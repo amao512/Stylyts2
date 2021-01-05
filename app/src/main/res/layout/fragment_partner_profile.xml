@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.fragments.main.profile.ProfileFragment">
+    <include
+        android:id="@+id/include_toolbar_partner_profile"
+        layout="@layout/base_toolbar" />
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:fitsSystemWindows="true"
+                app:contentScrim="@android:color/white"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+
+                <LinearLayout
+                    app:layout_collapseMode="parallax"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:adjustViewBounds="true"
+                            app:shapeAppearanceOverlay="@style/circleImageView"
+                            android:background="@drawable/rounded_rectangle_gray"
+                            android:id="@+id/shapeable_image_view_fragment_profile_avatar"
+                            android:layout_width="120dp"
+                            android:layout_height="120dp"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/jacket" />
+
+                        <TextView
+                            android:id="@+id/text_view_fragment_profile_user_name"
+                            style="@style/TitleTextBold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="12dp"
+                            app:layout_constraintEnd_toEndOf="@+id/shapeable_image_view_fragment_profile_avatar"
+                            app:layout_constraintStart_toStartOf="@+id/shapeable_image_view_fragment_profile_avatar"
+                            app:layout_constraintTop_toBottomOf="@+id/shapeable_image_view_fragment_profile_avatar"
+                            android:text="Zara" />
+
+                        <LinearLayout
+                            android:id="@+id/linearLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:orientation="vertical"
+                            app:layout_constraintEnd_toEndOf="@+id/text_view_fragment_profile_user_name"
+                            app:layout_constraintStart_toStartOf="@+id/text_view_fragment_profile_user_name"
+                            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_profile_user_name">
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="10" />
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/app_gray"
+                                android:text="подписчики" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="24dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="10" />
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/app_gray"
+                                android:text="фото" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="24dp"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toEndOf="@+id/linearLayout"
+                            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="10" />
+
+                            <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:textColor="@color/app_gray"
+                                android:text="подписки" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                            <TextView
+                                style="@style/TextRegularBold"
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_rectangle_orange"
+                                android:gravity="center"
+                                android:padding="6dp"
+                                android:text="Подписаться" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="6dp"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:gravity="center"
+                                android:padding="6dp"
+                                android:src="@drawable/ic_camera" />
+                            <TextView
+                                android:layout_marginStart="6dp"
+                                style="@style/TextRegularBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:gravity="center"
+                                android:padding="6dp"
+                                android:text="Для нее"
+                                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:background="@android:color/white"
+                android:id="@+id/recycler_view_fragment_partner_profile_filter_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_collection_filter"/>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_fragment_partner_profile_items_list"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</LinearLayout>

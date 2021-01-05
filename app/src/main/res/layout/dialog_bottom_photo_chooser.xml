@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_shape_white"
+    android:padding="16dp">
+    <View
+        android:layout_width="24dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:background="@color/app_gray_hint"
+        android:layout_marginBottom="32dp"/>
+    <TextView
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_baseline_qr_code_2_24"
+        style="@style/TextRegular"
+        android:text="Добавить вещь по штрихкоду"
+        android:layout_marginTop="6dp"
+        android:id="@+id/text_view_dialog_bottom_photo_chooser_photo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <View
+        android:layout_marginTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#979797"/>
+    <TextView
+        android:layout_marginTop="6dp"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_camera"
+        android:id="@+id/text_view_dialog_bottom_photo_chooser_barcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextRegular"
+        android:text="Добавить вещь по фотографии"/>
+    <View
+        android:layout_marginTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#979797"/>
+    <TextView
+        android:layout_marginTop="6dp"
+        android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_person_add"
+        android:id="@+id/text_view_dialog_bottom_photo_chooser_photo_as_collection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextRegular"
+        android:text="Опубликовать фото в образе"/>
+
+</LinearLayout>

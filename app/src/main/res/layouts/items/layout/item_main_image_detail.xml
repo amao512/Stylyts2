@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="16dp"
+    android:background="@drawable/rounded_rectangle_light_gray_white_corners_half_transparent">
+    <ImageView
+        android:id="@+id/image_view_image_detail_imageholder"
+        android:layout_margin="10dp"
+        android:src="@drawable/jacket"
+        android:layout_width="80dp"
+        android:layout_height="110dp"/>
+</FrameLayout>

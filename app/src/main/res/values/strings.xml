@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Stylyts</string>
+
+    <string name="fragment_login_forgot_password">Забыли пароль?</string>
+    <string name="fragment_login_sign_in">Войти</string>
+    <string name="fragment_login_no_account">Нет аккаунта?</string>
+    <string name="fragment_login_sign_up">Зарегестрироваться</string>
+
+    <string name="fragment_registration_appbar_title">Регистрация</string>
+    <string name="fragment_registration_birth_date">Дата рождения(месяц/день/год)</string>
+    <string name="fragment_registration_term"><![CDATA[Нажимая на кнопку Завершить регистрацию ниже, я соглашаюсь с уловиями Style App в рамках <u><font color=#0D4193>Правил Пользования, Условия оплаты, Политика  Конфиденциальности.</font></u>]]></string>
+    <string name="fragment_registration_complete">Завершить регистрацию</string>
+    <string name="fragment_registration_notification_info">Style App будет высылать вам почту только в рамках оповещения пользователей, маркентингового характера и push оповешения. Вы можете отписаться от получения данных писем в любое время выбрав данную опцию в настройках вашего аккаунта.</string>
+    <string name="fragment_registration_notification_info_reject_checkbox">Я не хочу получать рекламные письма от Style App.</string>
+
+    <string name="fragment_restore_password_forgot_password_title">Забыли Пароль?</string>
+    <string name="fragment_restore_password_forgot_password_description">Пожалуйста введите ваш Email адрес и мы сразу вышлем ваш на пароль вам на почту.</string>
+    <string name="fragment_restore_password_forgot_password_send_password_button">Отправить пароль</string>
+    <string name="fragment_restore_password_refresh_password_title">Обновите Пароль</string>
+    <string name="fragment_restore_password_refresh_password_description">Пожалуйста создайте ваш новый пароль</string>
+    <string name="fragment_restore_password_refresh_password_refresh_password_button">Обновить пароль</string>
+    <string name="fragment_restore_password_success_refreshed_title">Здравствуйте %1$s!</string>
+    <string name="fragment_restore_password_success_refreshed_description">Ваш пароль успешно обновлён!</string>
+    <string name="fragment_restore_password_success_refreshed_next_button">Вернуться в приложение</string>
+
+
+    <string name="email">Email</string>
+    <string name="name">Имя</string>
+    <string name="surname">Фамилия</string>
+    <string name="password">Пароль</string>
+    <string name="password_repeat">Повторите пароль</string>
+    <string name="back">Назад</string>
+
+    <string name="bottom_nav_bar_main">Главная</string>
+    <string name="bottom_nav_bar_collection">Образы</string>
+    <string name="bottom_nav_bar_create_collection">Создать образ</string>
+    <string name="bottom_nav_bar_shop">Поиск</string>
+    <string name="bottom_nav_bar_profile">Профиль</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="preference_file_key">preference_file_key</string>
+</resources>

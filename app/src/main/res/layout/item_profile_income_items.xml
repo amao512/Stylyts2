@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/include_toolbar_income"
+        layout="@layout/base_toolbar" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            style="@style/TitleTextBold"
+            android:text="Втроник, 10 декабря"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"/>
+        <TextView
+            android:layout_marginTop="16dp"
+            style="@style/TitleTextBold"
+            android:text="3 290 тг."
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textColor="#73C75D"/>
+    </LinearLayout>
+    <View
+        android:background="#F5F5F5"
+        android:layout_width="match_parent"
+        android:layout_height="16dp"/>
+    <include
+        layout="@layout/item_profile_income_item_detail"/>
+    <include
+        layout="@layout/item_profile_income_item_detail"/>
+
+</LinearLayout>

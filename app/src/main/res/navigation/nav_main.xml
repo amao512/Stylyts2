@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_partnerProfileFragment"
+            app:destination="@id/partnerProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createCollectionFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorFragment"
+        android:label="fragment_create_collection"
+        tools:layout="@layout/fragment_collection_constructor" >
+        <action
+            android:id="@+id/action_createCollectionFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment" />
+        <action
+            android:id="@+id/action_createCollectionFragment_to_photoChooserFragment"
+            app:destination="@id/photoChooserFragment" />
+        <action
+            android:id="@+id/action_createCollectionFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectionsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.collections.CollectionsFragment"
+        android:label="fragment_collections"
+        tools:layout="@layout/fragment_collections" >
+        <action
+            android:id="@+id/action_collectionsFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_profileIncomeFragment"
+            app:destination="@id/profileIncomeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop" >
+        <action
+            android:id="@+id/action_shopFragment_to_shopItemListFragment"
+            app:destination="@id/shopItemListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.detail.ItemDetailFragment"
+        android:label="fragment_item_detail"
+        tools:layout="@layout/fragment_item_detail" >
+        <action
+            android:id="@+id/action_itemDetailFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment" />
+        <action
+            android:id="@+id/action_itemDetailFragment_to_partnerProfileFragment"
+            app:destination="@id/partnerProfileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopItemListFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.ShopItemListFragment"
+        android:label="fragment_shop_item_list"
+        tools:layout="@layout/fragment_shop_item_list">
+        <action
+            android:id="@+id/action_shopItemListFragment_to_categoryTypeDetailFragment"
+            app:destination="@id/categoryTypeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/categoryTypeDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.CategoryTypeDetailFragment"
+        android:label="fragment_category_type_detail"
+        tools:layout="@layout/fragment_category_type_detail" >
+        <action
+            android:id="@+id/action_categoryTypeDetailFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/partnerProfileFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.PartnerProfileFragment"
+        android:label="fragment_partner_profile"
+        tools:layout="@layout/fragment_partner_profile" >
+        <action
+            android:id="@+id/action_partnerProfileFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileIncomeDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.ProfileIncomeDetailFragment"
+        android:label="ProfileIncomeDetailFragment" />
+    <fragment
+        android:id="@+id/profileIncomeFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.ProfileIncomeFragment"
+        android:label="fragment_profile_income"
+        tools:layout="@layout/fragment_profile_income" >
+        <action
+            android:id="@+id/action_profileIncomeFragment_to_profileIncomeDetailFragment"
+            app:destination="@id/profileIncomeDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/photoChooserFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment"
+        android:label="fragment_photo_chooser"
+        tools:layout="@layout/fragment_photo_chooser" >
+        <action
+            android:id="@+id/action_photoChooserFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment" />
+    </fragment>
+</navigation>
