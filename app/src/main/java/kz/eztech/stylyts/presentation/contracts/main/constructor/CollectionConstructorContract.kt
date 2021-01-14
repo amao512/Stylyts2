@@ -12,7 +12,6 @@ class CollectionConstructorContract {
     interface View:BaseView{
         fun processTypeDetail(model: CategoryTypeDetailModel)
         fun processShopCategories(shopCategoryModel: ShopCategoryModel)
-        fun copyImageView(view: ImageView,positionX:Float,positionY:Float,item: ClothesTypeDataModel?):ImageView
         fun processStyles(list:List<Style>)
         fun processSuccess()
     }

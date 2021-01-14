@@ -7,19 +7,28 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.MainImageAdditionalModel
 import kz.eztech.stylyts.domain.models.MainImageModel
+import kz.eztech.stylyts.domain.models.MainLentaModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.MainImagesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.presenters.main.MainLentaPresenter
+import kz.eztech.stylyts.presentation.presenters.main.profile.ProfilePresenter
+import javax.inject.Inject
 
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,UniversalViewClickListener {
 
     lateinit var dummyList: ArrayList<MainImageModel>
     lateinit var mainAdapter: MainImagesAdapter
+    
+    @Inject
+    lateinit var presenter: MainLentaPresenter
     override fun customizeActionBar() {
         with(include_toolbar){
             image_button_left_corner_action.visibility = View.GONE
@@ -32,27 +41,20 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         }
     }
 
-    override fun initializeDependency() {}
+    override fun initializeDependency() {
+        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
+    }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() {
+        presenter.attach(this)
+    }
 
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        dummyList = ArrayList()
-        addItems()
         mainAdapter = MainImagesAdapter()
     }
-
-    private fun addItems(){
-        for(i in 0..5){
-            val listAdditional = ArrayList<MainImageAdditionalModel>()
-            for (i in 0..5){
-                listAdditional.add(MainImageAdditionalModel(name = "Hello"))
-            }
-            dummyList.add(MainImageModel(name = "zara ${dummyList.count()}",additionals = listAdditional))
-        }
-    }
+    
 
     override fun initializeViews() {
         currentActivity.displayBottomNavigationView()
@@ -75,9 +77,15 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             }
         }
     }
-
+    
+    override fun processCollections(model: MainLentaModel) {
+        model.results?.let {
+            mainAdapter.updateList(it)
+        }
+    }
+    
     override fun processPostInitialization() {
-        mainAdapter.updateList(dummyList)
+        presenter.getCollections(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"")
     }
 
     override fun disposeRequests() {}
@@ -100,10 +108,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     
     }
     override fun displayProgress() {
-
+        progress_bar_fragment_main_lenta.visibility = View.VISIBLE
     }
 
     override fun hideProgress() {
-
+        progress_bar_fragment_main_lenta.visibility = View.GONE
     }
 }

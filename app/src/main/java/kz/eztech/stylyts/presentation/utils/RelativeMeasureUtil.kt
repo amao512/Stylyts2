@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
@@ -30,6 +31,24 @@ object RelativeMeasureUtil {
         val hAp = (100*view.height)/container.height
         val hR = (rcY * hAp)/100
 
+        return RelativeImageMeasurements(xR,yR,wR,hR)
+    }
+    
+    fun measureEntity(view: ImageEntity,container:ViewGroup):RelativeImageMeasurements{
+        Log.wtf("ResultAbsolute ","x:${view.absoluteCenterX()},y:${view.absoluteCenterY()},w:${view.getScaledWidth()},x:${view.getScaledHeight()}")
+        Log.wtf("ResultAbsoluteContainer ","x:${container.x},y:${container.y},w:${container.width},x:${container.height}")
+        val xAp = (100*view.absoluteCenterX())/container.width
+        val xR = (rcX * xAp)/100
+        
+        val yAp = (100*view.absoluteCenterY())/container.height
+        val yR = (rcY * yAp)/100
+        
+        val wAp = (100*view.getScaledWidth())/container.width
+        val wR = (rcX * wAp)/100
+        
+        val hAp = (100*view.getScaledHeight())/container.height
+        val hR = (rcY * hAp)/100
+        
         return RelativeImageMeasurements(xR,yR,wR,hR)
     }
 

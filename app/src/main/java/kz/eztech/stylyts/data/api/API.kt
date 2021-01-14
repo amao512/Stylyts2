@@ -4,6 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants.GENERATE_FORGOT_PASSWORD
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES_DETAIL
+import kz.eztech.stylyts.data.api.RestConstants.GET_COLLECTIONS
 import kz.eztech.stylyts.data.api.RestConstants.GET_STYLES
 import kz.eztech.stylyts.data.api.RestConstants.GET_USER_PROFILE
 import kz.eztech.stylyts.data.api.RestConstants.LOGIN_USER
@@ -60,4 +61,7 @@ interface API {
     @POST(SAVE_COLLECTION)
     fun saveCollection(@Header("Authorization") token: String,
                        @Body request: CollectionPostCreateModel): Single<Response<Unit>>
+    
+    @GET(GET_COLLECTIONS)
+    fun getCollections(@Header("Authorization") token: String): Single<Response<MainLentaModel>>
 }

@@ -10,6 +10,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.fragments.LoginFragment
 import kz.eztech.stylyts.presentation.fragments.RefreshPasswordFragment
 import kz.eztech.stylyts.presentation.fragments.RegistrationFragment
+import kz.eztech.stylyts.presentation.fragments.main.MainFragment
 import kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.main.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.main.shop.CategoryTypeDetailFragment
@@ -35,5 +36,6 @@ interface ApplicationComponent {
     fun inject(fragment: CategoryTypeDetailFragment)
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: CollectionConstructorFragment)
+    fun inject(fragment: MainFragment)
 
 }

@@ -9,9 +9,11 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.repository.AuthorizationRepository
+import kz.eztech.stylyts.data.repository.main.MainLentaRepository
 import kz.eztech.stylyts.data.repository.main.ProfileRepository
 import kz.eztech.stylyts.data.repository.main.ShopCategoryRepository
 import kz.eztech.stylyts.domain.repository.AuthorizationDomainRepository
+import kz.eztech.stylyts.domain.repository.main.MainLentaDomainRepository
 import kz.eztech.stylyts.domain.repository.main.ProfileDomainRepository
 import kz.eztech.stylyts.domain.repository.main.ShopCategoryDomainRepository
 import javax.inject.Named
@@ -60,6 +62,11 @@ class ApplicationModule(internal var mApplication: Application){
     @Provides
     fun providesProfileRepository(profileRepository: ProfileRepository) : ProfileDomainRepository {
         return profileRepository
+    }
+    
+    @Provides
+    fun providesMainLentaRepository(mainLentaRepository: MainLentaRepository) : MainLentaDomainRepository {
+        return mainLentaRepository
     }
 
 }

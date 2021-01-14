@@ -1,28 +1,24 @@
 package kz.eztech.stylyts.presentation.fragments.main.constructor
 
-import android.content.ClipData
-import android.content.ClipDescription.MIMETYPE_TEXT_HTML
-import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
-import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Point
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.DragEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.FrameLayout
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor.include_toolbar_profile
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
+import kotlinx.android.synthetic.main.item_constuctor_image_holder.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -42,6 +38,8 @@ import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFra
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorPresenter
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
+import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
+import kz.eztech.stylyts.presentation.utils.stick.Layer
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -58,7 +56,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private var isStyle = false
 
 	private val listOfItems = ArrayList<ClothesTypeDataModel>()
-	private val listOfViews = ArrayList<ImageView>()
+	private val listOfEntities = ArrayList<ImageEntity>()
+	private val listOfIdsChosen = ArrayList<Int>()
+	private var currentId : Int = -1
 	private var currentStyle:Style? = null
 	@Inject
 	lateinit var presenter:CollectionConstructorPresenter
@@ -75,14 +75,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			image_button_left_corner_action.visibility = android.view.View.GONE
 			text_view_toolbar_back.visibility = android.view.View.VISIBLE
 			text_view_toolbar_title.visibility = android.view.View.VISIBLE
-			image_button_right_corner_action.visibility = android.view.View.VISIBLE
-			image_button_right_corner_action.setOnClickListener{
+			image_button_right_corner_action.visibility = android.view.View.GONE
+			/*image_button_right_corner_action.setOnClickListener{
 				Log.wtf("ImagePhoto", "Here")
 				val chooserDialog = PhotoChooserDialog()
 				chooserDialog.setChoiceListener(this@CollectionConstructorFragment)
 				chooserDialog.show(childFragmentManager, "PhotoChooserTag")
 			}
-			image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_camera)
+			image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_camera)*/
 			elevation = 0f
 			customizeActionToolBar(this, "Создать образ")
 		}
@@ -109,9 +109,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		adapter = CollectionConstructorShopCategoryAdapter()
 		itemAdapter = CollectionConstructorShopItemAdapter()
 		recycler_view_fragment_collection_constructor_list.layoutManager = LinearLayoutManager(
-			context,
-			LinearLayoutManager.HORIZONTAL,
-			false
+				context,
+				LinearLayoutManager.HORIZONTAL,
+				false
 		)
 		recycler_view_fragment_collection_constructor_list.adapter = adapter
 		adapter.itemClickListener = this
@@ -120,8 +120,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun initializeListeners() {
-		frame_layout_fragment_collection_constructor_images_container.setOnDragListener(dragListen)
-		recycler_view_fragment_collection_constructor_list.setOnDragListener(dragRecyclerListener)
 		text_view_fragment_collection_constructor_total_price.setOnClickListener(this)
 		text_view_fragment_collection_constructor_category_back.setOnClickListener(this)
 		text_view_fragment_collection_constructor_category_next.setOnClickListener(this)
@@ -156,7 +154,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	override fun onClick(v: View?) {
 		when(v?.id){
 			R.id.text_view_fragment_collection_constructor_category_back -> {
-				if(isStyle){
+				if (isStyle) {
 					recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
 					recycler_view_fragment_collection_constructor_list.visibility = View.VISIBLE
 					list_view_fragment_collection_constructor_list_style.visibility = View.GONE
@@ -174,13 +172,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				}
 			}
 			R.id.text_view_fragment_collection_constructor_category_next -> {
-				if(isStyle){
+				if (isStyle) {
 					processPostImages()
-				} else if(isItems){
+				} else if (isItems) {
 					isStyle = true
 					isItems = false
-					recycler_view_fragment_collection_constructor_list.visibility= View.GONE
-					presenter.getStyles(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"")
+					recycler_view_fragment_collection_constructor_list.visibility = View.GONE
+					presenter.getStyles(
+							currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+									?: ""
+					)
 				}
 			}
 		}
@@ -190,14 +191,22 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		when(view?.id){
 			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
 				if (isItems) {
-					//findNavController().navigate(R.id.action_createCollectionFragment_to_itemDetailFragment)
+					processInputImageToPlace(view, item)
 				} else {
 					if (!adapter.isSubCategory) {
-						adapter.isSubCategory = true
 						(item as GenderCategory).run {
-							clothes_types?.let { list ->
-								recycler_view_fragment_collection_constructor_list.adapter = adapter
-								adapter.updateList(list)
+							if(isExternal){
+								onChoice(view,externalType)
+							}else{
+								adapter.isSubCategory = true
+								currentId = item.id?:0
+								clothes_types?.let { list ->
+									list.forEach {
+										it.constructor_icon = this.constructor_icon
+									}
+									recycler_view_fragment_collection_constructor_list.adapter = adapter
+									adapter.updateList(list)
+								}
 							}
 						}
 					} else {
@@ -206,29 +215,54 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 						}
 					}
 				}
-
+				
 			}
 		}
 	}
-	
+
+	private fun processInputImageToPlace(view: View, item: Any?) {
+		item as ClothesTypeDataModel
+		Glide.with(this)
+				.asBitmap()
+				.load("http://178.170.221.31:8000${item.cover_photo}")
+				.into(object : CustomTarget<Bitmap>(){
+					override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+						frame_layout_fragment_collection_constructor_images_container_placeholder.visibility = View.GONE
+						frame_layout_fragment_collection_constructor_images_container.post(Runnable {
+								val layer = Layer()
+								val entity = ImageEntity(layer, resource, frame_layout_fragment_collection_constructor_images_container.getWidth(), frame_layout_fragment_collection_constructor_images_container.getHeight())
+								frame_layout_fragment_collection_constructor_images_container.addEntityAndPosition(entity)
+							listOfItems.add(item)
+							listOfEntities.add(entity)
+							listOfIdsChosen.add(currentId)
+							processDraggedItems()
+						})
+						
+					}
+					override fun onLoadCleared(placeholder: Drawable?) {
+					}
+				})
+		
+	}
+
 	override fun onChoice(v: View?, item: Any?) {
 		when(item){
 			is Int -> {
-				when (item){
+				when (item) {
 					1 -> {
 						val bundle = Bundle()
 						bundle.putString(PHOTO_TYPE, BAR_CODE)
 						findNavController().navigate(
-							R.id.action_createCollectionFragment_to_cameraFragment,
-							bundle
+								R.id.action_createCollectionFragment_to_cameraFragment,
+								bundle
 						)
 					}
 					2 -> {
 						val bundle = Bundle()
 						bundle.putString(PHOTO_TYPE, PHOTO_LIBRARY)
 						findNavController().navigate(
-							R.id.action_createCollectionFragment_to_photoChooserFragment,
-							bundle
+								R.id.action_createCollectionFragment_to_photoChooserFragment,
+								bundle
 						)
 					}
 					3 -> {
@@ -236,10 +270,11 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					}
 				}
 			}
-			is CollectionPostCreateModel ->{
+			is CollectionPostCreateModel -> {
 				currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
 					presenter.saveCollection(
-						it,item)
+							it, item
+					)
 				}
 			}
 		}
@@ -247,6 +282,31 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	
 	override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
 		shopCategoryModel.menCategory?.let {
+			it.add(GenderCategory(
+					title = "Добавить категорию",
+					isExternal = true,
+					externalType = 0,
+					externalImageId = R.drawable.ic_baseline_add_circle_outline_24
+			))
+			it.add(GenderCategory(
+					title = "Добавить по штрихкоду",
+					isExternal = true,
+					externalType = 1,
+					isChoosen = false,
+					externalImageId = R.drawable.ic_baseline_qr_code_2_24
+			))
+			it.add(GenderCategory(
+					title = "Добавить по фото",
+					isExternal = true,
+					externalType = 2,
+					isChoosen = false,
+					externalImageId = R.drawable.ic_camera
+			))
+			if(listOfIdsChosen.isNotEmpty()){
+				listOfIdsChosen.forEach { type ->
+					it.find { it.id == type }?.isChoosen = true
+				}
+			}
 			adapter.isSubCategory = false
 			adapter.updateList(it)
 		}
@@ -260,271 +320,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		}
 	}
 	
-	override fun copyImageView(
-		view: ImageView,
-		positionX: Float,
-		positionY: Float,
-		item: ClothesTypeDataModel?
-	): ImageView {
-		var childView = ImageView(currentActivity)
-		childView.layoutParams =  ViewGroup.LayoutParams(
-			view.layoutParams.width,
-			view.layoutParams.height
-		)
-		childView.layoutParams.width = childView.layoutParams.width*2
-		childView.layoutParams.height = childView.layoutParams.height*2
-		childView.x = positionX - childView.layoutParams.width/2
-		childView.y = positionY - childView.layoutParams.height/2
-		childView.scaleX = 1f
-		childView.scaleY = 1f
-		childView.setImageDrawable(view.drawable)
-		childView.setOnLongClickListener {
-			initializeChildDrag(it, item)
-			true
-		}
-		item?.let {
-			listOfItems.add(it)
-			listOfViews.add(childView)
-		}
-		return childView
-	}
-
-	private fun createImage(positionX: Float, positionY: Float, width: Float, height: Float):ImageView{
-		var childView = ImageView(currentActivity)
-		childView.x = positionX
-		childView.y = positionY
-		childView.layoutParams = ViewGroup.LayoutParams(width.toInt(), height.toInt())
-		childView.layoutParams.height = height.toInt()
-		childView.setImageResource(R.drawable.jacket)
-		return childView
-	}
-	
-	private fun initializeChildDrag(v: View, item: ClothesTypeDataModel?){
-		val intent = Intent()
-		intent.putExtra("clothesmodel", item)
-		val item = ClipData.Item(v.tag as? CharSequence, intent, null)
-		val dragData = ClipData(
-			v.tag as? CharSequence,
-			arrayOf(MIMETYPE_TEXT_HTML),
-			item
-		)
-		val myShadow = MyDragShadowBuilder(v)
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-			v.startDragAndDrop(
-				dragData,
-				myShadow,
-				v,
-				0
-			)
-		} else {
-			v.startDrag(
-				dragData,
-				myShadow,
-				v,
-				0
-			)
-		}
-	}
-	
-	private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
-		private val currentView = v
-		private var mScaleFactor: Point? = null
-		// Defines a callback that sends the drag shadow dimensions and touch point back to the
-		// system.
-		override fun onProvideShadowMetrics(size: Point, touch: Point) {
-			// Sets the width of the shadow to half the width of the original View
-			val width: Int = view.width
-			
-			// Sets the height of the shadow to half the height of the original View
-			val height: Int = view.height
-			
-			
-			
-			// Sets the size parameter's width and height values. These get back to the system
-			// through the size parameter.
-			size.set(width, height)
-			mScaleFactor = size;
-			currentView.requestLayout()
-			
-			// Sets the touch point's position to be in the middle of the drag shadow
-			touch.set(width / 2, height / 2)
-		}
-		
-		// Defines a callback that draws the drag shadow in a Canvas that the system constructs
-		// from the dimensions passed in onProvideShadowMetrics().
-		override fun onDrawShadow(canvas: Canvas) {
-			// Draws the ColorDrawable in the Canvas passed in from the system.
-			mScaleFactor?.let {
-				canvas.scale(
-					1f, 1f
-				)
-			}
-			
-			currentView.draw(canvas)
-		}
-	}
-	
-	
-	private val dragListen = View.OnDragListener { v, event ->
-		
-		// Handles each of the expected events
-		when (event.action) {
-			DragEvent.ACTION_DRAG_STARTED -> {
-				event.getClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN) ||
-						event.getClipDescription().hasMimeType(MIMETYPE_TEXT_HTML)
-			}
-			DragEvent.ACTION_DRAG_ENTERED -> {
-				true;
-			}
-
-			DragEvent.ACTION_DRAG_LOCATION ->
-				true
-			DragEvent.ACTION_DRAG_EXITED -> {
-				true
-			}
-			DragEvent.ACTION_DROP -> {
-				try {
-					val view = event.localState as ImageView
-					if (view != null) {
-						when (event.clipDescription.getMimeType(0)) {
-							MIMETYPE_TEXT_HTML -> {
-								val owner = view.parent as ViewGroup
-								val container = v as FrameLayout
-								container.removeView(view)
-								view.x = event.x - view.layoutParams.width / 2
-								view.y = event.y - view.layoutParams.height / 2
-								owner.addView(view)
-								owner.requestLayout()
-								view.visibility = View.VISIBLE
-
-								true
-							}
-							MIMETYPE_TEXT_PLAIN -> {
-								val owner = view.parent as ViewGroup
-								val container = v as FrameLayout
-								val intent = event.clipData.getItemAt(0).intent
-								intent.setExtrasClassLoader(ClothesTypeDataModel::class.java.classLoader)
-								val currentItem =
-									intent.getParcelableExtra<ClothesTypeDataModel>("clothesmodel")
-								container.addView(
-									copyImageView(
-										view,
-										event.x,
-										event.y,
-										currentItem
-									)
-								)
-								owner.requestLayout()
-								view.visibility = View.VISIBLE
-
-
-								true
-							}
-							else -> {
-								false
-							}
-						}
-
-					} else false
-
-				} catch (e: Exception) {
-					false
-				}
-
-			}
-
-			DragEvent.ACTION_DRAG_ENDED -> {
-
-				// Invalidates the view to force a redraw
-				v.invalidate()
-
-				// Does a getResult(), and displays what happened.
-				when (event.result) {
-					true -> {
-						processDraggedItems()
-					}
-
-					else -> {
-					}
-				}
-
-				// returns true; the value is ignored.
-				true
-			}
-			else -> {
-				// An unknown action type was received.
-				Log.e("DragDrop Example", "Unknown action type received by OnDragListener.")
-				false
-			}
-		}
-	}
-	
-	private val dragRecyclerListener = View.OnDragListener { v, event ->
-		
-		// Handles each of the expected events
-		when (event.action) {
-			DragEvent.ACTION_DRAG_STARTED -> {
-				event.getClipDescription().hasMimeType(MIMETYPE_TEXT_HTML)
-			}
-			DragEvent.ACTION_DRAG_ENTERED -> {
-				true;
-			}
-
-			DragEvent.ACTION_DRAG_LOCATION ->
-				true
-			DragEvent.ACTION_DRAG_EXITED -> {
-				true
-			}
-			DragEvent.ACTION_DROP -> {
-				try {
-					val view = event.localState as ImageView
-					if (view != null) {
-						val owner = view.parent as ViewGroup
-						val container = v as RecyclerView
-						val intent = event.clipData.getItemAt(0).intent
-						intent.setExtrasClassLoader(ClothesTypeDataModel::class.java.classLoader)
-						val currentItem =
-							intent.getParcelableExtra<ClothesTypeDataModel>("clothesmodel")
-						if (listOfItems.contains(currentItem)) {
-							listOfItems.remove(currentItem)
-							listOfViews.remove(view)
-						}
-						owner.removeView(view)
-						owner.requestLayout()
-						true
-					} else false
-
-				} catch (e: Exception) {
-					false
-				}
-
-			}
-
-			DragEvent.ACTION_DRAG_ENDED -> {
-
-				// Invalidates the view to force a redraw
-				v.invalidate()
-
-				// Does a getResult(), and displays what happened.
-				when (event.result) {
-					true -> {
-						processDraggedItems()
-					}
-					else -> {
-
-					}
-				}
-
-				// returns true; the value is ignored.
-				true
-			}
-			else -> {
-				// An unknown action type was received.
-				Log.e("DragDrop Example", "Unknown action type received by OnDragListener.")
-				false
-			}
-		}
-	}
 
 	private fun processDraggedItems(){
 		val price = NumberFormat.getInstance().format(listOfItems.sumBy { it.cost ?: 0 })
@@ -532,7 +327,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 
 	private fun processPostImages(){
-		if(listOfItems.isNotEmpty() && listOfViews.isNotEmpty() && currentStyle!=null){
+		if(listOfItems.isNotEmpty() && listOfEntities.isNotEmpty() && currentStyle!=null){
 			val collectionPostCreateModel = CollectionPostCreateModel()
 
 			collectionPostCreateModel.style = currentStyle!!.id
@@ -542,30 +337,34 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 			val loccloth = ArrayList<ClothesCollection>()
 
-			listOfViews.forEachIndexed { index, imageView ->
-				val result = RelativeMeasureUtil.measureView(
-					imageView,
-					frame_layout_fragment_collection_constructor_images_container
+			listOfEntities.forEachIndexed { index, imageView ->
+				val result = RelativeMeasureUtil.measureEntity(
+						imageView,
+						frame_layout_fragment_collection_constructor_images_container
 				)
-				loccloth.add(ClothesCollection(
-					clothes_id = listOfItems[index].id,
-					point_x = result.point_x,
-					point_y = result.point_y,
-					width = result.width,
-					height = result.height,
-					degree = 0f
-				))
-				clth.add(listOfItems[index].id?:0)
+				loccloth.add(
+						ClothesCollection(
+								clothes_id = listOfItems[index].id,
+								point_x = result.point_x,
+								point_y = result.point_y,
+								width = result.width,
+								height = result.height,
+								degree = 0f
+						)
+				)
+				clth.add(listOfItems[index].id ?: 0)
 			}
 			collectionPostCreateModel.clothes = clth
 
 			collectionPostCreateModel.clothes_location = loccloth
-			collectionPostCreateModel.author = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+			collectionPostCreateModel.author = currentActivity.getSharedPrefByKey<Int>(
+					SharedConstants.USER_ID_KEY
+			)
 			collectionPostCreateModel.total_price = listOfItems.sumBy { it.cost?:0 }.toFloat()
 
 			val createCollecationDialog = CreateCollectionAcceptDialog()
 			val bundle = Bundle()
-			bundle.putParcelable("collectionModel",collectionPostCreateModel)
+			bundle.putParcelable("collectionModel", collectionPostCreateModel)
 			createCollecationDialog.arguments = bundle
 			createCollecationDialog.setChoiceListener(this@CollectionConstructorFragment)
 			createCollecationDialog.show(childFragmentManager, "PhotoChossoserTag")
@@ -579,7 +378,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	override fun processStyles(list: List<Style>) {
 		val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-			currentActivity,R.layout.item_style, list.map { it.title }
+				currentActivity, R.layout.item_style, list.map { it.title }
 		)
 		recycler_view_fragment_collection_constructor_list.visibility = View.GONE
 		list_view_fragment_collection_constructor_list_style.adapter = adapter

@@ -11,10 +11,10 @@ import kotlinx.android.parcel.Parcelize
 data class ShopCategoryModel(
     @SerializedName("M")
     @Expose
-    val menCategory: List<GenderCategory>? = null,
+    val menCategory: ArrayList<GenderCategory>? = null,
     @SerializedName("F")
     @Expose
-    val femaleCategory: List<GenderCategory>? = null
+    val femaleCategory: ArrayList<GenderCategory>? = null
 )
 
 @Parcelize
@@ -28,9 +28,17 @@ data class GenderCategory(
     @SerializedName("cover_image")
     @Expose
     var cover_image:String? = null,
+    @SerializedName("constructor_icon")
+    @Expose
+    var constructor_icon:String? = null,
     @SerializedName("title")
     @Expose
-    var title:String? = null
+    var title:String? = null,
+    var isExternal:Boolean = false,
+    var externalTitle:String? = null,
+    var externalImageId:Int = 0,
+    var externalType:Int = 0,
+    var isChoosen: Boolean = false
 ):Parcelable
 
 @Parcelize
@@ -46,5 +54,6 @@ data class ClothesTypes(
     var clothes_category:Int? = null,
     @SerializedName("body_part")
     @Expose
-    var body_part:Unit? = null
+    var body_part:Int? = null,
+    var constructor_icon:String? = null,
 ):Parcelable

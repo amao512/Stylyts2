@@ -18,9 +18,6 @@ data class CategoryTypeDetailModel(
 	@SerializedName("clothes_category")
 	@Expose
 	var clothes_category:Int? = null,
-	@SerializedName("body_part")
-	@Expose
-	var body_part:Unit? = null,
 	@SerializedName("clothes")
 	@Expose
 	var clothes:ClothesTypeModel? = null,
@@ -71,7 +68,7 @@ data class ClothesTypeDataModel(
 	var gender:String? = null,
 	@SerializedName("constructor_photo")
 	@Expose
-	var constructor_photo:Unit? = null,
+	var constructor_photo:String? = null,
 	@SerializedName("new_arrival")
 	@Expose
 	var new_arrival:Boolean? = null,

@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.main
 
+import kz.eztech.stylyts.domain.models.MainLentaModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -8,9 +9,9 @@ import kz.eztech.stylyts.presentation.base.BaseView
  */
 interface MainContract{
     interface View : BaseView{
-
+        fun processCollections(model:MainLentaModel)
     }
     interface Presenter:BasePresenter<View>{
-
+        fun getCollections(token: String)
     }
 }

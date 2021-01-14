@@ -21,6 +21,7 @@ object RestConstants {
     const val GET_CATEGORIES_DETAIL: String = "clothes/type/{id}"
     const val GET_STYLES: String = "clothes/styles/"
     const val SAVE_COLLECTION: String = "outfit/"
+    const val GET_COLLECTIONS: String = "outfit/"
 
     
     
