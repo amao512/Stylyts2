@@ -1,6 +1,8 @@
 package kz.eztech.stylyts.presentation.fragments.main.constructor
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -40,6 +43,9 @@ import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionCons
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 import kz.eztech.stylyts.presentation.utils.stick.Layer
+import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
+import kz.eztech.stylyts.presentation.utils.stick.MotionView
+import java.io.File
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -76,13 +82,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			text_view_toolbar_back.visibility = android.view.View.VISIBLE
 			text_view_toolbar_title.visibility = android.view.View.VISIBLE
 			image_button_right_corner_action.visibility = android.view.View.GONE
-			/*image_button_right_corner_action.setOnClickListener{
-				Log.wtf("ImagePhoto", "Here")
-				val chooserDialog = PhotoChooserDialog()
-				chooserDialog.setChoiceListener(this@CollectionConstructorFragment)
-				chooserDialog.show(childFragmentManager, "PhotoChooserTag")
-			}
-			image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_camera)*/
 			elevation = 0f
 			customizeActionToolBar(this, "Создать образ")
 		}
@@ -116,6 +115,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		recycler_view_fragment_collection_constructor_list.adapter = adapter
 		adapter.itemClickListener = this
 		itemAdapter.itemClickListener = this
+		frame_layout_fragment_collection_constructor_images_container.attachView(this)
 		processDraggedItems()
 	}
 	
@@ -222,27 +222,26 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private fun processInputImageToPlace(view: View, item: Any?) {
 		item as ClothesTypeDataModel
-		Glide.with(this)
-				.asBitmap()
-				.load("http://178.170.221.31:8000${item.cover_photo}")
-				.into(object : CustomTarget<Bitmap>(){
-					override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-						frame_layout_fragment_collection_constructor_images_container_placeholder.visibility = View.GONE
-						frame_layout_fragment_collection_constructor_images_container.post(Runnable {
-								val layer = Layer()
-								val entity = ImageEntity(layer, resource, frame_layout_fragment_collection_constructor_images_container.getWidth(), frame_layout_fragment_collection_constructor_images_container.getHeight())
-								frame_layout_fragment_collection_constructor_images_container.addEntityAndPosition(entity)
-							listOfItems.add(item)
-							listOfEntities.add(entity)
-							listOfIdsChosen.add(currentId)
-							processDraggedItems()
-						})
-						
-					}
-					override fun onLoadCleared(placeholder: Drawable?) {
-					}
-				})
-		
+		Glide.with(currentActivity.applicationContext)
+			.asFile()
+			.load("http://178.170.221.31:8000${item.cover_photo}")
+			.into(object : CustomTarget<File>(){
+				override fun onResourceReady(file: File, transition: Transition<in File>?) {
+					frame_layout_fragment_collection_constructor_images_container_placeholder.visibility = View.GONE
+					val resource = BitmapFactory.decodeFile(file.path)
+					frame_layout_fragment_collection_constructor_images_container.post(Runnable {
+						val layer = Layer()
+						val entity = ImageEntity(layer, resource,item,frame_layout_fragment_collection_constructor_images_container.getWidth(), frame_layout_fragment_collection_constructor_images_container.getHeight())
+						frame_layout_fragment_collection_constructor_images_container.addEntityAndPosition(entity)
+						listOfItems.add(item)
+						listOfEntities.add(entity)
+						listOfIdsChosen.add(currentId)
+						processDraggedItems()
+					})
+				}
+				override fun onLoadCleared(placeholder: Drawable?) {
+				}
+			})
 	}
 
 	override fun onChoice(v: View?, item: Any?) {
@@ -388,6 +387,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			processPostImages()
 		}
 
+	}
+
+	override fun deleteSelectedView(motionEntity: MotionEntity) {
+		val res = listOfEntities.remove(motionEntity)
+
+		val res2 = listOfItems.remove(motionEntity.item)
+		val res3 = listOfIdsChosen.remove(currentId)
+
+		Log.wtf("deletedSelectedEntity","res1:$res res2:$res2 res3:$res3")
+		processDraggedItems()
 	}
 
 	override fun processSuccess() {

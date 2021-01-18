@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.annotation.Nullable
+import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 
 
 /**
@@ -12,10 +13,11 @@ import androidx.annotation.Nullable
 class ImageEntity(
     layer: Layer,
     bitmap: Bitmap,
+    item: ClothesTypeDataModel,
     @androidx.annotation.IntRange(from = 1)canvasWidth: Int,
     @androidx.annotation.IntRange(from = 1)canvasHeight: Int
 ) :
-    MotionEntity(layer, canvasWidth, canvasHeight) {
+    MotionEntity(layer,item, canvasWidth, canvasHeight) {
     private val bitmap: Bitmap
     override fun drawContent(canvas: Canvas, @Nullable drawingPaint: Paint?) {
         canvas.drawBitmap(bitmap, matrix, drawingPaint)

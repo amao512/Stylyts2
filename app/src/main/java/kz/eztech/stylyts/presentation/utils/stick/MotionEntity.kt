@@ -3,13 +3,16 @@ package kz.eztech.stylyts.presentation.utils.stick
 import android.graphics.*
 import android.util.Log
 import androidx.annotation.IntRange
+import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.presentation.utils.stick.MathUtils.pointInTriangle
+import java.util.ArrayList
 
 /**
  * Created by Ruslan Erdenoff on 13.01.2021.
  */
 abstract class MotionEntity(
     val layer: Layer,
+    val item: ClothesTypeDataModel,
     @IntRange(from = 1) var canvasWidth: Int,
     @IntRange(from = 1) var canvasHeight: Int
 ) {
@@ -19,7 +22,8 @@ abstract class MotionEntity(
     private val destPoints = FloatArray(10) // x0, y0, x1, y1, x2, y2, x3, y3, x0, y0
     protected val srcPoints = FloatArray(10) // x0, y0, x1, y1, x2, y2, x3, y3, x0, y0
     private var borderPaint = Paint()
-    private var deleteBitmap: Bitmap? = null
+    private var deleteIcon:BitmapStickerIcon? = null
+    //private val icons = ArrayList<BitmapStickerIcon>()
     protected fun updateMatrix() {
         // init matrix to E - identity matrix
         matrix.reset()
@@ -61,14 +65,6 @@ abstract class MotionEntity(
     fun absoluteCenterY(): Float {
         val topLeftY = layer.y * canvasHeight
         return topLeftY + height * holyScale * 0.5f
-    }
-    
-    fun absoluteWidth():Float{
-        return canvasWidth.toFloat()
-    }
-    
-    fun absoluteHeight():Float{
-        return canvasHeight.toFloat()
     }
 
     fun absoluteCenter(): PointF {
@@ -132,18 +128,73 @@ abstract class MotionEntity(
         matrix.mapPoints(destPoints, srcPoints)
         canvas.drawLines(destPoints, 0, 8, borderPaint)
         canvas.drawLines(destPoints, 2, 8, borderPaint)
-        deleteBitmap?.let {
-            canvas.drawBitmap(it,canvasHeight.toFloat(),canvasHeight.toFloat(),borderPaint)
+
+        val x1: Float = destPoints.get(0)
+        val y1: Float = destPoints.get(1)
+        val x2: Float = destPoints.get(2)
+        val y2: Float = destPoints.get(3)
+        val x3: Float = destPoints.get(4)
+        val y3: Float = destPoints.get(5)
+        val x4: Float = destPoints.get(6)
+        val y4: Float = destPoints.get(7)
+
+        val rotation: Float = calculateRotation(x4, y4, x3, y3)
+        /*icons.forEach {
+
+        }*/
+        deleteIcon?.let {
+            try {
+                when (it.position) {
+                    BitmapStickerIcon.LEFT_TOP -> configIconMatrix(it, x1, y1, rotation)
+                    BitmapStickerIcon.RIGHT_TOP -> configIconMatrix(it, x2, y2, rotation)
+                    BitmapStickerIcon.LEFT_BOTTOM -> configIconMatrix(it, x3, y3, rotation)
+                    BitmapStickerIcon.RIGHT_BOTOM -> configIconMatrix(it, x4, y4, rotation)
+                }
+                it.draw(canvas, borderPaint)
+                it.draw(canvas, borderPaint)
+            }catch (e:Exception){}
+
         }
-       
+    }
+
+    fun configIconMatrix(icon: BitmapStickerIcon, x: Float, y: Float,
+                         rotation: Float) {
+        icon.x = x
+        icon.y = y
+        icon.matrix.reset()
+        icon.matrix.postRotate(rotation, (icon.width / 2).toFloat(), (icon.height / 2).toFloat())
+        icon.matrix.postTranslate(x - icon.width / 2, y - icon.height / 2)
     }
 
     fun setBorderPaint(borderPaint: Paint) {
         this.borderPaint = borderPaint
     }
-    
-    fun setDeleteBitmap(bitmap: Bitmap){
-        this.deleteBitmap = bitmap
+
+    fun findCurrentIconTouched(downX:Float,downY:Float): BitmapStickerIcon? {
+        /*
+        for (icon in icons) {
+            val x: Float = icon.getX() - downX
+            val y: Float = icon.getY() - downY
+            val distance_pow_2 = x * x + y * y
+            if (distance_pow_2 <= Math.pow((icon.getIconRadius() + icon.getIconRadius()).toDouble(), 2.0)) {
+                return icon
+            }
+        }*/
+        deleteIcon?.let {
+            val x: Float = it.getX() - downX
+            val y: Float = it.getY() - downY
+            val distance_pow_2 = x * x + y * y
+            if (distance_pow_2 <= Math.pow((it.getIconRadius() + it.getIconRadius()).toDouble(), 2.0)) {
+                return it
+            }
+        }
+        return null
+    }
+
+    fun setIcon(icon:BitmapStickerIcon){
+        //icons.clear()
+        //icons.add(icon)
+        deleteIcon = icon
     }
 
     protected abstract fun drawContent(canvas: Canvas, drawingPaint: Paint?)
@@ -151,12 +202,22 @@ abstract class MotionEntity(
     abstract val height: Int
     open fun release() {
         // free resources here
+        //icons.clear()=
+        deleteIcon?.release()
+    }
+
+    fun calculateRotation(x1: Float, y1: Float, x2: Float, y2: Float): Float {
+        val x = (x1 - x2).toDouble()
+        val y = (y1 - y2).toDouble()
+        val radians = Math.atan2(y, x)
+        return Math.toDegrees(radians).toFloat()
     }
 
     @Throws(Throwable::class)
     protected open fun finalize() {
         try {
             release()
+
         } finally {
             //super.finalize()
         }
