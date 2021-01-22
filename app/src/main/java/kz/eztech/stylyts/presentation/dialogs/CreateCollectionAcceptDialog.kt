@@ -1,13 +1,16 @@
 package kz.eztech.stylyts.presentation.dialogs
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
+import kotlinx.android.synthetic.main.item_collection_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
@@ -18,6 +21,7 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener{
     internal var listener: DialogChooserListener? = null
     private var currentModel: CollectionPostCreateModel? = null
+    private var currentBitmap: Bitmap? = null
     fun setChoiceListener(listener: DialogChooserListener){
         this.listener = listener
     }
@@ -32,6 +36,19 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        
+        arguments?.let {
+            if(it.containsKey("collectionModel")){
+                currentModel = it.getParcelable("collectionModel")
+            }
+            if(it.containsKey("photoBitmap")){
+                currentBitmap = it.getParcelable("photoBitmap")
+            }
+        }
+        currentBitmap?.let {
+            Glide.with(this).load(it).into(this.image_view_dialog_create_collection_accept)
+        }
+        
         with(include_toolbar_dialog_create_collection){
             image_button_left_corner_action.visibility = android.view.View.GONE
             text_view_toolbar_back.visibility = android.view.View.VISIBLE
@@ -49,12 +66,6 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener{
                 dismiss()
             }
             elevation = 0f
-        }
-
-        arguments?.let {
-            if(it.containsKey("collectionModel")){
-                currentModel = it.getParcelable("collectionModel")
-            }
         }
 
         text_view_save_collection.setOnClickListener {

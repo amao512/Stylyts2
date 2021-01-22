@@ -1,5 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.main.constructor
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -10,7 +12,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.loader.app.LoaderManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -40,11 +45,18 @@ import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFra
 import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment.Companion.PHOTO_TYPE
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorPresenter
+import kz.eztech.stylyts.presentation.utils.FileUtils.createPngFileFromBitmap
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
+import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 import kz.eztech.stylyts.presentation.utils.stick.Layer
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
 import kz.eztech.stylyts.presentation.utils.stick.MotionView
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -66,6 +78,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private val listOfIdsChosen = ArrayList<Int>()
 	private var currentId : Int = -1
 	private var currentStyle:Style? = null
+	private var currentCollectionBitmap:Bitmap? = null
 	@Inject
 	lateinit var presenter:CollectionConstructorPresenter
 	override fun getLayoutId(): Int {
@@ -104,7 +117,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun initializeViews() {
-		currentActivity.hideBottomNavigationView()
+		checkWritePermission()
 		adapter = CollectionConstructorShopCategoryAdapter()
 		itemAdapter = CollectionConstructorShopItemAdapter()
 		recycler_view_fragment_collection_constructor_list.layoutManager = LinearLayoutManager(
@@ -243,7 +256,28 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				}
 			})
 	}
-
+	
+	private fun checkWritePermission() {
+		if (ContextCompat.checkSelfPermission(
+						currentActivity,
+						Manifest.permission.WRITE_EXTERNAL_STORAGE
+				)
+				!= PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(
+							currentActivity,
+							Manifest.permission.WRITE_EXTERNAL_STORAGE
+					)) {
+				
+			} else {
+				ActivityCompat.requestPermissions(
+						currentActivity,
+						arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+						2
+				);
+			}
+		}
+	}
+	
 	override fun onChoice(v: View?, item: Any?) {
 		when(item){
 			is Int -> {
@@ -271,9 +305,27 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			}
 			is CollectionPostCreateModel -> {
 				currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
-					presenter.saveCollection(
-							it, item
-					)
+					try {
+						currentCollectionBitmap?.let { bitmap ->
+							val file =  createPngFileFromBitmap(requireContext(),bitmap)
+							file?.let { currentFile ->
+								presenter.saveCollection(
+										it, item,file
+								)
+							}?:run {
+								displayMessage("Не удалось загрузить данные")
+								hideProgress()
+							}
+							
+						}?:run{
+							displayMessage("Не удалось загрузить данные")
+							hideProgress()
+						}
+					}catch (e:Exception){
+						hideProgress()
+						displayMessage("Не удалось загрузить данные")
+					}
+					
 				}
 			}
 		}
@@ -360,14 +412,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					SharedConstants.USER_ID_KEY
 			)
 			collectionPostCreateModel.total_price = listOfItems.sumBy { it.cost?:0 }.toFloat()
-
+			frame_layout_fragment_collection_constructor_images_container.unselectEntity()
+			currentCollectionBitmap = createBitmapScreenshot(frame_layout_fragment_collection_constructor_images_container)
 			val createCollecationDialog = CreateCollectionAcceptDialog()
 			val bundle = Bundle()
 			bundle.putParcelable("collectionModel", collectionPostCreateModel)
+			bundle.putParcelable("photoBitmap",currentCollectionBitmap)
 			createCollecationDialog.arguments = bundle
 			createCollecationDialog.setChoiceListener(this@CollectionConstructorFragment)
 			createCollecationDialog.show(childFragmentManager, "PhotoChossoserTag")
-
+			
 		}else{
 			displayMessage("Не все данные заполнены")
 		}

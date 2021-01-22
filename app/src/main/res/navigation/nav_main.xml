@@ -19,9 +19,9 @@
     </fragment>
     <fragment
         android:id="@+id/createCollectionFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.ConstructorHolderFragment"
         android:label="fragment_create_collection"
-        tools:layout="@layout/fragment_collection_constructor" >
+        tools:layout="@layout/fragment_constructor_holder" >
         <action
             android:id="@+id/action_createCollectionFragment_to_itemDetailFragment"
             app:destination="@id/itemDetailFragment" />

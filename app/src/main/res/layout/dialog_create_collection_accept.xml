@@ -29,9 +29,10 @@
             android:padding="16dp">
 
             <ImageView
+                android:scaleType="fitCenter"
+                android:id="@+id/image_view_dialog_create_collection_accept"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/jacket" />
+                android:layout_height="60dp" />
 
             <EditText
                 android:id="@+id/edit_text_view_dialog_create_collection_accept_sign"

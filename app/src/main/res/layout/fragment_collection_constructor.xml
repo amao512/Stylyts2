@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".presentation.fragments.main.constructor.CollectionConstructorFragment">
 
     <include
@@ -17,7 +18,7 @@
         android:id="@+id/frame_layout_fragment_collection_constructor_images_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="#F5F5F5"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,6 +73,7 @@
         tools:text="1 000 тг" />
 
     <LinearLayout
+        android:background="@color/white"
         android:animateLayoutChanges="true"
         android:paddingBottom="16dp"
         android:id="@+id/linearLayout2"
@@ -117,6 +119,7 @@
             android:id="@+id/progress_bar_fragment_collection_constructor"
             layout="@layout/base_progress_small"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/white"
             android:id="@+id/recycler_view_fragment_collection_constructor_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

@@ -1,19 +1,24 @@
 package kz.eztech.stylyts.presentation.presenters.main.constructor
 
+import com.google.gson.Gson
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
-import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
-import kz.eztech.stylyts.domain.models.Style
+import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryTypeDetailUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.GetStylesUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.SaveCollectionConstructor
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
-import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemContract
+import okhttp3.FormBody
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.File
 import javax.inject.Inject
+
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
@@ -28,9 +33,9 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 	@Inject
 	constructor(errorHelper: ErrorHelper,
 	            getCategoryUseCase: GetCategoryUseCase,
-				getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
-				getStylesUseCase: GetStylesUseCase,
-				saveCollectionConstructor: SaveCollectionConstructor
+	            getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
+	            getStylesUseCase: GetStylesUseCase,
+	            saveCollectionConstructor: SaveCollectionConstructor
 	){
 		this.getCategoryTypeDetailUseCase = getCategoryTypeDetailUseCase
 		this.getCategoryUseCase = getCategoryUseCase
@@ -69,20 +74,20 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 			}
 		})
 	}
-	override fun getShopCategoryTypeDetail(typeId:Int,gender:String) {
+	override fun getShopCategoryTypeDetail(typeId: Int, gender: String) {
 		view.displayProgress()
-		val map = HashMap<String,Any>()
+		val map = HashMap<String, Any>()
 		map["id"] = typeId
 		map["gender_type"] = gender
 		getCategoryTypeDetailUseCase.initParams(map)
-		getCategoryTypeDetailUseCase.execute(object : DisposableSingleObserver<CategoryTypeDetailModel>(){
+		getCategoryTypeDetailUseCase.execute(object : DisposableSingleObserver<CategoryTypeDetailModel>() {
 			override fun onSuccess(t: CategoryTypeDetailModel) {
 				view.processViewAction {
 					view.processTypeDetail(t)
 					hideProgress()
 				}
 			}
-
+			
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					hideProgress()
@@ -95,14 +100,14 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 	override fun getStyles(token: String) {
 		view.displayProgress()
 		getStylesUseCase.initParam(token)
-		getStylesUseCase.execute(object : DisposableSingleObserver<List<Style>>(){
+		getStylesUseCase.execute(object : DisposableSingleObserver<List<Style>>() {
 			override fun onSuccess(t: List<Style>) {
 				view.processViewAction {
 					view.processStyles(t)
 					hideProgress()
 				}
 			}
-
+			
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					displayMessage(errorHelper.processError(e))
@@ -112,17 +117,41 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 		})
 	}
 
-	override fun saveCollection(token: String, model: CollectionPostCreateModel) {
+	override fun saveCollection(token: String, model: CollectionPostCreateModel, data: File) {
 		view.displayProgress()
-		saveCollectionConstructor.initParam(token,model)
-		saveCollectionConstructor.execute(object : DisposableSingleObserver<Unit>(){
+		val requestFile = data.asRequestBody(("image/*").toMediaTypeOrNull())
+		val body = MultipartBody.Part.createFormData("cover_photo", data.name, requestFile)
+		val mediaType = "multipart/form-data"
+		val requestBody = MultipartBody.Builder().apply {
+			addPart(body)
+			addFormDataPart("title",null,model.title!!.toRequestBody((mediaType).toMediaTypeOrNull()))
+			addFormDataPart("clothes",null,Gson().toJson(model.clothes).toRequestBody((mediaType).toMediaTypeOrNull()))
+			addFormDataPart("clothes_location",null,Gson().toJson(model.clothes_location).toRequestBody((mediaType).toMediaTypeOrNull()))
+			addFormDataPart("style",null,Gson().toJson(model.style).toRequestBody((mediaType).toMediaTypeOrNull()))
+			addFormDataPart("author",null,Gson().toJson(model.author).toRequestBody((mediaType).toMediaTypeOrNull()))
+			addFormDataPart("total_price",null,Gson().toJson(model.total_price).toRequestBody((mediaType).toMediaTypeOrNull()))
+			addFormDataPart("text",null,Gson().toJson(model.text).toRequestBody((mediaType).toMediaTypeOrNull()))
+		}.build()
+		/*val sJsonAttachment = JSONObject()
+		sJsonAttachment.put("title", model.title)
+		sJsonAttachment.put("clothes", model.clothes)
+		sJsonAttachment.put("clothes_location", model.clothes_location)
+		sJsonAttachment.put("style", model.style)
+		sJsonAttachment.put("author", model.author)
+		sJsonAttachment.put("total_price", model.total_price)
+		sJsonAttachment.put("text", model.text)
+		val bodyJsonAttachment = (sJsonAttachment.toString()).toRequestBody(MultipartBody.FORM)*/
+		val json = Gson().toJson(model).toRequestBody("application/json".toMediaTypeOrNull())
+		val jsonBody = MultipartBody.Part.create(json)
+		saveCollectionConstructor.initParam(token, jsonBody, requestBody)
+		saveCollectionConstructor.execute(object : DisposableSingleObserver<Unit>() {
 			override fun onSuccess(t: Unit) {
 				view.processViewAction {
 					view.processSuccess()
 					hideProgress()
 				}
 			}
-
+			
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					displayMessage(errorHelper.processError(e))

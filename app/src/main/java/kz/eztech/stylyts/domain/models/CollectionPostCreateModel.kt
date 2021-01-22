@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import okhttp3.MultipartBody
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
@@ -45,27 +46,27 @@ import kotlinx.android.parcel.Parcelize
 * */
 @Parcelize
 data class CollectionPostCreateModel(
-    @SerializedName("title")
+        @SerializedName("title")
     @Expose
     var title:String?=null,
-    @SerializedName("clothes")
+        @SerializedName("clothes")
     @Expose
     var clothes:List<Int>?=null,
-    @SerializedName("clothes_location")
+        @SerializedName("clothes_location")
     @Expose
     var clothes_location:List<ClothesCollection>?=null,
-    @SerializedName("style")
+        @SerializedName("style")
     @Expose
     var style:Int?=null,
     @SerializedName("author")
     @Expose
     var author:Int?=null,
-    @SerializedName("total_price")
+        @SerializedName("total_price")
     @Expose
     var total_price:Float?=null,
-    @SerializedName("text")
+        @SerializedName("text")
     @Expose
-    var text:String?=null,
+    var text:String?=null
 ):Parcelable
 
 @Parcelize
@@ -89,3 +90,29 @@ data class ClothesCollection(
     @Expose
     var degree:Float?=null,
 ):Parcelable
+
+data class ExportedCollectionPostCreateModel(
+        @SerializedName("title")
+        @Expose
+        var title:String?=null,
+        @SerializedName("clothes")
+        @Expose
+        var clothes:List<Int>?=null,
+        @SerializedName("clothes_location")
+        @Expose
+        var clothes_location:List<ClothesCollection>?=null,
+        @SerializedName("style")
+        @Expose
+        var style:Int?=null,
+        @SerializedName("author")
+        @Expose
+        var author:Int?=null,
+        @SerializedName("total_price")
+        @Expose
+        var total_price:Float?=null,
+        @SerializedName("text")
+        @Expose
+        var text:String?=null,
+        @SerializedName("cover_image")
+        var cover_image:MultipartBody.Part
+)

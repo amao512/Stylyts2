@@ -12,6 +12,8 @@ import kz.eztech.stylyts.data.api.RestConstants.REGISTER_USER
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION
 import kz.eztech.stylyts.data.api.RestConstants.SET_NEW_PASSWORD
 import kz.eztech.stylyts.domain.models.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -57,10 +59,16 @@ interface API {
 
     @GET(GET_STYLES)
     fun getStyles(@Header("Authorization")token: String): Single<Response<List<Style>>>
-
+    
+    /*@Multipart
     @POST(SAVE_COLLECTION)
     fun saveCollection(@Header("Authorization") token: String,
-                       @Body request: CollectionPostCreateModel): Single<Response<Unit>>
+                       @Part("params") request: CollectionPostCreateModel,
+                       @Part data: MultipartBody.Part): Single<Response<Unit>>*/
+    @Headers("Content-Type:multipart/alternative")
+    @POST(SAVE_COLLECTION)
+    fun saveCollection(@Header("Authorization") token: String,
+                       @Body file:MultipartBody): Single<Response<Unit>>
     
     @GET(GET_COLLECTIONS)
     fun getCollections(@Header("Authorization") token: String): Single<Response<MainLentaModel>>
