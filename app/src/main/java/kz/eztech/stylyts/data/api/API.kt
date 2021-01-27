@@ -60,15 +60,14 @@ interface API {
     @GET(GET_STYLES)
     fun getStyles(@Header("Authorization")token: String): Single<Response<List<Style>>>
     
-    /*@Multipart
+    @Multipart
     @POST(SAVE_COLLECTION)
     fun saveCollection(@Header("Authorization") token: String,
-                       @Part("params") request: CollectionPostCreateModel,
-                       @Part data: MultipartBody.Part): Single<Response<Unit>>*/
-    @Headers("Content-Type:multipart/alternative")
-    @POST(SAVE_COLLECTION)
+                       @Part("text") text: RequestBody,
+                       @Part data: MultipartBody.Part): Single<Response<Unit>>
+    /*@POST(SAVE_COLLECTION)
     fun saveCollection(@Header("Authorization") token: String,
-                       @Body file:MultipartBody): Single<Response<Unit>>
+                       @Body file:MultipartBody): Single<Response<Unit>>*/
     
     @GET(GET_COLLECTIONS)
     fun getCollections(@Header("Authorization") token: String): Single<Response<MainLentaModel>>

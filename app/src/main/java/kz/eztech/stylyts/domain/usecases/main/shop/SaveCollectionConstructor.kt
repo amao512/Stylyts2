@@ -19,9 +19,9 @@ import javax.inject.Named
 class SaveCollectionConstructor:BaseUseCase<Unit> {
     private var shopCategoryDomainRepository: ShopCategoryDomainRepository
     private lateinit var token:String
-    private lateinit var model:MultipartBody.Part
+    private lateinit var model:RequestBody
     //private lateinit var data: MultipartBody.Part
-    private lateinit var data: MultipartBody
+    private lateinit var data: MultipartBody.Part
     @Inject
     constructor(@Named("executor_thread") executorThread: Scheduler,
                 @Named("ui_thread") uiThread: Scheduler,
@@ -39,7 +39,7 @@ class SaveCollectionConstructor:BaseUseCase<Unit> {
     override fun createSingleObservable(): Single<Unit> {
         return shopCategoryDomainRepository.saveCollection(token,model,data)
     }*/
-    fun initParam(token:String, model: MultipartBody.Part, data: MultipartBody){
+    fun initParam(token:String, model: RequestBody, data: MultipartBody.Part){
         this.token = "Bearer $token"
         this.model = model
         this.data = data

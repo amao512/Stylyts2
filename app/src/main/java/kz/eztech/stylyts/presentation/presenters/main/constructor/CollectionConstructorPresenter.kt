@@ -125,12 +125,12 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 		val requestBody = MultipartBody.Builder().apply {
 			addPart(body)
 			addFormDataPart("title",null,model.title!!.toRequestBody((mediaType).toMediaTypeOrNull()))
-			addFormDataPart("clothes",null,Gson().toJson(model.clothes).toRequestBody((mediaType).toMediaTypeOrNull()))
-			addFormDataPart("clothes_location",null,Gson().toJson(model.clothes_location).toRequestBody((mediaType).toMediaTypeOrNull()))
-			addFormDataPart("style",null,Gson().toJson(model.style).toRequestBody((mediaType).toMediaTypeOrNull()))
-			addFormDataPart("author",null,Gson().toJson(model.author).toRequestBody((mediaType).toMediaTypeOrNull()))
-			addFormDataPart("total_price",null,Gson().toJson(model.total_price).toRequestBody((mediaType).toMediaTypeOrNull()))
-			addFormDataPart("text",null,Gson().toJson(model.text).toRequestBody((mediaType).toMediaTypeOrNull()))
+			//addFormDataPart("clothes",null,Gson().toJson(model.clothes).toRequestBody((mediaType).toMediaTypeOrNull()))
+			//addFormDataPart("clothes_location",null,Gson().toJson(model.clothes_location).toRequestBody((mediaType).toMediaTypeOrNull()))
+			//addFormDataPart("style",null,Gson().toJson(model.style).toRequestBody((mediaType).toMediaTypeOrNull()))
+			//addFormDataPart("author",null,Gson().toJson(model.author).toRequestBody((mediaType).toMediaTypeOrNull()))
+			//addFormDataPart("total_price",null,Gson().toJson(model.total_price).toRequestBody((mediaType).toMediaTypeOrNull()))
+			//addFormDataPart("text",null,Gson().toJson(model.text).toRequestBody((mediaType).toMediaTypeOrNull()))
 		}.build()
 		/*val sJsonAttachment = JSONObject()
 		sJsonAttachment.put("title", model.title)
@@ -142,8 +142,7 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 		sJsonAttachment.put("text", model.text)
 		val bodyJsonAttachment = (sJsonAttachment.toString()).toRequestBody(MultipartBody.FORM)*/
 		val json = Gson().toJson(model).toRequestBody("application/json".toMediaTypeOrNull())
-		val jsonBody = MultipartBody.Part.create(json)
-		saveCollectionConstructor.initParam(token, jsonBody, requestBody)
+		saveCollectionConstructor.initParam(token, json, body)
 		saveCollectionConstructor.execute(object : DisposableSingleObserver<Unit>() {
 			override fun onSuccess(t: Unit) {
 				view.processViewAction {

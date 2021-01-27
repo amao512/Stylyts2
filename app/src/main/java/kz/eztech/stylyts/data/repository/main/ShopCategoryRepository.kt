@@ -48,13 +48,15 @@ class ShopCategoryRepository:ShopCategoryDomainRepository {
             }
         }
     }
-
-    override fun saveCollection(token: String, model: MultipartBody.Part, data: MultipartBody): Single<Unit> {
-        return api.saveCollection(token,data).map {
+    
+    override fun saveCollection(token: String, model: RequestBody, data: MultipartBody.Part): Single<Unit> {
+        return api.saveCollection(token,model,data).map {
             when(it.isSuccessful){
                 true -> Unit
                 false -> throw NetworkException(it)
             }
         }
     }
+    
+    
 }

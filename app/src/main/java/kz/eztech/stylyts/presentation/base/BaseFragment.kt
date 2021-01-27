@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.base_toolbar.*
+import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 
 /**
@@ -23,7 +26,11 @@ abstract class BaseFragment <T:BaseActivity>: Fragment(){
     lateinit var rootView: View
 
     fun displayToast(msg:String){
-        currentActivity.displayToast(msg)
+        Snackbar.make(rootView,msg,Snackbar.LENGTH_SHORT).apply {
+            setTextColor(getColor(context, R.color.white))
+            setBackgroundTint(getColor(context,R.color.app_dark_blue_gray))
+        }
+        //currentActivity.displayToast(msg)
     }
 
     override fun onCreateView(
