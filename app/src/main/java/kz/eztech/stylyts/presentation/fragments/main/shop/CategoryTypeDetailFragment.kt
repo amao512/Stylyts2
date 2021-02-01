@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.item_category_type_detail.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
+import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
@@ -81,7 +83,10 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when(view?.id){
             R.id.linear_layout_item_category_type_detail->{
-                findNavController().navigate(R.id.action_categoryTypeDetailFragment_to_itemDetailFragment)
+                item as ClothesTypeDataModel
+                val bundle = Bundle()
+                bundle.putInt("itemId",item.id ?: -1)
+                findNavController().navigate(R.id.action_categoryTypeDetailFragment_to_itemDetailFragment,bundle)
             }
         }
     }
@@ -91,11 +96,15 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     }
 
     override fun initializeViews() {
-        currentActivity.displayBottomNavigationView()
         adapter = CategoryTypeDetailAdapter()
         recycler_view_fragment_category_type_detail.layoutManager = GridLayoutManager(context,2)
         recycler_view_fragment_category_type_detail.adapter = adapter
         adapter.itemClickListener = this
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
     }
 
     override fun initializeListeners() {

@@ -19,7 +19,7 @@ import javax.inject.Named
 class SaveCollectionConstructor:BaseUseCase<Unit> {
     private var shopCategoryDomainRepository: ShopCategoryDomainRepository
     private lateinit var token:String
-    private lateinit var model:RequestBody
+    private lateinit var model:Map<String,RequestBody>
     //private lateinit var data: MultipartBody.Part
     private lateinit var data: MultipartBody.Part
     @Inject
@@ -31,15 +31,14 @@ class SaveCollectionConstructor:BaseUseCase<Unit> {
         this.shopCategoryDomainRepository = shopCategoryDomainRepository
     }
 
-    /*fun initParam(token:String,model: CollectionPostCreateModel,data: MultipartBody.Part){
+    /*fun initParam(token:String,data: MultipartBody){
         this.token = "Bearer $token"
-        this.model = model
         this.data = data
     }
     override fun createSingleObservable(): Single<Unit> {
-        return shopCategoryDomainRepository.saveCollection(token,model,data)
+        return shopCategoryDomainRepository.saveCollection(token,data)
     }*/
-    fun initParam(token:String, model: RequestBody, data: MultipartBody.Part){
+    fun initParam(token:String, model: Map<String,RequestBody>, data: MultipartBody.Part){
         this.token = "Bearer $token"
         this.model = model
         this.data = data

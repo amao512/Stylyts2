@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"/>
     <FrameLayout
+        android:visibility="gone"
         android:id="@+id/frame_layout_item_photo_library"
         android:layout_margin="8dp"
         android:background="@drawable/circle_checked"

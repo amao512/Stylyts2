@@ -16,7 +16,7 @@ import javax.inject.Named
 class MainLentaUseCase: BaseUseCase<MainLentaModel> {
 	private var mainLentaDomainRepository: MainLentaDomainRepository
 	private lateinit var token:String
-	
+	private var queries:Map<String,Any>? = null
 	@Inject
 	constructor(@Named("executor_thread") executorThread: Scheduler,
 	            @Named("ui_thread") uiThread: Scheduler,
@@ -26,8 +26,9 @@ class MainLentaUseCase: BaseUseCase<MainLentaModel> {
 		this.mainLentaDomainRepository = mainLentaDomainRepository
 	}
 	
-	fun initParams(token:String) {
+	fun initParams(token:String,queries:Map<String,Any>? = null) {
 		this.token = "Bearer $token"
+		this.queries = queries
 	}
 	
 	override fun createSingleObservable(): Single<MainLentaModel> {

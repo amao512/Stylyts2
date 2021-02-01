@@ -14,5 +14,8 @@ class PhotoLibraryHolder(itemView: View, adapter: BaseAdapter): BaseViewHolder(i
         item as String
         itemView.text_view_item_photo_checked_text.text = position.toString()
         Glide.with(itemView.context).load(item).into(itemView.image_view_photo_library)
+        itemView.image_view_photo_library.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(itemView.image_view_photo_library,position,item)
+        }
     }
 }

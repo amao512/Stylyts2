@@ -73,7 +73,7 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_drawer" />
+                        android:src="@drawable/ic_multiple_choise" />
                 </FrameLayout>
 
                 <FrameLayout
@@ -92,7 +92,7 @@
                     <ImageView
                         android:layout_width="20dp"
                         android:layout_height="20dp"
-                        android:src="@drawable/ic_camera" />
+                        android:src="@drawable/ic_camera_white" />
                 </FrameLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.AppBarLayout>

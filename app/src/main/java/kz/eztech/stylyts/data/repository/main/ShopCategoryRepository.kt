@@ -49,7 +49,20 @@ class ShopCategoryRepository:ShopCategoryDomainRepository {
         }
     }
     
-    override fun saveCollection(token: String, model: RequestBody, data: MultipartBody.Part): Single<Unit> {
+    /*override fun saveCollection(token: String,body:MultipartBody): Single<Unit> {
+        return api.saveCollection(token,body).map {
+            when(it.isSuccessful){
+                true -> Unit
+                false -> throw NetworkException(it)
+            }
+        }
+    }*/
+
+    override fun saveCollection(
+        token: String,
+        model: Map<String,RequestBody>,
+        data: MultipartBody.Part
+    ): Single<Unit> {
         return api.saveCollection(token,model,data).map {
             when(it.isSuccessful){
                 true -> Unit
@@ -57,6 +70,4 @@ class ShopCategoryRepository:ShopCategoryDomainRepository {
             }
         }
     }
-    
-    
 }

@@ -8,14 +8,11 @@ import dagger.Provides
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kz.eztech.stylyts.data.db.LocalDataSource
 import kz.eztech.stylyts.data.repository.AuthorizationRepository
-import kz.eztech.stylyts.data.repository.main.MainLentaRepository
-import kz.eztech.stylyts.data.repository.main.ProfileRepository
-import kz.eztech.stylyts.data.repository.main.ShopCategoryRepository
+import kz.eztech.stylyts.data.repository.main.*
 import kz.eztech.stylyts.domain.repository.AuthorizationDomainRepository
-import kz.eztech.stylyts.domain.repository.main.MainLentaDomainRepository
-import kz.eztech.stylyts.domain.repository.main.ProfileDomainRepository
-import kz.eztech.stylyts.domain.repository.main.ShopCategoryDomainRepository
+import kz.eztech.stylyts.domain.repository.main.*
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -68,5 +65,18 @@ class ApplicationModule(internal var mApplication: Application){
     fun providesMainLentaRepository(mainLentaRepository: MainLentaRepository) : MainLentaDomainRepository {
         return mainLentaRepository
     }
+
+    @Provides
+    fun providesItemDetailRepository(itemDetailRepository: ItemDetailRepository) : ItemDetailDomainRepository {
+        return itemDetailRepository
+    }
+    
+    @Provides
+    fun providesFilteredItemsRepository(filteredItemsRepository: FilteredItemsRepository) : FilteredItemsDomainRepository {
+        return filteredItemsRepository
+    }
+
+    @Provides
+    fun provideDataSource() = LocalDataSource(mApplication)
 
 }

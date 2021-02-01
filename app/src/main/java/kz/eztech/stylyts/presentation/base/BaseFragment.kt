@@ -8,29 +8,45 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.StylytsApp
+
 
 /**
  * Created by Ruslan Erdenoff on 19.11.2020.
  */
-abstract class BaseFragment <T:BaseActivity>: Fragment(){
+abstract class BaseFragment<T : BaseActivity>: Fragment(){
     val currentActivity: T
         get() = activity as T
 
     val currentView: BaseView
         get() = getContractView()
 
-    lateinit var rootView: View
+    var hasInitializedRootView = false
 
-    fun displayToast(msg:String){
-        Snackbar.make(rootView,msg,Snackbar.LENGTH_SHORT).apply {
-            setTextColor(getColor(context, R.color.white))
-            setBackgroundTint(getColor(context,R.color.app_dark_blue_gray))
+    private var rootView: View? = null
+
+    fun displayToast(msg: String){
+        rootView?.let {
+            Snackbar.make(it, msg, Snackbar.LENGTH_SHORT).apply {
+                setBackgroundTint(getColor(context, R.color.app_dark_blue_gray))
+                view.setPadding(0, 0, 0, 0)
+            }.show()
         }
-        //currentActivity.displayToast(msg)
+
+    }
+
+    fun getPersistentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        if (rootView == null) {
+            rootView = inflater.inflate(getLayoutId(), container, false)
+        } else {
+            (rootView?.parent as? ViewGroup)?.removeView(rootView)
+        }
+
+        return rootView
     }
 
     override fun onCreateView(
@@ -39,18 +55,21 @@ abstract class BaseFragment <T:BaseActivity>: Fragment(){
     ): View? {
         currentView.initializeDependency()
         currentView.initializePresenter()
-        rootView =  inflater.inflate(getLayoutId(), container, false)
-        return rootView
+        return getPersistentView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        currentView.initializeViewsData()
-        currentView.initializeArguments()
-        currentView.customizeActionBar()
-        currentView.initializeViews()
-        currentView.initializeListeners()
-        currentView.processPostInitialization()
+
+        if (!hasInitializedRootView) {
+            hasInitializedRootView = true
+            currentView.initializeViewsData()
+            currentView.initializeArguments()
+            currentView.customizeActionBar()
+            currentView.initializeViews()
+            currentView.initializeListeners()
+            currentView.processPostInitialization()
+        }
     }
 
     override fun onStop() {
@@ -72,14 +91,14 @@ abstract class BaseFragment <T:BaseActivity>: Fragment(){
 
     abstract fun getContractView():BaseView
 
-    fun customizeActionToolBar(toolbar:View? = null,title:String? = null){
+    fun customizeActionToolBar(toolbar: View? = null, title: String? = null){
         toolbar?.let {
             it.apply {
-                title?.let {text ->
+                title?.let { text ->
                     text_view_toolbar_title.text = text
                 }
                 text_view_toolbar_back.setOnClickListener{
-                    currentActivity.onBackPressed()
+                    findNavController().navigateUp()
                 }
             }
         }

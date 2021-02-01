@@ -40,9 +40,6 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
 import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.presentation.dialogs.PhotoChooserDialog
-import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment.Companion.BAR_CODE
-import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment.Companion.PHOTO_LIBRARY
-import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment.Companion.PHOTO_TYPE
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorPresenter
 import kz.eztech.stylyts.presentation.utils.FileUtils.createPngFileFromBitmap
@@ -109,7 +106,15 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun initializeArguments() {
-	
+		arguments?.let {
+			if(it.containsKey("items")){
+				it.getParcelableArrayList<ClothesTypeDataModel>("items")?.let { it1 ->
+					it1.forEach {
+						processInputImageToPlace(it)
+					}
+				}
+			}
+		}
 	}
 	
 	override fun initializeViewsData() {
@@ -204,7 +209,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		when(view?.id){
 			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
 				if (isItems) {
-					processInputImageToPlace(view, item)
+					processInputImageToPlace(item)
 				} else {
 					if (!adapter.isSubCategory) {
 						(item as GenderCategory).run {
@@ -233,11 +238,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		}
 	}
 
-	private fun processInputImageToPlace(view: View, item: Any?) {
+	private fun processInputImageToPlace(item: Any?) {
 		item as ClothesTypeDataModel
+		var photoUrl = ""
+		item.cover_photo?.let {
+			photoUrl = if(it.contains("http",true)) it else "http://178.170.221.31:8000${it}"
+		}
+
 		Glide.with(currentActivity.applicationContext)
 			.asFile()
-			.load("http://178.170.221.31:8000${item.cover_photo}")
+			.load(photoUrl)
 			.into(object : CustomTarget<File>(){
 				override fun onResourceReady(file: File, transition: Transition<in File>?) {
 					frame_layout_fragment_collection_constructor_images_container_placeholder.visibility = View.GONE
@@ -280,29 +290,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	
 	override fun onChoice(v: View?, item: Any?) {
 		when(item){
-			is Int -> {
-				when (item) {
-					1 -> {
-						val bundle = Bundle()
-						bundle.putString(PHOTO_TYPE, BAR_CODE)
-						findNavController().navigate(
-								R.id.action_createCollectionFragment_to_cameraFragment,
-								bundle
-						)
-					}
-					2 -> {
-						val bundle = Bundle()
-						bundle.putString(PHOTO_TYPE, PHOTO_LIBRARY)
-						findNavController().navigate(
-								R.id.action_createCollectionFragment_to_photoChooserFragment,
-								bundle
-						)
-					}
-					3 -> {
-						findNavController().navigate(R.id.action_createCollectionFragment_to_photoChooserFragment)
-					}
-				}
-			}
 			is CollectionPostCreateModel -> {
 				currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
 					try {
@@ -337,7 +324,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					title = "Добавить категорию",
 					isExternal = true,
 					externalType = 0,
-					externalImageId = R.drawable.ic_baseline_add_circle_outline_24
+					externalImageId = R.drawable.ic_create_collection
 			))
 			it.add(GenderCategory(
 					title = "Добавить по штрихкоду",

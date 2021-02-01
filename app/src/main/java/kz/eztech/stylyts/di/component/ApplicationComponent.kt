@@ -7,11 +7,15 @@ import kz.eztech.stylyts.di.modules.ApplicationModule
 import kz.eztech.stylyts.di.modules.NetworkModule
 import kz.eztech.stylyts.presentation.base.BaseActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
+import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.fragments.LoginFragment
 import kz.eztech.stylyts.presentation.fragments.RefreshPasswordFragment
 import kz.eztech.stylyts.presentation.fragments.RegistrationFragment
 import kz.eztech.stylyts.presentation.fragments.main.MainFragment
+import kz.eztech.stylyts.presentation.fragments.main.collections.CollectionItemFragment
 import kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorFragment
+import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment
+import kz.eztech.stylyts.presentation.fragments.main.detail.ItemDetailFragment
 import kz.eztech.stylyts.presentation.fragments.main.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.main.shop.CategoryTypeDetailFragment
 import kz.eztech.stylyts.presentation.fragments.main.shop.ShopItemFragment
@@ -37,5 +41,10 @@ interface ApplicationComponent {
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: CollectionConstructorFragment)
     fun inject(fragment: MainFragment)
+    fun inject(fragment: ItemDetailFragment)
+    fun inject(fragment: PhotoChooserFragment)
+    fun inject(fragment: CollectionItemFragment)
+
+    fun inject(dialog:CartDialog)
 
 }

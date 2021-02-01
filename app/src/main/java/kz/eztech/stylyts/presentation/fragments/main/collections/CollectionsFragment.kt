@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.main.collections
 
+import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -9,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_collections.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.CollectionsViewPagerAdapter
@@ -20,6 +22,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.View,UniversalViewClickListener {
 	private lateinit var filterAdapter:CollectionsFilterAdapter
 	private lateinit var filterList:ArrayList<CollectionFilterModel>
+	private lateinit var pagerAdapter:CollectionsViewPagerAdapter
 	override fun getLayoutId(): Int {
 		return R.layout.fragment_collections
 	}
@@ -68,9 +71,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 	}
 
 	override fun initializeViews() {
-		currentActivity.displayBottomNavigationView()
-		val pagerAdapter = CollectionsViewPagerAdapter(this,this)
-		view_pager_fragment_collections.adapter = pagerAdapter
+		pagerAdapter = CollectionsViewPagerAdapter(this,this)
 		TabLayoutMediator(tab_bar_fragment_collections, view_pager_fragment_collections) { tab, position ->
 			when(position){
 				0 -> {tab.text = "Для нее"}
@@ -83,8 +84,21 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 		filterAdapter.updateList(filterList)
 	}
 	
+	override fun onResume() {
+		super.onResume()
+		currentActivity.displayBottomNavigationView()
+		view_pager_fragment_collections.adapter = pagerAdapter
+	}
+	
 	override fun onViewClicked(view: View, position: Int, item: Any?) {
-		findNavController().navigate(R.id.action_collectionsFragment_to_createCollectionFragment)
+		when(item){
+			is MainResult -> {
+				val bundle = Bundle()
+				bundle.putParcelable("model",item)
+				findNavController().navigate(R.id.action_collectionsFragment_to_collectionDetailFragment,bundle)
+			}
+		}
+		
 	}
 	
 	override fun initializeListeners() {

@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.domain.models.MainImageAdditionalModel
 import kz.eztech.stylyts.domain.models.MainImageModel
@@ -24,6 +25,7 @@ class MainImageHolder(
     override fun bindData(item: Any, position: Int) {
         with(itemView){
             val additionalAdapter = MainImagesAdditionalAdapter()
+            additionalAdapter.itemClickListener = adapter.itemClickListener
             this.recycler_view_item_main_image_additionals_list.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL,false)
             this.recycler_view_item_main_image_additionals_list.adapter = additionalAdapter
 
@@ -32,6 +34,17 @@ class MainImageHolder(
                     additionalAdapter.updateList(it)
                 }
                 text_view_item_main_image_partner_name.text ="${author?.first_name } ${author?.last_name }"
+
+                author?.avatar?.let {
+                    text_view_item_main_image_short_name.visibility = View.GONE
+                    Glide.with(itemView).load(it).into(shapeable_image_view_item_main_image_profile_avatar)
+                } ?: run{
+                    shapeable_image_view_item_main_image_profile_avatar.visibility = View.GONE
+                    text_view_item_main_image_short_name.visibility = View.VISIBLE
+                    text_view_item_main_image_short_name.text =
+                        "${author?.first_name?.toUpperCase()?.get(0)}${author?.last_name?.toUpperCase()?.get(0)}"
+
+                }
                 constraint_layout_fragment_item_main_image_profile_container.setOnClickListener{thisView ->
                     adapter.itemClickListener?.onViewClicked(thisView,position,item)
                 }
@@ -45,6 +58,9 @@ class MainImageHolder(
             }
 
             Glide.with(this).load(item.cover_photo).into(this.image_view_item_main_image_imageholder)
+            image_view_item_main_image_imageholder.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(image_view_item_main_image_imageholder,position,item)
+            }
 
         }
     }

@@ -1,17 +1,18 @@
 package kz.eztech.stylyts.presentation.fragments.main
 
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.item_main_image.view.*
+import kotlinx.android.synthetic.main.item_main_image_detail.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.MainImageAdditionalModel
-import kz.eztech.stylyts.domain.models.MainImageModel
-import kz.eztech.stylyts.domain.models.MainLentaModel
+import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.MainImagesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -57,23 +58,63 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     
 
     override fun initializeViews() {
-        currentActivity.displayBottomNavigationView()
         recycler_view_fragment_main_images_list.layoutManager= LinearLayoutManager(currentActivity)
         recycler_view_fragment_main_images_list.adapter = mainAdapter
         mainAdapter.itemClickListener = this
     }
-
+    
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
+    }
+    
     override fun initializeListeners() {
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
-        Log.wtf("onViewClicked","Clicked here")
         when(view?.id){
             R.id.constraint_layout_fragment_item_main_image_profile_container ->{
-                findNavController().navigate(R.id.action_mainFragment_to_partnerProfileFragment)
+                val bundle = Bundle()
+                bundle.putInt("items",1)
+                findNavController().navigate(R.id.action_mainFragment_to_partnerProfileFragment,bundle)
             }
             R.id.button_item_main_image_change_collection -> {
-                findNavController().navigate(R.id.action_mainFragment_to_createCollectionFragment)
+                item as MainResult
+                item.clothes?.let {
+                    val itemsList = ArrayList<ClothesTypeDataModel>()
+                    val bundle = Bundle()
+                    it.forEach { clothe ->
+                        itemsList.add(ClothesTypeDataModel(
+                            id = clothe.id,
+                            title =clothe.title,
+                            cover_photo = clothe.cover_photo,
+                            cost = clothe.cost,
+                            sale_cost = clothe.sale_cost,
+                            currency = clothe.currency,
+                            clothes_types = clothe.clothes_type,
+                            gender = clothe.gender,
+                            constructor_photo = clothe.constructor_photo,
+                            isLocated = true,
+
+                        ))
+                    }
+                    bundle.putParcelableArrayList("items",itemsList)
+                    findNavController().navigate(R.id.action_mainFragment_to_createCollectionFragment,bundle)
+                }?:run{
+                    findNavController().navigate(R.id.action_mainFragment_to_createCollectionFragment)
+                }
+            }
+            R.id.frame_layout_item_main_image_holder_container -> {
+                item as ClothesMainModel
+                val bundle = Bundle()
+                bundle.putParcelable("clotheModel",item)
+                findNavController().navigate(R.id.action_mainFragment_to_itemDetailFragment,bundle)
+            }
+            R.id.image_view_item_main_image_imageholder -> {
+                item as MainResult
+                val bundle = Bundle()
+                bundle.putParcelable("model",item)
+                findNavController().navigate(R.id.action_mainFragment_to_collectionDetailFragment,bundle)
             }
         }
     }

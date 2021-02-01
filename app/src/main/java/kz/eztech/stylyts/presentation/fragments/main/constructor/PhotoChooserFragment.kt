@@ -16,47 +16,50 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.mlkit.vision.barcode.Barcode
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.base_toolbar.view.*
+import kotlinx.android.synthetic.main.fragment_collection_item.*
+import kotlinx.android.synthetic.main.fragment_collections.*
 import kotlinx.android.synthetic.main.fragment_photo_chooser.*
 import kotlinx.android.synthetic.main.fragment_profile_income_detail.*
 import kotlinx.android.synthetic.main.fragment_profile_income_detail.include_toolbar_income_detail
 import kotlinx.android.synthetic.main.item_collection_image.view.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
+import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
+import kz.eztech.stylyts.presentation.adapters.GridImageItemFilteredAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.collections.PhotoChooserContract
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.presenters.main.constructor.PhotoChooserPresenter
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import java.io.IOException
 import java.lang.Exception
+import javax.inject.Inject
 
-class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.View {
-    private val PHOTO_FROM_GALLERY = 3
-    private val REQUEST_CODE_PERMISSIONS = 10
-    private var currentPhotoPath:String? = null
-    private var currentType = ""
-    private var currentInputImage : InputImage? = null
-
-    private lateinit var barcodeOptions: BarcodeScannerOptions
-    companion object{
-        const val PHOTO_TYPE = "photo_type"
-        const val BAR_CODE = "bar_code"
-        const val PHOTO_LIBRARY = "photo_library"
-        const val PHOTO_CAMERA = "photo_camera"
-    }
-    private val permissions = arrayOf(
-        Manifest.permission.CAMERA,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE)
-    private fun allPermissionsGranted() = permissions.all {
-        ContextCompat.checkSelfPermission(
-            currentActivity, it) == PackageManager.PERMISSION_GRANTED
-    }
+class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.View,UniversalViewClickListener {
+    private var photoUri:Uri? = null
+    
+    private lateinit var filterAdapter: CollectionsFilterAdapter
+    private lateinit var filterList:ArrayList<CollectionFilterModel>
+    private lateinit var genderCategoryList: List<GenderCategory>
+    
+    private lateinit var filteredAdapter:GridImageItemFilteredAdapter
+    
+    @Inject
+    lateinit var presenter:PhotoChooserPresenter
+    
     override fun getLayoutId(): Int {
         return R.layout.fragment_photo_chooser
     }
@@ -74,190 +77,44 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
             text_view_toolbar_right_text.visibility = android.view.View.VISIBLE
             text_view_toolbar_right_text.text = "Далее"
             elevation = 0f
-            customizeActionToolBar(this,"Создать образ")
+            customizeActionToolBar(this,"Создать Публикацию")
         }
     }
 
     override fun initializeDependency() {
-
+        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
     }
 
     override fun initializePresenter() {
-
+        presenter.attach(this)
     }
 
     override fun initializeArguments() {
         arguments?.let {
-            if(it.containsKey(PHOTO_TYPE)){
-                when(it.getString(PHOTO_TYPE)){
-                    BAR_CODE -> {
-                        currentType = BAR_CODE
-                    }
-                    PHOTO_CAMERA -> {
-                        currentType = PHOTO_CAMERA
-                    }
-                    PHOTO_LIBRARY -> {
-                        currentType = PHOTO_LIBRARY
-                    }
-
-                }
-            }
-        }
-    }
-
-    private fun processCurrentType(){
-        when(currentType){
-            BAR_CODE -> {
-                startChooser()
-            }
-            PHOTO_CAMERA -> {
-
-            }
-            PHOTO_LIBRARY -> {
-                startChooser()
+            if(it.containsKey("uri")){
+                photoUri = it.getParcelable("uri")
             }
         }
     }
 
     override fun initializeViewsData() {
-        barcodeOptions = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(
-                Barcode.FORMAT_QR_CODE,
-                Barcode.FORMAT_AZTEC)
-            .build()
+    
     }
 
     override fun initializeViews() {
         // Request camera permissions
-        if (allPermissionsGranted()) {
-            startChooser()
-        } else {
-            ActivityCompat.requestPermissions(
-                currentActivity,permissions, REQUEST_CODE_PERMISSIONS)
-        }
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startChooser()
-            } else {
-                Toast.makeText(context,
-                    "Permissions not granted by the user.",
-                    Toast.LENGTH_SHORT).show()
-                findNavController().navigateUp()
-            }
-        }
-    }
-
-    private fun startChooser(){
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(
-            Intent.createChooser(intent, "Фотография из галереии"),
-            PHOTO_FROM_GALLERY
-        )
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        try{
-            when(requestCode){
-                PHOTO_FROM_GALLERY -> {
-                    when(resultCode){
-                        Activity.RESULT_OK -> {
-                            val uri = data?.data
-                            val projection = arrayOf(MediaStore.Images.Media.DATA)
-
-                            val cursor =
-                                currentActivity.contentResolver.query(uri!!, projection, null, null, null)
-                            cursor?.moveToFirst()
-
-                            val columnIndex = cursor?.getColumnIndex(projection[0])
-                            val picturePath = cursor?.getString(columnIndex!!) // returns null
-                            cursor?.close()
-                            when(currentType){
-                                BAR_CODE -> {
-                                    val currentUri = FileUtils.getUriFromString(picturePath)
-                                    currentUri?.let {
-                                        updatePhoto(it)
-                                        var image: InputImage? = null
-                                        try {
-                                            image = InputImage.fromFilePath(currentActivity, it)
-                                        } catch (e: IOException) {
-                                            e.printStackTrace()
-                                        }
-                                        image?.let { im ->
-                                                scanBarcodes(im)
-                                        }
-                                    }
-                                }
-                                PHOTO_CAMERA -> {
-
-                                }
-                                PHOTO_LIBRARY -> {
-                                    updatePhoto(FileUtils.getUriFromString(picturePath))
-                                }
-                            }
-
-
-                        }
-                    }
-                }
-            }
-        }catch (e: Exception){
-            displayMessage("Упс, что то пошло не так :(")
-        }
-    }
-
-    private fun scanBarcodes(image: InputImage) {
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(
-                Barcode.FORMAT_QR_CODE,
-                Barcode.FORMAT_AZTEC)
-            .build()
-
-        val scanner = BarcodeScanning.getClient()
-        val result = scanner.process(image)
-            .addOnSuccessListener { barcodes ->
-                // Task completed successfully
-                // [START_EXCLUDE]
-                // [START get_barcodes]
-                for (barcode in barcodes) {
-                    val bounds = barcode.boundingBox
-                    val corners = barcode.cornerPoints
-
-                    val rawValue = barcode.rawValue
-                    Log.wtf("BARCODE","bounds = $bounds ,corners = $corners")
-                    Log.wtf("BARCODE","rawValue = $rawValue")
-                    val valueType = barcode.valueType
-
-                    if(rawValue.isNotEmpty()){
-                        findNavController().navigate(R.id.action_photoChooserFragment_to_itemDetailFragment)
-                    }
-                    // See API reference for complete list of supported types
-                    when (valueType) {
-                        Barcode.TYPE_WIFI -> {
-                            val ssid = barcode.wifi!!.ssid
-                            val password = barcode.wifi!!.password
-                            val type = barcode.wifi!!.encryptionType
-                            Log.wtf("BARCODE - WIFI","ssid = $ssid ,password = $password,type = $type ")
-                        }
-                        Barcode.TYPE_URL -> {
-                            val title = barcode.url!!.title
-                            val url = barcode.url!!.url
-                            Log.wtf("BARCODE - TYPE_URL","title = $title ,url = $url")
-
-                        }
-                    }
-
-                }
-            }
-            .addOnFailureListener {
-                displayMessage("Упс, что то пошло не так :(,Попробуйте еще раз")
-            }
+        updatePhoto(photoUri)
+        filterList = ArrayList()
+        filteredAdapter = GridImageItemFilteredAdapter()
+        filterAdapter = CollectionsFilterAdapter()
+        
+        recycler_view_fragment_photo_chooser_filter_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
+       
+        
+        recycler_view_fragment_photo_chooser.layoutManager = GridLayoutManager(context,2)
+        recycler_view_fragment_photo_chooser.adapter = filteredAdapter
+        
     }
 
     override fun updatePhoto(path: Uri?) {
@@ -269,15 +126,66 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
     }
 
     override fun initializeListeners() {
-
+        filterAdapter.setOnClickListener(this)
+        filteredAdapter.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
-
+        presenter.getCategory(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+                ?: "")
     }
-
+    
+    override fun processFilteredItems(model: FilteredItemsModel) {
+        model.results?.let {
+            filteredAdapter.updateList(it)
+        }
+    }
+    
+    override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
+        shopCategoryModel.menCategory?.let{
+            genderCategoryList = it
+            filterList.clear()
+            filterList.add(CollectionFilterModel("Фильтр",0,"M",1))
+            it.forEach { category ->
+                filterList.add(CollectionFilterModel(category.title,category.id,"M",0))
+                filterAdapter.updateList(filterList)
+            }
+        }
+    }
+    
+    override fun onViewClicked(view: View, position: Int, item: Any?) {
+        when(view.id){
+            R.id.frame_layout_item_collection_filter -> {
+                item as CollectionFilterModel
+                when(item.mode){
+                    0 -> {
+                        val model = genderCategoryList.find { it.id == item.id }
+                        model?.let {
+                            it.clothes_types?.let { clothes ->
+                                val map = HashMap<String,Any>()
+                                map["clothes_type"] = clothes.map { it.id }.joinToString()
+                                presenter.getShopCategoryTypeDetail(
+                                        currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
+                                        map)
+                            }
+                        }
+                        filterList.forEach {
+                            it.isChosen = false
+                        }
+                        filterList[filterList.indexOf(item)].isChosen = true
+                        filterAdapter.updateList(filterList)
+                    }
+                    1 -> {
+                        displayMessage("Фильтры")
+                    }
+                }
+               
+            }
+        }
+    }
+    
     override fun disposeRequests() {
-
+        presenter.disposeRequests()
     }
 
     override fun displayMessage(msg: String) {

@@ -5,6 +5,8 @@ import kz.eztech.stylyts.data.api.RestConstants.GENERATE_FORGOT_PASSWORD
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES_DETAIL
 import kz.eztech.stylyts.data.api.RestConstants.GET_COLLECTIONS
+import kz.eztech.stylyts.data.api.RestConstants.GET_FILTERED_ITEMS
+import kz.eztech.stylyts.data.api.RestConstants.GET_ITEM_DETAIL
 import kz.eztech.stylyts.data.api.RestConstants.GET_STYLES
 import kz.eztech.stylyts.data.api.RestConstants.GET_USER_PROFILE
 import kz.eztech.stylyts.data.api.RestConstants.LOGIN_USER
@@ -63,12 +65,18 @@ interface API {
     @Multipart
     @POST(SAVE_COLLECTION)
     fun saveCollection(@Header("Authorization") token: String,
-                       @Part("text") text: RequestBody,
-                       @Part data: MultipartBody.Part): Single<Response<Unit>>
-    /*@POST(SAVE_COLLECTION)
-    fun saveCollection(@Header("Authorization") token: String,
-                       @Body file:MultipartBody): Single<Response<Unit>>*/
+                       @PartMap partMap:Map<String, @JvmSuppressWildcards RequestBody> ,
+                       @Part file:MultipartBody.Part ): Single<Response<Unit>>
+    //@POST(SAVE_COLLECTION)
+    //fun saveCollection(@Header("Authorization") token: String,
+                       //@Body file:MultipartBody): Single<Response<Unit>>
     
     @GET(GET_COLLECTIONS)
-    fun getCollections(@Header("Authorization") token: String): Single<Response<MainLentaModel>>
+    fun getCollections(@Header("Authorization") token: String,@QueryMap queries:Map<String,Any>? = null): Single<Response<MainLentaModel>>
+
+    @GET(GET_ITEM_DETAIL)
+    fun getItemDetail(@Header("Authorization") token: String,@Path("id") id:Int): Single<Response<ClothesMainModel>>
+    
+    @GET(GET_FILTERED_ITEMS)
+    fun getFilteredItems(@Header("Authorization") token: String,@QueryMap map:Map<String,@JvmSuppressWildcards Any>):Single<Response<FilteredItemsModel>>
 }

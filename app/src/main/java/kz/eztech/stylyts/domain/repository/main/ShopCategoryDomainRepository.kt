@@ -12,6 +12,7 @@ interface ShopCategoryDomainRepository {
     fun getCategories():Single<ShopCategoryModel>
     fun getCategoryDetail(data:HashMap<String,Any>):Single<CategoryTypeDetailModel>
     fun getStyles(token:String):Single<List<Style>>
-    fun saveCollection(token:String, model: RequestBody, data: MultipartBody.Part):Single<Unit>
+    fun saveCollection(token:String, model: Map<String,RequestBody>,
+                       data: MultipartBody.Part):Single<Unit>
    // fun saveCollection(token:String,data: MultipartBody):Single<Unit>
 }

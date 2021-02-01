@@ -12,8 +12,10 @@
     <color name="app_dark_blue_gray">#2F3641</color>
     <color name="app_dark_blue_gray_half">#802F3641</color>
     <color name="app_light_gray">#D4D4D4</color>
+    <color name="app_very_light_gray">#F5F5F5</color>
     <color name="app_gray">#D8D8D8</color>
     <color name="app_gray_hint">#808080</color>
     <color name="app_light_orange">#EA9F5A</color>
     <color name="app_green">#29763A</color>
+    <color name="app_black_65">#A6000000</color>
 </resources>

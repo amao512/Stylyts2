@@ -1,7 +1,9 @@
 package kz.eztech.stylyts.domain.models
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 /**
  * Created by Ruslan Erdenoff on 14.01.2021.
@@ -12,7 +14,7 @@ data class MainLentaModel (
 	@Expose
 	var results:List<MainResult>? = null,
 )
-
+@Parcelize
 data class MainResult(
 	@SerializedName("id")
 	@Expose
@@ -65,8 +67,9 @@ data class MainResult(
 	@SerializedName("clothes")
 	@Expose
 	var clothes:List<ClothesMainModel>? = null
-)
+):Parcelable
 
+@Parcelize
 data class AuthorModel(
 	@SerializedName("id")
 	@Expose
@@ -95,8 +98,8 @@ data class AuthorModel(
 	@SerializedName("avatar")
 	@Expose
 	var avatar:String? = null
-)
-
+):Parcelable
+@Parcelize
 data class ClothesMainModel(
 	@SerializedName("id")
 	@Expose
@@ -142,9 +145,13 @@ data class ClothesMainModel(
 	var currency:String? = null,
 	@SerializedName("product_code")
 	@Expose
-	var product_code:String? = null
-)
+	var product_code:String? = null,
 
+	var currentColor:ClothesColor? = null,
+	var currentSize:ClothesSize? = null,
+
+):Parcelable
+@Parcelize
 data class ClothesSize(
 	@SerializedName("id")
 	@Expose
@@ -152,8 +159,8 @@ data class ClothesSize(
 	@SerializedName("size")
 	@Expose
 	var size:String? = null
-)
-
+):Parcelable
+@Parcelize
 data class ClothesColor(
 	@SerializedName("id")
 	@Expose
@@ -161,8 +168,8 @@ data class ClothesColor(
 	@SerializedName("color")
 	@Expose
 	var color:String? = null
-)
-
+):Parcelable
+@Parcelize
 data class BrandMainModel(
 	@SerializedName("id")
 	@Expose
@@ -182,4 +189,4 @@ data class BrandMainModel(
 	@SerializedName("avatar")
 	@Expose
 	var avatar:String? = null
-)
+):Parcelable

@@ -76,7 +76,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 	}
 
 	override fun initializeViews() {
-		currentActivity.displayBottomNavigationView()
 		val dummyList = ArrayList<MainImageModel>()
 		for(i in 0..5){
 			val listAdditional = ArrayList<MainImageAdditionalModel>()
@@ -89,6 +88,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 		recycler_view_fragment_profile_items_list.layoutManager = GridLayoutManager(context,2)
 		recycler_view_fragment_profile_items_list.adapter = adapter
 		adapter.updateList(dummyList)
+	}
+	
+	override fun onResume() {
+		super.onResume()
+		currentActivity.displayBottomNavigationView()
 	}
 
 	override fun processSettings() {

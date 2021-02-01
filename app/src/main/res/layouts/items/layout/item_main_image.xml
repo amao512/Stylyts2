@@ -13,16 +13,28 @@
 
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:background="@drawable/circle_white_gray_stroke"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:adjustViewBounds="true"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                android:id="@+id/shapeable_image_view_item_main_image_profile_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <TextView
+                android:background="@drawable/circle_gray"
+                android:id="@+id/text_view_item_main_image_short_name"
+                style="@style/TitleTextBold"
+                tools:text = "RE"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
         </FrameLayout>
 
         <TextView
@@ -117,6 +129,7 @@
             android:textSize="12sp"
             android:textAllCaps="false"
             android:layout_gravity="center"
+            android:textColor="@color/white"
             android:text="изменить образ"
             app:backgroundTint="@color/app_light_orange"
             android:layout_width="wrap_content"

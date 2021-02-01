@@ -72,4 +72,7 @@ data class ClothesTypeDataModel(
 	@SerializedName("new_arrival")
 	@Expose
 	var new_arrival:Boolean? = null,
+
+	var isLocated:Boolean = false,
+
 ):Parcelable

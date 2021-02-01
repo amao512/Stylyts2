@@ -18,8 +18,8 @@ class MainLentaRepository:MainLentaDomainRepository{
 		this.api = api
 	}
 	
-	override fun getCollections(token: String): Single<MainLentaModel> {
-		return api.getCollections(token).map {
+	override fun getCollections(token: String, queries: Map<String, Any>?): Single<MainLentaModel> {
+		return api.getCollections(token,queries).map {
 			when(it.isSuccessful){
 				true -> it.body()
 				false -> throw NetworkException(it)
