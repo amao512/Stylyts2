@@ -21,7 +21,7 @@ class SaveCollectionConstructor:BaseUseCase<Unit> {
     private lateinit var token:String
     private lateinit var model:Map<String,RequestBody>
     //private lateinit var data: MultipartBody.Part
-    private lateinit var data: MultipartBody.Part
+    private lateinit var data:  ArrayList<MultipartBody.Part>
     @Inject
     constructor(@Named("executor_thread") executorThread: Scheduler,
                 @Named("ui_thread") uiThread: Scheduler,
@@ -38,12 +38,11 @@ class SaveCollectionConstructor:BaseUseCase<Unit> {
     override fun createSingleObservable(): Single<Unit> {
         return shopCategoryDomainRepository.saveCollection(token,data)
     }*/
-    fun initParam(token:String, model: Map<String,RequestBody>, data: MultipartBody.Part){
+    fun initParam(token:String, data: ArrayList<MultipartBody.Part>){
         this.token = "Bearer $token"
-        this.model = model
         this.data = data
     }
     override fun createSingleObservable(): Single<Unit> {
-        return shopCategoryDomainRepository.saveCollection(token,model,data)
+        return shopCategoryDomainRepository.saveCollection(token,data)
     }
 }

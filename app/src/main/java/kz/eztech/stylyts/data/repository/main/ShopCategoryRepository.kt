@@ -49,23 +49,31 @@ class ShopCategoryRepository:ShopCategoryDomainRepository {
         }
     }
     
-    /*override fun saveCollection(token: String,body:MultipartBody): Single<Unit> {
-        return api.saveCollection(token,body).map {
+    override fun updateCollection(token: String, id: Int, data: ArrayList<MultipartBody.Part>): Single<Unit> {
+        return api.updateCollection(token,id,data).map {
             when(it.isSuccessful){
                 true -> Unit
                 false -> throw NetworkException(it)
             }
         }
-    }*/
-
+    }
+    
     override fun saveCollection(
         token: String,
-        model: Map<String,RequestBody>,
-        data: MultipartBody.Part
+        data: ArrayList<MultipartBody.Part>
     ): Single<Unit> {
-        return api.saveCollection(token,model,data).map {
+        return api.saveCollection(token,data).map {
             when(it.isSuccessful){
                 true -> Unit
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getBrands(token: String): Single<BrandsModel> {
+        return api.getBrands(token).map {
+            when(it.isSuccessful){
+                true -> it.body()
                 false -> throw NetworkException(it)
             }
         }

@@ -13,17 +13,17 @@ import java.io.File
  * Created by Ruslan Erdenoff on 21.12.2020.
  */
 interface CollectionConstructorContract {
-    interface View:BaseView{
-        fun processTypeDetail(model: CategoryTypeDetailModel)
+    interface View:MotionViewContract{
         fun processShopCategories(shopCategoryModel: ShopCategoryModel)
         fun processStyles(list:List<Style>)
         fun processSuccess()
-        fun deleteSelectedView(motionEntity: MotionEntity)
+        fun processFilteredItems(model: FilteredItemsModel)
     }
     interface Presenter:BasePresenter<View>{
         fun getCategory()
-        fun getShopCategoryTypeDetail(typeId:Int,gender:String)
+        fun getShopCategoryTypeDetail(token:String, map:Map<String,Any>)
         fun getStyles(token:String)
         fun saveCollection(token:String,model: CollectionPostCreateModel,data: File)
+        fun updateCollection(token:String,id:Int,model: CollectionPostCreateModel,data: File)
     }
 }

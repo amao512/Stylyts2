@@ -5,10 +5,8 @@ import com.google.gson.Gson
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.*
-import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryTypeDetailUseCase
-import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryUseCase
-import kz.eztech.stylyts.domain.usecases.main.shop.GetStylesUseCase
-import kz.eztech.stylyts.domain.usecases.main.shop.SaveCollectionConstructor
+import kz.eztech.stylyts.domain.usecases.main.GetFilteredItemsUseCase
+import kz.eztech.stylyts.domain.usecases.main.shop.*
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -28,27 +26,35 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 	private var errorHelper: ErrorHelper
 	private var getCategoryUseCase: GetCategoryUseCase
 	private var getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase
+	private var getFilteredItemsUseCase: GetFilteredItemsUseCase
 	private var getStylesUseCase: GetStylesUseCase
 	private var saveCollectionConstructor: SaveCollectionConstructor
+	private var updateCollectionUseCase: UpdateCollectionUseCase
 	private lateinit var view: CollectionConstructorContract.View
 	@Inject
 	constructor(errorHelper: ErrorHelper,
 	            getCategoryUseCase: GetCategoryUseCase,
 	            getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
 	            getStylesUseCase: GetStylesUseCase,
-	            saveCollectionConstructor: SaveCollectionConstructor
+	            getFilteredItemsUseCase: GetFilteredItemsUseCase,
+	            saveCollectionConstructor: SaveCollectionConstructor,
+	            updateCollectionUseCase: UpdateCollectionUseCase
 	){
+		this.getFilteredItemsUseCase = getFilteredItemsUseCase
 		this.getCategoryTypeDetailUseCase = getCategoryTypeDetailUseCase
 		this.getCategoryUseCase = getCategoryUseCase
 		this.errorHelper = errorHelper
 		this.saveCollectionConstructor = saveCollectionConstructor
 		this.getStylesUseCase = getStylesUseCase
+		this.updateCollectionUseCase = updateCollectionUseCase
 	}
 	override fun disposeRequests() {
 		getCategoryUseCase.clear()
 		getCategoryTypeDetailUseCase.clear()
 		getStylesUseCase.clear()
 		saveCollectionConstructor.clear()
+		getFilteredItemsUseCase.clear()
+		updateCollectionUseCase.clear()
 	}
 	
 	override fun attach(view: CollectionConstructorContract.View) {
@@ -75,19 +81,19 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 			}
 		})
 	}
-	override fun getShopCategoryTypeDetail(typeId: Int, gender: String) {
+	
+	override fun getShopCategoryTypeDetail(token: String, map: Map<String, Any>) {
 		view.displayProgress()
-		val map = HashMap<String, Any>()
-		map["id"] = typeId
-		map["gender_type"] = gender
-		getCategoryTypeDetailUseCase.initParams(map)
-		getCategoryTypeDetailUseCase.execute(object : DisposableSingleObserver<CategoryTypeDetailModel>() {
-			override fun onSuccess(t: CategoryTypeDetailModel) {
+		getFilteredItemsUseCase.initParams(token,map)
+		getFilteredItemsUseCase.execute(object : DisposableSingleObserver<FilteredItemsModel>() {
+			
+			override fun onSuccess(t: FilteredItemsModel) {
 				view.processViewAction {
-					view.processTypeDetail(t)
+					view.processFilteredItems(t)
 					hideProgress()
 				}
 			}
+			
 			
 			override fun onError(e: Throwable) {
 				view.processViewAction {
@@ -97,7 +103,7 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 			}
 		})
 	}
-
+	
 	override fun getStyles(token: String) {
 		view.displayProgress()
 		getStylesUseCase.initParam(token)
@@ -122,50 +128,70 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 		view.displayProgress()
 		val requestFile = data.asRequestBody(("image/*").toMediaTypeOrNull())
 		val body = MultipartBody.Part.createFormData("cover_photo", data.name, requestFile)
-		val json = Gson().toJson(model).toRequestBody("application/json".toMediaTypeOrNull())
-		val json2 = Gson().toJson(model)
-		val requestBody = MultipartBody.Builder().apply {
-			setType(MultipartBody.FORM)
-			addPart(body)
-			addFormDataPart("title", model.title.toString())
-			//addFormDataPart("clothes",null,Gson().toJson(model.clothes).toRequestBody((mediaType).toMediaTypeOrNull()))
-			//addFormDataPart("clothes_location",null,Gson().toJson(model.clothes_location).toRequestBody((mediaType).toMediaTypeOrNull()))
-			addFormDataPart("style", model.style.toString())
-			addFormDataPart("author", model.author.toString())
-			addFormDataPart("total_price", model.total_price.toString())
-			addFormDataPart("text", model.text.toString())
-		}.build()
-		
-		val map: HashMap<String, RequestBody> = HashMap()
-		map["title"] =  model.title.toString().toRequestBody((MultipartBody.FORM))
-		map["text"] = model.text.toString().toRequestBody((MultipartBody.FORM))
-		map["style"] = model.style.toString().toRequestBody((MultipartBody.FORM))
-		map["author"] = model.author.toString().toRequestBody((MultipartBody.FORM))
-		map["total_price"] = model.total_price.toString().toRequestBody((MultipartBody.FORM))
-		model.clothes?.forEachIndexed { index, i ->
-			//map["clothes"] = i.toString().toRequestBody(MultipartBody.FORM)
+		val clothesList = ArrayList<MultipartBody.Part>()
+		model.clothes?.forEach {
+			clothesList.add(MultipartBody.Part.createFormData("clothes",it.toString()))
 		}
 		
+		clothesList.add(body)
 		model.clothes_location?.forEachIndexed { index, clothesCollection ->
-			map["clothes_location[${index}]clothes_id"] = clothesCollection.clothes_id.toString().toRequestBody(MultipartBody.FORM)
-			map["clothes_location[${index}]point_x"] = clothesCollection.point_x.toString().toRequestBody(MultipartBody.FORM)
-			map["clothes_location[${index}]point_y"] = clothesCollection.point_y.toString().toRequestBody(MultipartBody.FORM)
-			map["clothes_location[${index}]width"] = clothesCollection.width.toString().toRequestBody(MultipartBody.FORM)
-			map["clothes_location[${index}]height"] = clothesCollection.height.toString().toRequestBody(MultipartBody.FORM)
-			map["clothes_location[${index}]degree"] = clothesCollection.degree.toString().toRequestBody(MultipartBody.FORM)
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]clothes_id",clothesCollection.clothes_id.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]point_x",clothesCollection.point_x.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]point_y",clothesCollection.point_y.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]width",clothesCollection.width.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]height",clothesCollection.height.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]degree",clothesCollection.degree.toString()))
 		}
-		/*val sJsonAttachment = JSONObject()
-		sJsonAttachment.put("title", model.title)
-		sJsonAttachment.put("clothes", model.clothes)
-		sJsonAttachment.put("clothes_location", model.clothes_location)
-		sJsonAttachment.put("style", model.style)
-		sJsonAttachment.put("author", model.author)
-		sJsonAttachment.put("total_price", model.total_price)
-		sJsonAttachment.put("text", model.text)
-		val bodyJsonAttachment = (sJsonAttachment.toString()).toRequestBody(MultipartBody.FORM)*/
-		//saveCollectionConstructor.initParam(token,requestBody)
-		saveCollectionConstructor.initParam(token, map, body)
+		clothesList.add(MultipartBody.Part.createFormData("title",model.title.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("text",model.text.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("style",model.style.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("author",model.author.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("total_price",model.total_price.toString()))
+		
+		saveCollectionConstructor.initParam(token, clothesList)
 		saveCollectionConstructor.execute(object : DisposableSingleObserver<Unit>() {
+			override fun onSuccess(t: Unit) {
+				view.processViewAction {
+					view.processSuccess()
+					hideProgress()
+				}
+			}
+			
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(errorHelper.processError(e))
+					hideProgress()
+				}
+			}
+		})
+	}
+	
+	override fun updateCollection(token: String, id: Int, model: CollectionPostCreateModel, data: File) {
+		view.displayProgress()
+		val requestFile = data.asRequestBody(("image/*").toMediaTypeOrNull())
+		val body = MultipartBody.Part.createFormData("cover_photo", data.name, requestFile)
+		val clothesList = ArrayList<MultipartBody.Part>()
+		model.clothes?.forEach {
+			clothesList.add(MultipartBody.Part.createFormData("clothes",it.toString()))
+		}
+		
+		clothesList.add(body)
+		model.clothes_location?.forEachIndexed { index, clothesCollection ->
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]clothes_id",clothesCollection.clothes_id.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]point_x",clothesCollection.point_x.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]point_y",clothesCollection.point_y.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]width",clothesCollection.width.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]height",clothesCollection.height.toString()))
+			clothesList.add(MultipartBody.Part.createFormData("clothes_location[${index}]degree",clothesCollection.degree.toString()))
+		}
+		clothesList.add(MultipartBody.Part.createFormData("title",model.title.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("text",model.text.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("style",model.style.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("author",model.author.toString()))
+		clothesList.add(MultipartBody.Part.createFormData("total_price",model.total_price.toString()))
+		
+		updateCollectionUseCase.initParam(token, id,clothesList)
+		updateCollectionUseCase.execute(object : DisposableSingleObserver<Unit>() {
 			override fun onSuccess(t: Unit) {
 				view.processViewAction {
 					view.processSuccess()

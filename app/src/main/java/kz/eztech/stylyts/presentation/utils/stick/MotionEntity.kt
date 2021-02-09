@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.utils.stick
 import android.graphics.*
 import android.util.Log
 import androidx.annotation.IntRange
+import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.presentation.utils.stick.MathUtils.pointInTriangle
 import java.util.ArrayList
@@ -11,16 +12,17 @@ import java.util.ArrayList
  * Created by Ruslan Erdenoff on 13.01.2021.
  */
 abstract class MotionEntity(
-    val layer: Layer,
-    val item: ClothesTypeDataModel,
-    @IntRange(from = 1) var canvasWidth: Int,
-    @IntRange(from = 1) var canvasHeight: Int
+        val layer: Layer,
+        val item: ClothesMainModel,
+        @IntRange(from = 1) var canvasWidth: Int,
+        @IntRange(from = 1) var canvasHeight: Int
 ) {
     protected val matrix = Matrix()
     var isSelected = false
     protected var holyScale = 0f
     private val destPoints = FloatArray(10) // x0, y0, x1, y1, x2, y2, x3, y3, x0, y0
     protected val srcPoints = FloatArray(10) // x0, y0, x1, y1, x2, y2, x3, y3, x0, y0
+    protected val customPoints = FloatArray(2) // x0, y0, x1, y1, x2, y2, x3, y3, x0, y0
     private var borderPaint = Paint()
     private var deleteIcon:BitmapStickerIcon? = null
     //private val icons = ArrayList<BitmapStickerIcon>()
@@ -78,6 +80,10 @@ abstract class MotionEntity(
     fun moveToCanvasCenter() {
         moveCenterTo(PointF(canvasWidth * 0.5f, canvasHeight * 0.5f))
     }
+    
+    fun moveToPoint(point:PointF) {
+        moveCenterTo(point)
+    }
     fun moveCenterTo(moveToCenter: PointF) {
         val currentCenter = absoluteCenter()
         layer.postTranslate(
@@ -126,8 +132,9 @@ abstract class MotionEntity(
 
     private fun drawSelectedBg(canvas: Canvas) {
         matrix.mapPoints(destPoints, srcPoints)
-        canvas.drawLines(destPoints, 0, 8, borderPaint)
-        canvas.drawLines(destPoints, 2, 8, borderPaint)
+        matrix.mapPoints(customPoints)
+        //canvas.drawLines(destPoints, 0, 8, borderPaint)
+        //canvas.drawLines(destPoints, 2, 8, borderPaint)
 
         val x1: Float = destPoints.get(0)
         val y1: Float = destPoints.get(1)
@@ -137,11 +144,15 @@ abstract class MotionEntity(
         val y3: Float = destPoints.get(5)
         val x4: Float = destPoints.get(6)
         val y4: Float = destPoints.get(7)
+        
+        val xC: Float = customPoints.get(0)
+        val yC: Float = customPoints.get(1)
 
-        val rotation: Float = calculateRotation(x4, y4, x3, y3)
+        val rotation: Float = calculateRotation(x3, y3, x4, y4)
         /*icons.forEach {
 
         }*/
+        
         deleteIcon?.let {
             try {
                 when (it.position) {
@@ -149,9 +160,14 @@ abstract class MotionEntity(
                     BitmapStickerIcon.RIGHT_TOP -> configIconMatrix(it, x2, y2, rotation)
                     BitmapStickerIcon.LEFT_BOTTOM -> configIconMatrix(it, x3, y3, rotation)
                     BitmapStickerIcon.RIGHT_BOTOM -> configIconMatrix(it, x4, y4, rotation)
+                    BitmapStickerIcon.CUSTOM -> configCustomIconMatrix(it, (x3 - width/8).toFloat(), (y3 - height/2.5).toFloat(), 0f)
                 }
-                it.draw(canvas, borderPaint)
-                it.draw(canvas, borderPaint)
+    
+                when (it.position) {
+                    BitmapStickerIcon.CUSTOM -> it.drawSmallRadius(canvas, borderPaint)
+                    else -> it.draw(canvas, borderPaint)
+                }
+                
             }catch (e:Exception){}
 
         }
@@ -162,7 +178,16 @@ abstract class MotionEntity(
         icon.x = x
         icon.y = y
         icon.matrix.reset()
-        icon.matrix.postRotate(rotation, (icon.width / 2).toFloat(), (icon.height / 2).toFloat())
+        //icon.matrix.postRotate(rotation, (icon.width / 2).toFloat(), (icon.height / 2).toFloat())
+        icon.matrix.postTranslate(x - icon.width / 2, y - icon.height / 2)
+    }
+    
+    fun configCustomIconMatrix(icon: BitmapStickerIcon, x: Float, y: Float,
+                               padding: Float){
+        icon.x = x
+        icon.y = y
+        icon.matrix.reset()
+        //icon.matrix.postRotate(rotation, (icon.width / 2).toFloat(), (icon.height / 2).toFloat())
         icon.matrix.postTranslate(x - icon.width / 2, y - icon.height / 2)
     }
 

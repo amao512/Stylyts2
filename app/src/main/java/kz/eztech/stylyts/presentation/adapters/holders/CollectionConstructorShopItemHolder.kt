@@ -10,6 +10,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.domain.models.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
@@ -22,10 +23,10 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 class CollectionConstructorShopItemHolder(itemView: View, adapter: BaseAdapter): BaseViewHolder(itemView,adapter) {
 
 	override fun bindData(item: Any, position: Int) {
-		with(item as ClothesTypeDataModel){
+		with(item as ClothesMainModel){
 			with(itemView){
 				Glide.with(this).load(
-					"http://178.170.221.31:8000$constructor_photo").into(this.image_view_item_collection_constructor_category_item_image_holder)
+					constructor_photo).into(this.image_view_item_collection_constructor_category_item_image_holder)
 				text_view_item_collection_constructor_category_item_title.text = title
 
 				image_view_item_collection_constructor_category_item_image_holder.apply {

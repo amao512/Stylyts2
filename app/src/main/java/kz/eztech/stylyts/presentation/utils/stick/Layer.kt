@@ -30,15 +30,26 @@ class Layer {
             scale = newVal
         }
     }
+    
+    fun postScaleRaw(value:Float){
+        if (value >= getMinScale() && value <= getMaxScale()) {
+            scale = value
+        }
+    }
 
-    protected fun getMaxScale(): Float {
+    fun getMaxScale(): Float {
         return Limits.MAX_SCALE
     }
 
-    protected fun getMinScale(): Float {
+    fun getMinScale(): Float {
         return Limits.MIN_SCALE
     }
-
+    
+    fun getMinMediumScale(): Float {
+        return Limits.MIN_MEDIUM_SCALE
+    }
+    
+    
     fun postRotate(rotationInDegreesDiff: Float) {
         rotationInDegrees += rotationInDegreesDiff
         rotationInDegrees %= 360.0f
@@ -59,8 +70,9 @@ class Layer {
     
     internal interface Limits {
         companion object {
-            const val MIN_SCALE = 0.3f
-            const val MAX_SCALE = 0.7f
+            const val MIN_SCALE = 0.2f
+            const val MIN_MEDIUM_SCALE = 0.30f
+            const val MAX_SCALE = 1f
             const val INITIAL_ENTITY_SCALE = 0.5f
         }
     }

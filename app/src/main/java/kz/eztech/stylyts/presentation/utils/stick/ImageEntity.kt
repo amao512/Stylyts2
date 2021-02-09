@@ -1,23 +1,24 @@
 package kz.eztech.stylyts.presentation.utils.stick
 
+import android.R.attr
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.annotation.Nullable
-import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
+import kz.eztech.stylyts.domain.models.ClothesMainModel
 
 
 /**
  * Created by Ruslan Erdenoff on 13.01.2021.
  */
 class ImageEntity(
-    layer: Layer,
-    bitmap: Bitmap,
-    item: ClothesTypeDataModel,
-    @androidx.annotation.IntRange(from = 1)canvasWidth: Int,
-    @androidx.annotation.IntRange(from = 1)canvasHeight: Int
+        layer: Layer,
+        bitmap: Bitmap,
+        item: ClothesMainModel,
+        @androidx.annotation.IntRange(from = 1) canvasWidth: Int,
+        @androidx.annotation.IntRange(from = 1) canvasHeight: Int
 ) :
-    MotionEntity(layer,item, canvasWidth, canvasHeight) {
+    MotionEntity(layer, item, canvasWidth, canvasHeight) {
     private val bitmap: Bitmap
     override fun drawContent(canvas: Canvas, @Nullable drawingPaint: Paint?) {
         canvas.drawBitmap(bitmap, matrix, drawingPaint)
@@ -62,5 +63,8 @@ class ImageEntity(
         srcPoints[7] = height
         srcPoints[8] = 0f
         srcPoints[8] = 0f
+        
+        customPoints[0] = width
+        customPoints[1] = (height / 2.0).toFloat()
     }
 }

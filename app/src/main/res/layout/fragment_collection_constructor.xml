@@ -23,14 +23,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_toolbar_profile"/>
+
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/frame_layout_fragment_collection_constructor_images_container_placeholder"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="450dp"
         android:background="#F5F5F5"
         android:gravity="center"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_toolbar_profile">
@@ -41,14 +41,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Создайте свой образ" />
+
         <TextView
-            android:textAlignment="center"
-            android:layout_marginTop="6dp"
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Чтобы выбрать понравившуюся вещь,\nкликните на нее 2 раза" />
+            android:layout_marginTop="6dp"
+            android:text="Чтобы выбрать понравившуюся вещь,\nкликните на нее 2 раза"
+            android:textAlignment="center" />
     </LinearLayout>
     <TextView
         android:id="@+id/text_view_fragment_collection_constructor_total_price"
@@ -122,12 +123,13 @@
             android:background="@color/white"
             android:id="@+id/recycler_view_fragment_collection_constructor_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            tools:listitem="@layout/item_collection_constructor_category_item"
+            android:layout_height="110dp"/>
         <ListView
             android:visibility="gone"
             android:id="@+id/list_view_fragment_collection_constructor_list_style"
             android:layout_width="match_parent"
-            android:layout_height="160dp"/>
+            android:layout_height="110dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

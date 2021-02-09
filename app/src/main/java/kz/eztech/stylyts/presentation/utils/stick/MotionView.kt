@@ -2,11 +2,9 @@ package kz.eztech.stylyts.presentation.utils.stick
 
 import android.annotation.TargetApi
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.*
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
@@ -18,15 +16,15 @@ import androidx.core.view.GestureDetectorCompat
 import kz.eztech.imageviewdragandscale.sticker.geusters.MoveGestureDetector
 import kz.eztech.imageviewdragandscale.sticker.geusters.RotateGestureDetector
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
+import kz.eztech.stylyts.presentation.contracts.main.constructor.MotionViewContract
 import java.util.*
 
 /**
  * Created by Ruslan Erdenoff on 13.01.2021.
  */
 class MotionView : FrameLayout {
-	fun attachView(collectionConstructorContract: CollectionConstructorContract.View){
-		this.collectionConstructorContract = collectionConstructorContract
+	fun attachView(motionViewContract: MotionViewContract){
+		this.motionViewContract = motionViewContract
 	}
 
 	interface Constants {
@@ -50,13 +48,15 @@ class MotionView : FrameLayout {
 	private var motionViewCallback: MotionViewCallback? = null
 
 	private lateinit var deleteIcon:BitmapStickerIcon
-	private var collectionConstructorContract:CollectionConstructorContract.View? = null
+	private var motionViewContract:MotionViewContract? = null
 
 	// gesture detection
 	private var scaleGestureDetector: ScaleGestureDetector? = null
 	private var rotateGestureDetector: RotateGestureDetector? = null
 	private var moveGestureDetector: MoveGestureDetector? = null
 	private var gestureDetectorCompat: GestureDetectorCompat? = null
+	
+	private var isFlexible = true
 
 	// constructors
 	constructor(context: Context) : super(context) {
@@ -77,22 +77,39 @@ class MotionView : FrameLayout {
 	}
 
 	private fun init(context: Context) {
-		// I fucking love Android
 		setWillNotDraw(false)
 		selectedLayerPaint = Paint()
 		selectedLayerPaint!!.alpha = (255 * Constants.SELECTED_LAYER_ALPHA).toInt()
 		selectedLayerPaint!!.isAntiAlias = true
 		deleteIcon = BitmapStickerIcon(
-			ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_delete_24),
-			BitmapStickerIcon.LEFT_TOP)
+				ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_delete_24),
+				BitmapStickerIcon.RIGHT_TOP)
 		deleteIcon.iconEvent = DeleteIconEvent()
-		// init listeners
+		
 		scaleGestureDetector = ScaleGestureDetector(context, ScaleListener())
 		rotateGestureDetector = RotateGestureDetector(context, RotateListener())
 		moveGestureDetector = MoveGestureDetector(context, MoveListener())
 		gestureDetectorCompat = GestureDetectorCompat(context, TapsListener())
 		setOnTouchListener(onTouchListener)
 		updateUI()
+	}
+	
+	fun setFlexible(isFlexible: Boolean){
+		this.isFlexible = isFlexible
+		if(!isFlexible){
+			scaleGestureDetector = null
+			rotateGestureDetector = null
+		}
+	}
+	
+	fun setCustomDeleteIcon(deleteIconId: Int){
+		deleteIcon = BitmapStickerIcon(
+				ContextCompat.getDrawable(getContext(), deleteIconId),
+				BitmapStickerIcon.CUSTOM)
+		deleteIcon.iconEvent = DeleteIconEvent()
+		selectedEntity?.let {
+			it.setIcon(deleteIcon)
+		}
 	}
 
 	fun getEntities(): List<MotionEntity> {
@@ -110,10 +127,20 @@ class MotionView : FrameLayout {
 		}
 	}
 
-	fun addEntityAndPosition(entity: MotionEntity?) {
+	fun addEntityAndPosition(entity: MotionEntity?,isCustom:Boolean?=false) {
 		if (entity != null) {
 			initEntityBorder(entity)
-			initialTranslateAndScale(entity)
+			isCustom?.let {
+				if(isCustom){
+					initialTranslateAndScaleCustom(entity)
+				}else{
+					initialTranslateAndScale(entity)
+				}
+			} ?: run {
+				initialTranslateAndScale(entity)
+			}
+			
+			
 			entities.add(entity)
 			selectEntity(entity, true)
 		}
@@ -125,7 +152,7 @@ class MotionView : FrameLayout {
 		val borderPaint = Paint()
 		borderPaint.strokeWidth = strokeSize.toFloat()
 		borderPaint.isAntiAlias = true
-		borderPaint.color = ContextCompat.getColor(context, R.color.design_default_color_primary_variant)
+		borderPaint.color = ContextCompat.getColor(context, R.color.white)
 		entity.setBorderPaint(borderPaint)
 		entity.setIcon(deleteIcon)
 	}
@@ -164,7 +191,7 @@ class MotionView : FrameLayout {
 		invalidate()
 	}
 
-	private fun handleTranslate(delta: PointF?) {
+	fun handleTranslate(delta: PointF?) {
 		if (selectedEntity != null) {
 			val newCenterX = selectedEntity!!.absoluteCenterX() + delta!!.x
 			val newCenterY = selectedEntity!!.absoluteCenterY() + delta.y
@@ -187,6 +214,11 @@ class MotionView : FrameLayout {
 	private fun initialTranslateAndScale(entity: MotionEntity) {
 		entity.moveToCanvasCenter()
 		entity.layer.scale = entity.layer.initialScale()
+	}
+	
+	private fun initialTranslateAndScaleCustom(entity: MotionEntity){
+		entity.moveToCanvasCenter()
+		entity.layer.scale = entity.layer.getMinMediumScale()
 	}
 
 	private fun selectEntity(entity: MotionEntity?, updateCallback: Boolean) {
@@ -269,12 +301,21 @@ class MotionView : FrameLayout {
 			return
 		}
 		if (entities.remove(selectedEntity)) {
-			collectionConstructorContract?.deleteSelectedView(selectedEntity!!)
+			motionViewContract?.deleteSelectedView(selectedEntity!!)
 			selectedEntity!!.release()
 			selectedEntity = null
 			invalidate()
 		}
 	}
+	
+	fun deleteEntity(entity: MotionEntity){
+		if (entities.remove(entity)) {
+			motionViewContract?.deleteSelectedView(entity)
+			entity.release()
+			invalidate()
+		}
+	}
+	
 
 	// memory
 	fun release() {
@@ -297,13 +338,19 @@ class MotionView : FrameLayout {
 				}
 			}
 		}
-
-
-		if (scaleGestureDetector != null) {
-			scaleGestureDetector!!.onTouchEvent(event)
-			rotateGestureDetector!!.onTouchEvent(event)
-			moveGestureDetector!!.onTouchEvent(event)
-			gestureDetectorCompat!!.onTouchEvent(event)
+		
+		scaleGestureDetector?.let {
+			it.onTouchEvent(event)
+		}
+		
+		rotateGestureDetector?.let {
+			it.onTouchEvent(event)
+		}
+		moveGestureDetector?.let {
+			it.onTouchEvent(event)
+		}
+		gestureDetectorCompat?.let {
+			it.onTouchEvent(event)
 		}
 		true
 	}
@@ -319,8 +366,8 @@ class MotionView : FrameLayout {
 		override fun onLongPress(e: MotionEvent) {
 			updateOnLongPress(e)
 		}
-
-		override fun onSingleTapUp(e: MotionEvent): Boolean {
+		
+		override fun onDown(e: MotionEvent): Boolean {
 			updateSelectionOnTap(e)
 			return true
 		}

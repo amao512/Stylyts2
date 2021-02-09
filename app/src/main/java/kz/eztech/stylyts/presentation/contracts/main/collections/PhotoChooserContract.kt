@@ -6,12 +6,13 @@ import kz.eztech.stylyts.domain.models.FilteredItemsModel
 import kz.eztech.stylyts.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.contracts.main.constructor.MotionViewContract
 
 /**
  * Created by Ruslan Erdenoff on 23.12.2020.
  */
 interface PhotoChooserContract {
-    interface View:BaseView{
+    interface View:MotionViewContract{
         fun updatePhoto(path: Uri?)
         fun processFilteredItems(model: FilteredItemsModel)
         fun processShopCategories(shopCategoryModel: ShopCategoryModel)

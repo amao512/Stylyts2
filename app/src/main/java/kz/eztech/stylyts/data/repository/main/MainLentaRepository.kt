@@ -19,10 +19,19 @@ class MainLentaRepository:MainLentaDomainRepository{
 	}
 	
 	override fun getCollections(token: String, queries: Map<String, Any>?): Single<MainLentaModel> {
-		return api.getCollections(token,queries).map {
-			when(it.isSuccessful){
-				true -> it.body()
-				false -> throw NetworkException(it)
+		queries?.let {
+			return api.getCollections(token,queries).map {
+				when(it.isSuccessful){
+					true -> it.body()
+					false -> throw NetworkException(it)
+				}
+			}
+		} ?: run {
+			return api.getCollections(token,HashMap()).map {
+				when(it.isSuccessful){
+					true -> it.body()
+					false -> throw NetworkException(it)
+				}
 			}
 		}
 	}

@@ -81,24 +81,11 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.button_item_main_image_change_collection -> {
                 item as MainResult
                 item.clothes?.let {
-                    val itemsList = ArrayList<ClothesTypeDataModel>()
+                    val itemsList = ArrayList<ClothesMainModel>()
+                    itemsList.addAll(it)
                     val bundle = Bundle()
-                    it.forEach { clothe ->
-                        itemsList.add(ClothesTypeDataModel(
-                            id = clothe.id,
-                            title =clothe.title,
-                            cover_photo = clothe.cover_photo,
-                            cost = clothe.cost,
-                            sale_cost = clothe.sale_cost,
-                            currency = clothe.currency,
-                            clothes_types = clothe.clothes_type,
-                            gender = clothe.gender,
-                            constructor_photo = clothe.constructor_photo,
-                            isLocated = true,
-
-                        ))
-                    }
                     bundle.putParcelableArrayList("items",itemsList)
+                    bundle.putInt("mainId",item.id?:0)
                     findNavController().navigate(R.id.action_mainFragment_to_createCollectionFragment,bundle)
                 }?:run{
                     findNavController().navigate(R.id.action_mainFragment_to_createCollectionFragment)
@@ -121,6 +108,15 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     
     override fun processCollections(model: MainLentaModel) {
         model.results?.let {
+            it.forEach { result ->
+                result.clothes_location?.let { locations ->
+                        result.clothes?.forEach {  clothesMainModel ->
+                            clothesMainModel.clothe_location = locations.find { location ->
+                                location.clothes_id == clothesMainModel.id
+                            }
+                        }
+                }
+            }
             mainAdapter.updateList(it)
         }
     }

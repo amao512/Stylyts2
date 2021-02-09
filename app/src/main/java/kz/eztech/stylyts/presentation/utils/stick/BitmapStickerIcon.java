@@ -16,8 +16,9 @@ import java.lang.annotation.RetentionPolicy;
 public class BitmapStickerIcon extends DrawableSticker implements StickerIconEvent {
     public static final float DEFAULT_ICON_RADIUS = 30f;
     public static final float DEFAULT_ICON_EXTRA_RADIUS = 10f;
+    public static final float DEFAULT_ICON_SMALL_RADIUS = 20f;
 
-    @IntDef({ LEFT_TOP, RIGHT_TOP, LEFT_BOTTOM, RIGHT_BOTOM }) @Retention(RetentionPolicy.SOURCE)
+    @IntDef({ LEFT_TOP, RIGHT_TOP, LEFT_BOTTOM, RIGHT_BOTOM,CUSTOM }) @Retention(RetentionPolicy.SOURCE)
     public @interface Gravity {
 
     }
@@ -26,6 +27,7 @@ public class BitmapStickerIcon extends DrawableSticker implements StickerIconEve
     public static final int RIGHT_TOP = 1;
     public static final int LEFT_BOTTOM = 2;
     public static final int RIGHT_BOTOM = 3;
+    public static final int CUSTOM = 4;
 
     private float iconRadius = DEFAULT_ICON_RADIUS;
     private float iconExtraRadius = DEFAULT_ICON_EXTRA_RADIUS;
@@ -42,6 +44,11 @@ public class BitmapStickerIcon extends DrawableSticker implements StickerIconEve
 
     public void draw(Canvas canvas, Paint paint) {
         canvas.drawCircle(x, y, iconRadius, paint);
+        super.draw(canvas);
+    }
+
+    public void drawSmallRadius(Canvas canvas, Paint paint) {
+        canvas.drawCircle(x, y, DEFAULT_ICON_SMALL_RADIUS, paint);
         super.draw(canvas);
     }
 

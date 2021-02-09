@@ -32,6 +32,6 @@ class MainLentaUseCase: BaseUseCase<MainLentaModel> {
 	}
 	
 	override fun createSingleObservable(): Single<MainLentaModel> {
-		return mainLentaDomainRepository.getCollections(token)
+		return mainLentaDomainRepository.getCollections(token,queries)
 	}
 }

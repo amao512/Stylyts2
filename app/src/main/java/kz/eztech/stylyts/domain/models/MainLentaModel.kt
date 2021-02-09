@@ -22,6 +22,9 @@ data class MainResult(
 	@SerializedName("author")
 	@Expose
 	var author:AuthorModel? = null,
+	@SerializedName("clothes_location")
+	@Expose
+	var clothes_location:List<ClothesLocation>? = null,
 	@SerializedName("likes_count")
 	@Expose
 	var likes_count:Int? = null,
@@ -149,7 +152,30 @@ data class ClothesMainModel(
 
 	var currentColor:ClothesColor? = null,
 	var currentSize:ClothesSize? = null,
+	var clothe_location:ClothesLocation? = null,
 
+):Parcelable
+
+@Parcelize
+data class ClothesLocation(
+	@SerializedName("clothes_id")
+	@Expose
+	var clothes_id:Int? = null,
+	@SerializedName("point_x")
+	@Expose
+	var point_x:Double? = null,
+	@SerializedName("point_y")
+	@Expose
+	var point_y:Double? = null,
+	@SerializedName("width")
+	@Expose
+	var width:Double? = null,
+	@SerializedName("height")
+	@Expose
+	var height:Double? = null,
+	@SerializedName("degree")
+	@Expose
+	var degree:Double? = null,
 ):Parcelable
 @Parcelize
 data class ClothesSize(

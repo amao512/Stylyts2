@@ -4,18 +4,16 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ImageView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.loader.app.LoaderManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -39,21 +37,16 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
 import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
-import kz.eztech.stylyts.presentation.dialogs.PhotoChooserDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorPresenter
 import kz.eztech.stylyts.presentation.utils.FileUtils.createPngFileFromBitmap
+import kz.eztech.stylyts.presentation.utils.RelativeImageMeasurements
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
+import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil.reMeasureEntity
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 import kz.eztech.stylyts.presentation.utils.stick.Layer
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
-import kz.eztech.stylyts.presentation.utils.stick.MotionView
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -70,12 +63,13 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private var isItems = false
 	private var isStyle = false
 
-	private val listOfItems = ArrayList<ClothesTypeDataModel>()
+	private val listOfItems = ArrayList<ClothesMainModel>()
 	private val listOfEntities = ArrayList<ImageEntity>()
 	private val listOfIdsChosen = ArrayList<Int>()
 	private var currentId : Int = -1
 	private var currentStyle:Style? = null
 	private var currentCollectionBitmap:Bitmap? = null
+	private var currentMainId: Int = -1
 	@Inject
 	lateinit var presenter:CollectionConstructorPresenter
 	override fun getLayoutId(): Int {
@@ -108,11 +102,19 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	override fun initializeArguments() {
 		arguments?.let {
 			if(it.containsKey("items")){
-				it.getParcelableArrayList<ClothesTypeDataModel>("items")?.let { it1 ->
-					it1.forEach {
-						processInputImageToPlace(it)
+				val handler = Handler(Looper.getMainLooper())
+				handler.postDelayed(Runnable {
+					it.getParcelableArrayList<ClothesMainModel>("items")?.let { it1 ->
+						it1.forEach {
+							processInputImageToPlace(it)
+						}
 					}
-				}
+				}, 500)
+				
+			}
+			
+			if(it.containsKey("mainId")){
+				currentMainId = it.getInt("mainId")
 			}
 		}
 	}
@@ -183,16 +185,13 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					isItems = false
 					isStyle = false
 				} else {
-					if (adapter.isSubCategory) {
-						adapter.isSubCategory = false
-						presenter.getCategory()
-					}
+					presenter.getCategory()
 				}
 			}
 			R.id.text_view_fragment_collection_constructor_category_next -> {
 				if (isStyle) {
 					processPostImages()
-				} else if (isItems) {
+				} else if (isItems || listOfItems.isNotEmpty()) {
 					isStyle = true
 					isItems = false
 					recycler_view_fragment_collection_constructor_list.visibility = View.GONE
@@ -211,25 +210,20 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				if (isItems) {
 					processInputImageToPlace(item)
 				} else {
-					if (!adapter.isSubCategory) {
-						(item as GenderCategory).run {
-							if(isExternal){
-								onChoice(view,externalType)
-							}else{
-								adapter.isSubCategory = true
-								currentId = item.id?:0
-								clothes_types?.let { list ->
-									list.forEach {
-										it.constructor_icon = this.constructor_icon
-									}
-									recycler_view_fragment_collection_constructor_list.adapter = adapter
-									adapter.updateList(list)
-								}
+					(item as GenderCategory).run {
+						if (isExternal) {
+							onChoice(view, externalType)
+						} else {
+							currentId = item.id ?: 0
+							item.clothes_types?.let { clothes ->
+								val map = HashMap<String, Any>()
+								map["clothes_type"] = clothes.map { it.id }.joinToString()
+								map["gender"] = "M"
+								presenter.getShopCategoryTypeDetail(
+										currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+												?: "",
+										map)
 							}
-						}
-					} else {
-						(item as ClothesTypes).run {
-							presenter.getShopCategoryTypeDetail(item.id ?: 1, "M")
 						}
 					}
 				}
@@ -237,31 +231,65 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			}
 		}
 	}
-
+	
+	override fun processFilteredItems(model: FilteredItemsModel) {
+		model.results?.let {
+			recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
+			itemAdapter.updateList(it)
+			isItems = true
+		}
+	}
+	
+	
 	private fun processInputImageToPlace(item: Any?) {
-		item as ClothesTypeDataModel
+		item as ClothesMainModel
 		var photoUrl = ""
 		item.cover_photo?.let {
-			photoUrl = if(it.contains("http",true)) it else "http://178.170.221.31:8000${it}"
+			photoUrl = if(it.contains("http", true)) it else "http://178.170.221.31:8000${it}"
 		}
-
+		var currentSameObject:ImageEntity? = null
+		if(listOfItems.isNotEmpty() && listOfEntities.isNotEmpty() ){
+			listOfEntities.forEach {
+				if(item.clothes_type?.body_part == it.item.clothes_type?.body_part){
+					currentSameObject = it
+				}
+			}
+		}
+		
 		Glide.with(currentActivity.applicationContext)
 			.asFile()
 			.load(photoUrl)
-			.into(object : CustomTarget<File>(){
+			.into(object : CustomTarget<File>() {
 				override fun onResourceReady(file: File, transition: Transition<in File>?) {
 					frame_layout_fragment_collection_constructor_images_container_placeholder.visibility = View.GONE
-					val resource = BitmapFactory.decodeFile(file.path)
+					val options = BitmapFactory.Options()
+					options.inMutable = true
+					var resource = BitmapFactory.decodeFile(file.path, options)
 					frame_layout_fragment_collection_constructor_images_container.post(Runnable {
+						currentSameObject?.let {
+							frame_layout_fragment_collection_constructor_images_container.deleteEntity(it)
+						}
 						val layer = Layer()
-						val entity = ImageEntity(layer, resource,item,frame_layout_fragment_collection_constructor_images_container.getWidth(), frame_layout_fragment_collection_constructor_images_container.getHeight())
+						var measurements: RelativeImageMeasurements? = null
+						item.clothe_location?.let {
+							measurements = reMeasureEntity(RelativeImageMeasurements(it.point_x!!.toFloat(), it.point_y!!.toFloat(), it.width!!.toFloat(), it.height!!.toFloat(), it.degree!!.toFloat()), frame_layout_fragment_collection_constructor_images_container)
+						}
+						
+						
+						val entity = ImageEntity(layer, resource, item, frame_layout_fragment_collection_constructor_images_container.getWidth(), frame_layout_fragment_collection_constructor_images_container.getHeight())
 						frame_layout_fragment_collection_constructor_images_container.addEntityAndPosition(entity)
+						measurements?.let {
+							entity.moveToPoint(PointF(it.point_x, it.point_y))
+							entity.layer.postScaleRaw(it.width/resource.width)
+							entity.layer.postRotate(it.degree)
+						}
 						listOfItems.add(item)
 						listOfEntities.add(entity)
 						listOfIdsChosen.add(currentId)
 						processDraggedItems()
 					})
 				}
+				
 				override fun onLoadCleared(placeholder: Drawable?) {
 				}
 			})
@@ -294,21 +322,28 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
 					try {
 						currentCollectionBitmap?.let { bitmap ->
-							val file =  createPngFileFromBitmap(requireContext(),bitmap)
+							val file = createPngFileFromBitmap(requireContext(), bitmap)
 							file?.let { currentFile ->
-								presenter.saveCollection(
-										it, item,file
-								)
-							}?:run {
+								if(currentMainId != -1){
+									presenter.updateCollection(
+											it, currentMainId,item, file
+									)
+								}else{
+									presenter.saveCollection(
+											it, item, file
+									)
+								}
+								
+							} ?: run {
 								displayMessage("Не удалось загрузить данные")
 								hideProgress()
 							}
 							
-						}?:run{
+						} ?: run {
 							displayMessage("Не удалось загрузить данные")
 							hideProgress()
 						}
-					}catch (e:Exception){
+					} catch (e: Exception) {
 						hideProgress()
 						displayMessage("Не удалось загрузить данные")
 					}
@@ -345,16 +380,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					it.find { it.id == type }?.isChoosen = true
 				}
 			}
-			adapter.isSubCategory = false
 			adapter.updateList(it)
-		}
-	}
-	
-	override fun processTypeDetail(model: CategoryTypeDetailModel) {
-		model.clothes?.data?.let {
-			recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
-			itemAdapter.updateList(it)
-			isItems = true
 		}
 	}
 	
@@ -387,7 +413,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 								point_y = result.point_y,
 								width = result.width,
 								height = result.height,
-								degree = 0f
+								degree = result.degree
 						)
 				)
 				clth.add(listOfItems[index].id ?: 0)
@@ -404,7 +430,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			val createCollecationDialog = CreateCollectionAcceptDialog()
 			val bundle = Bundle()
 			bundle.putParcelable("collectionModel", collectionPostCreateModel)
-			bundle.putParcelable("photoBitmap",currentCollectionBitmap)
+			bundle.putParcelable("photoBitmap", currentCollectionBitmap)
 			createCollecationDialog.arguments = bundle
 			createCollecationDialog.setChoiceListener(this@CollectionConstructorFragment)
 			createCollecationDialog.show(childFragmentManager, "PhotoChossoserTag")
@@ -436,7 +462,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		val res2 = listOfItems.remove(motionEntity.item)
 		val res3 = listOfIdsChosen.remove(currentId)
 
-		Log.wtf("deletedSelectedEntity","res1:$res res2:$res2 res3:$res3")
+		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
 		processDraggedItems()
 	}
 

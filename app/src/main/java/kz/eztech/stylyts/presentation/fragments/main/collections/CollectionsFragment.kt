@@ -72,12 +72,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
 	override fun initializeViews() {
 		pagerAdapter = CollectionsViewPagerAdapter(this,this)
-		TabLayoutMediator(tab_bar_fragment_collections, view_pager_fragment_collections) { tab, position ->
-			when(position){
-				0 -> {tab.text = "Для нее"}
-				1 -> {tab.text = "Для него"}
-			}
-		}.attach()
+		view_pager_fragment_collections.isSaveEnabled = false
 		filterAdapter = CollectionsFilterAdapter()
 		recycler_view_fragment_collections_filter_list.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
 		recycler_view_fragment_collections_filter_list.adapter = filterAdapter
@@ -88,6 +83,12 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 		super.onResume()
 		currentActivity.displayBottomNavigationView()
 		view_pager_fragment_collections.adapter = pagerAdapter
+		TabLayoutMediator(tab_bar_fragment_collections, view_pager_fragment_collections) { tab, position ->
+			when(position){
+				0 -> {tab.text = "Для нее"}
+				1 -> {tab.text = "Для него"}
+			}
+		}.attach()
 	}
 	
 	override fun onViewClicked(view: View, position: Int, item: Any?) {

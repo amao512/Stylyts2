@@ -149,22 +149,9 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 		when(v?.id){
 			R.id.button_fragment_item_detail_create_collection -> {
 				currentClotheModel?.let {
-					val itemsList = ArrayList<ClothesTypeDataModel>()
+					val itemsList = ArrayList<ClothesMainModel>()
 					val bundle = Bundle()
-					itemsList.add(
-						ClothesTypeDataModel(
-							id = it.id,
-							title =it.title,
-							cover_photo = it.cover_photo,
-							cost = it.cost,
-							sale_cost = it.sale_cost,
-							currency = it.currency,
-							clothes_types = it.clothes_type,
-							gender = it.gender,
-							constructor_photo = it.constructor_photo,
-							isLocated = true,
-							)
-					)
+					itemsList.add(it)
 					bundle.putParcelableArrayList("items",itemsList)
 					findNavController().navigate(R.id.action_itemDetailFragment_to_createCollectionFragment,bundle)
 				}

@@ -26,6 +26,7 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
     private lateinit var pagerAdapter:ConstructorPagerAdapter
 
     private val inputClotheList = ArrayList<ClothesTypeDataModel>()
+    private var currentMainId = -1
 
     override fun getLayoutId(): Int {
         return R.layout.fragment_constructor_holder
@@ -50,6 +51,10 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
                     inputClotheList.addAll(it1)
                 }
             }
+            
+            if(it.containsKey("mainId")){
+                currentMainId = it.getInt("mainId")
+            }
         }
     }
 
@@ -58,6 +63,7 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
     override fun initializeViews() {
         val bundle = Bundle()
         bundle.putParcelableArrayList("items",inputClotheList)
+        bundle.putInt("mainId",currentMainId)
         pagerAdapter = ConstructorPagerAdapter(this,bundle)
         view_pager_fragment_constructor_holder.isUserInputEnabled = false
         view_pager_fragment_constructor_holder.isSaveEnabled = false

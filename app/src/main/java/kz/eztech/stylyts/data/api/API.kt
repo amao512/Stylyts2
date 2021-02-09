@@ -2,6 +2,7 @@ package kz.eztech.stylyts.data.api
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants.GENERATE_FORGOT_PASSWORD
+import kz.eztech.stylyts.data.api.RestConstants.GET_BRANDS
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES_DETAIL
 import kz.eztech.stylyts.data.api.RestConstants.GET_COLLECTIONS
@@ -13,6 +14,7 @@ import kz.eztech.stylyts.data.api.RestConstants.LOGIN_USER
 import kz.eztech.stylyts.data.api.RestConstants.REGISTER_USER
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION
 import kz.eztech.stylyts.data.api.RestConstants.SET_NEW_PASSWORD
+import kz.eztech.stylyts.data.api.RestConstants.UPDATE_COLLECTION
 import kz.eztech.stylyts.domain.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -65,18 +67,28 @@ interface API {
     @Multipart
     @POST(SAVE_COLLECTION)
     fun saveCollection(@Header("Authorization") token: String,
-                       @PartMap partMap:Map<String, @JvmSuppressWildcards RequestBody> ,
-                       @Part file:MultipartBody.Part ): Single<Response<Unit>>
+                       //@PartMap partMap:Map<String, @JvmSuppressWildcards RequestBody> ,
+                      // @Part file:MultipartBody.Part ): Single<Response<Unit>>
+                       @Part files:ArrayList<MultipartBody.Part>): Single<Response<Unit>>
+    
+    @Multipart
+    @PATCH(UPDATE_COLLECTION)
+    fun updateCollection(@Header("Authorization") token: String,
+                         @Path("id") id:Int,
+                       @Part files:ArrayList<MultipartBody.Part>): Single<Response<Unit>>
     //@POST(SAVE_COLLECTION)
     //fun saveCollection(@Header("Authorization") token: String,
                        //@Body file:MultipartBody): Single<Response<Unit>>
     
     @GET(GET_COLLECTIONS)
-    fun getCollections(@Header("Authorization") token: String,@QueryMap queries:Map<String,Any>? = null): Single<Response<MainLentaModel>>
+    fun getCollections(@Header("Authorization") token: String,@QueryMap queries:Map<String,@JvmSuppressWildcards Any>): Single<Response<MainLentaModel>>
 
     @GET(GET_ITEM_DETAIL)
     fun getItemDetail(@Header("Authorization") token: String,@Path("id") id:Int): Single<Response<ClothesMainModel>>
     
     @GET(GET_FILTERED_ITEMS)
     fun getFilteredItems(@Header("Authorization") token: String,@QueryMap map:Map<String,@JvmSuppressWildcards Any>):Single<Response<FilteredItemsModel>>
+    
+    @GET(GET_BRANDS)
+    fun getBrands(@Header("Authorization") token: String):Single<Response<BrandsModel>>
 }

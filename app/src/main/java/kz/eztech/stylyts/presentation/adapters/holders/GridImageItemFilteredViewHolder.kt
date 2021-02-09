@@ -21,9 +21,9 @@ class GridImageItemFilteredViewHolder(itemView: View, adapter:BaseAdapter) : Bas
             Glide.with(this).load(
               item.cover_photo
             ).into(this.shapeable_image_view_item_collection_image)
-            setOnClickListener { view ->
-                adapter.itemClickListener?.let {
-                    it.onViewClicked(view,position,item)
+            shapeable_image_view_item_collection_image.setOnClickListener {
+                adapter.itemClickListener?.let { listener->
+                    listener.onViewClicked(it,position,item)
                 }
             }
             
