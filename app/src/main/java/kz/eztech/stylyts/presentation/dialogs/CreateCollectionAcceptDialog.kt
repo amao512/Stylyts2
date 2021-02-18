@@ -20,13 +20,15 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
-class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener{
+class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogChooserListener{
     internal var listener: DialogChooserListener? = null
     private var currentModel: CollectionPostCreateModel? = null
     private var currentBitmap: Bitmap? = null
     private var currentPhotoUri: Uri? = null
     private var isPhotoChooser = false
     private var selectedList:List<ClothesMainModel>? = null
+    private var hashMap = HashMap<String,Any>()
+    private lateinit var chooserDialog:CreateCollectionChooserDialog
     fun setChoiceListener(listener: DialogChooserListener){
         this.listener = listener
     }
@@ -41,7 +43,8 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+        chooserDialog = CreateCollectionChooserDialog()
+        chooserDialog.setChoiceListener(this)
         arguments?.let {
             if(it.containsKey("collectionModel")){
                 currentModel = it.getParcelable("collectionModel")
@@ -80,17 +83,9 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener{
             text_view_toolbar_right_text.setOnClickListener{
                 currentModel?.text = edit_text_view_dialog_create_collection_accept_sign.text.toString()
                 currentModel?.title =  edit_text_view_dialog_create_collection_accept_sign.text.toString()
-                listener?.onChoice(it,currentModel)
-                dismiss()
+                chooserDialog.show(childFragmentManager,"ChooserDialog")
             }
             elevation = 0f
-        }
-
-        text_view_save_collection.setOnClickListener {
-            currentModel?.text = edit_text_view_dialog_create_collection_accept_sign.text.toString()
-            currentModel?.title =  edit_text_view_dialog_create_collection_accept_sign.text.toString()
-            listener?.onChoice(it,currentModel)
-            dismiss()
         }
         if(isPhotoChooser){
             frame_layout_dialog_create_collection_accept_choose_clothes.visibility = View.VISIBLE
@@ -103,7 +98,26 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener{
             }
         }
     }
-
+    
+    override fun onChoice(v: View?, item: Any?) {
+        currentModel?.let {
+            hashMap["model"] = it
+            when(item as Int){
+                1 -> {
+                    hashMap["mode"] = 1
+                }
+                2 -> {
+                    hashMap["mode"] = 2
+                }
+                3 -> {
+                    hashMap["mode"] = 3
+                }
+            }
+            listener?.onChoice(include_toolbar_dialog_create_collection.text_view_toolbar_right_text,hashMap)
+        }
+        dismiss()
+    }
+    
     override fun getTheme(): Int {
         return R.style.FullScreenDialog
     }

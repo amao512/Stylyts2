@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
     <FrameLayout
-        android:id="@+id/frame_layout_tem_constructor_filter_clothe_container"
+        android:id="@+id/frame_layout_item_constructor_filter_clothe_sub_items_container"
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -18,7 +18,7 @@
             <com.mikhaellopez.circleview.CircleView
                 android:visibility="gone"
                 android:layout_gravity="center"
-                android:id="@+id/circle_view_item_constructor_filter_clothe_items"
+                android:id="@+id/circle_view_item_constructor_filter_clothe_sub_items"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 app:cv_border="false"
@@ -28,7 +28,7 @@
                 app:cv_shadow_radius="10"
                 android:layout_marginEnd="16dp"/>
             <TextView
-                android:id="@+id/text_view_item_constructor_filter_clothe_item_name"
+                android:id="@+id/text_view_item_constructor_filter_clothe_sub_item_name"
                 android:layout_gravity="center"
                 style="@style/TextRegular"
                 tools:text="Мой гардероб"
@@ -43,8 +43,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp">
             <ImageView
-                android:visibility="gone"
-                android:id="@+id/image_view_item_constructor_filter_clothe_items"
+                android:id="@+id/image_view_item_constructor_filter_clothe_sub_items"
                 android:layout_gravity="center"
                 android:background="@drawable/circle_filter_checked"
                 android:layout_width="14dp"
@@ -52,13 +51,6 @@
         </FrameLayout>
 
     </FrameLayout>
-    <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
-        android:id="@+id/recycler_view_item_constructor_filter_clothe_items"
-        tools:listitem="@layout/item_constructor_filter_clothe_sub_items"
-        android:layout_marginStart="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <View
         android:layout_marginTop="6dp"
         android:background="@color/app_very_light_gray"

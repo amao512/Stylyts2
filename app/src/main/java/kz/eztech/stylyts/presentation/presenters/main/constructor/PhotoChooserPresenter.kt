@@ -54,7 +54,7 @@ class PhotoChooserPresenter: PhotoChooserContract.Presenter {
 									clothes.map { clothesTypes ->
 										clothesTypes.id
 									}?.let { it1 ->
-										val map = HashMap<String,Any>()
+										val map = view.getFilterMap()
 										map["clothes_type"] = it1.joinToString()
 										getShopCategoryTypeDetail(token, map)
 									}

@@ -14,5 +14,6 @@ interface ItemDetailContract {
 
     interface Presenter: BasePresenter<View> {
         fun getItemDetail(token:String,id:Int)
+        fun getItemByBarcode(token:String,value:String)
     }
 }

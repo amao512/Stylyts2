@@ -38,7 +38,8 @@ data class GenderCategory(
     var externalTitle:String? = null,
     var externalImageId:Int = 0,
     var externalType:Int = 0,
-    var isChoosen: Boolean = false
+    var isChoosen: Boolean = false,
+    var chosenClothesTypes:Int?=null
 ):Parcelable
 
 @Parcelize
@@ -56,4 +57,5 @@ data class ClothesTypes(
     @Expose
     var body_part:Int? = null,
     var constructor_icon:String? = null,
+    var isChosen:Boolean = false
 ):Parcelable

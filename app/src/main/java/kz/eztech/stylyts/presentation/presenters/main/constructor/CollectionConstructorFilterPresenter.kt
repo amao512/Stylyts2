@@ -3,9 +3,11 @@ package kz.eztech.stylyts.presentation.presenters.main.constructor
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.BrandsModel
+import kz.eztech.stylyts.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.domain.usecases.main.GetFilteredItemsUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.GetBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryUseCase
+import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.collections.PhotoChooserContract
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorFilterContract
 import javax.inject.Inject
@@ -32,12 +34,29 @@ class CollectionConstructorFilterPresenter:CollectionConstructorFilterContract.P
         this.getBrandsUseCase = getBrandsUseCase
     }
 
-    fun initToken(token:String){
-        this.token = token
+    fun initToken(token:String?){
+        this.token = token ?: ""
     }
 
     override fun getCategories() {
-
+        view.displayProgress()
+        getCategoryUseCase.execute(object : DisposableSingleObserver<ShopCategoryModel>() {
+            override fun onSuccess(t: ShopCategoryModel) {
+                view.processViewAction {
+                    hideProgress()
+                    processShopCategories(t)
+                }
+            
+            }
+        
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideProgress()
+                    displayMessage(errorHelper.processError(e))
+                }
+            
+            }
+        })
     }
 
     override fun getBrands() {
@@ -45,6 +64,7 @@ class CollectionConstructorFilterPresenter:CollectionConstructorFilterContract.P
         getBrandsUseCase.initParam(token)
         getBrandsUseCase.execute(object : DisposableSingleObserver<BrandsModel>(){
             override fun onSuccess(t: BrandsModel) {
+                view.processBrands(t)
                 view.hideProgress()
             }
 

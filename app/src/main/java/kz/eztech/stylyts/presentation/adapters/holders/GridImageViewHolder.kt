@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.item_collection_image.view.*
 import kotlinx.android.synthetic.main.item_main_image.view.*
 import kotlinx.android.synthetic.main.item_main_image_detail.view.*
 import kotlinx.android.synthetic.main.item_main_image_detail.view.image_view_image_detail_imageholder
+import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
 
@@ -16,13 +17,14 @@ import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
 class GridImageViewHolder(itemView: View,adapter:BaseAdapter) : BaseViewHolder(itemView,adapter){
     override fun bindData(item: Any, position: Int) {
         with(itemView){
-            Glide.with(this).load(
-                resources.getIdentifier("auth_bg", "drawable", context.packageName)
-            ).into(this.shapeable_image_view_item_collection_image)
-            setOnClickListener { view ->
-                Log.wtf("GridImageViewHolder","CLICKED")
-                adapter.itemClickListener?.let {
-                    it.onViewClicked(view,position,"")
+            when(item){
+                is MainResult -> {
+                    Glide.with(this).load(item.cover_photo).into(shapeable_image_view_item_collection_image)
+                    shapeable_image_view_item_collection_image.setOnClickListener { view ->
+                        adapter.itemClickListener?.let {
+                            it.onViewClicked(view,position,item)
+                        }
+                    }
                 }
             }
             

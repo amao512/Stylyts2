@@ -26,4 +26,13 @@ class ItemDetailRepository:ItemDetailDomainRepository {
             }
         }
     }
+
+    override fun getItemByBarcode(token: String, value: String): Single<Unit> {
+        return api.getItemByBarcode(token,value).map {
+            when(it.isSuccessful){
+                true -> it.body()
+                else ->  throw NetworkException(it)
+            }
+        }
+    }
 }

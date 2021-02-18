@@ -83,7 +83,7 @@
                 <ImageView
                     android:background="?attr/selectableItemBackground"
                     android:id="@+id/image_view_fragment_collection_detail_imageholder"
-                    android:scaleType="matrix"
+                    android:scaleType="centerInside"
                     tools:src="@drawable/auth_bg"
                     android:layout_width="match_parent"
                     android:layout_height="500dp"/>

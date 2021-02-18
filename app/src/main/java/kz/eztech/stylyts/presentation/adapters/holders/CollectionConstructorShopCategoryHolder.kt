@@ -33,7 +33,7 @@ class CollectionConstructorShopCategoryHolder(itemView: View, adapter: BaseAdapt
 							}
 						}else{
 							Glide.with(this).load(
-									constructor_icon).into(this.image_view_item_collection_constructor_category_item_image_holder)
+									cover_image).into(this.image_view_item_collection_constructor_category_item_image_holder)
 							text_view_item_collection_constructor_category_item_title.text = title
 							
 							image_view_item_collection_constructor_category_item_image_holder.setOnClickListener {

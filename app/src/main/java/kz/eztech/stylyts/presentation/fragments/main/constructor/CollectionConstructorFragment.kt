@@ -21,7 +21,6 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
-import kotlinx.android.synthetic.main.fragment_collection_constructor.include_toolbar_profile
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
 import kotlinx.android.synthetic.main.item_constuctor_image_holder.view.*
@@ -36,6 +35,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
+import kz.eztech.stylyts.presentation.dialogs.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorPresenter
@@ -62,14 +62,20 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private lateinit var itemAdapter: CollectionConstructorShopItemAdapter
 	private var isItems = false
 	private var isStyle = false
+	private var currentType = 0
+	private var currentSaveMode = 1
 
 	private val listOfItems = ArrayList<ClothesMainModel>()
 	private val listOfEntities = ArrayList<ImageEntity>()
 	private val listOfIdsChosen = ArrayList<Int>()
+	private val listOfGenderCategory = ArrayList<GenderCategory>()
 	private var currentId : Int = -1
 	private var currentStyle:Style? = null
 	private var currentCollectionBitmap:Bitmap? = null
 	private var currentMainId: Int = -1
+	private val filterMap = HashMap<String, Any>()
+
+	private lateinit var filterDialog: ConstructorFilterDialog
 	@Inject
 	lateinit var presenter:CollectionConstructorPresenter
 	override fun getLayoutId(): Int {
@@ -81,14 +87,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun customizeActionBar() {
-		with(include_toolbar_profile){
-			image_button_left_corner_action.visibility = android.view.View.GONE
-			text_view_toolbar_back.visibility = android.view.View.VISIBLE
-			text_view_toolbar_title.visibility = android.view.View.VISIBLE
-			image_button_right_corner_action.visibility = android.view.View.GONE
-			elevation = 0f
-			customizeActionToolBar(this, "Создать образ")
-		}
+
 	}
 	
 	override fun initializeDependency() {
@@ -116,14 +115,19 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			if(it.containsKey("mainId")){
 				currentMainId = it.getInt("mainId")
 			}
+
+			if(it.containsKey("currentType")){
+				currentType = it.getInt("currentType")
+			}
 		}
 	}
 	
 	override fun initializeViewsData() {
-	
+		linearLayout2.layoutTransition.setAnimateParentHierarchy(false)
 	}
 	
 	override fun initializeViews() {
+		filterDialog = ConstructorFilterDialog()
 		checkWritePermission()
 		adapter = CollectionConstructorShopCategoryAdapter()
 		itemAdapter = CollectionConstructorShopItemAdapter()
@@ -143,6 +147,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		text_view_fragment_collection_constructor_total_price.setOnClickListener(this)
 		text_view_fragment_collection_constructor_category_back.setOnClickListener(this)
 		text_view_fragment_collection_constructor_category_next.setOnClickListener(this)
+		text_view_fragment_collection_constructor_category_filter.setOnClickListener(this)
+		filterDialog.setChoiceListener(this)
 	}
 
 	
@@ -175,15 +181,22 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		when(v?.id){
 			R.id.text_view_fragment_collection_constructor_category_back -> {
 				if (isStyle) {
-					recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
+					recycler_view_fragment_collection_constructor_list.adapter = adapter
 					recycler_view_fragment_collection_constructor_list.visibility = View.VISIBLE
 					list_view_fragment_collection_constructor_list_style.visibility = View.GONE
+					text_view_fragment_collection_constructor_category_back.visibility = View.GONE
 					isStyle = false
-					isItems = true
+					isItems = false
+					checkIsListEmpty()
+					presenter.getCategory()
 				} else if (isItems) {
+					checkIsListEmpty()
+					text_view_fragment_collection_constructor_category_filter.visibility = View.GONE
 					recycler_view_fragment_collection_constructor_list.adapter = adapter
+					text_view_fragment_collection_constructor_category_back.visibility = View.GONE
 					isItems = false
 					isStyle = false
+					presenter.getCategory()
 				} else {
 					presenter.getCategory()
 				}
@@ -191,7 +204,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			R.id.text_view_fragment_collection_constructor_category_next -> {
 				if (isStyle) {
 					processPostImages()
-				} else if (isItems || listOfItems.isNotEmpty()) {
+				} else if (listOfItems.isNotEmpty()) {
+					text_view_fragment_collection_constructor_category_back.visibility = View.VISIBLE
 					isStyle = true
 					isItems = false
 					recycler_view_fragment_collection_constructor_list.visibility = View.GONE
@@ -201,9 +215,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					)
 				}
 			}
+			R.id.text_view_fragment_collection_constructor_category_filter -> {
+				filterDialog.show(childFragmentManager, "FilterDialog")
+			}
 		}
 	}
-	
+	private fun checkIsListEmpty(){
+		if(listOfItems.isNotEmpty()){
+			text_view_fragment_collection_constructor_category_next.visibility = View.VISIBLE
+		}
+	}
 	override fun onViewClicked(view: View, position: Int, item: Any?) {
 		when(view?.id){
 			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
@@ -216,13 +237,20 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 						} else {
 							currentId = item.id ?: 0
 							item.clothes_types?.let { clothes ->
-								val map = HashMap<String, Any>()
-								map["clothes_type"] = clothes.map { it.id }.joinToString()
-								map["gender"] = "M"
+								filterMap["clothes_type"] = clothes.map { it.id }.joinToString()
+								when(currentType){
+									0 -> {
+										filterMap["gender"] = "M"
+									}
+									1 -> {
+										filterMap["gender"] = "F"
+									}
+								}
+
 								presenter.getShopCategoryTypeDetail(
 										currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
 												?: "",
-										map)
+									filterMap)
 							}
 						}
 					}
@@ -233,6 +261,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun processFilteredItems(model: FilteredItemsModel) {
+		text_view_fragment_collection_constructor_category_next.visibility = View.GONE
+		text_view_fragment_collection_constructor_category_filter.visibility = View.VISIBLE
+		text_view_fragment_collection_constructor_category_back.visibility = View.VISIBLE
 		model.results?.let {
 			recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
 			itemAdapter.updateList(it)
@@ -317,70 +348,128 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun onChoice(v: View?, item: Any?) {
-		when(item){
-			is CollectionPostCreateModel -> {
-				currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
-					try {
-						currentCollectionBitmap?.let { bitmap ->
-							val file = createPngFileFromBitmap(requireContext(), bitmap)
-							file?.let { currentFile ->
-								if(currentMainId != -1){
-									presenter.updateCollection(
-											it, currentMainId,item, file
-									)
-								}else{
-									presenter.saveCollection(
-											it, item, file
-									)
+		if(v?.id == R.id.button_dialog_filter_constructor_submit){
+			val map = item as HashMap<String, Any>
+			val clothes_type = filterMap["clothes_type"]
+			filterMap.clear()
+			filterMap["clothes_type"] = clothes_type as String
+			filterMap.putAll(map)
+			
+			
+			presenter.getShopCategoryTypeDetail(
+					currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
+					filterMap)
+		}else{
+			when(item){
+				is Map<*, *> -> {
+					val currentModel = item["model"] as CollectionPostCreateModel
+					currentSaveMode = item["mode"] as Int
+					currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
+						try {
+							currentCollectionBitmap?.let { bitmap ->
+								val file = createPngFileFromBitmap(requireContext(), bitmap)
+								file?.let { currentFile ->
+									if(currentMainId != -1){
+										presenter.updateCollection(
+												it, currentMainId,currentModel, file
+										)
+									}else{
+										presenter.saveCollection(
+												it, currentModel, file
+										)
+									}
+									
+								} ?: run {
+									displayMessage("Не удалось загрузить данные")
+									hideProgress()
 								}
 								
 							} ?: run {
 								displayMessage("Не удалось загрузить данные")
 								hideProgress()
 							}
-							
-						} ?: run {
-							displayMessage("Не удалось загрузить данные")
+						} catch (e: Exception) {
 							hideProgress()
+							displayMessage("Не удалось загрузить данные")
 						}
-					} catch (e: Exception) {
-						hideProgress()
-						displayMessage("Не удалось загрузить данные")
+						
 					}
 					
 				}
+				is Int -> {
+					when(item){
+						1 -> {
+							val bundle = Bundle()
+							bundle.putInt("mode",1)
+							findNavController().navigate(R.id.action_createCollectionFragment_to_cameraFragment,bundle)
+						}
+						2 -> {
+							val bundle = Bundle()
+							bundle.putInt("mode",2)
+							findNavController().navigate(R.id.action_createCollectionFragment_to_cameraFragment,bundle)
+						}
+					}
+				}
 			}
 		}
+		
 	}
 	
 	override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
-		shopCategoryModel.menCategory?.let {
-			it.add(GenderCategory(
-					title = "Добавить категорию",
-					isExternal = true,
-					externalType = 0,
-					externalImageId = R.drawable.ic_create_collection
-			))
-			it.add(GenderCategory(
-					title = "Добавить по штрихкоду",
-					isExternal = true,
-					externalType = 1,
-					isChoosen = false,
-					externalImageId = R.drawable.ic_baseline_qr_code_2_24
-			))
-			it.add(GenderCategory(
-					title = "Добавить по фото",
-					isExternal = true,
-					externalType = 2,
-					isChoosen = false,
-					externalImageId = R.drawable.ic_camera
-			))
-			if(listOfIdsChosen.isNotEmpty()){
-				listOfIdsChosen.forEach { type ->
-					it.find { it.id == type }?.isChoosen = true
+		when(currentType){
+			0 -> {
+				shopCategoryModel.menCategory?.let {
+
+					it.add(GenderCategory(
+						title = "Добавить по штрихкоду",
+						isExternal = true,
+						externalType = 1,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_baseline_qr_code_2_24
+					))
+					it.add(GenderCategory(
+						title = "Добавить по фото",
+						isExternal = true,
+						externalType = 2,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_camera
+					))
+					if(listOfIdsChosen.isNotEmpty()){
+						listOfIdsChosen.forEach { type ->
+							it.find { it.id == type }?.isChoosen = true
+						}
+					}
+					listOfGenderCategory.clear()
+					listOfGenderCategory.addAll(it)
+					adapter.updateList(listOfGenderCategory)
 				}
 			}
-			adapter.updateList(it)
+			1 -> {
+				shopCategoryModel.femaleCategory?.let {
+					it.add(GenderCategory(
+						title = "Добавить по штрихкоду",
+						isExternal = true,
+						externalType = 1,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_baseline_qr_code_2_24
+					))
+					it.add(GenderCategory(
+						title = "Добавить по фото",
+						isExternal = true,
+						externalType = 2,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_camera
+					))
+					if(listOfIdsChosen.isNotEmpty()){
+						listOfIdsChosen.forEach { type ->
+							it.find { it.id == type }?.isChoosen = true
+						}
+					}
+					listOfGenderCategory.clear()
+					listOfGenderCategory.addAll(it)
+					adapter.updateList(listOfGenderCategory)
+				}
+			}
 		}
 	}
 	
@@ -388,6 +477,18 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun processDraggedItems(){
 		val price = NumberFormat.getInstance().format(listOfItems.sumBy { it.cost ?: 0 })
 		text_view_fragment_collection_constructor_total_price.text = "$price тг."
+		if(!isItems){
+			checkIsListEmpty()
+			checkIsChosen()
+		}
+	}
+
+	private fun checkIsChosen(){
+		if(listOfIdsChosen.isNotEmpty()){
+			listOfIdsChosen.forEach { type ->
+				listOfGenderCategory.find { it.id == type }?.isChoosen = true
+			}
+		}
 	}
 
 	private fun processPostImages(){
@@ -465,9 +566,31 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
 		processDraggedItems()
 	}
-
-	override fun processSuccess() {
-		displayMessage("Успешно добавлено")
-		findNavController().navigateUp()
+	
+	override fun processSuccess(result: MainResult?) {
+		result?.let{ model ->
+			when(currentSaveMode){
+				1 -> {
+					displayMessage("Успешно добавлено")
+					findNavController().navigateUp()
+				}
+				2 -> {
+					model.id?.let{
+						presenter.saveCollectionToMe(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+								?: "",
+								it)
+					}
+					
+				}
+				else -> {
+					displayMessage("Успешно добавлено")
+					findNavController().navigateUp()
+				}
+			}
+		} ?: run {
+			displayMessage("Успешно добавлено")
+			findNavController().navigateUp()
+		}
+		
 	}
 }

@@ -2,6 +2,8 @@ package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.BrandModel
+import kz.eztech.stylyts.domain.models.GenderCategory
 import kz.eztech.stylyts.domain.models.MainImageModel
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
@@ -18,13 +20,39 @@ class CollectionConstructorFilterAdapter: BaseAdapter() {
     }
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
-        return object : BaseDiffUtilCallBack(currentList, list){
-            override fun getAreContentsTheSame(
-                oldItemPosition: Int,
-                newItemPosition: Int
-            ): Boolean {
-                return (currentList[oldItemPosition]).hashCode() ==
-                        (list[newItemPosition]).hashCode()
+        when(list[0]){
+            is BrandModel -> {
+                return object : BaseDiffUtilCallBack(currentList, list){
+                    override fun getAreContentsTheSame(
+                            oldItemPosition: Int,
+                            newItemPosition: Int
+                    ): Boolean {
+                        return (currentList[oldItemPosition] as BrandModel).isChosen ==
+                                (list[newItemPosition] as BrandModel).isChosen
+                    }
+                }
+            }
+            is GenderCategory -> {
+                return object : BaseDiffUtilCallBack(currentList, list){
+                    override fun getAreContentsTheSame(
+                            oldItemPosition: Int,
+                            newItemPosition: Int
+                    ): Boolean {
+                        return (currentList[oldItemPosition] as GenderCategory).isChoosen ==
+                                (list[newItemPosition] as GenderCategory).isChoosen
+                    }
+                }
+            }
+            else -> {
+                return object : BaseDiffUtilCallBack(currentList, list){
+                    override fun getAreContentsTheSame(
+                            oldItemPosition: Int,
+                            newItemPosition: Int
+                    ): Boolean {
+                        return (currentList[oldItemPosition]).hashCode() ==
+                                (list[newItemPosition]).hashCode()
+                    }
+                }
             }
         }
     }

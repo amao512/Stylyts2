@@ -4,33 +4,30 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorFragment
-import kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorHolderFragment
 import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoPostCreatorFragment
-import kz.eztech.stylyts.presentation.fragments.main.shop.ShopItemFragment
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 
 /**
- * Created by Ruslan Erdenoff on 22.01.2021.
+ * Created by Ruslan Erdenoff on 10.02.2021.
  */
-class ConstructorPagerAdapter (fa: Fragment,val args: Bundle? = null) : FragmentStateAdapter(fa) {
+class CollectionConstructorPagerAdapter (fa: Fragment, val args: Bundle? = null) : FragmentStateAdapter(fa) {
     private val NUM_PAGES = 2
     override fun getItemCount(): Int = NUM_PAGES
 
     override fun createFragment(position: Int): Fragment {
-        return when(position){
+        return when (position) {
             0 -> {
-                CollectionConstructorHolderFragment().apply {
+                CollectionConstructorFragment().apply {
+                    args?.putInt("currentType",0)
                     arguments = args
                 }
             }
             1 -> {
-                PhotoPostCreatorFragment().apply {
+                CollectionConstructorFragment().apply {
+                    args?.putInt("currentType",1)
                     arguments = args
                 }
             }
-            else -> CollectionConstructorHolderFragment()
+            else -> CollectionConstructorFragment()
         }
     }
-    
-    
 }

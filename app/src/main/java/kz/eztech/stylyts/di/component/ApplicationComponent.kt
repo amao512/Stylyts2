@@ -8,6 +8,7 @@ import kz.eztech.stylyts.di.modules.NetworkModule
 import kz.eztech.stylyts.presentation.base.BaseActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.fragments.LoginFragment
 import kz.eztech.stylyts.presentation.fragments.RefreshPasswordFragment
 import kz.eztech.stylyts.presentation.fragments.RegistrationFragment
@@ -44,6 +45,7 @@ interface ApplicationComponent {
     fun inject(fragment: ItemDetailFragment)
     fun inject(fragment: PhotoChooserFragment)
     fun inject(fragment: CollectionItemFragment)
+    fun inject(fragment: ConstructorFilterDialog)
 
     fun inject(dialog:CartDialog)
 

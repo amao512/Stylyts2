@@ -51,4 +51,8 @@ class ItemDetailPresenter: ItemDetailContract.Presenter {
     override fun attach(view: ItemDetailContract.View) {
         this.view = view
     }
+    
+    override fun getItemByBarcode(token: String, value: String) {
+    
+    }
 }

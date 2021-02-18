@@ -16,6 +16,7 @@ interface PhotoChooserContract {
         fun updatePhoto(path: Uri?)
         fun processFilteredItems(model: FilteredItemsModel)
         fun processShopCategories(shopCategoryModel: ShopCategoryModel)
+        fun getFilterMap():HashMap<String,Any>
     }
     interface Presenter:BasePresenter<View>{
         fun getCategory(token:String)

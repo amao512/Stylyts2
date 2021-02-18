@@ -16,7 +16,7 @@ interface CollectionConstructorContract {
     interface View:MotionViewContract{
         fun processShopCategories(shopCategoryModel: ShopCategoryModel)
         fun processStyles(list:List<Style>)
-        fun processSuccess()
+        fun processSuccess(result: MainResult?)
         fun processFilteredItems(model: FilteredItemsModel)
     }
     interface Presenter:BasePresenter<View>{
@@ -25,5 +25,6 @@ interface CollectionConstructorContract {
         fun getStyles(token:String)
         fun saveCollection(token:String,model: CollectionPostCreateModel,data: File)
         fun updateCollection(token:String,id:Int,model: CollectionPostCreateModel,data: File)
+        fun saveCollectionToMe(token:String,id:Int)
     }
 }

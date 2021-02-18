@@ -56,6 +56,6 @@ data class BrandModel(
     var modified:String? = null,
     @SerializedName("avatar")
     @Expose
-    var avatar:String? = null
-
+    var avatar:String? = null,
+    var isChosen:Boolean = false
 )

@@ -1,32 +1,17 @@
 package kz.eztech.stylyts.presentation.fragments.main.constructor
 
-import android.Manifest
-import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.ViewTreeObserver.*
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.mlkit.vision.barcode.Barcode
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.*
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.view.*
@@ -36,7 +21,6 @@ import kotlinx.android.synthetic.main.fragment_collection_item.*
 import kotlinx.android.synthetic.main.fragment_collections.*
 import kotlinx.android.synthetic.main.fragment_photo_chooser.*
 import kotlinx.android.synthetic.main.fragment_profile_income_detail.*
-import kotlinx.android.synthetic.main.fragment_profile_income_detail.include_toolbar_income_detail
 import kotlinx.android.synthetic.main.item_collection_image.view.*
 import kotlinx.android.synthetic.main.item_main_image_detail.view.*
 import kz.eztech.stylyts.R
@@ -45,25 +29,24 @@ import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
-import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.GridImageItemFilteredAdapter
 import kz.eztech.stylyts.presentation.adapters.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.collections.PhotoChooserContract
+import kz.eztech.stylyts.presentation.dialogs.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.PhotoChooserPresenter
-import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.RelativeImageMeasurements
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 import kz.eztech.stylyts.presentation.utils.stick.Layer
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
-import java.io.IOException
-import java.lang.Exception
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.View,UniversalViewClickListener, DialogChooserListener {
     private var photoUri:Uri? = null
@@ -76,6 +59,8 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
     private lateinit var selectedAdapter: MainImagesAdditionalAdapter
     private lateinit var createCollecationDialog:CreateCollectionAcceptDialog
     private val selectedList = ArrayList<ClothesMainModel>()
+    private lateinit var filterDialog:ConstructorFilterDialog
+    private val filterMap = HashMap<String, Any>()
     @Inject
     lateinit var presenter:PhotoChooserPresenter
     
@@ -103,7 +88,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
                 showCompleteDialog()
             }
             elevation = 0f
-            customizeActionToolBar(this,"Создать Публикацию")
+            customizeActionToolBar(this, "Создать Публикацию")
         }
     }
 
@@ -129,6 +114,8 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
 
     override fun initializeViews() {
         // Request camera permissions
+        filterDialog = ConstructorFilterDialog()
+        filterDialog.setChoiceListener(this)
         updatePhoto(photoUri)
         filterList = ArrayList()
         filteredAdapter = GridImageItemFilteredAdapter()
@@ -139,7 +126,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
         bottom_sheet_clothes.recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
     
     
-        bottom_sheet_clothes.recycler_view_fragment_photo_chooser.layoutManager = GridLayoutManager(context,2)
+        bottom_sheet_clothes.recycler_view_fragment_photo_chooser.layoutManager = GridLayoutManager(context, 2)
         bottom_sheet_clothes.recycler_view_fragment_photo_chooser.adapter = filteredAdapter
     
         bottom_sheet_clothes.recycler_view_fragment_photo_chooser_filter_list.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -159,7 +146,6 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
         bundle.putBoolean("isChooser", true)
         createCollecationDialog.arguments = bundle
         createCollecationDialog.show(childFragmentManager, "PhotoChossoserTag")
-    
         hideBottomSheet()
     }
     
@@ -170,18 +156,18 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
     }
     
     
-    private fun addClotheTag(clothe:ClothesMainModel){
+    private fun addClotheTag(clothe: ClothesMainModel){
         val layer = Layer()
-        val textView = layoutInflater.inflate(R.layout.text_view_tag_element,motion_view_fragment_photo_chooser_tags_container,false) as TextView
+        val textView = layoutInflater.inflate(R.layout.text_view_tag_element, motion_view_fragment_photo_chooser_tags_container, false) as TextView
         textView.text = clothe.title
         motion_view_fragment_photo_chooser_tags_container.addView(textView)
         val observer = textView.viewTreeObserver
         if(observer.isAlive){
-            observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener{
+            observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val resource = createBitmapScreenshot(textView)
                     val entity = ImageEntity(layer, resource, clothe, motion_view_fragment_photo_chooser_tags_container.getWidth(), motion_view_fragment_photo_chooser_tags_container.getHeight())
-                    motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(entity,true)
+                    motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(entity, true)
                     textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
                     selectedList.add(clothe)
@@ -190,7 +176,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
                 }
             })
         }else{
-            Log.wtf("observer","not alive")
+            Log.wtf("observer", "not alive")
         }
     }
     
@@ -223,27 +209,31 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
         shopCategoryModel.menCategory?.let{
             genderCategoryList = it
             filterList.clear()
-            filterList.add(CollectionFilterModel("Фильтр",0,"M",1))
+            filterList.add(CollectionFilterModel("Фильтр", 0, "M", 1))
             it.forEach { category ->
-                filterList.add(CollectionFilterModel(category.title,category.id,"M",0))
+                filterList.add(CollectionFilterModel(category.title, category.id, "M", 0))
                 filterAdapter.updateList(filterList)
             }
         }
     }
     
+    override fun getFilterMap(): HashMap<String, Any> {
+        return filterMap
+    }
+    
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when(item){
             is CollectionFilterModel -> {
-                when(item.mode){
+                when (item.mode) {
                     0 -> {
                         val model = genderCategoryList.find { it.id == item.id }
                         model?.let {
                             it.clothes_types?.let { clothes ->
-                                val map = HashMap<String,Any>()
-                                map["clothes_type"] = clothes.map { it.id }.joinToString()
+                                filterMap["clothes_type"] = clothes.map { it.id }.joinToString()
                                 presenter.getShopCategoryTypeDetail(
-                                        currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
-                                        map)
+                                        currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+                                                ?: "",
+                                        filterMap)
                             }
                         }
                         filterList.forEach {
@@ -253,20 +243,20 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
                         filterAdapter.updateList(filterList)
                     }
                     1 -> {
-                        displayMessage("Фильтры")
+                        filterDialog.show(childFragmentManager, "FilterDialog")
                     }
                 }
             }
             is ClothesMainModel -> {
-                when(view.id){
+                when (view.id) {
                     R.id.shapeable_image_view_item_collection_image -> {
                         addClotheTag(item)
                     }
                     R.id.frame_layout_item_main_image_holder_container -> {
-                    
+                
                     }
                 }
-                
+        
             }
         }
     }
@@ -282,11 +272,23 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
             }
             R.id.text_view_toolbar_right_text -> {
                 displayMessage("Успешно добавлено")
-                val intent = Intent(currentActivity,MainActivity::class.java)
+                val intent = Intent(currentActivity, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 currentActivity.startActivity(intent)
                 (currentActivity.finish())
+        
+            }
+            R.id.button_dialog_filter_constructor_submit -> {
+                val map = item as HashMap<String, Any>
+                val clothes_type = filterMap["clothes_type"]
+                filterMap.clear()
+                filterMap["clothes_type"] = clothes_type as String
+                filterMap.putAll(map)
                 
+                
+                presenter.getShopCategoryTypeDetail(
+                        currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
+                        filterMap)
             }
         }
     }
@@ -345,7 +347,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
         bundle.putParcelable("photoUri", photoUri)
         bundle.putBoolean("isChooser", true)
         if(selectedList.isNotEmpty()){
-            bundle.putParcelableArrayList("clothes",selectedList)
+            bundle.putParcelableArrayList("clothes", selectedList)
         }
         createCollecationDialog.arguments = bundle
         createCollecationDialog.show(childFragmentManager, "PhotoChossoserTag")

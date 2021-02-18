@@ -8,4 +8,5 @@ import kz.eztech.stylyts.domain.models.ClothesMainModel
  */
 interface ItemDetailDomainRepository {
     fun getItemDetail(token:String,id:Int):Single<ClothesMainModel>
+    fun getItemByBarcode(token:String,value:String):Single<Unit>
 }

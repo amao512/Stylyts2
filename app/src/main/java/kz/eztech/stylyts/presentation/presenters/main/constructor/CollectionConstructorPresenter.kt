@@ -30,6 +30,7 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 	private var getStylesUseCase: GetStylesUseCase
 	private var saveCollectionConstructor: SaveCollectionConstructor
 	private var updateCollectionUseCase: UpdateCollectionUseCase
+	private var saveCollectionToMeUseCase: SaveCollectionToMeUseCase
 	private lateinit var view: CollectionConstructorContract.View
 	@Inject
 	constructor(errorHelper: ErrorHelper,
@@ -38,7 +39,8 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 	            getStylesUseCase: GetStylesUseCase,
 	            getFilteredItemsUseCase: GetFilteredItemsUseCase,
 	            saveCollectionConstructor: SaveCollectionConstructor,
-	            updateCollectionUseCase: UpdateCollectionUseCase
+	            updateCollectionUseCase: UpdateCollectionUseCase,
+	            saveCollectionToMeUseCase: SaveCollectionToMeUseCase
 	){
 		this.getFilteredItemsUseCase = getFilteredItemsUseCase
 		this.getCategoryTypeDetailUseCase = getCategoryTypeDetailUseCase
@@ -47,6 +49,7 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 		this.saveCollectionConstructor = saveCollectionConstructor
 		this.getStylesUseCase = getStylesUseCase
 		this.updateCollectionUseCase = updateCollectionUseCase
+		this.saveCollectionToMeUseCase = saveCollectionToMeUseCase
 	}
 	override fun disposeRequests() {
 		getCategoryUseCase.clear()
@@ -149,10 +152,10 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 		clothesList.add(MultipartBody.Part.createFormData("total_price",model.total_price.toString()))
 		
 		saveCollectionConstructor.initParam(token, clothesList)
-		saveCollectionConstructor.execute(object : DisposableSingleObserver<Unit>() {
-			override fun onSuccess(t: Unit) {
+		saveCollectionConstructor.execute(object : DisposableSingleObserver<MainResult>() {
+			override fun onSuccess(t: MainResult) {
 				view.processViewAction {
-					view.processSuccess()
+					view.processSuccess(t)
 					hideProgress()
 				}
 			}
@@ -194,7 +197,26 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 		updateCollectionUseCase.execute(object : DisposableSingleObserver<Unit>() {
 			override fun onSuccess(t: Unit) {
 				view.processViewAction {
-					view.processSuccess()
+					view.processSuccess(null)
+					hideProgress()
+				}
+			}
+			
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(errorHelper.processError(e))
+					hideProgress()
+				}
+			}
+		})
+	}
+	
+	override fun saveCollectionToMe(token: String, id: Int) {
+		saveCollectionToMeUseCase.initParam(token, id)
+		saveCollectionToMeUseCase.execute(object : DisposableSingleObserver<Unit>() {
+			override fun onSuccess(t: Unit) {
+				view.processViewAction {
+					view.processSuccess(null)
 					hideProgress()
 				}
 			}

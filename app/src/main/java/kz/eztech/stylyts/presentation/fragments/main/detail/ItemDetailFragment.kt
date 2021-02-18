@@ -43,6 +43,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
 	private var currentColor:ClothesColor? = null
 	private var currentSize:ClothesSize? = null
+	private var barCode:String? = null
 
 	private lateinit var chooserDialog: ItemDetailChooserDialog
 
@@ -88,6 +89,9 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 			if(it.containsKey("itemId")){
 				currentClotheId = it.getInt("itemId")
 			}
+			if(it.containsKey("barcode_code")){
+				barCode = it.getString("barcode_code")
+			}
 		}
 	}
 	
@@ -118,14 +122,21 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
 
 		}?: run {
-			if(currentClotheId != -1){
-				presenter.getItemDetail(
-					currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"",
-					currentClotheId)
-			}else{
-				displayMessage("Не удалось прогрузить страницу")
-				findNavController().navigateUp()
+			barCode?.let {
+				presenter.getItemByBarcode(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"",it)
+			} ?: run {
+				if(currentClotheId != -1){
+					presenter.getItemDetail(
+							currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"",
+							currentClotheId)
+				}else{
+					displayMessage("Не удалось прогрузить страницу")
+					presenter.getItemDetail(
+						currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"",
+						43)
+				}
 			}
+			
 
 		}
 

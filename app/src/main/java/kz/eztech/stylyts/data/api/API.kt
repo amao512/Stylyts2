@@ -7,12 +7,14 @@ import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES_DETAIL
 import kz.eztech.stylyts.data.api.RestConstants.GET_COLLECTIONS
 import kz.eztech.stylyts.data.api.RestConstants.GET_FILTERED_ITEMS
+import kz.eztech.stylyts.data.api.RestConstants.GET_ITEM_BY_BARCODE
 import kz.eztech.stylyts.data.api.RestConstants.GET_ITEM_DETAIL
 import kz.eztech.stylyts.data.api.RestConstants.GET_STYLES
 import kz.eztech.stylyts.data.api.RestConstants.GET_USER_PROFILE
 import kz.eztech.stylyts.data.api.RestConstants.LOGIN_USER
 import kz.eztech.stylyts.data.api.RestConstants.REGISTER_USER
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION
+import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION_TO_ME
 import kz.eztech.stylyts.data.api.RestConstants.SET_NEW_PASSWORD
 import kz.eztech.stylyts.data.api.RestConstants.UPDATE_COLLECTION
 import kz.eztech.stylyts.domain.models.*
@@ -69,7 +71,7 @@ interface API {
     fun saveCollection(@Header("Authorization") token: String,
                        //@PartMap partMap:Map<String, @JvmSuppressWildcards RequestBody> ,
                       // @Part file:MultipartBody.Part ): Single<Response<Unit>>
-                       @Part files:ArrayList<MultipartBody.Part>): Single<Response<Unit>>
+                       @Part files:ArrayList<MultipartBody.Part>): Single<Response<MainResult>>
     
     @Multipart
     @PATCH(UPDATE_COLLECTION)
@@ -85,10 +87,16 @@ interface API {
 
     @GET(GET_ITEM_DETAIL)
     fun getItemDetail(@Header("Authorization") token: String,@Path("id") id:Int): Single<Response<ClothesMainModel>>
+
+    @GET(GET_ITEM_BY_BARCODE)
+    fun getItemByBarcode(@Header("Authorization") token: String,value:String): Single<Response<Unit>>
     
     @GET(GET_FILTERED_ITEMS)
     fun getFilteredItems(@Header("Authorization") token: String,@QueryMap map:Map<String,@JvmSuppressWildcards Any>):Single<Response<FilteredItemsModel>>
     
     @GET(GET_BRANDS)
     fun getBrands(@Header("Authorization") token: String):Single<Response<BrandsModel>>
+    
+    @GET(SAVE_COLLECTION_TO_ME)
+    fun saveCollectionToMe(@Header("Authorization") token: String,@Path("id")  id:Int):Single<Response<Unit>>
 }

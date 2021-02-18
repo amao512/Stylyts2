@@ -61,10 +61,11 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
 
         @SuppressLint("UnsafeExperimentalUsageError")
         override fun analyze(imageProxy: ImageProxy) {
+            Log.wtf("Analyze","analyzing")
             val mediaImage = imageProxy.image
             if (mediaImage != null) {
                 val image = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                scanBarcodes(image)
+                scanBarcodes(image,imageProxy)
             }
         }
     }
@@ -106,10 +107,20 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
     }
 
     override fun initializeArguments() {
+        arguments?.let {
+            if(it.containsKey("mode")){
+                mode = it.getInt("mode")
+            }
 
+        }
     }
 
     override fun initializeViewsData() {
+
+    }
+
+    override fun onStart() {
+        super.onStart()
         if (allPermissionsGranted()) {
             startCamera()
         } else {
@@ -170,9 +181,21 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                         val savedUri = photoFile.toUri()
                         val bundle = Bundle()
-                        bundle.putInt("mode",0)
-                        bundle.putParcelable("uri",savedUri)
-                        findNavController().navigate(R.id.action_cameraFragment_to_photoChooserFragment,bundle)
+                        when(mode){
+                            0  -> {
+                                bundle.putInt("mode",0)
+                                bundle.putParcelable("uri",savedUri)
+                                findNavController().navigate(R.id.action_cameraFragment_to_photoChooserFragment,bundle)
+                            }
+                            1 -> {
+                               //
+                            }
+                            2 -> {
+                                bundle.putParcelable("uri",savedUri)
+                                findNavController().navigate(R.id.action_cameraFragment_to_cleanBackgroundFragment,bundle)
+                            }
+                        }
+
                     }
                 })
     }
@@ -230,13 +253,25 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
                         Log.e(TAG, "Use case binding failed", exc)
                     }
                 }
+                2 -> {
+                    try {
+                        // Unbind use cases before rebinding
+                        cameraProvider.unbindAll()
+
+                        // Bind use cases to camera
+                        cameraProvider.bindToLifecycle(this, cameraSelector,preview, imageCapture )
+
+                    } catch (exc: Exception) {
+                        Log.e(TAG, "Use case binding failed", exc)
+                    }
+                }
             }
             
 
         }, ContextCompat.getMainExecutor(currentActivity))
     }
 
-    private fun scanBarcodes(image: InputImage) {
+    private fun scanBarcodes(image: InputImage,imageProxy: ImageProxy) {
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(
                 Barcode.FORMAT_QR_CODE,
@@ -244,11 +279,8 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
             .build()
 
         val scanner = BarcodeScanning.getClient()
-        val result = scanner.process(image)
+         scanner.process(image)
             .addOnSuccessListener { barcodes ->
-                // Task completed successfully
-                // [START_EXCLUDE]
-                // [START get_barcodes]
                 for (barcode in barcodes) {
                     val bounds = barcode.boundingBox
                     val corners = barcode.cornerPoints
@@ -258,10 +290,7 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
                     Log.wtf("BARCODE","rawValue = $rawValue")
                     val valueType = barcode.valueType
 
-                    if(rawValue.isNotEmpty()){
-                        findNavController().navigate(R.id.action_cameraFragment_to_itemDetailFragment)
-                    }
-                    // See API reference for complete list of supported types
+
                     when (valueType) {
                         Barcode.TYPE_WIFI -> {
                             val ssid = barcode.wifi!!.ssid
@@ -277,10 +306,19 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
                         }
                     }
 
+                    if(rawValue.isNotEmpty()){
+                        val bundle = Bundle()
+                        bundle.putString("barcode_code",rawValue)
+                        findNavController().navigate(R.id.itemDetailFragment,bundle)
+                    }
+
                 }
             }
             .addOnFailureListener {
                 displayMessage("Упс, что то пошло не так :(,Попробуйте еще раз")
+            }
+            .addOnCompleteListener {
+                imageProxy.close()
             }
     }
 

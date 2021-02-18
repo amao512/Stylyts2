@@ -61,10 +61,10 @@ class ShopCategoryRepository:ShopCategoryDomainRepository {
     override fun saveCollection(
         token: String,
         data: ArrayList<MultipartBody.Part>
-    ): Single<Unit> {
+    ): Single<MainResult> {
         return api.saveCollection(token,data).map {
             when(it.isSuccessful){
-                true -> Unit
+                true -> it.body()
                 false -> throw NetworkException(it)
             }
         }
@@ -72,6 +72,15 @@ class ShopCategoryRepository:ShopCategoryDomainRepository {
 
     override fun getBrands(token: String): Single<BrandsModel> {
         return api.getBrands(token).map {
+            when(it.isSuccessful){
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+    
+    override fun saveCollectionToMe(token: String, id: Int): Single<Unit> {
+        return api.saveCollectionToMe(token,id).map{
             when(it.isSuccessful){
                 true -> it.body()
                 false -> throw NetworkException(it)
