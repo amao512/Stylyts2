@@ -58,7 +58,6 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View,UniversalVi
     }
 
     override fun initializeViews() {
-        currentActivity.displayBottomNavigationView()
         val pagerAdapter = ShopViewPagerAdapter(this,this)
         view_pager_fragment_shop.adapter = pagerAdapter
         TabLayoutMediator(tab_bar_fragment_shop, view_pager_fragment_shop) { tab, position ->
@@ -67,6 +66,11 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View,UniversalVi
                 1 -> {tab.text = "Для него"}
             }
         }.attach()
+    }
+    
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
     }
 
     override fun initializeListeners() {

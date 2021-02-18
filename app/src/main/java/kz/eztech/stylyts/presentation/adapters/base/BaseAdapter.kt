@@ -41,9 +41,16 @@ abstract class BaseAdapter: RecyclerView.Adapter<BaseViewHolder>(){
         currentList.clear()
         currentList.addAll(list)
         diffResult.dispatchUpdatesTo(this)
-
-
     }
+    
+    fun updateListFull(list: List<Any>){
+        currentList.clear()
+        currentList.addAll(list)
+        val diffCallback = getDiffUtilCallBack(list)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
+    }
+    
 
     fun setOnClickListener(listener: UniversalViewClickListener){
         itemClickListener = listener

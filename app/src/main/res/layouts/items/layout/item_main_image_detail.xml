@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginEnd="16dp"
-    android:background="@drawable/rounded_rectangle_light_gray_white_corners_half_transparent">
+    android:id="@+id/frame_layout_item_main_image_holder_container"
+    android:background="@drawable/rounded_rectangle_very_light_gray_white_corners_half_transparent">
     <ImageView
         android:id="@+id/image_view_image_detail_imageholder"
         android:layout_margin="10dp"

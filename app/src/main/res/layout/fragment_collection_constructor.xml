@@ -4,24 +4,47 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F5F5F5"
     tools:context=".presentation.fragments.main.constructor.CollectionConstructorFragment">
 
-    <include
-        android:id="@+id/include_toolbar_profile"
-        layout="@layout/base_toolbar"
+    <kz.eztech.stylyts.presentation.utils.stick.MotionView
+        android:id="@+id/frame_layout_fragment_collection_constructor_images_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <FrameLayout
-        android:id="@+id/frame_layout_fragment_collection_constructor_images_container"
+    <LinearLayout
+        android:id="@+id/frame_layout_fragment_collection_constructor_images_container_placeholder"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="#F5F5F5"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/frame_layout_fragment_collection_constructor_images_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_toolbar_profile"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/SubtitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Создайте свой образ" />
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:text="Чтобы выбрать понравившуюся вещь,\nкликните на нее 2 раза"
+            android:textAlignment="center" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/text_view_fragment_collection_constructor_total_price"
@@ -31,13 +54,13 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounded_rectangle_orange"
-        android:textColor="@color/white"
         android:paddingStart="24dp"
-        android:paddingEnd="12dp"
         android:paddingTop="6dp"
+        android:paddingEnd="12dp"
         android:paddingBottom="6dp"
         android:textAlignment="textEnd"
-        app:layout_constraintBottom_toBottomOf="@+id/frame_layout_fragment_collection_constructor_images_container"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -46,6 +69,7 @@
         tools:text="1 000 тг" />
 
     <LinearLayout
+        android:background="@color/white"
         android:animateLayoutChanges="true"
         android:paddingBottom="16dp"
         android:id="@+id/linearLayout2"
@@ -62,6 +86,7 @@
             android:padding="12dp">
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/text_view_fragment_collection_constructor_category_back"
                 style="@style/TextRegular"
                 android:layout_width="wrap_content"
@@ -78,6 +103,7 @@
                 android:text="Выберите категорию вещей" />
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/text_view_fragment_collection_constructor_category_next"
                 style="@style/TextRegular"
                 android:layout_width="wrap_content"
@@ -85,20 +111,31 @@
                 android:layout_gravity="right|center"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
                 android:text="Далее" />
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/text_view_fragment_collection_constructor_category_filter"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:text="Фильтр" />
         </FrameLayout>
         <include
             android:visibility="gone"
             android:id="@+id/progress_bar_fragment_collection_constructor"
             layout="@layout/base_progress_small"/>
         <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/white"
             android:id="@+id/recycler_view_fragment_collection_constructor_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            tools:listitem="@layout/item_collection_constructor_category_item"
+            android:layout_height="110dp"/>
         <ListView
             android:visibility="gone"
             android:id="@+id/list_view_fragment_collection_constructor_list_style"
             android:layout_width="match_parent"
-            android:layout_height="160dp"/>
+            android:layout_height="110dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

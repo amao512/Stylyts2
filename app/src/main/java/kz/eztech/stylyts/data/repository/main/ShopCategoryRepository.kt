@@ -3,11 +3,10 @@ package kz.eztech.stylyts.data.repository.main
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.API
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
-import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
-import kz.eztech.stylyts.domain.models.Style
+import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.domain.repository.main.ShopCategoryDomainRepository
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 /**
@@ -49,11 +48,41 @@ class ShopCategoryRepository:ShopCategoryDomainRepository {
             }
         }
     }
-
-    override fun saveCollection(token: String, model: CollectionPostCreateModel): Single<Unit> {
-        return api.saveCollection(token,model).map {
+    
+    override fun updateCollection(token: String, id: Int, data: ArrayList<MultipartBody.Part>): Single<Unit> {
+        return api.updateCollection(token,id,data).map {
             when(it.isSuccessful){
                 true -> Unit
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+    
+    override fun saveCollection(
+        token: String,
+        data: ArrayList<MultipartBody.Part>
+    ): Single<MainResult> {
+        return api.saveCollection(token,data).map {
+            when(it.isSuccessful){
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getBrands(token: String): Single<BrandsModel> {
+        return api.getBrands(token).map {
+            when(it.isSuccessful){
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+    
+    override fun saveCollectionToMe(token: String, id: Int): Single<Unit> {
+        return api.saveCollectionToMe(token,id).map{
+            when(it.isSuccessful){
+                true -> it.body()
                 false -> throw NetworkException(it)
             }
         }

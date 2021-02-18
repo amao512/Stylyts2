@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:layout_height="match_parent">
 
@@ -29,9 +29,10 @@
             android:padding="16dp">
 
             <ImageView
+                android:scaleType="fitCenter"
+                android:id="@+id/image_view_dialog_create_collection_accept"
                 android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/jacket" />
+                android:layout_height="60dp" />
 
             <EditText
                 android:id="@+id/edit_text_view_dialog_create_collection_accept_sign"
@@ -54,6 +55,32 @@
             android:background="@color/app_gray" />
 
         <FrameLayout
+            android:visibility="gone"
+            android:id="@+id/frame_layout_dialog_create_collection_accept_choose_clothes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:text="Отметить вещи" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+        </FrameLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/app_gray" />
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
@@ -64,12 +91,24 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
                 android:text="Отметить пользователя" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
                 android:layout_gravity="center|end"
-                android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    tools:text = "3 вещ."
+                    android:id="@+id/text_view_dialog_create_collection_items_count"
+                    android:textColor="@color/app_gray_hint"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+            </LinearLayout>
+
         </FrameLayout>
 
         <View
@@ -157,38 +196,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|end" />
             </FrameLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-
-            <TextView
-                android:id="@+id/text_view_save_collection"
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:drawableStart="@drawable/ic_send_message"
-                android:drawablePadding="16dp"
-                android:text="Опубликовать в общей ленте" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="6dp"
-                android:background="@color/app_gray" />
-
-            <TextView
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:drawableStart="@drawable/ic_baseline_save_alt_24"
-                android:drawablePadding="16dp"
-                android:text="Добавить вещь по фотографии" />
         </LinearLayout>
 
     </LinearLayout>

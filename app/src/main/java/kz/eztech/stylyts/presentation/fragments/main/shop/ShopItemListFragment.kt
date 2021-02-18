@@ -71,13 +71,17 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     }
 
     override fun initializeViews() {
-        currentActivity.displayBottomNavigationView()
         adapter = ShopItemListAdapter()
         recycler_view_fragment_shop_item_list.layoutManager = LinearLayoutManager(currentActivity)
         recycler_view_fragment_shop_item_list.adapter = adapter
         adapter.itemClickListener = this
     }
-
+    
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
+    }
+    
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {

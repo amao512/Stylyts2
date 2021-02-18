@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_partner_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
@@ -53,7 +54,9 @@ class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContr
     }
 
     override fun initializeArguments() {
+        arguments?.let {
 
+        }
     }
 
     override fun initializeViewsData() {

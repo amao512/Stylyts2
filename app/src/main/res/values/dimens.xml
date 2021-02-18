@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="corner_radius_default">10dp</dimen>
+    <dimen name="corner_radius_default">4dp</dimen>
+    <dimen name="corner_radius_16">16dp</dimen>
     <dimen name="corner_radius_circle">100dp</dimen>
+    <dimen name="stroke_size">2dp</dimen>
 </resources>

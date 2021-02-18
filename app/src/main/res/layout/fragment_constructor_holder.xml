@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.fragments.main.constructor.ConstructorHolderFragment">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager_fragment_constructor_holder"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/motion_layout_fragment_constructor_holder_chooser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motion_layout_fragment_constructor_holder_chooser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutDescription="@xml/motion_scene_fragment_constructor_holder_change_state"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_fragment_constructor_holder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/rounded_rectangle_orange"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:translationX="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0">
+
+            <TextView
+                android:id="@+id/text_view_fragment_constructor_holder_create_collection"
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="СОЗДАТЬ ОБРАЗ"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/text_view_fragment_constructor_holder_create_post"
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="СОЗДАТЬ ПУБЛИКАЦИЮ"
+                android:textColor="@color/app_gray" />
+        </LinearLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

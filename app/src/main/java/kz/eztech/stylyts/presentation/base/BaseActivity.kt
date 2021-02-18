@@ -5,6 +5,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.google.android.material.snackbar.Snackbar
 import kz.eztech.stylyts.R
 import kotlin.reflect.KClass
 
@@ -15,7 +16,8 @@ abstract class BaseActivity : AppCompatActivity() {
     var mToolbar: Toolbar? = null
 
     fun displayToast(msg:String){
-        Toast.makeText(this,msg, Toast.LENGTH_SHORT).show()
+        //Snackbar.make()
+        //Toast.makeText(this,msg, Toast.LENGTH_SHORT).show()
     }
     
     inline fun <reified T> getSharedPrefByKey(key:String):T?{

@@ -4,9 +4,9 @@ import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
 /**
- * Created by Ruslan Erdenoff on 04.12.2020.
+ * Created by Ruslan Erdenoff on 22.01.2021.
  */
-interface ItemDetailContract {
+interface EmptyContract {
     interface View: BaseView {
 
     }

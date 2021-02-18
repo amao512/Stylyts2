@@ -4,7 +4,10 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/rounded_rectangle_white_gray_corners"
-    android:layout_margin="8dp">
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="6dp"
+    android:layout_marginBottom="8dp"
+    android:id="@+id/frame_layout_item_collection_filter">
     <TextView
         style="@style/TextRegularBold"
         android:id="@+id/text_view_item_collection_filter"
@@ -13,6 +16,6 @@
         tools:text = "Классика"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
 </FrameLayout>

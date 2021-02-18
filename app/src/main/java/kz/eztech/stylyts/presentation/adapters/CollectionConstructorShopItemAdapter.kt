@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.domain.models.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
@@ -23,8 +24,8 @@ class CollectionConstructorShopItemAdapter:BaseAdapter() {
 					oldItemPosition: Int,
 					newItemPosition: Int
 			): Boolean {
-				return (currentList[oldItemPosition] as ClothesTypeDataModel).id ==
-						(list[newItemPosition] as ClothesTypeDataModel).id
+				return (currentList[oldItemPosition] as ClothesMainModel).id ==
+						(list[newItemPosition] as ClothesMainModel).id
 			}
 		}
 	}
