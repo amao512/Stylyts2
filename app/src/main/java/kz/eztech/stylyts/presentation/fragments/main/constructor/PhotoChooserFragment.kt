@@ -37,6 +37,7 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.collections.PhotoChooserContract
 import kz.eztech.stylyts.presentation.dialogs.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
+import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.PhotoChooserPresenter
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
@@ -48,7 +49,7 @@ import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.View,UniversalViewClickListener, DialogChooserListener {
+class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.View,UniversalViewClickListener, DialogChooserListener,MotionViewTapListener {
     private var photoUri:Uri? = null
     
     private lateinit var filterAdapter: CollectionsFilterAdapter
@@ -77,11 +78,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
             image_button_left_corner_action.visibility = android.view.View.GONE
             text_view_toolbar_back.visibility = android.view.View.GONE
             text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            image_button_left_corner_action.visibility = android.view.View.VISIBLE
-            image_button_left_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_drawer)
-            image_button_left_corner_action.setOnClickListener {
-                showBottomSheet()
-            }
+            image_button_left_corner_action.visibility = android.view.View.GONE
             text_view_toolbar_right_text.visibility = android.view.View.VISIBLE
             text_view_toolbar_right_text.text = "Готово"
             text_view_toolbar_right_text.setOnClickListener {
@@ -139,6 +136,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
         motion_view_fragment_photo_chooser_tags_container.setCustomDeleteIcon(R.drawable.ic_baseline_close_20)
         motion_view_fragment_photo_chooser_tags_container.setFlexible(false)
         motion_view_fragment_photo_chooser_tags_container.attachView(this)
+        motion_view_fragment_photo_chooser_tags_container.setTapListener(this)
         createCollecationDialog = CreateCollectionAcceptDialog()
         createCollecationDialog.setChoiceListener(this)
         val bundle = Bundle()
@@ -220,7 +218,11 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
     override fun getFilterMap(): HashMap<String, Any> {
         return filterMap
     }
-    
+
+    override fun onSingleTapUp() {
+        showBottomSheet()
+    }
+
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when(item){
             is CollectionFilterModel -> {
@@ -295,7 +297,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
     
     private fun showBottomSheet(){
         BottomSheetBehavior.from(bottom_sheet_clothes).apply {
-            state = BottomSheetBehavior.STATE_COLLAPSED
+            state = BottomSheetBehavior.STATE_EXPANDED
             isHideable = false
         }
         recycler_view_fragment_photo_chooser_selected_list.visibility = View.GONE

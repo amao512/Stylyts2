@@ -17,6 +17,7 @@ import kz.eztech.imageviewdragandscale.sticker.geusters.MoveGestureDetector
 import kz.eztech.imageviewdragandscale.sticker.geusters.RotateGestureDetector
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.contracts.main.constructor.MotionViewContract
+import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
 import java.util.*
 
 /**
@@ -55,8 +56,10 @@ class MotionView : FrameLayout {
 	private var rotateGestureDetector: RotateGestureDetector? = null
 	private var moveGestureDetector: MoveGestureDetector? = null
 	private var gestureDetectorCompat: GestureDetectorCompat? = null
+	private var tapListener: MotionViewTapListener? = null
 	
 	private var isFlexible = true
+	private var isDeleted = false
 
 	// constructors
 	constructor(context: Context) : super(context) {
@@ -100,6 +103,10 @@ class MotionView : FrameLayout {
 			scaleGestureDetector = null
 			rotateGestureDetector = null
 		}
+	}
+
+	fun setTapListener(listener:MotionViewTapListener){
+		this.tapListener = listener
 	}
 	
 	fun setCustomDeleteIcon(deleteIconId: Int){
@@ -297,6 +304,7 @@ class MotionView : FrameLayout {
 	}
 
 	fun deletedSelectedEntity() {
+		isDeleted = true
 		if (selectedEntity == null) {
 			return
 		}
@@ -369,6 +377,18 @@ class MotionView : FrameLayout {
 		
 		override fun onDown(e: MotionEvent): Boolean {
 			updateSelectionOnTap(e)
+			return true
+		}
+
+		override fun onSingleTapUp(e: MotionEvent): Boolean {
+			if(isDeleted){
+				isDeleted = false
+			}else{
+				if( findEntityAtPoint(e.x, e.y) == null){
+					tapListener?.onSingleTapUp()
+				}
+			}
+
 			return true
 		}
 	}
