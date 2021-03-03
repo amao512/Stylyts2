@@ -37,39 +37,39 @@
     </style>
 
     <style name="TitleText" parent="Text">
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="SubtitleText" parent="Text">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TitleTextBold" parent="Bold">
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="SubtitleTextBold" parent="Bold">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TitleTextThin" parent="Thin">
-        <item name="android:textSize">21sp</item>
-    </style>
-
-    <style name="SubtitleTextThin" parent="Thin">
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="TextRegular" parent="Text">
+    <style name="SubtitleTextThin" parent="Thin">
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextRegular" parent="Text">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextRegularBold" parent="Bold">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextRegularThin" parent="Thin">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 

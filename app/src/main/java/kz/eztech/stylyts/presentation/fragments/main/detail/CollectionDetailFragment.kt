@@ -107,7 +107,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 	}
 	
 	override fun initializeListeners() {
-	
+		text_view_fragment_collection_detail_comments_count.setOnClickListener(this)
+		button_fragment_collection_detail_change_collection.setOnClickListener(this)
 	}
 	
 	override fun processPostInitialization() {
@@ -142,20 +143,38 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 								))
 					}
 					bundle.putParcelableArrayList("items",itemsList)
-					findNavController().navigate(R.id.action_collectionDetailFragment_to_createCollectionFragment,bundle)
+					findNavController().navigate(R.id.createCollectionFragment,bundle)
 				}?:run{
-					findNavController().navigate(R.id.action_mainFragment_to_createCollectionFragment)
+					findNavController().navigate(R.id.createCollectionFragment)
 				}
 			}
 			R.id.constraint_layout_fragment_collection_detail_profile_container ->{
 				val bundle = Bundle()
-				findNavController().navigate(R.id.action_collectionDetailFragment_to_partnerProfileFragment,bundle)
+				findNavController().navigate(R.id.partnerProfileFragment,bundle)
 			}
+
 		}
 	}
 	
 	override fun onClick(v: View?) {
-	
+		when(v?.id){
+			R.id.text_view_fragment_collection_detail_comments_count -> {
+				findNavController().navigate(R.id.userCommentsFragment)
+			}
+			R.id.button_fragment_collection_detail_change_collection -> {
+				currentModel.clothes?.let {
+					val itemsList = ArrayList<ClothesMainModel>()
+					itemsList.addAll(it)
+					val bundle = Bundle()
+					bundle.putParcelableArrayList("items",itemsList)
+					bundle.putInt("mainId",currentModel.id?:0)
+					findNavController().navigate(R.id.createCollectionFragment,bundle)
+				}?:run{
+					findNavController().navigate(R.id.createCollectionFragment)
+				}
+			}
+		}
+
 	}
 	
 	override fun disposeRequests() {

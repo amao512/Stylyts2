@@ -221,6 +221,8 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
             when(mode){
                 0 -> {
+                    linear_layout_fragment_camera_scanner_holder.visibility = View.GONE
+                    frameLayout4.visibility = View.VISIBLE
                     try {
                         // Unbind use cases before rebinding
                         cameraProvider.unbindAll()
@@ -234,6 +236,8 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
                     
                 }
                 1 -> {
+                    linear_layout_fragment_camera_scanner_holder.visibility = View.VISIBLE
+                    frameLayout4.visibility = View.GONE
                     val imageAnalysis = ImageAnalysis.Builder()
                             .setTargetResolution(Size(1280, 720))
                             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)

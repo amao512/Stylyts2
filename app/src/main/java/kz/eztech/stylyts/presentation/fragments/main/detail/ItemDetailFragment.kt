@@ -68,6 +68,10 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 			text_view_toolbar_title.visibility = android.view.View.VISIBLE
 			image_button_right_corner_action.visibility = android.view.View.VISIBLE
 			image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_shop)
+			image_button_right_corner_action.setOnClickListener {
+				val cartDialog = CartDialog()
+				cartDialog.show(childFragmentManager,"Cart")
+			}
 			elevation = 0f
 			customizeActionToolBar(this, "zara")
 		}

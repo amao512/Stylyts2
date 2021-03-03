@@ -9,11 +9,13 @@ import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.CollectionConstructorShopItemHolder
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class CollectionConstructorShopItemAdapter:BaseAdapter() {
+	var itemDoubleClickListener:UniversalViewDoubleClickListener? = null
 	override fun getLayoutId(): Int {
 		return R.layout.item_collection_constructor_category_item
 	}

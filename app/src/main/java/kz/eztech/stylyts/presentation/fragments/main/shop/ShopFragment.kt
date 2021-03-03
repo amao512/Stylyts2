@@ -17,10 +17,12 @@ import kz.eztech.stylyts.presentation.adapters.ShopViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopContract
+import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 
 class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View,UniversalViewClickListener {
 
+    private lateinit var pagerAdapter:ShopViewPagerAdapter
     override fun getLayoutId(): Int {
         return R.layout.fragment_shop
     }
@@ -36,6 +38,10 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View,UniversalVi
             text_view_toolbar_title.visibility = View.GONE
             image_button_right_corner_action.visibility = View.VISIBLE
             image_button_right_corner_action.setImageResource(R.drawable.ic_shop)
+            image_button_right_corner_action.setOnClickListener {
+                val cartDialog = CartDialog()
+                cartDialog.show(childFragmentManager,"Cart")
+            }
             elevation = 0f
             customizeActionToolBar(this,getString(R.string.fragment_registration_appbar_title))
         }
@@ -58,19 +64,20 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View,UniversalVi
     }
 
     override fun initializeViews() {
-        val pagerAdapter = ShopViewPagerAdapter(this,this)
-        view_pager_fragment_shop.adapter = pagerAdapter
-        TabLayoutMediator(tab_bar_fragment_shop, view_pager_fragment_shop) { tab, position ->
-            when(position){
-                0 -> {tab.text = "Для нее"}
-                1 -> {tab.text = "Для него"}
-            }
-        }.attach()
+        pagerAdapter = ShopViewPagerAdapter(this,this)
+        view_pager_fragment_shop.isSaveEnabled = false
     }
     
     override fun onResume() {
         super.onResume()
         currentActivity.displayBottomNavigationView()
+        view_pager_fragment_shop.adapter = pagerAdapter
+        TabLayoutMediator(tab_bar_fragment_shop, view_pager_fragment_shop) { tab, position ->
+            when(position){
+                0 -> {tab.text = "Для него"}
+                1 -> {tab.text = "Для нее"}
+            }
+        }.attach()
     }
 
     override fun initializeListeners() {

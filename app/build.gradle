@@ -135,6 +135,9 @@ dependencies {
     //Motion Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
+    //Lottie
+    implementation 'com.airbnb.android:lottie:3.6.1'
+
     //pagerindicator
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.5"
 

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kz.eztech.stylyts.presentation.adapters.holders.CollectionFilterHolder
+import kz.eztech.stylyts.presentation.adapters.holders.PhotoLibraryHolder
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import java.lang.reflect.Constructor
@@ -28,6 +29,28 @@ abstract class BaseAdapter: RecyclerView.Adapter<BaseViewHolder>(){
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.bindData(currentList[position], position)
+    }
+
+    override fun onBindViewHolder(
+        holder: BaseViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if(!payloads.isEmpty()) {
+            when(payloads.get(0)){
+                is Int -> {
+                    when(holder){
+                        is PhotoLibraryHolder -> {
+                            holder.bindPayloadData(currentList[position], position,
+                                payloads.get(0) as Int
+                            )
+                        }
+                    }
+                }
+            }
+        }else {
+            super.onBindViewHolder(holder,position, payloads);
+        }
     }
 
     override fun getItemCount(): Int {

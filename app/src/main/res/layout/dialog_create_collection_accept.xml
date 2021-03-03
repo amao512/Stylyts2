@@ -55,7 +55,6 @@
             android:background="@color/app_gray" />
 
         <FrameLayout
-            android:visibility="gone"
             android:id="@+id/frame_layout_dialog_create_collection_accept_choose_clothes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,6 +66,23 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
                 android:text="Отметить вещи" />
+            <LinearLayout
+                android:layout_gravity="center|end"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    tools:text = "3 вещ."
+                    android:id="@+id/text_view_dialog_create_collection_items_count"
+                    android:textColor="@color/app_gray_hint"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -81,6 +97,7 @@
             android:background="@color/app_gray" />
 
         <FrameLayout
+            android:id="@+id/frame_layout_dialog_create_collection_accept_user_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
@@ -98,7 +115,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     tools:text = "3 вещ."
-                    android:id="@+id/text_view_dialog_create_collection_items_count"
+                    android:id="@+id/text_view_dialog_create_collection_user_count"
                     android:textColor="@color/app_gray_hint"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"

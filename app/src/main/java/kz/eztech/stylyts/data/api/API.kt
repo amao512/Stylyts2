@@ -15,6 +15,8 @@ import kz.eztech.stylyts.data.api.RestConstants.LOGIN_USER
 import kz.eztech.stylyts.data.api.RestConstants.REGISTER_USER
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION_TO_ME
+import kz.eztech.stylyts.data.api.RestConstants.SAVE_ITEM_BY_PHOTO
+import kz.eztech.stylyts.data.api.RestConstants.SEARCH_USER_BY_NAME
 import kz.eztech.stylyts.data.api.RestConstants.SET_NEW_PASSWORD
 import kz.eztech.stylyts.data.api.RestConstants.UPDATE_COLLECTION
 import kz.eztech.stylyts.domain.models.*
@@ -34,9 +36,10 @@ interface API {
             @Field("email") email: String,
             @Field("password") password: String,
             @Field("first_name") first_name: String,
-            @Field("last_name") last_name: String,
+            @Field("name") last_name: String,
             @Field("date_of_birth") date_of_birth: String,
             @Field("should_send_mail") should_send_mail: Boolean,
+            @Field("username") username: String,
     ): Single<Response<UserModel>>
     
     @FormUrlEncoded
@@ -88,8 +91,9 @@ interface API {
     @GET(GET_ITEM_DETAIL)
     fun getItemDetail(@Header("Authorization") token: String,@Path("id") id:Int): Single<Response<ClothesMainModel>>
 
-    @GET(GET_ITEM_BY_BARCODE)
-    fun getItemByBarcode(@Header("Authorization") token: String,value:String): Single<Response<Unit>>
+    @FormUrlEncoded
+    @POST(GET_ITEM_BY_BARCODE)
+    fun getItemByBarcode(@Header("Authorization") token: String,@Field("barcode")value:String): Single<Response<ClothesMainModel>>
     
     @GET(GET_FILTERED_ITEMS)
     fun getFilteredItems(@Header("Authorization") token: String,@QueryMap map:Map<String,@JvmSuppressWildcards Any>):Single<Response<FilteredItemsModel>>
@@ -99,4 +103,12 @@ interface API {
     
     @GET(SAVE_COLLECTION_TO_ME)
     fun saveCollectionToMe(@Header("Authorization") token: String,@Path("id")  id:Int):Single<Response<Unit>>
+    
+    @GET(SEARCH_USER_BY_NAME)
+    fun searchUserByUsername(@Header("Authorization") token: String,  @Query("username")username:String):Single<Response<List<UserSearchModel>>>
+
+    @Multipart
+    @POST(SAVE_ITEM_BY_PHOTO)
+    fun saveItemByPhoto(@Header("Authorization") token: String,
+                       @Part files:ArrayList<MultipartBody.Part>): Single<Response<ClothesMainModel>>
 }

@@ -103,6 +103,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
                 bundle.putParcelable("model",item)
                 findNavController().navigate(R.id.action_mainFragment_to_collectionDetailFragment,bundle)
             }
+            R.id.text_view_item_main_image_comments_count ->{
+                findNavController().navigate(R.id.userCommentsFragment)
+            }
         }
     }
     

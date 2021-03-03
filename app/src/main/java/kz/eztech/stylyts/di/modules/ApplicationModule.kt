@@ -75,6 +75,11 @@ class ApplicationModule(internal var mApplication: Application){
     fun providesFilteredItemsRepository(filteredItemsRepository: FilteredItemsRepository) : FilteredItemsDomainRepository {
         return filteredItemsRepository
     }
+    
+    @Provides
+    fun providesUserSearchRepository(userSearchRepository: UserSearchRepository) : UserSearchDomainRepository {
+        return userSearchRepository
+    }
 
     @Provides
     fun provideDataSource() = LocalDataSource(mApplication)

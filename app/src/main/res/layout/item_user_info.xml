@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:id="@+id/linear_layout_item_user_info_container">
+    <FrameLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:adjustViewBounds="true"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            android:id="@+id/shapeable_image_view_item_user_info_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            tools:src="@drawable/jacket"/>
+        <TextView
+            android:layout_gravity="center"
+            android:background="@drawable/circle_gray"
+            android:id="@+id/text_view_item_user_info_short_name"
+            style="@style/TextRegular"
+            tools:text = "RE"
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+    </FrameLayout>
+    <LinearLayout
+        android:layout_marginStart="16dp"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/text_view_item_user_nickname"
+            style="@style/TextRegular"
+            tools:text="Ruslan Rus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/text_view_item_user_info_full_name"
+            style="@style/TextRegular"
+            android:textColor="@color/app_gray_hint"
+            tools:text="Ruslan Rus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            style="@style/TextRegular"
+            android:textColor="@color/app_gray_hint"
+            android:text="подписки"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

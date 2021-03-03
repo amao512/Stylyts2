@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
@@ -15,18 +16,32 @@ import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.fragment_clean_background.*
 import kz.eztech.stylyts.BuildConfig
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CleanBackgroundContract
+import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
+import kz.eztech.stylyts.presentation.dialogs.SaveItemAcceptDialog
+import kz.eztech.stylyts.presentation.presenters.main.CleanBackgroundPresenter
+import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.removebg.ErrorResponse
 import kz.eztech.stylyts.presentation.utils.removebg.RemoveBg
 import java.io.File
+import javax.inject.Inject
 
-class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundContract.View,View.OnClickListener {
+class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundContract.View,View.OnClickListener,
+	DialogChooserListener {
 
 	private var photoUri: Uri? = null
 	private var outputBitmap:Bitmap? = null
+	private lateinit var saveItemAcceptDialog: SaveItemAcceptDialog
+	private val hashMap = HashMap<String,String>()
+	@Inject
+	lateinit var presenter:CleanBackgroundPresenter
 	override fun getLayoutId(): Int {
 		return R.layout.fragment_clean_background
 	}
@@ -49,11 +64,11 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 	}
 	
 	override fun initializeDependency() {
-	
+		(currentActivity.application as StylytsApp).applicationComponent.inject(this)
 	}
 	
 	override fun initializePresenter() {
-	
+		presenter.attach(this)
 	}
 	
 	override fun initializeArguments() {
@@ -72,7 +87,8 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 	}
 	
 	override fun initializeViews() {
-	
+		saveItemAcceptDialog = SaveItemAcceptDialog()
+		saveItemAcceptDialog.setChoiceListener(this)
 	}
 	
 	override fun initializeListeners() {
@@ -116,17 +132,66 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 
 			}
 			R.id.button_fragment_clean_background_image_add_to_wardrobe -> {
-
+				val bundle = Bundle()
+				outputBitmap?.let {
+					bundle.putParcelable("photoBitmap", it)
+				}?: run{
+					photoUri?.let {
+						bundle.putParcelable("photoUri", it)
+					}
+				}
+				saveItemAcceptDialog.arguments = bundle
+				saveItemAcceptDialog.show(childFragmentManager, "SaveItemDialog")
 			}
 		}
+	}
+
+	override fun onChoice(v: View?, item: Any?) {
+		when(v?.id){
+			R.id.text_view_toolbar_right_text -> {
+				item?.let { description ->
+					description as String
+					hashMap["description"] = description
+					outputBitmap?.let {
+						val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
+						file?.let { inpFile ->
+							processImage(inpFile)
+						}?: run {
+							displayMessage("Ошибка при конвертировании фотографии")
+						}
+					}?:run{
+						photoUri?.let {
+							val imageFile = File(it.path)
+							processImage(imageFile)
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private fun processImage(file:File){
+		presenter.saveItem(
+			currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"",
+			hashMap,
+			file
+		)
 	}
 
 	override fun processPostInitialization() {
 	
 	}
-	
+
+	override fun processItemDetail(model: ClothesMainModel) {
+		val itemsList = ArrayList<ClothesMainModel>()
+		val bundle = Bundle()
+		itemsList.add(model)
+		bundle.putParcelableArrayList("items",itemsList)
+		findNavController().navigate(R.id.createCollectionFragment,bundle)
+	}
+
 	override fun disposeRequests() {
-	
+		presenter.disposeRequests()
 	}
 	
 	override fun displayMessage(msg: String) {

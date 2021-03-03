@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.item_collection_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
+import kz.eztech.stylyts.domain.models.UserSearchModel
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 
 /**
@@ -27,8 +28,10 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogC
     private var currentPhotoUri: Uri? = null
     private var isPhotoChooser = false
     private var selectedList:List<ClothesMainModel>? = null
+    private var selectedUsers:ArrayList<UserSearchModel>? = null
     private var hashMap = HashMap<String,Any>()
     private lateinit var chooserDialog:CreateCollectionChooserDialog
+    private lateinit var userSearchDialog:UserSearchDialog
     fun setChoiceListener(listener: DialogChooserListener){
         this.listener = listener
     }
@@ -45,6 +48,9 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogC
         super.onViewCreated(view, savedInstanceState)
         chooserDialog = CreateCollectionChooserDialog()
         chooserDialog.setChoiceListener(this)
+        selectedUsers = ArrayList<UserSearchModel>()
+        userSearchDialog = UserSearchDialog()
+        userSearchDialog.setChoiceListener(this)
         arguments?.let {
             if(it.containsKey("collectionModel")){
                 currentModel = it.getParcelable("collectionModel")
@@ -97,25 +103,52 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogC
                 text_view_dialog_create_collection_items_count.text = "${it.count()} вещ."
             }
         }
+        updateUserView()
+    
+        frame_layout_dialog_create_collection_accept_user_search.setOnClickListener {
+            userSearchDialog.show(childFragmentManager,"UserSearchDialog")
+        }
     }
     
     override fun onChoice(v: View?, item: Any?) {
-        currentModel?.let {
-            hashMap["model"] = it
-            when(item as Int){
-                1 -> {
-                    hashMap["mode"] = 1
-                }
-                2 -> {
-                    hashMap["mode"] = 2
-                }
-                3 -> {
-                    hashMap["mode"] = 3
+        when(item){
+            is Int -> {
+                currentModel?.let {
+                    hashMap["model"] = it
+                    when(item as Int){
+                        1 -> {
+                            hashMap["mode"] = 1
+                        }
+                        2 -> {
+                            hashMap["mode"] = 2
+                        }
+                        3 -> {
+                            hashMap["mode"] = 3
+                        }
+                    }
+                    listener?.onChoice(include_toolbar_dialog_create_collection.text_view_toolbar_right_text,hashMap)
+                    dismiss()
                 }
             }
-            listener?.onChoice(include_toolbar_dialog_create_collection.text_view_toolbar_right_text,hashMap)
+            is UserSearchModel -> {
+                selectedUsers?.let {
+                    if(!it.contains(item)){
+                        it.add(item)
+                    }
+                    updateUserView()
+                }
+            }
         }
-        dismiss()
+        
+    }
+    
+    private fun updateUserView(){
+        text_view_dialog_create_collection_user_count.visibility = View.VISIBLE
+        selectedUsers?.let {
+            if(it.isNotEmpty())
+                text_view_dialog_create_collection_user_count.text = "${it.count()} юзер."
+        }
+        
     }
     
     override fun getTheme(): Int {
@@ -123,6 +156,6 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogC
     }
 
     override fun onClick(v: View?) {
-
+    
     }
 }

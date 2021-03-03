@@ -64,4 +64,7 @@ data class UserModel(
 	@SerializedName("token")
 	@Expose
 	var token:String? = null,
+	@SerializedName("username")
+	@Expose
+	var username:String? = null,
 )
