@@ -19,6 +19,8 @@ import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.profile.ProfileContract
+import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.EditProfileDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.profile.ProfilePresenter
 import javax.inject.Inject
@@ -29,6 +31,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 	private lateinit var adapterFilter:CollectionsFilterAdapter
 	private var userId:Int  = 0
 	private var isSettings = false
+	private var currentName = ""
+	private var currentNickname = ""
+	private var currentSurname = ""
 	
 	@Inject
 	lateinit var presenter: ProfilePresenter
@@ -114,6 +119,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 	override fun initializeListeners() {
 		include_toolbar_profile.image_button_right_corner_action.setOnClickListener(this)
 		frame_layout_fragment_profile_my_incomes.setOnClickListener(this)
+		frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
+		text_view_fragment_profile_settings.setOnClickListener(this)
+		frame_layout_fragment_profile_cards.setOnClickListener(this)
+		linearLayout.setOnClickListener(this)
+		subs.setOnClickListener(this)
+		sub.setOnClickListener(this)
 	}
 
 	override fun onClick(v: View?) {
@@ -123,6 +134,29 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 			}
 			R.id.frame_layout_fragment_profile_my_incomes->{
 				findNavController().navigate(R.id.action_profileFragment_to_profileIncomeFragment)
+			}
+			R.id.frame_layout_fragment_profile_my_addresses -> {
+				findNavController().navigate(R.id.action_profileFragment_to_addressProfileFragment)
+			}
+			R.id.text_view_fragment_profile_settings -> {
+				val editProfileDialog = EditProfileDialog()
+				val bundle = Bundle()
+				bundle.putString("currentName",currentName)
+				bundle.putString("currentUserName",currentName)
+				bundle.putString("currentSurname",currentSurname)
+				editProfileDialog.show(childFragmentManager,"Cart")
+			}
+			R.id.frame_layout_fragment_profile_cards -> {
+				findNavController().navigate(R.id.action_profileFragment_to_cardFragment)
+			}
+			R.id.linearLayout -> {
+				findNavController().navigate(R.id.userSubsFragment)
+			}
+			R.id.subs -> {
+				findNavController().navigate(R.id.userSubsFragment)
+			}
+			R.id.sub -> {
+				findNavController().navigate(R.id.userSubsFragment)
 			}
 		}
 	}
@@ -183,6 +217,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 	override fun processProfile(user: UserModel) {
 		user.run {
 			userId = id ?: 0
+			currentName = first_name ?: ""
+			currentNickname = username ?: ""
+			currentSurname = last_name ?: ""
 			text_view_fragment_profile_user_name.text = first_name
 			text_view_fragment_profile_user_followers_count.text = "${followers_count ?: 0}"
 			text_view_fragment_profile_user_followings_count.text = "${followings_count ?: 0}"

@@ -146,10 +146,11 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(),RegistrationC
         val data = HashMap<String,Any>()
         data["email"] = edit_text_view_fragment_registration_email.text.toString()
         data["password"] = edit_text_view_fragment_registration_password.text.toString()
-        data["first_name"] = edit_text_view_fragment_registration_name.text.toString()
+        data["name"] = edit_text_view_fragment_registration_name.text.toString()
         data["last_name"] =  edit_text_view_fragment_registration_last_name.text.toString()
         data["date_of_birth"] = "$mYear-$mMonth-$mDayOfMonth"
         data["should_send_mail"] = true
+        data["username"] = edit_text_view_fragment_registration_username.text.toString()
 
         presenter.registerUser(data)
     }

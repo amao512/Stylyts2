@@ -20,6 +20,7 @@ import kz.eztech.stylyts.presentation.adapters.ShopItemListAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
+import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 
 class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,UniversalViewClickListener {
@@ -42,6 +43,10 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             text_view_toolbar_title.visibility = android.view.View.VISIBLE
             image_button_right_corner_action.visibility = android.view.View.VISIBLE
             image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_shop)
+            image_button_right_corner_action.setOnClickListener {
+                val cartDialog = CartDialog()
+                cartDialog.show(childFragmentManager,"Cart")
+            }
             elevation = 0f
             customizeActionToolBar(this,currentGenderCategory?.title?:"Одежда")
         }

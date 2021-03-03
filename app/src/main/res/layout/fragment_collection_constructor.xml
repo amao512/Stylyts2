@@ -80,47 +80,57 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <FrameLayout
+        <LinearLayout
+            android:weightSum="1"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp">
 
             <TextView
                 android:visibility="gone"
+                android:gravity="start|center"
+                android:layout_weight="0.2"
                 android:id="@+id/text_view_fragment_collection_constructor_category_back"
                 style="@style/TextRegular"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|center"
                 android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
                 android:text="Назад" />
 
             <TextView
+                android:textAlignment="center"
+                android:layout_weight="0.6"
                 style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Выберите категорию вещей" />
 
             <TextView
                 android:visibility="gone"
+                android:layout_weight="0.2"
+                android:gravity="end|center"
                 android:id="@+id/text_view_fragment_collection_constructor_category_next"
                 style="@style/TextRegular"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
                 android:text="Далее" />
             <TextView
                 android:visibility="gone"
+                android:layout_weight="0.2"
+                android:gravity="end|center"
                 android:id="@+id/text_view_fragment_collection_constructor_category_filter"
                 style="@style/TextRegular"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                 android:text="Фильтр" />
-        </FrameLayout>
+        </LinearLayout>
         <include
             android:visibility="gone"
             android:id="@+id/progress_bar_fragment_collection_constructor"
@@ -130,12 +140,12 @@
             android:id="@+id/recycler_view_fragment_collection_constructor_list"
             android:layout_width="match_parent"
             tools:listitem="@layout/item_collection_constructor_category_item"
-            android:layout_height="110dp"/>
+            android:layout_height="120dp"/>
         <ListView
             android:visibility="gone"
             android:id="@+id/list_view_fragment_collection_constructor_list_style"
             android:layout_width="match_parent"
-            android:layout_height="110dp"/>
+            android:layout_height="120dp"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

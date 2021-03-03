@@ -54,6 +54,10 @@ class MainImageHolder(
     
                 text_view_item_main_image_comments_cost.text = "${NumberFormat.getInstance().format(total_price)} $total_price_currency"
                 text_view_item_main_image_comments_count.text = "Показать $comments_count коммент."
+
+                text_view_item_main_image_comments_count.setOnClickListener {thisView ->
+                    adapter.itemClickListener?.onViewClicked(thisView,position,item)
+                }
                 text_view_item_main_image_date.text = "${DateFormatterHelper.formatISO_8601(created_at,FORMAT_DATE_DD_MMMM)}"
             }
 

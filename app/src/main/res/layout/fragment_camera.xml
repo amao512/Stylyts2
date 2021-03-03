@@ -23,24 +23,79 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_camera_toolbar" />
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/linear_layout_fragment_camera_scanner_holder"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_camera_toolbar">
+
+       <View
+           android:layout_weight="0.2"
+           android:background="@color/app_black_65"
+           android:layout_width="match_parent"
+           android:layout_height="0dp"/>
+        <LinearLayout
+            android:layout_weight="0.6"
+            android:weightSum="1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <View
+                android:background="@color/app_black_65"
+                android:layout_weight="0.1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                tools:ignore="NestedWeights" />
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:scaleType="fitXY"
+                app:lottie_autoPlay="true"
+                app:lottie_rawRes="@raw/scanner"
+                app:lottie_loop="true"
+                android:layout_weight="0.8"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+            <View
+                android:background="@color/app_black_65"
+                android:layout_weight="0.1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+        <View
+            android:layout_weight="0.2"
+            android:background="@color/app_black_65"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+    </LinearLayout>
+
+
     <FrameLayout
-        android:background="@color/app_black_65"
+        android:id="@+id/frameLayout4"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:background="@color/app_black_65"
         app:layout_constraintBottom_toBottomOf="@+id/viewFinder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
+
         <FrameLayout
             android:id="@+id/frame_layout_fragment_camera_take_picture"
-            android:layout_gravity="center"
-            android:background="@drawable/circle_black_white_corners"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_black_white_corners"
             android:padding="4dp">
+
             <ImageView
-                android:src="@drawable/circle_white"
                 android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                android:layout_height="50dp"
+                android:src="@drawable/circle_white" />
         </FrameLayout>
     </FrameLayout>
     <FrameLayout

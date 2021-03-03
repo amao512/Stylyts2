@@ -61,6 +61,11 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         recycler_view_fragment_main_images_list.layoutManager= LinearLayoutManager(currentActivity)
         recycler_view_fragment_main_images_list.adapter = mainAdapter
         mainAdapter.itemClickListener = this
+        mainAdapter.updateList(ArrayList<MainResult>().apply {
+            add(MainResult(
+                total_price = 12000
+            ))
+        })
     }
     
     override fun onResume() {
@@ -102,6 +107,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
                 val bundle = Bundle()
                 bundle.putParcelable("model",item)
                 findNavController().navigate(R.id.action_mainFragment_to_collectionDetailFragment,bundle)
+            }
+            R.id.text_view_item_main_image_comments_count ->{
+                findNavController().navigate(R.id.userCommentsFragment)
             }
         }
     }

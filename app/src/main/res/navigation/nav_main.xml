@@ -67,6 +67,12 @@
         <action
             android:id="@+id/action_profileFragment_to_collectionDetailFragment"
             app:destination="@id/collectionDetailFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_addressProfileFragment"
+            app:destination="@id/addressProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_cardFragment"
+            app:destination="@id/cardFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -176,4 +182,23 @@
             android:id="@+id/action_cleanBackgroundFragment_to_createCollectionFragment"
             app:destination="@id/createCollectionFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addressProfileFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.AddressProfileFragment"
+        android:label="fragment_address_profile"
+        tools:layout="@layout/fragment_address_profile" />
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.CardFragment"
+        android:label="fragment_card"
+        tools:layout="@layout/fragment_card" />
+    <fragment
+        android:id="@+id/userCommentsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.users.UserCommentsFragment"
+        android:label="fragment_user_comments"
+        tools:layout="@layout/fragment_user_comments" />
+    <fragment
+        android:id="@+id/userSubsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.users.UserSubsFragment"
+        android:label="UserSubsFragment" />
 </navigation>

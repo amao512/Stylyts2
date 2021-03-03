@@ -10,10 +10,13 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GestureDetectorCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -38,6 +41,7 @@ import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConst
 import kz.eztech.stylyts.presentation.dialogs.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorPresenter
 import kz.eztech.stylyts.presentation.utils.FileUtils.createPngFileFromBitmap
 import kz.eztech.stylyts.presentation.utils.RelativeImageMeasurements
@@ -56,7 +60,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	CollectionConstructorContract.View,
 	View.OnClickListener,
 	DialogChooserListener,
-	UniversalViewClickListener{
+	UniversalViewClickListener, UniversalViewDoubleClickListener {
 
 	private lateinit var adapter: CollectionConstructorShopCategoryAdapter
 	private lateinit var itemAdapter: CollectionConstructorShopItemAdapter
@@ -139,6 +143,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		recycler_view_fragment_collection_constructor_list.adapter = adapter
 		adapter.itemClickListener = this
 		itemAdapter.itemClickListener = this
+		itemAdapter.itemDoubleClickListener = this
 		frame_layout_fragment_collection_constructor_images_container.attachView(this)
 		processDraggedItems()
 	}
@@ -150,7 +155,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		text_view_fragment_collection_constructor_category_filter.setOnClickListener(this)
 		filterDialog.setChoiceListener(this)
 	}
-
 	
 
 	override fun processPostInitialization() {
@@ -184,7 +188,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					recycler_view_fragment_collection_constructor_list.adapter = adapter
 					recycler_view_fragment_collection_constructor_list.visibility = View.VISIBLE
 					list_view_fragment_collection_constructor_list_style.visibility = View.GONE
-					text_view_fragment_collection_constructor_category_back.visibility = View.GONE
+					text_view_fragment_collection_constructor_category_back.visibility = View.INVISIBLE
+					text_view_fragment_collection_constructor_category_back.isClickable  = false
 					isStyle = false
 					isItems = false
 					checkIsListEmpty()
@@ -193,7 +198,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					checkIsListEmpty()
 					text_view_fragment_collection_constructor_category_filter.visibility = View.GONE
 					recycler_view_fragment_collection_constructor_list.adapter = adapter
-					text_view_fragment_collection_constructor_category_back.visibility = View.GONE
+					text_view_fragment_collection_constructor_category_back.visibility = View.INVISIBLE
+					text_view_fragment_collection_constructor_category_back.isClickable  = false
 					isItems = false
 					isStyle = false
 					presenter.getCategory()
@@ -206,6 +212,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					processPostImages()
 				} else if (listOfItems.isNotEmpty()) {
 					text_view_fragment_collection_constructor_category_back.visibility = View.VISIBLE
+					text_view_fragment_collection_constructor_category_back.isClickable  = true
 					isStyle = true
 					isItems = false
 					recycler_view_fragment_collection_constructor_list.visibility = View.GONE
@@ -255,7 +262,23 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 						}
 					}
 				}
-				
+			}
+		}
+	}
+	
+	override fun onViewDoubleClicked(view: View, position: Int, item: Any?, isDouble: Boolean?) {
+		when(view?.id){
+			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
+				if (isItems) {
+					checkIsListEmpty()
+					text_view_fragment_collection_constructor_category_filter.visibility = View.GONE
+					recycler_view_fragment_collection_constructor_list.adapter = adapter
+					text_view_fragment_collection_constructor_category_back.visibility = View.GONE
+					text_view_fragment_collection_constructor_category_back.isClickable = false
+					isItems = false
+					isStyle = false
+					presenter.getCategory()
+				}
 			}
 		}
 	}
@@ -264,6 +287,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		text_view_fragment_collection_constructor_category_next.visibility = View.GONE
 		text_view_fragment_collection_constructor_category_filter.visibility = View.VISIBLE
 		text_view_fragment_collection_constructor_category_back.visibility = View.VISIBLE
+		text_view_fragment_collection_constructor_category_back.isClickable = true
 		model.results?.let {
 			recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
 			itemAdapter.updateList(it)
@@ -306,9 +330,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 							measurements = reMeasureEntity(RelativeImageMeasurements(it.point_x!!.toFloat(), it.point_y!!.toFloat(), it.width!!.toFloat(), it.height!!.toFloat(), it.degree!!.toFloat()), frame_layout_fragment_collection_constructor_images_container)
 						}
 						
-						
 						val entity = ImageEntity(layer, resource, item, frame_layout_fragment_collection_constructor_images_container.getWidth(), frame_layout_fragment_collection_constructor_images_container.getHeight())
 						frame_layout_fragment_collection_constructor_images_container.addEntityAndPosition(entity)
+						currentSameObject?.let {
+							entity.layer.scale = it.layer.scale
+							entity.layer.rotationInDegrees = it.layer.rotationInDegrees
+							entity.moveToPoint(PointF(it.absoluteCenterX(),it.absoluteCenterY()))
+						}
+						
 						measurements?.let {
 							entity.moveToPoint(PointF(it.point_x, it.point_y))
 							entity.layer.postScaleRaw(it.width/resource.width)

@@ -28,8 +28,10 @@
         android:id="@+id/text_view_item_category_type_detail_title"
         android:layout_gravity="center"
         style="@style/SubtitleTextBold"
-        tools:text = "Zara"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:textAlignment="center"
+        tools:text = "Zaraas asd s dasdas dasd asd"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:maxWidth="130dp"
         android:layout_marginTop="8dp"/>

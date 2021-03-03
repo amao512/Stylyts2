@@ -18,7 +18,7 @@ class CategoryTypeDetailHolder(itemView: View, adapter: BaseAdapter): BaseViewHo
 		with(item as ClothesTypeDataModel){
 			with(itemView){
 				text_view_item_category_type_detail_title.text = title
-				text_view_item_category_type_detail_sub_title.text = title
+				text_view_item_category_type_detail_sub_title.text = clothes_types?.title ?: title
 				text_view_item_category_type_detail_cost.text = NumberFormat.getInstance().format(cost) + " тг."
 				cover_photo?.let {
 					Glide.with(this).load("http://178.170.221.31:8000$cover_photo").into(this.image_view_item_category_type_detail)
