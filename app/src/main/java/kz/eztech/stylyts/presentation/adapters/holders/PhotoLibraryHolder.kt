@@ -12,7 +12,19 @@ import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
 class PhotoLibraryHolder(itemView: View, adapter: BaseAdapter): BaseViewHolder(itemView,adapter) {
     override fun bindData(item: Any, position: Int) {
         item as String
-        itemView.text_view_item_photo_checked_text.text = position.toString()
+        Glide.with(itemView.context).load(item).into(itemView.image_view_photo_library)
+        itemView.image_view_photo_library.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(itemView.image_view_photo_library,position,item)
+        }
+    }
+
+    fun bindPayloadData(item:Any,position:Int,payLoad:Int){
+        item as String
+        if(payLoad != -1){
+            itemView.frame_layout_item_photo_library.visibility = View.VISIBLE
+        }else{
+            itemView.frame_layout_item_photo_library.visibility = View.GONE
+        }
         Glide.with(itemView.context).load(item).into(itemView.image_view_photo_library)
         itemView.image_view_photo_library.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(itemView.image_view_photo_library,position,item)

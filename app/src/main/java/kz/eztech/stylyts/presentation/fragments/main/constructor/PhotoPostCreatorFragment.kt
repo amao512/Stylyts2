@@ -42,6 +42,7 @@ class PhotoPostCreatorFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
     private var photoUri: Uri? = null
     private var mode = -1
     private val listOfAllImages = ArrayList<String>()
+    private val listOfChosenImages = ArrayList<String>()
     override fun getLayoutId(): Int {
         return R.layout.fragment_photo_post_creator
     }
@@ -127,6 +128,14 @@ class PhotoPostCreatorFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
     
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         item as String
+        if(listOfChosenImages.contains(item)){
+            listOfChosenImages.remove(item)
+            photoAdapter.notifyItemChanged(position,-1)
+        }else{
+            listOfChosenImages.add(item)
+            photoAdapter.notifyItemChanged(position,listOfChosenImages.count())
+        }
+
         photoUri = Uri.fromFile(File(item))
         Glide.with(currentActivity).load(photoUri).into(image_view_fragment_photo_post_creator)
     }
