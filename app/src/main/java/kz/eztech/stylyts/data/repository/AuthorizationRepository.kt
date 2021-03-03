@@ -21,10 +21,11 @@ class AuthorizationRepository:AuthorizationDomainRepository {
         return api.registerUser(
             data["email"] as String,
             data["password"] as String,
-            data["first_name"] as String,
+            data["name"] as String,
             data["last_name"] as String,
             data["date_of_birth"] as String,
-            data["should_send_mail"] as Boolean
+            data["should_send_mail"] as Boolean,
+            data["username"] as String,
         ).map {
             when(it.isSuccessful){
                 true -> it.body()

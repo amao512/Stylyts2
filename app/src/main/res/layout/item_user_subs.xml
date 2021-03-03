@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="16dp"
+    android:id="@+id/linear_layout_item_user_info_container">
+    <FrameLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:adjustViewBounds="true"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            android:id="@+id/shapeable_image_view_item_user_subs_avatar"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            tools:src="@drawable/jacket"/>
+        <TextView
+            android:layout_gravity="center"
+            android:background="@drawable/circle_gray"
+            android:id="@+id/text_view_item_user_sub_short_name"
+            style="@style/TextRegular"
+            tools:text = "RE"
+            android:gravity="center"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+    </FrameLayout>
+    <LinearLayout
+        android:weightSum="1"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_marginStart="16dp"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="0.55"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/text_view_item_user_subs_nickname"
+                    style="@style/TextRegular"
+                    tools:text="Ruslan Ru"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/text_view_item_user_subs_name"
+                style="@style/TextRegular"
+                android:textColor="@color/app_gray_hint"
+                android:text="Ruslan rus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:layout_marginEnd="16dp"
+            android:id="@+id/button_item_user_subs_sub"
+            android:layout_marginStart="4dp"
+            style="@style/TextRegular"
+            android:textAllCaps="false"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="Подписаться"
+            app:backgroundTint="@color/app_light_orange"
+            android:layout_width="0dp"
+            android:layout_weight="0.45"
+            android:layout_height="45dp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

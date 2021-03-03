@@ -46,6 +46,18 @@
                         android:paddingBottom="16dp"
                         android:paddingEnd="24dp"
                         android:paddingTop="16dp"
+                        android:background="@drawable/rectangle_white_gray_corners"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <EditText
+                        android:id="@+id/edit_text_view_fragment_registration_username"
+                        android:inputType="text|textPersonName"
+                        android:hint="Никнейм"
+                        android:imeOptions="actionNext"
+                        android:paddingStart="24dp"
+                        android:paddingBottom="16dp"
+                        android:paddingEnd="24dp"
+                        android:paddingTop="16dp"
                         android:background="@drawable/rounded_rectangle_white_gray_corners_flat_top"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>

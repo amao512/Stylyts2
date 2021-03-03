@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.main.profile
 
+import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -11,24 +12,28 @@ import kotlinx.android.synthetic.main.item_collection_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants.TOKEN_KEY
-import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.MainImageAdditionalModel
-import kz.eztech.stylyts.domain.models.MainImageModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.profile.ProfileContract
+import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.EditProfileDialog
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.profile.ProfilePresenter
 import javax.inject.Inject
 
-class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.OnClickListener{
+class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.OnClickListener,UniversalViewClickListener{
 	
 	private lateinit var adapter:GridImageAdapter
 	private lateinit var adapterFilter:CollectionsFilterAdapter
+	private var userId:Int  = 0
 	private var isSettings = false
+	private var currentName = ""
+	private var currentNickname = ""
+	private var currentSurname = ""
 	
 	@Inject
 	lateinit var presenter: ProfilePresenter
@@ -66,29 +71,27 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 	override fun initializeViewsData() {
 		val filterList = ArrayList<CollectionFilterModel>()
 		filterList.add(CollectionFilterModel("Фильтр"))
-		filterList.add(CollectionFilterModel("Фото образов"))
-		filterList.add(CollectionFilterModel("Гардеров (355)"))
+		filterList.add(CollectionFilterModel(name = "Фото образов",isChosen = true))
+		filterList.add(CollectionFilterModel("Публикации"))
+		filterList.add(CollectionFilterModel("Гардеров"))
 		filterList.add(CollectionFilterModel("Мои данные"))
 		adapterFilter = CollectionsFilterAdapter()
+		adapterFilter.setOnClickListener(this)
 		recycler_view_fragment_profile_filter_list.layoutManager = LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false)
 		recycler_view_fragment_profile_filter_list.adapter = adapterFilter
 		adapterFilter.updateList(filterList)
 	}
 
 	override fun initializeViews() {
-		currentActivity.displayBottomNavigationView()
-		val dummyList = ArrayList<MainImageModel>()
-		for(i in 0..5){
-			val listAdditional = ArrayList<MainImageAdditionalModel>()
-			for (i in 0..5){
-				listAdditional.add(MainImageAdditionalModel(name = "Hello"))
-			}
-			dummyList.add(MainImageModel(name = "zara ${dummyList.count()}",additionals = listAdditional))
-		}
 		adapter = GridImageAdapter()
+		adapter.setOnClickListener(this)
 		recycler_view_fragment_profile_items_list.layoutManager = GridLayoutManager(context,2)
 		recycler_view_fragment_profile_items_list.adapter = adapter
-		adapter.updateList(dummyList)
+	}
+	
+	override fun onResume() {
+		super.onResume()
+		currentActivity.displayBottomNavigationView()
 	}
 
 	override fun processSettings() {
@@ -116,6 +119,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 	override fun initializeListeners() {
 		include_toolbar_profile.image_button_right_corner_action.setOnClickListener(this)
 		frame_layout_fragment_profile_my_incomes.setOnClickListener(this)
+		frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
+		text_view_fragment_profile_settings.setOnClickListener(this)
+		frame_layout_fragment_profile_cards.setOnClickListener(this)
+		linearLayout.setOnClickListener(this)
+		subs.setOnClickListener(this)
+		sub.setOnClickListener(this)
 	}
 
 	override fun onClick(v: View?) {
@@ -126,9 +135,62 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 			R.id.frame_layout_fragment_profile_my_incomes->{
 				findNavController().navigate(R.id.action_profileFragment_to_profileIncomeFragment)
 			}
+			R.id.frame_layout_fragment_profile_my_addresses -> {
+				findNavController().navigate(R.id.action_profileFragment_to_addressProfileFragment)
+			}
+			R.id.text_view_fragment_profile_settings -> {
+				val editProfileDialog = EditProfileDialog()
+				val bundle = Bundle()
+				bundle.putString("currentName",currentName)
+				bundle.putString("currentUserName",currentName)
+				bundle.putString("currentSurname",currentSurname)
+				editProfileDialog.show(childFragmentManager,"Cart")
+			}
+			R.id.frame_layout_fragment_profile_cards -> {
+				findNavController().navigate(R.id.action_profileFragment_to_cardFragment)
+			}
+			R.id.linearLayout -> {
+				findNavController().navigate(R.id.userSubsFragment)
+			}
+			R.id.subs -> {
+				findNavController().navigate(R.id.userSubsFragment)
+			}
+			R.id.sub -> {
+				findNavController().navigate(R.id.userSubsFragment)
+			}
 		}
 	}
-
+	
+	override fun onViewClicked(view: View, position: Int, item: Any?) {
+		when(view.id){
+			R.id.frame_layout_item_collection_filter ->{
+				when(position){
+					0 -> {
+					
+					}
+					1 -> {
+						val map = HashMap<String,Int>()
+						map["autor"]=userId
+						presenter.getMyCollections(currentActivity.getSharedPrefByKey<String>(TOKEN_KEY)?:"",map)
+					}
+					2 -> {
+					
+					}
+					3 ->{
+					
+					}
+				}
+			}
+			R.id.shapeable_image_view_item_collection_image ->{
+				item as MainResult
+				val bundle = Bundle()
+				bundle.putParcelable("model",item)
+				findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment,bundle)
+			}
+		}
+		
+	}
+	
 	override fun processPostInitialization() {
 		presenter.getProfile(currentActivity.getSharedPrefByKey<String>(TOKEN_KEY)?:"")
 	}
@@ -154,6 +216,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 	
 	override fun processProfile(user: UserModel) {
 		user.run {
+			userId = id ?: 0
+			currentName = first_name ?: ""
+			currentNickname = username ?: ""
+			currentSurname = last_name ?: ""
 			text_view_fragment_profile_user_name.text = first_name
 			text_view_fragment_profile_user_followers_count.text = "${followers_count ?: 0}"
 			text_view_fragment_profile_user_followings_count.text = "${followings_count ?: 0}"
@@ -167,6 +233,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View,View.
 						"${first_name?.toUpperCase()?.get(0)}${last_name?.toUpperCase()?.get(0)}"
 				
 			}
+		}
+		
+	}
+	
+	override fun processMyCollections(models: MainLentaModel) {
+		models.results?.let {
+			adapter.updateList(it)
 		}
 		
 	}

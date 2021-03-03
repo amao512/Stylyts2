@@ -23,11 +23,20 @@
                     layout="@layout/base_toolbar" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            android:id="@+id/recycler_view_fragment_main_images_list"
-            tools:listitem="@layout/item_main_image"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content">
+            <include
+                android:id="@+id/progress_bar_fragment_main_lenta"
+                layout="@layout/base_progress_small"/>
+            <androidx.recyclerview.widget.RecyclerView
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                android:id="@+id/recycler_view_fragment_main_images_list"
+                tools:listitem="@layout/item_main_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </LinearLayout>

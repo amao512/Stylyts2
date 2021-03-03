@@ -15,8 +15,24 @@ class CollectionsViewPagerAdapter(fa: Fragment,var itemClickListener:UniversalVi
     private val NUM_PAGES = 2
     override fun getItemCount(): Int = NUM_PAGES
 
-    override fun createFragment(position: Int): Fragment = CollectionItemFragment().apply {
-        setOnClickListener(itemClickListener)
+    override fun createFragment(position: Int): Fragment{
+        return when(position){
+            0 -> {
+                CollectionItemFragment(0).apply {
+                    setOnClickListener(itemClickListener)
+                }
+            }
+            1 -> {
+                CollectionItemFragment(1).apply {
+                    setOnClickListener(itemClickListener)
+                }
+            }
+            else -> {
+                CollectionItemFragment(0).apply {
+                    setOnClickListener(itemClickListener)
+                }
+            }
+        }
     }
     
     

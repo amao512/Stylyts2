@@ -12,25 +12,34 @@
         tools:layout="@layout/fragment_main" >
         <action
             android:id="@+id/action_mainFragment_to_createCollectionFragment"
-            app:destination="@id/createCollectionFragment" />
+            app:destination="@id/createCollectionFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="false" />
         <action
             android:id="@+id/action_mainFragment_to_partnerProfileFragment"
             app:destination="@id/partnerProfileFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_collectionDetailFragment"
+            app:destination="@id/collectionDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/createCollectionFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.ConstructorHolderFragment"
         android:label="fragment_create_collection"
-        tools:layout="@layout/fragment_collection_constructor" >
+        tools:layout="@layout/fragment_constructor_holder" >
         <action
             android:id="@+id/action_createCollectionFragment_to_itemDetailFragment"
             app:destination="@id/itemDetailFragment" />
         <action
-            android:id="@+id/action_createCollectionFragment_to_photoChooserFragment"
-            app:destination="@id/photoChooserFragment" />
-        <action
             android:id="@+id/action_createCollectionFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_createCollectionFragment_to_photoChooserFragment"
+            app:destination="@id/photoChooserFragment" />
     </fragment>
     <fragment
         android:id="@+id/collectionsFragment"
@@ -40,6 +49,9 @@
         <action
             android:id="@+id/action_collectionsFragment_to_createCollectionFragment"
             app:destination="@id/createCollectionFragment" />
+        <action
+            android:id="@+id/action_collectionsFragment_to_collectionDetailFragment"
+            app:destination="@id/collectionDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -52,6 +64,15 @@
         <action
             android:id="@+id/action_profileFragment_to_profileIncomeFragment"
             app:destination="@id/profileIncomeFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_collectionDetailFragment"
+            app:destination="@id/collectionDetailFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_addressProfileFragment"
+            app:destination="@id/addressProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_cardFragment"
+            app:destination="@id/cardFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -129,7 +150,55 @@
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
         <action
+            android:id="@+id/action_cameraFragment_to_photoChooserFragment"
+            app:destination="@id/photoChooserFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_cleanBackgroundFragment"
+            app:destination="@id/cleanBackgroundFragment" />
+        <action
             android:id="@+id/action_cameraFragment_to_itemDetailFragment"
             app:destination="@id/itemDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/collectionDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.detail.CollectionDetailFragment"
+        android:label="CollectionDetailFragment" >
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_partnerProfileFragment"
+            app:destination="@id/partnerProfileFragment" />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment" />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cleanBackgroundFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.CleanBackgroundFragment"
+        android:label="fragment_clean_background"
+        tools:layout="@layout/fragment_clean_background" >
+        <action
+            android:id="@+id/action_cleanBackgroundFragment_to_createCollectionFragment"
+            app:destination="@id/createCollectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressProfileFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.AddressProfileFragment"
+        android:label="fragment_address_profile"
+        tools:layout="@layout/fragment_address_profile" />
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.CardFragment"
+        android:label="fragment_card"
+        tools:layout="@layout/fragment_card" />
+    <fragment
+        android:id="@+id/userCommentsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.users.UserCommentsFragment"
+        android:label="fragment_user_comments"
+        tools:layout="@layout/fragment_user_comments" />
+    <fragment
+        android:id="@+id/userSubsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.users.UserSubsFragment"
+        android:label="UserSubsFragment" />
 </navigation>

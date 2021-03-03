@@ -86,45 +86,142 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:id="@+id/text_view_fragment_item_detail_brand_name"
                         style="@style/TitleTextBold"
-                        android:text="Zara"
+                        tools:text="Zara"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                     <TextView
+                        android:id="@+id/text_view_fragment_item_detail_item_name"
                         android:layout_marginTop="6dp"
                         style="@style/TextRegular"
-                        android:text="Куртка кожанная"
+                        tools:text="Куртка кожанная"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/app_gray_hint"/>
                     <TextView
+                        android:id="@+id/text_view_fragment_item_detail_item_price"
                         android:layout_marginTop="6dp"
                         style="@style/TextRegularBold"
-                        android:text="35 000 тг"
+                        tools:text="35 000 тг"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:animateLayoutChanges="true"
+                    android:layout_marginTop="24dp"
                     android:orientation="vertical"
-                    android:layout_margin="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_fragment_item_detail_add_to_cart"
-                        android:imeOptions="actionNext"
-                        app:cornerRadius="@dimen/corner_radius_default"
-                        style="@style/SubtitleText"
-                        android:gravity="start"
+                    <LinearLayout
+                        android:id="@+id/linear_layout_fragment_item_detail_cart_holder"
+                        android:background="@color/white"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="24dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Добавить в корзину"
-                        android:textAllCaps="false"
-                        android:padding="10dp"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        app:backgroundTint="@color/app_green" />
+                        android:layout_height="wrap_content">
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/linear_layout_fragment_item_detail_choosers_holder"
+                            android:layout_marginBottom="24dp"
+                            android:weightSum="1"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <FrameLayout
+                                android:id="@+id/frame_layout_fragment_item_detail_text_color"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:layout_weight="0.5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/text_view_fragment_item_detail_text_color"
+                                    android:layout_gravity="left|center"
+                                    style="@style/TextRegular"
+                                    android:text="Цвет"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <ImageView
+                                    android:layout_gravity="right|center"
+                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </FrameLayout>
+
+                            <FrameLayout
+                                android:id="@+id/frame_layout_fragment_item_detail_text_size"
+                                android:layout_marginStart="10dp"
+                                android:paddingStart="12dp"
+                                android:paddingEnd="12dp"
+                                android:paddingTop="8dp"
+                                android:paddingBottom="8dp"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:layout_weight="0.5"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
+                                <TextView
+                                    android:id="@+id/text_view_fragment_item_detail_text_size"
+                                    android:layout_gravity="left|center"
+                                    style="@style/TextRegular"
+                                    android:text="Размер"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                                <ImageView
+                                    android:layout_gravity="right|center"
+                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
+                            </FrameLayout>
+                        </LinearLayout>
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/button_fragment_item_detail_add_to_cart"
+                            android:imeOptions="actionNext"
+                            app:cornerRadius="@dimen/corner_radius_default"
+                            style="@style/SubtitleText"
+                            android:gravity="start"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Добавить в корзину"
+                            android:textAllCaps="false"
+                            android:padding="10dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/white"
+                            app:backgroundTint="@color/app_green" />
+
+                        <FrameLayout
+                            android:visibility="gone"
+                            android:layout_marginTop="24dp"
+                            android:id="@+id/frame_layout_fragment_item_detail_text_share"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="8dp"
+                            android:background="@drawable/rounded_rectangle_white_gray_corners"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/text_view_fragment_item_detail_text_share"
+                                android:layout_gravity="left|center"
+                                style="@style/TextRegular"
+                                android:text="Поделиться"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="10dp"
+                                android:drawableEnd="@drawable/ic_baseline_save_alt_24"/>
+                        </FrameLayout>
+                    </LinearLayout>
+
                     <com.google.android.material.button.MaterialButton
-                        android:layout_marginTop="16dp"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="16dp"
                         android:id="@+id/button_fragment_item_detail_create_collection"
                         android:imeOptions="actionNext"
                         app:cornerRadius="@dimen/corner_radius_default"
@@ -138,66 +235,88 @@
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         app:backgroundTint="@color/app_dark_blue_gray" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <FrameLayout
+                    <LinearLayout
+                        android:id="@+id/linear_layout_fragment_item_detail_description_holder"
+                        android:padding="24dp"
                         android:background="@drawable/rectangle_white_gray_corners"
+                        android:orientation="vertical"
+                        android:animateLayoutChanges="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="#4F4B4B"
+                                android:textStyle="bold"
+                                android:layout_gravity="left|center"
+                                style="@style/TextRegular"
+                                android:text="Описание товара"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <ImageView
+                                android:id="@+id/image_view_fragment_item_detail_description_arrow"
+                                android:layout_gravity="right|center"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </FrameLayout>
                         <TextView
+                            android:visibility="gone"
+                            android:id="@+id/text_view_fragment_item_detail_description"
+                            android:layout_marginTop="16dp"
+                            android:textColor="#4F4B4B"
                             android:layout_gravity="left|center"
-                            android:layout_margin="24dp"
                             style="@style/TextRegular"
-                            android:text="Описание товара"
+                            tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
-                        <ImageView
-                            android:layout_gravity="right|center"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                            android:layout_margin="24dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </FrameLayout>
-                    <FrameLayout
+                    </LinearLayout>
+                    <LinearLayout
+                        android:padding="24dp"
                         android:background="@drawable/rectangle_white_gray_corners"
+                        android:orientation="vertical"
+                        android:animateLayoutChanges="true"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+                        <FrameLayout
+                            android:id="@+id/frame_layout_fragment_item_detail_delivery_description_holder"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:textColor="#4F4B4B"
+                                android:textStyle="bold"
+                                android:layout_gravity="left|center"
+                                style="@style/TextRegular"
+                                android:text="Информация о доставке"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <ImageView
+                                android:id="@+id/image_view_fragment_item_detail_delivery_description_arrow"
+                                android:layout_gravity="right|center"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                        </FrameLayout>
+
                         <TextView
+                            android:id="@+id/text_view_fragment_item_detail_delivery_description"
+                            android:layout_marginTop="16dp"
+                            android:textColor="#4F4B4B"
                             android:layout_gravity="left|center"
-                            android:layout_margin="24dp"
                             style="@style/TextRegular"
-                            android:text="Информация о доставке"
+                            tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
-                        <ImageView
-                            android:layout_gravity="right|center"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                            android:layout_margin="24dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </FrameLayout>
-                    <FrameLayout
-                        android:background="@drawable/rectangle_white_gray_corners"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_gravity="left|center"
-                            android:layout_margin="24dp"
-                            style="@style/TextRegular"
-                            android:text="Таблица размеров"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                        <ImageView
-                            android:layout_gravity="right|center"
-                            android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
-                            android:layout_margin="24dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    </FrameLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

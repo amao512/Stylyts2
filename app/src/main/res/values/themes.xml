@@ -3,15 +3,16 @@
     <style name="Theme.Stylyts" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="android:fontFamily">@font/sf_pro_regular</item>
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryVariant">@android:color/transparent</item>
+        <item name="colorOnPrimary">@android:color/transparent</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -36,39 +37,39 @@
     </style>
 
     <style name="TitleText" parent="Text">
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="SubtitleText" parent="Text">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TitleTextBold" parent="Bold">
-        <item name="android:textSize">21sp</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="SubtitleTextBold" parent="Bold">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TitleTextThin" parent="Thin">
-        <item name="android:textSize">21sp</item>
-    </style>
-
-    <style name="SubtitleTextThin" parent="Thin">
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="TextRegular" parent="Text">
+    <style name="SubtitleTextThin" parent="Thin">
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextRegular" parent="Text">
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextRegularBold" parent="Bold">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="TextRegularThin" parent="Thin">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
 

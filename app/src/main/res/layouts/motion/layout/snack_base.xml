@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:background="@color/app_dark_blue_gray"
+    android:layout_height="?attr/actionBarSize">
+    <TextView
+        android:id="@+id/textview_snack_base_title"
+        android:layout_width="match_parent"
+        tools:text="Крутой проект"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:maxLines="2"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
+        android:layout_height="wrap_content"/>
+</FrameLayout>

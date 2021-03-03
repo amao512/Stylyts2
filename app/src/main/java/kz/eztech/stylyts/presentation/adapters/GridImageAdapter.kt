@@ -22,8 +22,8 @@ class GridImageAdapter : BaseAdapter(){
                 oldItemPosition: Int,
                 newItemPosition: Int
             ): Boolean {
-                return (currentList[oldItemPosition] as MainImageModel).name ==
-                        (list[newItemPosition] as MainImageModel).name
+                return (currentList[oldItemPosition]).hashCode() ==
+                        (list[newItemPosition]).hashCode()
             }
         }
     }

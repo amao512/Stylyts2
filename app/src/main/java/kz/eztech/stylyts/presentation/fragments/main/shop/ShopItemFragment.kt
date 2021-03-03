@@ -66,12 +66,13 @@ class ShopItemFragment(private var currentType:Int) : BaseFragment<MainActivity>
 	}
 	
 	override fun initializeViews() {
-		currentActivity.displayBottomNavigationView()
 		adapter = ShopCategoryAdapter()
 		recycler_view_fragment_shop_item.layoutManager = LinearLayoutManager(context)
 		recycler_view_fragment_shop_item.adapter = adapter
 		adapter.itemClickListener = this
 	}
+	
+	
 	
 	override fun initializeListeners() {
 		swipe_refresh_fragment_shop_item.setOnRefreshListener(this)
@@ -131,5 +132,6 @@ class ShopItemFragment(private var currentType:Int) : BaseFragment<MainActivity>
 	override fun onResume() {
 		super.onResume()
 		presenter.getCategory()
+		currentActivity.displayBottomNavigationView()
 	}
 }

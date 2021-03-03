@@ -23,6 +23,7 @@
     <string name="fragment_restore_password_success_refreshed_description">Ваш пароль успешно обновлён!</string>
     <string name="fragment_restore_password_success_refreshed_next_button">Вернуться в приложение</string>
 
+    <string name="item_user_comment"><![CDATA[<b>%1$s%2$s</b> %3$s]]></string>
 
     <string name="email">Email</string>
     <string name="name">Имя</string>
@@ -31,7 +32,7 @@
     <string name="password_repeat">Повторите пароль</string>
     <string name="back">Назад</string>
 
-    <string name="bottom_nav_bar_main">Главная</string>
+    <string name="bottom_nav_bar_main">Основная</string>
     <string name="bottom_nav_bar_collection">Образы</string>
     <string name="bottom_nav_bar_create_collection">Создать образ</string>
     <string name="bottom_nav_bar_shop">Поиск</string>

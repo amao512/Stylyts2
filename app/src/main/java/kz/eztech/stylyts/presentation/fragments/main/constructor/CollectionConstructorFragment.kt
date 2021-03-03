@@ -1,28 +1,32 @@
 package kz.eztech.stylyts.presentation.fragments.main.constructor
 
-import android.content.ClipData
-import android.content.ClipDescription.MIMETYPE_TEXT_HTML
-import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
-import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Point
+import android.Manifest
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.PointF
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import android.view.DragEvent
+import android.view.GestureDetector
+import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.GestureDetectorCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
-import kotlinx.android.synthetic.main.fragment_collection_constructor.include_toolbar_profile
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
+import kotlinx.android.synthetic.main.item_constuctor_image_holder.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -34,14 +38,20 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
+import kz.eztech.stylyts.presentation.dialogs.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
-import kz.eztech.stylyts.presentation.dialogs.PhotoChooserDialog
-import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment.Companion.BAR_CODE
-import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment.Companion.PHOTO_LIBRARY
-import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment.Companion.PHOTO_TYPE
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorPresenter
+import kz.eztech.stylyts.presentation.utils.FileUtils.createPngFileFromBitmap
+import kz.eztech.stylyts.presentation.utils.RelativeImageMeasurements
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
+import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil.reMeasureEntity
+import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
+import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
+import kz.eztech.stylyts.presentation.utils.stick.Layer
+import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
+import java.io.File
 import java.text.NumberFormat
 import javax.inject.Inject
 
@@ -50,16 +60,26 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	CollectionConstructorContract.View,
 	View.OnClickListener,
 	DialogChooserListener,
-	UniversalViewClickListener{
+	UniversalViewClickListener, UniversalViewDoubleClickListener {
 
 	private lateinit var adapter: CollectionConstructorShopCategoryAdapter
 	private lateinit var itemAdapter: CollectionConstructorShopItemAdapter
 	private var isItems = false
 	private var isStyle = false
+	private var currentType = 0
+	private var currentSaveMode = 1
 
-	private val listOfItems = ArrayList<ClothesTypeDataModel>()
-	private val listOfViews = ArrayList<ImageView>()
+	private val listOfItems = ArrayList<ClothesMainModel>()
+	private val listOfEntities = ArrayList<ImageEntity>()
+	private val listOfIdsChosen = ArrayList<Int>()
+	private val listOfGenderCategory = ArrayList<GenderCategory>()
+	private var currentId : Int = -1
 	private var currentStyle:Style? = null
+	private var currentCollectionBitmap:Bitmap? = null
+	private var currentMainId: Int = -1
+	private val filterMap = HashMap<String, Any>()
+
+	private lateinit var filterDialog: ConstructorFilterDialog
 	@Inject
 	lateinit var presenter:CollectionConstructorPresenter
 	override fun getLayoutId(): Int {
@@ -71,21 +91,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun customizeActionBar() {
-		with(include_toolbar_profile){
-			image_button_left_corner_action.visibility = android.view.View.GONE
-			text_view_toolbar_back.visibility = android.view.View.VISIBLE
-			text_view_toolbar_title.visibility = android.view.View.VISIBLE
-			image_button_right_corner_action.visibility = android.view.View.VISIBLE
-			image_button_right_corner_action.setOnClickListener{
-				Log.wtf("ImagePhoto", "Here")
-				val chooserDialog = PhotoChooserDialog()
-				chooserDialog.setChoiceListener(this@CollectionConstructorFragment)
-				chooserDialog.show(childFragmentManager, "PhotoChooserTag")
-			}
-			image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_camera)
-			elevation = 0f
-			customizeActionToolBar(this, "Создать образ")
-		}
+
 	}
 	
 	override fun initializeDependency() {
@@ -97,36 +103,58 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 	
 	override fun initializeArguments() {
-	
+		arguments?.let {
+			if(it.containsKey("items")){
+				val handler = Handler(Looper.getMainLooper())
+				handler.postDelayed(Runnable {
+					it.getParcelableArrayList<ClothesMainModel>("items")?.let { it1 ->
+						it1.forEach {
+							processInputImageToPlace(it)
+						}
+					}
+				}, 500)
+				
+			}
+			
+			if(it.containsKey("mainId")){
+				currentMainId = it.getInt("mainId")
+			}
+
+			if(it.containsKey("currentType")){
+				currentType = it.getInt("currentType")
+			}
+		}
 	}
 	
 	override fun initializeViewsData() {
-	
+		linearLayout2.layoutTransition.setAnimateParentHierarchy(false)
 	}
 	
 	override fun initializeViews() {
-		currentActivity.hideBottomNavigationView()
+		filterDialog = ConstructorFilterDialog()
+		checkWritePermission()
 		adapter = CollectionConstructorShopCategoryAdapter()
 		itemAdapter = CollectionConstructorShopItemAdapter()
 		recycler_view_fragment_collection_constructor_list.layoutManager = LinearLayoutManager(
-			context,
-			LinearLayoutManager.HORIZONTAL,
-			false
+				context,
+				LinearLayoutManager.HORIZONTAL,
+				false
 		)
 		recycler_view_fragment_collection_constructor_list.adapter = adapter
 		adapter.itemClickListener = this
 		itemAdapter.itemClickListener = this
+		itemAdapter.itemDoubleClickListener = this
+		frame_layout_fragment_collection_constructor_images_container.attachView(this)
 		processDraggedItems()
 	}
 	
 	override fun initializeListeners() {
-		frame_layout_fragment_collection_constructor_images_container.setOnDragListener(dragListen)
-		recycler_view_fragment_collection_constructor_list.setOnDragListener(dragRecyclerListener)
 		text_view_fragment_collection_constructor_total_price.setOnClickListener(this)
 		text_view_fragment_collection_constructor_category_back.setOnClickListener(this)
 		text_view_fragment_collection_constructor_category_next.setOnClickListener(this)
+		text_view_fragment_collection_constructor_category_filter.setOnClickListener(this)
+		filterDialog.setChoiceListener(this)
 	}
-
 	
 
 	override fun processPostInitialization() {
@@ -156,383 +184,344 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	override fun onClick(v: View?) {
 		when(v?.id){
 			R.id.text_view_fragment_collection_constructor_category_back -> {
-				if(isStyle){
-					recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
+				if (isStyle) {
+					recycler_view_fragment_collection_constructor_list.adapter = adapter
 					recycler_view_fragment_collection_constructor_list.visibility = View.VISIBLE
 					list_view_fragment_collection_constructor_list_style.visibility = View.GONE
+					text_view_fragment_collection_constructor_category_back.visibility = View.INVISIBLE
+					text_view_fragment_collection_constructor_category_back.isClickable  = false
 					isStyle = false
-					isItems = true
+					isItems = false
+					checkIsListEmpty()
+					presenter.getCategory()
 				} else if (isItems) {
+					checkIsListEmpty()
+					text_view_fragment_collection_constructor_category_filter.visibility = View.GONE
 					recycler_view_fragment_collection_constructor_list.adapter = adapter
+					text_view_fragment_collection_constructor_category_back.visibility = View.INVISIBLE
+					text_view_fragment_collection_constructor_category_back.isClickable  = false
 					isItems = false
 					isStyle = false
+					presenter.getCategory()
 				} else {
-					if (adapter.isSubCategory) {
-						adapter.isSubCategory = false
-						presenter.getCategory()
-					}
+					presenter.getCategory()
 				}
 			}
 			R.id.text_view_fragment_collection_constructor_category_next -> {
-				if(isStyle){
+				if (isStyle) {
 					processPostImages()
-				} else if(isItems){
+				} else if (listOfItems.isNotEmpty()) {
+					text_view_fragment_collection_constructor_category_back.visibility = View.VISIBLE
+					text_view_fragment_collection_constructor_category_back.isClickable  = true
 					isStyle = true
 					isItems = false
-					recycler_view_fragment_collection_constructor_list.visibility= View.GONE
-					presenter.getStyles(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"")
+					recycler_view_fragment_collection_constructor_list.visibility = View.GONE
+					presenter.getStyles(
+							currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+									?: ""
+					)
 				}
+			}
+			R.id.text_view_fragment_collection_constructor_category_filter -> {
+				filterDialog.show(childFragmentManager, "FilterDialog")
 			}
 		}
 	}
-	
+	private fun checkIsListEmpty(){
+		if(listOfItems.isNotEmpty()){
+			text_view_fragment_collection_constructor_category_next.visibility = View.VISIBLE
+		}
+	}
 	override fun onViewClicked(view: View, position: Int, item: Any?) {
 		when(view?.id){
 			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
 				if (isItems) {
-					//findNavController().navigate(R.id.action_createCollectionFragment_to_itemDetailFragment)
+					processInputImageToPlace(item)
 				} else {
-					if (!adapter.isSubCategory) {
-						adapter.isSubCategory = true
-						(item as GenderCategory).run {
-							clothes_types?.let { list ->
-								recycler_view_fragment_collection_constructor_list.adapter = adapter
-								adapter.updateList(list)
+					(item as GenderCategory).run {
+						if (isExternal) {
+							onChoice(view, externalType)
+						} else {
+							currentId = item.id ?: 0
+							item.clothes_types?.let { clothes ->
+								filterMap["clothes_type"] = clothes.map { it.id }.joinToString()
+								when(currentType){
+									0 -> {
+										filterMap["gender"] = "M"
+									}
+									1 -> {
+										filterMap["gender"] = "F"
+									}
+								}
+
+								presenter.getShopCategoryTypeDetail(
+										currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+												?: "",
+									filterMap)
 							}
 						}
-					} else {
-						(item as ClothesTypes).run {
-							presenter.getShopCategoryTypeDetail(item.id ?: 1, "M")
-						}
 					}
-				}
-
-			}
-		}
-	}
-	
-	override fun onChoice(v: View?, item: Any?) {
-		when(item){
-			is Int -> {
-				when (item){
-					1 -> {
-						val bundle = Bundle()
-						bundle.putString(PHOTO_TYPE, BAR_CODE)
-						findNavController().navigate(
-							R.id.action_createCollectionFragment_to_cameraFragment,
-							bundle
-						)
-					}
-					2 -> {
-						val bundle = Bundle()
-						bundle.putString(PHOTO_TYPE, PHOTO_LIBRARY)
-						findNavController().navigate(
-							R.id.action_createCollectionFragment_to_photoChooserFragment,
-							bundle
-						)
-					}
-					3 -> {
-						findNavController().navigate(R.id.action_createCollectionFragment_to_photoChooserFragment)
-					}
-				}
-			}
-			is CollectionPostCreateModel ->{
-				currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
-					presenter.saveCollection(
-						it,item)
 				}
 			}
 		}
 	}
 	
-	override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
-		shopCategoryModel.menCategory?.let {
-			adapter.isSubCategory = false
-			adapter.updateList(it)
+	override fun onViewDoubleClicked(view: View, position: Int, item: Any?, isDouble: Boolean?) {
+		when(view?.id){
+			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
+				if (isItems) {
+					checkIsListEmpty()
+					text_view_fragment_collection_constructor_category_filter.visibility = View.GONE
+					recycler_view_fragment_collection_constructor_list.adapter = adapter
+					text_view_fragment_collection_constructor_category_back.visibility = View.GONE
+					text_view_fragment_collection_constructor_category_back.isClickable = false
+					isItems = false
+					isStyle = false
+					presenter.getCategory()
+				}
+			}
 		}
 	}
 	
-	override fun processTypeDetail(model: CategoryTypeDetailModel) {
-		model.clothes?.data?.let {
+	override fun processFilteredItems(model: FilteredItemsModel) {
+		text_view_fragment_collection_constructor_category_next.visibility = View.GONE
+		text_view_fragment_collection_constructor_category_filter.visibility = View.VISIBLE
+		text_view_fragment_collection_constructor_category_back.visibility = View.VISIBLE
+		text_view_fragment_collection_constructor_category_back.isClickable = true
+		model.results?.let {
 			recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
 			itemAdapter.updateList(it)
 			isItems = true
 		}
 	}
 	
-	override fun copyImageView(
-		view: ImageView,
-		positionX: Float,
-		positionY: Float,
-		item: ClothesTypeDataModel?
-	): ImageView {
-		var childView = ImageView(currentActivity)
-		childView.layoutParams =  ViewGroup.LayoutParams(
-			view.layoutParams.width,
-			view.layoutParams.height
-		)
-		childView.layoutParams.width = childView.layoutParams.width*2
-		childView.layoutParams.height = childView.layoutParams.height*2
-		childView.x = positionX - childView.layoutParams.width/2
-		childView.y = positionY - childView.layoutParams.height/2
-		childView.scaleX = 1f
-		childView.scaleY = 1f
-		childView.setImageDrawable(view.drawable)
-		childView.setOnLongClickListener {
-			initializeChildDrag(it, item)
-			true
-		}
-		item?.let {
-			listOfItems.add(it)
-			listOfViews.add(childView)
-		}
-		return childView
-	}
-
-	private fun createImage(positionX: Float, positionY: Float, width: Float, height: Float):ImageView{
-		var childView = ImageView(currentActivity)
-		childView.x = positionX
-		childView.y = positionY
-		childView.layoutParams = ViewGroup.LayoutParams(width.toInt(), height.toInt())
-		childView.layoutParams.height = height.toInt()
-		childView.setImageResource(R.drawable.jacket)
-		return childView
-	}
 	
-	private fun initializeChildDrag(v: View, item: ClothesTypeDataModel?){
-		val intent = Intent()
-		intent.putExtra("clothesmodel", item)
-		val item = ClipData.Item(v.tag as? CharSequence, intent, null)
-		val dragData = ClipData(
-			v.tag as? CharSequence,
-			arrayOf(MIMETYPE_TEXT_HTML),
-			item
-		)
-		val myShadow = MyDragShadowBuilder(v)
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-			v.startDragAndDrop(
-				dragData,
-				myShadow,
-				v,
-				0
-			)
-		} else {
-			v.startDrag(
-				dragData,
-				myShadow,
-				v,
-				0
-			)
+	private fun processInputImageToPlace(item: Any?) {
+		item as ClothesMainModel
+		var photoUrl = ""
+		item.cover_photo?.let {
+			photoUrl = if(it.contains("http", true)) it else "http://178.170.221.31:8000${it}"
 		}
-	}
-	
-	private class MyDragShadowBuilder(v: View) : View.DragShadowBuilder(v) {
-		private val currentView = v
-		private var mScaleFactor: Point? = null
-		// Defines a callback that sends the drag shadow dimensions and touch point back to the
-		// system.
-		override fun onProvideShadowMetrics(size: Point, touch: Point) {
-			// Sets the width of the shadow to half the width of the original View
-			val width: Int = view.width
-			
-			// Sets the height of the shadow to half the height of the original View
-			val height: Int = view.height
-			
-			
-			
-			// Sets the size parameter's width and height values. These get back to the system
-			// through the size parameter.
-			size.set(width, height)
-			mScaleFactor = size;
-			currentView.requestLayout()
-			
-			// Sets the touch point's position to be in the middle of the drag shadow
-			touch.set(width / 2, height / 2)
+		var currentSameObject:ImageEntity? = null
+		if(listOfItems.isNotEmpty() && listOfEntities.isNotEmpty() ){
+			listOfEntities.forEach {
+				if(item.clothes_type?.body_part == it.item.clothes_type?.body_part){
+					currentSameObject = it
+				}
+			}
 		}
 		
-		// Defines a callback that draws the drag shadow in a Canvas that the system constructs
-		// from the dimensions passed in onProvideShadowMetrics().
-		override fun onDrawShadow(canvas: Canvas) {
-			// Draws the ColorDrawable in the Canvas passed in from the system.
-			mScaleFactor?.let {
-				canvas.scale(
-					1f, 1f
+		Glide.with(currentActivity.applicationContext)
+			.asFile()
+			.load(photoUrl)
+			.into(object : CustomTarget<File>() {
+				override fun onResourceReady(file: File, transition: Transition<in File>?) {
+					frame_layout_fragment_collection_constructor_images_container_placeholder.visibility = View.GONE
+					val options = BitmapFactory.Options()
+					options.inMutable = true
+					var resource = BitmapFactory.decodeFile(file.path, options)
+					frame_layout_fragment_collection_constructor_images_container.post(Runnable {
+						currentSameObject?.let {
+							frame_layout_fragment_collection_constructor_images_container.deleteEntity(it)
+						}
+						val layer = Layer()
+						var measurements: RelativeImageMeasurements? = null
+						item.clothe_location?.let {
+							measurements = reMeasureEntity(RelativeImageMeasurements(it.point_x!!.toFloat(), it.point_y!!.toFloat(), it.width!!.toFloat(), it.height!!.toFloat(), it.degree!!.toFloat()), frame_layout_fragment_collection_constructor_images_container)
+						}
+						
+						val entity = ImageEntity(layer, resource, item, frame_layout_fragment_collection_constructor_images_container.getWidth(), frame_layout_fragment_collection_constructor_images_container.getHeight())
+						frame_layout_fragment_collection_constructor_images_container.addEntityAndPosition(entity)
+						currentSameObject?.let {
+							entity.layer.scale = it.layer.scale
+							entity.layer.rotationInDegrees = it.layer.rotationInDegrees
+							entity.moveToPoint(PointF(it.absoluteCenterX(),it.absoluteCenterY()))
+						}
+						
+						measurements?.let {
+							entity.moveToPoint(PointF(it.point_x, it.point_y))
+							entity.layer.postScaleRaw(it.width/resource.width)
+							entity.layer.postRotate(it.degree)
+						}
+						listOfItems.add(item)
+						listOfEntities.add(entity)
+						listOfIdsChosen.add(currentId)
+						processDraggedItems()
+					})
+				}
+				
+				override fun onLoadCleared(placeholder: Drawable?) {
+				}
+			})
+	}
+	
+	private fun checkWritePermission() {
+		if (ContextCompat.checkSelfPermission(
+						currentActivity,
+						Manifest.permission.WRITE_EXTERNAL_STORAGE
 				)
+				!= PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(
+							currentActivity,
+							Manifest.permission.WRITE_EXTERNAL_STORAGE
+					)) {
+				
+			} else {
+				ActivityCompat.requestPermissions(
+						currentActivity,
+						arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE),
+						2
+				);
 			}
+		}
+	}
+	
+	override fun onChoice(v: View?, item: Any?) {
+		if(v?.id == R.id.button_dialog_filter_constructor_submit){
+			val map = item as HashMap<String, Any>
+			val clothes_type = filterMap["clothes_type"]
+			filterMap.clear()
+			filterMap["clothes_type"] = clothes_type as String
+			filterMap.putAll(map)
 			
-			currentView.draw(canvas)
-		}
-	}
-	
-	
-	private val dragListen = View.OnDragListener { v, event ->
-		
-		// Handles each of the expected events
-		when (event.action) {
-			DragEvent.ACTION_DRAG_STARTED -> {
-				event.getClipDescription().hasMimeType(MIMETYPE_TEXT_PLAIN) ||
-						event.getClipDescription().hasMimeType(MIMETYPE_TEXT_HTML)
-			}
-			DragEvent.ACTION_DRAG_ENTERED -> {
-				true;
-			}
-
-			DragEvent.ACTION_DRAG_LOCATION ->
-				true
-			DragEvent.ACTION_DRAG_EXITED -> {
-				true
-			}
-			DragEvent.ACTION_DROP -> {
-				try {
-					val view = event.localState as ImageView
-					if (view != null) {
-						when (event.clipDescription.getMimeType(0)) {
-							MIMETYPE_TEXT_HTML -> {
-								val owner = view.parent as ViewGroup
-								val container = v as FrameLayout
-								container.removeView(view)
-								view.x = event.x - view.layoutParams.width / 2
-								view.y = event.y - view.layoutParams.height / 2
-								owner.addView(view)
-								owner.requestLayout()
-								view.visibility = View.VISIBLE
-
-								true
+			
+			presenter.getShopCategoryTypeDetail(
+					currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
+					filterMap)
+		}else{
+			when(item){
+				is Map<*, *> -> {
+					val currentModel = item["model"] as CollectionPostCreateModel
+					currentSaveMode = item["mode"] as Int
+					currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?.let {
+						try {
+							currentCollectionBitmap?.let { bitmap ->
+								val file = createPngFileFromBitmap(requireContext(), bitmap)
+								file?.let { currentFile ->
+									if(currentMainId != -1){
+										presenter.updateCollection(
+												it, currentMainId,currentModel, file
+										)
+									}else{
+										presenter.saveCollection(
+												it, currentModel, file
+										)
+									}
+									
+								} ?: run {
+									displayMessage("Не удалось загрузить данные")
+									hideProgress()
+								}
+								
+							} ?: run {
+								displayMessage("Не удалось загрузить данные")
+								hideProgress()
 							}
-							MIMETYPE_TEXT_PLAIN -> {
-								val owner = view.parent as ViewGroup
-								val container = v as FrameLayout
-								val intent = event.clipData.getItemAt(0).intent
-								intent.setExtrasClassLoader(ClothesTypeDataModel::class.java.classLoader)
-								val currentItem =
-									intent.getParcelableExtra<ClothesTypeDataModel>("clothesmodel")
-								container.addView(
-									copyImageView(
-										view,
-										event.x,
-										event.y,
-										currentItem
-									)
-								)
-								owner.requestLayout()
-								view.visibility = View.VISIBLE
-
-
-								true
-							}
-							else -> {
-								false
-							}
+						} catch (e: Exception) {
+							hideProgress()
+							displayMessage("Не удалось загрузить данные")
 						}
-
-					} else false
-
-				} catch (e: Exception) {
-					false
-				}
-
-			}
-
-			DragEvent.ACTION_DRAG_ENDED -> {
-
-				// Invalidates the view to force a redraw
-				v.invalidate()
-
-				// Does a getResult(), and displays what happened.
-				when (event.result) {
-					true -> {
-						processDraggedItems()
+						
 					}
-
-					else -> {
+					
+				}
+				is Int -> {
+					when(item){
+						1 -> {
+							val bundle = Bundle()
+							bundle.putInt("mode",1)
+							findNavController().navigate(R.id.action_createCollectionFragment_to_cameraFragment,bundle)
+						}
+						2 -> {
+							val bundle = Bundle()
+							bundle.putInt("mode",2)
+							findNavController().navigate(R.id.action_createCollectionFragment_to_cameraFragment,bundle)
+						}
 					}
 				}
-
-				// returns true; the value is ignored.
-				true
 			}
-			else -> {
-				// An unknown action type was received.
-				Log.e("DragDrop Example", "Unknown action type received by OnDragListener.")
-				false
+		}
+		
+	}
+	
+	override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
+		when(currentType){
+			0 -> {
+				shopCategoryModel.menCategory?.let {
+
+					it.add(GenderCategory(
+						title = "Добавить по штрихкоду",
+						isExternal = true,
+						externalType = 1,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_baseline_qr_code_2_24
+					))
+					it.add(GenderCategory(
+						title = "Добавить по фото",
+						isExternal = true,
+						externalType = 2,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_camera
+					))
+					if(listOfIdsChosen.isNotEmpty()){
+						listOfIdsChosen.forEach { type ->
+							it.find { it.id == type }?.isChoosen = true
+						}
+					}
+					listOfGenderCategory.clear()
+					listOfGenderCategory.addAll(it)
+					adapter.updateList(listOfGenderCategory)
+				}
+			}
+			1 -> {
+				shopCategoryModel.femaleCategory?.let {
+					it.add(GenderCategory(
+						title = "Добавить по штрихкоду",
+						isExternal = true,
+						externalType = 1,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_baseline_qr_code_2_24
+					))
+					it.add(GenderCategory(
+						title = "Добавить по фото",
+						isExternal = true,
+						externalType = 2,
+						isChoosen = false,
+						externalImageId = R.drawable.ic_camera
+					))
+					if(listOfIdsChosen.isNotEmpty()){
+						listOfIdsChosen.forEach { type ->
+							it.find { it.id == type }?.isChoosen = true
+						}
+					}
+					listOfGenderCategory.clear()
+					listOfGenderCategory.addAll(it)
+					adapter.updateList(listOfGenderCategory)
+				}
 			}
 		}
 	}
 	
-	private val dragRecyclerListener = View.OnDragListener { v, event ->
-		
-		// Handles each of the expected events
-		when (event.action) {
-			DragEvent.ACTION_DRAG_STARTED -> {
-				event.getClipDescription().hasMimeType(MIMETYPE_TEXT_HTML)
-			}
-			DragEvent.ACTION_DRAG_ENTERED -> {
-				true;
-			}
-
-			DragEvent.ACTION_DRAG_LOCATION ->
-				true
-			DragEvent.ACTION_DRAG_EXITED -> {
-				true
-			}
-			DragEvent.ACTION_DROP -> {
-				try {
-					val view = event.localState as ImageView
-					if (view != null) {
-						val owner = view.parent as ViewGroup
-						val container = v as RecyclerView
-						val intent = event.clipData.getItemAt(0).intent
-						intent.setExtrasClassLoader(ClothesTypeDataModel::class.java.classLoader)
-						val currentItem =
-							intent.getParcelableExtra<ClothesTypeDataModel>("clothesmodel")
-						if (listOfItems.contains(currentItem)) {
-							listOfItems.remove(currentItem)
-							listOfViews.remove(view)
-						}
-						owner.removeView(view)
-						owner.requestLayout()
-						true
-					} else false
-
-				} catch (e: Exception) {
-					false
-				}
-
-			}
-
-			DragEvent.ACTION_DRAG_ENDED -> {
-
-				// Invalidates the view to force a redraw
-				v.invalidate()
-
-				// Does a getResult(), and displays what happened.
-				when (event.result) {
-					true -> {
-						processDraggedItems()
-					}
-					else -> {
-
-					}
-				}
-
-				// returns true; the value is ignored.
-				true
-			}
-			else -> {
-				// An unknown action type was received.
-				Log.e("DragDrop Example", "Unknown action type received by OnDragListener.")
-				false
-			}
-		}
-	}
 
 	private fun processDraggedItems(){
 		val price = NumberFormat.getInstance().format(listOfItems.sumBy { it.cost ?: 0 })
 		text_view_fragment_collection_constructor_total_price.text = "$price тг."
+		if(!isItems){
+			checkIsListEmpty()
+			checkIsChosen()
+		}
+	}
+
+	private fun checkIsChosen(){
+		if(listOfIdsChosen.isNotEmpty()){
+			listOfIdsChosen.forEach { type ->
+				listOfGenderCategory.find { it.id == type }?.isChoosen = true
+			}
+		}
 	}
 
 	private fun processPostImages(){
-		if(listOfItems.isNotEmpty() && listOfViews.isNotEmpty() && currentStyle!=null){
+		if(listOfItems.isNotEmpty() && listOfEntities.isNotEmpty() && currentStyle!=null){
 			val collectionPostCreateModel = CollectionPostCreateModel()
 
 			collectionPostCreateModel.style = currentStyle!!.id
@@ -542,34 +531,40 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 			val loccloth = ArrayList<ClothesCollection>()
 
-			listOfViews.forEachIndexed { index, imageView ->
-				val result = RelativeMeasureUtil.measureView(
-					imageView,
-					frame_layout_fragment_collection_constructor_images_container
+			listOfEntities.forEachIndexed { index, imageView ->
+				val result = RelativeMeasureUtil.measureEntity(
+						imageView,
+						frame_layout_fragment_collection_constructor_images_container
 				)
-				loccloth.add(ClothesCollection(
-					clothes_id = listOfItems[index].id,
-					point_x = result.point_x,
-					point_y = result.point_y,
-					width = result.width,
-					height = result.height,
-					degree = 0f
-				))
-				clth.add(listOfItems[index].id?:0)
+				loccloth.add(
+						ClothesCollection(
+								clothes_id = listOfItems[index].id,
+								point_x = result.point_x,
+								point_y = result.point_y,
+								width = result.width,
+								height = result.height,
+								degree = result.degree
+						)
+				)
+				clth.add(listOfItems[index].id ?: 0)
 			}
 			collectionPostCreateModel.clothes = clth
 
 			collectionPostCreateModel.clothes_location = loccloth
-			collectionPostCreateModel.author = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+			collectionPostCreateModel.author = currentActivity.getSharedPrefByKey<Int>(
+					SharedConstants.USER_ID_KEY
+			)
 			collectionPostCreateModel.total_price = listOfItems.sumBy { it.cost?:0 }.toFloat()
-
+			frame_layout_fragment_collection_constructor_images_container.unselectEntity()
+			currentCollectionBitmap = createBitmapScreenshot(frame_layout_fragment_collection_constructor_images_container)
 			val createCollecationDialog = CreateCollectionAcceptDialog()
 			val bundle = Bundle()
-			bundle.putParcelable("collectionModel",collectionPostCreateModel)
+			bundle.putParcelable("collectionModel", collectionPostCreateModel)
+			bundle.putParcelable("photoBitmap", currentCollectionBitmap)
 			createCollecationDialog.arguments = bundle
 			createCollecationDialog.setChoiceListener(this@CollectionConstructorFragment)
 			createCollecationDialog.show(childFragmentManager, "PhotoChossoserTag")
-
+			
 		}else{
 			displayMessage("Не все данные заполнены")
 		}
@@ -579,7 +574,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	override fun processStyles(list: List<Style>) {
 		val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-			currentActivity,R.layout.item_style, list.map { it.title }
+				currentActivity, R.layout.item_style, list.map { it.title }
 		)
 		recycler_view_fragment_collection_constructor_list.visibility = View.GONE
 		list_view_fragment_collection_constructor_list_style.adapter = adapter
@@ -591,8 +586,40 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	}
 
-	override fun processSuccess() {
-		displayMessage("Успешно добавлено")
-		findNavController().navigateUp()
+	override fun deleteSelectedView(motionEntity: MotionEntity) {
+		val res = listOfEntities.remove(motionEntity)
+
+		val res2 = listOfItems.remove(motionEntity.item)
+		val res3 = listOfIdsChosen.remove(currentId)
+
+		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
+		processDraggedItems()
+	}
+	
+	override fun processSuccess(result: MainResult?) {
+		result?.let{ model ->
+			when(currentSaveMode){
+				1 -> {
+					displayMessage("Успешно добавлено")
+					findNavController().navigateUp()
+				}
+				2 -> {
+					model.id?.let{
+						presenter.saveCollectionToMe(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+								?: "",
+								it)
+					}
+					
+				}
+				else -> {
+					displayMessage("Успешно добавлено")
+					findNavController().navigateUp()
+				}
+			}
+		} ?: run {
+			displayMessage("Успешно добавлено")
+			findNavController().navigateUp()
+		}
+		
 	}
 }

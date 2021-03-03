@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_partner_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
@@ -17,6 +18,7 @@ import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.PartnerProfileContract
+import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 
 class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContract.View,UniversalViewClickListener{
@@ -39,6 +41,10 @@ class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContr
             text_view_toolbar_title.visibility = android.view.View.VISIBLE
             image_button_right_corner_action.visibility = android.view.View.VISIBLE
             image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_shop)
+            image_button_right_corner_action.setOnClickListener {
+                val cartDialog = CartDialog()
+                cartDialog.show(childFragmentManager,"Cart")
+            }
             elevation = 0f
             customizeActionToolBar(this,"Zara")
         }
@@ -53,7 +59,9 @@ class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContr
     }
 
     override fun initializeArguments() {
+        arguments?.let {
 
+        }
     }
 
     override fun initializeViewsData() {

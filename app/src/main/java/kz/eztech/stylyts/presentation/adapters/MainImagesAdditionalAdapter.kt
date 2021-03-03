@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.MainImageAdditionalModel
 import kz.eztech.stylyts.domain.models.MainImageModel
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
@@ -32,8 +33,8 @@ class MainImagesAdditionalAdapter : BaseAdapter(){
                 oldItemPosition: Int,
                 newItemPosition: Int
             ): Boolean {
-                return (currentList[oldItemPosition] as MainImageAdditionalModel).name ==
-                        (list[newItemPosition] as MainImageAdditionalModel).name
+                return (currentList[oldItemPosition] as ClothesMainModel).id ==
+                        (list[newItemPosition] as ClothesMainModel).id
             }
         }
     }
