@@ -21,6 +21,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
 
     @Inject
     lateinit var presenter: LoginPresenter
+
     override fun customizeActionBar() {}
 
     override fun initializeDependency() {
@@ -43,9 +44,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
 
     override fun initializeArguments() {}
 
-    override fun processPostInitialization() {
-
-    }
+    override fun processPostInitialization() {}
 
     override fun disposeRequests() {
         presenter.disposeRequests()
@@ -97,6 +96,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
     override fun processLoginUser(authModel: AuthModel) {
         currentActivity.saveSharedPrefByKey(SharedConstants.TOKEN_KEY, authModel.token)
         currentActivity.saveSharedPrefByKey(SharedConstants.USER_ID_KEY, authModel.user?.pk)
+        currentActivity.saveSharedPrefByKey(SharedConstants.USERNAME_KEY, authModel.user?.username)
         startActivity(Intent(currentActivity, MainActivity::class.java))
         currentActivity.finish()
     }

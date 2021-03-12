@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.data.models.SharedConstants.TOKEN_KEY
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.MainLentaModel
@@ -31,6 +32,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private lateinit var adapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
+
     private var userId: Int = 0
     private var isSettings = false
     private var currentName = ""
@@ -39,6 +41,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     @Inject
     lateinit var presenter: ProfilePresenter
+
     override fun getLayoutId(): Int {
         return R.layout.fragment_profile
     }
@@ -56,7 +59,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             image_button_right_corner_action.visibility = android.view.View.VISIBLE
             image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_drawer)
             elevation = 0f
-            customizeActionToolBar(this)
+
+            customizeActionToolBar(
+                toolbar = this,
+                title = currentActivity.getSharedPrefByKey(SharedConstants.USERNAME_KEY)
+            )
         }
     }
 
@@ -142,12 +149,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 findNavController().navigate(R.id.action_profileFragment_to_addressProfileFragment)
             }
             R.id.text_view_fragment_profile_settings -> {
-                val editProfileDialog = EditProfileDialog()
-                val bundle = Bundle()
-                bundle.putString("currentName", currentName)
-                bundle.putString("currentUserName", currentName)
-                bundle.putString("currentSurname", currentSurname)
-                editProfileDialog.show(childFragmentManager, "Cart")
+                EditProfileDialog.getNewInstance(
+                    name = currentName,
+                    surname = currentSurname
+                ).show(childFragmentManager, "Cart")
             }
             R.id.frame_layout_fragment_profile_cards -> {
                 findNavController().navigate(R.id.action_profileFragment_to_cardFragment)
@@ -202,7 +207,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processPostInitialization() {
-        presenter.getProfile(currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: "")
+        presenter.getProfile(token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: "")
     }
 
     override fun disposeRequests() {
@@ -228,9 +233,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processProfile(profileModel: ProfileModel) {
         profileModel.run {
             userId = id ?: 0
-            currentName = name ?: ""
+            currentName = name ?: "name"
             currentNickname = ""
-            currentSurname = lastName ?: ""
+            currentSurname = lastName ?: "lastName"
             text_view_fragment_profile_user_name.text = name
             text_view_fragment_profile_user_followers_count.text = "${/*followers_count*/ 0}"
             text_view_fragment_profile_user_followings_count.text = "${/*followings_count*/ 0}"

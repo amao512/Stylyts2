@@ -32,6 +32,7 @@ class ProfilePresenter @Inject constructor(
 
     override fun getProfile(token: String) {
         view.displayProgress()
+
         getProfileUseCase.initParams(token)
         getProfileUseCase.execute(object : DisposableSingleObserver<ProfileModel>() {
 			override fun onSuccess(t: ProfileModel) {
@@ -61,6 +62,7 @@ class ProfilePresenter @Inject constructor(
 		map: Map<String, Any>
 	) {
         view.displayProgress()
+
         myCollectionsUseCase.initParams(token, map)
         myCollectionsUseCase.execute(object : DisposableSingleObserver<MainLentaModel>() {
 			override fun onSuccess(t: MainLentaModel) {

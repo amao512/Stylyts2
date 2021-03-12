@@ -6,4 +6,5 @@ package kz.eztech.stylyts.data.models
 object SharedConstants {
 	const val TOKEN_KEY = "token"
 	const val USER_ID_KEY = "id"
+	const val USERNAME_KEY = "username"
 }
