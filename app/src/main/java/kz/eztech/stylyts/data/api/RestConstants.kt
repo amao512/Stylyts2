@@ -14,7 +14,7 @@ object RestConstants {
     const val GENERATE_FORGOT_PASSWORD: String = "auth/generate_forgot_password/"
     const val SET_NEW_PASSWORD: String = "auth/set_new_password/"
     //User
-    const val GET_USER_PROFILE: String = "auth/me/"
+    const val GET_USER_PROFILE: String = "auth/profile/"
 
     //ShopCategories
     const val GET_CATEGORIES: String = "clothes/category/"

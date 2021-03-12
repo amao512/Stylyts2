@@ -241,7 +241,7 @@
 
 **Информация о себе**
 ----
- - **/api/auth/me/**
+ - **/api/auth/profile/**
 
 	  Информация о пользователя который залогинился
 
@@ -249,31 +249,26 @@
 	  `GET`
   
 - **Headers**
-	- `"Authorization": "Bearer <token>"`
+	- `"Authorization": "JWT <token>"`
 	   
 
  - **Success Response:**
 	 - **Code:** 200 <br />
 	 - **Content:** 
 		 ```
-		 {
-		   "id": 1,
-		    "followings_count": 0,
-		    "followers_count": 0,
-		    "is_brand": false,
-		    "last_login": null,
-		    "role": "user",
-		    "email": "galix.k@gmail.com",
-		    "first_name": "Galizhan",
-		    "last_name": "Tolybayev",
-		    "date_of_birth": "1998-12-31",
-		    "is_verified": false,
-		    "should_send_mail": false,
-		    "verification_uuid": "cf1f7651-e73a-429f-a88f-81c746488b23",
-		    "created": "2020-11-23T10:37:34.867859+06:00",
-		    "modified": "2020-11-23T10:37:34.867877+06:00",
-		    "avatar": null
-		}
+		 [
+             {
+                 "owner": 1,
+                 "avatar": null,
+                 "name": "Galizhan",
+                 "last_name": "Tolybayev",
+                 "brand": false,
+                 "date_of_birth": "1998-12-31",
+                 "gender": "",
+                 "is_active": true,
+                 "verification_uuid": "3b1a3064-77ed-4c04-a95e-22ea4122ba4f"
+             }
+         ]
  
  - **Error Response:**
 
@@ -281,17 +276,12 @@
 	 - **Content:** 
 		 ```
 		 {
-	    "errors": [
-	        {
-	            "field": "detail",
-	            "error_code": "not_authenticated",
-	            "message": "Учетные данные не были предоставлены."
-	        }
-	    ],
-	    "status_code": 401,
-	    "detail": "Учетные данные не были предоставлены.",
-	    "error_code": "not_authenticated"
-	}
+             "detail": "Учетные данные не были предоставлены."
+         }
+
+         {
+             "detail": "Signature has expired."
+         }
 
 **Изменить данные**
 ----

@@ -65,7 +65,7 @@ interface API {
                             @Query("gender")gender_type:String): Single<Response<CategoryTypeDetailModel>>
     
     @GET(GET_USER_PROFILE)
-    fun getUserProfile(@Header("Authorization")token: String): Single<Response<UserModel>>
+    fun getUserProfile(@Header("Authorization") token: String): Single<Response<List<ProfileModel>>>
 
     @GET(GET_STYLES)
     fun getStyles(@Header("Authorization")token: String): Single<Response<List<Style>>>
