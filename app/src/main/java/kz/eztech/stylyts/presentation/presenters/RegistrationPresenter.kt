@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.AuthModel
 import kz.eztech.stylyts.domain.usecases.RegistrationUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.RegistrationContract
@@ -11,16 +11,12 @@ import javax.inject.Inject
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
-class RegistrationPresenter:RegistrationContract.Presenter{
-    private var errorHelper: ErrorHelper
+class RegistrationPresenter @Inject constructor(
+    private var errorHelper: ErrorHelper,
     private var registrationUseCase: RegistrationUseCase
-    private lateinit var view:RegistrationContract.View
-    @Inject
-    constructor(errorHelper: ErrorHelper,
-                registrationUseCase: RegistrationUseCase){
-        this.registrationUseCase = registrationUseCase
-        this.errorHelper = errorHelper
-    }
+) : RegistrationContract.Presenter {
+
+    private lateinit var view: RegistrationContract.View
 
     override fun registerUser(data: HashMap<String, Any>) {
         view.displayProgress()
@@ -36,8 +32,8 @@ class RegistrationPresenter:RegistrationContract.Presenter{
         this.view = view
     }
 
-    inner class RegisterUserDisposable: DisposableSingleObserver<UserModel>(){
-        override fun onSuccess(t: UserModel) {
+    inner class RegisterUserDisposable : DisposableSingleObserver<AuthModel>() {
+        override fun onSuccess(t: AuthModel) {
             view.processViewAction {
                 hideProgress()
                 processUser(t)

@@ -21,7 +21,6 @@ import kz.eztech.stylyts.data.api.RestConstants.SET_NEW_PASSWORD
 import kz.eztech.stylyts.data.api.RestConstants.UPDATE_COLLECTION
 import kz.eztech.stylyts.domain.models.*
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -33,19 +32,21 @@ interface API {
     @FormUrlEncoded
     @POST(REGISTER_USER)
     fun registerUser(
-            @Field("email") email: String,
-            @Field("password") password: String,
-            @Field("first_name") first_name: String,
-            @Field("name") last_name: String,
-            @Field("date_of_birth") date_of_birth: String,
-            @Field("should_send_mail") should_send_mail: Boolean,
-            @Field("username") username: String,
-    ): Single<Response<UserModel>>
+        @Field("email") email: String,
+        @Field("password") password: String,
+        @Field("name") first_name: String,
+        @Field("last_name") last_name: String,
+        @Field("date_of_birth") date_of_birth: String,
+        @Field("should_send_mail") should_send_mail: Boolean,
+        @Field("username") username: String,
+    ): Single<Response<AuthModel>>
     
     @FormUrlEncoded
     @POST(LOGIN_USER)
-    fun loginUser( @Field("username") username: String,
-                   @Field("password") password: String): Single<Response<UserModel>>
+    fun loginUser(
+        @Field("username") username: String,
+        @Field("password") password: String
+    ): Single<Response<AuthModel>>
     
     @FormUrlEncoded
     @POST(GENERATE_FORGOT_PASSWORD)

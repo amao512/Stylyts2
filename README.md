@@ -15,7 +15,7 @@
 
 **Регистрация**
 ----
- - **/api/auth/*
+ - **/api/auth/registration/*
 
 	Регистрация  
 	 
@@ -27,58 +27,51 @@
 	|----------|:-------------:|:-------------:|------:|
 	| email(required) |  string | Электронная почта | -
 	| password(required) |  string | Пароль | -
-	| first_name(required) | string  |   Имя | -
-	| last_name (required) |string | Фамилия|    -  |
+	| name(required) | string  |   Имя | -
+	| last_name (required) |string | Фамилия |    -  |
+	| username | string | Никнейм |    -  |
 	| should_send_mail (required) | boolean | Получать рассылки по почте  |  true  |
 	| date_of_birth (required) |string (YYYY-MM-DD) | День рождениия |    - |
 
 
  - **Success Response:**
-	 После успешеного запроса берете поле **token** для дальнейшей Авторизации, и передаете в **headers** как `"Authorization": "Bearer <token>"`
+	 После успешеного запроса берете поле **token** для дальнейшей Авторизации, и передаете в **headers** как `"Authorization": "JWT <token>"`
 	 - **Code:** 200 <br />
 	 - **Content:** 
 		 ```
-		{
-		    "id": 17,
-		    "password": "",
-		    "last_login": null,
-		    "role": "user",
-		    "email": "galix.kz@gmail.kz133",
-		    "first_name": "Galizhan",
-		    "last_name": "Tolybayev",
-		    "date_of_birth": "1998-12-31",
-		    "is_verified": false,
-		    "should_send_mail": false,
-		    "verification_uuid": "3cf02311-d8fc-42ea-9a64-83a9fb33d880",
-		    "created": "2020-12-25T09:31:30.874573+06:00",
-		    "modified": "2020-12-25T09:31:30.874598+06:00",
-		    "avatar": null,
-		    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjQwNDAzMDkwLCJqdGkiOiIyNjkzNjU2OWRiMjA0MTdlYTkyMjhmNzMxNmViYWYxNSIsInVzZXJfaWQiOjE3fQ.BoXDTH_98CuZWyNs0sqPIppgSTqtOhfQMTDgo8E9oXo"
-		}
+		 {
+             "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4LCJ1c2VybmFtZSI6ImV4YW1wbGUxQG1haWwuY29tIiwiZXhwIjoxNjE1NTQ0MTg1LCJlbWFpbCI6ImV4YW1wbGUxQG1haWwuY29tIn0.NjW_BiIqhT-cT_32A_sJOaAzKiqGNb5_CLxSPHmpqts",
+             "user": {
+                 "pk": 8,
+                 "username": "username",
+                 "email": "galix.kz@gmail.kz133",
+                 "profile": {
+                     "owner": 8,
+                     "avatar": null,
+                     "name": "Galizhan",
+                     "last_name": "Tolybayev",
+                     "brand": false,
+                     "date_of_birth": "2001-01-01",
+                     "gender": "",
+                     "is_active": true,
+                     "verification_uuid": "9ca7f67c-05ee-431a-a0fb-460f03993f29"
+                 }
+             }
+         }
  
  - **Error Response:**
 
 	 - **Code:** 400 invalid  <br />
 	 - **Content:**
 	  ```
-			 {
-		    "errors": [
-		        {
-		            "field": "email",
-		            "error_code": "unique",
-		            "message": "Пользователь с такой электронной почтой уже существует"
-		        },
-		        {
-		            "field": "first_name",
-		            "error_code": "required",
-		            "message": "Это поле обязательно для заполнения"
-		        }
-		    ],
-		    "status_code": 400,
-		    "detail": "Invalid input.",
-		    "error_code": "invalid"
-		}
-
+	  {
+          "email": [
+              "user с таким email уже существует."
+          ],
+          "username": [
+              "user с таким username уже существует."
+          ]
+      }
 
 **Логин**
 ----

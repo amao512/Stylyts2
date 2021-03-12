@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts
 
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.AuthModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -9,11 +9,12 @@ import kz.eztech.stylyts.presentation.base.BaseView
  */
 interface LoginContract {
     interface View: BaseView {
-        fun processLoginUser(userModel: UserModel)
+        fun processLoginUser(authModel: AuthModel)
+
         fun checkData()
     }
 
     interface Presenter: BasePresenter<View> {
-        fun loginUser(data:HashMap<String,Any>)
+        fun loginUser(data: HashMap<String, Any>)
     }
 }

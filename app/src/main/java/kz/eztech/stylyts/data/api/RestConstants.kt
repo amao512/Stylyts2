@@ -9,7 +9,7 @@ import kz.eztech.stylyts.BuildConfig
 object RestConstants {
     const val BASE_URL: String = BuildConfig.BASE_URL
     
-    const val REGISTER_USER: String = "auth/"
+    const val REGISTER_USER: String = "auth/registration/"
     const val LOGIN_USER: String = "auth/login/"
     const val GENERATE_FORGOT_PASSWORD: String = "auth/generate_forgot_password/"
     const val SET_NEW_PASSWORD: String = "auth/set_new_password/"

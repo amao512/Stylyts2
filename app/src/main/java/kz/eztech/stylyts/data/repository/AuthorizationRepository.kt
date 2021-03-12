@@ -3,21 +3,18 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.API
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.AuthModel
 import kz.eztech.stylyts.domain.repository.AuthorizationDomainRepository
 import javax.inject.Inject
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
-class AuthorizationRepository:AuthorizationDomainRepository {
+class AuthorizationRepository @Inject constructor(
     private var api: API
+) : AuthorizationDomainRepository {
 
-    @Inject
-    constructor(api: API){
-        this.api = api
-    }
-    override fun registerUser(data: HashMap<String, Any>): Single<UserModel> {
+    override fun registerUser(data: HashMap<String, Any>): Single<AuthModel> {
         return api.registerUser(
             data["email"] as String,
             data["password"] as String,
@@ -27,19 +24,19 @@ class AuthorizationRepository:AuthorizationDomainRepository {
             data["should_send_mail"] as Boolean,
             data["username"] as String,
         ).map {
-            when(it.isSuccessful){
+            when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)
             }
         }
     }
 
-    override fun loginUser(data: HashMap<String, Any>): Single<UserModel> {
+    override fun loginUser(data: HashMap<String, Any>): Single<AuthModel> {
         return api.loginUser(
             data["username"] as String,
             data["password"] as String
         ).map {
-            when(it.isSuccessful){
+            when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)
             }
@@ -50,7 +47,7 @@ class AuthorizationRepository:AuthorizationDomainRepository {
         return api.generateForgotPassword(
             email
         ).map {
-            when(it.isSuccessful){
+            when (it.isSuccessful) {
                 true -> Unit
                 false -> throw NetworkException(it)
             }
@@ -62,7 +59,7 @@ class AuthorizationRepository:AuthorizationDomainRepository {
             data["token"] as String,
             data["password"] as String
         ).map {
-            when(it.isSuccessful){
+            when (it.isSuccessful) {
                 true -> Unit
                 false -> throw NetworkException(it)
             }
