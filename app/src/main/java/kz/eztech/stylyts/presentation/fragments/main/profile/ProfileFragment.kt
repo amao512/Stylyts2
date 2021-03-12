@@ -25,39 +25,43 @@ import kz.eztech.stylyts.presentation.contracts.main.profile.ProfileContract
 import kz.eztech.stylyts.presentation.dialogs.EditProfileDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.profile.ProfilePresenter
+import kz.eztech.stylyts.presentation.utils.extensions.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
     UniversalViewClickListener {
+
+    @Inject lateinit var presenter: ProfilePresenter
 
     private lateinit var adapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
 
     private var userId: Int = 0
     private var isSettings = false
-    private var currentName = ""
-    private var currentNickname = ""
-    private var currentSurname = ""
+    private var currentName = EMPTY_STRING
+    private var currentNickname = EMPTY_STRING
+    private var currentSurname = EMPTY_STRING
 
-    @Inject
-    lateinit var presenter: ProfilePresenter
+    override fun getLayoutId(): Int = R.layout.fragment_profile
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_profile
-    }
-
-    override fun getContractView(): BaseView {
-        return this
-    }
+    override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
         with(include_toolbar_profile) {
-            image_button_left_corner_action.visibility = android.view.View.VISIBLE
-            image_button_left_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_person_add)
-            text_view_toolbar_back.visibility = android.view.View.GONE
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            image_button_right_corner_action.visibility = android.view.View.VISIBLE
-            image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_drawer)
+            image_button_left_corner_action.show()
+            image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
+
+            text_view_toolbar_back.hide()
+            text_view_toolbar_title.show()
+            image_button_right_corner_action.show()
+
+            image_button_right_corner_action.setImageResource(R.drawable.ic_drawer)
+
             elevation = 0f
 
             customizeActionToolBar(
@@ -71,30 +75,32 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         (currentActivity.application as StylytsApp).applicationComponent.inject(this)
     }
 
-    override fun initializePresenter() {
-        presenter.attach(this)
-    }
+    override fun initializePresenter() = presenter.attach(this)
 
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
         val filterList = ArrayList<CollectionFilterModel>()
-        filterList.add(CollectionFilterModel("Фильтр"))
-        filterList.add(CollectionFilterModel(name = "Фото образов", isChosen = true))
-        filterList.add(CollectionFilterModel("Публикации"))
-        filterList.add(CollectionFilterModel("Гардеров"))
-        filterList.add(CollectionFilterModel("Мои данные"))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_filter)))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_photo_outfits), isChosen = true))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_publishes)))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_wardrobe)))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_my_data)))
+
         adapterFilter = CollectionsFilterAdapter()
         adapterFilter.setOnClickListener(this)
+
         recycler_view_fragment_profile_filter_list.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recycler_view_fragment_profile_filter_list.adapter = adapterFilter
+
         adapterFilter.updateList(filterList)
     }
 
     override fun initializeViews() {
         adapter = GridImageAdapter()
         adapter.setOnClickListener(this)
+
         recycler_view_fragment_profile_items_list.layoutManager = GridLayoutManager(context, 2)
         recycler_view_fragment_profile_items_list.adapter = adapter
     }
@@ -115,15 +121,15 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun showSettings() {
-        recycler_view_fragment_profile_filter_list.visibility = View.GONE
-        recycler_view_fragment_profile_items_list.visibility = View.GONE
-        frame_layout_fragment_profile_settings_container.visibility = View.VISIBLE
+        recycler_view_fragment_profile_filter_list.hide()
+        recycler_view_fragment_profile_items_list.hide()
+        frame_layout_fragment_profile_settings_container.show()
     }
 
     override fun hideSettings() {
-        recycler_view_fragment_profile_filter_list.visibility = View.VISIBLE
-        recycler_view_fragment_profile_items_list.visibility = View.VISIBLE
-        frame_layout_fragment_profile_settings_container.visibility = View.GONE
+        recycler_view_fragment_profile_filter_list.show()
+        recycler_view_fragment_profile_items_list.show()
+        frame_layout_fragment_profile_settings_container.hide()
     }
 
     override fun initializeListeners() {
@@ -173,24 +179,17 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         when (view.id) {
             R.id.frame_layout_item_collection_filter -> {
                 when (position) {
-                    0 -> {
-
-                    }
+                    0 -> {}
                     1 -> {
                         val map = HashMap<String, Int>()
                         map["autor"] = userId
                         presenter.getMyCollections(
-                            currentActivity.getSharedPrefByKey<String>(
-                                TOKEN_KEY
-                            ) ?: "", map
+                            token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: EMPTY_STRING,
+                            map = map
                         )
                     }
-                    2 -> {
-
-                    }
-                    3 -> {
-
-                    }
+                    2 -> {}
+                    3 -> {}
                 }
             }
             R.id.shapeable_image_view_item_collection_image -> {
@@ -203,55 +202,51 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 )
             }
         }
-
     }
 
     override fun processPostInitialization() {
-        presenter.getProfile(token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: "")
+        presenter.getProfile(
+            token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: EMPTY_STRING
+        )
     }
 
-    override fun disposeRequests() {
-        presenter.disposeRequests()
-    }
+    override fun disposeRequests() = presenter.disposeRequests()
 
-    override fun displayMessage(msg: String) {
-        displayToast(msg)
-    }
+    override fun displayMessage(msg: String) = displayToast(msg)
 
-    override fun isFragmentVisible(): Boolean {
-        return isVisible
-    }
+    override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayProgress() {
-        progress_bar_fragment_profile.visibility = View.VISIBLE
-    }
+    override fun displayProgress() = progress_bar_fragment_profile.show()
 
-    override fun hideProgress() {
-        progress_bar_fragment_profile.visibility = View.GONE
-    }
+    override fun hideProgress() = progress_bar_fragment_profile.hide()
 
     override fun processProfile(profileModel: ProfileModel) {
         profileModel.run {
-            userId = id ?: 0
-            currentName = name ?: "name"
-            currentNickname = ""
-            currentSurname = lastName ?: "lastName"
+            userId = id
+            currentName = name ?: EMPTY_STRING
+            currentNickname = EMPTY_STRING
+            currentSurname = lastName ?: EMPTY_STRING
+
             text_view_fragment_profile_user_name.text = name
             text_view_fragment_profile_user_followers_count.text = "${/*followers_count*/ 0}"
             text_view_fragment_profile_user_followings_count.text = "${/*followings_count*/ 0}"
+
             avatar?.let {
-                text_view_fragment_profile_user_short_name.visibility = View.GONE
-                Glide.with(currentActivity).load(it)
+                text_view_fragment_profile_user_short_name.hide()
+
+                Glide.with(currentActivity)
+                    .load(it)
                     .into(shapeable_image_view_fragment_profile_avatar)
             } ?: run {
-                shapeable_image_view_fragment_profile_avatar.visibility = View.GONE
-                text_view_fragment_profile_user_short_name.visibility = View.VISIBLE
-                text_view_fragment_profile_user_short_name.text =
-                    "${name?.toUpperCase()?.get(0)}${lastName?.toUpperCase()?.get(0)}"
-
+                shapeable_image_view_fragment_profile_avatar.hide()
+                text_view_fragment_profile_user_short_name.show()
+                text_view_fragment_profile_user_short_name.text = getString(
+                    R.string.full_name_text_format,
+                    name?.toUpperCase(Locale.getDefault())?.get(0),
+                    lastName?.toUpperCase(Locale.getDefault())?.get(0)
+                )
             }
         }
-
     }
 
     override fun processMyCollections(models: MainLentaModel) {

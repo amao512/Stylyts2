@@ -39,5 +39,18 @@
     <string name="bottom_nav_bar_profile">Профиль</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="preference_file_key">preference_file_key</string>
+
+    <string name="full_name_text_format">%s%s</string>
+
+    <string name="filter_list_filter">Фильтр</string>
+    <string name="filter_list_photo_outfits">Фото образов</string>
+    <string name="filter_list_publishes">Публикации</string>
+    <string name="filter_list_wardrobe">Гардероб</string>
+    <string name="filter_list_my_data">Мои данные</string>
+
+    <string name="toolbar_cancel">Отмена</string>
+    <string name="toolbar_title_edit_profile">Редактировать профиль</string>
+    <string name="toolbar_completed">Готово</string>
 </resources>

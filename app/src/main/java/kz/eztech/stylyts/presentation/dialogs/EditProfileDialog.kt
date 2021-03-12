@@ -10,15 +10,19 @@ import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.presentation.contracts.main.profile.EditProfileContract
+import kz.eztech.stylyts.presentation.utils.extensions.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
+import java.util.*
 
 /**
  * Created by Ruslan Erdenoff on 03.03.2021.
  */
 class EditProfileDialog : DialogFragment(), EditProfileContract.View {
 
-    private var currentName: String = ""
-    private var currentSurname: String = ""
-    private var currentUserName: String = ""
+    private var currentName: String = EMPTY_STRING
+    private var currentSurname: String = EMPTY_STRING
+    private var currentUserName: String = EMPTY_STRING
 
     companion object {
         private const val NAME_ARGS_KEY = "name_args_key"
@@ -64,18 +68,18 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
 
     override fun customizeActionBar() {
         with(include_toolbar_edit_profile) {
-            image_button_left_corner_action.visibility = View.GONE
-            text_view_toolbar_back.visibility = android.view.View.VISIBLE
-            text_view_toolbar_back.text = "Отмена"
+            image_button_left_corner_action.hide()
+            text_view_toolbar_back.show()
+            text_view_toolbar_back.text = context.getString(R.string.toolbar_cancel)
             text_view_toolbar_back.setCompoundDrawables(null, null, null, null)
             text_view_toolbar_back.setOnClickListener {
                 dismiss()
             }
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            text_view_toolbar_title.text = "Редактировать профиль"
-            image_button_right_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_right_text.visibility = View.VISIBLE
-            text_view_toolbar_right_text.text = "Готово"
+            text_view_toolbar_title.show()
+            text_view_toolbar_title.text = context.getString(R.string.toolbar_title_edit_profile)
+            image_button_right_corner_action.hide()
+            text_view_toolbar_right_text.show()
+            text_view_toolbar_right_text.text = context.getString(R.string.toolbar_completed)
             text_view_toolbar_right_text.setOnClickListener {
                 dismiss()
             }
@@ -92,15 +96,15 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey(NAME_ARGS_KEY)) {
-                currentName = it.getString(NAME_ARGS_KEY, "")
+                currentName = it.getString(NAME_ARGS_KEY, EMPTY_STRING)
             }
 
             if (it.containsKey(USERNAME_ARGS_KEY)) {
-                currentUserName = it.getString(USERNAME_ARGS_KEY, "")
+                currentUserName = it.getString(USERNAME_ARGS_KEY, EMPTY_STRING)
             }
 
             if (it.containsKey(SURNAME_ARGS_KEY)) {
-                currentSurname = it.getString(SURNAME_ARGS_KEY, "")
+                currentSurname = it.getString(SURNAME_ARGS_KEY, EMPTY_STRING)
             }
         }
     }
@@ -121,10 +125,12 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
         }
 
         if (currentName.isNotEmpty() && currentSurname.isNotEmpty()) {
-            text_view_fragment_profile_edit_user_short_name.text =
-                "${currentName?.toUpperCase()?.get(0)}${currentSurname?.toUpperCase()?.get(0)}"
+            text_view_fragment_profile_edit_user_short_name.text = getString(
+                R.string.full_name_text_format,
+                currentName.toUpperCase(Locale.getDefault())[0],
+                currentSurname.toUpperCase(Locale.getDefault())[0]
+            )
         }
-
     }
 
     override fun initializeListeners() {}
