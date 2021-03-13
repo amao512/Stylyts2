@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_size_24x"
-            android:text="У вас отсутствуют сохраненные способы оплаты. Добавьте карту"
+            android:text="@string/card_empty"
             android:visibility="gone"
             />
 
@@ -49,7 +49,7 @@
                 android:drawableStart="@drawable/ic_credit_card"
                 android:gravity="center"
                 android:padding="@dimen/padding_size_16x"
-                android:text="Добавить Кредитную/Дебетовую Карту"
+                android:text="@string/card_add"
                 android:textAllCaps="false"
                 />
         </LinearLayout>
@@ -80,7 +80,7 @@
                 style="@style/TextRegularBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Номер Карты"
+                android:text="@string/card_number"
                 android:textColor="@color/app_gray_hint"
                 />
 
@@ -93,7 +93,7 @@
                 android:background="@null"
                 android:drawableStart="@drawable/ic_credit_card"
                 android:drawablePadding="@dimen/padding_size_8x"
-                android:hint="Номер карты"
+                android:hint="@string/card_number"
                 android:inputType="number"
                 />
 
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_size_16x"
-                android:text="Дата истечения срока действия карты"
+                android:text="@string/card_last_date"
                 android:textColor="@color/app_gray_hint"
                 />
 
@@ -126,7 +126,7 @@
                     android:layout_marginTop="@dimen/margin_size_8x"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:gravity="center"
-                    android:text="Месяц"
+                    android:text="@string/month"
                     />
 
                 <TextView
@@ -136,7 +136,7 @@
                     android:layout_marginTop="@dimen/margin_size_8x"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:gravity="center"
-                    android:text="Год"
+                    android:text="@string/year"
                     />
             </LinearLayout>
 
@@ -161,7 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_size_16x"
-                android:text="Имя на карте"
+                android:text="@string/card_name"
                 android:textColor="@color/app_gray_hint"
                 />
 
@@ -172,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_size_16x"
                 android:background="@null"
-                android:hint="Имя на карте"
+                android:hint="@string/card_name"
                 tools:text="12/21"
                 />
 
@@ -205,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_size_16x"
-                android:text="Мы принимаем"
+                android:text="@string/card_we_accept"
                 android:textColor="@color/app_gray_hint"
                 />
 

@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_16x"
         android:drawableEnd="@drawable/ic_baseline_check_24_gray"
-        android:text="Предпочтительный адрес доставки"
+        android:text="@string/address_profile_prefer_address"
         android:textColor="@color/app_gray_hint"
         />
 
@@ -98,7 +98,7 @@
         android:layout_marginTop="@dimen/margin_size_8x"
         android:layout_marginBottom="@dimen/margin_size_16x"
         android:drawableEnd="@drawable/ic_baseline_check_24_gray"
-        android:text="Адрес выставления счетов по умолчанию"
+        android:text="@string/address_profile_default_score"
         android:textColor="@color/app_gray_hint"
         />
 </LinearLayout>

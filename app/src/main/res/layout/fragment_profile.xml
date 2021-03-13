@@ -123,7 +123,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="подписчики"
+                                android:text="@string/followers"
                                 android:textColor="@color/app_gray"
                                 />
                         </LinearLayout>
@@ -154,7 +154,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="фото"
+                                android:text="@string/photo"
                                 android:textColor="@color/app_gray"
                                 />
                         </LinearLayout>
@@ -186,7 +186,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="подписки"
+                                android:text="@string/following"
                                 android:textColor="@color/app_gray"
                                 />
                         </LinearLayout>
@@ -210,7 +210,7 @@
                                 android:background="@drawable/rounded_rectangle_white_gray_corners"
                                 android:gravity="center"
                                 android:padding="@dimen/padding_size_6x"
-                                android:text="Изменить профиль"
+                                android:text="@string/profile_change"
                                 />
 
                             <ImageView
@@ -276,7 +276,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="Мои Заказы"
+                            android:text="@string/profile_my_orders"
                             />
 
                         <ImageView
@@ -302,7 +302,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="Способ Оплаты"
+                            android:text="@string/profile_payments"
                             />
 
                         <ImageView
@@ -327,7 +327,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="Избранное"
+                            android:text="@string/profile_favorites"
                             />
 
                         <ImageView
@@ -353,7 +353,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="Мой Адрес"
+                            android:text="@string/profile_my_address"
                             />
 
                         <ImageView
@@ -379,7 +379,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="Мои доходы"
+                            android:text="@string/profile_my_incomes"
                             />
 
                         <ImageView
@@ -404,7 +404,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="Нужна Помощь"
+                            android:text="@string/profile_help_need"
                             />
 
                         <ImageView

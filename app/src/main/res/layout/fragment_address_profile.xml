@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_size_24x"
-            android:text="У вас отсутствуют адрес доставки. Добавьте адрес."
+            android:text="@string/address_profile_empty"
             android:visibility="gone"
             />
 
@@ -52,7 +52,7 @@
                 android:background="@drawable/rounded_rectangle_white_gray_corners"
                 android:gravity="center"
                 android:padding="@dimen/padding_size_16x"
-                android:text="Добавить адрес"
+                android:text="@string/address_profile_add"
                 android:textAllCaps="false"
                 />
         </LinearLayout>
@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/app_very_light_gray"
                 android:padding="@dimen/padding_size_16x"
-                android:text="Контактная информация"
+                android:text="@string/address_profile_contact"
                 />
 
             <LinearLayout
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Контактная информация"
+                    android:text="@string/address_profile_contact"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -127,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Фамилия"
+                    android:text="@string/surname"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -155,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Мобильный телефон"
+                    android:text="@string/address_profile_mobile_phone"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -183,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Контактная информация"
+                    android:text="@string/address_profile_contact"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -208,7 +208,7 @@
                 android:layout_marginTop="@dimen/margin_size_16x"
                 android:background="@color/app_very_light_gray"
                 android:padding="16dp"
-                android:text="Адресные данные"
+                android:text="@string/address_profile_address_data"
                 />
 
             <LinearLayout
@@ -224,7 +224,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Страна"
+                    android:text="@string/country"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -251,7 +251,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Адресс"
+                    android:text="@string/address"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -278,7 +278,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Населенный пункт"
+                    android:text="@string/locality"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -305,7 +305,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Почтовый индекс"
+                    android:text="@string/post_index"
                     android:textColor="@color/app_gray_hint"
                     />
 
@@ -343,7 +343,7 @@
                     android:background="@drawable/rounded_rectangle_white_gray_corners"
                     android:gravity="center"
                     android:padding="@dimen/padding_size_16x"
-                    android:text="Добавить адрес"
+                    android:text="@string/address_profile_add"
                     android:textAllCaps="false"
                     />
             </LinearLayout>

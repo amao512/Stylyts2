@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_16x"
         android:drawableEnd="@drawable/ic_baseline_check_24_gray"
-        android:text="Предпочитаемый способ оплаты"
+        android:text="@string/card_prefer_payment"
         android:textColor="@color/app_gray_hint"
         />
 </LinearLayout>

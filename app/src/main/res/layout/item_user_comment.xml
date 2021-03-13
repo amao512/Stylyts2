@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/margin_size_12x"
-                    android:text="Ответить"
+                    android:text="@string/reply"
                     android:textColor="@color/app_gray_hint"
                     />
             </LinearLayout>

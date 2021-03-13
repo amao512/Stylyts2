@@ -50,7 +50,7 @@
                 style="@style/TextRegularBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="СОЗДАТЬ ОБРАЗ"
+                android:text="@string/constructor_holder_create_outfit"
                 android:textColor="@color/white"
                 />
 
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_size_8x"
-                android:text="СОЗДАТЬ ПУБЛИКАЦИЮ"
+                android:text="@string/constructor_holder_create_publish"
                 android:textColor="@color/app_gray"
                 />
         </LinearLayout>

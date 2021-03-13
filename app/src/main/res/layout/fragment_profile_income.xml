@@ -24,7 +24,7 @@
             style="@style/TitleTextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Доходы от продаж"
+            android:text="@string/profile_income_title"
             android:textSize="@dimen/text_size_30x"
             />
 

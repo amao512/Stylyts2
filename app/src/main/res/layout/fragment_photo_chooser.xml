@@ -73,7 +73,7 @@
                     android:layout_gravity="center"
                     android:drawablePadding="@dimen/padding_size_12x"
                     android:gravity="center"
-                    android:text="Коснитесь фотографии, чтобы отметить вещь"
+                    android:text="@string/photo_chooser_touch"
                     android:textAlignment="center"
                     android:textColor="@color/app_gray_hint"
                     />
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:text="Что переместить метку, нажмите на нее и перетащите на желаемое место."
+                    android:text="@string/photo_chooser_move_title"
                     android:textAlignment="center"
                     android:textColor="@color/app_gray_hint"
                     />

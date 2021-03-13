@@ -67,7 +67,7 @@
                     android:layout_marginStart="@dimen/margin_size_12x"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                     android:gravity="center"
-                    android:text="Альбомы"
+                    android:text="@string/albums"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

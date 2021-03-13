@@ -58,7 +58,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_size_16x"
                 android:gravity="center"
-                android:text="Изменить фото профиля"
+                android:text="@string/edit_profile_change_photo"
                 />
 
             <View
@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
                         android:gravity="start"
-                        android:text="Имя"
+                        android:text="@string/profile_name"
                         />
 
                     <LinearLayout
@@ -106,7 +106,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="start"
-                            android:hint="Имя"
+                            android:hint="@string/profile_name"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:textColor="@color/app_gray_hint"
@@ -137,7 +137,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
                         android:gravity="start"
-                        android:text="Имя пользователя"
+                        android:text="@string/profile_username"
                         />
 
                     <LinearLayout
@@ -155,7 +155,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="start"
-                            android:hint="Имя пользователя"
+                            android:hint="@string/profile_username"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:textColor="@color/app_gray_hint"
@@ -186,7 +186,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
                         android:gravity="start"
-                        android:text="Сайт"
+                        android:text="@string/profile_web_site"
                         />
 
                     <LinearLayout
@@ -204,7 +204,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="start"
-                            android:hint="Сайт"
+                            android:hint="@string/profile_web_site"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:textColor="@color/app_gray_hint"
@@ -235,7 +235,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
                         android:gravity="start"
-                        android:text="Описание"
+                        android:text="@string/profile_desc"
                         />
 
                     <LinearLayout
@@ -253,7 +253,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="start"
-                            android:hint="Добавьте информацию о себе"
+                            android:hint="@string/profile_add_desc"
                             android:imeOptions="actionNext"
                             android:inputType="text"
                             android:textColor="@color/app_gray_hint"
@@ -290,7 +290,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
                         android:gravity="start"
-                        android:text="Instagram"
+                        android:text="@string/instagram"
                         />
 
                     <LinearLayout
@@ -308,7 +308,7 @@
                             android:layout_height="wrap_content"
                             android:background="@null"
                             android:gravity="start"
-                            android:hint="Добавьте cсылку на instagram"
+                            android:hint="@string/profile_add_instagram"
                             android:imeOptions="actionDone"
                             android:inputType="text"
                             android:textColor="@color/app_gray_hint"

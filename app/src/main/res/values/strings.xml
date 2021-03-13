@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Stylyts</string>
+    <string name="app_name_upper_case">STYLYTS</string>
 
     <string name="fragment_login_forgot_password">Забыли пароль?</string>
     <string name="fragment_login_sign_in">Войти</string>
@@ -26,11 +27,19 @@
     <string name="item_user_comment"><![CDATA[<b>%1$s%2$s</b> %3$s]]></string>
 
     <string name="email">Email</string>
+    <string name="username">Никнейм</string>
     <string name="name">Имя</string>
     <string name="surname">Фамилия</string>
     <string name="password">Пароль</string>
     <string name="password_repeat">Повторите пароль</string>
     <string name="back">Назад</string>
+    <string name="next">Далее</string>
+    <string name="country">Страна</string>
+    <string name="address">Адресс</string>
+    <string name="locality">Населенный пункт</string>
+    <string name="post_index">Почтовый индекс</string>
+    <string name="month">Месяц</string>
+    <string name="year">Год</string>
 
     <string name="bottom_nav_bar_main">Основная</string>
     <string name="bottom_nav_bar_collection">Образы</string>
@@ -53,4 +62,106 @@
     <string name="toolbar_cancel">Отмена</string>
     <string name="toolbar_title_edit_profile">Редактировать профиль</string>
     <string name="toolbar_completed">Готово</string>
+
+    <string name="cancel">Отмена</string>
+    <string name="color">Цвет</string>
+    <string name="size">Размер</string>
+    <string name="add_in_basket">Добавить в корзину</string>
+    <string name="share">Поделиться</string>
+    <string name="create_outfit_with_item">Создать образ с этой вещью</string>
+    <string name="item_description">Описание товара</string>
+    <string name="delivery_info">Информация о доставке</string>
+    <string name="albums">Альбомы</string>
+    <string name="followers">подписчики</string>
+    <string name="photo">фото</string>
+    <string name="following">подписки</string>
+    <string name="follow">Подписаться</string>
+    <string name="for_her">Для нее</string>
+    <string name="month_year">Месяц/Год</string>
+    <string name="name_surname">Имя Фамилия</string>
+    <string name="send">Отправить</string>
+    <string name="counts">Кол-во</string>
+    <string name="sale_commission">Коммисия за продажу</string>
+    <string name="reply">Ответить</string>
+
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="tik_tok">Tik Tok</string>
+
+    <string name="collection_chooser_publish">Опубликовать в общей ленте</string>
+    <string name="collection_chooser_save">Сохранить без публикации</string>
+    <string name="collection_chooser_buy">Купить данный образ</string>
+
+    <string name="detail_chooser_size_table">ТАБЛИЦА РАЗМЕРОВ</string>
+    <string name="detail_chooser_ready">ГОТОВО</string>
+
+    <string name="photo_chooser_add_item_by_barcode">Добавить вещь по штрихкоду</string>
+    <string name="photo_chooser_add_item_by_photo">Добавить вещь по фотографии</string>
+    <string name="photo_chooser_publish_in_outfit">Опубликовать фото в образе</string>
+
+    <string name="my_basket">Моя корзина</string>
+    <string name="empty_basket_title">Ваша корзина пуста</string>
+    <string name="empty_basket_subtitle">Добавьте вещи, чтобы они отобразились в корзине</string>
+
+    <string name="collection_add_text">Добавить надпись</string>
+    <string name="collection_accept_cancel_items">Отметить вещи</string>
+    <string name="collection_accept_cancel_users">Отметить пользователя</string>
+    <string name="collection_accept_publish_social_networks">Публикация в соц сетях</string>
+
+    <string name="edit_profile_change_photo">Изменить фото профиля</string>
+
+    <string name="profile_name">Имя</string>
+    <string name="profile_username">Имя пользователя</string>
+    <string name="profile_web_site">Сайт</string>
+    <string name="profile_desc">Описание</string>
+    <string name="profile_add_desc">Добавьте информацию о себе</string>
+    <string name="profile_add_instagram">Добавьте cсылку на instagram</string>
+
+    <string name="filter_constructor_filter">Фильтровать</string>
+    <string name="filter_constructor_show_results">Показать результаты</string>
+
+    <string name="address_profile_empty">У вас отсутствуют адрес доставки. Добавьте адрес.</string>
+    <string name="address_profile_add">Добавить адрес</string>
+    <string name="address_profile_contact">Контактная информация</string>
+    <string name="address_profile_mobile_phone">Мобильный телефон</string>
+    <string name="address_profile_address_data">Адресные данные</string>
+    <string name="address_profile_prefer_address">Предпочтительный адрес доставки</string>
+    <string name="address_profile_default_score">Адрес выставления счетов по умолчанию</string>
+
+    <string name="card_empty">У вас отсутствуют сохраненные способы оплаты. Добавьте карту</string>
+    <string name="card_add">Добавить Кредитную/Дебетовую Карту</string>
+    <string name="card_number">Номер Карты</string>
+    <string name="card_last_date">Дата истечения срока действия карты</string>
+    <string name="card_name">Имя на карте</string>
+    <string name="card_we_accept">Мы принимаем</string>
+    <string name="card_save">Сохранить карту</string>
+    <string name="card_prefer_payment">Предпочитаемый способ оплаты</string>
+
+    <string name="clean_background_clean_text">Убрать фон</string>
+    <string name="clean_background_add_wardrobe">Добавить в мой гардероб</string>
+
+    <string name="collection_constructor_create_title">Создайте свой образ</string>
+    <string name="collection_constructor_create_subtitle">Чтобы выбрать понравившуюся вещь,\nкликните на нее 2 раза</string>
+    <string name="collection_constructor_select_category">Выберите категорию вещей</string>
+
+    <string name="collection_detail_change_outfit">изменить образ</string>
+
+    <string name="constructor_holder_create_outfit">СОЗДАТЬ ОБРАЗ</string>
+    <string name="constructor_holder_create_publish">СОЗДАТЬ ПУБЛИКАЦИЮ</string>
+
+    <string name="photo_chooser_touch">Коснитесь фотографии, чтобы отметить вещь</string>
+    <string name="photo_chooser_move_title">Что переместить метку, нажмите на нее и перетащите на желаемое место.</string>
+
+    <string name="profile_change">Изменить профиль</string>
+    <string name="profile_my_orders">Мои Заказы</string>
+    <string name="profile_payments">Способ Оплаты</string>
+    <string name="profile_favorites">Избранное</string>
+    <string name="profile_my_address">Мой Адрес</string>
+    <string name="profile_my_incomes">Мои доходы</string>
+    <string name="profile_help_need">Нужна Помощь</string>
+
+    <string name="profile_income_title">Доходы от продаж</string>
+
+    <string name="comments_add">Добавьте комментарий&#8230;</string>
 </resources>

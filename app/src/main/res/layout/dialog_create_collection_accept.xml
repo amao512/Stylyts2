@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:hint="Добавить надпись"
+                android:hint="@string/collection_add_text"
                 android:imeOptions="actionNext"
                 android:inputType="text|textPersonName"
                 android:paddingHorizontal="@dimen/padding_size_24x"
@@ -72,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
-                android:text="Отметить вещи"
+                android:text="@string/collection_accept_cancel_items"
                 />
 
             <LinearLayout
@@ -124,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
-                android:text="Отметить пользователя"
+                android:text="@string/collection_accept_cancel_users"
                 />
 
             <LinearLayout
@@ -169,7 +169,7 @@
                 style="@style/SubtitleTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Публикация в соц сетях"
+                android:text="@string/collection_accept_publish_social_networks"
                 />
 
             <FrameLayout
@@ -183,7 +183,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Instagram"
+                    android:text="@string/instagram"
                     />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -203,7 +203,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Facebook"
+                    android:text="@string/facebook"
                     />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -223,7 +223,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Twitter"
+                    android:text="@string/twitter"
                     />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
@@ -243,7 +243,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Tik Tok"
+                    android:text="@string/tik_tok"
                     />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial

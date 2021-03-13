@@ -87,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center"
-                android:text="Коммисия за продажу"
+                android:text="@string/sale_commission"
                 android:textColor="@color/app_gray_hint"
                 />
 
@@ -113,7 +113,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center"
-                android:text="Кол-во"
+                android:text="@string/counts"
                 android:textColor="@color/app_gray_hint"
                 />
 

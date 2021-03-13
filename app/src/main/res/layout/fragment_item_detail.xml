@@ -178,7 +178,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start|center"
-                                    android:text="Цвет"
+                                    android:text="@string/color"
                                     />
 
                                 <ImageView
@@ -206,7 +206,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="start|center"
-                                    android:text="Размер"
+                                    android:text="@string/size"
                                     />
 
                                 <ImageView
@@ -226,7 +226,7 @@
                             android:gravity="start"
                             android:imeOptions="actionNext"
                             android:padding="@dimen/padding_size_10x"
-                            android:text="Добавить в корзину"
+                            android:text="@string/add_in_basket"
                             android:textAlignment="center"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
@@ -253,7 +253,7 @@
                                 android:layout_gravity="start|center"
                                 android:drawableEnd="@drawable/ic_baseline_save_alt_24"
                                 android:drawablePadding="10dp"
-                                android:text="Поделиться"
+                                android:text="@string/share"
                                 />
                         </FrameLayout>
                     </LinearLayout>
@@ -268,7 +268,7 @@
                         android:gravity="start"
                         android:imeOptions="actionNext"
                         android:padding="@dimen/padding_size_10x"
-                        android:text="Создать образ с этой вещью"
+                        android:text="@string/create_outfit_with_item"
                         android:textAlignment="center"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
@@ -304,7 +304,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start|center"
-                                android:text="Описание товара"
+                                android:text="@string/item_description"
                                 android:textColor="#4F4B4B"
                                 android:textStyle="bold"
                                 />
@@ -351,7 +351,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="start|center"
-                                android:text="Информация о доставке"
+                                android:text="@string/delivery_info"
                                 android:textColor="#4F4B4B"
                                 android:textStyle="bold"
                                 />

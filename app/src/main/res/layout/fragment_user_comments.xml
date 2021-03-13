@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.8"
                 android:background="@null"
-                android:hint="Добавьте комментарий..."
+                android:hint="@string/comments_add"
                 android:imeOptions="actionDone"
                 />
 
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.2"
                 android:background="@null"
-                android:text="Отправить"
+                android:text="@string/send"
                 android:textColor="@color/purple_200"
                 />
         </LinearLayout>

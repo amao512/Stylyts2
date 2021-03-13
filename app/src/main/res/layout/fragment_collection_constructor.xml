@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Создайте свой образ"
+            android:text="@string/collection_constructor_create_title"
             />
 
         <TextView
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_size_6x"
-            android:text="Чтобы выбрать понравившуюся вещь,\nкликните на нее 2 раза"
+            android:text="@string/collection_constructor_create_subtitle"
             android:textAlignment="center"
             />
     </LinearLayout>
@@ -104,7 +104,7 @@
                 android:layout_weight="0.2"
                 android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
                 android:gravity="start|center"
-                android:text="Назад"
+                android:text="@string/back"
                 android:visibility="gone"
                 />
 
@@ -114,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="0.6"
-                android:text="Выберите категорию вещей"
+                android:text="@string/collection_constructor_select_category"
                 android:textAlignment="center"
                 />
 
@@ -123,11 +123,11 @@
                 style="@style/TextRegular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
+                android:layout_gravity="end|center"
                 android:layout_weight="0.2"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
                 android:gravity="end|center"
-                android:text="Далее"
+                android:text="@string/next"
                 android:visibility="gone"
                 />
 
@@ -136,11 +136,11 @@
                 style="@style/TextRegular"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
+                android:layout_gravity="end|center"
                 android:layout_weight="0.2"
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                 android:gravity="end|center"
-                android:text="Фильтр"
+                android:text="@string/filter_list_filter"
                 android:visibility="gone"
                 />
         </LinearLayout>

@@ -40,7 +40,7 @@
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="У вас отсутствуют сохраненные способы оплаты. Добавьте карту"
+                    android:text="@string/card_empty"
                     android:textAlignment="center"
                     android:textColor="#2F3641"
                     />
@@ -81,7 +81,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginStart="@dimen/margin_size_16x"
-                            android:text="Добавить Кредитную/Дебетовую Карту"
+                            android:text="@string/card_add"
                             />
                     </LinearLayout>
 
@@ -117,7 +117,7 @@
                     style="@style/SubtitleText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Номер карты"
+                    android:text="@string/card_number"
                     />
 
                 <EditText
@@ -128,7 +128,7 @@
                     android:background="@null"
                     android:drawableStart="@drawable/ic_credit_card"
                     android:drawablePadding="@dimen/padding_size_8x"
-                    android:hint="Номер карты"
+                    android:hint="@string/card_number"
                     />
 
                 <View
@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_24x"
-                    android:text="Дата истечения срока действия карты"
+                    android:text="@string/card_last_date"
                     />
 
                 <EditText
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_24x"
                     android:background="@null"
-                    android:hint="Месяц/Год"
+                    android:hint="@string/month_year"
                     />
 
                 <View
@@ -169,7 +169,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_24x"
-                    android:text="Имя на карте"
+                    android:text="@string/card_name"
                     />
 
                 <EditText
@@ -178,7 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_24x"
                     android:background="@null"
-                    android:hint="Имя Фамилия"
+                    android:hint="@string/name_surname"
                     />
 
                 <View
@@ -201,7 +201,7 @@
                 android:gravity="start"
                 android:imeOptions="actionNext"
                 android:padding="@dimen/padding_size_12x"
-                android:text="Сохранить карту"
+                android:text="@string/card_save"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

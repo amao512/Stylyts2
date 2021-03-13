@@ -36,7 +36,7 @@
                     style="@style/SubtitleTextBold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Фильтровать"
+                    android:text="@string/filter_constructor_filter"
                     />
 
                 <TextView
@@ -170,7 +170,7 @@
         android:gravity="start"
         android:imeOptions="actionNext"
         android:padding="@dimen/padding_size_12x"
-        android:text="Показать результаты"
+        android:text="@string/filter_constructor_show_results"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/white"

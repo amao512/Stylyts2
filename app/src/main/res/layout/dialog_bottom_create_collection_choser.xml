@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/margin_size_6x"
         android:drawableStart="@drawable/ic_send_message"
         android:drawablePadding="@dimen/padding_size_16x"
-        android:text="Опубликовать в общей ленте"
+        android:text="@string/collection_chooser_publish"
         />
 
     <View
@@ -42,7 +42,7 @@
         android:layout_marginTop="@dimen/margin_size_6x"
         android:drawableStart="@drawable/ic_save_icon"
         android:drawablePadding="@dimen/padding_size_16x"
-        android:text="Сохранить без публикации"
+        android:text="@string/collection_chooser_save"
         />
 
     <View
@@ -60,6 +60,6 @@
         android:layout_marginTop="@dimen/margin_size_6x"
         android:drawableStart="@drawable/ic_shopping_cart"
         android:drawablePadding="@dimen/padding_size_16x"
-        android:text="Купить данный образ"
+        android:text="@string/collection_chooser_buy"
         />
 </LinearLayout>

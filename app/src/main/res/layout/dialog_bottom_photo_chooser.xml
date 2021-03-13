@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/margin_size_6x"
         android:drawableStart="@drawable/ic_baseline_qr_code_2_24"
         android:drawablePadding="@dimen/padding_size_16x"
-        android:text="Добавить вещь по штрихкоду"
+        android:text="@string/photo_chooser_add_item_by_barcode"
         />
 
     <View
@@ -42,7 +42,7 @@
         android:layout_marginTop="@dimen/margin_size_6x"
         android:drawableStart="@drawable/ic_camera"
         android:drawablePadding="@dimen/padding_size_16x"
-        android:text="Добавить вещь по фотографии"
+        android:text="@string/photo_chooser_add_item_by_photo"
         />
 
     <View
@@ -60,6 +60,6 @@
         android:layout_marginTop="@dimen/margin_size_6x"
         android:drawableStart="@drawable/ic_person_add"
         android:drawablePadding="@dimen/padding_size_16x"
-        android:text="Опубликовать фото в образе"
+        android:text="@string/photo_chooser_publish_in_outfit"
         />
 </LinearLayout>

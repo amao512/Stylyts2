@@ -68,7 +68,7 @@
             style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="подписки"
+            android:text="@string/following"
             android:textColor="@color/app_gray_hint"
             />
     </LinearLayout>

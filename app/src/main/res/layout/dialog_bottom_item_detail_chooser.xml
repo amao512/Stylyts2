@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start|center"
-            android:text="ТАБЛИЦА РАЗМЕРОВ"
+            android:text="@string/detail_chooser_size_table"
             />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center"
-            android:text="ГОТОВО"
+            android:text="@string/detail_chooser_ready"
             />
     </FrameLayout>
 
