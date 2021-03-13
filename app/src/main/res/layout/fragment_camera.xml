@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@android:color/black"
-    tools:context=".presentation.fragments.main.constructor.CameraFragment">
+    tools:context=".presentation.fragments.main.constructor.CameraFragment"
+    >
 
     <include
         android:id="@+id/include_camera_toolbar"
         layout="@layout/base_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
@@ -21,68 +24,82 @@
         app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_camera_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/include_camera_toolbar"
+        />
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/linear_layout_fragment_camera_scanner_holder"
-        android:weightSum="1"
-        android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="1"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_camera_toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/include_camera_toolbar"
+        >
 
-       <View
-           android:layout_weight="0.2"
-           android:background="@color/app_black_65"
-           android:layout_width="match_parent"
-           android:layout_height="0dp"/>
-        <LinearLayout
-            android:layout_weight="0.6"
-            android:weightSum="1"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="0dp">
-            <View
-                android:background="@color/app_black_65"
-                android:layout_weight="0.1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                tools:ignore="NestedWeights" />
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/animation_view"
-                android:scaleType="fitXY"
-                app:lottie_autoPlay="true"
-                app:lottie_rawRes="@raw/scanner"
-                app:lottie_loop="true"
-                android:layout_weight="0.8"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-            <View
-                android:background="@color/app_black_65"
-                android:layout_weight="0.1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
         <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="0.2"
             android:background="@color/app_black_65"
+            />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="0.6"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            >
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:background="@color/app_black_65"
+                tools:ignore="NestedWeights"
+                />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:scaleType="fitXY"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/scanner"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:background="@color/app_black_65"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:background="@color/app_black_65"
+            />
     </LinearLayout>
 
 
     <FrameLayout
         android:id="@+id/frameLayout4"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/camera_bottom_container_height"
         android:background="@color/app_black_65"
         app:layout_constraintBottom_toBottomOf="@+id/viewFinder"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
         <FrameLayout
             android:id="@+id/frame_layout_fragment_camera_take_picture"
@@ -90,27 +107,34 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/circle_black_white_corners"
-            android:padding="4dp">
+            android:padding="4dp"
+            >
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/circle_white" />
+                android:layout_width="@dimen/camera_take_photo_button_size"
+                android:layout_height="@dimen/camera_take_photo_button_size"
+                android:src="@drawable/circle_white"
+                />
         </FrameLayout>
+
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/frameLayout2"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/camera_bottom_container_height"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" >
+        app:layout_constraintStart_toStartOf="parent"
+        >
+
         <ImageView
-            android:layout_margin="24dp"
+            android:layout_width="@dimen/camera_icon_size"
+            android:layout_height="@dimen/camera_icon_size"
             android:layout_gravity="end|center"
+            android:layout_margin="@dimen/margin_size_24x"
             android:src="@drawable/ic_camera_white"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
+            />
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

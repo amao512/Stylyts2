@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.main.constructor.CollectionConstructorHolderFragment">
+    tools:context=".presentation.fragments.main.constructor.CollectionConstructorHolderFragment"
+    >
+
     <include
         android:id="@+id/include_toolbar_profile"
-        layout="@layout/base_toolbar" />
+        layout="@layout/base_toolbar"
+        />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_bar_fragment_collection_constructor_holder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabTextAppearance="@style/TextRegularBold"
         app:tabIndicatorColor="@color/app_black"
-        app:tabSelectedTextColor="@color/app_black"/>
+        app:tabSelectedTextColor="@color/app_black"
+        app:tabTextAppearance="@style/TextRegularBold"
+        />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager_fragment_collection_constructor_holder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
+        android:layout_height="match_parent"
+        />
 </LinearLayout>

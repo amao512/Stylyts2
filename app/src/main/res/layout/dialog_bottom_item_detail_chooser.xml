@@ -1,40 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_top_shape_white"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="@dimen/padding_size_16x"
+    >
+
     <View
-        android:layout_width="24dp"
-        android:layout_height="3dp"
+        android:layout_width="@dimen/bottom_dialog_top_small_divider_width"
+        android:layout_height="@dimen/bottom_dialog_top_small_divider_height"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_size_16x"
         android:background="@color/app_gray_hint"
-        android:layout_marginBottom="16dp"/>
+        />
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
+
         <TextView
-            android:layout_gravity="left|center"
             style="@style/TextRegularBold"
-            android:text="ТАБЛИЦА РАЗМЕРОВ"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:text="ТАБЛИЦА РАЗМЕРОВ"
+            />
+
         <TextView
             android:id="@+id/text_view_dialog_bottom_item_detail_chooser_done"
-            android:layout_gravity="right|center"
             style="@style/TextRegularBold"
-            android:text="ГОТОВО"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:text="ГОТОВО"
+            />
     </FrameLayout>
+
     <View
-        android:layout_marginTop="24dp"
-        android:background="@color/app_light_gray"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="@dimen/small_divider_height"
+        android:layout_marginTop="@dimen/margin_size_24x"
+        android:background="@color/app_light_gray"
+        />
+
     <ListView
         android:id="@+id/list_view_dialog_bottom_item_detail_chooser_list"
         android:layout_width="match_parent"
-        android:layout_height="160dp"/>
+        android:layout_height="160dp"
+        />
 </LinearLayout>

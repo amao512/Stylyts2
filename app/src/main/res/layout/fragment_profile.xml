@@ -1,67 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:animateLayoutChanges="true"
-    tools:context=".presentation.fragments.main.profile.ProfileFragment">
+    android:orientation="vertical"
+    tools:context=".presentation.fragments.main.profile.ProfileFragment"
+    >
+
     <include
         android:id="@+id/include_toolbar_profile"
-        layout="@layout/base_toolbar" />
+        layout="@layout/base_toolbar"
+        />
+
     <include
-        android:visibility="gone"
         android:id="@+id/progress_bar_fragment_profile"
-        layout="@layout/base_progress_small"/>
+        layout="@layout/base_progress_small"
+        android:visibility="gone"
+        />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
+
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@android:color/white"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                >
 
                 <LinearLayout
-                    app:layout_collapseMode="parallax"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="parallax"
+                    >
+
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+
                         <FrameLayout
                             android:id="@id/frame_layout_fragment_profile_avatar_holder"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
+                            android:layout_width="@dimen/profile_user_photo_size"
+                            android:layout_height="@dimen/profile_user_photo_size"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/margin_size_16x"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="16dp">
+                            >
+
                             <com.google.android.material.imageview.ShapeableImageView
-                                android:adjustViewBounds="true"
-                                app:shapeAppearanceOverlay="@style/circleImageView"
                                 android:id="@+id/shapeable_image_view_fragment_profile_avatar"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:adjustViewBounds="true"
+                                app:shapeAppearanceOverlay="@style/circleImageView"
+                                />
+
                             <TextView
-                                android:background="@drawable/circle_gray"
                                 android:id="@+id/text_view_fragment_profile_user_short_name"
                                 style="@style/TitleTextBold"
-                                tools:text = "RE"
-                                android:gravity="center"
-                                android:textSize="36sp"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:background="@drawable/circle_gray"
+                                android:gravity="center"
+                                android:textSize="@dimen/text_size_36x"
+                                tools:text="RE"
+                                />
                         </FrameLayout>
 
 
@@ -71,21 +91,23 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_margin="12dp"
+                            android:layout_margin="@dimen/margin_size_12x"
                             app:layout_constraintEnd_toEndOf="@+id/frame_layout_fragment_profile_avatar_holder"
                             app:layout_constraintStart_toStartOf="@+id/frame_layout_fragment_profile_avatar_holder"
                             app:layout_constraintTop_toBottomOf="@+id/frame_layout_fragment_profile_avatar_holder"
-                            tools:text="Ruslan" />
+                            tools:text="Ruslan"
+                            />
 
                         <LinearLayout
                             android:id="@+id/linearLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/margin_size_16x"
                             android:orientation="vertical"
                             app:layout_constraintEnd_toEndOf="@+id/text_view_fragment_profile_user_name"
                             app:layout_constraintStart_toStartOf="@+id/text_view_fragment_profile_user_name"
-                            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_profile_user_name">
+                            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_profile_user_name"
+                            >
 
                             <TextView
                                 android:id="@+id/text_view_fragment_profile_user_followers_count"
@@ -93,56 +115,62 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                tools:text="10" />
+                                tools:text="10"
+                                />
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:text="подписчики"
                                 android:textColor="@color/app_gray"
-                                android:text="подписчики" />
+                                />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
+                            android:layout_marginEnd="@dimen/margin_size_24x"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                             app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            >
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                tools:text="10" />
+                                tools:text="10"
+                                />
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:text="фото"
                                 android:textColor="@color/app_gray"
-                                android:text="фото" />
+                                />
                         </LinearLayout>
 
                         <LinearLayout
                             android:id="@+id/subs"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
+                            android:layout_marginStart="@dimen/margin_size_24x"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@+id/linearLayout"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            >
 
                             <TextView
                                 android:id="@+id/text_view_fragment_profile_user_followings_count"
@@ -150,27 +178,29 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                tools:text="10" />
+                                tools:text="10"
+                                />
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:text="подписки"
                                 android:textColor="@color/app_gray"
-                                android:text="подписки" />
+                                />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginVertical="@dimen/margin_size_16x"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                            >
 
                             <TextView
                                 android:id="@+id/text_view_fragment_profile_settings"
@@ -179,183 +209,227 @@
                                 android:layout_height="match_parent"
                                 android:background="@drawable/rounded_rectangle_white_gray_corners"
                                 android:gravity="center"
-                                android:padding="6dp"
-                                android:text="Изменить профиль" />
+                                android:padding="@dimen/padding_size_6x"
+                                android:text="Изменить профиль"
+                                />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="6dp"
+                                android:layout_marginStart="@dimen/margin_size_6x"
                                 android:background="@drawable/rounded_rectangle_white_gray_corners"
                                 android:gravity="center"
-                                android:padding="6dp"
-                                android:src="@drawable/ic_camera" />
+                                android:padding="@dimen/padding_size_6x"
+                                android:src="@drawable/ic_camera"
+                                />
                         </LinearLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
             <androidx.recyclerview.widget.RecyclerView
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:background="@android:color/white"
                 android:id="@+id/recycler_view_fragment_profile_filter_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_collection_filter"/>
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_scrollFlags="scroll|enterAlways"
+                tools:listitem="@layout/item_collection_filter"
+                />
         </com.google.android.material.appbar.AppBarLayout>
+
         <FrameLayout
-            android:visibility="gone"
             android:id="@+id/frame_layout_fragment_profile_settings_container"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
+
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nested_scroll_view_options_holder"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                >
+
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="@dimen/padding_size_24x"
+                    >
+
                     <FrameLayout
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:background="@drawable/rounded_rectangle_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_rectangle_gray"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_12x"
+                        >
+
                         <TextView
                             style="@style/SubtitleText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
                             android:text="Мои Заказы"
-                            android:layout_gravity="left|center"/>
+                            />
+
                         <ImageView
-                            android:layout_gravity="right|center"
+                            android:layout_width="@dimen/profile_settings_icon_size"
+                            android:layout_height="@dimen/profile_settings_icon_size"
+                            android:layout_gravity="end|center"
                             android:src="@drawable/ic_shop"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"/>
+                            />
                     </FrameLayout>
+
                     <FrameLayout
                         android:id="@+id/frame_layout_fragment_profile_cards"
-                        android:layout_marginTop="16dp"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:background="@drawable/rounded_rectangle_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_16x"
+                        android:background="@drawable/rounded_rectangle_gray"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_12x"
+                        >
+
                         <TextView
                             style="@style/SubtitleText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
                             android:text="Способ Оплаты"
-                            android:layout_gravity="left|center"/>
+                            />
+
                         <ImageView
-                            android:layout_gravity="right|center"
+                            android:layout_width="@dimen/profile_settings_icon_size"
+                            android:layout_height="@dimen/profile_settings_icon_size"
+                            android:layout_gravity="end|center"
                             android:src="@drawable/ic_credit_card"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"/>
+                            />
                     </FrameLayout>
+
                     <FrameLayout
-                        android:layout_marginTop="16dp"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:background="@drawable/rounded_rectangle_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_16x"
+                        android:background="@drawable/rounded_rectangle_gray"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_12x"
+                        >
+
                         <TextView
                             style="@style/SubtitleText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
                             android:text="Избранное"
-                            android:layout_gravity="left|center"/>
+                            />
+
                         <ImageView
-                            android:layout_gravity="right|center"
+                            android:layout_width="@dimen/profile_settings_icon_size"
+                            android:layout_height="@dimen/profile_settings_icon_size"
+                            android:layout_gravity="end|center"
                             android:src="@drawable/ic_baseline_favorite_border_24"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"/>
+                            />
                     </FrameLayout>
+
                     <FrameLayout
                         android:id="@+id/frame_layout_fragment_profile_my_addresses"
-                        android:layout_marginTop="16dp"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:background="@drawable/rounded_rectangle_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_16x"
+                        android:background="@drawable/rounded_rectangle_gray"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_12x"
+                        >
+
                         <TextView
                             style="@style/SubtitleText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
                             android:text="Мой Адрес"
-                            android:layout_gravity="left|center"/>
+                            />
+
                         <ImageView
-                            android:layout_gravity="right|center"
+                            android:layout_width="@dimen/profile_settings_icon_size"
+                            android:layout_height="@dimen/profile_settings_icon_size"
+                            android:layout_gravity="end|center"
                             android:src="@drawable/ic_home"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"/>
+                            />
                     </FrameLayout>
+
                     <FrameLayout
                         android:id="@+id/frame_layout_fragment_profile_my_incomes"
-                        android:layout_marginTop="16dp"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:background="@drawable/rounded_rectangle_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_16x"
+                        android:background="@drawable/rounded_rectangle_gray"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_12x"
+                        >
+
                         <TextView
                             style="@style/SubtitleText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
                             android:text="Мои доходы"
-                            android:layout_gravity="left|center"/>
+                            />
+
                         <ImageView
-                            android:layout_gravity="right|center"
+                            android:layout_width="@dimen/profile_settings_icon_size"
+                            android:layout_height="@dimen/profile_settings_icon_size"
+                            android:layout_gravity="end|center"
                             android:src="@drawable/ic_shop"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"/>
+                            />
                     </FrameLayout>
+
                     <FrameLayout
-                        android:layout_marginTop="16dp"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
-                        android:background="@drawable/rounded_rectangle_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_16x"
+                        android:background="@drawable/rounded_rectangle_gray"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_12x"
+                        >
+
                         <TextView
                             style="@style/SubtitleText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
                             android:text="Нужна Помощь"
-                            android:layout_gravity="left|center"/>
+                            />
+
                         <ImageView
-                            android:layout_gravity="right|center"
+                            android:layout_width="@dimen/profile_settings_icon_size"
+                            android:layout_height="@dimen/profile_settings_icon_size"
+                            android:layout_gravity="end|center"
                             android:src="@drawable/ic_save_icon"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"/>
+                            />
                     </FrameLayout>
+
                 </LinearLayout>
+
             </androidx.core.widget.NestedScrollView>
+
         </FrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_fragment_profile_items_list"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:spanCount="2"
+            tools:listitem="@layout/item_collection_image"
+            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </LinearLayout>

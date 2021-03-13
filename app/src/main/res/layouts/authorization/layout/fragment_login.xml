@@ -1,144 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/app_black"
-    tools:context=".presentation.fragments.LoginFragment">
+    tools:context=".presentation.fragments.LoginFragment"
+    >
+
     <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:alpha="0.8"
         android:scaleType="centerCrop"
         android:src="@drawable/auth_bg"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_gravity="center"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="@dimen/margin_size_24x"
+        >
 
         <EditText
-            android:imeOptions="actionNext"
-            android:inputType="textEmailAddress"
             android:id="@+id/editText_fragment_login_email"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_rectangle_light_gray_white_corners_half_transparent"
             android:hint="@string/email"
-            android:padding="14dp"
+            android:imeOptions="actionNext"
+            android:inputType="textEmailAddress"
+            android:padding="@dimen/padding_size_14x"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_18x"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <EditText
-            android:imeActionId="6"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword"
             android:id="@+id/editText_fragment_login_password"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_size_24x"
             android:background="@drawable/rounded_rectangle_light_gray_white_corners_half_transparent"
             android:hint="@string/password"
-            android:padding="14dp"
+            android:imeActionId="6"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:padding="@dimen/padding_size_14x"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_18x"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_fragment_login_email" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_fragment_login_email"
+            />
+
         <com.google.android.material.button.MaterialButton
-            android:visibility="gone"
-            android:textSize="18sp"
-            android:textAllCaps="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_rectangle_dark_gray_half_transparent"
             android:text="@string/fragment_login_sign_in"
+            android:textAllCaps="false"
             android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18x"
+            android:visibility="gone"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <TextView
             android:id="@+id/text_view_fragment_login_forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin_size_16x"
             android:text="@string/fragment_login_forgot_password"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_16x"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_fragment_login_password" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_fragment_login_password"
+            />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_fragment_login_sign_in"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="@dimen/margin_size_24x"
             android:background="@drawable/rounded_rectangle_dark_gray_half_transparent"
             android:text="@string/fragment_login_sign_in"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_18x"
             app:backgroundTint="@null"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_login_forgot_password" />
+            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_login_forgot_password"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        >
+
         <View
-            android:layout_marginBottom="8dp"
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="1dp"/>
+            android:layout_height="@dimen/small_divider_height"
+            android:layout_marginBottom="@dimen/margin_size_8x"
+            android:background="@color/white"
+            />
+
         <LinearLayout
-            android:layout_marginBottom="8dp"
-            android:layout_gravity="center"
-            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_size_8x"
+            android:orientation="horizontal"
+            >
+
             <TextView
-                android:layout_marginEnd="8dp"
-                android:layout_gravity="center"
-                android:textSize="14sp"
-                android:textColor="@color/white"
-                android:text="@string/fragment_login_no_account"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_fragment_login_sign_up"
-                app:backgroundTint="@color/white"
-                app:cornerRadius="@dimen/corner_radius_default"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/margin_size_8x"
+                android:text="@string/fragment_login_no_account"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14x"
+                />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_fragment_login_sign_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="@string/fragment_login_sign_up"
                 android:textAllCaps="false"
                 android:textColor="@color/black"
-                android:textSize="14sp"/>
+                android:textSize="@dimen/text_size_14x"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="@dimen/corner_radius_default"
+                />
         </LinearLayout>
+
     </LinearLayout>
+
     <include
-        android:visibility="gone"
         android:id="@+id/include_base_progress"
-        layout="@layout/base_progess"/>
+        layout="@layout/base_progress"
+        android:visibility="gone"
+        />
 </FrameLayout>

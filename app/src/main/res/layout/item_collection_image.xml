@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.imageview.ShapeableImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="250dp"
+<com.google.android.material.imageview.ShapeableImageView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/shapeable_image_view_item_collection_image"
     xmlns:tools="http://schemas.android.com/tools"
-    app:shapeAppearanceOverlay="@style/roundedImageView"
-    tools:src="@drawable/auth_bg"
+    android:id="@+id/shapeable_image_view_item_collection_image"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/collection_image_height"
+    android:layout_margin="@dimen/margin_size_16x"
     android:background="@color/app_very_light_gray"
     android:scaleType="centerInside"
-    android:layout_margin="16dp" />
+    app:shapeAppearanceOverlay="@style/roundedImageView"
+    tools:src="@drawable/auth_bg"
+    />

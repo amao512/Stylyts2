@@ -4,68 +4,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frame_layout_base_toolbar_container"
-    android:elevation="12dp"
     android:layout_width="match_parent"
-    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:elevation="@dimen/toolbar_elevation"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+    >
+
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/image_button_left_corner_action"
-        android:layout_marginStart="12dp"
-        android:layout_gravity="start|center"
-        android:background="?attr/selectableItemBackground"
-        tools:src = "@drawable/ic_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/text_view_toolbar_back"
-        android:layout_marginStart="12dp"
-        android:layout_gravity="start|center"
-        android:drawablePadding="12dp"
-        style="@style/TextRegular"
-        android:gravity="center"
-        android:text="@string/back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_left_24" />
+        android:layout_gravity="start|center"
+        android:layout_marginStart="@dimen/margin_size_12x"
+        android:background="?attr/selectableItemBackground"
+        android:visibility="gone"
+        tools:src="@drawable/ic_camera"
+        />
 
     <TextView
+        android:id="@+id/text_view_toolbar_back"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center"
+        android:layout_marginStart="@dimen/margin_size_12x"
+        android:drawablePadding="@dimen/padding_size_12x"
+        android:gravity="center"
+        android:text="@string/back"
         android:visibility="gone"
+        app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_left_24"
+        />
+
+    <TextView
         android:id="@+id/text_view_toolbar_title"
         style="@style/TextRegularBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:text = "SomeText"/>
+        android:visibility="gone"
+        tools:text="SomeText"
+        />
 
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/image_button_center_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="?attr/selectableItemBackground"
-        tools:src = "@drawable/ic_camera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:visibility="gone"
+        tools:src="@drawable/ic_camera"
+        />
 
     <ImageButton
-        android:visibility="gone"
         android:id="@+id/image_button_right_corner_action"
-        android:layout_marginEnd="12dp"
-        android:layout_gravity="center|end"
-        android:background="?attr/selectableItemBackground"
-        tools:src = "@drawable/ic_camera"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="@dimen/margin_size_12x"
+        android:background="?attr/selectableItemBackground"
+        android:visibility="gone"
+        tools:src="@drawable/ic_camera"
+        />
 
     <TextView
-        android:layout_marginEnd="12dp"
-        android:visibility="gone"
         android:id="@+id/text_view_toolbar_right_text"
         style="@style/TextRegularBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|end"
-        tools:text = "SomeText"/>
+        android:layout_marginEnd="@dimen/margin_size_12x"
+        android:visibility="gone"
+        tools:text="SomeText"
+        />
 </FrameLayout>

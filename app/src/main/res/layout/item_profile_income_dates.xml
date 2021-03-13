@@ -1,59 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_layout_item_profile_income_container"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:id="@+id/linear_layout_item_profile_income_container">
+    >
+
     <TextView
-        android:layout_marginTop="40dp"
         style="@style/TitleTextBold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_40x"
+        android:layout_marginBottom="@dimen/margin_size_24x"
         android:text="Декабрь 2020"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_marginBottom="24dp"/>
+        android:textSize="@dimen/text_size_30x"
+        />
+
     <TextView
         style="@style/SubtitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Декабрь 24 - Декабрь 30"/>
+        android:text="Декабрь 24 - Декабрь 30"
+        />
+
     <View
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="#979797"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="@dimen/small_divider_height"
+        android:layout_marginVertical="@dimen/margin_size_16x"
+        android:background="@color/divider_bg_color"
+        />
+
     <TextView
         style="@style/SubtitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Декабрь 24 - Декабрь 30"/>
+        android:text="Декабрь 24 - Декабрь 30"
+        />
+
     <View
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="#979797"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="@dimen/small_divider_height"
+        android:layout_marginVertical="@dimen/margin_size_16x"
+        android:background="@color/divider_bg_color"
+        />
+
     <TextView
         style="@style/SubtitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Декабрь 24 - Декабрь 30"/>
+        android:text="Декабрь 24 - Декабрь 30"
+        />
+
     <View
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="#979797"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="@dimen/small_divider_height"
+        android:layout_marginVertical="@dimen/margin_size_16x"
+        android:background="@color/divider_bg_color"
+        />
+
     <TextView
         style="@style/SubtitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Декабрь 24 - Декабрь 30"/>
+        android:text="Декабрь 24 - Декабрь 30"
+        />
+
     <View
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="#979797"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="@dimen/small_divider_height"
+        android:layout_marginVertical="@dimen/margin_size_16x"
+        android:background="@color/divider_bg_color"
+        />
 </LinearLayout>

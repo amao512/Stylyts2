@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/white"
-    android:layout_height="match_parent">
+    >
 
     <LinearLayout
         android:layout_width="0dp"
@@ -13,26 +15,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <include
             android:id="@+id/include_toolbar_dialog_create_collection"
             layout="@layout/base_toolbar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="@dimen/padding_size_16x"
+            >
 
             <ImageView
-                android:scaleType="fitCenter"
                 android:id="@+id/image_view_dialog_create_collection_accept"
-                android:layout_width="60dp"
-                android:layout_height="60dp" />
+                android:layout_width="@dimen/medium_image_size"
+                android:layout_height="@dimen/medium_image_size"
+                android:scaleType="fitCenter"
+                />
 
             <EditText
                 android:id="@+id/edit_text_view_dialog_create_collection_accept_sign"
@@ -43,177 +49,212 @@
                 android:hint="Добавить надпись"
                 android:imeOptions="actionNext"
                 android:inputType="text|textPersonName"
-                android:paddingStart="24dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="24dp"
-                android:paddingBottom="16dp" />
+                android:paddingHorizontal="@dimen/padding_size_24x"
+                android:paddingVertical="@dimen/padding_size_16x"
+                />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/app_gray" />
+            android:layout_height="@dimen/small_divider_height"
+            android:background="@color/app_gray"
+            />
 
         <FrameLayout
             android:id="@+id/frame_layout_dialog_create_collection_accept_choose_clothes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/padding_size_16x"
+            >
 
             <TextView
                 style="@style/TextRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
-                android:text="Отметить вещи" />
+                android:text="Отметить вещи"
+                />
+
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                >
+
                 <TextView
-                    tools:text = "3 вещ."
                     android:id="@+id/text_view_dialog_create_collection_items_count"
-                    android:textColor="@color/app_gray_hint"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/app_gray_hint"
+                    tools:text="3 вещ."
+                    />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
-                android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                />
         </FrameLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/app_gray" />
+            android:layout_height="@dimen/small_divider_height"
+            android:background="@color/app_gray"
+            />
 
         <FrameLayout
             android:id="@+id/frame_layout_dialog_create_collection_accept_user_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="@dimen/padding_size_16x"
+            >
 
             <TextView
                 style="@style/TextRegular"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
-                android:text="Отметить пользователя" />
+                android:text="Отметить пользователя"
+                />
+
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                >
+
                 <TextView
-                    tools:text = "3 вещ."
                     android:id="@+id/text_view_dialog_create_collection_user_count"
-                    android:textColor="@color/app_gray_hint"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/app_gray_hint"
+                    tools:text="3 вещ."
+                    />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24" />
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    />
             </LinearLayout>
 
         </FrameLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/app_gray" />
+            android:layout_height="@dimen/small_divider_height"
+            android:background="@color/app_gray"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="@dimen/padding_size_16x"
+            >
 
             <TextView
                 style="@style/SubtitleTextBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Публикация в соц сетях" />
+                android:text="Публикация в соц сетях"
+                />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="@dimen/margin_size_12x"
+                >
 
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Instagram" />
+                    android:text="Instagram"
+                    />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|end" />
+                    android:layout_gravity="center|end"
+                    />
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Facebook" />
+                    android:text="Facebook"
+                    />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|end" />
+                    android:layout_gravity="center|end"
+                    />
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Twitter" />
+                    android:text="Twitter"
+                    />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|end" />
+                    android:layout_gravity="center|end"
+                    />
             </FrameLayout>
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
 
                 <TextView
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center|start"
-                    android:text="Tik Tok" />
+                    android:text="Tik Tok"
+                    />
 
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center|end" />
+                    android:layout_gravity="center|end"
+                    />
             </FrameLayout>
+
         </LinearLayout>
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

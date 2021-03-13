@@ -1,62 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.fragments.main.constructor.CleanBackgroundFragment">
+    tools:context=".presentation.fragments.main.constructor.CleanBackgroundFragment"
+    >
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
         <include
             android:id="@+id/include_toolbar_clean_background"
-            layout="@layout/base_toolbar" />
+            layout="@layout/base_toolbar"
+            />
+
         <ImageView
-            android:scaleType="center"
             android:id="@+id/image_view_fragment_clean_background_image"
             android:layout_width="match_parent"
-            android:layout_height="350dp"/>
+            android:layout_height="@dimen/detail_photo_height"
+            android:scaleType="center"
+            />
+
         <com.google.android.material.button.MaterialButton
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_gravity="bottom"
             android:id="@+id/button_fragment_clean_background_image_clear_bg"
-            android:imeOptions="actionNext"
-            app:cornerRadius="@dimen/corner_radius_16"
             style="@style/SubtitleText"
-            android:gravity="start"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Убрать фон"
-            android:textAllCaps="false"
-            android:padding="12dp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            app:backgroundTint="@color/app_dark_blue_gray" />
-        <com.google.android.material.button.MaterialButton
-            android:layout_marginStart="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="16dp"
             android:layout_gravity="bottom"
-            android:id="@+id/button_fragment_clean_background_image_add_to_wardrobe"
-            android:imeOptions="actionNext"
-            app:cornerRadius="@dimen/corner_radius_16"
-            style="@style/SubtitleText"
+            android:layout_marginHorizontal="@dimen/margin_size_24x"
+            android:layout_marginTop="@dimen/margin_size_24x"
             android:gravity="start"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/padding_size_12x"
+            android:text="Убрать фон"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/app_dark_blue_gray"
+            app:cornerRadius="@dimen/corner_radius_16"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_fragment_clean_background_image_add_to_wardrobe"
+            style="@style/SubtitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginHorizontal="@dimen/margin_size_24x"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:gravity="start"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/padding_size_12x"
             android:text="Добавить в мой гардероб"
-            android:textAllCaps="false"
-            android:padding="12dp"
             android:textAlignment="center"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            app:backgroundTint="@color/app_dark_blue_gray" />
+            app:backgroundTint="@color/app_dark_blue_gray"
+            app:cornerRadius="@dimen/corner_radius_16"
+            />
     </LinearLayout>
 
     <include
-        android:visibility="gone"
         android:id="@+id/base_progress_clean_background"
-        layout="@layout/base_progess"/>
+        layout="@layout/base_progress"
+        android:visibility="gone"
+        />
 </FrameLayout>

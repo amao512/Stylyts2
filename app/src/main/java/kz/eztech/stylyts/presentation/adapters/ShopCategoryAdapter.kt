@@ -2,9 +2,7 @@ package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.GenderCategory
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.ShopCategoryHolder
@@ -16,7 +14,7 @@ import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
 class ShopCategoryAdapter: BaseAdapter(){
 
     override fun getLayoutId(): Int {
-        return R.layout.item_shop_catergory
+        return R.layout.item_shop_category
     }
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {

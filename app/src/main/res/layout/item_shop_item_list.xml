@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout_item_shop_item_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginStart="24dp"
-    android:layout_marginTop="16dp"
-    android:id="@+id/linear_layout_item_shop_item_list"
-    android:orientation="vertical">
+    android:layout_marginStart="@dimen/margin_size_24x"
+    android:layout_marginTop="@dimen/margin_size_16x"
+    android:orientation="vertical"
+    >
+
     <TextView
         android:id="@+id/text_view_item_shop_item_list"
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text ="Брюки"/>
+        tools:text="Брюки"
+        />
+
     <View
-        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/app_light_gray"/>
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:background="@color/app_light_gray"
+        />
 </LinearLayout>

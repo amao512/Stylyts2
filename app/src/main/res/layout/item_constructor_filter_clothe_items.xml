@@ -1,67 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
     <FrameLayout
         android:id="@+id/frame_layout_tem_constructor_filter_clothe_container"
-        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        >
+
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="start|center"
             android:orientation="horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            >
+
             <com.mikhaellopez.circleview.CircleView
-                android:visibility="gone"
-                android:layout_gravity="center"
                 android:id="@+id/circle_view_item_constructor_filter_clothe_items"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/constructor_filter_clothe_icon_size"
+                android:layout_height="@dimen/constructor_filter_clothe_icon_size"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/margin_size_16x"
+                android:visibility="gone"
                 app:cv_border="false"
                 app:cv_color="#3f51b5"
                 app:cv_shadow="true"
                 app:cv_shadow_color="#3f51b5"
                 app:cv_shadow_radius="10"
-                android:layout_marginEnd="16dp"/>
+                />
+
             <TextView
                 android:id="@+id/text_view_item_constructor_filter_clothe_item_name"
-                android:layout_gravity="center"
                 style="@style/TextRegular"
-                tools:text="Мой гардероб"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                tools:text="Мой гардероб"
+                />
         </LinearLayout>
 
         <FrameLayout
-            android:layout_marginEnd="24dp"
+            android:layout_width="@dimen/constructor_filter_clothe_icon_size"
+            android:layout_height="@dimen/constructor_filter_clothe_icon_size"
             android:layout_gravity="end|center"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/circle_filter_unchecked"
-            android:layout_width="20dp"
-            android:layout_height="20dp">
+            >
+
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/image_view_item_constructor_filter_clothe_items"
+                android:layout_width="@dimen/constructor_filter_clothe_items_select_size"
+                android:layout_height="@dimen/constructor_filter_clothe_items_select_size"
                 android:layout_gravity="center"
                 android:background="@drawable/circle_filter_checked"
-                android:layout_width="14dp"
-                android:layout_height="14dp"/>
+                android:visibility="gone"
+                />
         </FrameLayout>
 
     </FrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/recycler_view_item_constructor_filter_clothe_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:visibility="gone"
         tools:listitem="@layout/item_constructor_filter_clothe_sub_items"
-        android:layout_marginStart="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        />
+
     <View
-        android:layout_marginTop="6dp"
-        android:background="@color/app_very_light_gray"
         android:layout_width="match_parent"
-        android:layout_height="2dp"/>
+        android:layout_height="@dimen/filter_divider_height"
+        android:layout_marginTop="@dimen/margin_size_6x"
+        android:background="@color/app_very_light_gray"
+        />
 </LinearLayout>

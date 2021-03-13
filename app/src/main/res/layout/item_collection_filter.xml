@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_layout_item_collection_filter"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginVertical="@dimen/margin_size_8x"
+    android:layout_marginStart="@dimen/margin_size_6x"
     android:background="@drawable/rounded_rectangle_white_gray_corners"
-    android:layout_marginTop="8dp"
-    android:layout_marginStart="6dp"
-    android:layout_marginBottom="8dp"
-    android:id="@+id/frame_layout_item_collection_filter">
+    >
+
     <TextView
-        style="@style/TextRegularBold"
         android:id="@+id/text_view_item_collection_filter"
+        style="@style/TextRegularBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text = "Классика"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"/>
+        android:layout_marginHorizontal="@dimen/margin_size_8x"
+        android:layout_marginVertical="@dimen/margin_size_6x"
+        tools:text="Классика"
+        />
 </FrameLayout>

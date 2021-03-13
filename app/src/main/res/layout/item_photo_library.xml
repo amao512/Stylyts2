@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="100dp"
-    android:layout_height="wrap_content">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/photo_library_width"
+    android:layout_height="wrap_content"
+    >
+
     <ImageView
-        android:scaleType="centerCrop"
         android:id="@+id/image_view_photo_library"
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/frame_layout_item_photo_library"
-        android:layout_margin="8dp"
-        android:background="@drawable/circle_checked"
-        android:layout_gravity="top|end"
-        android:layout_width="24dp"
-        android:layout_height="24dp">
-        <ImageView
-            android:layout_gravity="center"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:src="@drawable/ic_baseline_check_24" />
-    </FrameLayout>
+        android:layout_height="@dimen/photo_library_width"
+        android:scaleType="centerCrop"
+        />
 
+    <FrameLayout
+        android:id="@+id/frame_layout_item_photo_library"
+        android:layout_width="@dimen/photo_library_check_container_size"
+        android:layout_height="@dimen/photo_library_check_container_size"
+        android:layout_gravity="top|end"
+        android:layout_margin="@dimen/margin_size_8x"
+        android:background="@drawable/circle_checked"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/photo_library_check_icon_size"
+            android:layout_height="@dimen/photo_library_check_icon_size"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_check_24"
+            />
+    </FrameLayout>
 
 </FrameLayout>

@@ -18,4 +18,11 @@
     <color name="app_light_orange">#EA9F5A</color>
     <color name="app_green">#29763A</color>
     <color name="app_black_65">#A6000000</color>
+
+    <color name="outfit_bg_color">#F5F5F5</color>
+
+    <color name="divider_bg_color">#979797</color>
+    <color name="large_divider_bg_color">#F5F5F5</color>
+
+    <color name="income_text_color">#73C75D</color>
 </resources>

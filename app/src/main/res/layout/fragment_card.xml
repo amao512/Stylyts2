@@ -1,195 +1,250 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.main.profile.CardFragment">
+    tools:context=".presentation.fragments.main.profile.CardFragment"
+    >
+
     <include
         android:id="@+id/include_toolbar_card"
-        layout="@layout/base_toolbar" />
+        layout="@layout/base_toolbar"
+        />
+
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/linear_layout_fragment_card_profile_cards"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone"
+        >
 
         <TextView
             android:id="@+id/text_view_fragment_card_profile_empty"
-            android:visibility="gone"
-            android:layout_gravity="center"
-            android:layout_margin="24dp"
             style="@style/TextRegular"
-            android:text="У вас отсутствуют сохраненные способы оплаты. Добавьте карту"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_size_24x"
+            android:text="У вас отсутствуют сохраненные способы оплаты. Добавьте карту"
+            android:visibility="gone"
+            />
+
         <LinearLayout
             android:id="@+id/linear_layout_fragment_card_profile_add_card"
-            android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            >
+
             <TextView
-                android:layout_margin="24dp"
                 style="@style/TextRegular"
-                android:textAllCaps="false"
-                android:text="Добавить Кредитную/Дебетовую Карту"
-                android:drawableStart="@drawable/ic_credit_card"
-                android:padding="16dp"
-                android:gravity="center"
-                android:background="@drawable/rounded_rectangle_white_gray_corners"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_size_24x"
+                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                android:drawableStart="@drawable/ic_credit_card"
+                android:gravity="center"
+                android:padding="@dimen/padding_size_16x"
+                android:text="Добавить Кредитную/Дебетовую Карту"
+                android:textAllCaps="false"
+                />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_fragment_card"
-            tools:listitem="@layout/item_user_card"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_user_card"
+            />
     </LinearLayout>
+
     <ScrollView
-        android:visibility="gone"
         android:id="@+id/scrollview_fragment_card_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
         <LinearLayout
-            android:layout_margin="16dp"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_size_16x"
+            android:orientation="vertical"
+            >
+
             <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="Номер Карты"
                 android:textColor="@color/app_gray_hint"
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                />
+
             <EditText
                 android:id="@+id/edit_text_fragment_card_number"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_credit_card"
                 style="@style/TextRegularBold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_8x"
                 android:background="@null"
-                android:inputType="number"
+                android:drawableStart="@drawable/ic_credit_card"
+                android:drawablePadding="@dimen/padding_size_8x"
                 android:hint="Номер карты"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:inputType="number"
+                />
+
             <View
-                android:layout_marginTop="8dp"
-                android:background="@color/app_gray_hint"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"/>
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:text="Дата истечения срока действия карты"
-                android:textColor="@color/app_gray_hint"
                 style="@style/TextRegularBold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="Дата истечения срока действия карты"
+                android:textColor="@color/app_gray_hint"
+                />
+
             <LinearLayout
                 android:id="@+id/card_date"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                >
+
                 <TextView
-                    android:gravity="center"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_8x"
                     android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:layout_marginTop="8dp"
+                    android:gravity="center"
                     android:text="Месяц"
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    />
+
                 <TextView
-                    android:gravity="center"
-                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:layout_marginTop="8dp"
-                    android:text="Год"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_8x"
+                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                    android:gravity="center"
+                    android:text="Год"
+                    />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/text_view_fragment_card_expiring"
-                android:layout_marginTop="16dp"
-                tools:text="12/21"
                 style="@style/TextRegular"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                tools:text="12/21"
+                />
+
             <View
-                android:layout_marginTop="8dp"
-                android:background="@color/app_gray_hint"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"/>
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:text="Имя на карте"
-                android:textColor="@color/app_gray_hint"
                 style="@style/TextRegularBold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="Имя на карте"
+                android:textColor="@color/app_gray_hint"
+                />
+
             <EditText
                 android:id="@+id/edit_text_fragment_card_holder"
-                android:background="@null"
-                android:layout_marginTop="16dp"
-                tools:text="12/21"
-                android:hint="Имя на карте"
                 style="@style/TextRegular"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:background="@null"
+                android:hint="Имя на карте"
+                tools:text="12/21"
+                />
+
             <View
-                android:layout_marginTop="8dp"
-                android:background="@color/app_gray_hint"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"/>
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_fragment_card_submit"
-                android:imeOptions="actionNext"
-                app:cornerRadius="@dimen/corner_radius_default"
                 style="@style/SubtitleText"
-                android:gravity="start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="@dimen/margin_size_48x"
+                android:gravity="start"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/padding_size_12x"
                 android:text="@string/fragment_registration_complete"
-                android:textAllCaps="false"
-                android:padding="12dp"
                 android:textAlignment="center"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:backgroundTint="@color/app_black" />
+                app:backgroundTint="@color/app_black"
+                app:cornerRadius="@dimen/corner_radius_default"
+                />
+
             <TextView
-                android:layout_marginTop="16dp"
-                android:text="Мы принимаем"
-                android:textColor="@color/app_gray_hint"
                 style="@style/TextRegularBold"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="Мы принимаем"
+                android:textColor="@color/app_gray_hint"
+                />
+
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+
                 <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:src="@drawable/ic_visa"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    />
+
                 <ImageView
-                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_size_8x"
                     android:src="@drawable/ic_mastercard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    />
+
                 <ImageView
-                    android:layout_marginStart="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_size_8x"
                     android:src="@drawable/ic_paypal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    />
+
                 <ImageView
-                    android:layout_marginStart="8dp"
-                    android:src="@drawable/ic_american_express"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_size_8x"
+                    android:src="@drawable/ic_american_express"
+                    />
             </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
+
 </LinearLayout>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAlignment="center"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/TextRegularBold"
-    android:padding="24dp">
-</TextView>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_size_24x"
+    android:textAlignment="center"
+    />

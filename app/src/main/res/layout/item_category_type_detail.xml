@@ -1,57 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linear_layout_item_category_type_detail"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:id="@+id/linear_layout_item_category_type_detail"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_margin="@dimen/margin_size_8x"
+    android:orientation="vertical"
+    >
 
     <FrameLayout
-        android:background="@drawable/rounded_rectangle_gray"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rectangle_gray"
+        >
+
         <ImageView
             android:id="@+id/image_view_item_category_type_detail"
+            android:layout_width="@dimen/category_type_detail_image_width"
+            android:layout_height="@dimen/category_type_detail_image_height"
             android:layout_gravity="center"
-            android:layout_margin="24dp"
-            android:layout_width="130dp"
-            android:layout_height="180dp"/>
+            android:layout_margin="@dimen/margin_size_24x"
+            />
+
         <ImageView
-            android:layout_margin="12dp"
-            android:layout_gravity="right|top"
-            android:src="@drawable/ic_baseline_favorite_border_24"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|top"
+            android:layout_margin="@dimen/margin_size_12x"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            />
     </FrameLayout>
+
     <TextView
         android:id="@+id/text_view_item_category_type_detail_title"
-        android:layout_gravity="center"
         style="@style/SubtitleTextBold"
-        android:gravity="center"
-        android:textAlignment="center"
-        tools:text = "Zaraas asd s dasdas dasd asd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxWidth="130dp"
-        android:layout_marginTop="8dp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:gravity="center"
+        android:maxWidth="@dimen/category_type_detail_text_max_width"
+        android:textAlignment="center"
+        tools:text="Zaraas asd s dasdas dasd asd"
+        />
+
     <TextView
-        android:maxWidth="130dp"
         android:id="@+id/text_view_item_category_type_detail_sub_title"
-        android:layout_gravity="center"
         style="@style/TextRegular"
-        tools:text = "Кожанная куртка"
-        android:textColor="@color/app_gray_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
-    <TextView
-        android:maxWidth="130dp"
-        android:id="@+id/text_view_item_category_type_detail_cost"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:maxWidth="@dimen/category_type_detail_text_max_width"
+        android:textColor="@color/app_gray_hint"
+        tools:text="Кожанная куртка"
+        />
+
+    <TextView
+        android:id="@+id/text_view_item_category_type_detail_cost"
         style="@style/TextRegularBold"
-        tools:text = "35 000 тг"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/margin_size_4x"
+        android:maxWidth="@dimen/category_type_detail_text_max_width"
+        tools:text="35 000 тг"
+        />
 </LinearLayout>

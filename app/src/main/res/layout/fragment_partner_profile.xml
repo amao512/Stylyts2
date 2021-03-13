@@ -1,51 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.main.profile.ProfileFragment">
+    tools:context=".presentation.fragments.main.profile.ProfileFragment"
+    >
+
     <include
         android:id="@+id/include_toolbar_partner_profile"
-        layout="@layout/base_toolbar" />
+        layout="@layout/base_toolbar"
+        />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
+
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@android:color/white"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                >
 
                 <LinearLayout
-                    app:layout_collapseMode="parallax"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="parallax"
+                    >
+
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
 
                         <com.google.android.material.imageview.ShapeableImageView
-                            android:adjustViewBounds="true"
-                            app:shapeAppearanceOverlay="@style/circleImageView"
-                            android:background="@drawable/rounded_rectangle_gray"
                             android:id="@+id/shapeable_image_view_fragment_profile_avatar"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
+                            android:layout_width="@dimen/profile_user_photo_size"
+                            android:layout_height="@dimen/profile_user_photo_size"
                             android:layout_gravity="center"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/margin_size_16x"
+                            android:adjustViewBounds="true"
+                            android:background="@drawable/rounded_rectangle_gray"
+                            android:src="@drawable/jacket"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            android:src="@drawable/jacket" />
+                            app:shapeAppearanceOverlay="@style/circleImageView"
+                            />
 
                         <TextView
                             android:id="@+id/text_view_fragment_profile_user_name"
@@ -53,112 +67,123 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_margin="12dp"
+                            android:layout_margin="@dimen/margin_size_12x"
                             app:layout_constraintEnd_toEndOf="@+id/shapeable_image_view_fragment_profile_avatar"
                             app:layout_constraintStart_toStartOf="@+id/shapeable_image_view_fragment_profile_avatar"
                             app:layout_constraintTop_toBottomOf="@+id/shapeable_image_view_fragment_profile_avatar"
-                            android:text="Zara" />
+                            tools:text="Zara"
+                            />
 
                         <LinearLayout
                             android:id="@+id/linearLayout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="@dimen/margin_size_16x"
                             android:orientation="vertical"
                             app:layout_constraintEnd_toEndOf="@+id/text_view_fragment_profile_user_name"
                             app:layout_constraintStart_toStartOf="@+id/text_view_fragment_profile_user_name"
-                            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_profile_user_name">
+                            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_profile_user_name"
+                            >
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="10" />
+                                tools:text="10"
+                                />
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:text="подписчики"
                                 android:textColor="@color/app_gray"
-                                android:text="подписчики" />
+                                />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
+                            android:layout_marginEnd="@dimen/margin_size_24x"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                             app:layout_constraintEnd_toStartOf="@+id/linearLayout"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            >
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="10" />
+                                tools:text="10"
+                                />
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:text="фото"
                                 android:textColor="@color/app_gray"
-                                android:text="фото" />
+                                />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="24dp"
+                            android:layout_marginStart="@dimen/margin_size_24x"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
                             app:layout_constraintStart_toEndOf="@+id/linearLayout"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout">
+                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            >
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="10" />
+                                tools:text="10"
+                                />
 
                             <TextView
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
+                                android:text="подписки"
                                 android:textColor="@color/app_gray"
-                                android:text="подписки" />
+                                />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginBottom="16dp"
+                            android:layout_marginVertical="@dimen/margin_size_16x"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                            >
 
                             <TextView
                                 style="@style/TextRegularBold"
-                                android:textColor="@color/white"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:background="@drawable/rounded_rectangle_orange"
                                 android:gravity="center"
-                                android:padding="6dp"
-                                android:text="Подписаться" />
+                                android:padding="@dimen/padding_size_6x"
+                                android:text="Подписаться"
+                                android:textColor="@color/white"
+                                />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -166,37 +191,47 @@
                                 android:layout_marginStart="6dp"
                                 android:background="@drawable/rounded_rectangle_white_gray_corners"
                                 android:gravity="center"
-                                android:padding="6dp"
-                                android:src="@drawable/ic_camera" />
+                                android:padding="@dimen/padding_size_6x"
+                                android:src="@drawable/ic_camera"
+                                />
+
                             <TextView
-                                android:layout_marginStart="6dp"
                                 style="@style/TextRegularBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
+                                android:layout_marginStart="6dp"
                                 android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
                                 android:gravity="center"
-                                android:padding="6dp"
+                                android:padding="@dimen/padding_size_6x"
                                 android:text="Для нее"
-                                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"/>
+                                />
                         </LinearLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
             <androidx.recyclerview.widget.RecyclerView
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:background="@android:color/white"
                 android:id="@+id/recycler_view_fragment_partner_profile_filter_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_collection_filter"/>
+                android:background="@android:color/white"
+                app:layout_scrollFlags="scroll|enterAlways"
+                tools:listitem="@layout/item_collection_filter"
+                />
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_fragment_partner_profile_items_list"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
 
 </LinearLayout>

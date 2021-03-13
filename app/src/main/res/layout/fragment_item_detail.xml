@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".presentation.fragments.main.detail.ItemDetailFragment">
+    android:orientation="vertical"
+    tools:context=".presentation.fragments.main.detail.ItemDetailFragment"
+    >
+
     <include
-        app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
         android:id="@+id/include_toolbar_item_detail"
-        layout="@layout/base_toolbar" />
+        layout="@layout/base_toolbar"
+        app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+        />
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
+
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed">
+                android:background="@color/white"
+                app:expandedTitleMarginEnd="@dimen/margin_size_64x"
+                app:expandedTitleMarginStart="@dimen/margin_size_48x"
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                >
+
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    app:layout_collapseMode="parallax"
                     android:layout_width="match_parent"
-                    android:layout_height="350dp">
+                    android:layout_height="@dimen/collection_item_image_height"
+                    app:layout_collapseMode="parallax"
+                    >
 
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/view_pager_fragment_item_detail_photos_holder"
@@ -36,290 +47,342 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_marginEnd="24dp"
+                        android:layout_width="@dimen/favorite_button_size"
+                        android:layout_height="@dimen/favorite_button_size"
+                        android:layout_marginTop="@dimen/margin_size_24x"
+                        android:layout_marginEnd="@dimen/margin_size_24x"
                         android:src="@drawable/ic_baseline_favorite_border_24"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="1.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0" />
+                        app:layout_constraintVertical_bias="0.0"
+                        />
 
                     <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
                         android:id="@+id/page_indicator_fragment_item_detail_pager_selector"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:spi_dotColor="#9EFFFFFF"
                         app:spi_dotSelectedColor="#fff"
                         app:spi_dotSelectedSize="8dp"
                         app:spi_dotSize="6dp"
                         app:spi_visibleDotCount="5"
                         app:spi_visibleDotThreshold="2"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </com.google.android.material.appbar.CollapsingToolbarLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
+
         <androidx.core.widget.NestedScrollView
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            android:fitsSystemWindows="true"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            >
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
 
                 <LinearLayout
-                    android:layout_marginTop="16dp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_size_16x"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
 
                     <TextView
                         android:id="@+id/text_view_fragment_item_detail_brand_name"
                         style="@style/TitleTextBold"
-                        tools:text="Zara"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:id="@+id/text_view_fragment_item_detail_item_name"
-                        android:layout_marginTop="6dp"
-                        style="@style/TextRegular"
-                        tools:text="Куртка кожанная"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/app_gray_hint"/>
+                        tools:text="Zara"
+                        />
+
+                    <TextView
+                        android:id="@+id/text_view_fragment_item_detail_item_name"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_6x"
+                        android:textColor="@color/app_gray_hint"
+                        tools:text="Куртка кожанная"
+                        />
+
                     <TextView
                         android:id="@+id/text_view_fragment_item_detail_item_price"
-                        android:layout_marginTop="6dp"
                         style="@style/TextRegularBold"
-                        tools:text="35 000 тг"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_6x"
+                        tools:text="35 000 тг"
+                        />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:animateLayoutChanges="true"
-                    android:layout_marginTop="24dp"
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_24x"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical"
+                    >
+
                     <LinearLayout
                         android:id="@+id/linear_layout_fragment_item_detail_cart_holder"
-                        android:background="@color/white"
-                        android:paddingStart="24dp"
-                        android:paddingEnd="24dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_16x"
+                        >
+
                         <LinearLayout
-                            android:visibility="gone"
                             android:id="@+id/linear_layout_fragment_item_detail_choosers_holder"
-                            android:layout_marginBottom="24dp"
-                            android:weightSum="1"
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/margin_size_24x"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            android:weightSum="1"
+                            >
+
                             <FrameLayout
                                 android:id="@+id/frame_layout_fragment_item_detail_text_color"
-                                android:paddingStart="12dp"
-                                android:paddingEnd="12dp"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:background="@drawable/rounded_rectangle_white_gray_corners"
-                                android:layout_weight="0.5"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:paddingHorizontal="@dimen/padding_size_12x"
+                                android:paddingVertical="@dimen/padding_size_8x"
+                                >
+
                                 <TextView
                                     android:id="@+id/text_view_fragment_item_detail_text_color"
-                                    android:layout_gravity="left|center"
                                     style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|center"
                                     android:text="Цвет"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    />
+
                                 <ImageView
-                                    android:layout_gravity="right|center"
-                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end|center"
+                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                    />
                             </FrameLayout>
 
                             <FrameLayout
                                 android:id="@+id/frame_layout_fragment_item_detail_text_size"
-                                android:layout_marginStart="10dp"
-                                android:paddingStart="12dp"
-                                android:paddingEnd="12dp"
-                                android:paddingTop="8dp"
-                                android:paddingBottom="8dp"
-                                android:background="@drawable/rounded_rectangle_white_gray_corners"
-                                android:layout_weight="0.5"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/margin_size_10x"
+                                android:layout_weight="0.5"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:paddingHorizontal="@dimen/padding_size_12x"
+                                android:paddingVertical="@dimen/padding_size_8x"
+                                >
+
                                 <TextView
                                     android:id="@+id/text_view_fragment_item_detail_text_size"
-                                    android:layout_gravity="left|center"
                                     style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="start|center"
                                     android:text="Размер"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    />
+
                                 <ImageView
-                                    android:layout_gravity="right|center"
-                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"/>
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end|center"
+                                    android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                    />
                             </FrameLayout>
                         </LinearLayout>
+
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/button_fragment_item_detail_add_to_cart"
-                            android:imeOptions="actionNext"
-                            app:cornerRadius="@dimen/corner_radius_default"
                             style="@style/SubtitleText"
-                            android:gravity="start"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="start"
+                            android:imeOptions="actionNext"
+                            android:padding="@dimen/padding_size_10x"
                             android:text="Добавить в корзину"
-                            android:textAllCaps="false"
-                            android:padding="10dp"
                             android:textAlignment="center"
+                            android:textAllCaps="false"
                             android:textColor="@color/white"
-                            app:backgroundTint="@color/app_green" />
+                            app:backgroundTint="@color/app_green"
+                            app:cornerRadius="@dimen/corner_radius_default"
+                            />
 
                         <FrameLayout
-                            android:visibility="gone"
-                            android:layout_marginTop="24dp"
                             android:id="@+id/frame_layout_fragment_item_detail_text_share"
-                            android:paddingStart="12dp"
-                            android:paddingEnd="12dp"
-                            android:paddingTop="8dp"
-                            android:paddingBottom="8dp"
-                            android:background="@drawable/rounded_rectangle_white_gray_corners"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="24dp"
+                            android:background="@drawable/rounded_rectangle_white_gray_corners"
+                            android:paddingHorizontal="@dimen/padding_size_12x"
+                            android:paddingVertical="@dimen/padding_size_8x"
+                            android:visibility="gone"
+                            >
+
                             <TextView
                                 android:id="@+id/text_view_fragment_item_detail_text_share"
-                                android:layout_gravity="left|center"
                                 style="@style/TextRegular"
-                                android:text="Поделиться"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="start|center"
+                                android:drawableEnd="@drawable/ic_baseline_save_alt_24"
                                 android:drawablePadding="10dp"
-                                android:drawableEnd="@drawable/ic_baseline_save_alt_24"/>
+                                android:text="Поделиться"
+                                />
                         </FrameLayout>
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
-                        android:layout_marginStart="24dp"
-                        android:layout_marginEnd="24dp"
-                        android:layout_marginBottom="16dp"
                         android:id="@+id/button_fragment_item_detail_create_collection"
-                        android:imeOptions="actionNext"
-                        app:cornerRadius="@dimen/corner_radius_default"
                         style="@style/SubtitleText"
-                        android:gravity="start"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_size_24x"
+                        android:layout_marginBottom="@dimen/margin_size_16x"
+                        android:gravity="start"
+                        android:imeOptions="actionNext"
+                        android:padding="@dimen/padding_size_10x"
                         android:text="Создать образ с этой вещью"
-                        android:textAllCaps="false"
-                        android:padding="10dp"
                         android:textAlignment="center"
+                        android:textAllCaps="false"
                         android:textColor="@color/white"
-                        app:backgroundTint="@color/app_dark_blue_gray" />
-
+                        app:backgroundTint="@color/app_dark_blue_gray"
+                        app:cornerRadius="@dimen/corner_radius_default"
+                        />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+
                     <LinearLayout
                         android:id="@+id/linear_layout_fragment_item_detail_description_holder"
-                        android:padding="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
                         android:background="@drawable/rectangle_white_gray_corners"
                         android:orientation="vertical"
-                        android:animateLayoutChanges="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:padding="@dimen/padding_size_24x"
+                        >
+
                         <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            >
+
                             <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start|center"
+                                android:text="Описание товара"
                                 android:textColor="#4F4B4B"
                                 android:textStyle="bold"
-                                android:layout_gravity="left|center"
-                                style="@style/TextRegular"
-                                android:text="Описание товара"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                />
+
                             <ImageView
                                 android:id="@+id/image_view_fragment_item_detail_description_arrow"
-                                android:layout_gravity="right|center"
-                                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|center"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                />
                         </FrameLayout>
+
                         <TextView
-                            android:visibility="gone"
                             android:id="@+id/text_view_fragment_item_detail_description"
-                            android:layout_marginTop="16dp"
-                            android:textColor="#4F4B4B"
-                            android:layout_gravity="left|center"
                             style="@style/TextRegular"
-                            tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginTop="@dimen/margin_size_16x"
+                            android:textColor="#4F4B4B"
+                            android:visibility="gone"
+                            tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
+                            />
                     </LinearLayout>
+
                     <LinearLayout
-                        android:padding="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
                         android:background="@drawable/rectangle_white_gray_corners"
                         android:orientation="vertical"
-                        android:animateLayoutChanges="true"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:padding="@dimen/padding_size_24x"
+                        >
+
                         <FrameLayout
                             android:id="@+id/frame_layout_fragment_item_detail_delivery_description_holder"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            >
+
                             <TextView
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start|center"
+                                android:text="Информация о доставке"
                                 android:textColor="#4F4B4B"
                                 android:textStyle="bold"
-                                android:layout_gravity="left|center"
-                                style="@style/TextRegular"
-                                android:text="Информация о доставке"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                />
+
                             <ImageView
                                 android:id="@+id/image_view_fragment_item_detail_delivery_description_arrow"
-                                android:layout_gravity="right|center"
-                                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end|center"
+                                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                />
                         </FrameLayout>
 
                         <TextView
                             android:id="@+id/text_view_fragment_item_detail_delivery_description"
-                            android:layout_marginTop="16dp"
-                            android:textColor="#4F4B4B"
-                            android:layout_gravity="left|center"
                             style="@style/TextRegular"
-                            tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:layout_marginTop="@dimen/margin_size_16x"
+                            android:textColor="#4F4B4B"
+                            tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
+                            />
                     </LinearLayout>
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </androidx.core.widget.NestedScrollView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>

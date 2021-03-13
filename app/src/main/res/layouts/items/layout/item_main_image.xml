@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="24dp">
+    android:padding="@dimen/padding_size_24x"
+    >
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout_fragment_item_main_image_profile_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <FrameLayout
             android:id="@+id/frameLayout"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/collection_detail_user_photo_size"
+            android:layout_height="@dimen/collection_detail_user_photo_size"
             android:background="@drawable/circle_white_gray_stroke"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:adjustViewBounds="true"
-                app:shapeAppearanceOverlay="@style/circleImageView"
                 android:id="@+id/shapeable_image_view_item_main_image_profile_avatar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                />
+
             <TextView
-                android:background="@drawable/circle_gray"
                 android:id="@+id/text_view_item_main_image_short_name"
                 style="@style/TitleTextBold"
-                tools:text = "RE"
-                android:gravity="center"
-                android:textSize="12sp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:background="@drawable/circle_gray"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_12x"
+                tools:text="RE"
+                />
         </FrameLayout>
 
         <TextView
@@ -42,14 +50,14 @@
             style="@style/TextRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginHorizontal="@dimen/margin_size_16x"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/imageButton"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/frameLayout"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="zara" />
+            tools:text="zara"
+            />
 
         <ImageButton
             android:id="@+id/imageButton"
@@ -59,105 +67,129 @@
             android:src="@drawable/ic_baseline_more_horiz_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.google.android.material.card.MaterialCardView
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
-        android:clickable="true"
-        app:cardCornerRadius="@dimen/corner_radius_default"
-        android:layout_marginTop="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:background="?attr/selectableItemBackground"
-            android:id="@+id/image_view_item_main_image_imageholder"
-            android:scaleType="centerInside"
-            tools:src="@drawable/auth_bg"
-            android:layout_width="match_parent"
-            android:layout_height="500dp"/>
-        <ImageButton
-            android:layout_gravity="top|right"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_safe_flag_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.card.MaterialCardView>
-    <androidx.recyclerview.widget.RecyclerView
-        android:fadingEdge="vertical"
-        android:fadingEdgeLength="30dp"
-        android:fillViewport="false"
-        android:requiresFadingEdge="vertical|horizontal"
-        android:id="@+id/recycler_view_item_main_image_additionals_list"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:layout_centerVertical="true"
-        tools:listitem="@layout/item_main_image_detail"/>
-    <LinearLayout
-        android:layout_marginTop="16dp"
-        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:clickable="true"
+        app:cardCornerRadius="@dimen/corner_radius_default"
+        app:cardElevation="0dp"
+        app:cardMaxElevation="0dp"
+        >
+
+        <ImageView
+            android:id="@+id/image_view_item_main_image_imageholder"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/collection_detail_image_size"
+            android:background="?attr/selectableItemBackground"
+            android:scaleType="centerInside"
+            tools:src="@drawable/auth_bg"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="@dimen/margin_size_32x"
+            android:layout_marginEnd="@dimen/margin_size_24x"
+            android:background="?android:attr/selectableItemBackground"
+            android:src="@drawable/ic_safe_flag_empty"
+            />
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_item_main_image_additionals_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/margin_size_24x"
+        android:fadingEdge="vertical"
+        android:fadingEdgeLength="@dimen/collection_detail_list_fade"
+        android:fillViewport="false"
+        android:orientation="horizontal"
+        android:requiresFadingEdge="vertical|horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_main_image_detail"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:orientation="horizontal"
+        >
+
         <ImageButton
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_favorite_border_24"/>
-        <ImageButton
-            android:layout_marginStart="4dp"
             android:layout_gravity="center"
             android:background="?attr/selectableItemBackground"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_chat_bubble_outline_24"/>
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            />
+
         <ImageButton
-            android:layout_marginStart="4dp"
-            android:layout_gravity="center"
-            android:background="?attr/selectableItemBackground"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_save_alt_24"/>
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/margin_size_4x"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_chat_bubble_outline_24"
+            />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/margin_size_4x"
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_save_alt_24"
+            />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_item_main_image_change_collection"
-            android:layout_marginStart="4dp"
-            android:textSize="12sp"
-            android:textAllCaps="false"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:text="изменить образ"
-            app:backgroundTint="@color/app_light_orange"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/margin_size_4x"
+            android:text="изменить образ"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_12x"
+            app:backgroundTint="@color/app_light_orange"
+            />
     </LinearLayout>
+
     <TextView
         android:id="@+id/text_view_item_main_image_comments_cost"
-        android:layout_marginTop="8dp"
         style="@style/TextRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_8x"
         android:textStyle="bold"
         tools:text="65 550 KZT"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        />
+
     <TextView
         android:id="@+id/text_view_item_main_image_comments_count"
-        android:textColor="@color/app_gray"
-        android:layout_marginTop="8dp"
         style="@style/TextRegular"
-        tools:text="Показать 53 комментарий..."
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:textColor="@color/app_gray"
+        tools:text="Показать 53 комментарий..."
+        />
+
     <TextView
         android:id="@+id/text_view_item_main_image_date"
-        android:layout_marginTop="8dp"
         style="@style/TextRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_8x"
         android:textColor="@color/app_gray"
         tools:text="21 сентября"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        />
 </LinearLayout>
