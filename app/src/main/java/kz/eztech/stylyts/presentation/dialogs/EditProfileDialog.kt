@@ -9,33 +9,46 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.ProfileModel
+import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.main.profile.EditProfileContract
-import kz.eztech.stylyts.presentation.utils.extensions.EMPTY_STRING
+import kz.eztech.stylyts.presentation.presenters.main.profile.EditProfilePresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.util.*
+import javax.inject.Inject
+import kotlin.collections.HashMap
 
 /**
  * Created by Ruslan Erdenoff on 03.03.2021.
  */
-class EditProfileDialog : DialogFragment(), EditProfileContract.View {
+class EditProfileDialog(
+    private val editorListener: EditorListener
+) : DialogFragment(), EditProfileContract.View {
+
+    @Inject lateinit var presenter: EditProfilePresenter
 
     private var currentName: String = EMPTY_STRING
     private var currentSurname: String = EMPTY_STRING
     private var currentUserName: String = EMPTY_STRING
 
     companion object {
+        private const val TOKEN_ARGS_KEY = "token_args_key"
         private const val NAME_ARGS_KEY = "name_args_key"
         private const val SURNAME_ARGS_KEY = "surname_args_key"
         private const val USERNAME_ARGS_KEY = "username_args_key"
 
         fun getNewInstance(
+            token: String?,
             name: String,
-            surname: String
+            surname: String,
+            editorListener: EditorListener
         ): EditProfileDialog {
-            val editProfileDialog = EditProfileDialog()
+            val editProfileDialog = EditProfileDialog(editorListener)
             val args = Bundle()
 
+            args.putString(TOKEN_ARGS_KEY, token)
             args.putString(NAME_ARGS_KEY, name)
             args.putString(SURNAME_ARGS_KEY, surname)
             editProfileDialog.arguments = args
@@ -66,6 +79,8 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
         customizeActionBar()
     }
 
+    override fun getTheme(): Int = R.style.FullScreenDialog
+
     override fun customizeActionBar() {
         with(include_toolbar_edit_profile) {
             image_button_left_corner_action.hide()
@@ -81,7 +96,7 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
             text_view_toolbar_right_text.show()
             text_view_toolbar_right_text.text = context.getString(R.string.toolbar_completed)
             text_view_toolbar_right_text.setOnClickListener {
-                dismiss()
+                completeEditing()
             }
             elevation = 0f
         }
@@ -91,7 +106,7 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
         (requireContext().applicationContext as StylytsApp).applicationComponent.inject(this)
     }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() = presenter.attach(view = this)
 
     override fun initializeArguments() {
         arguments?.let {
@@ -112,16 +127,12 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        if (currentName.isNotEmpty()) {
+        if (currentName.isNotEmpty() && currentSurname.isNotEmpty()) {
             edit_text_dialog_edit_profile_name.setText(currentName)
         }
 
         if (currentUserName.isNotEmpty()) {
             edit_text_dialog_edit_profile_username.setText(currentUserName)
-        }
-
-        if (currentSurname.isNotEmpty()) {
-            edit_text_dialog_edit_profile_username.setText(currentSurname)
         }
 
         if (currentName.isNotEmpty() && currentSurname.isNotEmpty()) {
@@ -147,5 +158,24 @@ class EditProfileDialog : DialogFragment(), EditProfileContract.View {
 
     override fun hideProgress() {}
 
-    override fun getTheme(): Int = R.style.FullScreenDialog
+    override fun successEditing(profileModel: ProfileModel) {
+        currentName = profileModel.name ?: EMPTY_STRING
+        editorListener.completeEditing(isSuccess = true)
+
+        dismiss()
+    }
+
+    private fun completeEditing() {
+        val data = HashMap<String, Any>()
+        val name: String = edit_text_dialog_edit_profile_name.text.toString()
+
+        if (name.isNotBlank()) {
+            data["name"] = name
+
+            presenter.editProfile(
+                token = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING,
+                data = data
+            )
+        }
+    }
 }

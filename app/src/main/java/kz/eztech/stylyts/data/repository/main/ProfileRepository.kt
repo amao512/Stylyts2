@@ -22,4 +22,19 @@ class ProfileRepository @Inject constructor(
             }
         }
     }
+
+    override fun editProfile(
+        token: String,
+        data: HashMap<String, Any>
+    ): Single<ProfileModel> {
+        return api.editUserProfile(
+            token = token,
+            name = data["name"] as String
+        ).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                else -> throw NetworkException(it)
+            }
+        }
+    }
 }

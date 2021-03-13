@@ -21,11 +21,12 @@ import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.main.profile.ProfileContract
 import kz.eztech.stylyts.presentation.dialogs.EditProfileDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.profile.ProfilePresenter
-import kz.eztech.stylyts.presentation.utils.extensions.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.util.*
@@ -34,7 +35,7 @@ import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
-    UniversalViewClickListener {
+    UniversalViewClickListener, EditorListener {
 
     @Inject lateinit var presenter: ProfilePresenter
 
@@ -46,6 +47,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var currentName = EMPTY_STRING
     private var currentNickname = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
+
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_profile
 
@@ -105,20 +111,32 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         recycler_view_fragment_profile_items_list.adapter = adapter
     }
 
-    override fun onResume() {
-        super.onResume()
-        currentActivity.displayBottomNavigationView()
+    override fun initializeListeners() {
+        include_toolbar_profile.image_button_right_corner_action.setOnClickListener(this)
+        frame_layout_fragment_profile_my_incomes.setOnClickListener(this)
+        frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
+        text_view_fragment_profile_settings.setOnClickListener(this)
+        frame_layout_fragment_profile_cards.setOnClickListener(this)
+        linearLayout.setOnClickListener(this)
+        subs.setOnClickListener(this)
+        sub.setOnClickListener(this)
     }
 
-    override fun processSettings() {
-        if (isSettings) {
-            isSettings = false
-            hideSettings()
-        } else {
-            isSettings = true
-            showSettings()
-        }
+    override fun processPostInitialization() {
+        presenter.getProfile(
+            token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: EMPTY_STRING
+        )
     }
+
+    override fun disposeRequests() = presenter.disposeRequests()
+
+    override fun displayMessage(msg: String) = displayToast(msg)
+
+    override fun isFragmentVisible(): Boolean = isVisible
+
+    override fun displayProgress() = progress_bar_fragment_profile.show()
+
+    override fun hideProgress() = progress_bar_fragment_profile.hide()
 
     override fun showSettings() {
         recycler_view_fragment_profile_filter_list.hide()
@@ -132,15 +150,49 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         frame_layout_fragment_profile_settings_container.hide()
     }
 
-    override fun initializeListeners() {
-        include_toolbar_profile.image_button_right_corner_action.setOnClickListener(this)
-        frame_layout_fragment_profile_my_incomes.setOnClickListener(this)
-        frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
-        text_view_fragment_profile_settings.setOnClickListener(this)
-        frame_layout_fragment_profile_cards.setOnClickListener(this)
-        linearLayout.setOnClickListener(this)
-        subs.setOnClickListener(this)
-        sub.setOnClickListener(this)
+    override fun processSettings() {
+        if (isSettings) {
+            isSettings = false
+            hideSettings()
+        } else {
+            isSettings = true
+            showSettings()
+        }
+    }
+
+    override fun processProfile(profileModel: ProfileModel) {
+        profileModel.run {
+            userId = id
+            currentName = name ?: EMPTY_STRING
+            currentNickname = EMPTY_STRING
+            currentSurname = lastName ?: EMPTY_STRING
+
+            text_view_fragment_profile_user_name.text = name
+            text_view_fragment_profile_user_followers_count.text = "${/*followers_count*/ 0}"
+            text_view_fragment_profile_user_followings_count.text = "${/*followings_count*/ 0}"
+
+            avatar?.let {
+                text_view_fragment_profile_user_short_name.hide()
+
+                Glide.with(currentActivity)
+                    .load(it)
+                    .into(shapeable_image_view_fragment_profile_avatar)
+            } ?: run {
+                shapeable_image_view_fragment_profile_avatar.hide()
+                text_view_fragment_profile_user_short_name.show()
+                text_view_fragment_profile_user_short_name.text = getString(
+                    R.string.full_name_text_format,
+                    name?.toUpperCase(Locale.getDefault())?.get(0),
+                    lastName?.toUpperCase(Locale.getDefault())?.get(0)
+                )
+            }
+        }
+    }
+
+    override fun processMyCollections(models: MainLentaModel) {
+        models.results?.let {
+            adapter.updateList(it)
+        }
     }
 
     override fun onClick(v: View?) {
@@ -156,8 +208,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             }
             R.id.text_view_fragment_profile_settings -> {
                 EditProfileDialog.getNewInstance(
+                    token = currentActivity.getSharedPrefByKey(TOKEN_KEY),
                     name = currentName,
-                    surname = currentSurname
+                    surname = currentSurname,
+                    editorListener = this
                 ).show(childFragmentManager, "Cart")
             }
             R.id.frame_layout_fragment_profile_cards -> {
@@ -204,54 +258,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    override fun processPostInitialization() {
-        presenter.getProfile(
-            token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: EMPTY_STRING
-        )
-    }
-
-    override fun disposeRequests() = presenter.disposeRequests()
-
-    override fun displayMessage(msg: String) = displayToast(msg)
-
-    override fun isFragmentVisible(): Boolean = isVisible
-
-    override fun displayProgress() = progress_bar_fragment_profile.show()
-
-    override fun hideProgress() = progress_bar_fragment_profile.hide()
-
-    override fun processProfile(profileModel: ProfileModel) {
-        profileModel.run {
-            userId = id
-            currentName = name ?: EMPTY_STRING
-            currentNickname = EMPTY_STRING
-            currentSurname = lastName ?: EMPTY_STRING
-
-            text_view_fragment_profile_user_name.text = name
-            text_view_fragment_profile_user_followers_count.text = "${/*followers_count*/ 0}"
-            text_view_fragment_profile_user_followings_count.text = "${/*followings_count*/ 0}"
-
-            avatar?.let {
-                text_view_fragment_profile_user_short_name.hide()
-
-                Glide.with(currentActivity)
-                    .load(it)
-                    .into(shapeable_image_view_fragment_profile_avatar)
-            } ?: run {
-                shapeable_image_view_fragment_profile_avatar.hide()
-                text_view_fragment_profile_user_short_name.show()
-                text_view_fragment_profile_user_short_name.text = getString(
-                    R.string.full_name_text_format,
-                    name?.toUpperCase(Locale.getDefault())?.get(0),
-                    lastName?.toUpperCase(Locale.getDefault())?.get(0)
-                )
-            }
-        }
-    }
-
-    override fun processMyCollections(models: MainLentaModel) {
-        models.results?.let {
-            adapter.updateList(it)
+    override fun completeEditing(isSuccess: Boolean) {
+        if (isSuccess) {
+            presenter.getProfile(
+                token = currentActivity.getSharedPrefByKey(TOKEN_KEY) ?: EMPTY_STRING
+            )
         }
     }
 }
