@@ -6,8 +6,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlinx.android.synthetic.main.fragment_profile.recycler_view_fragment_profile_filter_list
+import kotlinx.android.synthetic.main.fragment_profile.recycler_view_fragment_profile_items_list
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -59,9 +62,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun customizeActionBar() {
         with(include_toolbar_profile) {
-            image_button_left_corner_action.show()
-            image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
-
             text_view_toolbar_back.hide()
             text_view_toolbar_title.show()
             image_button_right_corner_action.show()
@@ -139,12 +139,15 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun hideProgress() = progress_bar_fragment_profile.hide()
 
     override fun showSettings() {
+        image_button_left_corner_action.show()
+        image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
         recycler_view_fragment_profile_filter_list.hide()
         recycler_view_fragment_profile_items_list.hide()
         frame_layout_fragment_profile_settings_container.show()
     }
 
     override fun hideSettings() {
+        image_button_left_corner_action.hide()
         recycler_view_fragment_profile_filter_list.show()
         recycler_view_fragment_profile_items_list.show()
         frame_layout_fragment_profile_settings_container.hide()
