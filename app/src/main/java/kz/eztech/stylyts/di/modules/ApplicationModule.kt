@@ -82,6 +82,11 @@ class ApplicationModule(internal var mApplication: Application){
     }
 
     @Provides
+    fun providesAddressRepository(addressRepository: AddressRepository): AddressDomainRepository {
+        return addressRepository
+    }
+
+    @Provides
     fun provideDataSource() = LocalDataSource(mApplication)
 
 }

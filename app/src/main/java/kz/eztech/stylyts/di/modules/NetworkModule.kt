@@ -9,8 +9,7 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.BuildConfig
-import kz.eztech.stylyts.data.api.API
-import kz.eztech.stylyts.data.api.RestConstants
+import kz.eztech.stylyts.data.api.*
 import kz.eztech.stylyts.data.helpers.MyTLSSocketFactory
 import okhttp3.Cache
 import okhttp3.ConnectionSpec
@@ -33,6 +32,7 @@ import javax.net.ssl.X509TrustManager
  */
 @Module
 class NetworkModule {
+
     @Provides
     @Singleton
     internal fun providesOkHttpCache(application: Application): Cache {
@@ -112,5 +112,21 @@ class NetworkModule {
         return retrofit.create(API::class.java)
     }
 
+    @Provides
+    @Singleton
+    internal fun provideAuthApi(retrofit: Retrofit): AuthApi {
+        return retrofit.create(AuthApi::class.java)
+    }
 
+    @Provides
+    @Singleton
+    internal fun provideProfileApi(retrofit: Retrofit): ProfileApi {
+        return retrofit.create(ProfileApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideAddressApi(retrofit: Retrofit): AddressApi {
+        return retrofit.create(AddressApi::class.java)
+    }
 }

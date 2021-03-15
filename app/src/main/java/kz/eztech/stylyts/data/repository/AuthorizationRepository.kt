@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.data.repository
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.API
+import kz.eztech.stylyts.data.api.AuthApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.AuthModel
 import kz.eztech.stylyts.domain.repository.AuthorizationDomainRepository
@@ -11,7 +11,7 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
 class AuthorizationRepository @Inject constructor(
-    private var api: API
+    private var api: AuthApi
 ) : AuthorizationDomainRepository {
 
     override fun registerUser(data: HashMap<String, Any>): Single<AuthModel> {

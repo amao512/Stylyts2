@@ -1,8 +1,6 @@
 package kz.eztech.stylyts.data.api
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants.EDIT_USER_PROFILE
-import kz.eztech.stylyts.data.api.RestConstants.GENERATE_FORGOT_PASSWORD
 import kz.eztech.stylyts.data.api.RestConstants.GET_BRANDS
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES
 import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES_DETAIL
@@ -11,14 +9,10 @@ import kz.eztech.stylyts.data.api.RestConstants.GET_FILTERED_ITEMS
 import kz.eztech.stylyts.data.api.RestConstants.GET_ITEM_BY_BARCODE
 import kz.eztech.stylyts.data.api.RestConstants.GET_ITEM_DETAIL
 import kz.eztech.stylyts.data.api.RestConstants.GET_STYLES
-import kz.eztech.stylyts.data.api.RestConstants.GET_USER_PROFILE
-import kz.eztech.stylyts.data.api.RestConstants.LOGIN_USER
-import kz.eztech.stylyts.data.api.RestConstants.REGISTER_USER
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION_TO_ME
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_ITEM_BY_PHOTO
 import kz.eztech.stylyts.data.api.RestConstants.SEARCH_USER_BY_NAME
-import kz.eztech.stylyts.data.api.RestConstants.SET_NEW_PASSWORD
 import kz.eztech.stylyts.data.api.RestConstants.UPDATE_COLLECTION
 import kz.eztech.stylyts.domain.models.*
 import okhttp3.MultipartBody
@@ -30,36 +24,6 @@ import retrofit2.http.*
  */
 interface API {
 
-    @FormUrlEncoded
-    @POST(REGISTER_USER)
-    fun registerUser(
-        @Field("email") email: String,
-        @Field("password") password: String,
-        @Field("name") first_name: String,
-        @Field("last_name") last_name: String,
-        @Field("date_of_birth") date_of_birth: String,
-        @Field("should_send_mail") should_send_mail: Boolean,
-        @Field("username") username: String,
-    ): Single<Response<AuthModel>>
-
-    @FormUrlEncoded
-    @POST(LOGIN_USER)
-    fun loginUser(
-        @Field("username") username: String,
-        @Field("password") password: String
-    ): Single<Response<AuthModel>>
-
-    @FormUrlEncoded
-    @POST(GENERATE_FORGOT_PASSWORD)
-    fun generateForgotPassword(@Field("email") email: String): Single<Response<Unit>>
-
-    @FormUrlEncoded
-    @POST(SET_NEW_PASSWORD)
-    fun setNewPassword(
-        @Field("token") token: String,
-        @Field("password") password: String
-    ): Single<Response<Unit>>
-
     @GET(GET_CATEGORIES)
     fun getCategories(): Single<Response<ShopCategoryModel>>
 
@@ -68,18 +32,6 @@ interface API {
         @Path("id") id: Int,
         @Query("gender") gender_type: String
     ): Single<Response<CategoryTypeDetailModel>>
-
-    @GET(GET_USER_PROFILE)
-    fun getUserProfile(
-        @Header("Authorization") token: String
-    ): Single<Response<List<ProfileModel>>>
-
-    @FormUrlEncoded
-    @PATCH(EDIT_USER_PROFILE)
-    fun editUserProfile(
-        @Header("Authorization") token: String,
-        @Field("name") name: String
-    ): Single<Response<ProfileModel>>
 
     @GET(GET_STYLES)
     fun getStyles(@Header("Authorization") token: String): Single<Response<List<Style>>>

@@ -1,10 +1,7 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
 import android.view.View
-import kotlinx.android.synthetic.main.item_address_profile.view.*
-import kotlinx.android.synthetic.main.item_address_profile.view.text_view_address_profile_name
 import kotlinx.android.synthetic.main.item_user_card.view.*
-import kz.eztech.stylyts.data.db.entities.AddressEntity
 import kz.eztech.stylyts.data.db.entities.CardEntity
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder

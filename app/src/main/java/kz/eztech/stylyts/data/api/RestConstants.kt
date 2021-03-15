@@ -15,9 +15,14 @@ object RestConstants {
     const val GENERATE_FORGOT_PASSWORD: String = "auth/generate_forgot_password/"
     const val SET_NEW_PASSWORD: String = "auth/set_new_password/"
 
-    //User
+    // User
     const val GET_USER_PROFILE: String = "auth/profile/"
     const val EDIT_USER_PROFILE: String = "auth/profile/edit/"
+
+    // Address
+    const val POST_ADDRESS: String = "address/"
+    const val GET_ALL_ADDRESS: String = "address/"
+    const val DELETE_ADDRESS: String = "address/{address_id}/"
 
     //ShopCategories
     const val GET_CATEGORIES: String = "clothes/category/"

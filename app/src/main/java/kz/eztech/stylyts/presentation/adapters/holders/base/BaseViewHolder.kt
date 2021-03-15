@@ -8,8 +8,12 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-abstract class BaseViewHolder(itemView: View,val adapter:BaseAdapter): RecyclerView.ViewHolder(itemView){
-    var itemListener:UniversalViewClickListener? = null
-    
+abstract class BaseViewHolder(
+    itemView: View,
+    val adapter: BaseAdapter
+) : RecyclerView.ViewHolder(itemView) {
+
+    var itemListener: UniversalViewClickListener? = null
+
     abstract fun bindData(item: Any, position: Int)
 }
