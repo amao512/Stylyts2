@@ -92,6 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/margin_size_12x"
+                            android:layout_marginBottom="@dimen/margin_size_16x"
                             app:layout_constraintEnd_toEndOf="@+id/frame_layout_fragment_profile_avatar_holder"
                             app:layout_constraintStart_toStartOf="@+id/frame_layout_fragment_profile_avatar_holder"
                             app:layout_constraintTop_toBottomOf="@+id/frame_layout_fragment_profile_avatar_holder"
@@ -99,7 +100,7 @@
                             />
 
                         <LinearLayout
-                            android:id="@+id/linearLayout"
+                            android:id="@+id/linear_layout_fragment_profile_followers_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_size_16x"
@@ -129,16 +130,16 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/sub"
+                            android:id="@+id/linear_layout_fragment_profile_photos_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/margin_size_24x"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-                            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintEnd_toStartOf="@+id/linear_layout_fragment_profile_followers_item"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
                             >
 
                             <TextView
@@ -160,16 +161,16 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/subs"
+                            android:id="@+id/linear_layout_fragment_profile_following_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_size_24x"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/linearLayout"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            app:layout_constraintStart_toEndOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
                             >
 
                             <TextView
@@ -192,6 +193,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/linear_layout_fragment_profile_change_buttons"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginVertical="@dimen/margin_size_16x"
@@ -199,7 +201,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                            app:layout_constraintTop_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
                             >
 
                             <TextView
@@ -246,6 +248,7 @@
             android:id="@+id/frame_layout_fragment_profile_settings_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_size_16x"
             android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >

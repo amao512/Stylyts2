@@ -117,9 +117,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
         text_view_fragment_profile_settings.setOnClickListener(this)
         frame_layout_fragment_profile_cards.setOnClickListener(this)
-        linearLayout.setOnClickListener(this)
-        subs.setOnClickListener(this)
-        sub.setOnClickListener(this)
+        linear_layout_fragment_profile_followers_item.setOnClickListener(this)
+        linear_layout_fragment_profile_following_item.setOnClickListener(this)
+        linear_layout_fragment_profile_photos_item.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -139,18 +139,28 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun hideProgress() = progress_bar_fragment_profile.hide()
 
     override fun showSettings() {
-        image_button_left_corner_action.show()
-        image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
+        linear_layout_fragment_profile_followers_item.hide()
+        linear_layout_fragment_profile_change_buttons.hide()
+        linear_layout_fragment_profile_photos_item.hide()
+        linear_layout_fragment_profile_following_item.hide()
         recycler_view_fragment_profile_filter_list.hide()
         recycler_view_fragment_profile_items_list.hide()
+
+        image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
+        image_button_left_corner_action.show()
         frame_layout_fragment_profile_settings_container.show()
     }
 
     override fun hideSettings() {
         image_button_left_corner_action.hide()
+        frame_layout_fragment_profile_settings_container.hide()
+
+        linear_layout_fragment_profile_followers_item.show()
+        linear_layout_fragment_profile_change_buttons.show()
+        linear_layout_fragment_profile_photos_item.show()
+        linear_layout_fragment_profile_following_item.show()
         recycler_view_fragment_profile_filter_list.show()
         recycler_view_fragment_profile_items_list.show()
-        frame_layout_fragment_profile_settings_container.hide()
     }
 
     override fun processSettings() {
@@ -220,13 +230,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.frame_layout_fragment_profile_cards -> {
                 findNavController().navigate(R.id.action_profileFragment_to_cardFragment)
             }
-            R.id.linearLayout -> {
+            R.id.linear_layout_fragment_profile_followers_item -> {
                 findNavController().navigate(R.id.userSubsFragment)
             }
-            R.id.subs -> {
+            R.id.linear_layout_fragment_profile_following_item -> {
                 findNavController().navigate(R.id.userSubsFragment)
             }
-            R.id.sub -> {
+            R.id.linear_layout_fragment_profile_photos_item -> {
                 findNavController().navigate(R.id.userSubsFragment)
             }
         }

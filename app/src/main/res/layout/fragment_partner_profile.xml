@@ -75,7 +75,7 @@
                             />
 
                         <LinearLayout
-                            android:id="@+id/linearLayout"
+                            android:id="@+id/linear_layout_fragment_profile_followers_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_size_16x"
@@ -108,11 +108,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/margin_size_24x"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-                            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintEnd_toStartOf="@+id/linear_layout_fragment_profile_followers_item"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
                             >
 
                             <TextView
@@ -138,11 +138,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_size_24x"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/linearLayout"
-                            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+                            app:layout_constraintStart_toEndOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
                             >
 
                             <TextView
@@ -171,7 +171,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                            app:layout_constraintTop_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
                             >
 
                             <TextView
