@@ -10,29 +10,25 @@ import javax.inject.Inject
 /**
  * Created by Ruslan Erdenoff on 14.01.2021.
  */
-class MainLentaRepository:MainLentaDomainRepository{
-	private var api: API
-	
-	@Inject
-	constructor(api: API){
-		this.api = api
-	}
-	
-	override fun getCollections(token: String, queries: Map<String, Any>?): Single<MainLentaModel> {
-		queries?.let {
-			return api.getCollections(token,queries).map {
-				when(it.isSuccessful){
-					true -> it.body()
-					false -> throw NetworkException(it)
-				}
-			}
-		} ?: run {
-			return api.getCollections(token,HashMap()).map {
-				when(it.isSuccessful){
-					true -> it.body()
-					false -> throw NetworkException(it)
-				}
-			}
-		}
-	}
+class MainLentaRepository @Inject constructor(
+    private var api: API
+) : MainLentaDomainRepository {
+
+    override fun getCollections(token: String, queries: Map<String, Any>?): Single<MainLentaModel> {
+        queries?.let {
+            return api.getCollections(token, queries).map {
+                when (it.isSuccessful) {
+                    true -> it.body()
+                    false -> throw NetworkException(it)
+                }
+            }
+        } ?: run {
+            return api.getCollections(token, HashMap()).map {
+                when (it.isSuccessful) {
+                    true -> it.body()
+                    false -> throw NetworkException(it)
+                }
+            }
+        }
+    }
 }
