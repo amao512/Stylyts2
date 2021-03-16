@@ -21,7 +21,8 @@ import javax.inject.Singleton
  */
 
 @Module
-class ApplicationModule(internal var mApplication: Application){
+class ApplicationModule(internal var mApplication: Application) {
+
     @Singleton
     @Provides
     internal fun providesApplication(): Application {
@@ -47,37 +48,37 @@ class ApplicationModule(internal var mApplication: Application){
     }
 
     @Provides
-    fun providesAuthorizationRepository(authorizationDomainRepository: AuthorizationRepository) : AuthorizationDomainRepository{
+    fun providesAuthorizationRepository(authorizationDomainRepository: AuthorizationRepository): AuthorizationDomainRepository {
         return authorizationDomainRepository
     }
 
     @Provides
-    fun providesShopCategoryRepository(shopCategoryRepository: ShopCategoryRepository) : ShopCategoryDomainRepository {
+    fun providesShopCategoryRepository(shopCategoryRepository: ShopCategoryRepository): ShopCategoryDomainRepository {
         return shopCategoryRepository
     }
-    
+
     @Provides
-    fun providesProfileRepository(profileRepository: ProfileRepository) : ProfileDomainRepository {
+    fun providesProfileRepository(profileRepository: ProfileRepository): ProfileDomainRepository {
         return profileRepository
     }
-    
+
     @Provides
-    fun providesMainLentaRepository(mainLentaRepository: MainLentaRepository) : MainLentaDomainRepository {
+    fun providesMainLentaRepository(mainLentaRepository: MainLentaRepository): MainLentaDomainRepository {
         return mainLentaRepository
     }
 
     @Provides
-    fun providesItemDetailRepository(itemDetailRepository: ItemDetailRepository) : ItemDetailDomainRepository {
+    fun providesItemDetailRepository(itemDetailRepository: ItemDetailRepository): ItemDetailDomainRepository {
         return itemDetailRepository
     }
-    
+
     @Provides
-    fun providesFilteredItemsRepository(filteredItemsRepository: FilteredItemsRepository) : FilteredItemsDomainRepository {
+    fun providesFilteredItemsRepository(filteredItemsRepository: FilteredItemsRepository): FilteredItemsDomainRepository {
         return filteredItemsRepository
     }
-    
+
     @Provides
-    fun providesUserSearchRepository(userSearchRepository: UserSearchRepository) : UserSearchDomainRepository {
+    fun providesUserSearchRepository(userSearchRepository: UserSearchRepository): UserSearchDomainRepository {
         return userSearchRepository
     }
 
@@ -88,5 +89,4 @@ class ApplicationModule(internal var mApplication: Application){
 
     @Provides
     fun provideDataSource() = LocalDataSource(mApplication)
-
 }

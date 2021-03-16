@@ -1,12 +1,8 @@
 package kz.eztech.stylyts.di.component
 
-import androidx.fragment.app.Fragment
-import dagger.android.AndroidInjectionModule
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.di.modules.ApplicationModule
 import kz.eztech.stylyts.di.modules.NetworkModule
-import kz.eztech.stylyts.presentation.base.BaseActivity
-import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.EditProfileDialog
@@ -35,8 +31,10 @@ import javax.inject.Singleton
 @Singleton
 @dagger.Component(modules = [ApplicationModule::class, NetworkModule::class])
 interface ApplicationComponent {
+
     val retrofit: Retrofit
-    fun okHttpClient() : OkHttpClient
+
+    fun okHttpClient(): OkHttpClient
 
     fun inject(application: StylytsApp)
     fun inject(fragment: RegistrationFragment)
@@ -55,7 +53,7 @@ interface ApplicationComponent {
     fun inject(fragment: AddressProfileFragment)
     fun inject(fragment: CardFragment)
 
-    fun inject(dialog:CartDialog)
-    fun inject(dialog:UserSearchDialog)
+    fun inject(dialog: CartDialog)
+    fun inject(dialog: UserSearchDialog)
     fun inject(dialog: EditProfileDialog)
 }
