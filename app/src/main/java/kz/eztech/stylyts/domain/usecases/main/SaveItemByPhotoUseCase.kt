@@ -12,25 +12,24 @@ import javax.inject.Named
 /**
  * Created by Ruslan Erdenoff on 24.02.2021.
  */
-class SaveItemByPhotoUseCase:BaseUseCase<ClothesMainModel>{
+class SaveItemByPhotoUseCase @Inject constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
     private var itemDetailDomainRepository: ItemDetailDomainRepository
-    private lateinit var token:String
-    private lateinit var data:  ArrayList<MultipartBody.Part>
+) : BaseUseCase<ClothesMainModel>(executorThread, uiThread) {
 
-    @Inject
-    constructor(@Named("executor_thread") executorThread: Scheduler,
-                @Named("ui_thread") uiThread: Scheduler,
-                itemDetailDomainRepository: ItemDetailDomainRepository
-    ) :
-            super(executorThread, uiThread) {
-        this.itemDetailDomainRepository = itemDetailDomainRepository
-    }
-    fun initParams(token:String,data: ArrayList<MultipartBody.Part>) {
-        this.token = "Bearer $token"
-        this.data = data
-    }
+    private lateinit var token: String
+    private lateinit var data: ArrayList<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<ClothesMainModel> {
         return itemDetailDomainRepository.saveItemByPhoto(token, data)
+    }
+
+    fun initParams(
+        token: String,
+        data: ArrayList<MultipartBody.Part>
+    ) {
+        this.token = "Bearer $token"
+        this.data = data
     }
 }

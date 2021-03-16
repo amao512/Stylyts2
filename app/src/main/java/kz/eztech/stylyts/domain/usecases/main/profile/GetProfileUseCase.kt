@@ -19,11 +19,11 @@ class GetProfileUseCase @Inject constructor(
 
     private lateinit var token: String
 
-    fun initParams(token: String) {
-        this.token = "JWT $token"
-    }
-
     override fun createSingleObservable(): Single<ProfileModel> {
         return profileDomainRepository.getProfile(token)
+    }
+
+    fun initParams(token: String) {
+        this.token = "JWT $token"
     }
 }

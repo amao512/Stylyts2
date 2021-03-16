@@ -11,22 +11,19 @@ import javax.inject.Named
 /**
  * Created by Ruslan Erdenoff on 05.02.2021.
  */
-class GetBrandsUseCase:BaseUseCase<BrandsModel> {
+class GetBrandsUseCase @Inject constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
     private var shopCategoryDomainRepository: ShopCategoryDomainRepository
-    private lateinit var token: String
-    @Inject
-    constructor(@Named("executor_thread") executorThread: Scheduler,
-                @Named("ui_thread") uiThread: Scheduler,
-                shopCategoryDomainRepository: ShopCategoryDomainRepository
-    ) :
-            super(executorThread, uiThread) {
-        this.shopCategoryDomainRepository = shopCategoryDomainRepository
-    }
+) : BaseUseCase<BrandsModel>(executorThread, uiThread) {
 
-    fun initParam(token:String){
-        this.token = "Bearer $token"
-    }
+    private lateinit var token: String
+
     override fun createSingleObservable(): Single<BrandsModel> {
         return shopCategoryDomainRepository.getBrands(token)
+    }
+
+    fun initParam(token: String) {
+        this.token = "Bearer $token"
     }
 }

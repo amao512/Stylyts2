@@ -7,5 +7,9 @@ import kz.eztech.stylyts.domain.models.MainLentaModel
  * Created by Ruslan Erdenoff on 14.01.2021.
  */
 interface MainLentaDomainRepository {
-	fun getCollections(token:String,queries:Map<String,Any>? = null):Single<MainLentaModel>
+
+    fun getCollections(
+        token: String,
+        queries: Map<String, Any>? = null
+    ): Single<MainLentaModel>
 }

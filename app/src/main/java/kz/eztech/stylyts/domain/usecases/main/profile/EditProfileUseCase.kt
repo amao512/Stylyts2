@@ -17,15 +17,15 @@ class EditProfileUseCase @Inject constructor(
     private lateinit var token: String
     private lateinit var data: HashMap<String, Any>
 
+    override fun createSingleObservable(): Single<ProfileModel> {
+        return profileDomainRepository.editProfile(token, data)
+    }
+
     fun initParams(
         token: String,
         data: HashMap<String, Any>
     ) {
         this.token = "JWT $token"
         this.data = data
-    }
-
-    override fun createSingleObservable(): Single<ProfileModel> {
-        return profileDomainRepository.editProfile(token, data)
     }
 }

@@ -9,22 +9,19 @@ import javax.inject.Named
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
-class GenerateForgotPasswordUseCase:BaseUseCase<Unit> {
+class GenerateForgotPasswordUseCase @Inject constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
     private var authorizationDomainRepository: AuthorizationDomainRepository
-    private lateinit var email:String
-    @Inject
-    constructor(@Named("executor_thread") executorThread: Scheduler,
-                @Named("ui_thread") uiThread: Scheduler,
-                authorizationDomainRepository: AuthorizationDomainRepository
-    ) :
-            super(executorThread, uiThread) {
-        this.authorizationDomainRepository = authorizationDomainRepository
-    }
-    fun initParams(email:String) {
-        this.email = email
-    }
+) : BaseUseCase<Unit>(executorThread, uiThread) {
+
+    private lateinit var email: String
 
     override fun createSingleObservable(): Single<Unit> {
         return authorizationDomainRepository.generateForgotPassword(email)
+    }
+
+    fun initParams(email: String) {
+        this.email = email
     }
 }

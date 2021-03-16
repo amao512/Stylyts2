@@ -18,11 +18,11 @@ class RegistrationUseCase @Inject constructor(
 
     private lateinit var data: HashMap<String, Any>
 
-    fun initParams(data: HashMap<String, Any>) {
-        this.data = data
-    }
-
     override fun createSingleObservable(): Single<AuthModel> {
         return authorizationDomainRepository.registerUser(data)
+    }
+
+    fun initParams(data: HashMap<String, Any>) {
+        this.data = data
     }
 }
