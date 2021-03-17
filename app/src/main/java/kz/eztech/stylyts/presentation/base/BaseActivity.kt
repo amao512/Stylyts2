@@ -65,4 +65,13 @@ abstract class BaseActivity : AppCompatActivity() {
             }
         }
     }
+
+    fun removeFromSharedPrefByKey(key: String) {
+        val sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),Context.MODE_PRIVATE) ?: return
+
+        with (sharedPreferences.edit()) {
+            remove(key)
+            apply()
+        }
+    }
 }

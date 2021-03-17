@@ -37,4 +37,6 @@ data class AddressModel(
     @SerializedName("comment")
     @Expose
     val comment: String?
-)
+) {
+    var isDefaultAddress: Boolean = false
+}

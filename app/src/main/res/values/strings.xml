@@ -167,4 +167,12 @@
 
     <string name="comments_add">Добавьте комментарий&#8230;</string>
     <string name="empty_fields_message">Пожалуйста, заполините поля!</string>
+
+    <string name="settings_saved">Сохраненное</string>
+    <string name="settings_personal_settings">Личные настройки</string>
+    <string name="settings_confidentiality">Политика конфиденциальности</string>
+    <string name="settings_rule_using">Правила пользования</string>
+    <string name="settings_estimate_app">Оценить приложение</string>
+    <string name="settings_exit">Выйти</string>
+    <string name="settings_title">Настройки</string>
 </resources>

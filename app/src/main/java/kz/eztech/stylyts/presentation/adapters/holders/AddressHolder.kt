@@ -5,13 +5,17 @@ import kotlinx.android.synthetic.main.item_address_profile.view.*
 import kz.eztech.stylyts.domain.models.AddressModel
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 27.02.2021.
  */
 class AddressHolder(
     itemView: View,
-    adapter: BaseAdapter
+    adapter: BaseAdapter,
+    private val addressViewClickListener: AddressViewClickListener
 ) : BaseViewHolder(itemView, adapter) {
 
     override fun bindData(
@@ -27,6 +31,18 @@ class AddressHolder(
             text_view_address_profile_country.text = item.country
             linear_layout_address_profile_container.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, item)
+            }
+
+            if (item.isDefaultAddress) {
+                item_address_divider.hide()
+                item_address_profile_set_default_delivery_address_text_view.hide()
+
+                item_address_profile_default_card_text_view.show()
+                item_address_profile_prefer_text_view.show()
+            }
+
+            item_address_profile_set_default_delivery_address_text_view.setOnClickListener {
+                addressViewClickListener.setDefaultAddress(addressModel = item)
             }
         }
     }

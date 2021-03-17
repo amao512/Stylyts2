@@ -112,7 +112,7 @@
                     android:background="@null"
                     android:imeOptions="actionNext"
                     android:inputType="text|textPersonName"
-                    android:text="Руслан"
+                    tools:text="Руслан"
                     />
 
                 <View
@@ -140,7 +140,7 @@
                     android:background="@null"
                     android:imeOptions="actionNext"
                     android:inputType="text|textPersonName"
-                    android:text="Руслан"
+                    tools:text="Руслан"
                     />
 
                 <View
@@ -168,7 +168,7 @@
                     android:background="@null"
                     android:imeOptions="actionNext"
                     android:inputType="phone"
-                    android:text="+70000000"
+                    tools:text="+70000000"
                     />
 
                 <View

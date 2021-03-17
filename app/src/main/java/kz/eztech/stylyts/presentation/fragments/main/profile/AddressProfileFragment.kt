@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.main.profile
 
+import android.util.Log
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import kz.eztech.stylyts.presentation.adapters.AddressAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.profile.AddressProfileContract
+import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.address.AddressPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -22,7 +24,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContract.View,
-    View.OnClickListener, UniversalViewClickListener {
+    View.OnClickListener, UniversalViewClickListener, AddressViewClickListener {
 
     @Inject lateinit var presenter: AddressPresenter
     private lateinit var addressAdapter: AddressAdapter
@@ -66,7 +68,7 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        addressAdapter = AddressAdapter()
+        addressAdapter = AddressAdapter(addressViewClickListener = this)
     }
 
     override fun initializeViews() {
@@ -140,6 +142,16 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
     }
 
     override fun processAddressList(addressList: List<AddressModel>) {
+        val defaultAddressId: Int = currentActivity.getSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY) ?: 0
+
+        Log.d("TAG" ,"from fragment $defaultAddressId")
+
+        addressList.forEach {
+            if (it.id?.toInt() == defaultAddressId) {
+                it.isDefaultAddress = true
+            }
+        }
+
         addressAdapter.updateList(addressList)
         addressAdapter.notifyDataSetChanged()
     }
@@ -156,6 +168,12 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
     override fun hideEmpty() {
         text_view_fragment_address_profile_empty?.hide()
         base_progress_address_profile.hide()
+    }
+
+    override fun setDefaultAddress(addressModel: AddressModel) {
+        currentActivity.saveSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY, addressModel.id?.toInt())
+
+        processPostInitialization()
     }
 
     private fun displayExistForm(addressModel: AddressModel) {

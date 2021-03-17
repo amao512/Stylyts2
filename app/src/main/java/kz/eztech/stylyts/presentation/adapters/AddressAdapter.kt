@@ -7,11 +7,14 @@ import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.AddressHolder
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
 
 /**
  * Created by Ruslan Erdenoff on 27.02.2021.
  */
-class AddressAdapter : BaseAdapter() {
+class AddressAdapter(
+    private val addressViewClickListener: AddressViewClickListener
+) : BaseAdapter() {
 
     override fun getLayoutId(): Int {
         return R.layout.item_address_profile
@@ -30,6 +33,10 @@ class AddressAdapter : BaseAdapter() {
     }
 
     override fun getViewHolder(view: View): BaseViewHolder {
-        return AddressHolder(view, this)
+        return AddressHolder(
+            itemView = view,
+            adapter = this,
+            addressViewClickListener = addressViewClickListener
+        )
     }
 }

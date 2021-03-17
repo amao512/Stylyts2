@@ -8,13 +8,13 @@
     android:layout_marginTop="@dimen/margin_size_24x"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="@dimen/padding_size_16x"
     >
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:padding="@dimen/padding_size_16x"
         >
 
         <LinearLayout
@@ -82,23 +82,49 @@
     </FrameLayout>
 
     <TextView
+        android:id="@+id/item_address_profile_prefer_text_view"
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_size_16x"
         android:layout_marginTop="@dimen/margin_size_16x"
         android:drawableEnd="@drawable/ic_baseline_check_24_gray"
         android:text="@string/address_profile_prefer_address"
         android:textColor="@color/app_gray_hint"
+        android:visibility="gone"
         />
 
     <TextView
+        android:id="@+id/item_address_profile_default_card_text_view"
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_size_16x"
         android:layout_marginTop="@dimen/margin_size_8x"
         android:layout_marginBottom="@dimen/margin_size_16x"
         android:drawableEnd="@drawable/ic_baseline_check_24_gray"
         android:text="@string/address_profile_default_score"
         android:textColor="@color/app_gray_hint"
+        android:visibility="gone"
+        />
+
+    <View
+        android:id="@+id/item_address_divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:background="@color/app_gray_hint"
+        />
+
+    <TextView
+        android:id="@+id/item_address_profile_set_default_delivery_address_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_size_16x"
+        android:text="Установить в качестве адреса доставки по умолчанию"
+        android:textColor="@color/app_light_orange"
+        android:textSize="@dimen/text_size_14x"
+        android:textStyle="bold"
         />
 </LinearLayout>

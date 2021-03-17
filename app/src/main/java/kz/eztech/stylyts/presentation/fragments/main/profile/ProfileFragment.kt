@@ -211,7 +211,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.image_button_right_corner_action -> {
-                processSettings()
+                findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
             }
             R.id.frame_layout_fragment_profile_my_incomes -> {
                 findNavController().navigate(R.id.action_profileFragment_to_profileIncomeFragment)
@@ -257,6 +257,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                     }
                     2 -> {}
                     3 -> {}
+                    4 -> processSettings()
                 }
             }
             R.id.shapeable_image_view_item_collection_image -> {

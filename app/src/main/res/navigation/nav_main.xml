@@ -73,6 +73,10 @@
         <action
             android:id="@+id/action_profileFragment_to_cardFragment"
             app:destination="@id/cardFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -201,4 +205,10 @@
         android:id="@+id/userSubsFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.main.users.UserSubsFragment"
         android:label="UserSubsFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings"
+        />
 </navigation>
