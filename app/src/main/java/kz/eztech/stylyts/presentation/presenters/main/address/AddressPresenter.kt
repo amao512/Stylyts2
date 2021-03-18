@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.main.address
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.AddressModel
+import kz.eztech.stylyts.domain.usecases.main.address.DeleteAddressUseCase
 import kz.eztech.stylyts.domain.usecases.main.address.GetAddressUseCase
 import kz.eztech.stylyts.domain.usecases.main.address.PostAddressUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -12,7 +13,8 @@ import javax.inject.Inject
 class AddressPresenter @Inject constructor(
     private var errorHelper: ErrorHelper,
     private val getAddressUseCase: GetAddressUseCase,
-    private val postAddressUseCase: PostAddressUseCase
+    private val postAddressUseCase: PostAddressUseCase,
+    private val deleteAddressUseCase: DeleteAddressUseCase
 ) : AddressProfileContract.Presenter {
 
     private lateinit var view: AddressProfileContract.View
@@ -71,5 +73,27 @@ class AddressPresenter @Inject constructor(
                 }
             }
         })
+    }
+
+    override fun deleteAddress(
+        token: String,
+        addressId: String
+    ) {
+        deleteAddressUseCase.initParams(token, addressId)
+        deleteAddressUseCase.execute(object : DisposableSingleObserver<Any>() {
+
+            override fun onSuccess(t: Any) {
+                view.processViewAction {
+                    displayDeletedAddress()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayDeletedAddress()
+                }
+            }
+        })
+
     }
 }

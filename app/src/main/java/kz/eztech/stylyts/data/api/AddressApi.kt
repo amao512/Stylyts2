@@ -3,13 +3,7 @@ package kz.eztech.stylyts.data.api
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.AddressModel
 import retrofit2.Response
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.Field
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.DELETE
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by Asylzhan Seytbek on 14.03.2021.
@@ -34,6 +28,6 @@ interface AddressApi {
     @DELETE(RestConstants.DELETE_ADDRESS)
     fun deleteAddress(
         @Header("Authorization") token: String,
-        @Query("address_id") id: String
-    )
+        @Path("address_id") id: String
+    ): Single<Any>
 }

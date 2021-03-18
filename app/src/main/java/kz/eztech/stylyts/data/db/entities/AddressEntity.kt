@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Ruslan Erdenoff on 27.02.2021.
  */
-@Entity(tableName = "address_table",indices = arrayOf(Index(value = ["id"],unique = true)))
+@Entity(tableName = "address_table", indices = arrayOf(Index(value = ["id"], unique = true)))
 data class AddressEntity(
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")
@@ -18,23 +18,12 @@ data class AddressEntity(
     @ColumnInfo(name = "id")
     var id: Int? = null,
 
-    @SerializedName("name")
-    @Expose
     @ColumnInfo(name = "name")
     var name: String? = null,
 
-    @SerializedName("surname")
-    @Expose
-    @ColumnInfo(name = "surname")
-    var surname: String? = null,
+    @ColumnInfo(name = "last_name")
+    var lastName: String? = null,
 
-    @SerializedName("contact")
-    @Expose
-    @ColumnInfo(name = "contact")
-    var contact: String? = null,
-
-    @SerializedName("phone")
-    @Expose
     @ColumnInfo(name = "phone")
     var phone: String? = null,
 
@@ -43,19 +32,47 @@ data class AddressEntity(
     @ColumnInfo(name = "country")
     var country: String? = null,
 
-    @SerializedName("address")
+    @SerializedName("city")
     @Expose
-    @ColumnInfo(name = "address")
-    var address: String? = null,
+    @ColumnInfo(name = "city")
+    val city: String? = null,
 
-    @SerializedName("point")
+    @SerializedName("street")
     @Expose
-    @ColumnInfo(name = "point")
-    var point: String? = null,
+    @ColumnInfo(name = "street")
+    val street: String? = null,
 
-    @SerializedName("postIndex")
+    @SerializedName("apartment")
     @Expose
-    @ColumnInfo(name = "postIndex")
-    var postIndex: String? = null,
+    @ColumnInfo(name = "apartment")
+    val apartment: String? = null,
+
+    @SerializedName("entrance")
+    @Expose
+    @ColumnInfo(name = "entrance")
+    val entrance: String? = null,
+
+    @SerializedName("floor")
+    @Expose
+    @ColumnInfo(name = "floor")
+    val floor: String? = null,
+
+    @SerializedName("door_phone")
+    @Expose
+    @ColumnInfo(name = "door_phone")
+    val doorPhone: String? = null,
+
+    @SerializedName("postal_code")
+    @Expose
+    @ColumnInfo(name = "postal_code")
+    val postalCode: String? = null,
+
+    @SerializedName("comment")
+    @Expose
+    @ColumnInfo(name = "comment")
+    val comment: String? = null,
+
+    @ColumnInfo(name = "is_default_address")
+    var isDefaultAddress: Boolean = false
 )
 

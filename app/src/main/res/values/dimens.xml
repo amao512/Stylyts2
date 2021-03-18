@@ -122,4 +122,5 @@
     <dimen name="camera_bottom_container_height">100dp</dimen>
     <dimen name="camera_take_photo_button_size">50dp</dimen>
     <dimen name="camera_icon_size">30dp</dimen>
+    <dimen name="search_tab_min_width">110dp</dimen>
 </resources>

@@ -1,8 +1,10 @@
 package kz.eztech.stylyts.presentation.fragments.main.profile
 
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_address_profile.*
@@ -12,6 +14,7 @@ import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.AddressModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.AddressAdapter
+import kz.eztech.stylyts.presentation.adapters.helpers.SwipeToDeleteAddressCallback
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.profile.AddressProfileContract
@@ -74,6 +77,9 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
     override fun initializeViews() {
         recycler_view_fragment_address_profile.layoutManager = LinearLayoutManager(currentActivity)
         recycler_view_fragment_address_profile.adapter = addressAdapter
+
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteAddressCallback(addressAdapter))
+        itemTouchHelper.attachToRecyclerView(recycler_view_fragment_address_profile)
     }
 
     override fun initializeListeners() {
@@ -92,19 +98,13 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.linear_layout_fragment_address_profile_add_address -> {
-                displayForm()
-            }
-            R.id.linear_layout_fragment_address_profile_create_address -> {
-                createAddress()
-            }
+            R.id.linear_layout_fragment_address_profile_add_address -> displayForm()
+            R.id.linear_layout_fragment_address_profile_create_address -> createAddress()
         }
     }
 
     override fun processPostInitialization() {
-        presenter.getAllAddress(
-            token = currentActivity.getSharedPrefByKey(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING
-        )
+        presenter.getAllAddress(token = getTokenFromSharedPref())
     }
 
     override fun disposeRequests() {}
@@ -144,8 +144,6 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
     override fun processAddressList(addressList: List<AddressModel>) {
         val defaultAddressId: Int = currentActivity.getSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY) ?: 0
 
-        Log.d("TAG" ,"from fragment $defaultAddressId")
-
         addressList.forEach {
             if (it.id?.toInt() == defaultAddressId) {
                 it.isDefaultAddress = true
@@ -176,6 +174,25 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
         processPostInitialization()
     }
 
+    override fun onSwipeDelete(addressModel: AddressModel) {
+        presenter.deleteAddress(
+            token = getTokenFromSharedPref(),
+            addressId = addressModel.id ?: EMPTY_STRING
+        )
+    }
+
+    override fun displayDeletedAddress() {
+        fragment_address_profile_success_deleted_text_view.show()
+        Handler(Looper.myLooper()!!)
+            .postDelayed({
+                fragment_address_profile_success_deleted_text_view.hide()
+            }, 2000)
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING
+    }
+
     private fun displayExistForm(addressModel: AddressModel) {
         isForm = true
         scroll_view_fragment_address_profile.show()
@@ -187,34 +204,10 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
     }
 
     private fun createAddress() {
-        val data = HashMap<String, Any>()
-        val addressList: MutableList<String> = mutableListOf()
-
         if (checkValidation()) {
-            val addressArray = edit_text_fragment_address_profile_address.text.split("/", ", ", " ")
-            addressList.addAll(addressArray)
-
-            data["country"] = edit_text_fragment_address_profile_country.text.toString()
-            data["postal_code"] = edit_text_fragment_address_profile_post.text.toString()
-
-            when {
-                addressList.size == 1 -> {
-                    data["city"] = addressList[0]
-                    data["street"] = EMPTY_STRING
-                }
-                addressList.size > 1 -> {
-                    data["city"] = addressList[0]
-                    data["street"] = addressList[1]
-                }
-                else -> {
-                    data["city"] = EMPTY_STRING
-                    data["street"] = EMPTY_STRING
-                }
-            }
-
             presenter.createAddress(
-                token = currentActivity.getSharedPrefByKey(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING,
-                data = data
+                token = getTokenFromSharedPref(),
+                data = getAddressData()
             )
         } else {
             displayToast(getString(R.string.empty_fields_message))
@@ -237,5 +230,33 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
         }
 
         return isValidate
+    }
+
+    private fun getAddressData(): HashMap<String, Any> {
+        val data = HashMap<String, Any>()
+        val addressList: MutableList<String> = mutableListOf()
+        val addressArray = edit_text_fragment_address_profile_address.text.split("/", ", ", " ")
+
+        addressList.addAll(addressArray)
+
+        data["country"] = edit_text_fragment_address_profile_country.text.toString()
+        data["postal_code"] = edit_text_fragment_address_profile_post.text.toString()
+
+        when {
+            addressList.size == 1 -> {
+                data["city"] = addressList[0]
+                data["street"] = EMPTY_STRING
+            }
+            addressList.size > 1 -> {
+                data["city"] = addressList[0]
+                data["street"] = addressList[1]
+            }
+            else -> {
+                data["city"] = EMPTY_STRING
+                data["street"] = EMPTY_STRING
+            }
+        }
+
+        return data
     }
 }

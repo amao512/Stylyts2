@@ -44,8 +44,8 @@ class AddressRepository @Inject constructor(
     override fun deleteAddress(
         token: String,
         id: String
-    ) {
-        api.deleteAddress(
+    ): Single<Any> {
+        return api.deleteAddress(
             token = token,
             id = id
         )

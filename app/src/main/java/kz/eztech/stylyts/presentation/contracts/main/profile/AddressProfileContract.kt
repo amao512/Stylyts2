@@ -22,6 +22,8 @@ interface AddressProfileContract {
         fun showEmpty()
 
         fun hideEmpty()
+
+        fun displayDeletedAddress()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -31,6 +33,11 @@ interface AddressProfileContract {
         fun createAddress(
             token: String,
             data: HashMap<String, Any>
+        )
+
+        fun deleteAddress(
+            token: String,
+            addressId: String
         )
     }
 }

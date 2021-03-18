@@ -5,22 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import kz.eztech.stylyts.presentation.adapters.holders.CollectionFilterHolder
 import kz.eztech.stylyts.presentation.adapters.holders.PhotoLibraryHolder
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import java.lang.reflect.Constructor
-
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
  */
-abstract class BaseAdapter: RecyclerView.Adapter<BaseViewHolder>(){
-    protected var currentList: ArrayList<Any>
+abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+
+    protected var currentList: MutableList<Any> = mutableListOf()
+
     var itemClickListener: UniversalViewClickListener? = null
-    init {
-        currentList = ArrayList()
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(getLayoutId(), parent, false)
@@ -36,20 +32,21 @@ abstract class BaseAdapter: RecyclerView.Adapter<BaseViewHolder>(){
         position: Int,
         payloads: MutableList<Any>
     ) {
-        if(!payloads.isEmpty()) {
-            when(payloads.get(0)){
+        if (!payloads.isEmpty()) {
+            when (payloads[0]) {
                 is Int -> {
-                    when(holder){
+                    when (holder) {
                         is PhotoLibraryHolder -> {
-                            holder.bindPayloadData(currentList[position], position,
-                                payloads.get(0) as Int
+                            holder.bindPayloadData(
+                                currentList[position], position,
+                                payloads[0] as Int
                             )
                         }
                     }
                 }
             }
-        }else {
-            super.onBindViewHolder(holder,position, payloads);
+        } else {
+            super.onBindViewHolder(holder, position, payloads);
         }
     }
 
@@ -57,7 +54,7 @@ abstract class BaseAdapter: RecyclerView.Adapter<BaseViewHolder>(){
         return currentList.count()
     }
 
-    fun updateList(list: List<Any>){
+    fun updateList(list: List<Any>) {
         val diffCallback = getDiffUtilCallBack(list)
 
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -65,25 +62,25 @@ abstract class BaseAdapter: RecyclerView.Adapter<BaseViewHolder>(){
         currentList.addAll(list)
         diffResult.dispatchUpdatesTo(this)
     }
-    
-    fun updateListFull(list: List<Any>){
+
+    fun updateListFull(list: List<Any>) {
         currentList.clear()
         currentList.addAll(list)
         val diffCallback = getDiffUtilCallBack(list)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
     }
-    
 
-    fun setOnClickListener(listener: UniversalViewClickListener){
+
+    fun setOnClickListener(listener: UniversalViewClickListener) {
         itemClickListener = listener
     }
 
-    abstract fun getLayoutId():Int
+    abstract fun getLayoutId(): Int
 
-    abstract fun getDiffUtilCallBack(list: List<Any>):BaseDiffUtilCallBack
+    abstract fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack
 
-    abstract fun getViewHolder(view:View):BaseViewHolder
+    abstract fun getViewHolder(view: View): BaseViewHolder
 }
 
 

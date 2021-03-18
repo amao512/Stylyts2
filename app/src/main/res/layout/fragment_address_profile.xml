@@ -26,16 +26,35 @@
         android:orientation="vertical"
         >
 
-        <TextView
-            android:id="@+id/text_view_fragment_address_profile_empty"
-            style="@style/TextRegular"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/margin_size_24x"
-            android:text="@string/address_profile_empty"
-            android:visibility="gone"
-            />
+            >
+
+            <TextView
+                android:id="@+id/fragment_address_profile_success_deleted_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/app_dark"
+                android:text="@string/address_profile_deleted"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14x"
+                android:padding="@dimen/padding_size_16x"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/text_view_fragment_address_profile_empty"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_size_24x"
+                android:text="@string/address_profile_empty"
+                android:visibility="gone"
+                />
+
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/linear_layout_fragment_address_profile_add_address"

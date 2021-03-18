@@ -16,9 +16,7 @@ class AddressAdapter(
     private val addressViewClickListener: AddressViewClickListener
 ) : BaseAdapter() {
 
-    override fun getLayoutId(): Int {
-        return R.layout.item_address_profile
-    }
+    override fun getLayoutId(): Int = R.layout.item_address_profile
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -38,5 +36,12 @@ class AddressAdapter(
             adapter = this,
             addressViewClickListener = addressViewClickListener
         )
+    }
+
+    fun deleteItem(position: Int) {
+        addressViewClickListener.onSwipeDelete(addressModel = currentList[position] as AddressModel)
+
+        currentList.removeAt(position)
+        notifyItemRemoved(position)
     }
 }

@@ -130,6 +130,8 @@
     <string name="address_profile_address_data">Адресные данные</string>
     <string name="address_profile_prefer_address">Предпочтительный адрес доставки</string>
     <string name="address_profile_default_score">Адрес выставления счетов по умолчанию</string>
+    <string name="address_profile_deleted">Адрес доставки удален</string>
+    <string name="address_profile_set_default">Установить в качестве адреса доставки по умолчанию</string>
 
     <string name="card_empty">У вас отсутствуют сохраненные способы оплаты. Добавьте карту</string>
     <string name="card_add">Добавить Кредитную/Дебетовую Карту</string>

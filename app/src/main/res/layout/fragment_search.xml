@@ -85,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:tabIndicatorColor="@color/app_black"
+                app:tabMinWidth="@dimen/search_tab_min_width"
                 app:tabSelectedTextColor="@color/app_black"
                 app:tabTextAppearance="@style/TextRegularBold"
                 />

@@ -17,5 +17,5 @@ interface AddressDomainRepository {
     fun deleteAddress(
         token: String,
         id: String
-    )
+    ): Single<Any>
 }

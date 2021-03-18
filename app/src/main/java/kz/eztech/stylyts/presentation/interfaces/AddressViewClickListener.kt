@@ -5,4 +5,6 @@ import kz.eztech.stylyts.domain.models.AddressModel
 interface AddressViewClickListener {
 
     fun setDefaultAddress(addressModel: AddressModel)
+
+    fun onSwipeDelete(addressModel: AddressModel)
 }
