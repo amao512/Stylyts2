@@ -86,6 +86,10 @@
         <action
             android:id="@+id/action_shopFragment_to_shopItemListFragment"
             app:destination="@id/shopItemListFragment" />
+        <action
+            android:id="@+id/action_shopFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/itemDetailFragment"
@@ -210,5 +214,10 @@
         android:name="kz.eztech.stylyts.presentation.fragments.main.settings.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings"
+        />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.search.SearchFragment"
+        android:label="SearchFragment"
         />
 </navigation>

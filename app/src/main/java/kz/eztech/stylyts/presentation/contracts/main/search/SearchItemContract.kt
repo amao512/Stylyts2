@@ -1,16 +1,13 @@
-package kz.eztech.stylyts.presentation.contracts.main.profile
+package kz.eztech.stylyts.presentation.contracts.main.search
 
 import kz.eztech.stylyts.domain.models.ProfileModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
-/**
- * Created by Ruslan Erdenoff on 22.02.2021.
- */
-interface UserSearchContract {
+interface SearchItemContract {
 
     interface View : BaseView {
-        fun processUser(list: List<ProfileModel>)
+        fun processUsers(list: List<ProfileModel>)
     }
 
     interface Presenter : BasePresenter<View> {

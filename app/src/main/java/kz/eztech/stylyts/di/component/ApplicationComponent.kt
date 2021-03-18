@@ -19,6 +19,7 @@ import kz.eztech.stylyts.presentation.fragments.main.detail.ItemDetailFragment
 import kz.eztech.stylyts.presentation.fragments.main.profile.AddressProfileFragment
 import kz.eztech.stylyts.presentation.fragments.main.profile.CardFragment
 import kz.eztech.stylyts.presentation.fragments.main.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.main.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.main.shop.CategoryTypeDetailFragment
 import kz.eztech.stylyts.presentation.fragments.main.shop.ShopItemFragment
 import okhttp3.OkHttpClient
@@ -52,6 +53,7 @@ interface ApplicationComponent {
     fun inject(fragment: CleanBackgroundFragment)
     fun inject(fragment: AddressProfileFragment)
     fun inject(fragment: CardFragment)
+    fun inject(fragment: SearchItemFragment)
 
     fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)

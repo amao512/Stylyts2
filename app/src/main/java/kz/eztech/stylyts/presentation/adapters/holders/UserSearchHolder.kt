@@ -2,31 +2,49 @@ package kz.eztech.stylyts.presentation.adapters.holders
 
 import android.view.View
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.item_user_info.view.*
-import kz.eztech.stylyts.domain.models.UserSearchModel
+import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.ProfileModel
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.getShortName
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 21.02.2021.
  */
-class UserSearchHolder(itemView: View, adapter: BaseAdapter): BaseViewHolder(itemView,adapter)  {
-	override fun bindData(item: Any, position: Int) {
-		item as UserSearchModel
+class UserSearchHolder(
+	itemView: View,
+	adapter: BaseAdapter
+): BaseViewHolder(itemView,adapter)  {
+
+	override fun bindData(
+		item: Any,
+		position: Int
+	) {
+
+		item as ProfileModel
+
 		with(itemView){
 			item.avatar?.let {
-				shapeable_image_view_item_user_info_avatar.visibility = View.VISIBLE
-				text_view_item_user_info_short_name.visibility = View.GONE
-				Glide.with(context).load(it).into(shapeable_image_view_item_user_info_avatar)
+				item_user_info_user_avatar_shapeable_image_view.show()
+				item_user_info_user_short_name_text_view.hide()
+				Glide.with(context).load(it).into(item_user_info_user_avatar_shapeable_image_view)
 			} ?: run {
-				shapeable_image_view_item_user_info_avatar.visibility  =View.GONE
-				text_view_item_user_info_short_name.visibility = View.VISIBLE
+				item_user_info_user_avatar_shapeable_image_view.hide()
+				item_user_info_user_short_name_text_view.show()
 				
-				text_view_item_user_info_short_name.text = "${item.first_name?.toUpperCase()?.get(0)}${item.last_name?.toUpperCase()?.get(0)}"
+				item_user_info_user_short_name_text_view.text = getShortName(item.name, item.lastName)
 			}
-			text_view_item_user_nickname.text = item.username
-			text_view_item_user_info_full_name.text = "${item.first_name} ${item.last_name}"
+
+			item_user_info_username_text_view.text = ""
+			item_user_info_full_name_text_view.text = context.getString(
+				R.string.full_name_text_format,
+				item.name,
+				item.lastName
+			)
+
 			linear_layout_item_user_info_container.setOnClickListener {
 				adapter.itemClickListener?.onViewClicked(it,position,item)
 			}

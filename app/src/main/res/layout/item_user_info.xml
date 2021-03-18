@@ -18,7 +18,7 @@
         >
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/shapeable_image_view_item_user_info_avatar"
+            android:id="@+id/item_user_info_user_avatar_shapeable_image_view"
             android:layout_width="@dimen/small_image_size"
             android:layout_height="@dimen/small_image_size"
             android:layout_gravity="center"
@@ -28,49 +28,61 @@
             />
 
         <TextView
-            android:id="@+id/text_view_item_user_info_short_name"
+            android:id="@+id/item_user_info_user_short_name_text_view"
             style="@style/TextRegular"
             android:layout_width="@dimen/small_image_size"
             android:layout_height="@dimen/small_image_size"
             android:layout_gravity="center"
             android:background="@drawable/circle_gray"
             android:gravity="center"
-            tools:text="RE"
+            tools:text="ET"
             />
     </FrameLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_weight="1"
         android:orientation="vertical"
         >
 
         <TextView
-            android:id="@+id/text_view_item_user_nickname"
-            style="@style/TextRegular"
+            android:id="@+id/item_user_info_username_text_view"
+            style="@style/SubtitleTextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Ruslan Rus"
+            tools:text="_Emillie93"
             />
 
         <TextView
-            android:id="@+id/text_view_item_user_info_full_name"
-            style="@style/TextRegular"
+            android:id="@+id/item_user_info_full_name_text_view"
+            style="@style/SubtitleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/app_gray_hint"
-            tools:text="Ruslan Rus"
+            tools:text="Emillie Johnson"
             />
 
-        <TextView
-            style="@style/TextRegular"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/following"
-            android:textColor="@color/app_gray_hint"
-            />
+        <!--        <TextView-->
+        <!--            style="@style/TextRegular"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="@string/following"-->
+        <!--            android:textColor="@color/app_gray_hint"-->
+        <!--            />-->
+
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_user_info_remove_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/margin_size_16x"
+        android:src="@drawable/ic_close"
+        android:visibility="gone"
+        />
 
 </LinearLayout>

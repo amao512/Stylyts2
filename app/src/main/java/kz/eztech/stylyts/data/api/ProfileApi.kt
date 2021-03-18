@@ -21,4 +21,10 @@ interface ProfileApi {
         @Header("Authorization") token: String,
         @Field("name") name: String
     ): Single<Response<ProfileModel>>
+
+    @GET(RestConstants.SEARCH_USER_BY_USERNAME)
+    fun searchUserByUsername(
+        @Header("Authorization") token: String,
+        @Query("search") username: String
+    ): Single<Response<List<ProfileModel>>>
 }

@@ -2,8 +2,7 @@ package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.ClothesTypes
-import kz.eztech.stylyts.domain.models.UserSearchModel
+import kz.eztech.stylyts.domain.models.ProfileModel
 import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.UserSearchHolder
@@ -23,8 +22,8 @@ class UserSearchAdapter: BaseAdapter() {
 					oldItemPosition: Int,
 					newItemPosition: Int
 			): Boolean {
-				return (currentList[oldItemPosition] as UserSearchModel).id ==
-						(list[newItemPosition] as UserSearchModel).id
+				return (currentList[oldItemPosition] as ProfileModel).owner ==
+						(list[newItemPosition] as ProfileModel).owner
 			}
 		}
 	}

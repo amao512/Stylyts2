@@ -52,7 +52,7 @@
 
     <string name="preference_file_key">preference_file_key</string>
 
-    <string name="full_name_text_format">%s%s</string>
+    <string name="full_name_text_format">%s %s</string>
 
     <string name="filter_list_filter">Фильтр</string>
     <string name="filter_list_photo_outfits">Фото образов</string>
@@ -175,4 +175,7 @@
     <string name="settings_estimate_app">Оценить приложение</string>
     <string name="settings_exit">Выйти</string>
     <string name="settings_title">Настройки</string>
+    <string name="search_item_accounts">Аккаунты</string>
+    <string name="search_item_shops">Магазины</string>
+    <string name="search_item_items">Вещи</string>
 </resources>

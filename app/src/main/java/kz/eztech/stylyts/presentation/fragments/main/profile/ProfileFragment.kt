@@ -9,8 +9,6 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.recycler_view_fragment_profile_filter_list
-import kotlinx.android.synthetic.main.fragment_profile.recycler_view_fragment_profile_items_list
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -30,12 +28,10 @@ import kz.eztech.stylyts.presentation.dialogs.EditProfileDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.profile.ProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
     UniversalViewClickListener, EditorListener {
@@ -65,6 +61,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             text_view_toolbar_back.hide()
             text_view_toolbar_title.show()
             image_button_right_corner_action.show()
+            image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
+            image_button_left_corner_action.show()
 
             image_button_right_corner_action.setImageResource(R.drawable.ic_drawer)
 
@@ -146,13 +144,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         recycler_view_fragment_profile_filter_list.hide()
         recycler_view_fragment_profile_items_list.hide()
 
-        image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
-        image_button_left_corner_action.show()
         frame_layout_fragment_profile_settings_container.show()
     }
 
     override fun hideSettings() {
-        image_button_left_corner_action.hide()
         frame_layout_fragment_profile_settings_container.hide()
 
         linear_layout_fragment_profile_followers_item.show()
@@ -181,8 +176,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             currentSurname = lastName ?: EMPTY_STRING
 
             text_view_fragment_profile_user_name.text = name
-            text_view_fragment_profile_user_followers_count.text = "${/*followers_count*/ 0}"
-            text_view_fragment_profile_user_followings_count.text = "${/*followings_count*/ 0}"
+            fragment_profile_followers_count.text = "${/*followers_count*/ 0}"
+            fragment_profile_followings_count.text = "${/*followings_count*/ 0}"
+            fragment_profile_photos_count.text = "${0}"
 
             avatar?.let {
                 text_view_fragment_profile_user_short_name.hide()
@@ -193,11 +189,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             } ?: run {
                 shapeable_image_view_fragment_profile_avatar.hide()
                 text_view_fragment_profile_user_short_name.show()
-                text_view_fragment_profile_user_short_name.text = getString(
-                    R.string.full_name_text_format,
-                    name?.toUpperCase(Locale.getDefault())?.get(0),
-                    lastName?.toUpperCase(Locale.getDefault())?.get(0)
-                )
+                text_view_fragment_profile_user_short_name.text = getShortName(name, lastName)
             }
         }
     }

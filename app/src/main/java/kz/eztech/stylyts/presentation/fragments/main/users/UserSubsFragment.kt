@@ -1,18 +1,11 @@
 package kz.eztech.stylyts.presentation.fragments.main.users
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_shop.*
-import kotlinx.android.synthetic.main.fragment_user_comments.*
 import kotlinx.android.synthetic.main.fragment_user_subs.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ShopViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.UserSubViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView

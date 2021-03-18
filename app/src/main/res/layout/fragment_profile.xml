@@ -111,7 +111,7 @@
                             >
 
                             <TextView
-                                android:id="@+id/text_view_fragment_profile_user_followers_count"
+                                android:id="@+id/fragment_profile_followers_count"
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -143,6 +143,7 @@
                             >
 
                             <TextView
+                                android:id="@+id/fragment_profile_photos_count"
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -174,7 +175,7 @@
                             >
 
                             <TextView
-                                android:id="@+id/text_view_fragment_profile_user_followings_count"
+                                android:id="@+id/fragment_profile_followings_count"
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
