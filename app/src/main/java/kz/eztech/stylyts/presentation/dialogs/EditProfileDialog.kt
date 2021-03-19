@@ -9,16 +9,15 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ProfileModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.main.profile.EditProfileContract
 import kz.eztech.stylyts.presentation.presenters.main.profile.EditProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import java.util.*
 import javax.inject.Inject
-import kotlin.collections.HashMap
 
 /**
  * Created by Ruslan Erdenoff on 03.03.2021.
@@ -136,11 +135,7 @@ class EditProfileDialog(
         }
 
         if (currentName.isNotEmpty() && currentSurname.isNotEmpty()) {
-            text_view_fragment_profile_edit_user_short_name.text = getString(
-                R.string.full_name_text_format,
-                currentName.toUpperCase(Locale.getDefault())[0],
-                currentSurname.toUpperCase(Locale.getDefault())[0]
-            )
+            text_view_fragment_profile_edit_user_short_name.text = getShortName(currentName, currentSurname)
         }
     }
 
@@ -158,8 +153,8 @@ class EditProfileDialog(
 
     override fun hideProgress() {}
 
-    override fun successEditing(profileModel: ProfileModel) {
-        currentName = profileModel.name ?: EMPTY_STRING
+    override fun successEditing(userModel: UserModel) {
+        currentName = userModel.name ?: EMPTY_STRING
         editorListener.completeEditing(isSuccess = true)
 
         dismiss()

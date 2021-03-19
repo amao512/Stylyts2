@@ -2,8 +2,8 @@ package kz.eztech.stylyts.presentation.presenters.main.profile
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ProfileModel
-import kz.eztech.stylyts.domain.usecases.main.profile.EditProfileUseCase
+import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.usecases.main.profile.EditUserUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.profile.EditProfileContract
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
  */
 class EditProfilePresenter @Inject constructor(
     private var errorHelper: ErrorHelper,
-    private val editProfileUseCase: EditProfileUseCase
+    private val editUserUseCase: EditUserUseCase
 ) : EditProfileContract.Presenter {
 
     private lateinit var view: EditProfileContract.View
@@ -28,12 +28,12 @@ class EditProfilePresenter @Inject constructor(
     ) {
         view.displayProgress()
 
-        editProfileUseCase.initParams(token, data)
-        editProfileUseCase.execute(object : DisposableSingleObserver<ProfileModel>() {
-            override fun onSuccess(t: ProfileModel) {
+        editUserUseCase.initParams(token, data)
+        editUserUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+            override fun onSuccess(t: UserModel) {
                 view.processViewAction {
                     hideProgress()
-                    successEditing(profileModel = t)
+                    successEditing(userModel = t)
                 }
             }
 
@@ -47,6 +47,6 @@ class EditProfilePresenter @Inject constructor(
     }
 
     override fun disposeRequests() {
-        editProfileUseCase.clear()
+        editUserUseCase.clear()
     }
 }

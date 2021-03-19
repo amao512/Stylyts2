@@ -8,22 +8,24 @@ import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 
-/**
- * Created by Ruslan Erdenoff on 25.12.2020.
- */
-class GetProfileUseCase @Inject constructor(
+class EditUserUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
-    private var profileDomainRepository: ProfileDomainRepository
+    private val profileDomainRepository: ProfileDomainRepository
 ) : BaseUseCase<UserModel>(executorThread, uiThread) {
 
     private lateinit var token: String
+    private lateinit var data: HashMap<String, Any>
 
     override fun createSingleObservable(): Single<UserModel> {
-        return profileDomainRepository.getUserProfile(token)
+        return profileDomainRepository.editUser(token, data)
     }
 
-    fun initParams(token: String) {
+    fun initParams(
+        token: String,
+        data: HashMap<String, Any>
+    ) {
         this.token = "JWT $token"
+        this.data = data
     }
 }

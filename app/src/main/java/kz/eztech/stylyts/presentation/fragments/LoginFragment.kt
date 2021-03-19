@@ -8,19 +8,22 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.AuthModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.LoginContract
 import kz.eztech.stylyts.presentation.presenters.LoginPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
     View.OnClickListener {
 
-    @Inject
-    lateinit var presenter: LoginPresenter
+    @Inject lateinit var presenter: LoginPresenter
 
     override fun customizeActionBar() {}
 
@@ -50,21 +53,13 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
         presenter.disposeRequests()
     }
 
-    override fun displayMessage(msg: String) {
-        displayToast(msg)
-    }
+    override fun displayMessage(msg: String) = displayToast(msg)
 
-    override fun isFragmentVisible(): Boolean {
-        return isVisible
-    }
+    override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_login
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_login
 
-    override fun getContractView(): BaseView {
-        return this
-    }
+    override fun getContractView(): BaseView = this
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -86,28 +81,39 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
     }
 
     override fun displayProgress() {
-        include_base_progress.visibility = View.VISIBLE
+        include_base_progress.show()
     }
 
     override fun hideProgress() {
-        include_base_progress.visibility = View.GONE
+        include_base_progress.hide()
     }
 
     override fun processLoginUser(authModel: AuthModel) {
-        currentActivity.saveSharedPrefByKey(SharedConstants.TOKEN_KEY, authModel.token)
-        currentActivity.saveSharedPrefByKey(SharedConstants.USER_ID_KEY, authModel.user?.pk)
-        currentActivity.saveSharedPrefByKey(SharedConstants.USERNAME_KEY, authModel.user?.username)
-        startActivity(Intent(currentActivity, MainActivity::class.java))
-        currentActivity.finish()
+        authModel.let {
+            currentActivity.saveSharedPrefByKey(SharedConstants.TOKEN_KEY, it.token)
+            presenter.getUserProfile(token = it.token ?: EMPTY_STRING)
+        }
+    }
+
+    override fun processUserProfile(userModel: UserModel) {
+        userModel.let {
+            currentActivity.saveSharedPrefByKey(SharedConstants.USER_ID_KEY, it.id)
+            currentActivity.saveSharedPrefByKey(SharedConstants.USERNAME_KEY, it.username)
+
+            startActivity(Intent(currentActivity, MainActivity::class.java))
+            currentActivity.finish()
+        }
     }
 
     override fun checkData() {
-        if (editText_fragment_login_email.text.isNotEmpty() &&
-            editText_fragment_login_password.text.isNotEmpty()
-        ) {
+        val email = editText_fragment_login_email.text
+        val password = editText_fragment_login_password.text
+
+        if (email.isNotEmpty() && password.isNotEmpty()) {
             val data = HashMap<String, Any>()
-            data["username"] = editText_fragment_login_email.text.toString()
-            data["password"] = editText_fragment_login_password.text.toString()
+            data["username"] = email.toString()
+            data["password"] = password.toString()
+
             presenter.loginUser(data)
         } else {
             displayMessage("Заполните данные")

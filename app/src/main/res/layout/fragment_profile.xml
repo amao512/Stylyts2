@@ -206,7 +206,7 @@
                             >
 
                             <TextView
-                                android:id="@+id/text_view_fragment_profile_settings"
+                                android:id="@+id/fragment_profile_edit_text_view"
                                 style="@style/TextRegularBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
@@ -214,6 +214,20 @@
                                 android:gravity="center"
                                 android:padding="@dimen/padding_size_6x"
                                 android:text="@string/profile_change"
+                                />
+
+                            <TextView
+                                android:id="@+id/fragment_profile_subscribe_text_view"
+                                style="@style/TextRegularBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_rectangle_orange"
+                                android:gravity="center"
+                                android:paddingHorizontal="@dimen/padding_size_16x"
+                                android:paddingVertical="@dimen/padding_size_6x"
+                                android:text="@string/subscribe"
+                                android:textColor="@color/white"
+                                android:visibility="gone"
                                 />
 
                             <ImageView

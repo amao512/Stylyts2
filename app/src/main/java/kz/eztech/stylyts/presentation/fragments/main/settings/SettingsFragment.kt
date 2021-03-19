@@ -28,6 +28,8 @@ class SettingsFragment : BaseFragment<MainActivity>(), SettingsContract.View, Vi
 
             text_view_toolbar_title.text = context.getString(R.string.settings_title)
             text_view_toolbar_title.show()
+
+            elevation = 0f
         }
     }
 

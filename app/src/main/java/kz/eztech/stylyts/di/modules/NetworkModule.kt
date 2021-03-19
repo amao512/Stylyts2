@@ -120,8 +120,8 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    internal fun provideProfileApi(retrofit: Retrofit): ProfileApi {
-        return retrofit.create(ProfileApi::class.java)
+    internal fun provideProfileApi(retrofit: Retrofit): UserApi {
+        return retrofit.create(UserApi::class.java)
     }
 
     @Provides

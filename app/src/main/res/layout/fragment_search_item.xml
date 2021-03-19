@@ -8,12 +8,10 @@
     tools:context=".presentation.fragments.main.search.SearchItemFragment"
     >
 
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_search_item_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingHorizontal="@dimen/padding_size_8x"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_user_info"
         />

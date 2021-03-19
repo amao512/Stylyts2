@@ -1,8 +1,15 @@
 package kz.eztech.stylyts.presentation.presenters.main.search
 
+import android.util.Log
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import kz.eztech.stylyts.data.db.LocalDataSource
+import kz.eztech.stylyts.data.db.entities.UserSearchEntity
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ProfileModel
+import kz.eztech.stylyts.domain.models.SearchModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.usecases.main.profile.UserSearchUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.search.SearchItemContract
@@ -12,9 +19,12 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 22.02.2021.
  */
 class SearchItemPresenter @Inject constructor(
-    private var errorHelper: ErrorHelper,
-    private var userSearchUseCase: UserSearchUseCase
+    private val errorHelper: ErrorHelper,
+    private val userSearchUseCase: UserSearchUseCase,
+    private val localDataSource: LocalDataSource
 ) : SearchItemContract.Presenter {
+
+    private val disposable = CompositeDisposable()
 
     private lateinit var view: SearchItemContract.View
 
@@ -33,11 +43,11 @@ class SearchItemPresenter @Inject constructor(
         view.displayProgress()
 
         userSearchUseCase.initParams(token, username)
-        userSearchUseCase.execute(object : DisposableSingleObserver<List<ProfileModel>>() {
-            override fun onSuccess(t: List<ProfileModel>) {
+        userSearchUseCase.execute(object : DisposableSingleObserver<SearchModel<UserModel>>() {
+            override fun onSuccess(t: SearchModel<UserModel>) {
                 view.processViewAction {
                     hideProgress()
-                    processUsers(t)
+                    processSearch(t)
                 }
             }
 
@@ -48,5 +58,54 @@ class SearchItemPresenter @Inject constructor(
                 }
             }
         })
+    }
+
+    override fun getUserFromLocaleDb() {
+        view.displayProgress()
+
+        disposable.clear()
+        disposable.add(
+            localDataSource.allUserSearchHistory
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    view.processViewAction {
+                        processUserFromLocalDb(userList = it)
+                    }
+                }, {
+                    view.processViewAction {
+                        displayMessage(errorHelper.processError(it))
+                    }
+                })
+        )
+    }
+
+    override fun saveUserToLocaleDb(user: UserModel) {
+        val userSearchEntity = UserSearchEntity(
+            id = user.id,
+            avatar = user.avatar,
+            name = user.name,
+            lastName = user.lastName,
+            brand = user.brand,
+            username = user.username
+        )
+
+        disposable.clear()
+        disposable.add(
+            localDataSource.insertUserSearch(userSearchEntity)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
+    }
+
+    override fun deleteUserFromLocalDb(userId: Int) {
+        disposable.clear()
+        disposable.add(
+            localDataSource.deleteUserSearch(userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe()
+        )
     }
 }

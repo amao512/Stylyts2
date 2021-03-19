@@ -65,13 +65,13 @@
             tools:text="Emillie Johnson"
             />
 
-        <!--        <TextView-->
-        <!--            style="@style/TextRegular"-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="@string/following"-->
-        <!--            android:textColor="@color/app_gray_hint"-->
-        <!--            />-->
+<!--                <TextView-->
+<!--                    style="@style/TextRegular"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/following"-->
+<!--                    android:textColor="@color/app_gray_hint"-->
+<!--                    />-->
 
     </LinearLayout>
 

@@ -1,16 +1,23 @@
 package kz.eztech.stylyts.presentation.fragments.main.search
 
+import android.os.Bundle
+import android.util.Log
 import android.view.View
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_search_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.db.entities.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.ProfileModel
+import kz.eztech.stylyts.domain.models.SearchModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSearchAdapter
+import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.search.SearchItemContract
+import kz.eztech.stylyts.presentation.fragments.main.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.search.SearchItemPresenter
@@ -25,11 +32,12 @@ class SearchItemFragment(
 ) : BaseFragment<MainActivity>(), SearchItemContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: SearchItemPresenter
-
     private lateinit var userSearchAdapter: UserSearchAdapter
+    private lateinit var userSearchHistoryAdapter: UserSearchHistoryAdapter
 
-    private var itemClickListener: UniversalViewClickListener? = null
     private var searchListener: SearchListener? = null
+    private var query: String = EMPTY_STRING
+    private var isHistory: Boolean = true
 
     override fun getLayoutId(): Int = R.layout.fragment_search_item
 
@@ -47,29 +55,49 @@ class SearchItemFragment(
 
     override fun initializeViewsData() {
         userSearchAdapter = UserSearchAdapter()
+        userSearchAdapter.itemClickListener = this
+
+        userSearchHistoryAdapter = UserSearchHistoryAdapter()
+        userSearchHistoryAdapter.itemClickListener = this
     }
 
     override fun initializeViews() {
-        when (type) {
-            0 -> fragment_search_item_recycler_view.adapter = userSearchAdapter
-            else -> {}
-        }
+        setUserAdapter()
     }
 
     override fun initializeListeners() {
         searchListener?.onQuery {
-            if (it.isBlank()) {
-                userSearchAdapter.updateList(emptyList())
-            }
+            query = it
+            currentActivity.removeFromSharedPrefByKey(SharedConstants.QUERY_KEY)
 
-            presenter.getUserByUsername(
-                token = currentActivity.getSharedPrefByKey(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING,
-                username = it
-            )
+            processPostInitialization()
         }
     }
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        val oldQuery = currentActivity.getSharedPrefByKey(SharedConstants.QUERY_KEY) ?: EMPTY_STRING
+        userSearchAdapter.clearList()
+
+        if (query.isBlank() && oldQuery.isNotEmpty()) {
+            presenter.getUserByUsername(
+                token = getTokenFromSharedPref(),
+                username = oldQuery
+            )
+            isHistory = false
+            setUserAdapter()
+        } else if (query.isBlank()) {
+            presenter.getUserFromLocaleDb()
+            isHistory = true
+            setUserAdapter()
+        } else {
+            presenter.getUserByUsername(
+                token = getTokenFromSharedPref(),
+                username = query
+            )
+            isHistory = false
+            setUserAdapter()
+        }
+    }
 
     override fun disposeRequests() {}
 
@@ -81,21 +109,73 @@ class SearchItemFragment(
 
     override fun hideProgress() {}
 
+    override fun processSearch(searchModel: SearchModel<UserModel>) {
+        searchModel.results?.let {
+            val userList: MutableList<UserModel> = mutableListOf()
+
+            it.map { user ->
+                if (user.id != currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)) {
+                    userList.add(user)
+                }
+            }
+
+            userSearchAdapter.updateList(list = userList)
+        }
+    }
+
+    override fun processUserFromLocalDb(userList: List<UserSearchEntity>) {
+        userSearchHistoryAdapter.updateList(list = userList)
+    }
+
     override fun onViewClicked(
         view: View,
         position: Int,
         item: Any?
-    ) {}
-
-    override fun processUsers(list: List<ProfileModel>) {
-        userSearchAdapter.updateList(list)
+    ) {
+        when (view.id) {
+            R.id.linear_layout_item_user_info_container -> navigateToUserProfile(item)
+            R.id.item_user_info_remove_image_view -> {
+                presenter.deleteUserFromLocalDb(userId = (item as UserSearchEntity).id ?: 0)
+                presenter.getUserFromLocaleDb()
+            }
+        }
     }
 
-    fun setOnClickListener(itemClickListener:UniversalViewClickListener?){
-        this.itemClickListener = itemClickListener
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        currentActivity.saveSharedPrefByKey(SharedConstants.QUERY_KEY, query)
     }
 
     fun setSearchListener(searchListener: SearchListener?) {
         this.searchListener = searchListener
+    }
+
+    private fun navigateToUserProfile(item: Any?) {
+        val bundle = Bundle()
+
+        when (item) {
+            is UserModel -> {
+                bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id ?: 0)
+                presenter.saveUserToLocaleDb(user = item)
+            }
+            is UserSearchEntity -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id ?: 0)
+        }
+
+        findNavController().navigate(R.id.action_searchFragment_to_profileFragment, bundle)
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING
+    }
+
+    private fun setUserAdapter() {
+        Log.d("TAG", "$type")
+        if (type == 0) {
+            fragment_search_item_recycler_view.adapter = when (isHistory) {
+                true -> userSearchHistoryAdapter
+                false -> userSearchAdapter
+            }
+        }
     }
 }

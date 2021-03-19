@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.data.models.SharedConstants.TOKEN_KEY
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.MainLentaModel
 import kz.eztech.stylyts.domain.models.MainResult
-import kz.eztech.stylyts.domain.models.ProfileModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
@@ -41,11 +39,16 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var adapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
 
+    private var isOwnProfile: Boolean = true
     private var userId: Int = 0
-    private var isSettings = false
+    private var isMyData = false
     private var currentName = EMPTY_STRING
     private var currentNickname = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
+
+    companion object {
+        const val USER_ID_BUNDLE_KEY = "user_id"
+    }
 
     override fun onResume() {
         super.onResume()
@@ -60,18 +63,19 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         with(include_toolbar_profile) {
             text_view_toolbar_back.hide()
             text_view_toolbar_title.show()
-            image_button_right_corner_action.show()
-            image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
             image_button_left_corner_action.show()
 
-            image_button_right_corner_action.setImageResource(R.drawable.ic_drawer)
+            if (isOwnProfile) {
+                image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
+                image_button_right_corner_action.setImageResource(R.drawable.ic_drawer)
+                image_button_right_corner_action.show()
+            } else {
+                image_button_left_corner_action.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            }
 
             elevation = 0f
 
-            customizeActionToolBar(
-                toolbar = this,
-                title = currentActivity.getSharedPrefByKey(SharedConstants.USERNAME_KEY)
-            )
+            customizeActionToolBar(toolbar = this)
         }
     }
 
@@ -81,24 +85,19 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun initializePresenter() = presenter.attach(this)
 
-    override fun initializeArguments() {}
+    override fun initializeArguments() {
+        if (arguments?.getInt(USER_ID_BUNDLE_KEY) != null) {
+            isOwnProfile = false
+            userId = arguments?.getInt(USER_ID_BUNDLE_KEY) ?: 0
+        }
+    }
 
     override fun initializeViewsData() {
-        val filterList = ArrayList<CollectionFilterModel>()
-        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_filter)))
-        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_photo_outfits), isChosen = true))
-        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_publishes)))
-        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_wardrobe)))
-        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_my_data)))
-
         adapterFilter = CollectionsFilterAdapter()
         adapterFilter.setOnClickListener(this)
+        adapterFilter.updateList(getCollectionFilterList())
 
-        recycler_view_fragment_profile_filter_list.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recycler_view_fragment_profile_filter_list.adapter = adapterFilter
-
-        adapterFilter.updateList(filterList)
     }
 
     override fun initializeViews() {
@@ -113,17 +112,23 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         include_toolbar_profile.image_button_right_corner_action.setOnClickListener(this)
         frame_layout_fragment_profile_my_incomes.setOnClickListener(this)
         frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
-        text_view_fragment_profile_settings.setOnClickListener(this)
+        fragment_profile_edit_text_view.setOnClickListener(this)
         frame_layout_fragment_profile_cards.setOnClickListener(this)
         linear_layout_fragment_profile_followers_item.setOnClickListener(this)
         linear_layout_fragment_profile_following_item.setOnClickListener(this)
         linear_layout_fragment_profile_photos_item.setOnClickListener(this)
+        image_button_left_corner_action.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
-        presenter.getProfile(
-            token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: EMPTY_STRING
-        )
+        if (isOwnProfile) {
+            presenter.getProfile(token = getTokenFromSharedPref())
+        } else {
+            presenter.getProfileById(
+                token = getTokenFromSharedPref(),
+                userId = userId.toString()
+            )
+        }
     }
 
     override fun disposeRequests() = presenter.disposeRequests()
@@ -136,20 +141,18 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun hideProgress() = progress_bar_fragment_profile.hide()
 
-    override fun showSettings() {
+    override fun showMyData() {
         linear_layout_fragment_profile_followers_item.hide()
         linear_layout_fragment_profile_change_buttons.hide()
         linear_layout_fragment_profile_photos_item.hide()
         linear_layout_fragment_profile_following_item.hide()
         recycler_view_fragment_profile_filter_list.hide()
         recycler_view_fragment_profile_items_list.hide()
-
         frame_layout_fragment_profile_settings_container.show()
     }
 
-    override fun hideSettings() {
+    override fun hideMyData() {
         frame_layout_fragment_profile_settings_container.hide()
-
         linear_layout_fragment_profile_followers_item.show()
         linear_layout_fragment_profile_change_buttons.show()
         linear_layout_fragment_profile_photos_item.show()
@@ -158,27 +161,35 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         recycler_view_fragment_profile_items_list.show()
     }
 
-    override fun processSettings() {
-        if (isSettings) {
-            isSettings = false
-            hideSettings()
+    override fun processMyData() {
+        if (isMyData) {
+            isMyData = false
+            hideMyData()
         } else {
-            isSettings = true
-            showSettings()
+            isMyData = true
+            showMyData()
         }
     }
 
-    override fun processProfile(profileModel: ProfileModel) {
-        profileModel.run {
-            userId = id
+    override fun processProfile(userModel: UserModel) {
+        userModel.run {
+            userId = id ?: 0
             currentName = name ?: EMPTY_STRING
-            currentNickname = EMPTY_STRING
+            currentNickname = username ?: EMPTY_STRING
             currentSurname = lastName ?: EMPTY_STRING
 
+            include_toolbar_profile.text_view_toolbar_title.text = username
             text_view_fragment_profile_user_name.text = name
             fragment_profile_followers_count.text = "${/*followers_count*/ 0}"
             fragment_profile_followings_count.text = "${/*followings_count*/ 0}"
             fragment_profile_photos_count.text = "${0}"
+
+            if (!isOwnProfile) {
+                fragment_profile_subscribe_text_view.show()
+                fragment_profile_edit_text_view.hide()
+
+                adapterFilter.removeByPosition(4)
+            }
 
             avatar?.let {
                 text_view_fragment_profile_user_short_name.hide()
@@ -211,9 +222,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.frame_layout_fragment_profile_my_addresses -> {
                 findNavController().navigate(R.id.action_profileFragment_to_addressProfileFragment)
             }
-            R.id.text_view_fragment_profile_settings -> {
+            R.id.fragment_profile_edit_text_view -> {
                 EditProfileDialog.getNewInstance(
-                    token = currentActivity.getSharedPrefByKey(TOKEN_KEY),
+                    token = getTokenFromSharedPref(),
                     name = currentName,
                     surname = currentSurname,
                     editorListener = this
@@ -231,44 +242,65 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.linear_layout_fragment_profile_photos_item -> {
                 findNavController().navigate(R.id.userSubsFragment)
             }
+            R.id.image_button_left_corner_action -> {
+                if (!isOwnProfile) {
+                    findNavController().navigateUp()
+                }
+            }
         }
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
-            R.id.frame_layout_item_collection_filter -> {
-                when (position) {
-                    0 -> {}
-                    1 -> {
-                        val map = HashMap<String, Int>()
-                        map["autor"] = userId
-                        presenter.getMyCollections(
-                            token = currentActivity.getSharedPrefByKey<String>(TOKEN_KEY) ?: EMPTY_STRING,
-                            map = map
-                        )
-                    }
-                    2 -> {}
-                    3 -> {}
-                    4 -> processSettings()
-                }
-            }
-            R.id.shapeable_image_view_item_collection_image -> {
-                item as MainResult
-                val bundle = Bundle()
-                bundle.putParcelable("model", item)
-                findNavController().navigate(
-                    R.id.action_profileFragment_to_collectionDetailFragment,
-                    bundle
-                )
-            }
+            R.id.frame_layout_item_collection_filter -> onFilterClick(position)
+            R.id.shapeable_image_view_item_collection_image -> onCollectionClick(item)
         }
     }
 
     override fun completeEditing(isSuccess: Boolean) {
         if (isSuccess) {
-            presenter.getProfile(
-                token = currentActivity.getSharedPrefByKey(TOKEN_KEY) ?: EMPTY_STRING
-            )
+            presenter.getProfile(token = getTokenFromSharedPref())
         }
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(TOKEN_KEY) ?: EMPTY_STRING
+    }
+
+    private fun getCollectionFilterList(): List<CollectionFilterModel> {
+        val filterList = mutableListOf<CollectionFilterModel>()
+
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_filter)))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_photo_outfits), isChosen = true))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_publishes)))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_wardrobe)))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_my_data)))
+
+        return filterList
+    }
+
+    private fun onFilterClick(position: Int) {
+        when (position) {
+            0 -> {}
+            1 -> {
+                val map = HashMap<String, Int>()
+                map["autor"] = userId
+                presenter.getMyCollections(
+                    token = getTokenFromSharedPref(),
+                    map = map
+                )
+            }
+            2 -> {}
+            3 -> {}
+            4 -> processMyData()
+        }
+    }
+
+    private fun onCollectionClick(item: Any?) {
+        item as MainResult
+        val bundle = Bundle()
+        bundle.putParcelable("model", item)
+
+        findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
     }
 }

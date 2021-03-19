@@ -57,6 +57,8 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
                 }
             }
             image_button_right_corner_action.hide()
+
+            elevation = 0f
         }
     }
 

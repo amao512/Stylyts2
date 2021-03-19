@@ -16,9 +16,10 @@ object RestConstants {
     const val SET_NEW_PASSWORD: String = "auth/set_new_password/"
 
     // User
-    const val GET_USER_PROFILE: String = "auth/profile/"
+    const val GET_USER_PROFILE: String = "auth/profile/me/"
     const val EDIT_USER_PROFILE: String = "auth/profile/edit/"
     const val SEARCH_USER_BY_USERNAME: String = "auth/profile/"
+    const val GET_USER_BY_ID: String = "auth/profile/{user_id}/"
 
     // Address
     const val POST_ADDRESS: String = "address/"

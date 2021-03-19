@@ -9,4 +9,6 @@ object SharedConstants {
 	const val USERNAME_KEY = "username"
 
 	const val DEFAULT_ADDRESS_ID_KEY = "default_address_id"
+
+	const val QUERY_KEY = "query"
 }

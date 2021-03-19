@@ -71,6 +71,11 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun clearList() {
+        currentList.clear()
+        notifyDataSetChanged()
+    }
+
 
     fun setOnClickListener(listener: UniversalViewClickListener) {
         itemClickListener = listener

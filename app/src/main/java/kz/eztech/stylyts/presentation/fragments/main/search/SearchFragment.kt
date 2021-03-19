@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.main.search
 
+import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
@@ -7,6 +8,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.SearchViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -14,19 +16,26 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.search.SearchContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.SearchListener
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
-    UniversalViewClickListener, View.OnClickListener, SearchListener {
+    View.OnClickListener, SearchListener {
 
     private lateinit var searchViewPagerAdapter: SearchViewPagerAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        currentActivity.removeFromSharedPrefByKey(SharedConstants.QUERY_KEY)
+    }
 
     override fun onResume() {
         super.onResume()
 
         initTab()
+        initializeViews()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_search
@@ -59,9 +68,9 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
     override fun initializeViews() {
         searchViewPagerAdapter = SearchViewPagerAdapter(
             fragment = this,
-            itemClickListener = this,
             searchListener = this
         )
+
         fragment_search_view_pager.isSaveEnabled = false
     }
 
@@ -81,16 +90,24 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
 
     override fun hideProgress() {}
 
-    override fun onViewClicked(
-        view: View,
-        position: Int,
-        item: Any?
-    ) {}
-
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fragment_search_cancel_text_view -> findNavController().navigateUp()
         }
+    }
+
+    override fun onQuery(query: (String) -> Unit) {
+        fragment_search_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query(query ?: EMPTY_STRING)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                query(newText ?: EMPTY_STRING)
+                return false
+            }
+        })
     }
 
     private fun initTab() {
@@ -102,21 +119,5 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
                 2 -> tab.text = getString(R.string.search_item_items)
             }
         }.attach()
-    }
-
-    override fun onQuery(query: (String) -> Unit) {
-        fragment_search_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query(query.toString())
-
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                query(newText.toString())
-
-                return false
-            }
-        })
     }
 }

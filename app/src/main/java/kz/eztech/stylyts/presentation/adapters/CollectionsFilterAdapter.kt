@@ -50,6 +50,11 @@ class CollectionsFilterAdapter : BaseAdapter(){
     override fun getViewHolder(view: View): BaseViewHolder {
         return CollectionFilterHolder(view,this)
     }
+
+    fun removeByPosition(position: Int) {
+        currentList.removeAt(position)
+        notifyItemRemoved(position)
+    }
     /*
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when(viewType){

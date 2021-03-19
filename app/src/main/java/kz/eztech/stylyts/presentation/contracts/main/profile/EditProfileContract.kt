@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.main.profile
 
-import kz.eztech.stylyts.domain.models.ProfileModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -10,7 +10,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface EditProfileContract {
 
     interface View : BaseView {
-        fun successEditing(profileModel: ProfileModel)
+        fun successEditing(userModel: UserModel)
     }
 
     interface Presenter : BasePresenter<View> {

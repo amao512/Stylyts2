@@ -171,7 +171,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
 
     override fun processUser(authModel: AuthModel) {
         currentActivity.saveSharedPrefByKey(TOKEN_KEY, authModel.token)
-        currentActivity.saveSharedPrefByKey(USER_ID_KEY, authModel.user?.pk)
+        currentActivity.saveSharedPrefByKey(USER_ID_KEY, authModel.user?.id)
         processSuccessRegistration()
     }
 }

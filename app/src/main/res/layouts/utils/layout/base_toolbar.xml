@@ -77,4 +77,13 @@
         android:visibility="gone"
         tools:text="SomeText"
         />
+
+    <View
+        android:id="@+id/toolbar_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/small_divider_height"
+        android:layout_gravity="bottom"
+        android:background="@color/app_light_gray"
+        android:visibility="gone"
+        />
 </FrameLayout>
