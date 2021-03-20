@@ -80,15 +80,23 @@
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/fragment_search_tab_layout"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabIndicatorColor="@color/app_black"
-                app:tabMinWidth="@dimen/search_tab_min_width"
-                app:tabSelectedTextColor="@color/app_black"
-                app:tabTextAppearance="@style/TextRegularBold"
-                />
+                android:background="@color/white"
+                >
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/fragment_search_tab_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:tabIndicatorColor="@color/app_black"
+                    app:tabMinWidth="@dimen/search_tab_min_width"
+                    app:tabSelectedTextColor="@color/app_black"
+                    app:tabTextAppearance="@style/TextRegularBold"
+                    />
+            </FrameLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.viewpager2.widget.ViewPager2

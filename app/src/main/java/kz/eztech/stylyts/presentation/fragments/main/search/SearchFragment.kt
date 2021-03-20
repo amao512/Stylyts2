@@ -100,11 +100,13 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
         fragment_search_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query(query ?: EMPTY_STRING)
+
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 query(newText ?: EMPTY_STRING)
+
                 return false
             }
         })
@@ -112,11 +114,12 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
 
     private fun initTab() {
         fragment_search_view_pager.adapter = searchViewPagerAdapter
+
         TabLayoutMediator(fragment_search_tab_layout, fragment_search_view_pager) { tab, position ->
-            when (position) {
-                0 -> tab.text = getString(R.string.search_item_accounts)
-                1 -> tab.text = getString(R.string.search_item_shops)
-                2 -> tab.text = getString(R.string.search_item_items)
+            tab.text = when (position) {
+                SearchItemFragment.USERS_POSITION -> getString(R.string.search_item_accounts)
+                SearchItemFragment.SHOPS_POSITION -> getString(R.string.search_item_shops)
+                else -> getString(R.string.search_item_items)
             }
         }.attach()
     }

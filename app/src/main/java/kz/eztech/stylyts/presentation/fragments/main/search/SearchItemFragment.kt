@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.main.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_search_item.*
@@ -28,7 +27,7 @@ import javax.inject.Inject
  * Created by Asylzhan Seytbek on 17.03.2021.
  */
 class SearchItemFragment(
-    private val type: Int
+    private val position: Int
 ) : BaseFragment<MainActivity>(), SearchItemContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: SearchItemPresenter
@@ -38,6 +37,12 @@ class SearchItemFragment(
     private var searchListener: SearchListener? = null
     private var query: String = EMPTY_STRING
     private var isHistory: Boolean = true
+
+    companion object {
+        const val USERS_POSITION = 0
+        const val SHOPS_POSITION = 1
+        const val CLOTHES_POSITION = 2
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_search_item
 
@@ -170,8 +175,7 @@ class SearchItemFragment(
     }
 
     private fun setUserAdapter() {
-        Log.d("TAG", "$type")
-        if (type == 0) {
+        if (position == USERS_POSITION) {
             fragment_search_item_recycler_view.adapter = when (isHistory) {
                 true -> userSearchHistoryAdapter
                 false -> userSearchAdapter

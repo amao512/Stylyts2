@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.presenters.main.search
 
-import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver

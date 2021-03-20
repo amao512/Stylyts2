@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.adapters
 
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import kz.eztech.stylyts.presentation.fragments.main.search.SearchItemFragment
@@ -17,8 +16,6 @@ class SearchViewPagerAdapter(
     override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
-        Log.d("TAG", "position = $position")
-
         return SearchItemFragment(position).apply {
             setSearchListener(searchListener)
         }
