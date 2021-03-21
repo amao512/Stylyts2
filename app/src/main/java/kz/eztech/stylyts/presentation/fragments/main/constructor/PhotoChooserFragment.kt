@@ -13,16 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.*
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.view.*
-import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
-import kotlinx.android.synthetic.main.fragment_collection_constructor.*
-import kotlinx.android.synthetic.main.fragment_collection_item.*
-import kotlinx.android.synthetic.main.fragment_collections.*
 import kotlinx.android.synthetic.main.fragment_photo_chooser.*
-import kotlinx.android.synthetic.main.fragment_profile_income_detail.*
-import kotlinx.android.synthetic.main.item_collection_image.view.*
-import kotlinx.android.synthetic.main.item_main_image_detail.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -44,7 +36,6 @@ import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 import kz.eztech.stylyts.presentation.utils.stick.Layer
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -75,13 +66,13 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
 
     override fun customizeActionBar() {
         with(include_toolbar_photo_chooser){
-            image_button_left_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_back.visibility = android.view.View.GONE
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            image_button_left_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_right_text.visibility = android.view.View.VISIBLE
-            text_view_toolbar_right_text.text = "Готово"
-            text_view_toolbar_right_text.setOnClickListener {
+            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_back_text_view.visibility = android.view.View.GONE
+            toolbar_title_text_view.visibility = android.view.View.VISIBLE
+            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_right_text_text_view.visibility = android.view.View.VISIBLE
+            toolbar_right_text_text_view.text = "Готово"
+            toolbar_right_text_text_view.setOnClickListener {
                 showCompleteDialog()
             }
             elevation = 0f
@@ -269,10 +260,10 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
                 linear_layout_fragment_photo_chooser_container.visibility = View.VISIBLE
                 bottom_sheet_clothes.visibility = View.VISIBLE
             }
-            R.id.text_view_toolbar_back -> {
+            R.id.toolbar_back_text_view -> {
                 findNavController().navigateUp()
             }
-            R.id.text_view_toolbar_right_text -> {
+            R.id.toolbar_right_text_text_view -> {
                 displayMessage("Успешно добавлено")
                 val intent = Intent(currentActivity, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

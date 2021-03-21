@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
-import kotlinx.android.synthetic.main.dialog_create_collection_accept.image_view_dialog_create_collection_accept
 import kotlinx.android.synthetic.main.dialog_save_item_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
@@ -55,17 +53,17 @@ class SaveItemAcceptDialog: DialogFragment(), View.OnClickListener {
         }
 
         with(include_toolbar_dialog_save_item){
-            image_button_left_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_back.visibility = android.view.View.VISIBLE
-            text_view_toolbar_back.setOnClickListener {
+            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_back_text_view.visibility = android.view.View.VISIBLE
+            toolbar_back_text_view.setOnClickListener {
                 listener?.onChoice(it,null)
                 dismiss()
             }
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            text_view_toolbar_title.text = "Добавить вещь"
-            text_view_toolbar_right_text.visibility = android.view.View.VISIBLE
-            text_view_toolbar_right_text.text = "Готово"
-            text_view_toolbar_right_text.setOnClickListener{
+            toolbar_title_text_view.visibility = android.view.View.VISIBLE
+            toolbar_title_text_view.text = "Добавить вещь"
+            toolbar_right_text_text_view.visibility = android.view.View.VISIBLE
+            toolbar_right_text_text_view.text = "Готово"
+            toolbar_right_text_text_view.setOnClickListener{
                 listener?.onChoice(it,edit_text_view_dialog_save_item_accept_sign.text.toString())
                 dismiss()
             }

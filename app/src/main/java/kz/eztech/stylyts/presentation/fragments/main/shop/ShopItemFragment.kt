@@ -15,6 +15,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.shop.ShopCategoryPresenter
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ShopItemFragment(
@@ -79,12 +81,12 @@ class ShopItemFragment(
     override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {
-        recycler_view_fragment_shop_item.visibility = View.GONE
+        recycler_view_fragment_shop_item.hide()
         swipe_refresh_fragment_shop_item.isRefreshing = true
     }
 
     override fun hideProgress() {
-        recycler_view_fragment_shop_item.visibility = View.VISIBLE
+        recycler_view_fragment_shop_item.show()
         swipe_refresh_fragment_shop_item.isRefreshing = false
     }
 

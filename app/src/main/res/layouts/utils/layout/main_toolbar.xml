@@ -12,7 +12,7 @@
     >
 
     <TextView
-        android:id="@+id/text_view_toolbar_back"
+        android:id="@+id/toolbar_back_text_view"
         style="@style/TextRegular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,7 @@
         />
 
     <TextView
-        android:id="@+id/text_view_toolbar_title"
+        android:id="@+id/toolbar_title_text_view"
         style="@style/TextRegular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

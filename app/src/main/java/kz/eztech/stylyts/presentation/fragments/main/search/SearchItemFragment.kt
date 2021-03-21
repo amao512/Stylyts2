@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.fragments.main.search
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_search_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -21,6 +22,8 @@ import kz.eztech.stylyts.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.search.SearchItemPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 /**
@@ -28,7 +31,7 @@ import javax.inject.Inject
  */
 class SearchItemFragment(
     private val position: Int
-) : BaseFragment<MainActivity>(), SearchItemContract.View, UniversalViewClickListener {
+) : BaseFragment<MainActivity>(), SearchItemContract.View, UniversalViewClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject lateinit var presenter: SearchItemPresenter
     private lateinit var userSearchAdapter: UserSearchAdapter
@@ -42,6 +45,10 @@ class SearchItemFragment(
         const val USERS_POSITION = 0
         const val SHOPS_POSITION = 1
         const val CLOTHES_POSITION = 2
+    }
+
+    override fun onRefresh() {
+        processPostInitialization()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_search_item
@@ -104,15 +111,23 @@ class SearchItemFragment(
         }
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {}
 
     override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayProgress() {}
+    override fun displayProgress() {
+        fragment_search_item_recycler_view.hide()
+        fragment_search_item_swipe_refresh_layout.isRefreshing = true
+    }
 
-    override fun hideProgress() {}
+    override fun hideProgress() {
+        fragment_search_item_recycler_view.show()
+        fragment_search_item_swipe_refresh_layout.isRefreshing = false
+    }
 
     override fun processSearch(searchModel: SearchModel<UserModel>) {
         searchModel.results?.let {

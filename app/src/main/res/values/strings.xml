@@ -60,8 +60,9 @@
     <string name="filter_list_wardrobe">Гардероб</string>
     <string name="filter_list_my_data">Мои данные</string>
 
-    <string name="toolbar_cancel">Отмена</string>
     <string name="toolbar_title_edit_profile">Редактировать профиль</string>
+    <string name="toolbar_title_comments">Комментарии</string>
+    <string name="toolbar_cancel">Отмена</string>
     <string name="toolbar_completed">Готово</string>
 
     <string name="cancel">Отмена</string>
@@ -181,4 +182,8 @@
     <string name="search_item_shops">Магазины</string>
     <string name="search_item_items">Вещи</string>
     <string name="subscribe">Подписаться</string>
+
+    <string name="card_fragment_add_way_payment">Добавить Способ Оплаты</string>
+
+    <string name="collection_detail_fragment_publishes">Публикация</string>
 </resources>

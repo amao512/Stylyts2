@@ -3,17 +3,10 @@ package kz.eztech.stylyts.presentation.fragments.main.constructor
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.Matrix
-import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.util.Size
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.Surface
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -27,7 +20,6 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -87,12 +79,12 @@ class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListene
     override fun customizeActionBar() {
         with(include_camera_toolbar){
             setBackgroundColor(getColor(requireContext(),R.color.app_black_65))
-            image_button_left_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_back.visibility = android.view.View.VISIBLE
-            text_view_toolbar_title.visibility = android.view.View.GONE
-            text_view_toolbar_right_text.visibility = android.view.View.VISIBLE
-            text_view_toolbar_right_text.text = "Далее"
-            text_view_toolbar_right_text.setTextColor(getColor(requireContext(),R.color.app_light_orange))
+            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_back_text_view.visibility = android.view.View.VISIBLE
+            toolbar_title_text_view.visibility = android.view.View.GONE
+            toolbar_right_text_text_view.visibility = android.view.View.VISIBLE
+            toolbar_right_text_text_view.text = "Далее"
+            toolbar_right_text_text_view.setTextColor(getColor(requireContext(),R.color.app_light_orange))
             elevation = 0f
             customizeActionToolBar(this)
         }

@@ -3,16 +3,10 @@ package kz.eztech.stylyts.presentation.fragments.main.constructor
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
-import kotlinx.android.synthetic.main.fragment_camera.*
 import kotlinx.android.synthetic.main.fragment_clean_background.*
 import kz.eztech.stylyts.BuildConfig
 import kz.eztech.stylyts.R
@@ -24,7 +18,6 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CleanBackgroundContract
-import kz.eztech.stylyts.presentation.dialogs.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.presentation.dialogs.SaveItemAcceptDialog
 import kz.eztech.stylyts.presentation.presenters.main.CleanBackgroundPresenter
 import kz.eztech.stylyts.presentation.utils.FileUtils
@@ -53,11 +46,11 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 	
 	override fun customizeActionBar() {
 		with(include_toolbar_clean_background){
-			image_button_left_corner_action.visibility = android.view.View.GONE
-			text_view_toolbar_back.visibility = android.view.View.VISIBLE
-			text_view_toolbar_title.visibility = android.view.View.VISIBLE
-			text_view_toolbar_title.text = "Добавить вещь"
-			text_view_toolbar_right_text.visibility = android.view.View.GONE
+			toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+			toolbar_back_text_view.visibility = android.view.View.VISIBLE
+			toolbar_title_text_view.visibility = android.view.View.VISIBLE
+			toolbar_title_text_view.text = "Добавить вещь"
+			toolbar_right_text_text_view.visibility = android.view.View.GONE
 			elevation = 0f
 			customizeActionToolBar(this)
 		}
@@ -148,7 +141,7 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 
 	override fun onChoice(v: View?, item: Any?) {
 		when(v?.id){
-			R.id.text_view_toolbar_right_text -> {
+			R.id.toolbar_right_text_text_view -> {
 				item?.let { description ->
 					description as String
 					hashMap["description"] = description

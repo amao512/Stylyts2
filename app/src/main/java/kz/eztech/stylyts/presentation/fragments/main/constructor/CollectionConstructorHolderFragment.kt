@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.main.constructor
 
 import android.os.Bundle
-import android.view.View
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor_holder.*
@@ -28,10 +27,10 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(), Constr
 
     override fun customizeActionBar() {
         with(include_toolbar_profile){
-            image_button_left_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_back.visibility = android.view.View.VISIBLE
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            image_button_right_corner_action.visibility = android.view.View.GONE
+            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_back_text_view.visibility = android.view.View.VISIBLE
+            toolbar_title_text_view.visibility = android.view.View.VISIBLE
+            toolbar_right_corner_action_image_button.visibility = android.view.View.GONE
             elevation = 0f
             customizeActionToolBar(this, "Создать образ")
         }

@@ -15,6 +15,8 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.RegistrationContract
 import kz.eztech.stylyts.presentation.presenters.RegistrationPresenter
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.DateFormatSymbols
 import java.util.*
 import javax.inject.Inject
@@ -23,18 +25,19 @@ import kotlin.collections.HashMap
 class RegistrationFragment : BaseFragment<AuthorizationActivity>(), RegistrationContract.View,
     View.OnClickListener {
 
+    @Inject lateinit var presenter: RegistrationPresenter
+
     private var mYear: Int? = null
     private var mMonth: Int? = null
     private var mDayOfMonth: Int? = null
 
-    @Inject
-    lateinit var presenter: RegistrationPresenter
     override fun customizeActionBar() {
         with(include_toolbar) {
-            image_button_left_corner_action.visibility = View.VISIBLE
-            text_view_toolbar_back.visibility = View.VISIBLE
-            text_view_toolbar_title.visibility = View.VISIBLE
-            image_button_right_corner_action.visibility = View.GONE
+            toolbar_left_corner_action_image_button.show()
+            toolbar_back_text_view.show()
+            toolbar_title_text_view.show()
+            toolbar_right_corner_action_image_button.hide()
+
             customizeActionToolBar(this, getString(R.string.fragment_registration_appbar_title))
         }
     }
@@ -50,12 +53,10 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        text_view_fragment_registration_term.text =
-            HtmlCompat.fromHtml(
-                getString(R.string.fragment_registration_term),
-                HtmlCompat.FROM_HTML_MODE_LEGACY
-            )
-
+        text_view_fragment_registration_term.text = HtmlCompat.fromHtml(
+            getString(R.string.fragment_registration_term),
+            HtmlCompat.FROM_HTML_MODE_LEGACY
+        )
     }
 
     override fun initializeViews() {}
@@ -65,9 +66,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         button_fragment_registration_submit.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {
-
-    }
+    override fun processPostInitialization() {}
 
     override fun disposeRequests() {
         presenter.disposeRequests()
@@ -77,23 +76,15 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         displayToast(msg)
     }
 
-    override fun isFragmentVisible(): Boolean {
-        return isVisible
-    }
+    override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_registration
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_registration
 
-    override fun getContractView(): BaseView {
-        return this
-    }
+    override fun getContractView(): BaseView = this
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.text_view_fragment_registration_term -> {
-
-            }
+            R.id.text_view_fragment_registration_term -> { }
             R.id.button_fragment_registration_date -> {
                 var c: Calendar? = null
 
@@ -162,11 +153,11 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
     }
 
     override fun displayProgress() {
-        include_base_progress.visibility = View.VISIBLE
+        include_base_progress.show()
     }
 
     override fun hideProgress() {
-        include_base_progress.visibility = View.GONE
+        include_base_progress.hide()
     }
 
     override fun processUser(authModel: AuthModel) {

@@ -1,15 +1,10 @@
 package kz.eztech.stylyts.presentation.fragments.main.shop
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.android.synthetic.main.fragment_shop_item_list.*
 import kotlinx.android.synthetic.main.fragment_shop_item_list.include_toolbar_profile
 import kz.eztech.stylyts.R
@@ -22,58 +17,54 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 
-class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,UniversalViewClickListener {
+class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,
+    UniversalViewClickListener {
+
     private lateinit var adapter: ShopItemListAdapter
 
-    private var currentGenderCategory: GenderCategory?=null
-    private var currentGender: Int?=null
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_shop_item_list
-    }
+    private var currentGenderCategory: GenderCategory? = null
+    private var currentGender: Int? = null
 
-    override fun getContractView(): BaseView {
-        return this
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_shop_item_list
+
+    override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
-        with(include_toolbar_profile){
-            image_button_left_corner_action.visibility = View.GONE
-            text_view_toolbar_back.visibility = android.view.View.VISIBLE
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            image_button_right_corner_action.visibility = android.view.View.VISIBLE
-            image_button_right_corner_action.setImageResource(kz.eztech.stylyts.R.drawable.ic_shop)
-            image_button_right_corner_action.setOnClickListener {
+        with(include_toolbar_profile) {
+            toolbar_left_corner_action_image_button.hide()
+            toolbar_back_text_view.show()
+            toolbar_title_text_view.show()
+
+            toolbar_right_corner_action_image_button.show()
+            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
+            toolbar_right_corner_action_image_button.setOnClickListener {
                 val cartDialog = CartDialog()
-                cartDialog.show(childFragmentManager,"Cart")
+                cartDialog.show(childFragmentManager, "Cart")
             }
-            elevation = 0f
-            customizeActionToolBar(this,currentGenderCategory?.title?:"Одежда")
+
+            customizeActionToolBar(this, currentGenderCategory?.title ?: "Одежда")
         }
     }
 
-    override fun initializeDependency() {
+    override fun initializeDependency() {}
 
-    }
-
-    override fun initializePresenter() {
-
-    }
+    override fun initializePresenter() {}
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("currentItem")){
-                currentGenderCategory = (it.getParcelable("currentItem") ?: null as GenderCategory )
+            if (it.containsKey("currentItem")) {
+                currentGenderCategory = (it.getParcelable("currentItem") ?: null as GenderCategory)
             }
-            if(it.containsKey("currentGender")){
-                currentGender  = it.getInt("currentGender")
+            if (it.containsKey("currentGender")) {
+                currentGender = it.getInt("currentGender")
             }
         }
     }
 
-    override fun initializeViewsData() {
-
-    }
+    override fun initializeViewsData() {}
 
     override fun initializeViews() {
         adapter = ShopItemListAdapter()
@@ -81,12 +72,12 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         recycler_view_fragment_shop_item_list.adapter = adapter
         adapter.itemClickListener = this
     }
-    
+
     override fun onResume() {
         super.onResume()
         currentActivity.displayBottomNavigationView()
     }
-    
+
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
@@ -94,35 +85,35 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             it.clothes_types?.let { list ->
                 adapter.updateList(list)
             }
-
         }
-
     }
 
     override fun disposeRequests() {}
 
     override fun displayMessage(msg: String) {}
 
-    override fun isFragmentVisible(): Boolean {
-        return isVisible
-    }
+    override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {}
 
     override fun hideProgress() {}
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
-        with(item as ClothesTypes){
+        with(item as ClothesTypes) {
             val bundle = Bundle()
-            val gender = when(currentGender){
+            val gender = when (currentGender) {
                 0 -> "M"
                 1 -> "F"
                 else -> "M"
             }
-            bundle.putString("gender",gender)
-            bundle.putInt("typeId",id?:1)
-            bundle.putString("title",title)
-            findNavController().navigate(R.id.action_shopItemListFragment_to_categoryTypeDetailFragment,bundle)
+            bundle.putString("gender", gender)
+            bundle.putInt("typeId", id ?: 1)
+            bundle.putString("title", title)
+
+            findNavController().navigate(
+                R.id.action_shopItemListFragment_to_categoryTypeDetailFragment,
+                bundle
+            )
         }
     }
 }

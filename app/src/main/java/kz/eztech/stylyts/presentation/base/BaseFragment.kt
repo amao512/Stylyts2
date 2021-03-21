@@ -94,9 +94,9 @@ abstract class BaseFragment<T : BaseActivity>: Fragment(){
         toolbar?.let {
             it.apply {
                 title?.let { text ->
-                    text_view_toolbar_title.text = text
+                    toolbar_title_text_view.text = text
                 }
-                text_view_toolbar_back.setOnClickListener{
+                toolbar_back_text_view.setOnClickListener{
                     findNavController().navigateUp()
                 }
             }

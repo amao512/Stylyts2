@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.fragments.main.search
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -44,15 +45,20 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
 
     override fun customizeActionBar() {
         with(fragment_search_toolbar) {
-            image_button_left_corner_action.hide()
-            text_view_toolbar_back.hide()
-            text_view_toolbar_title.hide()
-            image_button_right_corner_action.show()
-            image_button_right_corner_action.setImageResource(R.drawable.ic_shop)
-            image_button_right_corner_action.setOnClickListener {
+            toolbar_left_corner_action_image_button.hide()
+            toolbar_back_text_view.hide()
+            toolbar_title_text_view.hide()
+            toolbar_right_corner_action_image_button.show()
+            toolbar_left_corner_action_image_button.show()
+
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
+            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
+            toolbar_right_corner_action_image_button.setOnClickListener {
                 val cartDialog = CartDialog()
                 cartDialog.show(childFragmentManager, "Cart")
             }
+
+            background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)
             elevation = 0f
         }
     }

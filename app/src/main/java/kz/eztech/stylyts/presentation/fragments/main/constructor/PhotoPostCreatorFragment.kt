@@ -7,13 +7,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
@@ -22,9 +18,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_photo_chooser.*
 import kotlinx.android.synthetic.main.fragment_photo_post_creator.*
-import kotlinx.android.synthetic.main.item_photo_library.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.PhotoLibraryAdapter
@@ -53,13 +47,13 @@ class PhotoPostCreatorFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
 
     override fun customizeActionBar() {
         with(include_toolbar_fragment_photo_post_creator){
-            image_button_left_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_back.visibility = android.view.View.VISIBLE
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            image_button_right_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_right_text.visibility = android.view.View.VISIBLE
-            text_view_toolbar_right_text.text = "Далее"
-            text_view_toolbar_right_text.setOnClickListener {
+            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_back_text_view.visibility = android.view.View.VISIBLE
+            toolbar_title_text_view.visibility = android.view.View.VISIBLE
+            toolbar_right_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_right_text_text_view.visibility = android.view.View.VISIBLE
+            toolbar_right_text_text_view.text = "Далее"
+            toolbar_right_text_text_view.setOnClickListener {
                 photoUri?.let {
                     val bundle = Bundle()
                     bundle.putParcelable("uri",photoUri)

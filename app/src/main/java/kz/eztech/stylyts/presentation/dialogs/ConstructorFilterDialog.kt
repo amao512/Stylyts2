@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.dialog_bottom_item_detail_chooser.*
 import kotlinx.android.synthetic.main.dialog_filter_constructor.*
-import kotlinx.android.synthetic.main.fragment_collections.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -85,23 +83,23 @@ class ConstructorFilterDialog: DialogFragment(), View.OnClickListener,
 
 	override fun customizeActionBar() {
 		with(include_dialog_filter_toolbar){
-			image_button_left_corner_action.visibility = View.VISIBLE
-			image_button_left_corner_action.setImageResource(R.drawable.ic_baseline_close_24)
-			image_button_left_corner_action.setOnClickListener {
+			toolbar_left_corner_action_image_button.visibility = View.VISIBLE
+			toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_close_24)
+			toolbar_left_corner_action_image_button.setOnClickListener {
 				processDismiss()
 			}
-			text_view_toolbar_back.visibility = View.GONE
-			text_view_toolbar_title.visibility = View.GONE
-			image_button_right_corner_action.visibility = View.GONE
-			text_view_toolbar_right_text.text = "Очистить"
-			text_view_toolbar_right_text.setOnClickListener {
+			toolbar_back_text_view.visibility = View.GONE
+			toolbar_title_text_view.visibility = View.GONE
+			toolbar_right_corner_action_image_button.visibility = View.GONE
+			toolbar_right_text_text_view.text = "Очистить"
+			toolbar_right_text_text_view.setOnClickListener {
 				clearFilter()
 			}
 			if(filterMap.isNotEmpty()){
-				text_view_toolbar_right_text.visibility = View.VISIBLE
+				toolbar_right_text_text_view.visibility = View.VISIBLE
 				button_dialog_filter_constructor_submit.visibility = View.VISIBLE
 			}else{
-				text_view_toolbar_right_text.visibility = View.GONE
+				toolbar_right_text_text_view.visibility = View.GONE
 				button_dialog_filter_constructor_submit.visibility = View.GONE
 			}
 			
@@ -281,18 +279,18 @@ class ConstructorFilterDialog: DialogFragment(), View.OnClickListener,
 
 	private fun customizeFilterToolBar(){
 		with(include_dialog_filter_toolbar){
-			image_button_left_corner_action.visibility = View.VISIBLE
-			image_button_left_corner_action.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-			image_button_left_corner_action.setOnClickListener {
+			toolbar_left_corner_action_image_button.visibility = View.VISIBLE
+			toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+			toolbar_left_corner_action_image_button.setOnClickListener {
 				processBack()
 			}
-			text_view_toolbar_back.visibility = View.GONE
-			text_view_toolbar_title.visibility = View.VISIBLE
-			text_view_toolbar_title.text = currentMode.title
-			image_button_right_corner_action.visibility = View.GONE
-			text_view_toolbar_right_text.visibility = View.VISIBLE
-			text_view_toolbar_right_text.text = "Сбросить"
-			text_view_toolbar_right_text.setOnClickListener {
+			toolbar_back_text_view.visibility = View.GONE
+			toolbar_title_text_view.visibility = View.VISIBLE
+			toolbar_title_text_view.text = currentMode.title
+			toolbar_right_corner_action_image_button.visibility = View.GONE
+			toolbar_right_text_text_view.visibility = View.VISIBLE
+			toolbar_right_text_text_view.text = "Сбросить"
+			toolbar_right_text_text_view.setOnClickListener {
 				clearFilter()
 				processCurrentInitialCurrentMode()
 			}

@@ -3,7 +3,6 @@ package kz.eztech.stylyts.presentation.dialogs
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
-import kotlinx.android.synthetic.main.item_collection_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
@@ -76,17 +74,17 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogC
         }
         
         with(include_toolbar_dialog_create_collection){
-            image_button_left_corner_action.visibility = android.view.View.GONE
-            text_view_toolbar_back.visibility = android.view.View.VISIBLE
-            text_view_toolbar_back.setOnClickListener {
+            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
+            toolbar_back_text_view.visibility = android.view.View.VISIBLE
+            toolbar_back_text_view.setOnClickListener {
                 listener?.onChoice(it,null)
                 dismiss()
             }
-            text_view_toolbar_title.visibility = android.view.View.VISIBLE
-            text_view_toolbar_title.text = "Создать образ"
-            text_view_toolbar_right_text.visibility = android.view.View.VISIBLE
-            text_view_toolbar_right_text.text = "Готово"
-            text_view_toolbar_right_text.setOnClickListener{
+            toolbar_title_text_view.visibility = android.view.View.VISIBLE
+            toolbar_title_text_view.text = "Создать образ"
+            toolbar_right_text_text_view.visibility = android.view.View.VISIBLE
+            toolbar_right_text_text_view.text = "Готово"
+            toolbar_right_text_text_view.setOnClickListener{
                 currentModel?.text = edit_text_view_dialog_create_collection_accept_sign.text.toString()
                 currentModel?.title =  edit_text_view_dialog_create_collection_accept_sign.text.toString()
                 chooserDialog.show(childFragmentManager,"ChooserDialog")
@@ -126,7 +124,7 @@ class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogC
                             hashMap["mode"] = 3
                         }
                     }
-                    listener?.onChoice(include_toolbar_dialog_create_collection.text_view_toolbar_right_text,hashMap)
+                    listener?.onChoice(include_toolbar_dialog_create_collection.toolbar_right_text_text_view,hashMap)
                     dismiss()
                 }
             }

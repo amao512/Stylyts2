@@ -45,18 +45,18 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
 
     override fun customizeActionBar() {
         with(include_toolbar_addresses) {
-            image_button_left_corner_action.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            text_view_toolbar_title.text = context.getString(R.string.address_profile_title)
-            image_button_left_corner_action.show()
-            text_view_toolbar_title.show()
-            image_button_left_corner_action.setOnClickListener {
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_title_text_view.text = context.getString(R.string.address_profile_title)
+            toolbar_left_corner_action_image_button.show()
+            toolbar_title_text_view.show()
+            toolbar_left_corner_action_image_button.setOnClickListener {
                 if (isForm) {
                     displayContent()
                 } else {
                     findNavController().navigateUp()
                 }
             }
-            image_button_right_corner_action.hide()
+            toolbar_right_corner_action_image_button.hide()
 
             elevation = 0f
         }
@@ -125,7 +125,7 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
 
     override fun displayContent() {
         isForm = false
-        include_toolbar_addresses.text_view_toolbar_title.text = getString(R.string.address_profile_title)
+        include_toolbar_addresses.toolbar_title_text_view.text = getString(R.string.address_profile_title)
         linear_layout_fragment_address_profile_addresses.show()
         scroll_view_fragment_address_profile.hide()
 
@@ -133,7 +133,7 @@ class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContr
 
     override fun displayForm() {
         isForm = true
-        include_toolbar_addresses.text_view_toolbar_title.text = getString(R.string.address_profile_add)
+        include_toolbar_addresses.toolbar_title_text_view.text = getString(R.string.address_profile_add)
         scroll_view_fragment_address_profile.show()
         linear_layout_fragment_address_profile_addresses.hide()
         edit_text_fragment_address_profile_phone.setText(EMPTY_STRING)

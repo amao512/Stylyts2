@@ -17,6 +17,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:elevation="0dp"
             >
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -36,7 +37,6 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_size_8x"
                         >
 
                         <include
@@ -49,6 +49,7 @@
                         android:id="@+id/fragment_shop_search_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_10x"
                         android:layout_marginHorizontal="@dimen/margin_size_16x"
                         android:focusable="false"
                         android:theme="@style/SearchView"
@@ -66,6 +67,13 @@
                 app:tabIndicatorColor="@color/app_black"
                 app:tabSelectedTextColor="@color/app_black"
                 app:tabTextAppearance="@style/TextRegularBold"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_gravity="bottom"
+                android:background="@color/toolbar_border"
                 />
         </com.google.android.material.appbar.AppBarLayout>
 

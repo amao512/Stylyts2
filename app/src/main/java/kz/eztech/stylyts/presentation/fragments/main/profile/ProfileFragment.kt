@@ -61,19 +61,16 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun customizeActionBar() {
         with(include_toolbar_profile) {
-            text_view_toolbar_back.hide()
-            text_view_toolbar_title.show()
-            image_button_left_corner_action.show()
+            toolbar_title_text_view.show()
+            toolbar_left_corner_action_image_button.show()
 
             if (isOwnProfile) {
-                image_button_left_corner_action.setImageResource(R.drawable.ic_person_add)
-                image_button_right_corner_action.setImageResource(R.drawable.ic_drawer)
-                image_button_right_corner_action.show()
+                toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
+                toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
+                toolbar_right_corner_action_image_button.show()
             } else {
-                image_button_left_corner_action.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+                toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             }
-
-            elevation = 0f
 
             customizeActionToolBar(toolbar = this)
         }
@@ -109,7 +106,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun initializeListeners() {
-        include_toolbar_profile.image_button_right_corner_action.setOnClickListener(this)
+        include_toolbar_profile.toolbar_right_corner_action_image_button.setOnClickListener(this)
         frame_layout_fragment_profile_my_incomes.setOnClickListener(this)
         frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
         fragment_profile_edit_text_view.setOnClickListener(this)
@@ -117,7 +114,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         linear_layout_fragment_profile_followers_item.setOnClickListener(this)
         linear_layout_fragment_profile_following_item.setOnClickListener(this)
         linear_layout_fragment_profile_photos_item.setOnClickListener(this)
-        image_button_left_corner_action.setOnClickListener(this)
+        toolbar_left_corner_action_image_button.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -178,7 +175,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             currentNickname = username ?: EMPTY_STRING
             currentSurname = lastName ?: EMPTY_STRING
 
-            include_toolbar_profile.text_view_toolbar_title.text = username
+            include_toolbar_profile.toolbar_title_text_view.text = username
             text_view_fragment_profile_user_name.text = name
             fragment_profile_followers_count.text = "${/*followers_count*/ 0}"
             fragment_profile_followings_count.text = "${/*followings_count*/ 0}"
@@ -213,7 +210,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.image_button_right_corner_action -> {
+            R.id.toolbar_right_corner_action_image_button -> {
                 findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
             }
             R.id.frame_layout_fragment_profile_my_incomes -> {
@@ -242,7 +239,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.linear_layout_fragment_profile_photos_item -> {
                 findNavController().navigate(R.id.userSubsFragment)
             }
-            R.id.image_button_left_corner_action -> {
+            R.id.toolbar_left_corner_action_image_button -> {
                 if (!isOwnProfile) {
                     findNavController().navigateUp()
                 }

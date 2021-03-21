@@ -70,10 +70,12 @@ class SearchItemPresenter @Inject constructor(
                 .subscribe({
                     view.processViewAction {
                         processUserFromLocalDb(userList = it)
+                        hideProgress()
                     }
                 }, {
                     view.processViewAction {
                         displayMessage(errorHelper.processError(it))
+                        hideProgress()
                     }
                 })
         )

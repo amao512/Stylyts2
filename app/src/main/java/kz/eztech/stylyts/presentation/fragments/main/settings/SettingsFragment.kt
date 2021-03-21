@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.fragments.main.settings
 
 import android.content.Intent
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -23,12 +24,13 @@ class SettingsFragment : BaseFragment<MainActivity>(), SettingsContract.View, Vi
 
     override fun customizeActionBar() {
         with(fragment_settings_toolbar) {
-            image_button_left_corner_action.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            image_button_left_corner_action.show()
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.show()
 
-            text_view_toolbar_title.text = context.getString(R.string.settings_title)
-            text_view_toolbar_title.show()
+            toolbar_title_text_view.text = context.getString(R.string.settings_title)
+            toolbar_title_text_view.show()
 
+            background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)
             elevation = 0f
         }
     }
@@ -70,7 +72,7 @@ class SettingsFragment : BaseFragment<MainActivity>(), SettingsContract.View, Vi
     }
 
     override fun initializeListeners() {
-        image_button_left_corner_action.setOnClickListener(this)
+        toolbar_left_corner_action_image_button.setOnClickListener(this)
         fragment_settings_exit.setOnClickListener(this)
     }
 
@@ -88,7 +90,7 @@ class SettingsFragment : BaseFragment<MainActivity>(), SettingsContract.View, Vi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.image_button_left_corner_action -> findNavController().navigateUp()
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_settings_exit -> onExit()
         }
     }

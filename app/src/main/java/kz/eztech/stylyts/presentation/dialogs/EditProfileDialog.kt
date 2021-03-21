@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_edit_profile.*
@@ -82,22 +83,26 @@ class EditProfileDialog(
 
     override fun customizeActionBar() {
         with(include_toolbar_edit_profile) {
-            image_button_left_corner_action.hide()
-            text_view_toolbar_back.show()
-            text_view_toolbar_back.text = context.getString(R.string.toolbar_cancel)
-            text_view_toolbar_back.setCompoundDrawables(null, null, null, null)
-            text_view_toolbar_back.setOnClickListener {
+            toolbar_left_corner_action_image_button.hide()
+
+            toolbar_back_text_view.show()
+            toolbar_back_text_view.text = context.getString(R.string.toolbar_cancel)
+            toolbar_back_text_view.setCompoundDrawables(null, null, null, null)
+            toolbar_back_text_view.setOnClickListener {
                 dismiss()
             }
-            text_view_toolbar_title.show()
-            text_view_toolbar_title.text = context.getString(R.string.toolbar_title_edit_profile)
-            image_button_right_corner_action.hide()
-            text_view_toolbar_right_text.show()
-            text_view_toolbar_right_text.text = context.getString(R.string.toolbar_completed)
-            text_view_toolbar_right_text.setOnClickListener {
+
+            toolbar_title_text_view.show()
+            toolbar_title_text_view.text = context.getString(R.string.toolbar_title_edit_profile)
+
+            toolbar_right_corner_action_image_button.hide()
+
+            toolbar_right_text_text_view.show()
+            toolbar_right_text_text_view.text = context.getString(R.string.toolbar_completed)
+            toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(context, R.color.app_light_orange))
+            toolbar_right_text_text_view.setOnClickListener {
                 completeEditing()
             }
-            elevation = 0f
         }
     }
 
