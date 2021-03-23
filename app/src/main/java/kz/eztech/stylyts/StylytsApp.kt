@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.multidex.MultiDex
 import kz.eztech.stylyts.auth.di.AuthModule
 import kz.eztech.stylyts.common.di.ApplicationComponent
-import kz.eztech.stylyts.di.component.DaggerApplicationComponent
+import kz.eztech.stylyts.common.di.DaggerApplicationComponent
 import kz.eztech.stylyts.common.di.modules.ApplicationModule
 import kz.eztech.stylyts.common.di.modules.NetworkModule
 import kz.eztech.stylyts.profile.di.ProfileModule

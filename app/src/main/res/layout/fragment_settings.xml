@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.main.settings.SettingsFragment"
+    tools:context=".settings.presentation.fragments.SettingsFragment"
     >
 
     <include
@@ -13,39 +13,39 @@
         layout="@layout/base_toolbar"
         />
 
-    <kz.eztech.stylyts.presentation.fragments.main.settings.SettingsItemView
+    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
         android:id="@+id/fragment_settings_saved_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_24x"
         />
 
-    <kz.eztech.stylyts.presentation.fragments.main.settings.SettingsItemView
-        android:id="@+id/fragment_settings_personal_settings"
+    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+        android:id="@+id/fragment_settings_personal_settings_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.presentation.fragments.main.settings.SettingsItemView
-        android:id="@+id/fragment_settings_confidentiality"
+    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+        android:id="@+id/fragment_settings_confidentiality_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.presentation.fragments.main.settings.SettingsItemView
-        android:id="@+id/fragment_settings_rule_using"
+    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+        android:id="@+id/fragment_settings_rule_using_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.presentation.fragments.main.settings.SettingsItemView
-        android:id="@+id/fragment_settings_estimate_app"
+    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+        android:id="@+id/fragment_settings_estimate_app_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.presentation.fragments.main.settings.SettingsItemView
-        android:id="@+id/fragment_settings_exit"
+    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+        android:id="@+id/fragment_settings_exit_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />

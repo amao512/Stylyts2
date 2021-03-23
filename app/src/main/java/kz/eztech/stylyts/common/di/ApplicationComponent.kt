@@ -25,6 +25,7 @@ import kz.eztech.stylyts.profile.presentation.fragments.CardFragment
 import kz.eztech.stylyts.profile.presentation.fragments.ProfileFragment
 import kz.eztech.stylyts.search.di.SearchModule
 import kz.eztech.stylyts.search.presentation.fragments.SearchItemFragment
+import kz.eztech.stylyts.settings.presentation.dialogs.ExitDialog
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -67,4 +68,5 @@ interface ApplicationComponent {
     fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)
     fun inject(dialog: EditProfileDialog)
+    fun inject(dialog: ExitDialog)
 }

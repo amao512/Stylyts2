@@ -24,7 +24,8 @@
             app:destination="@id/itemDetailFragment" />
         <action
             android:id="@+id/action_mainFragment_to_collectionDetailFragment"
-            app:destination="@id/collectionDetailFragment" />
+            app:destination="@id/collectionDetailFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/createCollectionFragment"
@@ -211,10 +212,23 @@
         android:label="UserSubsFragment" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.settings.SettingsFragment"
+        android:name="kz.eztech.stylyts.settings.presentation.fragments.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings"
-        />
+        >
+        <action
+            android:id="@+id/action_settingsFragment_to_savedSettingsFragment"
+            app:destination="@id/savedSettingsFragment"
+            />
+        <action
+            android:id="@+id/action_settingsFragment_to_personalSettingsFragment"
+            app:destination="@id/personalSettingsFragment"
+            />
+        <action
+            android:id="@+id/action_settingsFragment_to_exitDialog"
+            app:destination="@id/exitDialog"
+            />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="kz.eztech.stylyts.search.presentation.fragments.SearchFragment"
@@ -225,4 +239,21 @@
             app:destination="@id/profileFragment"
             />
     </fragment>
+    <fragment
+        android:id="@+id/savedSettingsFragment"
+        android:name="kz.eztech.stylyts.settings.presentation.fragments.SavedSettingsFragment"
+        android:label="fragment_saved_settings"
+        tools:layout="@layout/fragment_saved_settings"
+        />
+    <fragment
+        android:id="@+id/personalSettingsFragment"
+        android:name="kz.eztech.stylyts.settings.presentation.fragments.PersonalSettingsFragment"
+        android:label="fragment_personal_settings"
+        tools:layout="@layout/fragment_personal_settings"
+        />
+    <dialog
+        android:id="@+id/exitDialog"
+        android:name="kz.eztech.stylyts.settings.presentation.dialogs.ExitDialog"
+        android:label="ExitDialog"
+        />
 </navigation>

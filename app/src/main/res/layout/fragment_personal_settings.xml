@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".settings.presentation.fragments.PersonalSettingsFragment"
+    >
+
+    <include
+        android:id="@+id/fragment_personal_settings_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            style="@style/Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/personal_settings_invite"
+            android:textSize="@dimen/text_size_16x"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/padding_size_16x"
+            >
+
+            <ImageView
+                android:layout_width="@dimen/icon_size_20x"
+                android:layout_height="@dimen/icon_size_20x"
+                android:src="@drawable/ic_person_add"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:text="@string/personal_settings_invite_friends"
+                android:textSize="@dimen/text_size_14x"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/little_divider_height"
+            android:layout_marginTop="@dimen/margin_size_24x"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            style="@style/Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/personal_settings_account"
+            android:textSize="@dimen/text_size_16x"
+            />
+
+        <LinearLayout
+            android:id="@+id/fragment_personal_settings_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/padding_size_16x"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/password"
+                android:textSize="@dimen/text_size_14x"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right_gray"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_personal_settings_language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_10x"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/padding_size_16x"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/language"
+                android:textSize="@dimen/text_size_14x"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right_gray"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/little_divider_height"
+            android:layout_marginTop="@dimen/margin_size_24x"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            style="@style/Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/personal_settings_support"
+            android:textSize="@dimen/text_size_16x"
+            />
+
+        <LinearLayout
+            android:id="@+id/fragment_personal_settings_tell_problem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/padding_size_16x"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/personal_settings_tell_problem"
+                android:textSize="@dimen/text_size_14x"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right_gray"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/little_divider_height"
+            android:layout_marginTop="@dimen/margin_size_24x"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            style="@style/Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/personal_settings_notification"
+            android:textSize="@dimen/text_size_16x"
+            />
+
+        <LinearLayout
+            android:id="@+id/fragment_personal_settings_notifications"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/padding_size_16x"
+            >
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/personal_settings_push_notification"
+                android:textSize="@dimen/text_size_14x"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_right_gray"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

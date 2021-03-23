@@ -85,6 +85,7 @@
     <string name="counts">Кол-во</string>
     <string name="sale_commission">Коммисия за продажу</string>
     <string name="reply">Ответить</string>
+    <string name="language">Язык</string>
 
     <string name="instagram">Instagram</string>
     <string name="facebook">Facebook</string>
@@ -186,4 +187,21 @@
     <string name="card_fragment_add_way_payment">Добавить Способ Оплаты</string>
 
     <string name="collection_detail_fragment_publishes">Публикация</string>
+
+    <string name="saved_settings_title">Сохраненное</string>
+    <string name="saved_settings_save">Сохранить</string>
+    <string name="saved_settings_save_subtitle">Сохраняйте публикации и образы, которые хотите посмотреть позже. Только вы сможете просматривать сохраненные вами обьекты.</string>
+
+    <string name="dialog_exit_title">Вы точно хотите выйти из аккаунта Emilie89?</string>
+    <string name="dialog_exit_positive_text">Выйти</string>
+    <string name="dialog_exit_cancel_text">Отмена</string>
+
+    <string name="personal_settings_title">Личные настройки</string>
+    <string name="personal_settings_invite">Пригласить</string>
+    <string name="personal_settings_invite_friends">Пригласите ваших друзей</string>
+    <string name="personal_settings_account">Аккаунт</string>
+    <string name="personal_settings_support">Служба поддержки</string>
+    <string name="personal_settings_tell_problem">Сообщить о проблеме</string>
+    <string name="personal_settings_notification">Уведомления</string>
+    <string name="personal_settings_push_notification">Push Уведомления</string>
 </resources>

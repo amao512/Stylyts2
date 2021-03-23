@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.main.settings
+package kz.eztech.stylyts.settings.presentation.view
 
 import android.content.Context
 import android.util.AttributeSet

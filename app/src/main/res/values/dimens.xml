@@ -4,8 +4,11 @@
     <dimen name="text_size_14x">14sp</dimen>
     <dimen name="text_size_16x">16sp</dimen>
     <dimen name="text_size_18x">18sp</dimen>
+    <dimen name="text_size_20x">20sp</dimen>
     <dimen name="text_size_30x">30sp</dimen>
     <dimen name="text_size_36x">36sp</dimen>
+
+    <dimen name="line_height_24x">24dp</dimen>
 
     <dimen name="margin_size_4x">4dp</dimen>
     <dimen name="margin_size_6x">6dp</dimen>
@@ -13,6 +16,7 @@
     <dimen name="margin_size_10x">10dp</dimen>
     <dimen name="margin_size_12x">12dp</dimen>
     <dimen name="margin_size_16x">16dp</dimen>
+    <dimen name="margin_size_20x">20dp</dimen>
     <dimen name="margin_size_24x">24dp</dimen>
     <dimen name="margin_size_32x">32dp</dimen>
     <dimen name="margin_size_40x">40dp</dimen>
@@ -29,6 +33,8 @@
     <dimen name="padding_size_32x">32dp</dimen>
     <dimen name="padding_size_36x">36dp</dimen>
     <dimen name="padding_size_40x">40dp</dimen>
+
+    <dimen name="icon_size_20x">20dp</dimen>
 
     <dimen name="splash_logo_size">50sp</dimen>
 
@@ -122,5 +128,6 @@
     <dimen name="camera_bottom_container_height">100dp</dimen>
     <dimen name="camera_take_photo_button_size">50dp</dimen>
     <dimen name="camera_icon_size">30dp</dimen>
+
     <dimen name="search_tab_min_width">110dp</dimen>
 </resources>
