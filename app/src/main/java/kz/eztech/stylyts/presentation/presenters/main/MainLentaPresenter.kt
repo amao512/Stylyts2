@@ -4,7 +4,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.MainLentaModel
 import kz.eztech.stylyts.domain.usecases.main.MainLentaUseCase
-import kz.eztech.stylyts.presentation.base.processViewAction
+import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import javax.inject.Inject
 

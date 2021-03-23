@@ -14,12 +14,12 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.domain.models.UserSearchModel
-import kz.eztech.stylyts.presentation.base.DialogChooserListener
+import kz.eztech.stylyts.common.presentation.base.DialogChooserListener
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
-class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener,DialogChooserListener{
+class CreateCollectionAcceptDialog:DialogFragment(),View.OnClickListener, DialogChooserListener {
     internal var listener: DialogChooserListener? = null
     private var currentModel: CollectionPostCreateModel? = null
     private var currentBitmap: Bitmap? = null

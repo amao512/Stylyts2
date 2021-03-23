@@ -42,20 +42,17 @@
 		 {
              "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4LCJ1c2VybmFtZSI6ImV4YW1wbGUxQG1haWwuY29tIiwiZXhwIjoxNjE1NTQ0MTg1LCJlbWFpbCI6ImV4YW1wbGUxQG1haWwuY29tIn0.NjW_BiIqhT-cT_32A_sJOaAzKiqGNb5_CLxSPHmpqts",
              "user": {
-                 "pk": 8,
+                 "id": 8,
+                 "avatar": null,
                  "username": "username",
+                 "name": "Galizhan",
+                 "last_name": "Tolybayev",
                  "email": "galix.kz@gmail.kz133",
-                 "profile": {
-                     "owner": 8,
-                     "avatar": null,
-                     "name": "Galizhan",
-                     "last_name": "Tolybayev",
-                     "brand": false,
-                     "date_of_birth": "2001-01-01",
-                     "gender": "",
-                     "is_active": true,
-                     "verification_uuid": "9ca7f67c-05ee-431a-a0fb-460f03993f29"
-                 }
+                 "brand": false,
+                 "date_of_birth": "2001-01-01",
+                 "gender": "",
+                 "is_active": true,
+                 "verification_uuid": "9ca7f67c-05ee-431a-a0fb-460f03993f29"
              }
          }
  
@@ -89,29 +86,24 @@
 	   
 
  - **Success Response:**
-	  Добавьте полученный токен в headers `"Authorization": "Bearer <token>"`
+	  Добавьте полученный токен в headers `"Authorization": "JWT <token>"`
 	  
 	 - **Code:** 200 <br />
 	 - **Content:** 
 	 ```
 	 {
-    	   "id": 1,
-    	    "followings_count": 0,
-    	    "followers_count": 0,
-    	    "is_brand": false,
-    	    "last_login": null,
-    	    "role": "user",
-    	    "email": "galix.k@gmail.com",
-    	    "first_name": "Galizhan",
-    	    "last_name": "Tolybayev",
-    	    "date_of_birth": "1998-12-31",
-    	    "is_verified": false,
-    	    "should_send_mail": false,
-    	    "verification_uuid": "cf1f7651-e73a-429f-a88f-81c746488b23",
-    	    "created": "2020-11-23T10:37:34.867859+06:00",
-    	    "modified": "2020-11-23T10:37:34.867877+06:00",
-    	    "avatar": null
-    	}
+         "id": 8,
+         "avatar": null,
+         "username": "username",
+         "name": "Galizhan",
+         "last_name": "Tolybayev",
+         "email": "galix.kz@gmail.kz133",
+         "brand": false,
+         "date_of_birth": "2001-01-01",
+         "gender": "",
+         "is_active": true,
+         "verification_uuid": "9ca7f67c-05ee-431a-a0fb-460f03993f29"
+    }
  - **Error Response:**
 
 	 - **Code:** 400 Value Error <br />
@@ -241,7 +233,7 @@
 
 **Информация о себе**
 ----
- - **/api/auth/profile/**
+ - **/api/auth/profile/me/**
 
 	  Информация о пользователя который залогинился
 
@@ -256,19 +248,19 @@
 	 - **Code:** 200 <br />
 	 - **Content:** 
 		 ```
-		 [
-             {
-                 "owner": 1,
-                 "avatar": null,
-                 "name": "Galizhan",
-                 "last_name": "Tolybayev",
-                 "brand": false,
-                 "date_of_birth": "1998-12-31",
-                 "gender": "",
-                 "is_active": true,
-                 "verification_uuid": "3b1a3064-77ed-4c04-a95e-22ea4122ba4f"
-             }
-         ]
+         {
+             "id": 8,
+             "avatar": null,
+             "username": "username",
+             "name": "Galizhan",
+             "last_name": "Tolybayev",
+             "email": "galix.kz@gmail.kz133",
+             "brand": false,
+             "date_of_birth": "2001-01-01",
+             "gender": "",
+             "is_active": true,
+             "verification_uuid": "9ca7f67c-05ee-431a-a0fb-460f03993f29"
+         }
  
  - **Error Response:**
 
@@ -285,7 +277,7 @@
 
 **Изменить данные**
 ----
- - **/api/auth/:id*
+ - **/api/auth/profile/edit/*
 
 	Изменить данные
 	 
@@ -305,21 +297,18 @@
 	 - **Content:** 
 		```
 		{
-	        "id": 1,
-	        "is_brand": false,
-	        "last_login": null,
-	        "role": "user",
-	        "email": "galix.kz@gmail.com1",
-	        "first_name": "Galizhan",
-	        "last_name": "Tolybayev",
-	        "date_of_birth": "1998-12-31",
-	        "is_verified": false,
-	        "should_send_mail": false,
-	        "verification_uuid": "c1f4c5b4-11c9-4d92-b7d4-96e6424e1ed8",
-	        "created": "2020-11-23T11:46:02.025895+06:00",
-	        "modified": "2020-11-23T11:46:02.025931+06:00",
-	        "avatar": null
-	    },
+             "id": 8,
+             "avatar": null,
+             "username": "username",
+             "name": "Galizhan",
+             "last_name": "Tolybayev",
+             "email": "galix.kz@gmail.kz133",
+             "brand": false,
+             "date_of_birth": "2001-01-01",
+             "gender": "",
+             "is_active": true,
+             "verification_uuid": "9ca7f67c-05ee-431a-a0fb-460f03993f29"
+        }
  - **Error Response:**
 
 	 - **Code:** 400 user_not_found  <br />
@@ -337,73 +326,18 @@
 			    "detail": "Invalid input.",
 			    "error_code": "invalid"
 			}
-**Информация о себе**
-----
- - **/api/auth/me/**
-
-	  Информация о себе
- - **Method:**
-	  `GET`
-  
-- **Headers**
-	- `"Authorization": "Bearer <token>"`
-	   
-- **Params**
-	| Параметр  | Тип данных |      Описание      |  Default |
-	|----------|:-------------:|:-------------:|------:|
-	| id(required) |  integer | id пользователя | -
- - **Success Response:**
-	 - **Code:** 200 <br />
-	 - **Content:** 
-		 ```
-		 {
-		   "id": 1,
-		    "followings_count": 0,
-		    "followers_count": 0,
-		    "is_brand": false,
-		    "last_login": null,
-		    "role": "user",
-		    "email": "galix.k@gmail.com",
-		    "first_name": "Galizhan",
-		    "last_name": "Tolybayev",
-		    "date_of_birth": "1998-12-31",
-		    "is_verified": false,
-		    "should_send_mail": false,
-		    "verification_uuid": "cf1f7651-e73a-429f-a88f-81c746488b23",
-		    "created": "2020-11-23T10:37:34.867859+06:00",
-		    "modified": "2020-11-23T10:37:34.867877+06:00",
-		    "avatar": null
-		}
- 
- - **Error Response:**
-
-	 - **Code:** 401 not_authenticated  <br />
-	 - **Content:** 
-		 ```
-		 {
-	    "errors": [
-	        {
-	            "field": "detail",
-	            "error_code": "not_authenticated",
-	            "message": "Учетные данные не были предоставлены."
-	        }
-	    ],
-	    "status_code": 401,
-	    "detail": "Учетные данные не были предоставлены.",
-	    "error_code": "not_authenticated"
-	}
 
 **Информация о другом пользователе**
 ----
- - **/api/auth/:id/**
+ - **/api/auth/profile/:id/**
 
-	  Информация о другом пользователе по айдишке. Тут важно учесть поле 		    "role", она может быть user/brand и в зависимости от него выводить отображать.
+	  Информация о другом пользователе по айдишке. Тут важно учесть поле "role", она может быть user/brand и в зависимости от него выводить отображать.
 
  - **Method:**
 	  `GET`
   
 - **Headers**
-	- `"Authorization": "Bearer <token>"`
+	- `"Authorization": "JWT <token>"`
 	   
 - **Params**
 	| Параметр  | Тип данных |      Описание      |  Default |
@@ -414,23 +348,18 @@
 	 - **Content:** 
 		 ```
 		 {
-		   "id": 1,
-		    "followings_count": 0,
-		    "followers_count": 0,
-		    "is_brand": false,
-		    "last_login": null,
-		    "role": "user",
-		    "email": "galix.k@gmail.com",
-		    "first_name": "Galizhan",
-		    "last_name": "Tolybayev",
-		    "date_of_birth": "1998-12-31",
-		    "is_verified": false,
-		    "should_send_mail": false,
-		    "verification_uuid": "cf1f7651-e73a-429f-a88f-81c746488b23",
-		    "created": "2020-11-23T10:37:34.867859+06:00",
-		    "modified": "2020-11-23T10:37:34.867877+06:00",
-		    "avatar": null
-		}
+              "id": 8,
+              "avatar": null,
+              "username": "username",
+              "name": "Galizhan",
+              "last_name": "Tolybayev",
+              "email": "galix.kz@gmail.kz133",
+              "brand": false,
+              "date_of_birth": "2001-01-01",
+              "gender": "",
+              "is_active": true,
+              "verification_uuid": "9ca7f67c-05ee-431a-a0fb-460f03993f29"
+         }
  
  - **Error Response:**
 

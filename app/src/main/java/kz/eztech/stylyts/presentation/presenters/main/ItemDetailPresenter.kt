@@ -5,7 +5,7 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.usecases.main.GetItemByBarcodeUseCase
 import kz.eztech.stylyts.domain.usecases.main.GetItemDetailUseCase
-import kz.eztech.stylyts.presentation.base.processViewAction
+import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.detail.ItemDetailContract
 import javax.inject.Inject
 

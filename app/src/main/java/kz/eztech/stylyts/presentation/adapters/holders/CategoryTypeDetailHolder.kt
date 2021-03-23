@@ -3,11 +3,9 @@ package kz.eztech.stylyts.presentation.adapters.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_category_type_detail.view.*
-import kotlinx.android.synthetic.main.item_collection_image.view.*
-import kz.eztech.stylyts.data.api.RestConstants.BASE_URL
 import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 import java.text.NumberFormat
 
 /**

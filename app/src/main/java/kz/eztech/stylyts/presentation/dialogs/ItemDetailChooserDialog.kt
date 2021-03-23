@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.dialog_bottom_item_detail_chooser.*
-import kotlinx.android.synthetic.main.dialog_bottom_photo_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesColor
 import kz.eztech.stylyts.domain.models.ClothesSize
-import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
+import kz.eztech.stylyts.common.presentation.base.BaseRoundedBottomSheetDialog
 
 /**
  * Created by Ruslan Erdenoff on 28.01.2021.

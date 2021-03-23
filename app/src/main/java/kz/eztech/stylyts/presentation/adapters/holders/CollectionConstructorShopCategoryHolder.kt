@@ -1,19 +1,12 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
-import android.content.ClipData
-import android.content.ClipDescription
-import android.graphics.Canvas
-import android.graphics.Point
 import android.view.View
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
-import kotlinx.android.synthetic.main.item_collection_image.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesTypes
 import kz.eztech.stylyts.domain.models.GenderCategory
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.

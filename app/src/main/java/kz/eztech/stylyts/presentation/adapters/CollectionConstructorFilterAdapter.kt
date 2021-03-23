@@ -4,11 +4,10 @@ import android.view.View
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.BrandModel
 import kz.eztech.stylyts.domain.models.GenderCategory
-import kz.eztech.stylyts.domain.models.MainImageModel
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.CollectionConstructorFilterHolder
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 
 /**

@@ -3,10 +3,8 @@ package kz.eztech.stylyts.presentation.presenters.main.shop
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ShopCategoryModel
-import kz.eztech.stylyts.domain.usecases.LoginUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryUseCase
-import kz.eztech.stylyts.presentation.base.processViewAction
-import kz.eztech.stylyts.presentation.contracts.LoginContract
+import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemContract
 import javax.inject.Inject
 

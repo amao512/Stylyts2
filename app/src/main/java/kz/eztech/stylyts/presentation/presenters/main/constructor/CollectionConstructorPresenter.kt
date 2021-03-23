@@ -1,20 +1,15 @@
 package kz.eztech.stylyts.presentation.presenters.main.constructor
 
-import android.R.attr.description
-import com.google.gson.Gson
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.domain.usecases.main.GetFilteredItemsUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.*
-import kz.eztech.stylyts.presentation.base.processViewAction
+import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorContract
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.http.Multipart
 import java.io.File
 import javax.inject.Inject
 

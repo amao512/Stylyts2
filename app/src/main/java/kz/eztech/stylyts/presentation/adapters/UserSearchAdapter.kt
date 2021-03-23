@@ -3,10 +3,10 @@ package kz.eztech.stylyts.presentation.adapters
 import android.view.View
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.holders.UserSearchHolder
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.search.presentation.adapters.UserSearchHolder
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 21.02.2021.

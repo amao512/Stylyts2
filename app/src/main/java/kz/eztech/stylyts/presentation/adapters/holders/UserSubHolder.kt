@@ -3,8 +3,8 @@ package kz.eztech.stylyts.presentation.adapters.holders
 import android.view.View
 import kotlinx.android.synthetic.main.item_user_subs.view.*
 import kz.eztech.stylyts.domain.models.UserSub
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 04.03.2021.

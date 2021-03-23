@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_save_item_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
-import kz.eztech.stylyts.presentation.base.DialogChooserListener
+import kz.eztech.stylyts.common.presentation.base.DialogChooserListener
 
 /**
  * Created by Ruslan Erdenoff on 24.02.2021.

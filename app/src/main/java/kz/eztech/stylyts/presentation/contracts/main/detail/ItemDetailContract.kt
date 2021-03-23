@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.presentation.contracts.main.detail
 
 import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.presentation.base.BasePresenter
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BasePresenter
+import kz.eztech.stylyts.common.presentation.base.BaseView
 
 /**
  * Created by Ruslan Erdenoff on 04.12.2020.

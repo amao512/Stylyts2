@@ -20,17 +20,17 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_photo_post_creator.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.PhotoLibraryAdapter
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.ViewUtils
 import java.io.File
 
 class PhotoPostCreatorFragment : BaseFragment<MainActivity>(), EmptyContract.View,
-    LoaderManager.LoaderCallbacks<Cursor>,View.OnClickListener,UniversalViewClickListener {
+    LoaderManager.LoaderCallbacks<Cursor>,View.OnClickListener, UniversalViewClickListener {
     
     private lateinit var photoAdapter: PhotoLibraryAdapter
     private var photoUri: Uri? = null

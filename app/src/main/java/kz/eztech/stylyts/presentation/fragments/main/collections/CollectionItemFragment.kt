@@ -1,40 +1,31 @@
 package kz.eztech.stylyts.presentation.fragments.main.collections
 
-import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.fragment_collection_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.MainImageAdditionalModel
-import kz.eztech.stylyts.domain.models.MainImageModel
 import kz.eztech.stylyts.domain.models.MainLentaModel
-import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.GridImageCollectionItemAdapter
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.collections.CollectionItemContract
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.CollectionsItemPresenter
-import kz.eztech.stylyts.presentation.presenters.main.MainLentaPresenter
 import javax.inject.Inject
 
-class CollectionItemFragment(var currentMode:Int) : BaseFragment<MainActivity>(), CollectionItemContract.View,UniversalViewClickListener {
+class CollectionItemFragment(var currentMode:Int) : BaseFragment<MainActivity>(), CollectionItemContract.View,
+    UniversalViewClickListener {
 
     private lateinit var adapter:GridImageCollectionItemAdapter
-    private var itemClickListener:UniversalViewClickListener? = null
+    private var itemClickListener: UniversalViewClickListener? = null
     
     @Inject
     lateinit var presenter: CollectionsItemPresenter
     
-    fun setOnClickListener(itemClickListener:UniversalViewClickListener?){
+    fun setOnClickListener(itemClickListener: UniversalViewClickListener?){
         this.itemClickListener = itemClickListener
     }
     override fun getLayoutId(): Int {

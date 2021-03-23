@@ -10,7 +10,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.dialog_cart.*
-import kotlinx.android.synthetic.main.item_cart_item.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.LocalDataSource
@@ -18,14 +17,14 @@ import kz.eztech.stylyts.data.db.entities.CartEntity
 import kz.eztech.stylyts.data.db.entities.CartMapper
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.presentation.adapters.CartAdapter
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import java.text.NumberFormat
 import javax.inject.Inject
 
 /**
  * Created by Ruslan Erdenoff on 28.01.2021.
  */
-class CartDialog: DialogFragment(), View.OnClickListener,UniversalViewClickListener {
+class CartDialog: DialogFragment(), View.OnClickListener, UniversalViewClickListener {
 
 	private var disposables = CompositeDisposable()
 	private lateinit var cartAdapter:CartAdapter

@@ -8,14 +8,14 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_partner_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.*
-import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.PartnerProfileContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 

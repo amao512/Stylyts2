@@ -4,7 +4,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.repository.main.ItemDetailDomainRepository
-import kz.eztech.stylyts.domain.usecases.BaseUseCase
+import kz.eztech.stylyts.common.domain.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 

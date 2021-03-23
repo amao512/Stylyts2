@@ -15,11 +15,11 @@ import kz.eztech.stylyts.domain.models.BrandModel
 import kz.eztech.stylyts.domain.models.BrandsModel
 import kz.eztech.stylyts.domain.models.GenderCategory
 import kz.eztech.stylyts.domain.models.ShopCategoryModel
-import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CollectionConstructorFilterAdapter
-import kz.eztech.stylyts.presentation.base.DialogChooserListener
+import kz.eztech.stylyts.common.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CollectionConstructorFilterContract
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.constructor.CollectionConstructorFilterPresenter
 import javax.inject.Inject
 
@@ -27,7 +27,7 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 04.02.2021.
  */
 class ConstructorFilterDialog: DialogFragment(), View.OnClickListener,
-	CollectionConstructorFilterContract.View,UniversalViewClickListener {
+	CollectionConstructorFilterContract.View, UniversalViewClickListener {
 
 	private enum class ConstructorFilterMode(val title:String){
 		MAIN("Фильтр"),

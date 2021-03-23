@@ -3,15 +3,13 @@ package kz.eztech.stylyts.presentation.adapters.holders
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.item_constructor_filter_clothe_items.view.*
-import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.domain.models.BrandModel
 import kz.eztech.stylyts.domain.models.ClothesTypes
 import kz.eztech.stylyts.domain.models.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.CollectionConstructorSubFilterAdapter
-import kz.eztech.stylyts.presentation.adapters.MainImagesAdditionalAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 
 /**
  * Created by Ruslan Erdenoff on 05.02.2021.
@@ -43,7 +41,7 @@ class CollectionConstructorFilterHolder(itemView: View, adapter: BaseAdapter): B
                     item.clothes_types?.let {
                         clothesTypes.clear()
                         clothesTypes.addAll(it)
-                        additionalAdapter.itemClickListener = object : UniversalViewClickListener{
+                        additionalAdapter.itemClickListener = object : UniversalViewClickListener {
                             override fun onViewClicked(view: View, position: Int, subItem: Any?) {
                                 when(subItem){
                                     is ClothesTypes -> {

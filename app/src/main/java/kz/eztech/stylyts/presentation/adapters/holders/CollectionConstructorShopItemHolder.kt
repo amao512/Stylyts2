@@ -1,26 +1,15 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
 import android.annotation.SuppressLint
-import android.content.ClipData
-import android.content.ClipDescription
-import android.content.Intent
-import android.graphics.Canvas
-import android.graphics.Point
-import android.os.Bundle
-import android.util.Log
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
-import kz.eztech.stylyts.domain.models.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.CollectionConstructorShopItemAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.

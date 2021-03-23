@@ -13,12 +13,12 @@ import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.MainImageModel
 import kz.eztech.stylyts.domain.models.MainLentaModel
 import kz.eztech.stylyts.domain.models.MainResult
-import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.MainImagesAdapter
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLentaPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide

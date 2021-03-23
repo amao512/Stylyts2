@@ -1,17 +1,12 @@
 package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
-import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.MainImageModel
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.base.BaseMultipleAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.CollectionFilterCustomHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.CollectionFilterHolder
-import kz.eztech.stylyts.presentation.adapters.holders.ShopCategoryHolder
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.

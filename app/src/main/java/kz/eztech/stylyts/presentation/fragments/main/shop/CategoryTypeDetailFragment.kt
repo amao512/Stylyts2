@@ -11,13 +11,13 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
 import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
-import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.shop.CategoryTypeDetailFragmentPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show

@@ -14,10 +14,9 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import kotlinx.android.synthetic.main.item_main_image.view.*
 import kotlinx.android.synthetic.main.pager_item_vp_image.view.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 
 /**
  * Created by ZhenisMadiyar on 05,Февраль,2019

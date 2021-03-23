@@ -3,12 +3,10 @@ package kz.eztech.stylyts.presentation.adapters.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_cart_item.view.*
-import kotlinx.android.synthetic.main.item_main_image_detail.view.*
 import kz.eztech.stylyts.data.db.entities.CartEntity
 import kz.eztech.stylyts.data.db.entities.CartMapper
-import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 import java.text.NumberFormat
 
 /**

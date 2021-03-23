@@ -3,10 +3,8 @@ package kz.eztech.stylyts.presentation.dialogs
 import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.dialog_bottom_create_collection_choser.*
-import kotlinx.android.synthetic.main.dialog_bottom_photo_chooser.*
-import kotlinx.android.synthetic.main.dialog_bottom_photo_chooser.text_view_dialog_bottom_photo_chooser_barcode
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
+import kz.eztech.stylyts.common.presentation.base.BaseRoundedBottomSheetDialog
 
 /**
  * Created by Ruslan Erdenoff on 11.02.2021.

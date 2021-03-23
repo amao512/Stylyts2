@@ -6,8 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import kz.eztech.stylyts.presentation.adapters.AddressAdapter
-import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.profile.presentation.adapters.AddressAdapter
 
 class SwipeToDeleteAddressCallback(
     private val adapter: AddressAdapter,

@@ -3,11 +3,8 @@ package kz.eztech.stylyts.presentation.adapters
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.main.constructor.CollectionConstructorHolderFragment
 import kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoPostCreatorFragment
-import kz.eztech.stylyts.presentation.fragments.main.shop.ShopItemFragment
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 
 /**
  * Created by Ruslan Erdenoff on 22.01.2021.

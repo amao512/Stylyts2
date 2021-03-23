@@ -1,24 +1,15 @@
 package kz.eztech.stylyts.presentation.fragments.main.constructor
 
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.ContextCompat.getColor
-import kotlinx.android.synthetic.main.fragment_collections.*
-import kotlinx.android.synthetic.main.fragment_collections.view_pager_fragment_collections
 import kotlinx.android.synthetic.main.fragment_constructor_holder.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
-import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.CollectionsViewPagerAdapter
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ConstructorPagerAdapter
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.constructor.ConstructorHolderContract
 
 class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolderContract.View , MotionLayout.TransitionListener{

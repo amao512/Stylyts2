@@ -3,12 +3,10 @@ package kz.eztech.stylyts.presentation.presenters.main
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.usecases.main.GetItemDetailUseCase
 import kz.eztech.stylyts.domain.usecases.main.SaveItemByPhotoUseCase
-import kz.eztech.stylyts.presentation.base.processViewAction
+import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CleanBackgroundContract
-import kz.eztech.stylyts.presentation.contracts.main.detail.ItemDetailContract
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

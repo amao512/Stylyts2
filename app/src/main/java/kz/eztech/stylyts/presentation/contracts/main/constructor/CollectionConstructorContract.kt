@@ -1,12 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.main.constructor
 
-import android.widget.ImageView
 import kz.eztech.stylyts.domain.models.*
-import kz.eztech.stylyts.presentation.base.BasePresenter
-import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
-import kz.eztech.stylyts.presentation.utils.stick.MotionView
-import okhttp3.MultipartBody
+import kz.eztech.stylyts.common.presentation.base.BasePresenter
 import java.io.File
 
 /**
@@ -19,7 +14,7 @@ interface CollectionConstructorContract {
         fun processSuccess(result: MainResult?)
         fun processFilteredItems(model: FilteredItemsModel)
     }
-    interface Presenter:BasePresenter<View>{
+    interface Presenter: BasePresenter<View> {
         fun getCategory()
         fun getShopCategoryTypeDetail(token:String, map:Map<String,Any>)
         fun getStyles(token:String)

@@ -1,21 +1,16 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
-import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_image.view.*
-import kotlinx.android.synthetic.main.item_main_image.view.*
-import kotlinx.android.synthetic.main.item_main_image_detail.view.*
-import kotlinx.android.synthetic.main.item_main_image_detail.view.image_view_image_detail_imageholder
-import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.MainResult
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
  */
-class GridImageCollectionItemViewHolder(itemView: View, adapter:BaseAdapter) : BaseViewHolder(itemView,adapter){
+class GridImageCollectionItemViewHolder(itemView: View, adapter: BaseAdapter) : BaseViewHolder(itemView,adapter){
     override fun bindData(item: Any, position: Int) {
         item as MainResult
         with(itemView){

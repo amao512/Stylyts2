@@ -2,15 +2,11 @@ package kz.eztech.stylyts.presentation.presenters.main.constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
 import kz.eztech.stylyts.domain.models.FilteredItemsModel
 import kz.eztech.stylyts.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.domain.usecases.main.GetFilteredItemsUseCase
-import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryTypeDetailUseCase
 import kz.eztech.stylyts.domain.usecases.main.shop.GetCategoryUseCase
-import kz.eztech.stylyts.domain.usecases.main.shop.GetStylesUseCase
-import kz.eztech.stylyts.domain.usecases.main.shop.SaveCollectionConstructor
-import kz.eztech.stylyts.presentation.base.processViewAction
+import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.collections.PhotoChooserContract
 import javax.inject.Inject
 

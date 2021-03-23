@@ -3,17 +3,16 @@ package kz.eztech.stylyts.presentation.adapters
 import android.view.View
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.BrandModel
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.holders.CollectionConstructorFilterHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.CollectionConstructorSubFilterHolder
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 09.02.2021.
  */
 
-class CollectionConstructorSubFilterAdapter:BaseAdapter() {
+class CollectionConstructorSubFilterAdapter: BaseAdapter() {
 	override fun getLayoutId(): Int {
 		return R.layout.item_constructor_filter_clothe_sub_items
 	}

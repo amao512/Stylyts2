@@ -1,14 +1,9 @@
 package kz.eztech.stylyts.presentation.fragments.main
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.CreateCollectionContract
 
 class CreateCollectionFragment : BaseFragment<MainActivity>(),CreateCollectionContract.View {

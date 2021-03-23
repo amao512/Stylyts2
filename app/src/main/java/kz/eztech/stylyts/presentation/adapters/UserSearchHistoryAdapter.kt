@@ -2,11 +2,11 @@ package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.data.db.entities.UserSearchEntity
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.holders.UserSearchHolder
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.search.data.db.UserSearchEntity
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.search.presentation.adapters.UserSearchHolder
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Asylzhan Seytbek on 19.03.2021.

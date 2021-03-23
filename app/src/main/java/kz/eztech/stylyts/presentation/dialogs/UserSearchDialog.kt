@@ -13,16 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_user_search.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ProfileModel
-import kz.eztech.stylyts.domain.models.UserSearchModel
-import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSearchAdapter
-import kz.eztech.stylyts.presentation.base.DialogChooserListener
-import kz.eztech.stylyts.presentation.contracts.main.profile.UserSearchContract
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.presenters.main.search.SearchItemPresenter
-import javax.inject.Inject
+import kz.eztech.stylyts.common.presentation.base.DialogChooserListener
+import kz.eztech.stylyts.profile.presentation.contracts.UserSearchContract
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 
 /**
  * Created by Ruslan Erdenoff on 22.02.2021.

@@ -22,15 +22,15 @@ import com.google.mlkit.vision.common.InputImage
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_camera.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.concurrent.Executors
 
-class CameraFragment : BaseFragment<MainActivity>(),BaseView,View.OnClickListener {
+class CameraFragment : BaseFragment<MainActivity>(), BaseView,View.OnClickListener {
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10

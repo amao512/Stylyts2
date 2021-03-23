@@ -2,14 +2,11 @@ package kz.eztech.stylyts.presentation.adapters.holders
 
 import android.view.View
 import androidx.core.text.HtmlCompat
-import kotlinx.android.synthetic.main.item_user_card.view.*
-import kotlinx.android.synthetic.main.item_user_card.view.text_view_card_profile_card_name
 import kotlinx.android.synthetic.main.item_user_comment.view.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.data.db.entities.CardEntity
 import kz.eztech.stylyts.domain.models.UserComment
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 04.03.2021.

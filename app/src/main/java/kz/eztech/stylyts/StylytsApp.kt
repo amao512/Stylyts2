@@ -2,30 +2,36 @@ package kz.eztech.stylyts
 
 import android.app.Application
 import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import androidx.multidex.MultiDex
-import kz.eztech.stylyts.di.component.ApplicationComponent
+import kz.eztech.stylyts.auth.di.AuthModule
+import kz.eztech.stylyts.common.di.ApplicationComponent
 import kz.eztech.stylyts.di.component.DaggerApplicationComponent
-import kz.eztech.stylyts.di.modules.ApplicationModule
-import kz.eztech.stylyts.di.modules.NetworkModule
+import kz.eztech.stylyts.common.di.modules.ApplicationModule
+import kz.eztech.stylyts.common.di.modules.NetworkModule
+import kz.eztech.stylyts.profile.di.ProfileModule
+import kz.eztech.stylyts.search.di.SearchModule
 
 /**
  * Created by Ruslan Erdenoff on 18.11.2020.
  */
 class StylytsApp : Application(){
+
     lateinit var applicationComponent: ApplicationComponent
+
     override fun onCreate() {
         super.onCreate()
         instance = this
 
         applicationComponent = DaggerApplicationComponent
             .builder()
-            .applicationModule(ApplicationModule(this))
+            .applicationModule(ApplicationModule(mApplication = this))
             .networkModule(NetworkModule())
+            .authModule(AuthModule())
+            .profileModule(ProfileModule())
+            .searchModule(SearchModule(mApplication = this))
             .build()
-        applicationComponent.inject(this)
 
+        applicationComponent.inject(application = this)
     }
 
     override fun attachBaseContext(base: Context) {

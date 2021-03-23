@@ -7,10 +7,10 @@ import kotlinx.android.synthetic.main.fragment_collection_constructor_holder.*
 import kotlinx.android.synthetic.main.fragment_profile.include_toolbar_profile
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
-import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CollectionConstructorPagerAdapter
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.constructor.ConstructorHolderContract
 
 class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolderContract.View {

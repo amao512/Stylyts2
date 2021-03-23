@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.dialog_bottom_photo_chooser.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
+import kz.eztech.stylyts.common.presentation.base.BaseRoundedBottomSheetDialog
 
 /**
  * Created by Ruslan Erdenoff on 23.12.2020.

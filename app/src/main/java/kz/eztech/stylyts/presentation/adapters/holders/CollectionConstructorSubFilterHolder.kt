@@ -1,14 +1,10 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.item_constructor_filter_clothe_items.view.*
 import kotlinx.android.synthetic.main.item_constructor_filter_clothe_sub_items.view.*
-import kz.eztech.stylyts.domain.models.BrandModel
 import kz.eztech.stylyts.domain.models.ClothesTypes
-import kz.eztech.stylyts.presentation.adapters.MainImagesAdditionalAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 09.02.2021.

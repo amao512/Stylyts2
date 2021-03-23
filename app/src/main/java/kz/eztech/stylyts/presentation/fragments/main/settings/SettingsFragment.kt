@@ -9,11 +9,11 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
-import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.contracts.main.profile.SettingsContract
+import kz.eztech.stylyts.auth.presentation.AuthorizationActivity
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
+import kz.eztech.stylyts.profile.presentation.contracts.SettingsContract
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 class SettingsFragment : BaseFragment<MainActivity>(), SettingsContract.View, View.OnClickListener {

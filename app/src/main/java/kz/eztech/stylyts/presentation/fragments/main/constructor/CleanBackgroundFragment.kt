@@ -13,10 +13,10 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.base.BaseFragment
-import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.base.DialogChooserListener
+import kz.eztech.stylyts.common.presentation.activity.MainActivity
+import kz.eztech.stylyts.common.presentation.base.BaseFragment
+import kz.eztech.stylyts.common.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.constructor.CleanBackgroundContract
 import kz.eztech.stylyts.presentation.dialogs.SaveItemAcceptDialog
 import kz.eztech.stylyts.presentation.presenters.main.CleanBackgroundPresenter

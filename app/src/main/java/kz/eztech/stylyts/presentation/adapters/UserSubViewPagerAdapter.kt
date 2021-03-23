@@ -2,9 +2,8 @@ package kz.eztech.stylyts.presentation.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import kz.eztech.stylyts.presentation.fragments.main.shop.ShopItemFragment
 import kz.eztech.stylyts.presentation.fragments.main.users.UserSubsItemFragment
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 
 /**
  * Created by Ruslan Erdenoff on 04.03.2021.

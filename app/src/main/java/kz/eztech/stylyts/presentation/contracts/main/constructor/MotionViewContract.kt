@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.main.constructor
 
-import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
 
 /**

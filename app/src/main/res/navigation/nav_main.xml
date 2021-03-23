@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.ProfileFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.fragments.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" >
         <action
@@ -132,11 +132,11 @@
     </fragment>
     <fragment
         android:id="@+id/profileIncomeDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.ProfileIncomeDetailFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.fragments.ProfileIncomeDetailFragment"
         android:label="ProfileIncomeDetailFragment" />
     <fragment
         android:id="@+id/profileIncomeFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.ProfileIncomeFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.fragments.ProfileIncomeFragment"
         android:label="fragment_profile_income"
         tools:layout="@layout/fragment_profile_income" >
         <action
@@ -192,12 +192,12 @@
     </fragment>
     <fragment
         android:id="@+id/addressProfileFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.AddressProfileFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.fragments.AddressProfileFragment"
         android:label="fragment_address_profile"
         tools:layout="@layout/fragment_address_profile" />
     <fragment
         android:id="@+id/cardFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.profile.CardFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.fragments.CardFragment"
         android:label="fragment_card"
         tools:layout="@layout/fragment_card" />
     <fragment
@@ -217,7 +217,7 @@
         />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.search.SearchFragment"
+        android:name="kz.eztech.stylyts.search.presentation.fragments.SearchFragment"
         android:label="SearchFragment"
         >
         <action

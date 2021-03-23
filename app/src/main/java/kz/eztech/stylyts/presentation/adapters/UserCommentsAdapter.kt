@@ -2,17 +2,16 @@ package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.data.db.entities.AddressEntity
 import kz.eztech.stylyts.domain.models.UserComment
-import kz.eztech.stylyts.presentation.adapters.base.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.base.BaseDiffUtilCallBack
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.UserCommentHolder
-import kz.eztech.stylyts.presentation.adapters.holders.base.BaseViewHolder
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 04.03.2021.
  */
-class UserCommentsAdapter:BaseAdapter() {
+class UserCommentsAdapter: BaseAdapter() {
     override fun getLayoutId(): Int {
         return R.layout.item_user_comment
     }
