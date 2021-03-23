@@ -4,7 +4,6 @@ import android.app.Application
 import io.reactivex.Completable
 import io.reactivex.Observable
 import kz.eztech.stylyts.common.data.db.LocalDatabase
-import javax.inject.Inject
 
 /**
  * Created by Asylzhan Seytbek on 22.03.2021.

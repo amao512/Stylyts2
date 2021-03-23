@@ -192,7 +192,7 @@
     <string name="saved_settings_save">Сохранить</string>
     <string name="saved_settings_save_subtitle">Сохраняйте публикации и образы, которые хотите посмотреть позже. Только вы сможете просматривать сохраненные вами обьекты.</string>
 
-    <string name="dialog_exit_title">Вы точно хотите выйти из аккаунта Emilie89?</string>
+    <string name="dialog_exit_title">Вы точно хотите выйти из аккаунта %s?</string>
     <string name="dialog_exit_positive_text">Выйти</string>
     <string name="dialog_exit_cancel_text">Отмена</string>
 

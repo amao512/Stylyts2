@@ -14,6 +14,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.auth.presentation.AuthorizationActivity
 import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
 class ExitDialog : DialogFragment(), View.OnClickListener {
@@ -35,6 +36,7 @@ class ExitDialog : DialogFragment(), View.OnClickListener {
         isCancelable = false
 
         initializeDependency()
+        initializeViewsData()
         initializeListeners()
     }
 
@@ -59,6 +61,13 @@ class ExitDialog : DialogFragment(), View.OnClickListener {
 
     private fun initializeDependency() {
         (requireContext().applicationContext as StylytsApp).applicationComponent.inject(dialog = this)
+    }
+
+    private fun initializeViewsData() {
+        dialog_exit_warn_title.text = getString(
+            R.string.dialog_exit_title,
+            sharedPreferences.getString(SharedConstants.USERNAME_KEY, EMPTY_STRING)
+        )
     }
 
     private fun initializeListeners() {

@@ -22,7 +22,7 @@ interface AuthApi {
         @Field("last_name") last_name: String,
         @Field("date_of_birth") date_of_birth: String,
         @Field("should_send_mail") should_send_mail: Boolean,
-        @Field("username") username: String,
+        @Field("username") username: String
     ): Single<Response<AuthModel>>
 
     @FormUrlEncoded
