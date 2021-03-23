@@ -17,35 +17,19 @@ import javax.inject.Inject
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
-class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
-	private var errorHelper: ErrorHelper
-	private var getCategoryUseCase: GetCategoryUseCase
-	private var getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase
-	private var getFilteredItemsUseCase: GetFilteredItemsUseCase
-	private var getStylesUseCase: GetStylesUseCase
-	private var saveCollectionConstructor: SaveCollectionConstructor
-	private var updateCollectionUseCase: UpdateCollectionUseCase
+class CollectionConstructorPresenter @Inject constructor(
+	private var errorHelper: ErrorHelper,
+	private var getCategoryUseCase: GetCategoryUseCase,
+	private var getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
+	private var getStylesUseCase: GetStylesUseCase,
+	private var getFilteredItemsUseCase: GetFilteredItemsUseCase,
+	private var saveCollectionConstructor: SaveCollectionConstructor,
+	private var updateCollectionUseCase: UpdateCollectionUseCase,
 	private var saveCollectionToMeUseCase: SaveCollectionToMeUseCase
+) : CollectionConstructorContract.Presenter{
+
 	private lateinit var view: CollectionConstructorContract.View
-	@Inject
-	constructor(errorHelper: ErrorHelper,
-	            getCategoryUseCase: GetCategoryUseCase,
-	            getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
-	            getStylesUseCase: GetStylesUseCase,
-	            getFilteredItemsUseCase: GetFilteredItemsUseCase,
-	            saveCollectionConstructor: SaveCollectionConstructor,
-	            updateCollectionUseCase: UpdateCollectionUseCase,
-	            saveCollectionToMeUseCase: SaveCollectionToMeUseCase
-	){
-		this.getFilteredItemsUseCase = getFilteredItemsUseCase
-		this.getCategoryTypeDetailUseCase = getCategoryTypeDetailUseCase
-		this.getCategoryUseCase = getCategoryUseCase
-		this.errorHelper = errorHelper
-		this.saveCollectionConstructor = saveCollectionConstructor
-		this.getStylesUseCase = getStylesUseCase
-		this.updateCollectionUseCase = updateCollectionUseCase
-		this.saveCollectionToMeUseCase = saveCollectionToMeUseCase
-	}
+
 	override fun disposeRequests() {
 		getCategoryUseCase.clear()
 		getCategoryTypeDetailUseCase.clear()
@@ -61,38 +45,38 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 	
 	override fun getCategory() {
 		view.displayProgress()
+
 		getCategoryUseCase.execute(object : DisposableSingleObserver<ShopCategoryModel>() {
 			override fun onSuccess(t: ShopCategoryModel) {
 				view.processViewAction {
 					hideProgress()
 					processShopCategories(t)
 				}
-				
 			}
-			
+
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					hideProgress()
 					displayMessage(errorHelper.processError(e))
 				}
-				
 			}
 		})
 	}
 	
 	override fun getShopCategoryTypeDetail(token: String, map: Map<String, Any>) {
 		view.displayProgress()
+
 		getFilteredItemsUseCase.initParams(token,map)
 		getFilteredItemsUseCase.execute(object : DisposableSingleObserver<FilteredItemsModel>() {
-			
+
 			override fun onSuccess(t: FilteredItemsModel) {
 				view.processViewAction {
 					view.processFilteredItems(t)
 					hideProgress()
 				}
 			}
-			
-			
+
+
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					hideProgress()
@@ -104,6 +88,7 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 	
 	override fun getStyles(token: String) {
 		view.displayProgress()
+
 		getStylesUseCase.initParam(token)
 		getStylesUseCase.execute(object : DisposableSingleObserver<List<Style>>() {
 			override fun onSuccess(t: List<Style>) {
@@ -112,7 +97,7 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 					hideProgress()
 				}
 			}
-			
+
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					displayMessage(errorHelper.processError(e))
@@ -124,6 +109,7 @@ class CollectionConstructorPresenter : CollectionConstructorContract.Presenter{
 
 	override fun saveCollection(token: String, model: CollectionPostCreateModel, data: File) {
 		view.displayProgress()
+
 		val requestFile = data.asRequestBody(("image/*").toMediaTypeOrNull())
 		val body = MultipartBody.Part.createFormData("cover_photo", data.name, requestFile)
 		val clothesList = ArrayList<MultipartBody.Part>()

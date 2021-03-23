@@ -204,4 +204,12 @@
     <string name="personal_settings_tell_problem">Сообщить о проблеме</string>
     <string name="personal_settings_notification">Уведомления</string>
     <string name="personal_settings_push_notification">Push Уведомления</string>
+
+    <string name="price_tenge_text_format">%s тг</string>
+
+    <string name="collection_constructor_success_added">Успешно добавлено</string>
+    <string name="collection_constructor_not_all_data_filled">Не все данные заполнены</string>
+    <string name="collection_constructor_add_by_barcode">Добавить по штрихкоду</string>
+    <string name="collection_constructor_add_by_photo">Добавить по фото</string>
+    <string name="collection_contructor_error_load_data">Не удалось загрузить данные</string>
 </resources>
