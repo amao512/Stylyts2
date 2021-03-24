@@ -252,8 +252,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				}
 				is Int -> {
 					when (item) {
-						1 -> navigateToCameraFragment(mode = 1)
-						2 -> navigateToCameraFragment(mode = 2)
+						1 -> {/* add category */}
+						2 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
+						3 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
 					}
 				}
             }
@@ -489,9 +490,18 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun addCameraCategories(genderCategoryList: ArrayList<GenderCategory>) {
 		genderCategoryList.add(
 			GenderCategory(
-				title = getString(R.string.collection_constructor_add_by_barcode),
+				title = getString(R.string.collection_constructor_add_category),
 				isExternal = true,
 				externalType = 1,
+				isChoosen = false,
+				externalImageId = R.drawable.ic_add
+			)
+		)
+		genderCategoryList.add(
+			GenderCategory(
+				title = getString(R.string.collection_constructor_add_by_barcode),
+				isExternal = true,
+				externalType = 2,
 				isChoosen = false,
 				externalImageId = R.drawable.ic_baseline_qr_code_2_24
 			)
@@ -500,7 +510,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			GenderCategory(
 				title = getString(R.string.collection_constructor_add_by_photo),
 				isExternal = true,
-				externalType = 2,
+				externalType = 3,
 				isChoosen = false,
 				externalImageId = R.drawable.ic_camera
 			)

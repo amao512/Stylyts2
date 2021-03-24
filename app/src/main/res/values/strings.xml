@@ -224,4 +224,5 @@
 
     <string name="save_item_accept_add_item">Добавить вещь</string>
     <string name="save_item_accept_ready">Готово</string>
+    <string name="collection_constructor_add_category">Добавить категорию</string>
 </resources>
