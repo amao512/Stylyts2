@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.common.presentation.contracts.main.collections
 
 import android.net.Uri
-import kz.eztech.stylyts.create_outfit.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.create_outfit.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.constructor.domain.models.FilteredItemsModel
+import kz.eztech.stylyts.constructor.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.common.presentation.base.BasePresenter
-import kz.eztech.stylyts.create_outfit.presentation.contracts.MotionViewContract
+import kz.eztech.stylyts.constructor.presentation.contracts.MotionViewContract
 
 /**
  * Created by Ruslan Erdenoff on 23.12.2020.

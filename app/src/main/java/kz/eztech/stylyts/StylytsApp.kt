@@ -8,6 +8,7 @@ import kz.eztech.stylyts.common.di.ApplicationComponent
 import kz.eztech.stylyts.common.di.DaggerApplicationComponent
 import kz.eztech.stylyts.common.di.modules.ApplicationModule
 import kz.eztech.stylyts.common.di.modules.NetworkModule
+import kz.eztech.stylyts.constructor.di.ConstructorModule
 import kz.eztech.stylyts.profile.di.ProfileModule
 import kz.eztech.stylyts.search.di.SearchModule
 
@@ -29,6 +30,7 @@ class StylytsApp : Application(){
             .authModule(AuthModule())
             .profileModule(ProfileModule())
             .searchModule(SearchModule(mApplication = this))
+            .constructorModule(ConstructorModule())
             .build()
 
         applicationComponent.inject(application = this)

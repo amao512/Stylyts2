@@ -227,4 +227,9 @@
 
     <string name="save_item_accept_add_item">Добавить вещь</string>
     <string name="save_item_accept_ready">Готово</string>
+    <string name="post_creator_title">Создать Публикацию</string>
+    <string name="profile_add_to_wardrobe">Добавить вещь в гардероб</string>
+    <string name="ready">Готово</string>
+    <string name="photo_chooser_title">Создать Публикацию</string>
+    <string name="photo_chooser_sucess_added">Успешно добавлено</string>
 </resources>

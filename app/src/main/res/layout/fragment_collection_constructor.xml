@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/outfit_bg_color"
-    tools:context=".create_outfit.presentation.fragments.CollectionConstructorFragment"
+    tools:context=".constructor.presentation.fragments.CollectionConstructorFragment"
     >
 
     <kz.eztech.stylyts.common.presentation.utils.stick.MotionView

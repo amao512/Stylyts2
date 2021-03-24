@@ -2,9 +2,7 @@ package kz.eztech.stylyts.common.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.create_outfit.domain.models.ClothesTypes
-import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.constructor.domain.models.ClothesTypes
 import kz.eztech.stylyts.common.presentation.adapters.holders.ShopItemListHolder
 import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 

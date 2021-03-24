@@ -2,9 +2,8 @@ package kz.eztech.stylyts.common.presentation.adapters.holders
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_constructor_filter_clothe_sub_items.view.*
-import kz.eztech.stylyts.create_outfit.domain.models.ClothesTypes
+import kz.eztech.stylyts.constructor.domain.models.ClothesTypes
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 09.02.2021.

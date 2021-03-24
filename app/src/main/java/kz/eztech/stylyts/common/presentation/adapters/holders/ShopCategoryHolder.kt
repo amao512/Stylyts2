@@ -3,9 +3,8 @@ package kz.eztech.stylyts.common.presentation.adapters.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_shop_category.view.*
-import kz.eztech.stylyts.create_outfit.domain.models.GenderCategory
+import kz.eztech.stylyts.constructor.domain.models.GenderCategory
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 26.11.2020.

@@ -9,10 +9,10 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.common.domain.models.ClothesMainModel
-import kz.eztech.stylyts.create_outfit.domain.models.ClothesTypeDataModel
+import kz.eztech.stylyts.constructor.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.common.domain.models.MainResult
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
-import kz.eztech.stylyts.create_outfit.presentation.adapters.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.constructor.presentation.adapters.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.common.presentation.contracts.main.detail.CollectionDetailContract

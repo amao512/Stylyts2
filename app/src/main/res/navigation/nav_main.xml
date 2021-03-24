@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/createCollectionFragment"
-        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.ConstructorHolderFragment"
+        android:name="kz.eztech.stylyts.constructor.presentation.fragments.ConstructorHolderFragment"
         android:label="fragment_create_collection"
         tools:layout="@layout/fragment_constructor_holder" >
         <action
@@ -81,6 +81,10 @@
         <action
             android:id="@+id/action_profileFragment_to_cameraFragment"
             app:destination="@id/cameraFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_photoPostCreatorFragment"
+            app:destination="@id/photoPostCreatorFragment"
             />
     </fragment>
     <fragment
@@ -150,7 +154,7 @@
     </fragment>
     <fragment
         android:id="@+id/photoChooserFragment"
-        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.PhotoChooserFragment"
+        android:name="kz.eztech.stylyts.constructor.presentation.fragments.PhotoChooserFragment"
         android:label="fragment_photo_chooser"
         tools:layout="@layout/fragment_photo_chooser" >
         <action
@@ -159,7 +163,7 @@
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.CameraFragment"
+        android:name="kz.eztech.stylyts.camera.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
         <action
@@ -188,7 +192,7 @@
     </fragment>
     <fragment
         android:id="@+id/cleanBackgroundFragment"
-        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.CleanBackgroundFragment"
+        android:name="kz.eztech.stylyts.constructor.presentation.fragments.CleanBackgroundFragment"
         android:label="fragment_clean_background"
         tools:layout="@layout/fragment_clean_background" >
         <action
@@ -260,4 +264,19 @@
         android:name="kz.eztech.stylyts.settings.presentation.dialogs.ExitDialog"
         android:label="ExitDialog"
         />
+    <fragment
+        android:id="@+id/photoPostCreatorFragment"
+        android:name="kz.eztech.stylyts.constructor.presentation.fragments.PhotoPostCreatorFragment"
+        android:label="fragment_photo_post_creator"
+        tools:layout="@layout/fragment_photo_post_creator"
+        >
+        <action
+            android:id="@+id/action_photoPostCreatorFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            />
+        <action
+            android:id="@+id/action_photoPostCreatorFragment_to_photoChooserFragment"
+            app:destination="@id/photoChooserFragment"
+            />
+    </fragment>
 </navigation>

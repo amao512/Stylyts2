@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.camera.CameraFragment
 import kz.eztech.stylyts.common.data.models.SharedConstants.TOKEN_KEY
 import kz.eztech.stylyts.common.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.common.domain.models.MainLentaModel
@@ -19,21 +20,22 @@ import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.common.presentation.base.EditorListener
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.common.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.common.presentation.utils.extensions.hide
 import kz.eztech.stylyts.common.presentation.utils.extensions.show
-import kz.eztech.stylyts.create_outfit.presentation.adapters.CollectionsFilterAdapter
-import kz.eztech.stylyts.create_outfit.presentation.fragments.CameraFragment
+import kz.eztech.stylyts.constructor.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.profile.presentation.contracts.ProfileContract
 import kz.eztech.stylyts.profile.presentation.dialogs.EditProfileDialog
+import kz.eztech.stylyts.profile.presentation.dialogs.PhotoChooserDialog
 import kz.eztech.stylyts.profile.presentation.presenters.ProfilePresenter
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
-    UniversalViewClickListener, EditorListener {
+    UniversalViewClickListener, EditorListener, DialogChooserListener {
 
     @Inject lateinit var presenter: ProfilePresenter
 
@@ -186,7 +188,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 fragment_profile_subscribe_text_view.show()
                 fragment_profile_edit_text_view.hide()
 
-                adapterFilter.removeByPosition(position = 5)
                 adapterFilter.removeByPosition(position = 4)
                 adapterFilter.removeByPosition(position = 3)
             }
@@ -263,6 +264,20 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
+    override fun onChoice(v: View?, item: Any?) {
+        when (v?.id) {
+            R.id.text_view_dialog_bottom_photo_chooser_barcode -> {
+                navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
+            }
+            R.id.text_view_dialog_bottom_photo_chooser_photo -> {
+                navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
+            }
+            R.id.text_view_dialog_bottom_photo_chooser_create_publish -> {
+                findNavController().navigate(R.id.action_profileFragment_to_photoPostCreatorFragment)
+            }
+        }
+    }
+
     private fun getTokenFromSharedPref(): String {
         return currentActivity.getSharedPrefByKey(TOKEN_KEY) ?: EMPTY_STRING
     }
@@ -278,12 +293,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_wardrobe)))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_my_data)))
         filterList.add(CollectionFilterModel(
-            name = getString(R.string.profile_add_by_barcode),
-            icon = R.drawable.ic_baseline_qr_code_2_24
-        ))
-        filterList.add(CollectionFilterModel(
-            name = getString(R.string.profile_add_by_photo),
-            icon = R.drawable.ic_camera
+            name = getString(R.string.profile_add_to_wardrobe),
+            icon = R.drawable.ic_baseline_add
         ))
 
         return filterList
@@ -302,8 +313,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             }
             2 -> {}
             3 -> processMyData()
-            4 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
-            5 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
+            4 ->  PhotoChooserDialog().apply {
+                setChoiceListener(listener = this@ProfileFragment)
+            }.show(childFragmentManager, EMPTY_STRING)
         }
     }
 

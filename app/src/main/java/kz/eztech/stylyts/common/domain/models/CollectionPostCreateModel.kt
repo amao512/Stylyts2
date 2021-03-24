@@ -46,73 +46,73 @@ import okhttp3.MultipartBody
 * */
 @Parcelize
 data class CollectionPostCreateModel(
-        @SerializedName("title")
+    @SerializedName("title")
     @Expose
-    var title:String?=null,
-        @SerializedName("clothes")
+    var title: String? = null,
+    @SerializedName("clothes")
     @Expose
-    var clothes:List<Int>?=null,
-        @SerializedName("clothes_location")
+    var clothes: List<Int>? = null,
+    @SerializedName("clothes_location")
     @Expose
-    var clothes_location:List<ClothesCollection>?=null,
-        @SerializedName("style")
+    var clothes_location: List<ClothesCollection>? = null,
+    @SerializedName("style")
     @Expose
-    var style:Int?=null,
+    var style: Int? = null,
     @SerializedName("author")
     @Expose
-    var author:Int?=null,
-        @SerializedName("total_price")
+    var author: Int? = null,
+    @SerializedName("total_price")
     @Expose
-    var total_price:Float?=null,
-        @SerializedName("text")
+    var total_price: Float? = null,
+    @SerializedName("text")
     @Expose
-    var text:String?=null
-):Parcelable
+    var text: String? = null
+) : Parcelable
 
 @Parcelize
 data class ClothesCollection(
     @SerializedName("clothes_id")
     @Expose
-    var clothes_id:Int?=null,
+    var clothes_id: Int? = null,
     @SerializedName("point_x")
     @Expose
-    var point_x:Float?=null,
+    var point_x: Float? = null,
     @SerializedName("point_y")
     @Expose
-    var point_y:Float?=null,
+    var point_y: Float? = null,
     @SerializedName("width")
     @Expose
-    var width:Float?=null,
+    var width: Float? = null,
     @SerializedName("height")
     @Expose
-    var height:Float?=null,
+    var height: Float? = null,
     @SerializedName("degree")
     @Expose
-    var degree:Float?=null,
-):Parcelable
+    var degree: Float? = null,
+) : Parcelable
 
 data class ExportedCollectionPostCreateModel(
-        @SerializedName("title")
-        @Expose
-        var title:String?=null,
-        @SerializedName("clothes")
-        @Expose
-        var clothes:List<Int>?=null,
-        @SerializedName("clothes_location")
-        @Expose
-        var clothes_location:List<ClothesCollection>?=null,
-        @SerializedName("style")
-        @Expose
-        var style:Int?=null,
-        @SerializedName("author")
-        @Expose
-        var author:Int?=null,
-        @SerializedName("total_price")
-        @Expose
-        var total_price:Float?=null,
-        @SerializedName("text")
-        @Expose
-        var text:String?=null,
-        @SerializedName("cover_image")
-        var cover_image:MultipartBody.Part
+    @SerializedName("title")
+    @Expose
+    var title: String? = null,
+    @SerializedName("clothes")
+    @Expose
+    var clothes: List<Int>? = null,
+    @SerializedName("clothes_location")
+    @Expose
+    var clothes_location: List<ClothesCollection>? = null,
+    @SerializedName("style")
+    @Expose
+    var style: Int? = null,
+    @SerializedName("author")
+    @Expose
+    var author: Int? = null,
+    @SerializedName("total_price")
+    @Expose
+    var total_price: Float? = null,
+    @SerializedName("text")
+    @Expose
+    var text: String? = null,
+    @SerializedName("cover_image")
+    var cover_image: MultipartBody.Part
 )

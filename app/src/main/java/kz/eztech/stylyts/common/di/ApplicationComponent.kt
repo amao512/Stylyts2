@@ -8,16 +8,18 @@ import kz.eztech.stylyts.auth.presentation.fragments.RegistrationFragment
 import kz.eztech.stylyts.common.di.modules.ApplicationModule
 import kz.eztech.stylyts.common.di.modules.NetworkModule
 import kz.eztech.stylyts.common.presentation.dialogs.CartDialog
-import kz.eztech.stylyts.create_outfit.presentation.dialogs.ConstructorFilterDialog
-import kz.eztech.stylyts.create_outfit.presentation.dialogs.UserSearchDialog
+import kz.eztech.stylyts.constructor.presentation.dialogs.ConstructorFilterDialog
+import kz.eztech.stylyts.constructor.presentation.dialogs.UserSearchDialog
 import kz.eztech.stylyts.common.presentation.fragments.MainFragment
 import kz.eztech.stylyts.common.presentation.fragments.collections.CollectionItemFragment
-import kz.eztech.stylyts.create_outfit.presentation.fragments.CleanBackgroundFragment
-import kz.eztech.stylyts.create_outfit.presentation.fragments.CollectionConstructorFragment
-import kz.eztech.stylyts.create_outfit.presentation.fragments.PhotoChooserFragment
+import kz.eztech.stylyts.constructor.presentation.fragments.CleanBackgroundFragment
+import kz.eztech.stylyts.constructor.presentation.fragments.CollectionConstructorFragment
+import kz.eztech.stylyts.constructor.presentation.fragments.PhotoChooserFragment
 import kz.eztech.stylyts.common.presentation.fragments.detail.ItemDetailFragment
 import kz.eztech.stylyts.common.presentation.fragments.shop.CategoryTypeDetailFragment
 import kz.eztech.stylyts.common.presentation.fragments.shop.ShopItemFragment
+import kz.eztech.stylyts.constructor.di.ConstructorModule
+import kz.eztech.stylyts.constructor.presentation.dialogs.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.profile.di.ProfileModule
 import kz.eztech.stylyts.profile.presentation.dialogs.EditProfileDialog
 import kz.eztech.stylyts.profile.presentation.fragments.AddressProfileFragment
@@ -39,7 +41,8 @@ import javax.inject.Singleton
     NetworkModule::class,
     AuthModule::class,
     ProfileModule::class,
-    SearchModule::class
+    SearchModule::class,
+    ConstructorModule::class
 ])
 interface ApplicationComponent {
 
@@ -69,4 +72,5 @@ interface ApplicationComponent {
     fun inject(dialog: UserSearchDialog)
     fun inject(dialog: EditProfileDialog)
     fun inject(dialog: ExitDialog)
+    fun inject(dialog: CreateCollectionAcceptDialog)
 }
