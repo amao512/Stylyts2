@@ -2,6 +2,7 @@ package kz.eztech.stylyts.profile.domain.usecases
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import kz.eztech.stylyts.common.data.api.RestConstants
 import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.profile.domain.repository.ProfileDomainRepository
 import kz.eztech.stylyts.common.domain.usecases.BaseUseCase
@@ -25,7 +26,7 @@ class GetProfileByIdUseCase @Inject constructor(
         token: String,
         userId: String
     ) {
-        this.token = "JWT $token"
+        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.userId = userId
     }
 }
