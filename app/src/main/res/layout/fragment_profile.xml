@@ -200,8 +200,8 @@
                             android:layout_marginVertical="@dimen/margin_size_16x"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/linear_layout_fragment_profile_following_item"
+                            app:layout_constraintStart_toStartOf="@+id/linear_layout_fragment_profile_photos_item"
                             app:layout_constraintTop_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
                             >
 
@@ -231,13 +231,13 @@
                                 />
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/icon_size_36x"
+                                android:layout_height="@dimen/icon_size_36x"
                                 android:layout_marginStart="@dimen/margin_size_6x"
                                 android:background="@drawable/rounded_rectangle_white_gray_corners"
                                 android:gravity="center"
                                 android:padding="@dimen/padding_size_6x"
-                                android:src="@drawable/ic_camera"
+                                android:src="@drawable/ic_instagram"
                                 />
                         </LinearLayout>
 
