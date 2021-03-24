@@ -12,16 +12,16 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_card.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.db.LocalDataSource
-import kz.eztech.stylyts.data.db.entities.CardEntity
+import kz.eztech.stylyts.common.data.db.LocalDataSource
+import kz.eztech.stylyts.common.data.db.entities.CardEntity
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.profile.presentation.adapters.CardAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.profile.presentation.contracts.CardContract
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 import java.util.*
 import javax.inject.Inject
 

@@ -6,18 +6,18 @@ import androidx.navigation.findNavController
 import kotlinx.android.synthetic.main.fragment_login.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.common.data.models.SharedConstants
 import kz.eztech.stylyts.auth.domain.models.AuthModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.auth.presentation.AuthorizationActivity
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.auth.presentation.contracts.LoginContract
 import kz.eztech.stylyts.auth.presentation.presenters.LoginPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,

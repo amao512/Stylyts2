@@ -16,8 +16,8 @@ import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.auth.presentation.contracts.RefreshPasswordContract
 import kz.eztech.stylyts.auth.presentation.presenters.RefreshPasswordPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class RefreshPasswordFragment : BaseFragment<AuthorizationActivity>(), RefreshPasswordContract.View,

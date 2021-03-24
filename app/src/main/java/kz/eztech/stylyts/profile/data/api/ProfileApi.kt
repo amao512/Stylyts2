@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.profile.data.api
 
 import io.reactivex.Single
-import kz.eztech.stylyts.common.data.RestConstants
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.data.api.RestConstants
+import kz.eztech.stylyts.common.domain.models.UserModel
 import retrofit2.Response
 import retrofit2.http.*
 

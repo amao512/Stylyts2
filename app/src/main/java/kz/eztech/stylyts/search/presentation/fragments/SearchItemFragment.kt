@@ -8,12 +8,12 @@ import kotlinx.android.synthetic.main.fragment_search_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.search.data.db.UserSearchEntity
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.common.data.models.SharedConstants
 import kz.eztech.stylyts.search.domain.models.SearchModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.UserSearchAdapter
-import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
+import kz.eztech.stylyts.create_outfit.presentation.adapters.UserSearchAdapter
+import kz.eztech.stylyts.common.presentation.adapters.UserSearchHistoryAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.search.presentation.contracts.SearchItemContract
@@ -21,9 +21,9 @@ import kz.eztech.stylyts.profile.presentation.fragments.ProfileFragment
 import kz.eztech.stylyts.search.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.search.presentation.presenters.SearchItemPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 import javax.inject.Inject
 
 /**

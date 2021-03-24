@@ -10,20 +10,20 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_address_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.common.data.models.SharedConstants
 import kz.eztech.stylyts.profile.domain.models.AddressModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.profile.presentation.adapters.AddressAdapter
-import kz.eztech.stylyts.presentation.adapters.helpers.SwipeToDeleteAddressCallback
+import kz.eztech.stylyts.common.presentation.adapters.helpers.SwipeToDeleteAddressCallback
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.profile.presentation.contracts.AddressProfileContract
 import kz.eztech.stylyts.profile.presentation.interfaces.AddressViewClickListener
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.profile.presentation.presenters.AddressPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class AddressProfileFragment : BaseFragment<MainActivity>(), AddressProfileContract.View,

@@ -1,9 +1,9 @@
 package kz.eztech.stylyts.auth.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.common.data.exception.ErrorHelper
 import kz.eztech.stylyts.auth.domain.models.AuthModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.auth.domain.usecases.LoginUseCase
 import kz.eztech.stylyts.profile.domain.usecases.GetProfileUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction

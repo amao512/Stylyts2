@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.profile.presentation.contracts
 
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.base.BasePresenter
 import kz.eztech.stylyts.common.presentation.base.BaseView
 

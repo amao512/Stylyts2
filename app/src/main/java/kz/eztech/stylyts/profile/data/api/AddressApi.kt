@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.profile.data.api
 
 import io.reactivex.Single
-import kz.eztech.stylyts.common.data.RestConstants
+import kz.eztech.stylyts.common.data.api.RestConstants
 import kz.eztech.stylyts.profile.domain.models.AddressModel
 import retrofit2.Response
 import retrofit2.http.*

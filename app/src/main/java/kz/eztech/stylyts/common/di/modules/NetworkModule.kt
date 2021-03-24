@@ -9,9 +9,9 @@ import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.BuildConfig
-import kz.eztech.stylyts.common.data.RestConstants
-import kz.eztech.stylyts.data.api.API
-import kz.eztech.stylyts.data.helpers.MyTLSSocketFactory
+import kz.eztech.stylyts.common.data.api.RestConstants
+import kz.eztech.stylyts.common.data.api.API
+import kz.eztech.stylyts.common.data.helpers.MyTLSSocketFactory
 import okhttp3.Cache
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient

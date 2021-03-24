@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.auth.data
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.common.data.exception.NetworkException
 import kz.eztech.stylyts.auth.domain.models.AuthModel
 import kz.eztech.stylyts.auth.domain.repository.AuthorizationDomainRepository
 import javax.inject.Inject

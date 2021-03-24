@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.MainFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/createCollectionFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.ConstructorHolderFragment"
+        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.ConstructorHolderFragment"
         android:label="fragment_create_collection"
         tools:layout="@layout/fragment_constructor_holder" >
         <action
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/collectionsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.collections.CollectionsFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.collections.CollectionsFragment"
         android:label="fragment_collections"
         tools:layout="@layout/fragment_collections" >
         <action
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.ShopFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.shop.ShopFragment"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" >
         <action
@@ -94,7 +94,7 @@
     </fragment>
     <fragment
         android:id="@+id/itemDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.detail.ItemDetailFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.detail.ItemDetailFragment"
         android:label="fragment_item_detail"
         tools:layout="@layout/fragment_item_detail" >
         <action
@@ -106,7 +106,7 @@
     </fragment>
     <fragment
         android:id="@+id/shopItemListFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.ShopItemListFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.shop.ShopItemListFragment"
         android:label="fragment_shop_item_list"
         tools:layout="@layout/fragment_shop_item_list">
         <action
@@ -115,7 +115,7 @@
     </fragment>
     <fragment
         android:id="@+id/categoryTypeDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.CategoryTypeDetailFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.shop.CategoryTypeDetailFragment"
         android:label="fragment_category_type_detail"
         tools:layout="@layout/fragment_category_type_detail" >
         <action
@@ -124,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/partnerProfileFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.shop.PartnerProfileFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.shop.PartnerProfileFragment"
         android:label="fragment_partner_profile"
         tools:layout="@layout/fragment_partner_profile" >
         <action
@@ -146,7 +146,7 @@
     </fragment>
     <fragment
         android:id="@+id/photoChooserFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.PhotoChooserFragment"
+        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.PhotoChooserFragment"
         android:label="fragment_photo_chooser"
         tools:layout="@layout/fragment_photo_chooser" >
         <action
@@ -155,7 +155,7 @@
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.CameraFragment"
+        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
         <action
@@ -170,7 +170,7 @@
     </fragment>
     <fragment
         android:id="@+id/collectionDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.detail.CollectionDetailFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.detail.CollectionDetailFragment"
         android:label="CollectionDetailFragment" >
         <action
             android:id="@+id/action_collectionDetailFragment_to_partnerProfileFragment"
@@ -184,7 +184,7 @@
     </fragment>
     <fragment
         android:id="@+id/cleanBackgroundFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.constructor.CleanBackgroundFragment"
+        android:name="kz.eztech.stylyts.create_outfit.presentation.fragments.CleanBackgroundFragment"
         android:label="fragment_clean_background"
         tools:layout="@layout/fragment_clean_background" >
         <action
@@ -203,12 +203,12 @@
         tools:layout="@layout/fragment_card" />
     <fragment
         android:id="@+id/userCommentsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.users.UserCommentsFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.users.UserCommentsFragment"
         android:label="fragment_user_comments"
         tools:layout="@layout/fragment_user_comments" />
     <fragment
         android:id="@+id/userSubsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.users.UserSubsFragment"
+        android:name="kz.eztech.stylyts.common.presentation.fragments.users.UserSubsFragment"
         android:label="UserSubsFragment" />
     <fragment
         android:id="@+id/settingsFragment"

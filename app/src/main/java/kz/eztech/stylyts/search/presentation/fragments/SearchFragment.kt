@@ -9,17 +9,17 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.common.data.models.SharedConstants
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.search.presentation.adapters.SearchViewPagerAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.search.presentation.contracts.SearchContract
-import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.common.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.search.presentation.interfaces.SearchListener
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 
 class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
     View.OnClickListener, SearchListener {

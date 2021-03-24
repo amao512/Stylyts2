@@ -4,7 +4,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.auth.domain.models.AuthModel
 import kz.eztech.stylyts.auth.domain.repository.AuthorizationDomainRepository
-import kz.eztech.stylyts.common.domain.BaseUseCase
+import kz.eztech.stylyts.common.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 

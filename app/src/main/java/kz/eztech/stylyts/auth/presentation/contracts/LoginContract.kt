@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.auth.presentation.contracts
 
 import kz.eztech.stylyts.auth.domain.models.AuthModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.base.BasePresenter
 import kz.eztech.stylyts.common.presentation.base.BaseView
 

@@ -1,0 +1,34 @@
+package kz.eztech.stylyts.common.presentation.adapters
+
+import android.view.View
+import kz.eztech.stylyts.R
+import kz.eztech.stylyts.common.domain.models.UserComment
+import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.common.presentation.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.common.presentation.adapters.holders.UserCommentHolder
+import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
+
+/**
+ * Created by Ruslan Erdenoff on 04.03.2021.
+ */
+class UserCommentsAdapter: BaseAdapter() {
+    override fun getLayoutId(): Int {
+        return R.layout.item_user_comment
+    }
+
+    override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
+        return object : BaseDiffUtilCallBack(currentList, list){
+            override fun getAreContentsTheSame(
+                oldItemPosition: Int,
+                newItemPosition: Int
+            ): Boolean {
+                return (currentList[oldItemPosition] as UserComment).id ==
+                        (list[newItemPosition] as UserComment).id
+            }
+        }
+    }
+
+    override fun getViewHolder(view: View): BaseViewHolder {
+        return UserCommentHolder(view,this)
+    }
+}

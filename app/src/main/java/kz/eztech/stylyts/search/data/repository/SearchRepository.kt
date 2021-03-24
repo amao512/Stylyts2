@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.search.data.repository
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.data.exception.NetworkException
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.search.data.SearchAPI
 import kz.eztech.stylyts.search.domain.models.SearchModel
 import kz.eztech.stylyts.search.domain.repository.SearchDomainRepository

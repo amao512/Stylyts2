@@ -5,12 +5,12 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_user_info.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.search.data.db.UserSearchEntity
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.extensions.getShortName
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 21.02.2021.

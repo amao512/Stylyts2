@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.auth.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.common.data.exception.ErrorHelper
 import kz.eztech.stylyts.auth.domain.usecases.GenerateForgotPasswordUseCase
 import kz.eztech.stylyts.auth.domain.usecases.SetNewPasswordUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction

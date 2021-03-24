@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.profile.domain.repository
 
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.

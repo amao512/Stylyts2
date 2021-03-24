@@ -2,9 +2,9 @@ package kz.eztech.stylyts.profile.domain.usecases
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.profile.domain.repository.ProfileDomainRepository
-import kz.eztech.stylyts.common.domain.BaseUseCase
+import kz.eztech.stylyts.common.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 

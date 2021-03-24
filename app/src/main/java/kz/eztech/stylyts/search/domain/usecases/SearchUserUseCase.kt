@@ -3,9 +3,9 @@ package kz.eztech.stylyts.search.domain.usecases
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.search.domain.models.SearchModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.search.domain.repository.SearchDomainRepository
-import kz.eztech.stylyts.common.domain.BaseUseCase
+import kz.eztech.stylyts.common.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 

@@ -10,14 +10,14 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants.TOKEN_KEY
-import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.MainLentaModel
-import kz.eztech.stylyts.domain.models.MainResult
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.data.models.SharedConstants.TOKEN_KEY
+import kz.eztech.stylyts.common.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.common.domain.models.MainLentaModel
+import kz.eztech.stylyts.common.domain.models.MainResult
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.CollectionsFilterAdapter
-import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
+import kz.eztech.stylyts.create_outfit.presentation.adapters.CollectionsFilterAdapter
+import kz.eztech.stylyts.common.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.common.presentation.base.EditorListener
@@ -25,10 +25,10 @@ import kz.eztech.stylyts.profile.presentation.contracts.ProfileContract
 import kz.eztech.stylyts.profile.presentation.dialogs.EditProfileDialog
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.profile.presentation.presenters.ProfilePresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.common.presentation.utils.extensions.getShortName
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,

@@ -2,7 +2,7 @@ package kz.eztech.stylyts.profile.data.db.dao
 
 import androidx.room.*
 import io.reactivex.Observable
-import kz.eztech.stylyts.data.db.entities.CardEntity
+import kz.eztech.stylyts.common.data.db.entities.CardEntity
 
 /**
  * Created by Ruslan Erdenoff on 02.03.2021.

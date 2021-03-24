@@ -9,8 +9,8 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.contracts.EmptyContract
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 
 class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener {
 

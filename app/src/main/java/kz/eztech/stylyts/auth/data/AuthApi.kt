@@ -2,7 +2,7 @@ package kz.eztech.stylyts.auth.data
 
 import io.reactivex.Single
 import kz.eztech.stylyts.auth.domain.models.AuthModel
-import kz.eztech.stylyts.common.data.RestConstants
+import kz.eztech.stylyts.common.data.api.RestConstants
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

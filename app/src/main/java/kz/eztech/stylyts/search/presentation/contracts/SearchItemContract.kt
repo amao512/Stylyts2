@@ -2,7 +2,7 @@ package kz.eztech.stylyts.search.presentation.contracts
 
 import kz.eztech.stylyts.search.data.db.UserSearchEntity
 import kz.eztech.stylyts.search.domain.models.SearchModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.base.BasePresenter
 import kz.eztech.stylyts.common.presentation.base.BaseView
 

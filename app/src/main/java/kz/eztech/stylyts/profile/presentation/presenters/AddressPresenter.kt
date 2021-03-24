@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.profile.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.common.data.exception.ErrorHelper
 import kz.eztech.stylyts.profile.domain.models.AddressModel
 import kz.eztech.stylyts.profile.domain.usecases.address.DeleteAddressUseCase
 import kz.eztech.stylyts.profile.domain.usecases.address.GetAddressUseCase

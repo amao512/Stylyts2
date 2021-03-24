@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.profile.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.data.exception.ErrorHelper
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.profile.domain.usecases.EditProfileUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.profile.presentation.contracts.EditProfileContract

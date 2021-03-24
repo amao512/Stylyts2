@@ -2,7 +2,7 @@ package kz.eztech.stylyts.profile.presentation.adapters.holders
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_user_card.view.*
-import kz.eztech.stylyts.data.db.entities.CardEntity
+import kz.eztech.stylyts.common.data.db.entities.CardEntity
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 

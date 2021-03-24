@@ -8,15 +8,15 @@ import dagger.Provides
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import kz.eztech.stylyts.data.db.LocalDataSource
-import kz.eztech.stylyts.data.repository.main.FilteredItemsRepository
-import kz.eztech.stylyts.data.repository.main.ItemDetailRepository
-import kz.eztech.stylyts.data.repository.main.MainLentaRepository
-import kz.eztech.stylyts.data.repository.main.ShopCategoryRepository
-import kz.eztech.stylyts.domain.repository.main.FilteredItemsDomainRepository
-import kz.eztech.stylyts.domain.repository.main.ItemDetailDomainRepository
-import kz.eztech.stylyts.domain.repository.main.MainLentaDomainRepository
-import kz.eztech.stylyts.domain.repository.main.ShopCategoryDomainRepository
+import kz.eztech.stylyts.common.data.db.LocalDataSource
+import kz.eztech.stylyts.create_outfit.data.repository.FilteredItemsRepository
+import kz.eztech.stylyts.common.data.repository.ItemDetailRepository
+import kz.eztech.stylyts.common.data.repository.MainLentaRepository
+import kz.eztech.stylyts.create_outfit.data.repository.ShopCategoryRepository
+import kz.eztech.stylyts.create_outfit.domain.repository.FilteredItemsDomainRepository
+import kz.eztech.stylyts.common.domain.repository.ItemDetailDomainRepository
+import kz.eztech.stylyts.common.domain.repository.MainLentaDomainRepository
+import kz.eztech.stylyts.create_outfit.domain.repository.ShopCategoryDomainRepository
 import javax.inject.Named
 import javax.inject.Singleton
 

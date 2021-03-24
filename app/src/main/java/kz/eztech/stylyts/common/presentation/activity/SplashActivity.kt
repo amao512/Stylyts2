@@ -7,7 +7,7 @@ import android.view.animation.AnimationUtils
 import kotlinx.android.synthetic.main.activity_splash.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.auth.presentation.AuthorizationActivity
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.common.data.models.SharedConstants
 import kz.eztech.stylyts.common.presentation.base.BaseActivity
 
 class SplashActivity : BaseActivity() {

@@ -2,7 +2,7 @@ package kz.eztech.stylyts.profile.data.repository
 
 import io.reactivex.Single
 import kz.eztech.stylyts.profile.data.api.AddressApi
-import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.common.data.exception.NetworkException
 import kz.eztech.stylyts.profile.domain.models.AddressModel
 import kz.eztech.stylyts.profile.domain.repository.AddressDomainRepository
 import javax.inject.Inject

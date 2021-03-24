@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.profile.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.MainLentaModel
-import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.domain.usecases.main.MainLentaUseCase
+import kz.eztech.stylyts.common.data.exception.ErrorHelper
+import kz.eztech.stylyts.common.domain.models.MainLentaModel
+import kz.eztech.stylyts.common.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.usecases.MainLentaUseCase
 import kz.eztech.stylyts.profile.domain.usecases.GetProfileByIdUseCase
 import kz.eztech.stylyts.profile.domain.usecases.GetProfileUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction
@@ -15,10 +15,10 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class ProfilePresenter @Inject constructor(
-	private val errorHelper: ErrorHelper,
-	private val getProfileUseCase: GetProfileUseCase,
-	private val getProfileByIdUseCase: GetProfileByIdUseCase,
-	private val myCollectionsUseCase: MainLentaUseCase
+    private val errorHelper: ErrorHelper,
+    private val getProfileUseCase: GetProfileUseCase,
+    private val getProfileByIdUseCase: GetProfileByIdUseCase,
+    private val myCollectionsUseCase: MainLentaUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View

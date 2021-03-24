@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.dialog_exit.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.auth.presentation.AuthorizationActivity
-import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.common.data.models.SharedConstants
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
 class ExitDialog : DialogFragment(), View.OnClickListener {

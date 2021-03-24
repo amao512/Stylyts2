@@ -2,7 +2,7 @@ package kz.eztech.stylyts.auth.domain.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.domain.models.UserModel
 
 data class AuthModel(
     @SerializedName("token")

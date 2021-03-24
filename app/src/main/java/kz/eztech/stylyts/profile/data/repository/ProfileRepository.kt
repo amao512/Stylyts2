@@ -2,8 +2,8 @@ package kz.eztech.stylyts.profile.data.repository
 
 import io.reactivex.Single
 import kz.eztech.stylyts.profile.data.api.ProfileApi
-import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.data.exception.NetworkException
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.profile.domain.repository.ProfileDomainRepository
 import javax.inject.Inject
 

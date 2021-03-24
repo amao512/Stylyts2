@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import kz.eztech.stylyts.presentation.adapters.holders.PhotoLibraryHolder
+import kz.eztech.stylyts.create_outfit.presentation.adapters.holders.PhotoLibraryHolder
 import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 

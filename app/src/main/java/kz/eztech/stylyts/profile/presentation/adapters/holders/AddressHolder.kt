@@ -6,8 +6,8 @@ import kz.eztech.stylyts.profile.domain.models.AddressModel
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 import kz.eztech.stylyts.profile.presentation.interfaces.AddressViewClickListener
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.common.presentation.utils.extensions.hide
+import kz.eztech.stylyts.common.presentation.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 27.02.2021.

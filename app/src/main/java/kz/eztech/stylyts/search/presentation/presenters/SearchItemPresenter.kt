@@ -4,8 +4,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.common.data.exception.ErrorHelper
+import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.search.data.db.SearchDataSource
 import kz.eztech.stylyts.search.data.db.UserSearchEntity

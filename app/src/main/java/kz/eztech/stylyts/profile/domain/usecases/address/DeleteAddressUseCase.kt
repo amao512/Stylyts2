@@ -3,7 +3,7 @@ package kz.eztech.stylyts.profile.domain.usecases.address
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.profile.domain.repository.AddressDomainRepository
-import kz.eztech.stylyts.common.domain.BaseUseCase
+import kz.eztech.stylyts.common.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 
