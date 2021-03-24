@@ -53,16 +53,16 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
     override fun initializeViewsData() {
         filterList = ArrayList()
-        filterList.add(CollectionFilterModel("Классика"))
-        filterList.add(CollectionFilterModel("Уличный"))
-        filterList.add(CollectionFilterModel("Casual"))
-        filterList.add(CollectionFilterModel("Спортивный"))
-        filterList.add(CollectionFilterModel("Произвольный"))
-        filterList.add(CollectionFilterModel("Классика"))
-        filterList.add(CollectionFilterModel("Уличный"))
-        filterList.add(CollectionFilterModel("Casual"))
-        filterList.add(CollectionFilterModel("Спортивный"))
-        filterList.add(CollectionFilterModel("Произвольный"))
+        filterList.add(CollectionFilterModel(name = "Классика"))
+        filterList.add(CollectionFilterModel(name = "Уличный"))
+        filterList.add(CollectionFilterModel(name = "Casual"))
+        filterList.add(CollectionFilterModel(name = "Спортивный"))
+        filterList.add(CollectionFilterModel(name = "Произвольный"))
+        filterList.add(CollectionFilterModel(name = "Классика"))
+        filterList.add(CollectionFilterModel(name = "Уличный"))
+        filterList.add(CollectionFilterModel(name = "Casual"))
+        filterList.add(CollectionFilterModel(name = "Спортивный"))
+        filterList.add(CollectionFilterModel(name = "Произвольный"))
     }
 
     override fun initializeViews() {

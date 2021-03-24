@@ -16,19 +16,20 @@ import kz.eztech.stylyts.common.domain.models.MainLentaModel
 import kz.eztech.stylyts.common.domain.models.MainResult
 import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
-import kz.eztech.stylyts.create_outfit.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.common.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.common.presentation.base.EditorListener
-import kz.eztech.stylyts.profile.presentation.contracts.ProfileContract
-import kz.eztech.stylyts.profile.presentation.dialogs.EditProfileDialog
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.profile.presentation.presenters.ProfilePresenter
 import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.common.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.common.presentation.utils.extensions.hide
 import kz.eztech.stylyts.common.presentation.utils.extensions.show
+import kz.eztech.stylyts.create_outfit.presentation.adapters.CollectionsFilterAdapter
+import kz.eztech.stylyts.create_outfit.presentation.fragments.CameraFragment
+import kz.eztech.stylyts.profile.presentation.contracts.ProfileContract
+import kz.eztech.stylyts.profile.presentation.dialogs.EditProfileDialog
+import kz.eztech.stylyts.profile.presentation.presenters.ProfilePresenter
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
@@ -267,11 +268,21 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun getCollectionFilterList(): List<CollectionFilterModel> {
         val filterList = mutableListOf<CollectionFilterModel>()
 
-        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_filter)))
+        filterList.add(CollectionFilterModel(
+            name = getString(R.string.filter_list_filter),
+            icon = R.drawable.ic_filter
+        ))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_photo_outfits), isChosen = true))
-        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_publishes)))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_wardrobe)))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_my_data)))
+        filterList.add(CollectionFilterModel(
+            name = getString(R.string.collection_constructor_add_by_barcode),
+            icon = R.drawable.ic_baseline_qr_code_2_24
+        ))
+        filterList.add(CollectionFilterModel(
+            name = getString(R.string.collection_constructor_add_by_photo),
+            icon = R.drawable.ic_camera
+        ))
 
         return filterList
     }
@@ -288,16 +299,28 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 )
             }
             2 -> {}
-            3 -> {}
-            4 -> processMyData()
+            3 -> processMyData()
+            4 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
+            5 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
         }
     }
 
     private fun onCollectionClick(item: Any?) {
         item as MainResult
+
         val bundle = Bundle()
         bundle.putParcelable("model", item)
 
         findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
+    }
+
+    private fun navigateToCameraFragment(mode: Int) {
+        val bundle = Bundle()
+        bundle.putInt("mode", mode)
+
+        findNavController().navigate(
+            R.id.action_profileFragment_to_cameraFragment,
+            bundle
+        )
     }
 }

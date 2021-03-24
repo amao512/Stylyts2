@@ -204,9 +204,13 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(),PhotoChooserContract.V
         shopCategoryModel.menCategory?.let{
             genderCategoryList = it
             filterList.clear()
-            filterList.add(CollectionFilterModel("Фильтр", 0, "M", 1))
+            filterList.add(CollectionFilterModel(name = "Фильтр", id = 0, gender = "M", mode = 1))
             it.forEach { category ->
-                filterList.add(CollectionFilterModel(category.title, category.id, "M", 0))
+                filterList.add(CollectionFilterModel(
+                    name = category.title,
+                    id = category.id,
+                    gender = "M",
+                    mode = 0))
                 filterAdapter.updateList(filterList)
             }
         }

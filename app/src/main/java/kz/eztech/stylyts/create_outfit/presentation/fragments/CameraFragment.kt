@@ -45,6 +45,9 @@ class CameraFragment : BaseFragment<MainActivity>(), BaseView, View.OnClickListe
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
 
+        const val BARCODE_MODE = 0
+        const val PHOTO_MODE = 1
+
         /** Helper function used to create a timestamped file */
         private fun createFile(baseFolder: File, format: String, extension: String) =
             File(
@@ -123,7 +126,9 @@ class CameraFragment : BaseFragment<MainActivity>(), BaseView, View.OnClickListe
 
     override fun initializeViewsData() {}
 
-    override fun initializeViews() {}
+    override fun initializeViews() {
+        currentActivity.hideBottomNavigationView()
+    }
 
     override fun initializeListeners() {
         frame_layout_fragment_camera_take_picture.setOnClickListener(this)

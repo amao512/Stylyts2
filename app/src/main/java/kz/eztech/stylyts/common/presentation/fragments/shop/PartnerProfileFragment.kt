@@ -70,11 +70,11 @@ class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContr
         adapter.itemClickListener = this
 
         val filterList = ArrayList<CollectionFilterModel>()
-        filterList.add(CollectionFilterModel("Фильтр"))
-        filterList.add(CollectionFilterModel("Образы"))
-        filterList.add(CollectionFilterModel("Все позиции"))
-        filterList.add(CollectionFilterModel("Верх"))
-        filterList.add(CollectionFilterModel("Низ"))
+        filterList.add(CollectionFilterModel(name = "Фильтр"))
+        filterList.add(CollectionFilterModel(name = "Образы"))
+        filterList.add(CollectionFilterModel(name = "Все позиции"))
+        filterList.add(CollectionFilterModel(name = "Верх"))
+        filterList.add(CollectionFilterModel(name = "Низ"))
         adapterFilter = CollectionsFilterAdapter()
         recycler_view_fragment_partner_profile_filter_list.layoutManager = LinearLayoutManager(
             context,
