@@ -166,6 +166,8 @@
     <string name="profile_my_address">Мой Адрес</string>
     <string name="profile_my_incomes">Мои доходы</string>
     <string name="profile_help_need">Нужна Помощь</string>
+    <string name="profile_add_by_photo">Добавить вещь по фото</string>
+    <string name="profile_add_by_barcode">Добавить вещь по шрих коду</string>
 
     <string name="profile_income_title">Доходы от продаж</string>
 
@@ -212,6 +214,7 @@
     <string name="collection_constructor_add_by_barcode">Добавить по штрихкоду</string>
     <string name="collection_constructor_add_by_photo">Добавить по фото</string>
     <string name="collection_constructor_error_load_data">Не удалось загрузить данные</string>
+    <string name="collection_constructor_add_category">Добавить категорию</string>
 
     <string name="clean_background_title">Добавить вещь</string>
     <string name="clean_background_convert_error">Ошибка при конвертировании фотографии</string>
@@ -224,5 +227,4 @@
 
     <string name="save_item_accept_add_item">Добавить вещь</string>
     <string name="save_item_accept_ready">Готово</string>
-    <string name="collection_constructor_add_category">Добавить категорию</string>
 </resources>

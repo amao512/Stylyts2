@@ -186,7 +186,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 fragment_profile_subscribe_text_view.show()
                 fragment_profile_edit_text_view.hide()
 
-                adapterFilter.removeByPosition(4)
+                adapterFilter.removeByPosition(position = 5)
+                adapterFilter.removeByPosition(position = 4)
+                adapterFilter.removeByPosition(position = 3)
             }
 
             avatar?.let {
@@ -276,11 +278,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_wardrobe)))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_my_data)))
         filterList.add(CollectionFilterModel(
-            name = getString(R.string.collection_constructor_add_by_barcode),
+            name = getString(R.string.profile_add_by_barcode),
             icon = R.drawable.ic_baseline_qr_code_2_24
         ))
         filterList.add(CollectionFilterModel(
-            name = getString(R.string.collection_constructor_add_by_photo),
+            name = getString(R.string.profile_add_by_photo),
             icon = R.drawable.ic_camera
         ))
 

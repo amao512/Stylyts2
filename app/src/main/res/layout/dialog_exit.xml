@@ -27,11 +27,11 @@
 
     <TextView
         android:id="@+id/dialog_exit_positive_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/margin_size_48x"
-        android:layout_marginVertical="@dimen/margin_size_20x"
+        android:paddingHorizontal="@dimen/padding_size_48x"
+        android:paddingVertical="@dimen/padding_size_20x"
         android:text="@string/dialog_exit_positive_text"
         android:textAlignment="center"
         android:textColor="@color/app_red"
@@ -47,11 +47,11 @@
 
     <TextView
         android:id="@+id/dialog_exit_cancel_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginHorizontal="@dimen/margin_size_48x"
-        android:layout_marginVertical="@dimen/margin_size_20x"
+        android:paddingHorizontal="@dimen/padding_size_48x"
+        android:paddingVertical="@dimen/padding_size_20x"
         android:text="@string/dialog_exit_cancel_text"
         android:textAlignment="center"
         android:textColor="@color/app_dark_blue_gray"

@@ -1,7 +1,5 @@
 package kz.eztech.stylyts.settings.presentation.dialogs
 
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,14 +10,28 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_exit.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.auth.presentation.AuthorizationActivity
-import kz.eztech.stylyts.common.data.models.SharedConstants
-import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
-import javax.inject.Inject
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
 
-class ExitDialog : DialogFragment(), View.OnClickListener {
+class ExitDialog(
+    private val universalViewClickListener: UniversalViewClickListener
+) : DialogFragment(), View.OnClickListener {
 
-    @Inject lateinit var sharedPreferences: SharedPreferences
+    companion object {
+        private const val USERNAME_BUNDLE_KEY = "username_bundle"
+
+        fun getNewInstance(
+            universalViewClickListener: UniversalViewClickListener,
+            username: String
+        ): ExitDialog {
+            val exitDialog = ExitDialog(universalViewClickListener)
+            val bundle = Bundle()
+
+            bundle.putString(USERNAME_BUNDLE_KEY, username)
+            exitDialog.arguments = bundle
+
+            return exitDialog
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,7 +78,7 @@ class ExitDialog : DialogFragment(), View.OnClickListener {
     private fun initializeViewsData() {
         dialog_exit_warn_title.text = getString(
             R.string.dialog_exit_title,
-            sharedPreferences.getString(SharedConstants.USERNAME_KEY, EMPTY_STRING)
+            arguments?.getString(USERNAME_BUNDLE_KEY)
         )
     }
 
@@ -76,14 +88,10 @@ class ExitDialog : DialogFragment(), View.OnClickListener {
     }
 
     private fun onExit() {
-        sharedPreferences.edit().apply {
-            remove(SharedConstants.TOKEN_KEY)
-            remove(SharedConstants.USER_ID_KEY)
-            remove(SharedConstants.USERNAME_KEY)
-            apply()
-        }
-
-        startActivity(Intent(context, AuthorizationActivity::class.java))
-        activity?.finish()
+        universalViewClickListener.onViewClicked(
+            view = dialog_exit_positive_text_view,
+            item = null,
+            position = 0
+        )
     }
 }

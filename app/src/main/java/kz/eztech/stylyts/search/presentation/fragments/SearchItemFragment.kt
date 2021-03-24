@@ -3,7 +3,6 @@ package kz.eztech.stylyts.search.presentation.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_search_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -31,7 +30,7 @@ import javax.inject.Inject
  */
 class SearchItemFragment(
     private val position: Int
-) : BaseFragment<MainActivity>(), SearchItemContract.View, UniversalViewClickListener, SwipeRefreshLayout.OnRefreshListener {
+) : BaseFragment<MainActivity>(), SearchItemContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: SearchItemPresenter
     private lateinit var userSearchAdapter: UserSearchAdapter
@@ -45,10 +44,6 @@ class SearchItemFragment(
         const val USERS_POSITION = 0
         const val SHOPS_POSITION = 1
         const val CLOTHES_POSITION = 2
-    }
-
-    override fun onRefresh() {
-        processPostInitialization()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_search_item
@@ -121,12 +116,10 @@ class SearchItemFragment(
 
     override fun displayProgress() {
         fragment_search_item_recycler_view.hide()
-        fragment_search_item_swipe_refresh_layout.isRefreshing = true
     }
 
     override fun hideProgress() {
         fragment_search_item_recycler_view.show()
-        fragment_search_item_swipe_refresh_layout.isRefreshing = false
     }
 
     override fun processSearch(searchModel: SearchModel<UserModel>) {

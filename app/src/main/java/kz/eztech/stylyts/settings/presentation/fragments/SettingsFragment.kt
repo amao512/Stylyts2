@@ -1,18 +1,25 @@
 package kz.eztech.stylyts.settings.presentation.fragments
 
+import android.content.Intent
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.auth.presentation.AuthorizationActivity
+import kz.eztech.stylyts.common.data.models.SharedConstants
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.common.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.common.presentation.utils.extensions.show
+import kz.eztech.stylyts.settings.presentation.dialogs.ExitDialog
 
-class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener {
+class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener,
+    UniversalViewClickListener{
 
     override fun getLayoutId(): Int = R.layout.fragment_settings
 
@@ -95,8 +102,30 @@ class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.
                 findNavController().navigate(R.id.action_settingsFragment_to_personalSettingsFragment)
             }
             R.id.fragment_settings_exit_item -> {
-                findNavController().navigate(R.id.action_settingsFragment_to_exitDialog)
+                ExitDialog.getNewInstance(
+                    universalViewClickListener = this,
+                    username = currentActivity.getSharedPrefByKey(SharedConstants.USERNAME_KEY) ?: EMPTY_STRING
+                ).show(childFragmentManager, EMPTY_STRING)
             }
         }
+    }
+
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        when (view.id) {
+            R.id.dialog_exit_positive_text_view -> onExit()
+        }
+    }
+
+    private fun onExit() {
+        currentActivity.removeFromSharedPrefByKey(SharedConstants.TOKEN_KEY)
+        currentActivity.removeFromSharedPrefByKey(SharedConstants.USER_ID_KEY)
+        currentActivity.removeFromSharedPrefByKey(SharedConstants.USERNAME_KEY)
+
+        startActivity(Intent(context, AuthorizationActivity::class.java))
+        currentActivity.finish()
     }
 }
