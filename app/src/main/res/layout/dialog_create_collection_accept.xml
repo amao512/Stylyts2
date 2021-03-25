@@ -9,6 +9,7 @@
     >
 
     <LinearLayout
+        android:id="@+id/dialog_create_collection_accept_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -256,5 +257,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/dialog_create_collection_accept_progress_bar"
+        layout="@layout/base_progress"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

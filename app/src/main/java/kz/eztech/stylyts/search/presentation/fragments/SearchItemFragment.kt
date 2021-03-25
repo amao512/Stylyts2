@@ -11,7 +11,7 @@ import kz.eztech.stylyts.common.data.models.SharedConstants
 import kz.eztech.stylyts.search.domain.models.SearchModel
 import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
-import kz.eztech.stylyts.constructor.presentation.adapters.UserSearchAdapter
+import kz.eztech.stylyts.collection_constructor.presentation.adapters.UserSearchAdapter
 import kz.eztech.stylyts.common.presentation.adapters.UserSearchHistoryAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView

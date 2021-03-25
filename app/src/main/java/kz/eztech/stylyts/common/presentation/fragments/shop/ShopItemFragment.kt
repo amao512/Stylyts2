@@ -6,8 +6,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.constructor.domain.models.GenderCategory
-import kz.eztech.stylyts.constructor.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.collection_constructor.domain.models.GenderCategory
+import kz.eztech.stylyts.collection_constructor.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.adapters.ShopCategoryAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment

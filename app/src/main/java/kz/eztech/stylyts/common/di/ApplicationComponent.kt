@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.common.di
 
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.address.di.AddressModule
 import kz.eztech.stylyts.auth.di.AuthModule
 import kz.eztech.stylyts.auth.presentation.fragments.LoginFragment
 import kz.eztech.stylyts.auth.presentation.fragments.RefreshPasswordFragment
@@ -8,21 +9,21 @@ import kz.eztech.stylyts.auth.presentation.fragments.RegistrationFragment
 import kz.eztech.stylyts.common.di.modules.ApplicationModule
 import kz.eztech.stylyts.common.di.modules.NetworkModule
 import kz.eztech.stylyts.common.presentation.dialogs.CartDialog
-import kz.eztech.stylyts.constructor.presentation.dialogs.ConstructorFilterDialog
-import kz.eztech.stylyts.constructor.presentation.dialogs.UserSearchDialog
+import kz.eztech.stylyts.collection_constructor.presentation.dialogs.ConstructorFilterDialog
+import kz.eztech.stylyts.collection_constructor.presentation.dialogs.UserSearchDialog
 import kz.eztech.stylyts.common.presentation.fragments.MainFragment
 import kz.eztech.stylyts.common.presentation.fragments.collections.CollectionItemFragment
-import kz.eztech.stylyts.constructor.presentation.fragments.CleanBackgroundFragment
-import kz.eztech.stylyts.constructor.presentation.fragments.CollectionConstructorFragment
-import kz.eztech.stylyts.constructor.presentation.fragments.PhotoChooserFragment
+import kz.eztech.stylyts.collection_constructor.presentation.fragments.CleanBackgroundFragment
+import kz.eztech.stylyts.collection_constructor.presentation.fragments.CollectionConstructorFragment
+import kz.eztech.stylyts.collection_constructor.presentation.fragments.PhotoChooserFragment
 import kz.eztech.stylyts.common.presentation.fragments.detail.ItemDetailFragment
 import kz.eztech.stylyts.common.presentation.fragments.shop.CategoryTypeDetailFragment
 import kz.eztech.stylyts.common.presentation.fragments.shop.ShopItemFragment
-import kz.eztech.stylyts.constructor.di.ConstructorModule
-import kz.eztech.stylyts.constructor.presentation.dialogs.CreateCollectionAcceptDialog
+import kz.eztech.stylyts.collection_constructor.di.CollectionConstructorModule
+import kz.eztech.stylyts.collection_constructor.presentation.dialogs.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.profile.di.ProfileModule
 import kz.eztech.stylyts.profile.presentation.dialogs.EditProfileDialog
-import kz.eztech.stylyts.profile.presentation.fragments.AddressProfileFragment
+import kz.eztech.stylyts.address.presentation.AddressFragment
 import kz.eztech.stylyts.profile.presentation.fragments.CardFragment
 import kz.eztech.stylyts.profile.presentation.fragments.ProfileFragment
 import kz.eztech.stylyts.search.di.SearchModule
@@ -41,8 +42,9 @@ import javax.inject.Singleton
     NetworkModule::class,
     AuthModule::class,
     ProfileModule::class,
+    AddressModule::class,
     SearchModule::class,
-    ConstructorModule::class
+    CollectionConstructorModule::class
 ])
 interface ApplicationComponent {
 
@@ -64,7 +66,7 @@ interface ApplicationComponent {
     fun inject(fragment: CollectionItemFragment)
     fun inject(fragment: ConstructorFilterDialog)
     fun inject(fragment: CleanBackgroundFragment)
-    fun inject(fragment: AddressProfileFragment)
+    fun inject(fragment: AddressFragment)
     fun inject(fragment: CardFragment)
     fun inject(fragment: SearchItemFragment)
 

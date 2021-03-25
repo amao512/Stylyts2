@@ -9,14 +9,14 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.common.data.db.LocalDataSource
-import kz.eztech.stylyts.constructor.data.repository.FilteredItemsRepository
+import kz.eztech.stylyts.collection_constructor.data.repository.FilteredItemsRepository
 import kz.eztech.stylyts.common.data.repository.ItemDetailRepository
 import kz.eztech.stylyts.common.data.repository.MainLentaRepository
-import kz.eztech.stylyts.constructor.data.repository.ShopCategoryRepository
-import kz.eztech.stylyts.constructor.domain.repository.FilteredItemsDomainRepository
+import kz.eztech.stylyts.collection_constructor.data.repository.ShopCategoryRepository
+import kz.eztech.stylyts.collection_constructor.domain.repository.FilteredItemsDomainRepository
 import kz.eztech.stylyts.common.domain.repository.ItemDetailDomainRepository
 import kz.eztech.stylyts.common.domain.repository.MainLentaDomainRepository
-import kz.eztech.stylyts.constructor.domain.repository.ShopCategoryDomainRepository
+import kz.eztech.stylyts.collection_constructor.domain.repository.ShopCategoryDomainRepository
 import javax.inject.Named
 import javax.inject.Singleton
 

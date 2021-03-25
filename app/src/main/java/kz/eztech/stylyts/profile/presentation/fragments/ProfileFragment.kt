@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.camera.CameraFragment
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
 import kz.eztech.stylyts.common.data.models.SharedConstants.TOKEN_KEY
 import kz.eztech.stylyts.common.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.common.domain.models.MainLentaModel
 import kz.eztech.stylyts.common.domain.models.MainResult
 import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
@@ -27,11 +27,12 @@ import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.common.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.common.presentation.utils.extensions.hide
 import kz.eztech.stylyts.common.presentation.utils.extensions.show
-import kz.eztech.stylyts.constructor.presentation.adapters.CollectionsFilterAdapter
+import kz.eztech.stylyts.collection_constructor.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.profile.presentation.contracts.ProfileContract
 import kz.eztech.stylyts.profile.presentation.dialogs.EditProfileDialog
-import kz.eztech.stylyts.profile.presentation.dialogs.PhotoChooserDialog
+import kz.eztech.stylyts.profile.presentation.dialogs.CreatorChooserDialog
 import kz.eztech.stylyts.profile.presentation.presenters.ProfilePresenter
+import kz.eztech.stylyts.search.domain.models.SearchModel
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
@@ -188,8 +189,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 fragment_profile_subscribe_text_view.show()
                 fragment_profile_edit_text_view.hide()
 
+                adapterFilter.removeByPosition(position = 5)
                 adapterFilter.removeByPosition(position = 4)
-                adapterFilter.removeByPosition(position = 3)
             }
 
             avatar?.let {
@@ -206,8 +207,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    override fun processMyCollections(models: MainLentaModel) {
-        models.results?.let {
+    override fun processMyPublications(searchModel: SearchModel<PublicationsModel>) {
+        searchModel.results?.let {
             adapter.updateList(it)
         }
     }
@@ -254,7 +255,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
             R.id.frame_layout_item_collection_filter -> onFilterClick(position)
-            R.id.shapeable_image_view_item_collection_image -> onCollectionClick(item)
+            R.id.shapeable_image_view_item_collection_image -> {/*onCollectionClick(item)*/}
         }
     }
 
@@ -266,13 +267,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun onChoice(v: View?, item: Any?) {
         when (v?.id) {
-            R.id.text_view_dialog_bottom_photo_chooser_barcode -> {
+            R.id.dialog_bottom_creator_chooser_barcode -> {
                 navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
             }
-            R.id.text_view_dialog_bottom_photo_chooser_photo -> {
+            R.id.dialog_bottom_creator_chooser_photo -> {
                 navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
             }
-            R.id.text_view_dialog_bottom_photo_chooser_create_publish -> {
+            R.id.dialog_bottom_creator_chooser_create_publish -> {
                 findNavController().navigate(R.id.action_profileFragment_to_photoPostCreatorFragment)
             }
         }
@@ -289,6 +290,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             name = getString(R.string.filter_list_filter),
             icon = R.drawable.ic_filter
         ))
+        filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_publishes)))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_photo_outfits), isChosen = true))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_wardrobe)))
         filterList.add(CollectionFilterModel(name = getString(R.string.filter_list_my_data)))
@@ -303,17 +305,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun onFilterClick(position: Int) {
         when (position) {
             0 -> {}
-            1 -> {
-                val map = HashMap<String, Int>()
-                map["autor"] = userId
-                presenter.getMyCollections(
-                    token = getTokenFromSharedPref(),
-                    map = map
-                )
-            }
+            1 -> presenter.getMyPublications(token = getTokenFromSharedPref())
             2 -> {}
-            3 -> processMyData()
-            4 ->  PhotoChooserDialog().apply {
+            3 -> {}
+            4 -> processMyData()
+            5 ->  CreatorChooserDialog().apply {
                 setChoiceListener(listener = this@ProfileFragment)
             }.show(childFragmentManager, EMPTY_STRING)
         }

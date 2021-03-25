@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_shop.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.constructor.domain.models.GenderCategory
+import kz.eztech.stylyts.collection_constructor.domain.models.GenderCategory
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.adapters.ShopViewPagerAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment

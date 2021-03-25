@@ -3,12 +3,13 @@ package kz.eztech.stylyts
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import kz.eztech.stylyts.address.di.AddressModule
 import kz.eztech.stylyts.auth.di.AuthModule
 import kz.eztech.stylyts.common.di.ApplicationComponent
 import kz.eztech.stylyts.common.di.DaggerApplicationComponent
 import kz.eztech.stylyts.common.di.modules.ApplicationModule
 import kz.eztech.stylyts.common.di.modules.NetworkModule
-import kz.eztech.stylyts.constructor.di.ConstructorModule
+import kz.eztech.stylyts.collection_constructor.di.CollectionConstructorModule
 import kz.eztech.stylyts.profile.di.ProfileModule
 import kz.eztech.stylyts.search.di.SearchModule
 
@@ -29,8 +30,9 @@ class StylytsApp : Application(){
             .networkModule(NetworkModule())
             .authModule(AuthModule())
             .profileModule(ProfileModule())
+            .addressModule(AddressModule())
             .searchModule(SearchModule(mApplication = this))
-            .constructorModule(ConstructorModule())
+            .collectionConstructorModule(CollectionConstructorModule())
             .build()
 
         applicationComponent.inject(application = this)

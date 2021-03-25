@@ -4,11 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import kz.eztech.stylyts.profile.data.db.dao.AddressDao
+import kz.eztech.stylyts.address.data.db.AddressDao
 import kz.eztech.stylyts.profile.data.db.dao.CardDao
 import kz.eztech.stylyts.common.data.db.dao.CartDao
 import kz.eztech.stylyts.search.data.db.UserSearchDao
-import kz.eztech.stylyts.profile.data.db.entities.AddressEntity
+import kz.eztech.stylyts.address.data.db.AddressEntity
 import kz.eztech.stylyts.common.data.db.entities.CardEntity
 import kz.eztech.stylyts.common.data.db.entities.CartEntity
 import kz.eztech.stylyts.search.data.db.UserSearchEntity

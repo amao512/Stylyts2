@@ -31,6 +31,7 @@ object RestConstants {
 
     // Post
     const val CREATE_POST: String = "post/"
+    const val GET_MY_POSTS: String = "post/"
 
     //ShopCategories
     const val GET_CATEGORIES: String = "clothes/category/"

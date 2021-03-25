@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
-import kz.eztech.stylyts.constructor.domain.models.ClothesTypes
+import kz.eztech.stylyts.collection_constructor.domain.models.ClothesTypes
 
 /**
  * Created by Ruslan Erdenoff on 14.01.2021.

@@ -2,8 +2,8 @@ package kz.eztech.stylyts.common.presentation.presenters.shop
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.common.data.exception.ErrorHelper
-import kz.eztech.stylyts.constructor.domain.models.ShopCategoryModel
-import kz.eztech.stylyts.constructor.domain.usecases.GetCategoryUseCase
+import kz.eztech.stylyts.collection_constructor.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.collection_constructor.domain.usecases.GetCategoryUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.common.presentation.contracts.main.shop.ShopItemContract
 import javax.inject.Inject

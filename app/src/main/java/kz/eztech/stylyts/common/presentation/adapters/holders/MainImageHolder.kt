@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.common.domain.models.MainResult
-import kz.eztech.stylyts.constructor.presentation.adapters.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.collection_constructor.presentation.adapters.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.common.presentation.utils.DateFormatterHelper
 import kz.eztech.stylyts.common.presentation.utils.DateFormatterHelper.FORMAT_DATE_DD_MMMM

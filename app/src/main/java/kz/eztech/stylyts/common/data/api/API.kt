@@ -14,9 +14,9 @@ import kz.eztech.stylyts.common.data.api.RestConstants.SAVE_COLLECTION_TO_ME
 import kz.eztech.stylyts.common.data.api.RestConstants.SAVE_ITEM_BY_PHOTO
 import kz.eztech.stylyts.common.data.api.RestConstants.SEARCH_USER_BY_NAME
 import kz.eztech.stylyts.common.data.api.RestConstants.UPDATE_COLLECTION
-import kz.eztech.stylyts.constructor.domain.models.CategoryTypeDetailModel
-import kz.eztech.stylyts.constructor.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.constructor.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.collection_constructor.domain.models.CategoryTypeDetailModel
+import kz.eztech.stylyts.collection_constructor.domain.models.FilteredItemsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.common.domain.models.ClothesMainModel
 import kz.eztech.stylyts.common.domain.models.MainLentaModel
 import kz.eztech.stylyts.common.domain.models.MainResult

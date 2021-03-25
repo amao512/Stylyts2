@@ -3,7 +3,7 @@ package kz.eztech.stylyts.common.presentation.adapters.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_category_type_detail.view.*
-import kz.eztech.stylyts.constructor.domain.models.ClothesTypeDataModel
+import kz.eztech.stylyts.collection_constructor.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
 import java.text.NumberFormat
 

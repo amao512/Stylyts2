@@ -8,8 +8,8 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_item_list.*
 import kotlinx.android.synthetic.main.fragment_shop_item_list.include_toolbar_profile
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.constructor.domain.models.ClothesTypes
-import kz.eztech.stylyts.constructor.domain.models.GenderCategory
+import kz.eztech.stylyts.collection_constructor.domain.models.ClothesTypes
+import kz.eztech.stylyts.collection_constructor.domain.models.GenderCategory
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.adapters.ShopItemListAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment

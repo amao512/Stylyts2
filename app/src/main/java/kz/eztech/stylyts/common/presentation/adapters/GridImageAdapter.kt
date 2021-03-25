@@ -10,13 +10,12 @@ import kz.eztech.stylyts.common.presentation.adapters.holders.BaseViewHolder
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
  */
-class GridImageAdapter : BaseAdapter(){
-    override fun getLayoutId(): Int {
-        return R.layout.item_collection_image
-    }
+class GridImageAdapter : BaseAdapter() {
+
+    override fun getLayoutId(): Int = R.layout.item_collection_image
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
-        return object : BaseDiffUtilCallBack(currentList, list){
+        return object : BaseDiffUtilCallBack(currentList, list) {
             override fun getAreContentsTheSame(
                 oldItemPosition: Int,
                 newItemPosition: Int
@@ -28,6 +27,6 @@ class GridImageAdapter : BaseAdapter(){
     }
 
     override fun getViewHolder(view: View): BaseViewHolder {
-        return GridImageViewHolder(view,this)
+        return GridImageViewHolder(view, this)
     }
 }

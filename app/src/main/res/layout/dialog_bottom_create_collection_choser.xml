@@ -16,50 +16,87 @@
         android:background="@color/app_gray_hint"
         />
 
-    <TextView
-        android:id="@+id/text_view_dialog_bottom_create_collection_chooser_public"
-        style="@style/TextRegular"
+    <LinearLayout
+        android:id="@+id/dialog_bottom_create_collection_chooser_common_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_size_6x"
-        android:drawableStart="@drawable/ic_send_message"
-        android:drawablePadding="@dimen/padding_size_16x"
-        android:text="@string/collection_chooser_publish"
-        />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_send_message"
+            />
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:text="@string/collection_chooser_publish"
+            />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/small_divider_height"
-        android:layout_marginTop="@dimen/margin_size_6x"
+        android:layout_marginVertical="@dimen/margin_size_8x"
         android:background="@color/divider_bg_color"
         />
 
-    <TextView
-        android:id="@+id/text_view_dialog_bottom_create_collection_chooser_wardrobe"
-        style="@style/TextRegular"
+    <LinearLayout
+        android:id="@+id/dialog_bottom_create_collection_chooser_wardrobe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_size_6x"
-        android:drawableStart="@drawable/ic_save_icon"
-        android:drawablePadding="@dimen/padding_size_16x"
-        android:text="@string/collection_chooser_save"
-        />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_save_icon"
+            />
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:text="@string/collection_chooser_save"
+            />
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/small_divider_height"
-        android:layout_marginTop="@dimen/margin_size_6x"
+        android:layout_marginVertical="@dimen/margin_size_8x"
         android:background="@color/divider_bg_color"
         />
 
-    <TextView
-        android:id="@+id/text_view_dialog_bottom_photo_chooser_photo_as_collection_buy"
-        style="@style/TextRegular"
+    <LinearLayout
+        android:id="@+id/dialog_bottom_photo_chooser_photo_as_collection_buy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_size_6x"
-        android:drawableStart="@drawable/ic_shopping_cart"
-        android:drawablePadding="@dimen/padding_size_16x"
-        android:text="@string/collection_chooser_buy"
-        />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_shopping_cart"
+            />
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:text="@string/collection_chooser_buy"
+            />
+    </LinearLayout>
+
 </LinearLayout>

@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/createCollectionFragment"
-        android:name="kz.eztech.stylyts.constructor.presentation.fragments.ConstructorHolderFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.fragments.ConstructorHolderFragment"
         android:label="fragment_create_collection"
         tools:layout="@layout/fragment_constructor_holder" >
         <action
@@ -154,7 +154,7 @@
     </fragment>
     <fragment
         android:id="@+id/photoChooserFragment"
-        android:name="kz.eztech.stylyts.constructor.presentation.fragments.PhotoChooserFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.fragments.PhotoChooserFragment"
         android:label="fragment_photo_chooser"
         tools:layout="@layout/fragment_photo_chooser" >
         <action
@@ -192,7 +192,7 @@
     </fragment>
     <fragment
         android:id="@+id/cleanBackgroundFragment"
-        android:name="kz.eztech.stylyts.constructor.presentation.fragments.CleanBackgroundFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.fragments.CleanBackgroundFragment"
         android:label="fragment_clean_background"
         tools:layout="@layout/fragment_clean_background" >
         <action
@@ -201,7 +201,7 @@
     </fragment>
     <fragment
         android:id="@+id/addressProfileFragment"
-        android:name="kz.eztech.stylyts.profile.presentation.fragments.AddressProfileFragment"
+        android:name="kz.eztech.stylyts.address.presentation.AddressFragment"
         android:label="fragment_address_profile"
         tools:layout="@layout/fragment_address_profile" />
     <fragment
@@ -266,7 +266,7 @@
         />
     <fragment
         android:id="@+id/photoPostCreatorFragment"
-        android:name="kz.eztech.stylyts.constructor.presentation.fragments.PhotoPostCreatorFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.fragments.PhotoPostCreatorFragment"
         android:label="fragment_photo_post_creator"
         tools:layout="@layout/fragment_photo_post_creator"
         >
@@ -279,4 +279,9 @@
             app:destination="@id/photoChooserFragment"
             />
     </fragment>
+    <fragment
+        android:id="@+id/createCollectionAcceptDialog"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.dialogs.CreateCollectionAcceptDialog"
+        android:label="CreateCollectionAcceptDialog"
+        />
 </navigation>

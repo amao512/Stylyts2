@@ -1,14 +1,15 @@
 package kz.eztech.stylyts.profile.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
 import kz.eztech.stylyts.common.data.exception.ErrorHelper
-import kz.eztech.stylyts.common.domain.models.MainLentaModel
 import kz.eztech.stylyts.common.domain.models.UserModel
-import kz.eztech.stylyts.common.domain.usecases.MainLentaUseCase
 import kz.eztech.stylyts.profile.domain.usecases.GetProfileByIdUseCase
 import kz.eztech.stylyts.profile.domain.usecases.GetProfileUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction
+import kz.eztech.stylyts.profile.domain.usecases.GetMyPublicationsUseCase
 import kz.eztech.stylyts.profile.presentation.contracts.ProfileContract
+import kz.eztech.stylyts.search.domain.models.SearchModel
 import javax.inject.Inject
 
 /**
@@ -18,14 +19,14 @@ class ProfilePresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getProfileUseCase: GetProfileUseCase,
     private val getProfileByIdUseCase: GetProfileByIdUseCase,
-    private val myCollectionsUseCase: MainLentaUseCase
+    private val getMyPublicationsUseCase: GetMyPublicationsUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View
 
 	override fun disposeRequests() {
         getProfileUseCase.clear()
-        myCollectionsUseCase.clear()
+		getMyPublicationsUseCase.clear()
     }
 
     override fun attach(view: ProfileContract.View) {
@@ -82,18 +83,15 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-    override fun getMyCollections(
-		token: String,
-		map: Map<String, Any>
-	) {
+    override fun getMyPublications(token: String) {
         view.displayProgress()
 
-        myCollectionsUseCase.initParams(token, map)
-        myCollectionsUseCase.execute(object : DisposableSingleObserver<MainLentaModel>() {
-			override fun onSuccess(t: MainLentaModel) {
+		getMyPublicationsUseCase.initParams(token)
+		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<SearchModel<PublicationsModel>>() {
+			override fun onSuccess(t: SearchModel<PublicationsModel>) {
 				view.processViewAction {
 					hideProgress()
-					processMyCollections(t)
+					processMyPublications(t)
 				}
 			}
 

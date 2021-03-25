@@ -16,8 +16,8 @@ import androidx.core.view.GestureDetectorCompat
 import kz.eztech.imageviewdragandscale.sticker.geusters.MoveGestureDetector
 import kz.eztech.imageviewdragandscale.sticker.geusters.RotateGestureDetector
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.constructor.presentation.contracts.MotionViewContract
-import kz.eztech.stylyts.constructor.presentation.listeners.MotionViewTapListener
+import kz.eztech.stylyts.collection_constructor.presentation.contracts.MotionViewContract
+import kz.eztech.stylyts.collection_constructor.presentation.listeners.MotionViewTapListener
 import java.util.*
 
 /**

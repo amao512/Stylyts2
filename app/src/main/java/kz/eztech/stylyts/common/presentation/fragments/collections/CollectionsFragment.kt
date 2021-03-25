@@ -12,7 +12,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.common.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.common.domain.models.MainResult
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
-import kz.eztech.stylyts.constructor.presentation.adapters.CollectionsFilterAdapter
+import kz.eztech.stylyts.collection_constructor.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.common.presentation.adapters.CollectionsViewPagerAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView

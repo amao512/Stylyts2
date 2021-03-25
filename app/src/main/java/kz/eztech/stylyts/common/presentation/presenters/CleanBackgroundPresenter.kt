@@ -6,7 +6,7 @@ import kz.eztech.stylyts.common.domain.models.ClothesMainModel
 import kz.eztech.stylyts.common.domain.usecases.GetItemDetailUseCase
 import kz.eztech.stylyts.common.domain.usecases.SaveItemByPhotoUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction
-import kz.eztech.stylyts.constructor.presentation.contracts.CleanBackgroundContract
+import kz.eztech.stylyts.collection_constructor.presentation.contracts.CleanBackgroundContract
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

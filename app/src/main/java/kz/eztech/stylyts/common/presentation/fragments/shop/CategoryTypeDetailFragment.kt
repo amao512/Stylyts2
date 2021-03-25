@@ -9,8 +9,8 @@ import kotlinx.android.synthetic.main.fragment_category_type_detail.*
 import kotlinx.android.synthetic.main.fragment_category_type_detail.include_toolbar_profile
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.constructor.domain.models.CategoryTypeDetailModel
-import kz.eztech.stylyts.constructor.domain.models.ClothesTypeDataModel
+import kz.eztech.stylyts.collection_constructor.domain.models.CategoryTypeDetailModel
+import kz.eztech.stylyts.collection_constructor.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.adapters.CategoryTypeDetailAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
