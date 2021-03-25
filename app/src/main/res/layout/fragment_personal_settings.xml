@@ -100,7 +100,7 @@
             android:id="@+id/fragment_personal_settings_language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_size_10x"
+            android:layout_marginTop="@dimen/margin_size_12x"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"

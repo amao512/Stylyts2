@@ -1,19 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Stylyts</string>
     <string name="app_name_upper_case">STYLYTS</string>
 
-    <string name="language">Language</string>
+    <string name="language">Тіл</string>
     <string name="language_kazakh">Қазақша</string>
     <string name="language_english">English</string>
     <string name="language_russian">Русский</string>
 
-    <string name="fragment_login_forgot_password">Forgot password?</string>
-    <string name="fragment_login_sign_in">Sign in</string>
+    <string name="fragment_login_forgot_password">Забыли пароль?</string>
+    <string name="fragment_login_sign_in">Кіру</string>
     <string name="fragment_login_no_account">Нет аккаунта?</string>
-    <string name="fragment_login_sign_up">Sign up</string>
+    <string name="fragment_login_sign_up">Зарегестрироваться</string>
 
-    <string name="fragment_registration_appbar_title">Sign up</string>
-    <string name="fragment_registration_birth_date">Date of birth(месяц/день/год)</string>
+    <string name="fragment_registration_appbar_title">Регистрация</string>
+    <string name="fragment_registration_birth_date">Дата рождения(месяц/день/год)</string>
     <string name="fragment_registration_term"><![CDATA[Нажимая на кнопку Завершить регистрацию ниже, я соглашаюсь с уловиями Style App в рамках <u><font color=#0D4193>Правил Пользования, Условия оплаты, Политика  Конфиденциальности.</font></u>]]></string>
     <string name="fragment_registration_complete">Завершить регистрацию</string>
     <string name="fragment_registration_notification_info">Style App будет высылать вам почту только в рамках оповещения пользователей, маркентингового характера и push оповешения. Вы можете отписаться от получения данных писем в любое время выбрав данную опцию в настройках вашего аккаунта.</string>
@@ -32,26 +33,26 @@
     <string name="item_user_comment"><![CDATA[<b>%1$s%2$s</b> %3$s]]></string>
 
     <string name="email">Email</string>
-    <string name="username">Username</string>
-    <string name="name">Name</string>
-    <string name="surname">Surname</string>
-    <string name="password">Password</string>
-    <string name="password_repeat">Repeat password</string>
-    <string name="back">Back</string>
-    <string name="next">Next</string>
-    <string name="country">Country</string>
-    <string name="city">City</string>
-    <string name="address">Address</string>
+    <string name="username">Никнейм</string>
+    <string name="name">Аты</string>
+    <string name="surname">Жөні</string>
+    <string name="password">Құпия сөз</string>
+    <string name="password_repeat">Құпия сөзді қайталаңыз</string>
+    <string name="back">Назад</string>
+    <string name="next">Далее</string>
+    <string name="country">Страна</string>
+    <string name="city">Город</string>
+    <string name="address">Мекен жайы</string>
     <string name="locality">Населенный пункт</string>
     <string name="post_index">Почтовый индекс</string>
-    <string name="month">Month</string>
-    <string name="year">Year</string>
+    <string name="month">Месяц</string>
+    <string name="year">Год</string>
 
-    <string name="bottom_nav_bar_main">Main</string>
+    <string name="bottom_nav_bar_main">Основная</string>
     <string name="bottom_nav_bar_collection">Образы</string>
     <string name="bottom_nav_bar_create_collection">Создать образ</string>
-    <string name="bottom_nav_bar_shop">Search</string>
-    <string name="bottom_nav_bar_profile">Profile</string>
+    <string name="bottom_nav_bar_shop">Іздеу</string>
+    <string name="bottom_nav_bar_profile">Профиль</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -59,15 +60,15 @@
 
     <string name="full_name_text_format">%s %s</string>
 
-    <string name="filter_list_filter">Filter</string>
+    <string name="filter_list_filter">Фильтр</string>
     <string name="filter_list_photo_outfits">Фото образов</string>
-    <string name="filter_list_publishes">Publications</string>
-    <string name="filter_list_wardrobe">Wardrobe</string>
+    <string name="filter_list_publishes">Публикации</string>
+    <string name="filter_list_wardrobe">Гардероб</string>
     <string name="filter_list_my_data">Мои данные</string>
 
-    <string name="toolbar_title_edit_profile">Edit profile</string>
-    <string name="toolbar_title_comments">Comments</string>
-    <string name="toolbar_cancel">Cancel</string>
+    <string name="toolbar_title_edit_profile">Редактировать профиль</string>
+    <string name="toolbar_title_comments">Комментарии</string>
+    <string name="toolbar_cancel">Отмена</string>
     <string name="toolbar_completed">Готово</string>
 
     <string name="cancel">Отмена</string>

@@ -10,7 +10,9 @@ import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.common.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.common.presentation.utils.extensions.show
+import kz.eztech.stylyts.settings.presentation.dialogs.ChangeLanguageDialog
 
 class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener {
 
@@ -42,6 +44,7 @@ class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
 
     override fun initializeListeners() {
         toolbar_left_corner_action_image_button.setOnClickListener(this)
+        fragment_personal_settings_language.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {}
@@ -59,6 +62,10 @@ class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
+            R.id.fragment_personal_settings_language -> ChangeLanguageDialog().show(
+                childFragmentManager,
+                EMPTY_STRING
+            )
         }
     }
 }
