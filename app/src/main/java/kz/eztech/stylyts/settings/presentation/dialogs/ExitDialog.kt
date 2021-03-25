@@ -64,7 +64,7 @@ class ExitDialog(
             dialog!!.window?.setBackgroundDrawable(
                 ContextCompat.getDrawable(
                     requireContext().applicationContext,
-                    R.drawable.bg_exit_dialog
+                    R.drawable.bg_rounded_dialog
                 )
             )
             dialog!!.window?.requestFeature(Window.FEATURE_NO_TITLE)

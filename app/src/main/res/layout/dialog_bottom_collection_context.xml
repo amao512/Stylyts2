@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/padding_size_16x"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded_dialog"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/dialog_bottom_collection_context_delete_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/collection_context_delete"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/little_divider_height"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            android:id="@+id/dialog_bottom_collection_context_archive_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/collection_context_archive"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/little_divider_height"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            android:id="@+id/dialog_bottom_collection_context_change_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/collection_context_change"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/little_divider_height"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            android:id="@+id/dialog_bottom_collection_context_share_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/collection_context_share"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/little_divider_height"
+            android:background="@color/divider_bg_color"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:layout_marginBottom="@dimen/margin_size_24x"
+        android:background="@drawable/bg_rounded_dialog"
+        >
+
+        <TextView
+            android:id="@+id/dialog_bottom_collection_cancel_archive_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/collection_context_cancel"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+    </FrameLayout>
+
+</LinearLayout>

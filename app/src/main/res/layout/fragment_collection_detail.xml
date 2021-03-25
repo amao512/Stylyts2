@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,209 +7,239 @@
     android:layout_height="match_parent"
     >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         >
-
-        <include
-            android:id="@+id/include_toolbar_collection_detail"
-            layout="@layout/base_toolbar"
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="@dimen/padding_size_24x"
             >
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint_layout_fragment_collection_detail_profile_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <FrameLayout
-                    android:id="@+id/frameLayout"
-                    android:layout_width="@dimen/collection_detail_user_photo_size"
-                    android:layout_height="@dimen/collection_detail_user_photo_size"
-                    android:background="@drawable/circle_white_gray_stroke"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    >
-
-                    <com.google.android.material.imageview.ShapeableImageView
-                        android:id="@+id/shapeable_image_view_fragment_collection_detail_profile_avatar"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:adjustViewBounds="true"
-                        app:shapeAppearanceOverlay="@style/circleImageView"
-                        />
-
-                    <TextView
-                        android:id="@+id/text_view_text_view_fragment_collection_detail_short_name"
-                        style="@style/TitleTextBold"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/circle_gray"
-                        android:gravity="center"
-                        android:textSize="@dimen/text_size_12x"
-                        tools:text="RE"
-                        />
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/text_view_fragment_collection_detail_partner_name"
-                    style="@style/TextRegular"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_size_16x"
-                    android:text="zara"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageButton"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@+id/frameLayout"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:src="@drawable/ic_baseline_more_horiz_24"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_16x"
-                android:clickable="true"
-                app:cardCornerRadius="@dimen/corner_radius_default"
-                app:cardElevation="@dimen/collection_detail_card_elevation"
-                app:cardMaxElevation="@dimen/collection_detail_card_max_elevation"
-                >
-
-                <ImageView
-                    android:id="@+id/image_view_fragment_collection_detail_imageholder"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/collection_detail_image_size"
-                    android:background="?attr/selectableItemBackground"
-                    android:scaleType="centerInside"
-                    tools:src="@drawable/auth_bg"
-                    />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="top|end"
-                    android:layout_marginTop="@dimen/margin_size_32x"
-                    android:layout_marginEnd="@dimen/margin_size_24x"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:src="@drawable/ic_safe_flag_empty"
-                    />
-            </com.google.android.material.card.MaterialCardView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_fragment_collection_detail_additionals_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="@dimen/margin_size_24x"
-                android:fadingEdge="vertical"
-                android:fadingEdgeLength="@dimen/collection_detail_list_fade"
-                android:fillViewport="false"
-                android:orientation="horizontal"
-                android:requiresFadingEdge="vertical|horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_main_image_detail"
+            <include
+                android:id="@+id/include_toolbar_collection_detail"
+                layout="@layout/base_toolbar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_16x"
-                android:orientation="horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/padding_size_24x"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/include_toolbar_collection_detail"
                 >
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_layout_fragment_collection_detail_profile_container"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ic_baseline_favorite_border_24"
+                    >
+
+                    <FrameLayout
+                        android:id="@+id/frameLayout"
+                        android:layout_width="@dimen/collection_detail_user_photo_size"
+                        android:layout_height="@dimen/collection_detail_user_photo_size"
+                        android:background="@drawable/circle_white_gray_stroke"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        >
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/shapeable_image_view_fragment_collection_detail_profile_avatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            app:shapeAppearanceOverlay="@style/circleImageView"
+                            />
+
+                        <TextView
+                            android:id="@+id/text_view_text_view_fragment_collection_detail_short_name"
+                            style="@style/TitleTextBold"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/circle_gray"
+                            android:gravity="center"
+                            android:textSize="@dimen/text_size_12x"
+                            tools:text="RE"
+                            />
+                    </FrameLayout>
+
+                    <TextView
+                        android:id="@+id/text_view_fragment_collection_detail_partner_name"
+                        style="@style/TextRegular"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_size_16x"
+                        android:text="zara"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/frameLayout"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <ImageButton
+                        android:id="@+id/imageButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_more_horiz_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_16x"
+                    android:clickable="true"
+                    app:cardCornerRadius="@dimen/corner_radius_default"
+                    app:cardElevation="@dimen/collection_detail_card_elevation"
+                    app:cardMaxElevation="@dimen/collection_detail_card_max_elevation"
+                    >
+
+                    <ImageView
+                        android:id="@+id/image_view_fragment_collection_detail_imageholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/collection_detail_image_size"
+                        android:background="?attr/selectableItemBackground"
+                        android:scaleType="centerInside"
+                        tools:src="@drawable/auth_bg"
+                        />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="@dimen/margin_size_32x"
+                        android:layout_marginEnd="@dimen/margin_size_24x"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:src="@drawable/ic_safe_flag_empty"
+                        />
+                </com.google.android.material.card.MaterialCardView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_fragment_collection_detail_additionals_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/margin_size_24x"
+                    android:fadingEdge="vertical"
+                    android:fadingEdgeLength="@dimen/collection_detail_list_fade"
+                    android:fillViewport="false"
+                    android:orientation="horizontal"
+                    android:requiresFadingEdge="vertical|horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_main_image_detail"
                     />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/margin_size_4x"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ic_baseline_chat_bubble_outline_24"
+                    android:layout_marginTop="@dimen/margin_size_16x"
+                    android:orientation="horizontal"
+                    >
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_favorite_border_24"
+                        />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_size_4x"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_chat_bubble_outline_24"
+                        />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_size_4x"
+                        android:background="?attr/selectableItemBackground"
+                        android:src="@drawable/ic_baseline_save_alt_24"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_fragment_collection_detail_change_collection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_size_4x"
+                        android:text="@string/collection_detail_change_outfit"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_12x"
+                        app:backgroundTint="@color/app_light_orange"
+                        />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/text_view_fragment_collection_detail_comments_cost"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_8x"
+                    android:textStyle="bold"
+                    tools:text="65 550 KZT"
                     />
 
-                <ImageButton
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/text_view_fragment_collection_detail_comments_count"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/margin_size_4x"
-                    android:background="?attr/selectableItemBackground"
-                    android:src="@drawable/ic_baseline_save_alt_24"
+                    android:layout_marginTop="@dimen/margin_size_8x"
+                    android:textColor="@color/app_gray"
+                    tools:text="Показать 53 комментарий..."
                     />
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_fragment_collection_detail_change_collection"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/text_view_fragment_collection_detail_date"
+                    style="@style/TextRegular"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/margin_size_4x"
-                    android:text="@string/collection_detail_change_outfit"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_12x"
-                    app:backgroundTint="@color/app_light_orange"
+                    android:layout_marginTop="@dimen/margin_size_8x"
+                    android:textColor="@color/app_gray"
+                    tools:text="21 сентября"
                     />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_view_fragment_collection_detail_comments_cost"
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_8x"
-                android:textStyle="bold"
-                tools:text="65 550 KZT"
-                />
-
-            <TextView
-                android:id="@+id/text_view_fragment_collection_detail_comments_count"
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_8x"
-                android:textColor="@color/app_gray"
-                tools:text="Показать 53 комментарий..."
-                />
-
-            <TextView
-                android:id="@+id/text_view_fragment_collection_detail_date"
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_8x"
-                android:textColor="@color/app_gray"
-                tools:text="21 сентября"
-                />
         </LinearLayout>
 
-    </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+    <include
+        android:id="@+id/fragment_collection_detail_progress_bar"
+        layout="@layout/base_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

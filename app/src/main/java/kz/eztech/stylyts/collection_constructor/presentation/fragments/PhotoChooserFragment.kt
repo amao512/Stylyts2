@@ -301,7 +301,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(), PhotoChooserContract.
                 findNavController().navigateUp()
             }
             R.id.toolbar_right_text_text_view -> {
-                displayMessage(getString(R.string.photo_chooser_sucess_added))
+                displayMessage(getString(R.string.photo_chooser_success_added))
 
                 val intent = Intent(currentActivity, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -9,19 +9,22 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.collection.presentation.contracts.CollectionDetailContract
+import kz.eztech.stylyts.collection.presentation.dialogs.CollectionContextDialog
 import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.collection_constructor.presentation.adapters.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.common.domain.models.ClothesMainModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
+import kz.eztech.stylyts.common.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.common.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.common.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.common.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.common.presentation.utils.extensions.hide
 import kz.eztech.stylyts.common.presentation.utils.extensions.show
 
 class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailContract.View,
-    UniversalViewClickListener, View.OnClickListener {
+    UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
     private lateinit var currentModel: PublicationModel
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
@@ -139,16 +142,31 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayProgress() {}
+    override fun displayProgress() {
+        fragment_collection_detail_progress_bar.show()
+    }
 
-    override fun hideProgress() {}
+    override fun hideProgress() {
+        fragment_collection_detail_progress_bar.hide()
+    }
+
+    override fun onChoice(v: View?, item: Any?) {
+        when (v?.id) {
+            R.id.dialog_bottom_collection_context_delete_text_view -> {}
+        }
+    }
 
     private fun processPublication() {
-        with(currentModel) {
-//            clothes?.let {
+        processCollectionInfo()
+        processCollectionListeners()
+        loadCollectionPhoto()
+    }
+
+    private fun processCollectionInfo() {
+        //            clothes?.let {
 //                additionalAdapter.updateList(it)
 //            }
-            text_view_fragment_collection_detail_partner_name.text = "Author"
+        text_view_fragment_collection_detail_partner_name.text = "Author"
 //                "${author?.first_name} ${author?.last_name}"
 
 //            author?.avatar?.let {
@@ -156,20 +174,14 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 //                Glide.with(requireContext()).load(it)
 //                    .into(shapeable_image_view_fragment_collection_detail_profile_avatar)
 //            } ?: run {
-            shapeable_image_view_fragment_collection_detail_profile_avatar.visibility =
-                View.GONE
-            text_view_text_view_fragment_collection_detail_short_name.visibility = View.VISIBLE
-            text_view_text_view_fragment_collection_detail_short_name.text = getShortName(
-                firstName = "Author",
-                lastName = "Name"
-            )
+        shapeable_image_view_fragment_collection_detail_profile_avatar.visibility =
+            View.GONE
+        text_view_text_view_fragment_collection_detail_short_name.visibility = View.VISIBLE
+        text_view_text_view_fragment_collection_detail_short_name.text = getShortName(
+            firstName = "Author",
+            lastName = "Name"
+        )
 //            }
-            constraint_layout_fragment_collection_detail_profile_container.setOnClickListener { thisView ->
-                //adapter.itemClickListener?.onViewClicked(thisView,position,item)
-            }
-            button_fragment_collection_detail_change_collection.setOnClickListener { thisView ->
-                //adapter.itemClickListener?.onViewClicked(thisView,position,item)
-            }
 
 //            text_view_fragment_collection_detail_comments_cost.text =
 //                "${NumberFormat.getInstance().format(total_price)} $total_price_currency"
@@ -181,8 +193,23 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 //                    DateFormatterHelper.FORMAT_DATE_DD_MMMM
 //                )
 //            }"
-        }
+    }
 
+    private fun processCollectionListeners() {
+        constraint_layout_fragment_collection_detail_profile_container.setOnClickListener {
+//            adapter.itemClickListener?.onViewClicked(thisView, position, item)
+        }
+        button_fragment_collection_detail_change_collection.setOnClickListener {
+            //adapter.itemClickListener?.onViewClicked(thisView,position,item)
+        }
+        imageButton.setOnClickListener {
+            CollectionContextDialog().apply {
+                setChoiceListener(listener = this@CollectionDetailFragment)
+            }.show(childFragmentManager, EMPTY_STRING)
+        }
+    }
+
+    private fun loadCollectionPhoto() {
         Glide.with(this)
             .load(currentModel.imageOne)
             .into(this.image_view_fragment_collection_detail_imageholder)
