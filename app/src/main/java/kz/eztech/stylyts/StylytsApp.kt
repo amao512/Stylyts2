@@ -3,18 +3,18 @@ package kz.eztech.stylyts
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import kz.eztech.stylyts.address.di.AddressModule
-import kz.eztech.stylyts.auth.di.AuthModule
-import kz.eztech.stylyts.collection.di.CollectionModule
-import kz.eztech.stylyts.collection_constructor.di.CollectionConstructorModule
-import kz.eztech.stylyts.common.di.ApplicationComponent
-import kz.eztech.stylyts.common.di.DaggerApplicationComponent
-import kz.eztech.stylyts.common.di.modules.ApplicationModule
-import kz.eztech.stylyts.common.di.modules.NetworkModule
-import kz.eztech.stylyts.common.presentation.utils.helpers.LocaleHelper
-import kz.eztech.stylyts.main.di.MainModule
-import kz.eztech.stylyts.profile.di.ProfileModule
-import kz.eztech.stylyts.search.di.SearchModule
+import kz.eztech.stylyts.di.modules.AddressModule
+import kz.eztech.stylyts.di.modules.AuthModule
+import kz.eztech.stylyts.di.modules.CollectionModule
+import kz.eztech.stylyts.di.modules.CollectionConstructorModule
+import kz.eztech.stylyts.di.ApplicationComponent
+import kz.eztech.stylyts.di.DaggerApplicationComponent
+import kz.eztech.stylyts.di.modules.ApplicationModule
+import kz.eztech.stylyts.di.modules.NetworkModule
+import kz.eztech.stylyts.presentation.utils.helpers.LocaleHelper
+import kz.eztech.stylyts.di.modules.MainModule
+import kz.eztech.stylyts.di.modules.ProfileModule
+import kz.eztech.stylyts.di.modules.SearchModule
 
 /**
  * Created by Ruslan Erdenoff on 18.11.2020.

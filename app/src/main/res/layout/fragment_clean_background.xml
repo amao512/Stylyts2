@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".collection_constructor.presentation.fragments.CleanBackgroundFragment"
+    tools:context=".presentation.fragments.collection_constructor.CleanBackgroundFragment"
     >
 
     <LinearLayout

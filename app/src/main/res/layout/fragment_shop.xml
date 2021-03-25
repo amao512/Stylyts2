@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".common.presentation.fragments.shop.ShopFragment"
+    tools:context=".presentation.fragments.shop.ShopFragment"
     >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

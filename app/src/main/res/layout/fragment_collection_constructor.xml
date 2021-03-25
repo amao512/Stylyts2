@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/outfit_bg_color"
-    tools:context=".collection_constructor.presentation.fragments.CollectionConstructorFragment"
+    tools:context=".presentation.fragments.collection_constructor.CollectionConstructorFragment"
     >
 
-    <kz.eztech.stylyts.common.presentation.utils.stick.MotionView
+    <kz.eztech.stylyts.presentation.utils.stick.MotionView
         android:id="@+id/frame_layout_fragment_collection_constructor_images_container"
         android:layout_width="0dp"
         android:layout_height="0dp"

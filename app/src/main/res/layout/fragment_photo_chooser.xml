@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".collection_constructor.presentation.fragments.PhotoChooserFragment"
+    tools:context=".presentation.fragments.collection_constructor.PhotoChooserFragment"
     >
 
     <include
@@ -41,7 +41,7 @@
                     android:scaleType="fitCenter"
                     />
 
-                <kz.eztech.stylyts.common.presentation.utils.stick.MotionView
+                <kz.eztech.stylyts.presentation.utils.stick.MotionView
                     android:id="@+id/motion_view_fragment_photo_chooser_tags_container"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/detail_photo_height"

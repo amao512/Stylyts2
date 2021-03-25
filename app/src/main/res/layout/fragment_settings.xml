@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".settings.presentation.fragments.SettingsFragment"
+    tools:context=".presentation.fragments.settings.SettingsFragment"
     >
 
     <include
@@ -13,38 +13,38 @@
         layout="@layout/base_toolbar"
         />
 
-    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
         android:id="@+id/fragment_settings_saved_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_24x"
         />
 
-    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
         android:id="@+id/fragment_settings_personal_settings_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
         android:id="@+id/fragment_settings_confidentiality_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
         android:id="@+id/fragment_settings_rule_using_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
         android:id="@+id/fragment_settings_estimate_app_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
-    <kz.eztech.stylyts.settings.presentation.view.SettingsItemView
+    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
         android:id="@+id/fragment_settings_exit_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
