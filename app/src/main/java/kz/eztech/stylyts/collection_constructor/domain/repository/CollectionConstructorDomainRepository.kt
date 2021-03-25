@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.collection_constructor.domain.repository
 
 import io.reactivex.Single
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import okhttp3.MultipartBody
 
 interface CollectionConstructorDomainRepository {
@@ -12,5 +12,5 @@ interface CollectionConstructorDomainRepository {
         hidden: Boolean,
         tags: String,
         imageOne: MultipartBody.Part
-    ): Single<PublicationsModel>
+    ): Single<PublicationModel>
 }

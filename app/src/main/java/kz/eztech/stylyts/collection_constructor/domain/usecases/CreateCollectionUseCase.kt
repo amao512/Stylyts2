@@ -4,7 +4,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.common.data.api.RestConstants
 import kz.eztech.stylyts.common.domain.usecases.BaseUseCase
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.collection_constructor.domain.repository.CollectionConstructorDomainRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class CreateCollectionUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val collectionConstructorDomainRepository: CollectionConstructorDomainRepository
-) : BaseUseCase<PublicationsModel>(executorThread, uiThread) {
+) : BaseUseCase<PublicationModel>(executorThread, uiThread) {
 
     private lateinit var token: String
     private lateinit var description: String
@@ -23,7 +23,7 @@ class CreateCollectionUseCase @Inject constructor(
 
     private var hidden: Boolean = false
 
-    override fun createSingleObservable(): Single<PublicationsModel> {
+    override fun createSingleObservable(): Single<PublicationModel> {
         return collectionConstructorDomainRepository.createPost(
             token = token,
             description = description,

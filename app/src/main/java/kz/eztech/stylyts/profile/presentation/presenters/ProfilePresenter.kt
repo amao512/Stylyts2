@@ -1,7 +1,10 @@
 package kz.eztech.stylyts.profile.presentation.presenters
 
+import android.app.Application
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.R
+import kz.eztech.stylyts.collection.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.common.data.exception.ErrorHelper
 import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.profile.domain.usecases.GetProfileByIdUseCase
@@ -16,6 +19,7 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class ProfilePresenter @Inject constructor(
+	private val application: Application,
     private val errorHelper: ErrorHelper,
     private val getProfileUseCase: GetProfileUseCase,
     private val getProfileByIdUseCase: GetProfileByIdUseCase,
@@ -33,11 +37,69 @@ class ProfilePresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getProfile(token: String) {
+    override fun getProfile(
+		token: String,
+		userId: String,
+		isOwnProfile: Boolean
+	) {
         view.displayProgress()
 
-        getProfileUseCase.initParams(token)
-        getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+		if (isOwnProfile) {
+			getOwnProfile(token)
+		} else {
+			getProfileById(token, userId)
+		}
+    }
+
+	override fun getFilerList(isOwnProfile: Boolean) {
+		val filterList = mutableListOf<CollectionFilterModel>()
+
+		filterList.add(CollectionFilterModel(
+			id = 1,
+			name = application.getString(R.string.filter_list_filter),
+			icon = R.drawable.ic_filter
+		))
+		filterList.add(CollectionFilterModel(
+			id = 2,
+			name = application.getString(R.string.filter_list_publishes),
+			isChosen = true
+		))
+		filterList.add(CollectionFilterModel(id = 3, name = application.getString(R.string.filter_list_photo_outfits)))
+		filterList.add(CollectionFilterModel(id = 4, name = application.getString(R.string.filter_list_wardrobe)))
+
+		if (isOwnProfile) {
+			filterList.add(
+				CollectionFilterModel(
+					id = 5,
+					name = application.getString(R.string.filter_list_my_data)
+				)
+			)
+			filterList.add(
+				CollectionFilterModel(
+					id = 6,
+					name = application.getString(R.string.profile_add_to_wardrobe),
+					icon = R.drawable.ic_baseline_add
+				)
+			)
+		}
+
+		view.processFilter(filterList)
+	}
+
+    override fun getPublications(
+		token: String,
+		isOwnProfile: Boolean
+	) {
+        view.displayProgress()
+
+		if (isOwnProfile) {
+			getOwnPublications(token)
+		}
+    }
+
+	private fun getOwnProfile(token: String) {
+		getProfileUseCase.initParams(token)
+		getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
 				view.processViewAction {
 					hideProgress()
@@ -57,14 +119,12 @@ class ProfilePresenter @Inject constructor(
 				}
 			}
 		})
-    }
+	}
 
-	override fun getProfileById(
+	private fun getProfileById(
 		token: String,
 		userId: String
 	) {
-		view.displayProgress()
-
 		getProfileByIdUseCase.initParams(token, userId)
 		getProfileByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
@@ -83,12 +143,10 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-    override fun getMyPublications(token: String) {
-        view.displayProgress()
-
+	private fun getOwnPublications(token: String) {
 		getMyPublicationsUseCase.initParams(token)
-		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<SearchModel<PublicationsModel>>() {
-			override fun onSuccess(t: SearchModel<PublicationsModel>) {
+		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<SearchModel<PublicationModel>>() {
+			override fun onSuccess(t: SearchModel<PublicationModel>) {
 				view.processViewAction {
 					hideProgress()
 					processMyPublications(t)
@@ -102,5 +160,5 @@ class ProfilePresenter @Inject constructor(
 				}
 			}
 		})
-    }
+	}
 }

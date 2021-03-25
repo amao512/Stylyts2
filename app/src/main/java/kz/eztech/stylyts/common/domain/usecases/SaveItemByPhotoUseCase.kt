@@ -3,7 +3,7 @@ package kz.eztech.stylyts.common.domain.usecases
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.common.domain.models.ClothesMainModel
-import kz.eztech.stylyts.common.domain.repository.ItemDetailDomainRepository
+import kz.eztech.stylyts.collection.domain.repository.ItemDetailDomainRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Named

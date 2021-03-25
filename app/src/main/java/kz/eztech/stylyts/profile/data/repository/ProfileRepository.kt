@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.profile.data.repository
 
 import io.reactivex.Single
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.profile.data.api.ProfileApi
 import kz.eztech.stylyts.common.data.exception.NetworkException
 import kz.eztech.stylyts.common.domain.models.UserModel
@@ -55,7 +55,7 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    override fun getMyPublications(token: String): Single<SearchModel<PublicationsModel>> {
+    override fun getMyPublications(token: String): Single<SearchModel<PublicationModel>> {
         return api.getMyCollections(
             token = token
         ).map {

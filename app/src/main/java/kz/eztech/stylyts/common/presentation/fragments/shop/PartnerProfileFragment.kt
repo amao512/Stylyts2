@@ -7,10 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_partner_profile.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.common.domain.models.*
+import kz.eztech.stylyts.collection.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.common.presentation.activity.MainActivity
 import kz.eztech.stylyts.common.presentation.adapters.CategoryTypeDetailAdapter
-import kz.eztech.stylyts.collection_constructor.presentation.adapters.CollectionsFilterAdapter
+import kz.eztech.stylyts.collection.presentation.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.common.presentation.base.BaseFragment
 import kz.eztech.stylyts.common.presentation.base.BaseView
 import kz.eztech.stylyts.common.presentation.contracts.main.shop.PartnerProfileContract

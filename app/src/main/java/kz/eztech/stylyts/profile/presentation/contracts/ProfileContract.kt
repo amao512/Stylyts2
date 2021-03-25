@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.profile.presentation.contracts
 
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.common.presentation.base.BasePresenter
 import kz.eztech.stylyts.common.presentation.base.BaseView
@@ -21,14 +22,23 @@ interface ProfileContract {
 
         fun processProfile(userModel: UserModel)
 
-        fun processMyPublications(searchModel: SearchModel<PublicationsModel>)
+        fun processFilter(filterList: List<CollectionFilterModel>)
+
+        fun processMyPublications(searchModel: SearchModel<PublicationModel>)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getProfile(token: String)
+        fun getProfile(
+            token: String,
+            userId: String,
+            isOwnProfile: Boolean
+        )
 
-        fun getProfileById(token: String, userId: String)
+        fun getFilerList(isOwnProfile: Boolean)
 
-        fun getMyPublications(token: String)
+        fun getPublications(
+            token: String,
+            isOwnProfile: Boolean
+        )
     }
 }

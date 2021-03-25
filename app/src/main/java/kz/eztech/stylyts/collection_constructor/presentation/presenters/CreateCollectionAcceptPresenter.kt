@@ -3,7 +3,7 @@ package kz.eztech.stylyts.collection_constructor.presentation.presenters
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.common.data.exception.ErrorHelper
 import kz.eztech.stylyts.common.presentation.base.processViewAction
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.collection_constructor.domain.usecases.CreateCollectionUseCase
 import kz.eztech.stylyts.collection_constructor.presentation.contracts.CreateCollectionAcceptContract
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -40,11 +40,11 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         val body: MultipartBody.Part = MultipartBody.Part.createFormData("image_one", file.name, requestFile)
 
         createCollectionUseCase.initParams(token, description, tags, body, hidden)
-        createCollectionUseCase.execute(object : DisposableSingleObserver<PublicationsModel>() {
-            override fun onSuccess(t: PublicationsModel) {
+        createCollectionUseCase.execute(object : DisposableSingleObserver<PublicationModel>() {
+            override fun onSuccess(t: PublicationModel) {
                 view.processViewAction {
                     hideProgress()
-                    processPublications(publicationsModel = t)
+                    processPublications(publicationModel = t)
                 }
             }
 

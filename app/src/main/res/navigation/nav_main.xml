@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="kz.eztech.stylyts.common.presentation.fragments.MainFragment"
+        android:name="kz.eztech.stylyts.main.presentation.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action
@@ -44,7 +44,7 @@
     </fragment>
     <fragment
         android:id="@+id/collectionsFragment"
-        android:name="kz.eztech.stylyts.common.presentation.fragments.collections.CollectionsFragment"
+        android:name="kz.eztech.stylyts.collection.presentation.fragments.CollectionsFragment"
         android:label="fragment_collections"
         tools:layout="@layout/fragment_collections" >
         <action
@@ -102,7 +102,7 @@
     </fragment>
     <fragment
         android:id="@+id/itemDetailFragment"
-        android:name="kz.eztech.stylyts.common.presentation.fragments.detail.ItemDetailFragment"
+        android:name="kz.eztech.stylyts.collection.presentation.fragments.ItemDetailFragment"
         android:label="fragment_item_detail"
         tools:layout="@layout/fragment_item_detail" >
         <action
@@ -178,7 +178,7 @@
     </fragment>
     <fragment
         android:id="@+id/collectionDetailFragment"
-        android:name="kz.eztech.stylyts.common.presentation.fragments.detail.CollectionDetailFragment"
+        android:name="kz.eztech.stylyts.collection.presentation.fragments.CollectionDetailFragment"
         android:label="CollectionDetailFragment" >
         <action
             android:id="@+id/action_collectionDetailFragment_to_partnerProfileFragment"

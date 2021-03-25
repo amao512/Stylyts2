@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.profile.data.api
 
 import io.reactivex.Single
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.common.data.api.RestConstants
 import kz.eztech.stylyts.common.domain.models.UserModel
 import kz.eztech.stylyts.search.domain.models.SearchModel
@@ -34,5 +34,5 @@ interface ProfileApi {
     @GET(RestConstants.GET_MY_POSTS)
     fun getMyCollections(
         @Header("Authorization") token: String
-    ): Single<Response<SearchModel<PublicationsModel>>>
+    ): Single<Response<SearchModel<PublicationModel>>>
 }

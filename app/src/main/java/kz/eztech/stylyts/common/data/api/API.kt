@@ -1,26 +1,22 @@
 package kz.eztech.stylyts.common.data.api
 
 import io.reactivex.Single
+import kz.eztech.stylyts.collection_constructor.domain.models.CategoryTypeDetailModel
+import kz.eztech.stylyts.collection_constructor.domain.models.FilteredItemsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.common.data.api.RestConstants.GET_BRANDS
 import kz.eztech.stylyts.common.data.api.RestConstants.GET_CATEGORIES
 import kz.eztech.stylyts.common.data.api.RestConstants.GET_CATEGORIES_DETAIL
 import kz.eztech.stylyts.common.data.api.RestConstants.GET_COLLECTIONS
 import kz.eztech.stylyts.common.data.api.RestConstants.GET_FILTERED_ITEMS
-import kz.eztech.stylyts.common.data.api.RestConstants.GET_ITEM_BY_BARCODE
-import kz.eztech.stylyts.common.data.api.RestConstants.GET_ITEM_DETAIL
 import kz.eztech.stylyts.common.data.api.RestConstants.GET_STYLES
 import kz.eztech.stylyts.common.data.api.RestConstants.SAVE_COLLECTION
 import kz.eztech.stylyts.common.data.api.RestConstants.SAVE_COLLECTION_TO_ME
-import kz.eztech.stylyts.common.data.api.RestConstants.SAVE_ITEM_BY_PHOTO
-import kz.eztech.stylyts.common.data.api.RestConstants.SEARCH_USER_BY_NAME
 import kz.eztech.stylyts.common.data.api.RestConstants.UPDATE_COLLECTION
-import kz.eztech.stylyts.collection_constructor.domain.models.CategoryTypeDetailModel
-import kz.eztech.stylyts.collection_constructor.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.collection_constructor.domain.models.ShopCategoryModel
-import kz.eztech.stylyts.common.domain.models.ClothesMainModel
+import kz.eztech.stylyts.common.domain.models.BrandsModel
 import kz.eztech.stylyts.common.domain.models.MainLentaModel
 import kz.eztech.stylyts.common.domain.models.MainResult
-import kz.eztech.stylyts.common.domain.models.*
+import kz.eztech.stylyts.common.domain.models.Style
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -68,18 +64,6 @@ interface API {
         @QueryMap queries: Map<String, @JvmSuppressWildcards Any>
     ): Single<Response<MainLentaModel>>
 
-    @GET(GET_ITEM_DETAIL)
-    fun getItemDetail(
-        @Header("Authorization") token: String,
-        @Path("id") id: Int
-    ): Single<Response<ClothesMainModel>>
-
-    @FormUrlEncoded
-    @POST(GET_ITEM_BY_BARCODE)
-    fun getItemByBarcode(
-        @Header("Authorization") token: String,
-        @Field("barcode") value: String
-    ): Single<Response<ClothesMainModel>>
 
     @GET(GET_FILTERED_ITEMS)
     fun getFilteredItems(
@@ -95,17 +79,4 @@ interface API {
         @Header("Authorization") token: String,
         @Path("id") id: Int
     ): Single<Response<Unit>>
-
-    @GET(SEARCH_USER_BY_NAME)
-    fun searchUserByUsername(
-        @Header("Authorization") token: String,
-        @Query("username") username: String
-    ): Single<Response<List<UserSearchModel>>>
-
-    @Multipart
-    @POST(SAVE_ITEM_BY_PHOTO)
-    fun saveItemByPhoto(
-        @Header("Authorization") token: String,
-        @Part files: ArrayList<MultipartBody.Part>
-    ): Single<Response<ClothesMainModel>>
 }

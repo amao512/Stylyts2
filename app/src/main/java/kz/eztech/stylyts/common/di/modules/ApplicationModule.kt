@@ -10,12 +10,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.common.data.db.LocalDataSource
 import kz.eztech.stylyts.collection_constructor.data.repository.FilteredItemsRepository
-import kz.eztech.stylyts.common.data.repository.ItemDetailRepository
-import kz.eztech.stylyts.common.data.repository.MainLentaRepository
+import kz.eztech.stylyts.main.data.repository.MainLentaRepository
 import kz.eztech.stylyts.collection_constructor.data.repository.ShopCategoryRepository
 import kz.eztech.stylyts.collection_constructor.domain.repository.FilteredItemsDomainRepository
-import kz.eztech.stylyts.common.domain.repository.ItemDetailDomainRepository
-import kz.eztech.stylyts.common.domain.repository.MainLentaDomainRepository
+import kz.eztech.stylyts.main.domain.repository.MainLentaDomainRepository
 import kz.eztech.stylyts.collection_constructor.domain.repository.ShopCategoryDomainRepository
 import javax.inject.Named
 import javax.inject.Singleton
@@ -54,16 +52,6 @@ class ApplicationModule(private val mApplication: Application) {
     @Provides
     fun providesShopCategoryRepository(shopCategoryRepository: ShopCategoryRepository): ShopCategoryDomainRepository {
         return shopCategoryRepository
-    }
-
-    @Provides
-    fun providesMainLentaRepository(mainLentaRepository: MainLentaRepository): MainLentaDomainRepository {
-        return mainLentaRepository
-    }
-
-    @Provides
-    fun providesItemDetailRepository(itemDetailRepository: ItemDetailRepository): ItemDetailDomainRepository {
-        return itemDetailRepository
     }
 
     @Provides

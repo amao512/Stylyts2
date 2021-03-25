@@ -7,7 +7,7 @@ import kz.eztech.stylyts.collection_constructor.domain.models.ShopCategoryModel
 import kz.eztech.stylyts.collection_constructor.domain.usecases.GetFilteredItemsUseCase
 import kz.eztech.stylyts.collection_constructor.domain.usecases.GetCategoryUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction
-import kz.eztech.stylyts.common.presentation.contracts.main.collections.PhotoChooserContract
+import kz.eztech.stylyts.collection.presentation.contracts.PhotoChooserContract
 import javax.inject.Inject
 
 /**

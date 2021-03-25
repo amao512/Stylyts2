@@ -6,7 +6,6 @@
     android:id="@+id/shapeable_image_view_item_collection_image"
     android:layout_width="match_parent"
     android:layout_height="@dimen/collection_image_height"
-    android:layout_margin="@dimen/margin_size_16x"
     android:background="@color/app_very_light_gray"
     android:scaleType="centerInside"
     app:shapeAppearanceOverlay="@style/roundedImageView"

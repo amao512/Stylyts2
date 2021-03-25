@@ -3,7 +3,7 @@ package kz.eztech.stylyts.common.presentation.presenters
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.common.data.exception.ErrorHelper
 import kz.eztech.stylyts.common.domain.models.ClothesMainModel
-import kz.eztech.stylyts.common.domain.usecases.GetItemDetailUseCase
+import kz.eztech.stylyts.collection.domain.usecases.GetItemDetailUseCase
 import kz.eztech.stylyts.common.domain.usecases.SaveItemByPhotoUseCase
 import kz.eztech.stylyts.common.presentation.base.processViewAction
 import kz.eztech.stylyts.collection_constructor.presentation.contracts.CleanBackgroundContract

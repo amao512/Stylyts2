@@ -2,7 +2,7 @@ package kz.eztech.stylyts.profile.domain.usecases
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.common.data.api.RestConstants
 import kz.eztech.stylyts.common.domain.usecases.BaseUseCase
 import kz.eztech.stylyts.profile.domain.repository.ProfileDomainRepository
@@ -14,11 +14,11 @@ class GetMyPublicationsUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val profileDomainRepository: ProfileDomainRepository
-) : BaseUseCase<SearchModel<PublicationsModel>>(executorThread, uiThread) {
+) : BaseUseCase<SearchModel<PublicationModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
 
-    override fun createSingleObservable(): Single<SearchModel<PublicationsModel>> {
+    override fun createSingleObservable(): Single<SearchModel<PublicationModel>> {
         return profileDomainRepository.getMyPublications(token)
     }
 

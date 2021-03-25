@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_create_collection_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.collection_constructor.presentation.contracts.CreateCollectionAcceptContract
 import kz.eztech.stylyts.collection_constructor.presentation.presenters.CreateCollectionAcceptPresenter
 import kz.eztech.stylyts.common.data.models.SharedConstants
@@ -200,8 +200,8 @@ class CreateCollectionAcceptDialog : DialogFragment(), View.OnClickListener, Dia
         }
     }
 
-    override fun processPublications(publicationsModel: PublicationsModel) {
-        Log.d("TAG", publicationsModel.toString())
+    override fun processPublications(publicationModel: PublicationModel) {
+        Log.d("TAG", publicationModel.toString())
         findNavController().popBackStack(R.id.profileFragment, false)
     }
 

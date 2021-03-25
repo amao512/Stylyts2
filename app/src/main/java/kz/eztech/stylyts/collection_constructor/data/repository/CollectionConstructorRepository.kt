@@ -3,7 +3,7 @@ package kz.eztech.stylyts.collection_constructor.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.common.data.exception.NetworkException
 import kz.eztech.stylyts.collection_constructor.data.api.CollectionConstructorApi
-import kz.eztech.stylyts.collection_constructor.domain.models.PublicationsModel
+import kz.eztech.stylyts.collection_constructor.domain.models.PublicationModel
 import kz.eztech.stylyts.collection_constructor.domain.repository.CollectionConstructorDomainRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class CollectionConstructorRepository @Inject constructor(
         hidden: Boolean,
         tags: String,
         imageOne: MultipartBody.Part
-    ): Single<PublicationsModel> {
+    ): Single<PublicationModel> {
         return constructorApi.createPost(
             token = token,
             description = description,

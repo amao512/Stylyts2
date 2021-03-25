@@ -2,7 +2,7 @@ package kz.eztech.stylyts.common.presentation.adapters.holders
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_collection_filter.view.*
-import kz.eztech.stylyts.common.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.collection.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.common.presentation.adapters.BaseAdapter
 
 /**
