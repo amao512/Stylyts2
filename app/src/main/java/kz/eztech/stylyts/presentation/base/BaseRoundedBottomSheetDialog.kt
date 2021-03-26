@@ -10,9 +10,10 @@ import android.view.ViewGroup
 /**
  * Created by Ruslan Erdenoff on 10.01.2020.
  */
-open class BaseRoundedBottomSheetDialog (val currentId:Int) : RoundedCommonBottomSheetDialog() {
+open class BaseRoundedBottomSheetDialog(val currentId: Int) : RoundedCommonBottomSheetDialog() {
 
     internal var listener: DialogChooserListener? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -24,7 +25,7 @@ open class BaseRoundedBottomSheetDialog (val currentId:Int) : RoundedCommonBotto
         return inflater.inflate(currentId, container, false)
     }
 
-    fun setChoiceListener(listener: DialogChooserListener){
+    fun setChoiceListener(listener: DialogChooserListener) {
         this.listener = listener
     }
 }

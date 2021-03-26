@@ -251,4 +251,8 @@
     <string name="change_password_new_password">Новый пароль</string>
     <string name="change_password_old_password">Старый пароль</string>
     <string name="change_password_repeat_new_password">Повторите новый пароль</string>
+
+    <string name="send_problem_title">Сообщить о проблеме</string>
+    <string name="send_problem_spam">Спам</string>
+    <string name="send_problem_something_went_wrong">Что-то не работает</string>
 </resources>

@@ -251,4 +251,8 @@
     <string name="change_password_new_password">Жаңа құпия сөз</string>
     <string name="change_password_old_password">Ескі құпия сөз</string>
     <string name="change_password_repeat_new_password">Жаңа құпия сөзді қайталаңыз</string>
+
+    <string name="send_problem_title">Сообщить о проблеме</string>
+    <string name="send_problem_spam">Спам</string>
+    <string name="send_problem_something_went_wrong">Что-то не работает</string>
 </resources>

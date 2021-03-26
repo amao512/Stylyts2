@@ -17,6 +17,7 @@
         android:layout_marginVertical="@dimen/margin_size_20x"
         android:text="@string/dialog_exit_title"
         android:textAlignment="center"
+        android:textColor="@color/app_dark_blue_gray"
         android:textSize="@dimen/text_size_16x"
         />
 
@@ -61,5 +62,4 @@
         android:textSize="@dimen/text_size_14x"
         android:textStyle="bold"
         />
-
 </LinearLayout>

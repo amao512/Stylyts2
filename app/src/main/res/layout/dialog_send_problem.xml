@@ -3,9 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginHorizontal="@dimen/margin_size_16x"
     android:background="@android:color/transparent"
     android:orientation="vertical"
-    android:paddingHorizontal="@dimen/padding_size_16x"
     >
 
     <LinearLayout
@@ -16,12 +16,31 @@
         >
 
         <TextView
-            android:id="@+id/dialog_bottom_collection_context_delete_text_view"
+            style="@style/TitleTextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingVertical="@dimen/padding_size_16x"
-            android:text="@string/collection_context_delete"
+            android:text="@string/send_problem_title"
+            android:textColor="@color/app_dark_blue_gray"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/little_divider_height"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            android:id="@+id/dialog_send_problem_spam_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/send_problem_spam"
             android:textColor="@color/app_red"
             android:textSize="@dimen/text_size_14x"
             android:textStyle="bold"
@@ -34,12 +53,13 @@
             />
 
         <TextView
-            android:id="@+id/dialog_bottom_collection_context_archive_text_view"
+            android:id="@+id/dialog_send_problem_something_wrong_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:paddingVertical="@dimen/padding_size_16x"
-            android:text="@string/collection_context_archive"
+            android:text="@string/send_problem_something_went_wrong"
             android:textColor="@color/app_dark_blue_gray"
             android:textSize="@dimen/text_size_14x"
             android:textStyle="bold"
@@ -52,27 +72,10 @@
             />
 
         <TextView
-            android:id="@+id/dialog_bottom_collection_context_change_text_view"
+            android:id="@+id/dialog_send_problem_share_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:paddingVertical="@dimen/padding_size_16x"
-            android:text="@string/collection_context_change"
-            android:textColor="@color/app_dark_blue_gray"
-            android:textSize="@dimen/text_size_14x"
-            android:textStyle="bold"
-            />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/little_divider_height"
-            android:background="@color/divider_bg_color"
-            />
-
-        <TextView
-            android:id="@+id/dialog_bottom_collection_context_share_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:paddingVertical="@dimen/padding_size_16x"
             android:text="@string/collection_context_share"
@@ -91,13 +94,14 @@
         >
 
         <TextView
-            android:id="@+id/dialog_bottom_collection_cancel_archive_text_view"
+            android:id="@+id/dialog_send_problem_cancel_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center"
             android:paddingVertical="@dimen/padding_size_16x"
             android:text="@string/collection_context_cancel"
-            android:textColor="@color/app_dark_blue_gray"
+            android:textColor="@color/app_blue"
             android:textSize="@dimen/text_size_14x"
             android:textStyle="bold"
             />
