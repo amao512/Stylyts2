@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <include
+        android:id="@+id/dialog_push_notification_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <TextView
+        style="@style/TitleTextBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/push_notification"
+        android:textColor="@color/app_dark_blue_gray"
+        android:layout_marginHorizontal="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="@dimen/margin_size_16x"
+        >
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/push_notification_subtitle"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/dialog_push_notification_switch_compat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            app:thumbTint="@color/white"
+            app:track="@drawable/bg_switch_track_selector"
+            />
+    </LinearLayout>
+
+</LinearLayout>

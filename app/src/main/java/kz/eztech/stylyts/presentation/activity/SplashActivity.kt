@@ -21,13 +21,13 @@ class SplashActivity : BaseActivity() {
 
             override fun onAnimationEnd(animation: Animation?) {
                 val currentToken = getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
-//                if (currentToken.isNullOrEmpty()) {
-//                    startActivity(Intent(this@SplashActivity, AuthorizationActivity::class.java))
-//                    finish()
-//                } else {
+                if (currentToken.isNullOrEmpty()) {
+                    startActivity(Intent(this@SplashActivity, AuthorizationActivity::class.java))
+                    finish()
+                } else {
                     startActivity(Intent(this@SplashActivity, MainActivity::class.java))
                     finish()
-//                }
+                }
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}

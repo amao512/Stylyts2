@@ -35,7 +35,9 @@
                 android:gravity="center_vertical"
                 android:layoutDirection="rtl"
                 android:text="@string/language_russian"
+                android:textAlignment="textStart"
                 android:textColor="@color/app_gray_hint"
+                android:textDirection="ltr"
                 />
 
             <View
@@ -55,7 +57,9 @@
                 android:gravity="center_vertical"
                 android:layoutDirection="rtl"
                 android:text="@string/language_english"
+                android:textAlignment="textStart"
                 android:textColor="@color/app_gray_hint"
+                android:textDirection="ltr"
                 />
 
             <View
@@ -75,7 +79,9 @@
                 android:gravity="center_vertical"
                 android:layoutDirection="rtl"
                 android:text="@string/language_kazakh"
+                android:textAlignment="textStart"
                 android:textColor="@color/app_gray_hint"
+                android:textDirection="ltr"
                 />
         </RadioGroup>
 

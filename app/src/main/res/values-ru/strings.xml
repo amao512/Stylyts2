@@ -255,4 +255,7 @@
     <string name="send_problem_title">Сообщить о проблеме</string>
     <string name="send_problem_spam">Спам</string>
     <string name="send_problem_something_went_wrong">Что-то не работает</string>
+
+    <string name="push_notification">Push уведомления</string>
+    <string name="push_notification_subtitle">Выключить уведомления внутри приложения</string>
 </resources>
