@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_size_16x"
     android:background="@drawable/bg_rounded_dialog"
     android:orientation="vertical"
     >
@@ -12,11 +13,11 @@
         style="@style/Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_size_40x"
+        android:layout_marginHorizontal="@dimen/margin_size_64x"
         android:layout_marginVertical="@dimen/margin_size_20x"
         android:text="@string/dialog_exit_title"
         android:textAlignment="center"
-        android:textSize="@dimen/text_size_18x"
+        android:textSize="@dimen/text_size_16x"
         />
 
     <View
@@ -30,12 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="?attr/selectableItemBackground"
         android:paddingHorizontal="@dimen/padding_size_48x"
         android:paddingVertical="@dimen/padding_size_20x"
         android:text="@string/dialog_exit_positive_text"
         android:textAlignment="center"
         android:textColor="@color/app_red"
-        android:textSize="@dimen/text_size_16x"
+        android:textSize="@dimen/text_size_14x"
         android:textStyle="bold"
         />
 
@@ -50,12 +52,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:background="?attr/selectableItemBackground"
         android:paddingHorizontal="@dimen/padding_size_48x"
         android:paddingVertical="@dimen/padding_size_20x"
         android:text="@string/dialog_exit_cancel_text"
         android:textAlignment="center"
         android:textColor="@color/app_dark_blue_gray"
-        android:textSize="@dimen/text_size_16x"
+        android:textSize="@dimen/text_size_14x"
         android:textStyle="bold"
         />
 

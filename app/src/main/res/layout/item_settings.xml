@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="@dimen/settings_item_height"
+    android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:paddingHorizontal="@dimen/padding_size_16x"
     android:paddingVertical="@dimen/padding_size_8x"
@@ -19,10 +20,10 @@
     <TextView
         android:id="@+id/item_settings_title_text_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginStart="@dimen/margin_size_40x"
+        android:gravity="center_vertical"
         android:textColor="@color/app_dark_blue_gray"
-        android:textSize="@dimen/text_size_16x"
         tools:text="Сохраненное"
         />
 
