@@ -33,10 +33,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_6x"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"
+            android:paddingVertical="@dimen/padding_size_6x"
             >
 
             <ImageView
@@ -75,10 +77,12 @@
             android:id="@+id/fragment_personal_settings_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_6x"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"
+            android:paddingVertical="@dimen/padding_size_6x"
             >
 
             <TextView
@@ -100,10 +104,11 @@
             android:id="@+id/fragment_personal_settings_language"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_size_12x"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"
+            android:paddingVertical="@dimen/padding_size_6x"
             >
 
             <TextView
@@ -142,10 +147,12 @@
             android:id="@+id/fragment_personal_settings_tell_problem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_6x"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"
+            android:paddingVertical="@dimen/padding_size_6x"
             >
 
             <TextView
@@ -184,10 +191,12 @@
             android:id="@+id/fragment_personal_settings_notifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_6x"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"
+            android:paddingVertical="@dimen/padding_size_6x"
             >
 
             <TextView

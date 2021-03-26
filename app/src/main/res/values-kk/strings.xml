@@ -247,4 +247,8 @@
     <string name="collection_context_change">Изменить</string>
     <string name="collection_context_share">Поделиться</string>
     <string name="collection_context_cancel">Отмена</string>
+
+    <string name="change_password_new_password">Жаңа құпия сөз</string>
+    <string name="change_password_old_password">Ескі құпия сөз</string>
+    <string name="change_password_repeat_new_password">Жаңа құпия сөзді қайталаңыз</string>
 </resources>

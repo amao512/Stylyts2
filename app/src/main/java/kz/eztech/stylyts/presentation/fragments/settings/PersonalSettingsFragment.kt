@@ -13,6 +13,7 @@ import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import kz.eztech.stylyts.presentation.dialogs.settings.ChangeLanguageDialog
+import kz.eztech.stylyts.presentation.dialogs.settings.ChangePasswordDialog
 
 class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener {
 
@@ -45,6 +46,7 @@ class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
     override fun initializeListeners() {
         toolbar_left_corner_action_image_button.setOnClickListener(this)
         fragment_personal_settings_language.setOnClickListener(this)
+        fragment_personal_settings_password.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {}
@@ -63,6 +65,10 @@ class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_personal_settings_language -> ChangeLanguageDialog().show(
+                childFragmentManager,
+                EMPTY_STRING
+            )
+            R.id.fragment_personal_settings_password -> ChangePasswordDialog().show(
                 childFragmentManager,
                 EMPTY_STRING
             )

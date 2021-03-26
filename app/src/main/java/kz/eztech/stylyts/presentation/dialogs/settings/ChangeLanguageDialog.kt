@@ -57,6 +57,8 @@ class ChangeLanguageDialog : DialogFragment(), View.OnClickListener {
 
             toolbar_title_text_view.text = context.getString(R.string.language)
             toolbar_title_text_view.show()
+
+            background = ContextCompat.getDrawable(requireContext(), R.color.toolbar_bg_gray)
         }
     }
 
