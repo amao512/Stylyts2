@@ -257,4 +257,6 @@
 
     <string name="push_notification">Push notification</string>
     <string name="push_notification_subtitle">Выключить уведомления внутри приложения</string>
+
+    <string name="message_problem_subtitle">Please briefly describe the problem</string>
 </resources>

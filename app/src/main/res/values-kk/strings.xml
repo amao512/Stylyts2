@@ -258,4 +258,6 @@
 
     <string name="push_notification">Push уведомления</string>
     <string name="push_notification_subtitle">Выключить уведомления внутри приложения</string>
+
+    <string name="message_problem_subtitle">Мәселені қысқаша сипаттап беріңізші</string>
 </resources>

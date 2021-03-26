@@ -34,7 +34,7 @@
             />
 
         <TextView
-            android:id="@+id/dialog_send_problem_spam_text_view"
+            android:id="@+id/dialog_report_problem_spam_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -53,7 +53,7 @@
             />
 
         <TextView
-            android:id="@+id/dialog_send_problem_something_wrong_text_view"
+            android:id="@+id/dialog_report_problem_something_wrong_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -72,7 +72,7 @@
             />
 
         <TextView
-            android:id="@+id/dialog_send_problem_share_text_view"
+            android:id="@+id/dialog_report_problem_share_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -94,7 +94,7 @@
         >
 
         <TextView
-            android:id="@+id/dialog_send_problem_cancel_text_view"
+            android:id="@+id/dialog_report_problem_cancel_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"

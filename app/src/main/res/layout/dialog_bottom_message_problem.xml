@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_top_shape_white"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/padding_size_48x"
+    >
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_size_16x"
+        >
+
+        <TextView
+            android:id="@+id/dialog_bottom_message_problem_cancel_text_view"
+            style="@style/Text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textSize="@dimen/text_size_14x"
+            />
+
+        <TextView
+            android:id="@+id/dialog_bottom_message_problem_send_text_view"
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:clickable="false"
+            android:focusable="false"
+            android:text="@string/send"
+            android:textColor="@color/app_gray_hint"
+            android:textSize="@dimen/text_size_14x"
+            />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:background="@color/divider_bg_color"
+        />
+
+    <TextView
+        android:id="@+id/dialog_bottom_message_problem_title_text_view"
+        style="@style/TitleTextBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:textColor="@color/app_dark_blue_gray"
+        tools:text="Что-то не работает"
+        />
+
+    <TextView
+        style="@style/Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_10x"
+        android:text="@string/message_problem_subtitle"
+        android:textColor="@color/app_dark_blue_gray"
+        />
+
+    <EditText
+        android:id="@+id/dialog_bottom_message_problem_edit_text"
+        style="@style/Text"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/report_problem_edit_text_height"
+        android:layout_marginHorizontal="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_10x"
+        android:layout_marginBottom="@dimen/margin_size_24x"
+        android:background="@null"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:textColor="@color/app_dark_blue_gray"
+        />
+</LinearLayout>

@@ -1,6 +1,8 @@
 package kz.eztech.stylyts.presentation.fragments.settings
 
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
@@ -10,14 +12,15 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.dialogs.settings.*
+import kz.eztech.stylyts.presentation.interfaces.MessageProblemViewListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.dialogs.settings.ChangeLanguageDialog
-import kz.eztech.stylyts.presentation.dialogs.settings.ChangePasswordDialog
-import kz.eztech.stylyts.presentation.dialogs.settings.PushNotificationDialog
-import kz.eztech.stylyts.presentation.dialogs.settings.SendProblemDialog
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 
-class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener {
+class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View,
+    View.OnClickListener,
+    UniversalViewClickListener, MessageProblemViewListener {
 
     override fun getLayoutId(): Int = R.layout.fragment_personal_settings
 
@@ -69,21 +72,40 @@ class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_personal_settings_language -> ChangeLanguageDialog().show(
-                childFragmentManager,
-                EMPTY_STRING
+                childFragmentManager, EMPTY_STRING
             )
             R.id.fragment_personal_settings_password -> ChangePasswordDialog().show(
-                childFragmentManager,
-                EMPTY_STRING
+                childFragmentManager, EMPTY_STRING
             )
-            R.id.fragment_personal_settings_tell_problem -> SendProblemDialog().show(
-                childFragmentManager,
-                EMPTY_STRING
+            R.id.fragment_personal_settings_tell_problem -> ReportProblemDialog.getNewInstance(
+                universalViewClickListener = this
+            ).show(
+                childFragmentManager, EMPTY_STRING
             )
             R.id.fragment_personal_settings_notifications -> PushNotificationDialog().show(
-                childFragmentManager,
-                EMPTY_STRING
+                childFragmentManager, EMPTY_STRING
             )
         }
+    }
+
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        when (view.id) {
+            R.id.dialog_report_problem_spam_text_view -> MessageProblemDialog.getNewInstance(
+                problemTitle = getString(R.string.send_problem_spam),
+                messageProblemViewListener = this
+            ).show(childFragmentManager, EMPTY_STRING)
+            R.id.dialog_report_problem_something_wrong_text_view -> MessageProblemDialog.getNewInstance(
+                problemTitle = getString(R.string.send_problem_something_went_wrong),
+                messageProblemViewListener = this
+            ).show(childFragmentManager, EMPTY_STRING)
+        }
+    }
+
+    override fun writeProblem(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
