@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
-import android.util.Log
 import androidx.preference.PreferenceManager
 import kz.eztech.stylyts.presentation.base.BaseActivity
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -17,6 +16,10 @@ import java.util.*
 object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "locale_selected_language"
+
+    const val KAZAKH_LANGUAGE = "kz"
+    const val ENGLISH_LANGUAGE = "en"
+    const val RUSSIAN_LANGUAGE = "ru"
 
     fun setLocale(
         context: Context,
@@ -34,8 +37,12 @@ object LocaleHelper {
     fun setLocaleFromSharedPref(context: Context) {
         val language = PreferenceManager.getDefaultSharedPreferences(context).getString(SELECTED_LANGUAGE, EMPTY_STRING)
 
-        Log.d("TAG", "Styles App")
         BaseActivity.dLocale = Locale(language)
+    }
+
+    fun getLocaleFromSharedPref(context: Context): String {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+            .getString(SELECTED_LANGUAGE, EMPTY_STRING) ?: EMPTY_STRING
     }
 
     @TargetApi(Build.VERSION_CODES.N)
@@ -47,8 +54,6 @@ object LocaleHelper {
             putString(SELECTED_LANGUAGE, language)
             apply()
         }
-
-        Log.d("TAG", "locale helper")
     }
 
     @TargetApi(Build.VERSION_CODES.N)

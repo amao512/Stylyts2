@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     >
 
@@ -11,58 +12,73 @@
         layout="@layout/base_toolbar"
         />
 
-    <RadioGroup
-        android:id="@+id/dialog_change_language_radio_group"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:layout_marginTop="@dimen/margin_size_16x"
         >
 
-        <RadioButton
-            android:id="@+id/dialog_change_language_kazakh_radio_button"
+        <RadioGroup
+            android:id="@+id/dialog_change_language_radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:buttonTint="@color/black"
-            android:gravity="center_vertical"
-            android:layoutDirection="rtl"
-            android:text="@string/language_kazakh"
-            />
+            android:orientation="vertical"
+            >
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/little_divider_height"
-            android:layout_marginVertical="@dimen/margin_size_6x"
-            android:background="@color/divider_bg_color"
-            />
+            <RadioButton
+                android:id="@+id/dialog_change_language_russian_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_size_16x"
+                android:buttonTint="@color/app_gray_hint"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:layoutDirection="rtl"
+                android:text="@string/language_russian"
+                android:textColor="@color/app_gray_hint"
+                />
 
-        <RadioButton
-            android:id="@+id/dialog_change_language_english_radio_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/black"
-            android:gravity="center_vertical"
-            android:layoutDirection="rtl"
-            android:text="@string/language_english"
-            />
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginVertical="@dimen/margin_size_8x"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:background="@color/divider_bg_color"
+                />
 
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/little_divider_height"
-            android:layout_marginVertical="@dimen/margin_size_6x"
-            android:background="@color/divider_bg_color"
-            />
+            <RadioButton
+                android:id="@+id/dialog_change_language_english_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_size_16x"
+                android:buttonTint="@color/app_gray_hint"
+                android:gravity="center_vertical"
+                android:layoutDirection="rtl"
+                android:text="@string/language_english"
+                android:textColor="@color/app_gray_hint"
+                />
 
-        <RadioButton
-            android:id="@+id/dialog_change_language_russian_radio_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/black"
-            android:checked="true"
-            android:gravity="center_vertical"
-            android:layoutDirection="rtl"
-            android:text="@string/language_russian"
-            />
-    </RadioGroup>
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginVertical="@dimen/margin_size_8x"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:background="@color/divider_bg_color"
+                />
+
+            <RadioButton
+                android:id="@+id/dialog_change_language_kazakh_radio_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_size_16x"
+                android:buttonTint="@color/app_gray_hint"
+                android:gravity="center_vertical"
+                android:layoutDirection="rtl"
+                android:text="@string/language_kazakh"
+                android:textColor="@color/app_gray_hint"
+                />
+        </RadioGroup>
+
+    </FrameLayout>
 
 </LinearLayout>

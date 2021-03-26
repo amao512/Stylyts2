@@ -11,10 +11,13 @@ import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.dialog_change_language.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import kz.eztech.stylyts.presentation.utils.helpers.LocaleHelper
 
 class ChangeLanguageDialog : DialogFragment(), View.OnClickListener {
+
+    private var language = EMPTY_STRING
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,11 +37,14 @@ class ChangeLanguageDialog : DialogFragment(), View.OnClickListener {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> dismiss()
             R.id.toolbar_right_text_text_view -> {
+                LocaleHelper.setLocale(requireContext(), language)
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 activity?.finish()
             }
         }
     }
+
+    override fun getTheme(): Int = R.style.FullScreenDialog
 
     private fun customizeActionBar() {
         with (dialog_change_language_toolbar) {
@@ -60,16 +66,22 @@ class ChangeLanguageDialog : DialogFragment(), View.OnClickListener {
     }
 
     private fun initializeLanguageRadioGroup() {
+        when (LocaleHelper.getLocaleFromSharedPref(requireContext())) {
+            LocaleHelper.KAZAKH_LANGUAGE -> dialog_change_language_kazakh_radio_button.isChecked = true
+            LocaleHelper.ENGLISH_LANGUAGE -> dialog_change_language_english_radio_button.isChecked = true
+            LocaleHelper.RUSSIAN_LANGUAGE -> dialog_change_language_russian_radio_button.isChecked = true
+        }
+
         dialog_change_language_radio_group.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.dialog_change_language_kazakh_radio_button -> {
-                    LocaleHelper.setLocale(requireContext(), "kz")
+                    language = LocaleHelper.KAZAKH_LANGUAGE
                 }
                 R.id.dialog_change_language_english_radio_button -> {
-                    LocaleHelper.setLocale(requireContext(), "en")
+                    language = LocaleHelper.ENGLISH_LANGUAGE
                 }
                 R.id.dialog_change_language_russian_radio_button -> {
-                    LocaleHelper.setLocale(requireContext(), "ru")
+                    language = LocaleHelper.RUSSIAN_LANGUAGE
                 }
             }
         }
