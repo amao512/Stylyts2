@@ -25,7 +25,7 @@ import javax.inject.Inject
  */
 class EditProfileDialog(
     private val editorListener: EditorListener
-) : DialogFragment(), EditProfileContract.View {
+) : DialogFragment(), EditProfileContract.View, View.OnClickListener {
 
     @Inject lateinit var presenter: EditProfilePresenter
 
@@ -144,7 +144,9 @@ class EditProfileDialog(
         }
     }
 
-    override fun initializeListeners() {}
+    override fun initializeListeners() {
+        dialog_edit_profile_change_photo_text_view.setOnClickListener(this)
+    }
 
     override fun processPostInitialization() {}
 
@@ -163,6 +165,14 @@ class EditProfileDialog(
         editorListener.completeEditing(isSuccess = true)
 
         dismiss()
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.dialog_edit_profile_change_photo_text_view -> ChangeProfilePhotoDialog().show(
+                childFragmentManager, EMPTY_STRING
+            )
+        }
     }
 
     private fun completeEditing() {
