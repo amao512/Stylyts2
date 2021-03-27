@@ -73,7 +73,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         currentActivity.displayBottomNavigationView()
     }
 
-    override fun initializeListeners() {}
+    override fun initializeListeners() {
+        toolbar_right_corner_action_image_button.setOnClickListener(this)
+    }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
@@ -121,7 +123,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun getContractView(): BaseView = this
 
-    override fun onClick(v: View?) {}
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.toolbar_right_corner_action_image_button -> {
+                findNavController().navigate(R.id.action_mainFragment_to_chatsFragment)
+            }
+        }
+    }
 
     override fun displayProgress() {
         progress_bar_fragment_main_lenta.show()

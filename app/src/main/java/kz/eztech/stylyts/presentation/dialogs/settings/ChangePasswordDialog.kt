@@ -33,7 +33,8 @@ class ChangePasswordDialog : DialogFragment(R.layout.dialog_change_password), Vi
             toolbar_left_corner_action_image_button.show()
 
             toolbar_right_text_text_view.text = getString(R.string.saved_settings_save)
-            toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_light_orange))
+            toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_gray_hint))
+            toolbar_right_text_text_view.isClickable = false
             toolbar_right_text_text_view.show()
 
             toolbar_title_text_view.text = getString(R.string.password)

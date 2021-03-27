@@ -26,6 +26,10 @@
             android:id="@+id/action_mainFragment_to_collectionDetailFragment"
             app:destination="@id/collectionDetailFragment"
             />
+        <action
+            android:id="@+id/action_mainFragment_to_chatsFragment"
+            app:destination="@id/chatsFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/createCollectionFragment"
@@ -283,5 +287,11 @@
         android:id="@+id/createCollectionAcceptDialog"
         android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionAcceptDialog"
         android:label="CreateCollectionAcceptDialog"
+        />
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.chat.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats"
         />
 </navigation>

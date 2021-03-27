@@ -36,7 +36,7 @@
             android:layout_marginTop="@dimen/margin_size_16x"
             android:text="@string/saved_settings_save"
             android:textColor="@color/app_dark_blue_gray"
-            android:textSize="@dimen/text_size_18x"
+            android:textSize="@dimen/text_size_16x"
             android:textStyle="bold"
             android:layout_gravity="start"
             />
@@ -46,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_size_8x"
             android:text="@string/saved_settings_save_subtitle"
-            android:textSize="@dimen/text_size_14x"
             />
     </LinearLayout>
 

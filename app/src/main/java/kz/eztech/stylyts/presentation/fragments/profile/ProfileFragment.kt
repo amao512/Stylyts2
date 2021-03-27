@@ -294,16 +294,17 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onFilterClick(position: Int) {
-        adapterFilter.onChooseItem(position)
-
         when (position) {
             0 -> {}
-            1 -> presenter.getPublications(
-                token = getTokenFromSharedPref(),
-                isOwnProfile = isOwnProfile
-            )
-            2 -> {}
-            3 -> {}
+            1 -> {
+                presenter.getPublications(
+                    token = getTokenFromSharedPref(),
+                    isOwnProfile = isOwnProfile
+                )
+                adapterFilter.onChooseItem(position)
+            }
+            2 -> adapterFilter.onChooseItem(position)
+            3 -> adapterFilter.onChooseItem(position)
             4 -> processMyData()
             5 ->  CreatorChooserDialog().apply {
                 setChoiceListener(listener = this@ProfileFragment)

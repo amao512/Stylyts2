@@ -46,6 +46,8 @@ class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
+        currentActivity.hideBottomNavigationView()
+
         fragment_settings_saved_items.setItem(
             title = getString(R.string.settings_saved),
             icon = R.drawable.ic_saved

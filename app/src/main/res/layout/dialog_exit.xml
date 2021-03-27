@@ -13,7 +13,7 @@
         style="@style/Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_size_64x"
+        android:layout_marginHorizontal="@dimen/margin_size_48x"
         android:layout_marginVertical="@dimen/margin_size_20x"
         android:text="@string/dialog_exit_title"
         android:textAlignment="center"

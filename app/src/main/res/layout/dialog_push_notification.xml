@@ -44,7 +44,6 @@
             android:id="@+id/dialog_push_notification_switch_compat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
             app:thumbTint="@color/white"
             app:track="@drawable/bg_switch_track_selector"
             />

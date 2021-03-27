@@ -259,4 +259,6 @@
     <string name="push_notification_subtitle">Выключить уведомления внутри приложения</string>
 
     <string name="message_problem_subtitle">Please briefly describe the problem</string>
+    <string name="chats_title">Чаты</string>
+    <string name="chats_empty_subtitle">В данной момент у вас нет чатов с другими пользователями. Найдите нужного вам пользователя или магазин в поиске, или зайдите к нему на странице и начните чат.</string>
 </resources>

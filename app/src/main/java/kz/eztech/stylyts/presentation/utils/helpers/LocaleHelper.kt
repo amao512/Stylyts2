@@ -17,7 +17,7 @@ object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "locale_selected_language"
 
-    const val KAZAKH_LANGUAGE = "kz"
+    const val KAZAKH_LANGUAGE = "kk"
     const val ENGLISH_LANGUAGE = "en"
     const val RUSSIAN_LANGUAGE = "ru"
 
