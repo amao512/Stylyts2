@@ -51,7 +51,7 @@ class ChangeLanguageDialog : DialogFragment(), View.OnClickListener {
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
 
-            toolbar_right_text_text_view.text = getString(R.string.ready)
+            toolbar_right_text_text_view.text = getString(R.string.done)
             toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_light_orange))
             toolbar_right_text_text_view.show()
 

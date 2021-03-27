@@ -78,7 +78,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(), PhotoChooserContract.
             toolbar_left_corner_action_image_button.hide()
 
             toolbar_right_text_text_view.show()
-            toolbar_right_text_text_view.text = context.getString(R.string.ready)
+            toolbar_right_text_text_view.text = context.getString(R.string.done)
             toolbar_right_text_text_view.setOnClickListener {
                 showCompleteDialog()
             }

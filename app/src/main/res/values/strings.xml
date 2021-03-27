@@ -9,25 +9,25 @@
 
     <string name="fragment_login_forgot_password">Forgot password?</string>
     <string name="fragment_login_sign_in">Sign in</string>
-    <string name="fragment_login_no_account">Нет аккаунта?</string>
+    <string name="fragment_login_no_account">Don\'t have an account?</string>
     <string name="fragment_login_sign_up">Sign up</string>
 
     <string name="fragment_registration_appbar_title">Sign up</string>
     <string name="fragment_registration_birth_date">Date of birth(месяц/день/год)</string>
-    <string name="fragment_registration_term"><![CDATA[Нажимая на кнопку Завершить регистрацию ниже, я соглашаюсь с уловиями Style App в рамках <u><font color=#0D4193>Правил Пользования, Условия оплаты, Политика  Конфиденциальности.</font></u>]]></string>
-    <string name="fragment_registration_complete">Завершить регистрацию</string>
-    <string name="fragment_registration_notification_info">Style App будет высылать вам почту только в рамках оповещения пользователей, маркентингового характера и push оповешения. Вы можете отписаться от получения данных писем в любое время выбрав данную опцию в настройках вашего аккаунта.</string>
-    <string name="fragment_registration_notification_info_reject_checkbox">Я не хочу получать рекламные письма от Style App.</string>
+    <string name="fragment_registration_term"><![CDATA[By clicking on the Complete registration button below, I agree to the terms of the Style App within <u><font color=#0D4193>Terms of Use, Terms of Payment, Privacy Policy.</font></u>]]></string>
+    <string name="fragment_registration_complete">Complete registration</string>
+    <string name="fragment_registration_notification_info">Style App will only send you mail as part of user notification, marketing and push notification. You can unsubscribe from receiving these letters at any time by selecting this option in your account settings.</string>
+    <string name="fragment_registration_notification_info_reject_checkbox">I don\'t want to receive promotional emails from Style App.</string>
 
-    <string name="fragment_restore_password_forgot_password_title">Забыли Пароль?</string>
-    <string name="fragment_restore_password_forgot_password_description">Пожалуйста введите ваш Email адрес и мы сразу вышлем ваш на пароль вам на почту.</string>
-    <string name="fragment_restore_password_forgot_password_send_password_button">Отправить пароль</string>
-    <string name="fragment_restore_password_refresh_password_title">Обновите Пароль</string>
-    <string name="fragment_restore_password_refresh_password_description">Пожалуйста создайте ваш новый пароль</string>
-    <string name="fragment_restore_password_refresh_password_refresh_password_button">Обновить пароль</string>
-    <string name="fragment_restore_password_success_refreshed_title">Здравствуйте %1$s!</string>
-    <string name="fragment_restore_password_success_refreshed_description">Ваш пароль успешно обновлён!</string>
-    <string name="fragment_restore_password_success_refreshed_next_button">Вернуться в приложение</string>
+    <string name="fragment_restore_password_forgot_password_title">Forgot password?</string>
+    <string name="fragment_restore_password_forgot_password_description">Please enter your Email address and we will immediately send your password to your email.</string>
+    <string name="fragment_restore_password_forgot_password_send_password_button">Send password</string>
+    <string name="fragment_restore_password_refresh_password_title">Refresh password</string>
+    <string name="fragment_restore_password_refresh_password_description">Please create your new password</string>
+    <string name="fragment_restore_password_refresh_password_refresh_password_button">Refresh password</string>
+    <string name="fragment_restore_password_success_refreshed_title">Hello %1$s!</string>
+    <string name="fragment_restore_password_success_refreshed_description">Your password has been successfully updated!</string>
+    <string name="fragment_restore_password_success_refreshed_next_button">Return to app</string>
 
     <string name="item_user_comment"><![CDATA[<b>%1$s%2$s</b> %3$s]]></string>
 
@@ -42,14 +42,14 @@
     <string name="country">Country</string>
     <string name="city">City</string>
     <string name="address">Address</string>
-    <string name="locality">Населенный пункт</string>
-    <string name="post_index">Почтовый индекс</string>
+    <string name="locality">Locality</string>
+    <string name="post_index">Postcode</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
 
     <string name="bottom_nav_bar_main">Main</string>
-    <string name="bottom_nav_bar_collection">Образы</string>
-    <string name="bottom_nav_bar_create_collection">Создать образ</string>
+    <string name="bottom_nav_bar_collection">Outfits</string>
+    <string name="bottom_nav_bar_create_collection">Create outfit</string>
     <string name="bottom_nav_bar_shop">Search</string>
     <string name="bottom_nav_bar_profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -60,56 +60,56 @@
     <string name="full_name_text_format">%s %s</string>
 
     <string name="filter_list_filter">Filter</string>
-    <string name="filter_list_photo_outfits">Фото образов</string>
+    <string name="filter_list_photo_outfits">Photo of outfits</string>
     <string name="filter_list_publishes">Publications</string>
     <string name="filter_list_wardrobe">Wardrobe</string>
-    <string name="filter_list_my_data">Мои данные</string>
+    <string name="filter_list_my_data">My data</string>
 
     <string name="toolbar_title_edit_profile">Edit profile</string>
     <string name="toolbar_title_comments">Comments</string>
     <string name="toolbar_cancel">Cancel</string>
-    <string name="toolbar_completed">Готово</string>
+    <string name="toolbar_completed">Done</string>
 
-    <string name="cancel">Отмена</string>
-    <string name="color">Цвет</string>
-    <string name="size">Размер</string>
-    <string name="add_in_basket">Добавить в корзину</string>
-    <string name="share">Поделиться</string>
-    <string name="create_outfit_with_item">Создать образ с этой вещью</string>
-    <string name="item_description">Описание товара</string>
-    <string name="delivery_info">Информация о доставке</string>
-    <string name="albums">Альбомы</string>
-    <string name="followers">подписчики</string>
-    <string name="photo">фото</string>
-    <string name="following">подписки</string>
-    <string name="follow">Подписаться</string>
-    <string name="for_her">Для нее</string>
-    <string name="month_year">Месяц/Год</string>
-    <string name="name_surname">Имя Фамилия</string>
-    <string name="send">Отправить</string>
-    <string name="counts">Кол-во</string>
-    <string name="sale_commission">Коммисия за продажу</string>
-    <string name="reply">Ответить</string>
+    <string name="cancel">Cancel</string>
+    <string name="color">Color</string>
+    <string name="size">Size</string>
+    <string name="add_in_basket">Add to Shopping Cart</string>
+    <string name="share">Share</string>
+    <string name="create_outfit_with_item">Create an outfit with this thing</string>
+    <string name="item_description">Product description</string>
+    <string name="delivery_info">Information about delivery</string>
+    <string name="albums">Albums</string>
+    <string name="followers">followers</string>
+    <string name="photo">Photo</string>
+    <string name="following">following</string>
+    <string name="follow">follow</string>
+    <string name="for_her">For her</string>
+    <string name="month_year">Month/Year</string>
+    <string name="name_surname">Name Surname</string>
+    <string name="send">Send</string>
+    <string name="counts">Counts</string>
+    <string name="sale_commission">Sale commission</string>
+    <string name="reply">Reply</string>
 
     <string name="instagram">Instagram</string>
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="tik_tok">Tik Tok</string>
 
-    <string name="collection_chooser_publish">Опубликовать в общей ленте</string>
-    <string name="collection_chooser_save">Сохранить без публикации</string>
-    <string name="collection_chooser_buy">Купить данный образ</string>
+    <string name="collection_chooser_publish">Post to shared feed</string>
+    <string name="collection_chooser_save">Save without publishing</string>
+    <string name="collection_chooser_buy">Buy this look</string>
 
-    <string name="detail_chooser_size_table">ТАБЛИЦА РАЗМЕРОВ</string>
-    <string name="detail_chooser_ready">ГОТОВО</string>
+    <string name="detail_chooser_size_table">SIZE TABLE</string>
+    <string name="detail_chooser_ready">DONE</string>
 
-    <string name="photo_chooser_add_item_by_barcode">Добавить вещь по штрихкоду</string>
-    <string name="photo_chooser_add_item_by_photo">Добавить вещь по фотографии</string>
-    <string name="photo_chooser_publish_in_outfit">Опубликовать фото в образе</string>
+    <string name="photo_chooser_add_item_by_barcode">Add item by barcode</string>
+    <string name="photo_chooser_add_item_by_photo">Add item by photo</string>
+    <string name="photo_chooser_publish_in_outfit">Post a photo in an outfit</string>
 
-    <string name="my_basket">Моя корзина</string>
-    <string name="empty_basket_title">Ваша корзина пуста</string>
-    <string name="empty_basket_subtitle">Добавьте вещи, чтобы они отобразились в корзине</string>
+    <string name="my_basket">My basket</string>
+    <string name="empty_basket_title">Your basket is empty</string>
+    <string name="empty_basket_subtitle">Add items to show up in your shopping cart</string>
 
     <string name="collection_add_text">Добавить надпись</string>
     <string name="collection_accept_cancel_items">Отметить вещи</string>
@@ -118,26 +118,26 @@
 
     <string name="edit_profile_change_photo">Изменить фото профиля</string>
 
-    <string name="profile_name">Имя</string>
-    <string name="profile_username">Имя пользователя</string>
-    <string name="profile_web_site">Сайт</string>
-    <string name="profile_desc">Описание</string>
-    <string name="profile_add_desc">Добавьте информацию о себе</string>
-    <string name="profile_add_instagram">Добавьте cсылку на instagram</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_username">Username</string>
+    <string name="profile_web_site">Web site</string>
+    <string name="profile_desc">Description</string>
+    <string name="profile_add_desc">Add information about yourself</string>
+    <string name="profile_add_instagram">Add link on instagram</string>
 
-    <string name="filter_constructor_filter">Фильтровать</string>
-    <string name="filter_constructor_show_results">Показать результаты</string>
+    <string name="filter_constructor_filter">Filter</string>
+    <string name="filter_constructor_show_results">Show Results</string>
 
-    <string name="address_profile_title">Адресная книга</string>
-    <string name="address_profile_empty">У вас отсутствуют адрес доставки. Добавьте адрес.</string>
-    <string name="address_profile_add">Добавить адрес</string>
-    <string name="address_profile_contact">Контактная информация</string>
-    <string name="address_profile_mobile_phone">Мобильный телефон</string>
-    <string name="address_profile_address_data">Адресные данные</string>
-    <string name="address_profile_prefer_address">Предпочтительный адрес доставки</string>
-    <string name="address_profile_default_score">Адрес выставления счетов по умолчанию</string>
-    <string name="address_profile_deleted">Адрес доставки удален</string>
-    <string name="address_profile_set_default">Установить в качестве адреса доставки по умолчанию</string>
+    <string name="address_profile_title">The address book</string>
+    <string name="address_profile_empty">You do not have a shipping address. Add an address.</string>
+    <string name="address_profile_add">Add an address</string>
+    <string name="address_profile_contact">Contact Information</string>
+    <string name="address_profile_mobile_phone">Mobile phone</string>
+    <string name="address_profile_address_data">Address data</string>
+    <string name="address_profile_prefer_address">Preferred shipping address</string>
+    <string name="address_profile_default_score">Default billing address</string>
+    <string name="address_profile_deleted">Shipping address removed</string>
+    <string name="address_profile_set_default">Set as default shipping address</string>
 
     <string name="card_empty">У вас отсутствуют сохраненные способы оплаты. Добавьте карту</string>
     <string name="card_add">Добавить Кредитную/Дебетовую Карту</string>
@@ -163,32 +163,32 @@
     <string name="photo_chooser_touch">Коснитесь фотографии, чтобы отметить вещь</string>
     <string name="photo_chooser_move_title">Что переместить метку, нажмите на нее и перетащите на желаемое место.</string>
 
-    <string name="profile_change">Изменить профиль</string>
-    <string name="profile_my_orders">Мои Заказы</string>
+    <string name="profile_change">Change profile</string>
+    <string name="profile_my_orders">My orders</string>
     <string name="profile_payments">Способ Оплаты</string>
     <string name="profile_favorites">Избранное</string>
     <string name="profile_my_address">Мой Адрес</string>
     <string name="profile_my_incomes">Мои доходы</string>
     <string name="profile_help_need">Нужна Помощь</string>
-    <string name="profile_add_by_photo">Добавить вещь по фото</string>
-    <string name="profile_add_by_barcode">Добавить вещь по шрих коду</string>
+    <string name="profile_add_by_photo">Add an item by photo</string>
+    <string name="profile_add_by_barcode">Add an item by barcode</string>
 
-    <string name="profile_income_title">Доходы от продаж</string>
+    <string name="profile_income_title">Sales revenue</string>
 
-    <string name="comments_add">Добавьте комментарий&#8230;</string>
-    <string name="empty_fields_message">Пожалуйста, заполините поля!</string>
+    <string name="comments_add">Add comment&#8230;</string>
+    <string name="empty_fields_message">Please, enter fields!</string>
 
-    <string name="settings_saved">Сохраненное</string>
-    <string name="settings_personal_settings">Личные настройки</string>
-    <string name="settings_confidentiality">Политика конфиденциальности</string>
-    <string name="settings_rule_using">Правила пользования</string>
-    <string name="settings_estimate_app">Оценить приложение</string>
-    <string name="settings_exit">Выйти</string>
-    <string name="settings_title">Настройки</string>
-    <string name="search_item_accounts">Аккаунты</string>
-    <string name="search_item_shops">Магазины</string>
-    <string name="search_item_items">Вещи</string>
-    <string name="subscribe">Подписаться</string>
+    <string name="settings_saved">Saved</string>
+    <string name="settings_personal_settings">Personal settings</string>
+    <string name="settings_confidentiality">Privacy Policy</string>
+    <string name="settings_rule_using">Terms of use</string>
+    <string name="settings_estimate_app">Rate app</string>
+    <string name="settings_exit">Exit</string>
+    <string name="settings_title">Settings</string>
+    <string name="search_item_accounts">Accounts</string>
+    <string name="search_item_shops">Shops</string>
+    <string name="search_item_items">Clothes</string>
+    <string name="subscribe">Follow</string>
 
     <string name="card_fragment_add_way_payment">Добавить Способ Оплаты</string>
 
@@ -198,22 +198,22 @@
     <string name="saved_settings_save">Сохранить</string>
     <string name="saved_settings_save_subtitle">Сохраняйте публикации и образы, которые хотите посмотреть позже. Только вы сможете просматривать сохраненные вами обьекты.</string>
 
-    <string name="dialog_exit_title">Вы точно хотите выйти из аккаунта %s?</string>
-    <string name="dialog_exit_positive_text">Выйти</string>
-    <string name="dialog_exit_cancel_text">Отмена</string>
+    <string name="dialog_exit_title">You definitely want to log out of your %s account?</string>
+    <string name="dialog_exit_positive_text">Exit</string>
+    <string name="dialog_exit_cancel_text">Cancel</string>
 
-    <string name="personal_settings_title">Личные настройки</string>
-    <string name="personal_settings_invite">Пригласить</string>
-    <string name="personal_settings_invite_friends">Пригласите ваших друзей</string>
-    <string name="personal_settings_account">Аккаунт</string>
-    <string name="personal_settings_support">Служба поддержки</string>
-    <string name="personal_settings_tell_problem">Сообщить о проблеме</string>
-    <string name="personal_settings_notification">Уведомления</string>
-    <string name="personal_settings_push_notification">Push Уведомления</string>
+    <string name="personal_settings_title">Personal settings</string>
+    <string name="personal_settings_invite">Share</string>
+    <string name="personal_settings_invite_friends">Invite your friends</string>
+    <string name="personal_settings_account">Accounts</string>
+    <string name="personal_settings_support">Support service</string>
+    <string name="personal_settings_tell_problem">Report an issue</string>
+    <string name="personal_settings_notification">Notification</string>
+    <string name="personal_settings_push_notification">Push Notification</string>
 
-    <string name="price_tenge_text_format">%s тг</string>
+    <string name="price_tenge_text_format">%s tenges</string>
 
-    <string name="collection_constructor_success_added">Успешно добавлено</string>
+    <string name="collection_constructor_success_added">Success added</string>
     <string name="collection_constructor_not_all_data_filled">Не все данные заполнены</string>
     <string name="collection_constructor_add_by_barcode">Добавить по штрихкоду</string>
     <string name="collection_constructor_add_by_photo">Добавить по фото</string>
@@ -223,42 +223,43 @@
     <string name="clean_background_title">Добавить вещь</string>
     <string name="clean_background_convert_error">Ошибка при конвертировании фотографии</string>
 
-    <string name="constructor_filter_clear">Очистить</string>
-    <string name="constructor_filter_reset">Сбросить</string>
+    <string name="constructor_filter_clear">Cleaer</string>
+    <string name="constructor_filter_reset">Reset</string>
 
     <string name="create_collection_create_outfit">Создать образ</string>
-    <string name="create_collection_ready">Готово</string>
+    <string name="create_collection_ready">Done</string>
 
     <string name="save_item_accept_add_item">Добавить вещь</string>
-    <string name="save_item_accept_ready">Готово</string>
+    <string name="save_item_accept_ready">Done</string>
 
-    <string name="post_creator_title">Создать Публикацию</string>
+    <string name="post_creator_title">Create publication</string>
 
     <string name="profile_add_to_wardrobe">Добавить вещь в гардероб</string>
 
-    <string name="ready">Готово</string>
+    <string name="done">Done</string>
 
-    <string name="photo_chooser_title">Создать Публикацию</string>
-    <string name="photo_chooser_success_added">Успешно добавлено</string>
+    <string name="photo_chooser_title">Create Publication</string>
+    <string name="photo_chooser_success_added">Success added</string>
 
-    <string name="collection_context_delete">Удалить</string>
-    <string name="collection_context_archive">Архивировать</string>
-    <string name="collection_context_change">Изменить</string>
-    <string name="collection_context_share">Поделиться</string>
-    <string name="collection_context_cancel">Отмена</string>
+    <string name="collection_context_delete">Delete</string>
+    <string name="collection_context_archive">Archive</string>
+    <string name="collection_context_change">Change</string>
+    <string name="collection_context_share">Share</string>
+    <string name="collection_context_cancel">Cancel</string>
 
     <string name="change_password_new_password">New password</string>
     <string name="change_password_old_password">Previous password</string>
     <string name="change_password_repeat_new_password">Repeat new password</string>
 
-    <string name="send_problem_title">Сообщить о проблеме</string>
-    <string name="send_problem_spam">Спам</string>
-    <string name="send_problem_something_went_wrong">Что-то не работает</string>
+    <string name="send_problem_title">Report issue</string>
+    <string name="send_problem_spam">Spam</string>
+    <string name="send_problem_something_went_wrong">Something went wrong</string>
 
     <string name="push_notification">Push notification</string>
-    <string name="push_notification_subtitle">Выключить уведомления внутри приложения</string>
+    <string name="push_notification_subtitle">Turn off notifications inside the app</string>
 
     <string name="message_problem_subtitle">Please briefly describe the problem</string>
-    <string name="chats_title">Чаты</string>
-    <string name="chats_empty_subtitle">В данной момент у вас нет чатов с другими пользователями. Найдите нужного вам пользователя или магазин в поиске, или зайдите к нему на странице и начните чат.</string>
+
+    <string name="chats_title">Chats</string>
+    <string name="chats_empty_subtitle">You do not currently have chats with other users. Find the user or store you need in the search, or go to him on the page and start a chat.</string>
 </resources>

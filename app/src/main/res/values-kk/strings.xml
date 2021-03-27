@@ -237,15 +237,15 @@
 
     <string name="profile_add_to_wardrobe">Добавить вещь в гардероб</string>
 
-    <string name="ready">Готово</string>
+    <string name="done">Дайын</string>
 
     <string name="photo_chooser_title">Создать Публикацию</string>
     <string name="photo_chooser_success_added">Успешно добавлено</string>
 
-    <string name="collection_context_delete">Удалить</string>
+    <string name="collection_context_delete">Өшіру</string>
     <string name="collection_context_archive">Архивировать</string>
-    <string name="collection_context_change">Изменить</string>
-    <string name="collection_context_share">Поделиться</string>
+    <string name="collection_context_change">Өзгерту</string>
+    <string name="collection_context_share">Бөлісу</string>
     <string name="collection_context_cancel">Отмена</string>
 
     <string name="change_password_new_password">Жаңа құпия сөз</string>
@@ -256,8 +256,11 @@
     <string name="send_problem_spam">Спам</string>
     <string name="send_problem_something_went_wrong">Что-то не работает</string>
 
-    <string name="push_notification">Push уведомления</string>
-    <string name="push_notification_subtitle">Выключить уведомления внутри приложения</string>
+    <string name="push_notification">Push хабарлама</string>
+    <string name="push_notification_subtitle">Қолданба ішіндегі хабарландыруларды өшіру</string>
 
     <string name="message_problem_subtitle">Мәселені қысқаша сипаттап беріңізші</string>
+
+    <string name="chats_title">Чат</string>
+    <string name="chats_empty_subtitle">Қазіргі уақытта сізде басқа қолданушылармен чаттар жоқ. Іздеу кезінде қажет пайдаланушыны немесе дүкенді табыңыз немесе оған бетте кіріп, сұхбат бастаңыз.</string>
 </resources>
