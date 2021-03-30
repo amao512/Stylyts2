@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_size_16x"
         android:layout_marginVertical="@dimen/margin_size_8x"
+        android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
         >
 

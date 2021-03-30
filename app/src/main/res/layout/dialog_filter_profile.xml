@@ -40,6 +40,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dialog_filter_profile_title"
         tools:listitem="@layout/item_filter_group"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/padding_size_48x"
         />
 
     <com.google.android.material.button.MaterialButton
@@ -47,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_margin="@dimen/margin_size_24x"
+        android:layout_margin="@dimen/margin_size_16x"
         android:gravity="start"
         android:imeOptions="actionNext"
         android:padding="@dimen/padding_size_12x"
@@ -61,5 +63,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

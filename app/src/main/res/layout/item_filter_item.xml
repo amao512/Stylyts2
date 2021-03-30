@@ -14,7 +14,6 @@
         android:layout_marginStart="@dimen/margin_size_40x"
         android:layout_marginTop="@dimen/margin_size_8x"
         android:layout_marginEnd="@dimen/margin_size_16x"
-        android:background="?attr/selectableItemBackground"
         android:checkMark="?android:attr/listChoiceIndicatorSingle"
         android:checkMarkTint="@color/app_dark_blue_gray"
         android:gravity="center"
