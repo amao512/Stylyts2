@@ -32,6 +32,7 @@ import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
 import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.presentation.dialogs.profile.FilterProfileDialog
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
@@ -295,7 +296,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun onFilterClick(position: Int) {
         when (position) {
-            0 -> {}
+            0 -> FilterProfileDialog().show(childFragmentManager, EMPTY_STRING)
             1 -> {
                 presenter.getPublications(
                     token = getTokenFromSharedPref(),
