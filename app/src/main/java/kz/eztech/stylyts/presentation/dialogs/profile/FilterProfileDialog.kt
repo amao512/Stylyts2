@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_filter_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.profile.FilterItemModel
 import kz.eztech.stylyts.domain.models.profile.FilterModel
-import kz.eztech.stylyts.domain.models.profile.FilterSingleCheckedExpandableGroup
+import kz.eztech.stylyts.domain.models.profile.FilterSingleCheckGenre
 import kz.eztech.stylyts.presentation.adapters.profile.FilterAdapter
 import kz.eztech.stylyts.presentation.adapters.profile.FilterGroupAdapter
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -112,19 +112,19 @@ class FilterProfileDialog : DialogFragment(), View.OnClickListener, UniversalVie
         return list
     }
 
-    private fun getFilterGroupList(): List<FilterSingleCheckedExpandableGroup> {
+    private fun getFilterGroupList(): List<FilterSingleCheckGenre> {
         // test data
-        val list: MutableList<FilterSingleCheckedExpandableGroup> = mutableListOf()
+        val list: MutableList<FilterSingleCheckGenre> = mutableListOf()
         val topList: MutableList<FilterItemModel> = mutableListOf()
         topList.add(FilterItemModel(title = "Вещь 1"))
         topList.add(FilterItemModel(title = "Вещь 2"))
         topList.add(FilterItemModel(title = "Вещь 3"))
         topList.add(FilterItemModel(title = "Вещь 4"))
 
-        list.add(FilterSingleCheckedExpandableGroup(title = "Верх", topList))
-        list.add(FilterSingleCheckedExpandableGroup(title = "Низ", topList))
-        list.add(FilterSingleCheckedExpandableGroup(title = "Обувь", topList))
-        list.add(FilterSingleCheckedExpandableGroup(title = "Акссесуары", topList))
+        list.add(FilterSingleCheckGenre(title = "Верх", topList))
+        list.add(FilterSingleCheckGenre(title = "Низ", topList))
+        list.add(FilterSingleCheckGenre(title = "Обувь", topList))
+        list.add(FilterSingleCheckGenre(title = "Акссесуары", topList))
 
         return list
     }

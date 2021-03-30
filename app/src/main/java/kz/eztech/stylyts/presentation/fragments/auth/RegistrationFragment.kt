@@ -3,6 +3,8 @@ package kz.eztech.stylyts.presentation.fragments.auth
 import android.app.DatePickerDialog
 import android.view.View
 import androidx.core.text.HtmlCompat
+import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_registration.*
 import kz.eztech.stylyts.R
@@ -27,18 +29,20 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
 
     @Inject lateinit var presenter: RegistrationPresenter
 
+    private var isUsernameChecked = false
     private var mYear: Int? = null
     private var mMonth: Int? = null
     private var mDayOfMonth: Int? = null
 
     override fun customizeActionBar() {
         with(include_toolbar) {
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_close_24)
             toolbar_left_corner_action_image_button.show()
-            toolbar_back_text_view.show()
-            toolbar_title_text_view.show()
-            toolbar_right_corner_action_image_button.hide()
 
-            customizeActionToolBar(this, getString(R.string.fragment_registration_appbar_title))
+            toolbar_title_text_view.hide()
+            toolbar_bottom_border_view.hide()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.fragment_registration_appbar_title))
         }
     }
 
@@ -62,6 +66,8 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
     override fun initializeViews() {}
 
     override fun initializeListeners() {
+        toolbar_left_corner_action_image_button.setOnClickListener(this)
+        fragment_registration_check_username_button.setOnClickListener(this)
         button_fragment_registration_date.setOnClickListener(this)
         button_fragment_registration_submit.setOnClickListener(this)
     }
@@ -84,33 +90,11 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.text_view_fragment_registration_term -> { }
-            R.id.button_fragment_registration_date -> {
-                var c: Calendar? = null
-
-                if (mYear == null || mMonth == null || mDayOfMonth == null) {
-                    c = Calendar.getInstance()
-                    c?.let { cal ->
-                        mYear = cal.get(Calendar.YEAR)
-                        mMonth = cal.get(Calendar.MONTH)
-                        mDayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
-                    }
-                }
-
-                val dpd = DatePickerDialog(currentActivity, { view, year, monthOfYear, dayOfMonth ->
-                    mYear = year
-                    mMonth = monthOfYear
-                    mDayOfMonth = dayOfMonth
-                    button_fragment_registration_date.setText("$mDayOfMonth / ${DateFormatSymbols().getMonths()[mMonth!! - 1]} / $mYear")
-
-                }, mYear!!, mMonth!!, mDayOfMonth!!)
-
-                dpd.show()
-            }
-
-            R.id.button_fragment_registration_submit -> {
-                checkData()
-            }
+            R.id.toolbar_left_corner_action_image_button -> onCloseButtonClick()
+            R.id.fragment_registration_check_username_button -> onUsernameCheck()
+            R.id.text_view_fragment_registration_term -> {}
+            R.id.button_fragment_registration_date -> setDate()
+            R.id.button_fragment_registration_submit -> checkData()
         }
     }
 
@@ -125,12 +109,12 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
             if (edit_text_view_fragment_registration_password.text.toString() !=
                 edit_text_view_fragment_registration_password_repeat.text.toString()
             ) {
-                displayMessage("Пароли несовпадают")
+                displayMessage(msg = getString(R.string.registration_passwords_not_match))
             } else {
                 processCheckedData()
             }
         } else {
-            displayMessage("Заполните пустые поля")
+            displayMessage(msg = getString(R.string.registration_fill_empty_fields))
         }
     }
 
@@ -149,7 +133,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
 
     override fun processSuccessRegistration() {
         currentActivity.onBackPressed()
-        displayMessage("Успешно")
+        displayMessage(msg = getString(R.string.registration_success))
     }
 
     override fun displayProgress() {
@@ -164,5 +148,56 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         currentActivity.saveSharedPrefByKey(TOKEN_KEY, authModel.token)
         currentActivity.saveSharedPrefByKey(USER_ID_KEY, authModel.user?.id)
         processSuccessRegistration()
+    }
+
+    private fun onCloseButtonClick() {
+        when (isUsernameChecked) {
+            true -> {
+                fragment_registration_fields_scroll_view.hide()
+                fragment_registration_username_linear_layout.show()
+            }
+            false -> findNavController().navigateUp()
+        }
+    }
+
+    private fun onUsernameCheck() {
+        if (edit_text_view_fragment_registration_username.text.isNotBlank()) {
+            toolbar_title_text_view.show()
+            toolbar_back_text_view.show()
+            toolbar_left_corner_action_image_button.hide()
+            fragment_registration_username_linear_layout.hide()
+            fragment_registration_fields_scroll_view.show()
+
+            isUsernameChecked = true
+        } else {
+            displayMessage(msg = getString(R.string.registration_fill_field))
+        }
+    }
+
+    private fun setDate() {
+        val c: Calendar?
+
+        if (mYear == null || mMonth == null || mDayOfMonth == null) {
+            c = Calendar.getInstance()
+            c?.let { cal ->
+                mYear = cal.get(Calendar.YEAR)
+                mMonth = cal.get(Calendar.MONTH)
+                mDayOfMonth = cal.get(Calendar.DAY_OF_MONTH)
+            }
+        }
+
+        val dpd = DatePickerDialog(
+            currentActivity,
+            { _, year, monthOfYear, dayOfMonth ->
+                mYear = year
+                mMonth = monthOfYear
+                mDayOfMonth = dayOfMonth
+                button_fragment_registration_date.text = "$mDayOfMonth / ${DateFormatSymbols().getMonths()[mMonth!! - 1]} / $mYear"
+
+            },
+            mYear!!, mMonth!!, mDayOfMonth!!
+        )
+
+        dpd.show()
     }
 }

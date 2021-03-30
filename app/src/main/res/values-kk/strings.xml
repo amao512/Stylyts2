@@ -19,6 +19,8 @@
     <string name="fragment_registration_complete">Завершить регистрацию</string>
     <string name="fragment_registration_notification_info">Style App будет высылать вам почту только в рамках оповещения пользователей, маркентингового характера и push оповешения. Вы можете отписаться от получения данных писем в любое время выбрав данную опцию в настройках вашего аккаунта.</string>
     <string name="fragment_registration_notification_info_reject_checkbox">Я не хочу получать рекламные письма от Style App.</string>
+    <string name="registration_create_username_title">Пайдаланушы атын жасаңыз</string>
+    <string name="registration_create_username_subtitle">Жаңа аккаунтың атын жасаңыз. Сіз оны кейінірек өзгерте аласыз</string>
 
     <string name="fragment_restore_password_forgot_password_title">Забыли Пароль?</string>
     <string name="fragment_restore_password_forgot_password_description">Пожалуйста введите ваш Email адрес и мы сразу вышлем ваш на пароль вам на почту.</string>
