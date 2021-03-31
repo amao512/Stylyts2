@@ -43,7 +43,7 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
                 val cartDialog = CartDialog()
                 cartDialog.show(childFragmentManager, "Cart")
             }
-            elevation = 0f
+
             background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)
             customizeActionToolBar(this, getString(R.string.fragment_registration_appbar_title))
         }
@@ -58,8 +58,10 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        shopViewPagerAdapter = ShopViewPagerAdapter(this, this)
+        shopViewPagerAdapter = ShopViewPagerAdapter(fa = this, itemClickListener = this)
         fragment_shop_view_pager.isSaveEnabled = false
+        fragment_shop_search_view.isClickable = false
+        fragment_shop_search_view.isFocusable = false
     }
 
     override fun onResume() {
@@ -68,19 +70,14 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
         fragment_shop_view_pager.adapter = shopViewPagerAdapter
         TabLayoutMediator(fragment_shop_tab_layout, fragment_shop_view_pager) { tab, position ->
             when (position) {
-                0 -> tab.text = "Для него"
-                1 -> tab.text = "Для нее"
+                0 -> tab.text = getString(R.string.for_him)
+                1 -> tab.text = getString(R.string.for_her)
             }
         }.attach()
     }
 
     override fun initializeListeners() {
         fragment_shop_search_view.setOnClickListener(this)
-        fragment_shop_search_view.setOnQueryTextFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                findNavController().navigate(R.id.action_shopFragment_to_searchFragment)
-            }
-        }
     }
 
     override fun processPostInitialization() {}

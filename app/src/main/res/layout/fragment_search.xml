@@ -48,9 +48,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_size_16x"
+                        android:layout_marginTop="@dimen/margin_size_10x"
                         android:orientation="horizontal"
                         android:weightSum="1"
-                        android:layout_marginTop="@dimen/margin_size_10x"
                         >
 
                         <androidx.appcompat.widget.SearchView
@@ -58,10 +58,12 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="0.85"
+                            android:focusedByDefault="true"
                             android:inputType="text"
                             android:theme="@style/SearchView"
                             app:queryBackground="@android:color/transparent"
                             app:queryHint="Поиск"
+                            app:searchIcon="@drawable/ic_search"
                             />
 
                         <TextView

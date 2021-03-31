@@ -21,6 +21,10 @@
     <string name="fragment_registration_notification_info_reject_checkbox">Я не хочу получать рекламные письма от Style App.</string>
     <string name="registration_create_username_title">Пайдаланушы атын жасаңыз</string>
     <string name="registration_create_username_subtitle">Жаңа аккаунтың атын жасаңыз. Сіз оны кейінірек өзгерте аласыз</string>
+    <string name="registration_passwords_not_match">Пароли несовпадают</string>
+    <string name="registration_fill_empty_fields">Заполните пустые поля</string>
+    <string name="registration_success">Успешно</string>
+    <string name="registration_fill_field">Пожалуйста, заполните поле</string>
 
     <string name="fragment_restore_password_forgot_password_title">Забыли Пароль?</string>
     <string name="fragment_restore_password_forgot_password_description">Пожалуйста введите ваш Email адрес и мы сразу вышлем ваш на пароль вам на почту.</string>
@@ -86,6 +90,8 @@
     <string name="photo">фото</string>
     <string name="following">подписки</string>
     <string name="follow">Подписаться</string>
+    <string name="search">Поиск</string>
+    <string name="for_him">Для него</string>
     <string name="for_her">Для нее</string>
     <string name="month_year">Месяц/Год</string>
     <string name="name_surname">Имя Фамилия</string>

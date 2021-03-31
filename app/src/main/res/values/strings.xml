@@ -20,6 +20,10 @@
     <string name="fragment_registration_notification_info_reject_checkbox">I don\'t want to receive promotional emails from Style App.</string>
     <string name="registration_create_username_title">Create username</string>
     <string name="registration_create_username_subtitle">Create username for your new account. You can also change it later</string>
+    <string name="registration_passwords_not_match">Пароли несовпадают</string>
+    <string name="registration_fill_empty_fields">Заполните пустые поля</string>
+    <string name="registration_success">Успешно</string>
+    <string name="registration_fill_field">Пожалуйста, заполните поле</string>
 
     <string name="fragment_restore_password_forgot_password_title">Forgot password?</string>
     <string name="fragment_restore_password_forgot_password_description">Please enter your Email address and we will immediately send your password to your email.</string>
@@ -85,6 +89,8 @@
     <string name="photo">Photo</string>
     <string name="following">following</string>
     <string name="follow">follow</string>
+    <string name="search">Search</string>
+    <string name="for_him">For him</string>
     <string name="for_her">For her</string>
     <string name="month_year">Month/Year</string>
     <string name="name_surname">Name Surname</string>
@@ -264,8 +270,4 @@
 
     <string name="chats_title">Chats</string>
     <string name="chats_empty_subtitle">You do not currently have chats with other users. Find the user or store you need in the search, or go to him on the page and start a chat.</string>
-    <string name="registration_passwords_not_match">Пароли несовпадают</string>
-    <string name="registration_fill_empty_fields">Заполните пустые поля</string>
-    <string name="registration_success">Успешно</string>
-    <string name="registration_fill_field">Пожалуйста, заполните поле</string>
 </resources>
