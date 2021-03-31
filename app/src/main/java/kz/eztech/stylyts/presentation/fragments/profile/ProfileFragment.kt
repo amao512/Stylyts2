@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
@@ -214,6 +215,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                     token = getTokenFromSharedPref(),
                     name = currentName,
                     surname = currentSurname,
+                    username = currentActivity.getSharedPrefByKey(SharedConstants.USERNAME_KEY) ?: EMPTY_STRING,
                     editorListener = this
                 ).show(childFragmentManager, "Cart")
             }
@@ -274,6 +276,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         fragment_profile_followers_count.text = "${/*followers_count*/ 0}"
         fragment_profile_followings_count.text = "${/*followings_count*/ 0}"
         fragment_profile_photos_count.text = "${0}"
+
+        if (!isOwnProfile) {
+            fragment_profile_edit_text_view.hide()
+            fragment_profile_subscribe_text_view.show()
+        }
     }
 
     private fun loadProfilePhoto(userModel: UserModel) {

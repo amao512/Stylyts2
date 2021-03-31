@@ -43,6 +43,7 @@ class EditProfileDialog(
             token: String?,
             name: String,
             surname: String,
+            username: String,
             editorListener: EditorListener
         ): EditProfileDialog {
             val editProfileDialog = EditProfileDialog(editorListener)
@@ -51,6 +52,7 @@ class EditProfileDialog(
             args.putString(TOKEN_ARGS_KEY, token)
             args.putString(NAME_ARGS_KEY, name)
             args.putString(SURNAME_ARGS_KEY, surname)
+            args.putString(USERNAME_ARGS_KEY, username)
             editProfileDialog.arguments = args
 
             return editProfileDialog
