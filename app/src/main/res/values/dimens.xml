@@ -142,4 +142,6 @@
     <dimen name="switch_stroke_width">4dp</dimen>
 
     <dimen name="report_problem_edit_text_height">200dp</dimen>
+
+    <dimen name="search_view_height">34dp</dimen>
 </resources>
