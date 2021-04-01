@@ -8,21 +8,22 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.search.SearchModel
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.search.SearchModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
 import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
-import kz.eztech.stylyts.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchItemPresenter
+import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 /**
@@ -32,11 +33,12 @@ class SearchItemFragment(
     private val position: Int
 ) : BaseFragment<MainActivity>(), SearchItemContract.View, UniversalViewClickListener {
 
+    private val searchViewModel: SearchViewModel by inject()
+
     @Inject lateinit var presenter: SearchItemPresenter
     private lateinit var userSearchAdapter: UserSearchAdapter
     private lateinit var userSearchHistoryAdapter: UserSearchHistoryAdapter
 
-    private var searchListener: SearchListener? = null
     private var query: String = EMPTY_STRING
     private var isHistory: Boolean = true
 
@@ -73,12 +75,12 @@ class SearchItemFragment(
     }
 
     override fun initializeListeners() {
-        searchListener?.onQuery {
+        searchViewModel.queryLiveData.observe(viewLifecycleOwner, {
             query = it
             currentActivity.removeFromSharedPrefByKey(SharedConstants.QUERY_KEY)
 
             processPostInitialization()
-        }
+        })
     }
 
     override fun processPostInitialization() {
@@ -158,10 +160,6 @@ class SearchItemFragment(
         super.onDestroyView()
 
         currentActivity.saveSharedPrefByKey(SharedConstants.QUERY_KEY, query)
-    }
-
-    fun setSearchListener(searchListener: SearchListener?) {
-        this.searchListener = searchListener
     }
 
     private fun navigateToUserProfile(item: Any?) {

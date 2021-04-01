@@ -21,6 +21,7 @@ import kz.eztech.stylyts.presentation.fragments.auth.RefreshPasswordFragment
 import kz.eztech.stylyts.presentation.fragments.auth.RegistrationFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.PhotoChooserFragment
+import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment
 import okhttp3.OkHttpClient
@@ -64,6 +65,7 @@ interface ApplicationComponent {
     fun inject(fragment: CleanBackgroundFragment)
     fun inject(fragment: AddressFragment)
     fun inject(fragment: CardFragment)
+    fun inject(fragment: SearchFragment)
     fun inject(fragment: SearchItemFragment)
 
     fun inject(dialog: CartDialog)

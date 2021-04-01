@@ -9,20 +9,25 @@ import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.search.SearchViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.contracts.search.SearchContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.interfaces.SearchListener
+import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.adapters.search.SearchViewPagerAdapter
-import kz.eztech.stylyts.presentation.contracts.search.SearchContract
-import kz.eztech.stylyts.presentation.interfaces.SearchListener
+import org.koin.android.ext.android.inject
 
 class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
     View.OnClickListener, SearchListener {
+
+    private val searchViewModel: SearchViewModel by inject()
 
     private lateinit var searchViewPagerAdapter: SearchViewPagerAdapter
 
@@ -62,7 +67,9 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
         }
     }
 
-    override fun initializeDependency() {}
+    override fun initializeDependency() {
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
+    }
 
     override fun initializePresenter() {}
 
@@ -71,10 +78,7 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        searchViewPagerAdapter = SearchViewPagerAdapter(
-            fragment = this,
-            searchListener = this
-        )
+        searchViewPagerAdapter = SearchViewPagerAdapter(fragment = this)
 
         fragment_search_view_pager.isSaveEnabled = false
     }
@@ -83,7 +87,9 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
         fragment_search_cancel_text_view.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        onSearchListener()
+    }
 
     override fun disposeRequests() {}
 
@@ -102,15 +108,19 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
     }
 
     override fun onQuery(query: (String) -> Unit) {
+
+    }
+
+    private fun onSearchListener() {
         fragment_search_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query(query ?: EMPTY_STRING)
+                searchViewModel.onSearch(query ?: EMPTY_STRING)
 
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                query(newText ?: EMPTY_STRING)
+                searchViewModel.onSearch(newText ?: EMPTY_STRING)
 
                 return false
             }

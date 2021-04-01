@@ -1,17 +1,16 @@
 package kz.eztech.stylyts.presentation.presenters.search
 
-import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import javax.inject.Inject
 
-class SearchViewModel @Inject constructor() : ViewModel() {
+class SearchViewModel : ViewModel() {
 
-    val queryLiveData: MutableLiveData<String> = MutableLiveData()
+    private val _queryLiveData: MutableLiveData<String> = MutableLiveData()
+
+    val queryLiveData: LiveData<String> = _queryLiveData
 
     fun onSearch(query: String) {
-        queryLiveData.postValue(query)
-
-        Log.d("TAG", "viewModel = $query")
+        _queryLiveData.value = query
     }
 }

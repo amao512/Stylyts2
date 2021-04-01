@@ -3,18 +3,11 @@ package kz.eztech.stylyts
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import kz.eztech.stylyts.di.modules.AddressModule
-import kz.eztech.stylyts.di.modules.AuthModule
-import kz.eztech.stylyts.di.modules.CollectionModule
-import kz.eztech.stylyts.di.modules.CollectionConstructorModule
 import kz.eztech.stylyts.di.ApplicationComponent
 import kz.eztech.stylyts.di.DaggerApplicationComponent
-import kz.eztech.stylyts.di.modules.ApplicationModule
-import kz.eztech.stylyts.di.modules.NetworkModule
+import kz.eztech.stylyts.di.modules.*
 import kz.eztech.stylyts.presentation.utils.helpers.LocaleHelper
-import kz.eztech.stylyts.di.modules.MainModule
-import kz.eztech.stylyts.di.modules.ProfileModule
-import kz.eztech.stylyts.di.modules.SearchModule
+import org.koin.core.context.startKoin
 
 /**
  * Created by Ruslan Erdenoff on 18.11.2020.
@@ -29,6 +22,10 @@ class StylytsApp : Application(){
 
         initApplicationComponent()
         initLocality()
+
+        startKoin {
+            modules(viewModelModule)
+        }
     }
 
     override fun attachBaseContext(base: Context) {
