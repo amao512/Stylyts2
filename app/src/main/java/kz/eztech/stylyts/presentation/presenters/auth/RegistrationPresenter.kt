@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.auth
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.usecases.auth.RegistrationUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.auth.RegistrationContract
@@ -32,8 +32,8 @@ class RegistrationPresenter @Inject constructor(
         this.view = view
     }
 
-    inner class RegisterUserDisposable : DisposableSingleObserver<AuthModel>() {
-        override fun onSuccess(t: AuthModel) {
+    inner class RegisterUserDisposable : DisposableSingleObserver<UserModel>() {
+        override fun onSuccess(t: UserModel) {
             view.processViewAction {
                 hideProgress()
                 processUser(t)

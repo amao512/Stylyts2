@@ -11,6 +11,14 @@ data class UserModel(
 	@Expose
 	val id: Int?,
 
+	@SerializedName("email")
+	@Expose
+	val email: String?,
+
+	@SerializedName("username")
+	@Expose
+	val username: String?,
+
 	@SerializedName("avatar")
 	@Expose
 	val avatar: String?,

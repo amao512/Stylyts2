@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -15,7 +14,6 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.auth.LoginContract
 import kz.eztech.stylyts.presentation.presenters.auth.LoginPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -28,7 +26,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
     override fun customizeActionBar() {}
 
     override fun initializeDependency() {
-        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
     }
 
     override fun initializePresenter() {
@@ -62,21 +60,18 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
     override fun getContractView(): BaseView = this
 
     override fun onClick(v: View?) {
+        hideSoftWareKeyboard()
+
         when (v?.id) {
             R.id.button_fragment_login_sign_up -> {
-                hideSoftWareKeyboard()
                 view?.findNavController()
                     ?.navigate(R.id.action_loginFragment_to_registrationFragment)
             }
             R.id.text_view_fragment_login_forgot_password -> {
-                hideSoftWareKeyboard()
                 view?.findNavController()
                     ?.navigate(R.id.action_loginFragment_to_refreshPasswordFragment)
             }
-            R.id.button_fragment_login_sign_in -> {
-                hideSoftWareKeyboard()
-                checkData()
-            }
+            R.id.button_fragment_login_sign_in -> checkData()
         }
     }
 
@@ -92,17 +87,6 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
         tokenModel.let {
             currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.access)
             currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.refresh)
-//            presenter.getUserProfile(token = it.access ?: EMPTY_STRING)
-
-            startActivity(Intent(currentActivity, MainActivity::class.java))
-            currentActivity.finish()
-        }
-    }
-
-    override fun processUserProfile(userModel: UserModel) {
-        userModel.let {
-//            currentActivity.saveSharedPrefByKey(SharedConstants.USER_ID_KEY, it.id)
-//            currentActivity.saveSharedPrefByKey(SharedConstants.USERNAME_KEY, it.username)
 
             startActivity(Intent(currentActivity, MainActivity::class.java))
             currentActivity.finish()
@@ -120,7 +104,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
 
             presenter.loginUser(data)
         } else {
-            displayMessage("Заполните данные")
+            displayMessage(msg = getString(R.string.fill_data))
         }
     }
 }

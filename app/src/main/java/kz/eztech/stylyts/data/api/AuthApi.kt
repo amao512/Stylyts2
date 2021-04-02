@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.data.api
 
 import io.reactivex.Single
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import retrofit2.Response
@@ -14,14 +15,15 @@ interface AuthApi {
     @FormUrlEncoded
     @POST(RestConstants.REGISTER_USER)
     fun registerUser(
+        @Field("username") username: String,
         @Field("email") email: String,
         @Field("password") password: String,
-        @Field("name") first_name: String,
-        @Field("last_name") last_name: String,
-        @Field("date_of_birth") date_of_birth: String,
-        @Field("should_send_mail") should_send_mail: Boolean,
-        @Field("username") username: String
-    ): Single<Response<AuthModel>>
+        @Field("first_name") firstName: String,
+        @Field("last_name") lastName: String,
+        @Field("gender") gender: String,
+        @Field("dob") dateOfBirth: String,
+        @Field("is_brand") isBrand: Boolean,
+    ): Single<Response<UserModel>>
 
     @FormUrlEncoded
     @POST(RestConstants.LOGIN_USER)

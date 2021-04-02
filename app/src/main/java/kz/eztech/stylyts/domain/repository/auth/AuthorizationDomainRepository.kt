@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.domain.repository.auth
 
 import io.reactivex.Single
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 
@@ -9,7 +10,7 @@ import kz.eztech.stylyts.domain.models.auth.TokenModel
  */
 interface AuthorizationDomainRepository {
 
-    fun registerUser(data: HashMap<String, Any>): Single<AuthModel>
+    fun registerUser(data: HashMap<String, Any>): Single<UserModel>
 
     fun loginUser(data: HashMap<String, Any>): Single<TokenModel>
 

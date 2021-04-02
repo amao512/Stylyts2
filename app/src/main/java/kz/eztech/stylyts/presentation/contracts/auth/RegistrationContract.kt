@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.auth
 
-import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -16,7 +16,7 @@ interface RegistrationContract {
 
         fun processSuccessRegistration()
 
-        fun processUser(authModel: AuthModel)
+        fun processUser(userModel: UserModel)
     }
 
     interface Presenter : BasePresenter<View> {

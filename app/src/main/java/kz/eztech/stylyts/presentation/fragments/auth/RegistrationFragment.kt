@@ -9,9 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_registration.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
-import kz.eztech.stylyts.data.models.SharedConstants.USER_ID_KEY
-import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -122,11 +120,12 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         val data = HashMap<String, Any>()
         data["email"] = edit_text_view_fragment_registration_email.text.toString()
         data["password"] = edit_text_view_fragment_registration_password.text.toString()
-        data["name"] = edit_text_view_fragment_registration_name.text.toString()
+        data["first_name"] = edit_text_view_fragment_registration_name.text.toString()
         data["last_name"] = edit_text_view_fragment_registration_last_name.text.toString()
         data["date_of_birth"] = "$mYear-$mMonth-$mDayOfMonth"
-        data["should_send_mail"] = true
+        data["is_brand"] = false
         data["username"] = edit_text_view_fragment_registration_username.text.toString()
+        data["gender"] = "male"
 
         presenter.registerUser(data)
     }
@@ -144,9 +143,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         include_base_progress.hide()
     }
 
-    override fun processUser(authModel: AuthModel) {
-        currentActivity.saveSharedPrefByKey(ACCESS_TOKEN_KEY, authModel.token)
-        currentActivity.saveSharedPrefByKey(USER_ID_KEY, authModel.user?.id)
+    override fun processUser(userModel: UserModel) {
         processSuccessRegistration()
     }
 

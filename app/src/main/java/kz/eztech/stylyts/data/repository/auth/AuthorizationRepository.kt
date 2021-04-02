@@ -4,7 +4,7 @@ import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.AuthApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.domain.repository.auth.AuthorizationDomainRepository
 import javax.inject.Inject
@@ -16,15 +16,16 @@ class AuthorizationRepository @Inject constructor(
     private var api: AuthApi
 ) : AuthorizationDomainRepository {
 
-    override fun registerUser(data: HashMap<String, Any>): Single<AuthModel> {
+    override fun registerUser(data: HashMap<String, Any>): Single<UserModel> {
         return api.registerUser(
-            data["email"] as String,
-            data["password"] as String,
-            data["name"] as String,
-            data["last_name"] as String,
-            data["date_of_birth"] as String,
-            data["should_send_mail"] as Boolean,
-            data["username"] as String,
+            username = data["username"] as String,
+            email = data["email"] as String,
+            password = data["password"] as String,
+            firstName = data["first_name"] as String,
+            lastName = data["last_name"] as String,
+            gender = data["gender"] as String,
+            dateOfBirth = data["date_of_birth"] as String,
+            isBrand = data["is_brand"] as Boolean
         ).map {
             when (it.isSuccessful) {
                 true -> it.body()
