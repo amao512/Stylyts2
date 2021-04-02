@@ -6,8 +6,8 @@ import com.thoughtbot.expandablecheckrecyclerview.CheckableChildRecyclerViewAdap
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.profile.FilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.profile.FilterItemModel
+import kz.eztech.stylyts.domain.models.profile.FilterSingleCheckGenre
 import kz.eztech.stylyts.presentation.adapters.profile.holders.FilterGroupViewHolder
 import kz.eztech.stylyts.presentation.adapters.profile.holders.FilterItemViewHolder
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING

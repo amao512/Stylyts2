@@ -20,7 +20,7 @@ class SplashActivity : BaseActivity() {
             override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
-                val currentToken = getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+                val currentToken = getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY)
                 if (currentToken.isNullOrEmpty()) {
                     startActivity(Intent(this@SplashActivity, AuthorizationActivity::class.java))
                     finish()

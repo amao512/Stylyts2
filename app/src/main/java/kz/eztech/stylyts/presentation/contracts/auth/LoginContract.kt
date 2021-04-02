@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.auth
 
-import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -11,7 +11,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface LoginContract {
     interface View: BaseView {
 
-        fun processLoginUser(authModel: AuthModel)
+        fun processLoginUser(tokenModel: TokenModel)
 
         fun processUserProfile(userModel: UserModel)
 

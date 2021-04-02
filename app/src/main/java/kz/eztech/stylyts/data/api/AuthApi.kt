@@ -2,10 +2,9 @@ package kz.eztech.stylyts.data.api
 
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.domain.models.auth.TokenModel
 import retrofit2.Response
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Created by Asylzhan Seytbek on 14.03.2021.
@@ -29,7 +28,7 @@ interface AuthApi {
     fun loginUser(
         @Field("username") username: String,
         @Field("password") password: String
-    ): Single<Response<AuthModel>>
+    ): Single<Response<TokenModel>>
 
     @FormUrlEncoded
     @POST(RestConstants.GENERATE_FORGOT_PASSWORD)

@@ -123,7 +123,7 @@ class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.
     }
 
     private fun onExit() {
-        currentActivity.removeFromSharedPrefByKey(SharedConstants.TOKEN_KEY)
+        currentActivity.removeFromSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY)
         currentActivity.removeFromSharedPrefByKey(SharedConstants.USER_ID_KEY)
         currentActivity.removeFromSharedPrefByKey(SharedConstants.USERNAME_KEY)
 

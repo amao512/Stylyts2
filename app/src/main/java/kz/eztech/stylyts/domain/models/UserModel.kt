@@ -15,35 +15,31 @@ data class UserModel(
 	@Expose
 	val avatar: String?,
 
-	@SerializedName("name")
+	@SerializedName("first_name")
 	@Expose
-	val name: String?,
+	val firstName: String?,
 
 	@SerializedName("last_name")
 	@Expose
 	val lastName: String?,
 
-	@SerializedName("brand")
+	@SerializedName("is_brand")
 	@Expose
-	val brand: Boolean,
+	val isBrand: Boolean,
 
-	@SerializedName("date_of_birth")
+	@SerializedName("dob")
 	@Expose
-	val date_of_birth: String?,
+	val dateOfBirth: String?,
 
 	@SerializedName("gender")
 	@Expose
 	val gender: String?,
 
-	@SerializedName("is_active")
+	@SerializedName("web_site")
 	@Expose
-	val isActive: Boolean,
+	val webSite: String?,
 
-	@SerializedName("username")
+	@SerializedName("instagram")
 	@Expose
-	val username: String?,
-
-	@SerializedName("verification_uuid")
-	@Expose
-	val verification_uuid: String?
+	val instagram: String?,
 )

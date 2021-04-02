@@ -12,8 +12,8 @@ import retrofit2.http.*
  */
 interface ProfileApi {
 
-    @GET(RestConstants.GET_USER_PROFILE)
-    fun getUserProfile(
+    @GET(RestConstants.GET_MY_PROFILE)
+    fun getMyProfile(
         @Header("Authorization") token: String
     ): Single<Response<UserModel>>
 

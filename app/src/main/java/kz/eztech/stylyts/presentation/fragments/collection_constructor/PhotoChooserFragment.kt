@@ -261,7 +261,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(), PhotoChooserContract.
                             it.clothes_types?.let { clothes ->
                                 filterMap["clothes_type"] = clothes.map { it.id }.joinToString()
                                 presenter.getShopCategoryTypeDetail(
-                                    currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)
+                                    currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY)
                                         ?: "",
                                     filterMap
                                 )
@@ -384,6 +384,6 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(), PhotoChooserContract.
     }
 
     private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING
+        return currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

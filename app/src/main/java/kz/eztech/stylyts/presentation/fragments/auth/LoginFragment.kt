@@ -7,8 +7,8 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -88,17 +88,21 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
         include_base_progress.hide()
     }
 
-    override fun processLoginUser(authModel: AuthModel) {
-        authModel.let {
-            currentActivity.saveSharedPrefByKey(SharedConstants.TOKEN_KEY, it.token)
-            presenter.getUserProfile(token = it.token ?: EMPTY_STRING)
+    override fun processLoginUser(tokenModel: TokenModel) {
+        tokenModel.let {
+            currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.access)
+            currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.refresh)
+//            presenter.getUserProfile(token = it.access ?: EMPTY_STRING)
+
+            startActivity(Intent(currentActivity, MainActivity::class.java))
+            currentActivity.finish()
         }
     }
 
     override fun processUserProfile(userModel: UserModel) {
         userModel.let {
-            currentActivity.saveSharedPrefByKey(SharedConstants.USER_ID_KEY, it.id)
-            currentActivity.saveSharedPrefByKey(SharedConstants.USERNAME_KEY, it.username)
+//            currentActivity.saveSharedPrefByKey(SharedConstants.USER_ID_KEY, it.id)
+//            currentActivity.saveSharedPrefByKey(SharedConstants.USERNAME_KEY, it.username)
 
             startActivity(Intent(currentActivity, MainActivity::class.java))
             currentActivity.finish()

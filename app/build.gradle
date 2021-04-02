@@ -44,12 +44,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField ("String", "BASE_URL", '"http://178.170.221.31:8000/api/"')
+            buildConfigField ("String", "BASE_URL", '"http://178.170.221.31/api/v1/"')
             buildConfigField ("String", "REMOVE_BG_API_KEY", '"8zkRHmfJBESQPgZko4BcUvuo"')
         }
         debug{
             debuggable true
-            buildConfigField ("String", "BASE_URL", '"http://178.170.221.31:8000/api/"')
+            buildConfigField ("String", "BASE_URL", '"http://178.170.221.31/api/v1/"')
             buildConfigField ("String", "REMOVE_BG_API_KEY", '"8zkRHmfJBESQPgZko4BcUvuo"')
         }
         staging {

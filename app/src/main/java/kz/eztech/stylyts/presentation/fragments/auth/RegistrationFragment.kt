@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_registration.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants.TOKEN_KEY
+import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.data.models.SharedConstants.USER_ID_KEY
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
@@ -145,7 +145,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
     }
 
     override fun processUser(authModel: AuthModel) {
-        currentActivity.saveSharedPrefByKey(TOKEN_KEY, authModel.token)
+        currentActivity.saveSharedPrefByKey(ACCESS_TOKEN_KEY, authModel.token)
         currentActivity.saveSharedPrefByKey(USER_ID_KEY, authModel.user?.id)
         processSuccessRegistration()
     }

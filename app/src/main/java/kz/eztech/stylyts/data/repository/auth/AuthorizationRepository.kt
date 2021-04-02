@@ -1,9 +1,11 @@
 package kz.eztech.stylyts.data.repository.auth
 
+import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.AuthApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.domain.repository.auth.AuthorizationDomainRepository
 import javax.inject.Inject
 
@@ -31,11 +33,12 @@ class AuthorizationRepository @Inject constructor(
         }
     }
 
-    override fun loginUser(data: HashMap<String, Any>): Single<AuthModel> {
+    override fun loginUser(data: HashMap<String, Any>): Single<TokenModel> {
         return api.loginUser(
-            data["username"] as String,
-            data["password"] as String
+            username = data["username"] as String,
+            password = data["password"] as String
         ).map {
+            Log.d("TAG", "$it")
             when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)

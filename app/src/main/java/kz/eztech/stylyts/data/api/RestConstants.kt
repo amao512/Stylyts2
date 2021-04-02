@@ -11,13 +11,13 @@ object RestConstants {
     const val HEADERS_AUTH_FORMAT = "JWT %s"
 
     // Authentication
-    const val REGISTER_USER: String = "auth/registration/"
-    const val LOGIN_USER: String = "auth/login/"
+    const val REGISTER_USER: String = "auth/signup"
+    const val LOGIN_USER: String = "auth/token"
     const val GENERATE_FORGOT_PASSWORD: String = "auth/generate_forgot_password/"
     const val SET_NEW_PASSWORD: String = "auth/set_new_password/"
 
     // User
-    const val GET_USER_PROFILE: String = "auth/profile/me/"
+    const val GET_MY_PROFILE: String = "profiles/me"
     const val EDIT_USER_PROFILE: String = "auth/profile/edit/"
     const val GET_USER_BY_ID: String = "auth/profile/{user_id}/"
 

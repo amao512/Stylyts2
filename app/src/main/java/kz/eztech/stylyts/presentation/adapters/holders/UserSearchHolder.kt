@@ -7,6 +7,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -28,14 +29,14 @@ class UserSearchHolder(
                 is UserModel -> {
                     displayAvatar(
                         avatar = item.avatar,
-                        name = item.name,
+                        name = item.firstName,
                         lastName = item.lastName
                     )
 
                     displayUserInfo(
-                        name = item.name,
+                        name = item.firstName,
                         lastName = item.lastName,
-                        username = item.username
+                        username = EMPTY_STRING
                     )
 
                     linear_layout_item_user_info_container.setOnClickListener {

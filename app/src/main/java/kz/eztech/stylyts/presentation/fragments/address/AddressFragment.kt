@@ -192,7 +192,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     }
 
     private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING
+        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 
     private fun displayExistForm(addressModel: AddressModel) {

@@ -1,9 +1,10 @@
 package kz.eztech.stylyts.presentation.presenters.auth
 
+import android.util.Log
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.domain.usecases.auth.LoginUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -32,8 +33,8 @@ class LoginPresenter @Inject constructor(
     override fun loginUser(data: HashMap<String, Any>) {
         view.displayProgress()
         loginUseCase.initParams(data)
-        loginUseCase.execute(object : DisposableSingleObserver<AuthModel>(){
-            override fun onSuccess(t: AuthModel) {
+        loginUseCase.execute(object : DisposableSingleObserver<TokenModel>(){
+            override fun onSuccess(t: TokenModel) {
                 view.processViewAction {
                     processLoginUser(t)
                 }

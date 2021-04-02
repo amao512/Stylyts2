@@ -14,7 +14,7 @@ import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.data.models.SharedConstants.TOKEN_KEY
+import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -180,8 +180,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processProfile(userModel: UserModel) {
         userModel.run {
             userId = id ?: 0
-            currentName = name ?: EMPTY_STRING
-            currentNickname = username ?: EMPTY_STRING
+            currentName = firstName ?: EMPTY_STRING
+//            currentNickname = username ?: EMPTY_STRING
             currentSurname = lastName ?: EMPTY_STRING
         }
 
@@ -271,8 +271,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun fillProfileInfo(userModel: UserModel) {
-        include_toolbar_profile.toolbar_title_text_view.text = userModel.username
-        text_view_fragment_profile_user_name.text = userModel.name
+//        include_toolbar_profile.toolbar_title_text_view.text = userModel.username
+        text_view_fragment_profile_user_name.text = userModel.firstName
         fragment_profile_followers_count.text = "${/*followers_count*/ 0}"
         fragment_profile_followings_count.text = "${/*followings_count*/ 0}"
         fragment_profile_photos_count.text = "${0}"
@@ -293,12 +293,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         } ?: run {
             shapeable_image_view_fragment_profile_avatar.hide()
             text_view_fragment_profile_user_short_name.show()
-            text_view_fragment_profile_user_short_name.text = getShortName(userModel.name, userModel.lastName)
+            text_view_fragment_profile_user_short_name.text = getShortName(userModel.firstName, userModel.lastName)
         }
     }
 
     private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(TOKEN_KEY) ?: EMPTY_STRING
+        return currentActivity.getSharedPrefByKey(ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 
     private fun onFilterClick(position: Int) {

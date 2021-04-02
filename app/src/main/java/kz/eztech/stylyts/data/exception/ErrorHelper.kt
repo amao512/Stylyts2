@@ -12,8 +12,9 @@ import javax.inject.Inject
 class ErrorHelper {
 
     var errorString: String = ""
-	@Inject
-	constructor()
+
+    @Inject
+    constructor()
 
     fun getApiError(errorObject: JSONObject): ApiError {
 
@@ -26,35 +27,36 @@ class ErrorHelper {
 
     fun processError(e: Throwable): String {
         try {
-	        e as NetworkException
-	        val error = JSONObject(e.getErrorBody())
-	        val apiError: ApiError = getApiError(error)
-			if(apiError.errors.isNotEmpty()){
-				errorString = apiError.errors.joinToString { it.message }
-			}else if(apiError.detail.isNotEmpty()){
-				errorString = apiError.detail
-			}else{
-				errorString = "Неизвестная ошибка"
-			}
+            e as NetworkException
+            val error = JSONObject(e.getErrorBody())
+            val apiError: ApiError = getApiError(error)
+            if (apiError.errors.isNotEmpty()) {
+                errorString = apiError.errors.joinToString { it.message }
+            } else if (apiError.detail.isNotEmpty()) {
+                errorString = apiError.detail
+            } else {
+                errorString = "Неизвестная ошибка"
+            }
 
         } catch (error: Exception) {
-	        errorString = "Неизвестная ошибка"
-	        try {
-		        when (e) {
-			        is NetworkException -> {
-				        when (e.code()) {
-					        500 -> errorString = ("Ошибка сервера")
-					        502 -> errorString = ("Ошибка сервера")
-					        404 -> errorString = ("Страницы не существуте")
-				        }
-			        }
-			        is SocketTimeoutException -> errorString = "Нет интернет соединения"
+            errorString = "Неизвестная ошибка"
+            try {
+                when (e) {
+					is NetworkException -> {
+						when (e.code()) {
+							500 -> errorString = ("Ошибка сервера")
+							502 -> errorString = ("Ошибка сервера")
+							404 -> errorString = ("Страницы не существуте")
+						}
+					}
+					is SocketTimeoutException -> errorString = "Нет интернет соединения"
 
-			        is UnknownHostException -> errorString = "Нет интернет соединения"
+					is UnknownHostException -> errorString = "Нет интернет соединения"
 
-			        is ConnectException -> errorString = "Нет интернет соединения"
-		        }
-	        }catch (e:Exception){ }
+					is ConnectException -> errorString = "Нет интернет соединения"
+                }
+            } catch (e: Exception) {
+            }
         }
         return errorString
     }

@@ -4,13 +4,9 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-class NetworkException : HttpException {
+class NetworkException(response: Response<*>) : HttpException(response) {
 
-    var responseBody: Response<*>
-
-    constructor(response: Response<*>) : super(response) {
-        this.responseBody = response
-    }
+    var responseBody: Response<*> = response
 
     fun getResponse(): Response<*> {
         return responseBody

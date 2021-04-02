@@ -132,7 +132,7 @@ class ConstructorFilterDialog : DialogFragment(), View.OnClickListener,
         adapter = CollectionConstructorFilterAdapter()
         adapter.setOnClickListener(this)
         activity?.let {
-            presenter.initToken((it as MainActivity).getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY))
+            presenter.initToken((it as MainActivity).getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY))
         }
         recycler_view_dialog_filter_constructor_list.layoutManager = LinearLayoutManager(activity)
         recycler_view_dialog_filter_constructor_list.adapter = adapter

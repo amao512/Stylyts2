@@ -163,7 +163,7 @@ class EditProfileDialog(
     override fun hideProgress() {}
 
     override fun successEditing(userModel: UserModel) {
-        currentName = userModel.name ?: EMPTY_STRING
+        currentName = userModel.firstName ?: EMPTY_STRING
         editorListener.completeEditing(isSuccess = true)
 
         dismiss()

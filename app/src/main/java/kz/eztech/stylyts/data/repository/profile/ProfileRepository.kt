@@ -17,7 +17,7 @@ class ProfileRepository @Inject constructor(
 ) : ProfileDomainRepository {
 
     override fun getUserProfile(token: String): Single<UserModel> {
-        return api.getUserProfile(token).map {
+        return api.getMyProfile(token).map {
             when (it.isSuccessful) {
                 true -> it.body()
                 else -> throw NetworkException(it)

@@ -280,6 +280,6 @@ class CreateCollectionAcceptDialog : DialogFragment(), View.OnClickListener, Dia
     }
 
     private fun getTokenFromSharedPref(): String {
-        return (activity as MainActivity).getSharedPrefByKey(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING
+        return (activity as MainActivity).getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

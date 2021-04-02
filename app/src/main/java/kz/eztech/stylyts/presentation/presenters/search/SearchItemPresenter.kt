@@ -81,10 +81,10 @@ class SearchItemPresenter @Inject constructor(
         val userSearchEntity = UserSearchEntity(
             id = user.id,
             avatar = user.avatar,
-            name = user.name,
+            name = user.firstName,
             lastName = user.lastName,
-            brand = user.brand,
-            username = user.username
+            brand = user.isBrand,
+            username = ""
         )
 
         disposable.clear()

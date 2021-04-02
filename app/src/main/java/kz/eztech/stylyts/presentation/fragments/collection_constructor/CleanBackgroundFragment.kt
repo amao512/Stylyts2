@@ -217,6 +217,6 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     }
 
     private fun getTokeFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: EMPTY_STRING
+        return currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

@@ -130,19 +130,19 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             barCode?.let {
                 presenter.getItemByBarcode(
                     currentActivity.getSharedPrefByKey<String>(
-                        SharedConstants.TOKEN_KEY
+                        SharedConstants.ACCESS_TOKEN_KEY
                     ) ?: "", it
                 )
             } ?: run {
                 if (currentClotheId != -1) {
                     presenter.getItemDetail(
-                        currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
+                        currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: "",
                         currentClotheId
                     )
                 } else {
                     displayMessage("Не удалось прогрузить страницу")
                     presenter.getItemDetail(
-                        currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
+                        currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: "",
                         43
                     )
                 }

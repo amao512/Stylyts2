@@ -72,7 +72,7 @@ class CollectionItemFragment(var currentMode:Int) : BaseFragment<MainActivity>()
                 map["gender"] = "F"
             }
         }
-        presenter.getCollections(currentActivity.getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY) ?: "",
+        presenter.getCollections(currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: "",
                 map)
     }
     
