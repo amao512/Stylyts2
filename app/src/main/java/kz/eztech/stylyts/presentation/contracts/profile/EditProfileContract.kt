@@ -16,7 +16,7 @@ interface EditProfileContract {
     interface Presenter : BasePresenter<View> {
         fun editProfile(
             token: String,
-            data: HashMap<String, Any>
+            data: HashMap<String, Any?>
         )
     }
 }

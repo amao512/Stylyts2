@@ -24,7 +24,7 @@ class EditProfilePresenter @Inject constructor(
 
     override fun editProfile(
         token: String,
-        data: HashMap<String, Any>
+        data: HashMap<String, Any?>
     ) {
         view.displayProgress()
 

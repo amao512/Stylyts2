@@ -12,9 +12,9 @@ interface ProfileDomainRepository {
 
     fun getUserProfile(token: String): Single<UserModel>
 
-    fun editUser(
+    fun editUserProfile(
         token: String,
-        data: HashMap<String, Any>
+        data: HashMap<String, Any?>
     ): Single<UserModel>
 
     fun getUserProfileById(

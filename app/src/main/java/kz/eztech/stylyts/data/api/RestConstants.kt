@@ -18,7 +18,7 @@ object RestConstants {
 
     // User
     const val GET_MY_PROFILE: String = "profiles/me"
-    const val EDIT_USER_PROFILE: String = "auth/profile/edit/"
+    const val EDIT_PROFILE: String = "profiles/me"
     const val GET_USER_BY_ID: String = "auth/profile/{user_id}/"
 
     // Address

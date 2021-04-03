@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.data.repository.profile
 
+import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.data.api.ProfileApi
@@ -7,6 +8,8 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
 import kz.eztech.stylyts.domain.models.search.SearchModel
+import okhttp3.MultipartBody
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -25,14 +28,19 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    override fun editUser(
+    override fun editUserProfile(
         token: String,
-        data: HashMap<String, Any>
+        data: HashMap<String, Any?>
     ): Single<UserModel> {
         return api.editUserProfile(
             token = token,
-            name = data["name"] as String
+            firstName = data["first_name"] as String,
+            lastName = data["last_name"] as String,
+            avatar = data["avatar"] as MultipartBody.Part?,
+            instagram = data["instagram"] as String?,
+            webSite = data["web_site"] as String?
         ).map {
+            Log.d("TAG", "$it")
             when (it.isSuccessful) {
                 true -> it.body()
                 else -> throw NetworkException(it)

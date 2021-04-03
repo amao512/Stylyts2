@@ -16,15 +16,15 @@ class EditProfileUseCase @Inject constructor(
 ) : BaseUseCase<UserModel>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var data: HashMap<String, Any>
+    private lateinit var data: HashMap<String, Any?>
 
     override fun createSingleObservable(): Single<UserModel> {
-        return profileDomainRepository.editUser(token, data)
+        return profileDomainRepository.editUserProfile(token, data)
     }
 
     fun initParams(
         token: String,
-        data: HashMap<String, Any>
+        data: HashMap<String, Any?>
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.data = data
