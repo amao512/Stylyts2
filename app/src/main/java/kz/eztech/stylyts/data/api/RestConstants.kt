@@ -16,6 +16,10 @@ object RestConstants {
     const val GENERATE_FORGOT_PASSWORD: String = "auth/generate_forgot_password/"
     const val SET_NEW_PASSWORD: String = "auth/set_new_password/"
 
+    // Token
+    const val VERIFY_TOKEN: String = "auth/token/verify"
+    const val REFRESH_TOKEN: String = "auth/token/refresh"
+
     // User
     const val GET_MY_PROFILE: String = "profiles/me"
     const val EDIT_PROFILE: String = "profiles/me"

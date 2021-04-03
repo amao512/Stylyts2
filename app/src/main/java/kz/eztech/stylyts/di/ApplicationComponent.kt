@@ -11,6 +11,7 @@ import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopItemFragment
 import kz.eztech.stylyts.di.modules.*
+import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.UserSearchDialog
@@ -50,6 +51,7 @@ interface ApplicationComponent {
     fun okHttpClient(): OkHttpClient
 
     fun inject(application: StylytsApp)
+    fun inject(activity: MainActivity)
     fun inject(fragment: RegistrationFragment)
     fun inject(fragment: LoginFragment)
     fun inject(fragment: RefreshPasswordFragment)
