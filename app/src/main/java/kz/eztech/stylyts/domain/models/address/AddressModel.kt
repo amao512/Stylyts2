@@ -10,6 +10,9 @@ data class AddressModel(
     @SerializedName("id")
     @Expose
     val id: String?,
+    @SerializedName("user")
+    @Expose
+    val user: String?,
     @SerializedName("country")
     @Expose
     val country: String?,

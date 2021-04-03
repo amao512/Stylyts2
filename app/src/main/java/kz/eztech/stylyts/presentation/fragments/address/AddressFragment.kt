@@ -188,7 +188,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
         Handler(Looper.myLooper()!!)
             .postDelayed({
                 fragment_address_profile_success_deleted_text_view.hide()
-            }, 2000)
+            }, 1000)
     }
 
     private fun getTokenFromSharedPref(): String {

@@ -1,9 +1,9 @@
-package kz.eztech.stylyts.domain.models.search
+package kz.eztech.stylyts.domain.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-data class SearchModel<T>(
+data class ResultsModel<T>(
     @SerializedName("count")
     @Expose
     val count: Int?,

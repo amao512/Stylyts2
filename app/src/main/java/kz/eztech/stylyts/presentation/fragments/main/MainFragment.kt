@@ -23,7 +23,7 @@ import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLentaPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -102,8 +102,8 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         }
     }
 
-    override fun processMyPublications(searchModel: SearchModel<PublicationModel>) {
-        searchModel.results?.let {
+    override fun processMyPublications(resultsModel: ResultsModel<PublicationModel>) {
+        resultsModel.results?.let {
             mainAdapter.updateList(it)
         }
     }

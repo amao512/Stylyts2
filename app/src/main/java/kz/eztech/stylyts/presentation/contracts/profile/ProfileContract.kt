@@ -5,7 +5,7 @@ import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
@@ -24,7 +24,7 @@ interface ProfileContract {
 
         fun processFilter(filterList: List<CollectionFilterModel>)
 
-        fun processMyPublications(searchModel: SearchModel<PublicationModel>)
+        fun processMyPublications(resultsModel: ResultsModel<PublicationModel>)
     }
 
     interface Presenter : BasePresenter<View> {

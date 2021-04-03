@@ -32,7 +32,7 @@ import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.presentation.dialogs.profile.FilterProfileDialog
 import javax.inject.Inject
 
@@ -193,8 +193,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         adapterFilter.updateList(filterList)
     }
 
-    override fun processMyPublications(searchModel: SearchModel<PublicationModel>) {
-        searchModel.results?.let {
+    override fun processMyPublications(resultsModel: ResultsModel<PublicationModel>) {
+        resultsModel.results?.let {
             gridAdapter.updateList(it)
         }
     }

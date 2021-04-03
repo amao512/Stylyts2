@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.usecases.address
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.repository.address.AddressDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -25,7 +26,7 @@ class PostAddressUseCase @Inject constructor(
         token: String,
         data: HashMap<String, Any>
     ) {
-        this.token = "JWT $token"
+        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.data = data
     }
 }

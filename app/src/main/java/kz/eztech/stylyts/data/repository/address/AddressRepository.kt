@@ -3,6 +3,7 @@ package kz.eztech.stylyts.data.repository.address
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.AddressApi
 import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.repository.address.AddressDomainRepository
 import javax.inject.Inject
@@ -32,7 +33,7 @@ class AddressRepository @Inject constructor(
         }
     }
 
-    override fun getAllAddress(token: String): Single<List<AddressModel>> {
+    override fun getAllAddress(token: String): Single<ResultsModel<AddressModel>> {
         return api.getAllAddress(token).map {
             when (it.isSuccessful) {
                 true -> it.body()

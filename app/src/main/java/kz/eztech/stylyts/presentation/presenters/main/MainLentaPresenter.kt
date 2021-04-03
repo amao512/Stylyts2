@@ -8,7 +8,7 @@ import kz.eztech.stylyts.domain.usecases.main.MainLentaUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import javax.inject.Inject
 
 /**
@@ -46,11 +46,11 @@ class MainLentaPresenter @Inject constructor(
 		view.displayProgress()
 
 		getMyPublicationsUseCase.initParams(token)
-		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<SearchModel<PublicationModel>>() {
-			override fun onSuccess(t: SearchModel<PublicationModel>) {
+		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PublicationModel>>() {
+			override fun onSuccess(t: ResultsModel<PublicationModel>) {
 				view.processViewAction {
 					hideProgress()
-					processMyPublications(searchModel = t)
+					processMyPublications(resultsModel = t)
 				}
 			}
 

@@ -22,9 +22,9 @@ object RestConstants {
     const val GET_USER_BY_ID: String = "auth/profile/{user_id}/"
 
     // Address
-    const val POST_ADDRESS: String = "address/"
-    const val GET_ALL_ADDRESS: String = "address/"
-    const val DELETE_ADDRESS: String = "address/{address_id}/"
+    const val POST_ADDRESS: String = "addresses"
+    const val GET_ALL_ADDRESS: String = "addresses"
+    const val DELETE_ADDRESS: String = "addresses/{address_id}"
 
     // Search
     const val SEARCH_USER_BY_USERNAME: String = "auth/profile/"

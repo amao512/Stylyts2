@@ -3,7 +3,7 @@ package kz.eztech.stylyts.domain.usecases.search
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.repository.search.SearchDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -17,12 +17,12 @@ class SearchUserUseCase @Inject constructor(
 	@Named("executor_thread") executorThread: Scheduler,
 	@Named("ui_thread") uiThread: Scheduler,
 	private var searchDomainRepository: SearchDomainRepository
-) : BaseUseCase<SearchModel<UserModel>>(executorThread, uiThread) {
+) : BaseUseCase<ResultsModel<UserModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
     private lateinit var username: String
 
-    override fun createSingleObservable(): Single<SearchModel<UserModel>> {
+    override fun createSingleObservable(): Single<ResultsModel<UserModel>> {
         return searchDomainRepository.getUserByUsername(token, username)
     }
 

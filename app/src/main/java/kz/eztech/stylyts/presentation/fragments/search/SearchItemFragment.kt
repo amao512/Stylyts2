@@ -9,7 +9,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
@@ -124,8 +124,8 @@ class SearchItemFragment(
         fragment_search_item_recycler_view.show()
     }
 
-    override fun processSearch(searchModel: SearchModel<UserModel>) {
-        searchModel.results?.let {
+    override fun processSearch(resultsModel: ResultsModel<UserModel>) {
+        resultsModel.results?.let {
             val userList: MutableList<UserModel> = mutableListOf()
 
             it.map { user ->

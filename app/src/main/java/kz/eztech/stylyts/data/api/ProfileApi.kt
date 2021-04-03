@@ -3,11 +3,10 @@ package kz.eztech.stylyts.data.api
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
-import java.io.File
 
 /**
  * Created by Asylzhan Seytbek on 14.03.2021.
@@ -39,5 +38,5 @@ interface ProfileApi {
     @GET(RestConstants.GET_MY_POSTS)
     fun getMyCollections(
         @Header("Authorization") token: String
-    ): Single<Response<SearchModel<PublicationModel>>>
+    ): Single<Response<ResultsModel<PublicationModel>>>
 }

@@ -7,9 +7,8 @@ import kz.eztech.stylyts.data.api.ProfileApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
-import kz.eztech.stylyts.domain.models.search.SearchModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import okhttp3.MultipartBody
-import java.io.File
 import javax.inject.Inject
 
 /**
@@ -63,7 +62,7 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    override fun getMyPublications(token: String): Single<SearchModel<PublicationModel>> {
+    override fun getMyPublications(token: String): Single<ResultsModel<PublicationModel>> {
         return api.getMyCollections(
             token = token
         ).map {

@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.data.api
 
 import io.reactivex.Single
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import retrofit2.Response
 import retrofit2.http.*
@@ -24,7 +25,7 @@ interface AddressApi {
     @GET(RestConstants.GET_ALL_ADDRESS)
     fun getAllAddress(
         @Header("Authorization") token: String
-    ): Single<Response<List<AddressModel>>>
+    ): Single<Response<ResultsModel<AddressModel>>>
 
     @DELETE(RestConstants.DELETE_ADDRESS)
     fun deleteAddress(
