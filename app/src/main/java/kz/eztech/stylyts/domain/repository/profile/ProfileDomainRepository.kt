@@ -4,6 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import okhttp3.MultipartBody
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
@@ -14,7 +15,12 @@ interface ProfileDomainRepository {
 
     fun editUserProfile(
         token: String,
-        data: HashMap<String, Any?>
+        data: HashMap<String, Any>
+    ): Single<UserModel>
+
+    fun setProfilePhoto(
+        token: String,
+        avatar: MultipartBody.Part
     ): Single<UserModel>
 
     fun getUserProfileById(

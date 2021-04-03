@@ -27,7 +27,6 @@ class ChangeProfilePhotoDialog(
                     0,
                     null
                 )
-                dismiss()
             }
             R.id.dialog_bottom_change_profile_photo_take_photo_text_view -> {
                 universalViewClickListener.onViewClicked(
@@ -35,14 +34,23 @@ class ChangeProfilePhotoDialog(
                     0,
                     null
                 )
-                dismiss()
+            }
+            R.id.dialog_bottom_change_profile_photo_delete_text_view -> {
+                universalViewClickListener.onViewClicked(
+                    dialog_bottom_change_profile_photo_delete_text_view,
+                    0,
+                    null
+                )
             }
         }
+
+        dismiss()
     }
 
     private fun initializeListeners() {
         dialog_bottom_change_profile_photo_cancel_text_view.setOnClickListener(this)
         dialog_bottom_change_profile_photo_choose_from_gallery_text_view.setOnClickListener(this)
         dialog_bottom_change_profile_photo_take_photo_text_view.setOnClickListener(this)
+        dialog_bottom_change_profile_photo_delete_text_view.setOnClickListener(this)
     }
 }

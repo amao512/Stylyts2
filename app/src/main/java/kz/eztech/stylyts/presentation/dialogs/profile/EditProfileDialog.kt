@@ -1,12 +1,11 @@
 package kz.eztech.stylyts.presentation.dialogs.profile
 
-import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,26 +13,24 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.google.android.material.snackbar.Snackbar
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.EditProfileContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.EditProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
+import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import javax.inject.Inject
+
 
 /**
  * Created by Ruslan Erdenoff on 03.03.2021.
@@ -42,37 +39,22 @@ class EditProfileDialog(
     private val editorListener: EditorListener
 ) : DialogFragment(), EditProfileContract.View, View.OnClickListener, UniversalViewClickListener {
 
-    @Inject
-    lateinit var presenter: EditProfilePresenter
+    @Inject lateinit var presenter: EditProfilePresenter
 
-    private var currentFirstName: String = EMPTY_STRING
-    private var currentLastName: String = EMPTY_STRING
-    private var currentUserName: String = EMPTY_STRING
-    private var currentAvatar: String = EMPTY_STRING
-    private var avatarMultipartBody: MultipartBody.Part? = null
-
-    private lateinit var imageResultLaunch: ActivityResultLauncher<Intent>
+    private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
+    private lateinit var cameraResultLaunch: ActivityResultLauncher<Intent>
 
     companion object {
-        private const val TOKEN_ARGS_KEY = "token_args_key"
-        private const val NAME_ARGS_KEY = "name_args_key"
-        private const val SURNAME_ARGS_KEY = "surname_args_key"
-        private const val USERNAME_ARGS_KEY = "username_args_key"
+        const val TOKEN_ARGS_KEY = "token_args_key"
 
         fun getNewInstance(
             token: String?,
-            name: String,
-            surname: String,
-            username: String,
             editorListener: EditorListener
         ): EditProfileDialog {
             val editProfileDialog = EditProfileDialog(editorListener)
             val args = Bundle()
 
             args.putString(TOKEN_ARGS_KEY, token)
-            args.putString(NAME_ARGS_KEY, name)
-            args.putString(SURNAME_ARGS_KEY, surname)
-            args.putString(USERNAME_ARGS_KEY, username)
             editProfileDialog.arguments = args
 
             return editProfileDialog
@@ -92,11 +74,11 @@ class EditProfileDialog(
         super.onViewCreated(view, savedInstanceState)
 
         initializeDependency()
+        initializePresenter()
         initializeArguments()
         initializeViewsData()
         initializeViews()
         initializeListeners()
-        initializePresenter()
         processPostInitialization()
         customizeActionBar()
     }
@@ -110,9 +92,7 @@ class EditProfileDialog(
             toolbar_back_text_view.show()
             toolbar_back_text_view.text = context.getString(R.string.toolbar_cancel)
             toolbar_back_text_view.setCompoundDrawables(null, null, null, null)
-            toolbar_back_text_view.setOnClickListener {
-                dismiss()
-            }
+            toolbar_back_text_view.setOnClickListener(this@EditProfileDialog)
 
             toolbar_title_text_view.show()
             toolbar_title_text_view.text = context.getString(R.string.toolbar_title_edit_profile)
@@ -122,14 +102,9 @@ class EditProfileDialog(
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = context.getString(R.string.toolbar_completed)
             toolbar_right_text_text_view.setTextColor(
-                ContextCompat.getColor(
-                    context,
-                    R.color.app_light_orange
-                )
+                ContextCompat.getColor(context, R.color.app_light_orange)
             )
-            toolbar_right_text_text_view.setOnClickListener {
-                completeEditing()
-            }
+            toolbar_right_text_text_view.setOnClickListener(this@EditProfileDialog)
         }
     }
 
@@ -139,68 +114,41 @@ class EditProfileDialog(
 
     override fun initializePresenter() = presenter.attach(view = this)
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(NAME_ARGS_KEY)) {
-                currentFirstName = it.getString(NAME_ARGS_KEY, EMPTY_STRING)
-            }
-
-            if (it.containsKey(USERNAME_ARGS_KEY)) {
-                currentUserName = it.getString(USERNAME_ARGS_KEY, EMPTY_STRING)
-            }
-
-            if (it.containsKey(SURNAME_ARGS_KEY)) {
-                currentLastName = it.getString(SURNAME_ARGS_KEY, EMPTY_STRING)
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        imageResultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                text_view_fragment_profile_edit_user_short_name.hide()
-                shapeable_image_view_fragment_profile_avatar.setImageURI(result.data?.data)
+        galleryResultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                setProfileImage(uri = result.data?.data)
+            }
+        }
 
-                val bitmap = (shapeable_image_view_fragment_profile_avatar.drawable as BitmapDrawable).bitmap
-                val file  = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
-                val requestFile = file?.asRequestBody(("image/*").toMediaTypeOrNull())
-
-                requestFile?.let {
-                    avatarMultipartBody = MultipartBody.Part.createFormData("avatar", file.name, it)
-                }
+        cameraResultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                setProfileImageByBitmap(bitmap = result.data?.extras?.get("data") as? Bitmap)
             }
         }
     }
 
-    override fun initializeViews() {
-        if (currentFirstName.isNotEmpty() && currentLastName.isNotEmpty()) {
-            edit_text_dialog_edit_profile_name.setText("$currentFirstName $currentLastName")
-        }
-
-        if (currentUserName.isNotEmpty()) {
-            edit_text_dialog_edit_profile_username.setText(currentUserName)
-        }
-
-        if (currentFirstName.isNotEmpty() && currentLastName.isNotEmpty()) {
-            text_view_fragment_profile_edit_user_short_name.text =
-                getShortName(currentFirstName, currentLastName)
-        }
-    }
+    override fun initializeViews() {}
 
     override fun initializeListeners() {
         dialog_edit_profile_change_photo_text_view.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        presenter.getProfile(token = getTokenFromArguments())
+    }
 
     override fun disposeRequests() {}
 
     override fun displayMessage(msg: String) {
         view?.let {
-            Snackbar.make(it, msg, Snackbar.LENGTH_SHORT).apply {
-                setBackgroundTint(ContextCompat.getColor(context, R.color.app_dark_blue_gray))
-                view.setPadding(0, 0, 0, 0)
-            }.show()
+            displaySnackBar(
+                context = requireContext(),
+                view = it,
+                msg = msg
+            )
         }
     }
 
@@ -210,19 +158,41 @@ class EditProfileDialog(
 
     override fun hideProgress() {}
 
-    override fun successEditing(userModel: UserModel) {
-        currentFirstName = userModel.firstName ?: EMPTY_STRING
-        editorListener.completeEditing(isSuccess = true)
+    override fun processUserModel(userModel: UserModel) {
+        userModel.let { user ->
+            edit_text_dialog_edit_profile_name.setText("${user.firstName} ${user.lastName}")
+            edit_text_dialog_edit_profile_username.setText(user.username)
+            edit_text_dialog_edit_profile_insta.setText(user.instagram)
+            edit_text_dialog_edit_profile_site.setText(user.webSite)
 
+            user.avatar?.let {
+                text_view_fragment_profile_edit_user_short_name.hide()
+
+                Glide.with(this)
+                    .load(it)
+                    .centerCrop()
+                    .into(shapeable_image_view_fragment_profile_avatar)
+            } ?: run {
+                text_view_fragment_profile_edit_user_short_name.text = getShortName(
+                    firstName = user.firstName,
+                    lastName = user.lastName
+                )
+            }
+        }
+    }
+
+    override fun successEditing() {
+        editorListener.completeEditing(isSuccess = true)
         dismiss()
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.toolbar_back_text_view -> dismiss()
+            R.id.toolbar_right_text_text_view -> completeEditing()
             R.id.dialog_edit_profile_change_photo_text_view -> {
-                ChangeProfilePhotoDialog(universalViewClickListener = this).show(
-                    childFragmentManager, EMPTY_STRING
-                )
+                ChangeProfilePhotoDialog(universalViewClickListener = this)
+                    .show(childFragmentManager, EMPTY_STRING)
             }
         }
     }
@@ -235,24 +205,14 @@ class EditProfileDialog(
         when (view.id) {
             R.id.dialog_bottom_change_profile_photo_choose_from_gallery_text_view -> openGalleryForImage()
             R.id.dialog_bottom_change_profile_photo_take_photo_text_view -> openCameraForImage()
-        }
-    }
-
-    override fun onActivityResult(
-        requestCode: Int,
-        resultCode: Int,
-        data: Intent?
-    ) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == Activity.RESULT_OK && requestCode == 0) {
-            shapeable_image_view_fragment_profile_avatar.setImageURI(data?.data)
-            Log.d("TAG", "${data?.data}")
+            R.id.dialog_bottom_change_profile_photo_delete_text_view -> presenter.deleteProfilePhoto(
+                token = getTokenFromArguments()
+            )
         }
     }
 
     private fun completeEditing() {
-        val data = HashMap<String, Any?>()
+        val data = HashMap<String, Any>()
         val names: List<String> = edit_text_dialog_edit_profile_name.text.split(" ")
         val webSite: String = edit_text_dialog_edit_profile_site.text.toString()
         val instagram: String = edit_text_dialog_edit_profile_insta.text.toString()
@@ -261,48 +221,74 @@ class EditProfileDialog(
             if (names[0].isNotBlank()) {
                 data["first_name"] = names[0]
             } else {
-                displayMessage(msg = "Заполните имя и фамилию через пробел!")
+                displayMessage(msg = getString(R.string.fill_names_throught_space))
 
                 return
             }
             if (names[1].isNotBlank()) {
                 data["last_name"] = names[1]
             } else {
-                displayMessage(msg = "Заполните имя и фамилию через пробел!")
+                displayMessage(msg = getString(R.string.fill_names_throught_space))
 
                 return
             }
         } else {
-            displayMessage(msg = "Заполните имя и фамилию через пробел!")
+            displayMessage(msg = getString(R.string.fill_names_throught_space))
 
             return
         }
 
         data["web_site"] = when (webSite.isBlank()) {
-            true -> null
+            true -> EMPTY_STRING
             false -> webSite
         }
         data["instagram"] = when (instagram.isBlank()) {
-            true -> null
+            true -> EMPTY_STRING
             false -> instagram
         }
 
-        data["avatar"] = avatarMultipartBody
-
         presenter.editProfile(
-            token = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING,
+            token = getTokenFromArguments(),
             data = data
         )
     }
 
     private fun openGalleryForImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-//        startActivityForResult(intent, 0)
-
-        imageResultLaunch.launch(intent)
+        galleryResultLaunch.launch(intent)
     }
 
     private fun openCameraForImage() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
+        try {
+            cameraResultLaunch.launch(intent)
+        } catch (e: Exception) {}
     }
+
+    private fun setProfileImage(uri: Uri?) {
+        val bitmap = FileUtils.createBitmapFromUri(
+            context = requireContext(),
+            uri = uri
+        )
+
+        setProfileImageByBitmap(bitmap)
+    }
+
+    private fun setProfileImageByBitmap(bitmap: Bitmap?) {
+        bitmap?.let {
+            val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
+
+            file?.let {
+                presenter.changeProfilePhoto(
+                    token = getTokenFromArguments(),
+                    file = file
+                )
+                text_view_fragment_profile_edit_user_short_name.text = EMPTY_STRING
+                text_view_fragment_profile_edit_user_short_name.show()
+            }
+        }
+    }
+
+    private fun getTokenFromArguments(): String = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
 }

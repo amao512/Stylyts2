@@ -9,31 +9,30 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
-import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
+import kz.eztech.stylyts.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
+import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
+import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.base.EditorListener
+import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
+import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
+import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
+import kz.eztech.stylyts.presentation.dialogs.profile.FilterProfileDialog
+import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
-import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
-import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
-import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
-import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
-import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
-import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.presentation.dialogs.profile.FilterProfileDialog
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
@@ -213,9 +212,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.fragment_profile_edit_text_view -> {
                 EditProfileDialog.getNewInstance(
                     token = getTokenFromSharedPref(),
-                    name = currentName,
-                    surname = currentSurname,
-                    username = currentActivity.getSharedPrefByKey(SharedConstants.USERNAME_KEY) ?: EMPTY_STRING,
                     editorListener = this
                 ).show(childFragmentManager, "Cart")
             }
@@ -289,6 +285,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
             Glide.with(currentActivity)
                 .load(it)
+                .centerCrop()
                 .into(shapeable_image_view_fragment_profile_avatar)
         } ?: run {
             shapeable_image_view_fragment_profile_avatar.hide()

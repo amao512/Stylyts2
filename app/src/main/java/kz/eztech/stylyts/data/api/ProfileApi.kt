@@ -24,9 +24,15 @@ interface ProfileApi {
         @Header("Authorization") token: String,
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String,
-        @Field("avatar") avatar: MultipartBody.Part?,
-        @Field("instagram") instagram: String?,
-        @Field("web_site") webSite: String?
+        @Field("instagram") instagram: String,
+        @Field("web_site") webSite: String
+    ): Single<Response<UserModel>>
+
+    @Multipart
+    @PATCH(RestConstants.EDIT_PROFILE)
+    fun setProfilePhoto(
+        @Header("Authorization") token: String,
+        @Part avatar: MultipartBody.Part?
     ): Single<Response<UserModel>>
 
     @GET(RestConstants.GET_USER_BY_ID)

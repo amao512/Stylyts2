@@ -90,6 +90,10 @@
             android:id="@+id/action_profileFragment_to_photoPostCreatorFragment"
             app:destination="@id/photoPostCreatorFragment"
             />
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileDialog"
+            app:destination="@id/editProfileDialog"
+            />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -179,6 +183,10 @@
         <action
             android:id="@+id/action_cameraFragment_to_itemDetailFragment"
             app:destination="@id/itemDetailFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_editProfileDialog"
+            app:destination="@id/editProfileDialog"
+            />
     </fragment>
     <fragment
         android:id="@+id/collectionDetailFragment"
@@ -294,4 +302,14 @@
         android:label="fragment_chats"
         tools:layout="@layout/fragment_chats"
         />
+    <fragment
+        android:id="@+id/editProfileDialog"
+        android:name="kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog"
+        android:label="EditProfileDialog"
+        >
+        <action
+            android:id="@+id/action_editProfileDialog_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            />
+    </fragment>
 </navigation>

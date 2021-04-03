@@ -29,20 +29,34 @@ class ProfileRepository @Inject constructor(
 
     override fun editUserProfile(
         token: String,
-        data: HashMap<String, Any?>
+        data: HashMap<String, Any>
     ): Single<UserModel> {
         return api.editUserProfile(
             token = token,
             firstName = data["first_name"] as String,
             lastName = data["last_name"] as String,
-            avatar = data["avatar"] as MultipartBody.Part?,
-            instagram = data["instagram"] as String?,
-            webSite = data["web_site"] as String?
+            instagram = data["instagram"] as String,
+            webSite = data["web_site"] as String
         ).map {
             Log.d("TAG", "$it")
             when (it.isSuccessful) {
                 true -> it.body()
                 else -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun setProfilePhoto(
+        token: String,
+        avatar: MultipartBody.Part
+    ): Single<UserModel> {
+        return api.setProfilePhoto(
+            token = token,
+            avatar = avatar
+        ).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
             }
         }
     }

@@ -3,9 +3,16 @@ package kz.eztech.stylyts.presentation.presenters.profile
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.usecases.profile.ChangeProfilePhotoUseCase
 import kz.eztech.stylyts.domain.usecases.profile.EditProfileUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.EditProfileContract
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -13,7 +20,9 @@ import javax.inject.Inject
  */
 class EditProfilePresenter @Inject constructor(
     private var errorHelper: ErrorHelper,
-    private val editProfileUseCase: EditProfileUseCase
+    private val editProfileUseCase: EditProfileUseCase,
+    private val getProfileUseCase: GetProfileUseCase,
+    private val changeProfilePhotoUseCase: ChangeProfilePhotoUseCase
 ) : EditProfileContract.Presenter {
 
     private lateinit var view: EditProfileContract.View
@@ -22,9 +31,30 @@ class EditProfilePresenter @Inject constructor(
         this.view = view
     }
 
+    override fun getProfile(token: String) {
+        view.displayProgress()
+
+        getProfileUseCase.initParams(token)
+        getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+            override fun onSuccess(t: UserModel) {
+                view.processViewAction {
+                    processUserModel(userModel = t)
+                    hideProgress()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
+                    hideProgress()
+                }
+            }
+        })
+    }
+
     override fun editProfile(
         token: String,
-        data: HashMap<String, Any?>
+        data: HashMap<String, Any>
     ) {
         view.displayProgress()
 
@@ -33,14 +63,70 @@ class EditProfilePresenter @Inject constructor(
             override fun onSuccess(t: UserModel) {
                 view.processViewAction {
                     hideProgress()
-                    successEditing(userModel = t)
+                    processUserModel(userModel = t)
+                    successEditing()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
                     hideProgress()
-                    displayMessage(errorHelper.processError(e))
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
+
+    override fun changeProfilePhoto(
+        token: String,
+        file: File
+    ) {
+        view.displayProgress()
+
+        val requestFile = file.asRequestBody(("image/*").toMediaTypeOrNull())
+
+        val multipartBody = MultipartBody.Part.createFormData(
+            "avatar",
+            file.name,
+            requestFile
+        )
+
+        changeProfilePhotoUseCase.initParams(token, multipartBody)
+        changeProfilePhotoUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+            override fun onSuccess(t: UserModel) {
+                view.processViewAction {
+                    processUserModel(userModel = t)
+                    hideProgress()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideProgress()
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
+
+    override fun deleteProfilePhoto(token: String) {
+        view.displayProgress()
+
+        val multipartBody = MultipartBody.Part.createFormData("avatar", EMPTY_STRING)
+
+        changeProfilePhotoUseCase.initParams(token, multipartBody)
+        changeProfilePhotoUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+            override fun onSuccess(t: UserModel) {
+                view.processViewAction {
+                    processUserModel(userModel = t)
+                    hideProgress()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideProgress()
+                    displayMessage(msg = errorHelper.processError(e))
                 }
             }
         })
@@ -48,5 +134,7 @@ class EditProfilePresenter @Inject constructor(
 
     override fun disposeRequests() {
         editProfileUseCase.clear()
+        getProfileUseCase.clear()
+        changeProfilePhotoUseCase.clear()
     }
 }

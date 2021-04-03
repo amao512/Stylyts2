@@ -6,27 +6,28 @@ import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
+import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Named
 
-class EditProfileUseCase @Inject constructor(
+class ChangeProfilePhotoUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
-    private val profileDomainRepository: ProfileDomainRepository
+    private var profileDomainRepository: ProfileDomainRepository
 ) : BaseUseCase<UserModel>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var data: HashMap<String, Any>
+    private lateinit var avatar: MultipartBody.Part
 
     override fun createSingleObservable(): Single<UserModel> {
-        return profileDomainRepository.editUserProfile(token, data)
+        return profileDomainRepository.setProfilePhoto(token, avatar)
     }
 
     fun initParams(
         token: String,
-        data: HashMap<String, Any>
+        avatar: MultipartBody.Part
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.data = data
+        this.avatar = avatar
     }
 }

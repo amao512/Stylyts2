@@ -271,4 +271,5 @@
     <string name="chats_title">Chats</string>
     <string name="chats_empty_subtitle">You do not currently have chats with other users. Find the user or store you need in the search, or go to him on the page and start a chat.</string>
     <string name="fill_data">Заполните данные</string>
+    <string name="fill_names_throught_space">Заполните имя и фамилию через пробел!</string>
 </resources>

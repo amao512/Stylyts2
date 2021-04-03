@@ -34,7 +34,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.concurrent.Executors
 
-class CameraFragment : BaseFragment<MainActivity>(), BaseView, View.OnClickListener {
+class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListener {
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
@@ -45,8 +45,9 @@ class CameraFragment : BaseFragment<MainActivity>(), BaseView, View.OnClickListe
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
 
-        const val PHOTO_MODE = 2
         const val BARCODE_MODE = 1
+        const val PHOTO_MODE = 2
+        const val GET_PHOTO_MODE = 3
 
         /** Helper function used to create a timestamped file */
         private fun createFile(baseFolder: File, format: String, extension: String) =
@@ -196,6 +197,10 @@ class CameraFragment : BaseFragment<MainActivity>(), BaseView, View.OnClickListe
             0 -> navigateToPhotoChooser(savedUri)
             1 -> {}
             2 -> navigateToCleanBackground(savedUri)
+            3 -> {
+                findNavController().previousBackStackEntry?.savedStateHandle?.set("uri_from_camera", savedUri)
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -262,6 +267,11 @@ class CameraFragment : BaseFragment<MainActivity>(), BaseView, View.OnClickListe
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
+            3 -> showCamera(
+                cameraProvider = cameraProvider,
+                cameraSelector = cameraSelector,
+                preview = preview
+            )
         }
     }
 
