@@ -13,6 +13,7 @@ object RestConstants {
     // Authentication
     const val REGISTER_USER: String = "auth/signup"
     const val LOGIN_USER: String = "auth/token"
+    const val IS_USERNAME_EXISTS = "auth/username-exists"
     const val GENERATE_FORGOT_PASSWORD: String = "auth/generate_forgot_password/"
     const val SET_NEW_PASSWORD: String = "auth/set_new_password/"
 

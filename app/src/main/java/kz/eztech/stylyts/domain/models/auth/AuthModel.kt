@@ -7,7 +7,7 @@ import kz.eztech.stylyts.domain.models.UserModel
 data class AuthModel(
     @SerializedName("token")
     @Expose
-    val token: String?,
+    val token: TokenModel?,
     @SerializedName("user")
     @Expose
     val user: UserModel?

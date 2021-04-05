@@ -3,9 +3,11 @@ package kz.eztech.stylyts.data.api
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.models.auth.AuthModel
-import kz.eztech.stylyts.domain.models.auth.TokenModel
+import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.POST
 
 /**
  * Created by Asylzhan Seytbek on 14.03.2021.
@@ -30,7 +32,13 @@ interface AuthApi {
     fun loginUser(
         @Field("username") username: String,
         @Field("password") password: String
-    ): Single<Response<TokenModel>>
+    ): Single<Response<AuthModel>>
+
+    @FormUrlEncoded
+    @POST(RestConstants.IS_USERNAME_EXISTS)
+    fun isUsernameExists(
+        @Field("username") username: String
+    ): Single<Response<ExistsUsernameModel>>
 
     @FormUrlEncoded
     @POST(RestConstants.GENERATE_FORGOT_PASSWORD)

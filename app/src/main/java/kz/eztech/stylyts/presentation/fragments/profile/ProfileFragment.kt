@@ -181,7 +181,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         userModel.run {
             userId = id ?: 0
             currentName = firstName ?: EMPTY_STRING
-//            currentNickname = username ?: EMPTY_STRING
+            currentNickname = username ?: EMPTY_STRING
             currentSurname = lastName ?: EMPTY_STRING
         }
 
@@ -268,7 +268,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun fillProfileInfo(userModel: UserModel) {
-//        include_toolbar_profile.toolbar_title_text_view.text = userModel.username
+        include_toolbar_profile.toolbar_title_text_view.text = userModel.username
         text_view_fragment_profile_user_name.text = userModel.firstName
         fragment_profile_followers_count.text = "${/*followers_count*/ 0}"
         fragment_profile_followings_count.text = "${/*followings_count*/ 0}"

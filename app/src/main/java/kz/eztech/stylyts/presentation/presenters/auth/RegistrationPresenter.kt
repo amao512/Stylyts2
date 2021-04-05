@@ -3,6 +3,8 @@ package kz.eztech.stylyts.presentation.presenters.auth
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
+import kz.eztech.stylyts.domain.usecases.auth.CheckUsernameUseCase
 import kz.eztech.stylyts.domain.usecases.auth.RegistrationUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.auth.RegistrationContract
@@ -13,10 +15,28 @@ import javax.inject.Inject
  */
 class RegistrationPresenter @Inject constructor(
     private var errorHelper: ErrorHelper,
-    private var registrationUseCase: RegistrationUseCase
+    private var registrationUseCase: RegistrationUseCase,
+    private val checkUsernameUseCase: CheckUsernameUseCase
 ) : RegistrationContract.Presenter {
 
     private lateinit var view: RegistrationContract.View
+
+    override fun checkUsername(username: String) {
+        checkUsernameUseCase.initParams(username)
+        checkUsernameUseCase.execute(object : DisposableSingleObserver<ExistsUsernameModel>() {
+            override fun onSuccess(t: ExistsUsernameModel) {
+                view.processViewAction {
+                    isUsernameExists(existsUsernameModel = t)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
 
     override fun registerUser(data: HashMap<String, Any>) {
         view.displayProgress()

@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_registration.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -89,7 +90,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> onCloseButtonClick()
-            R.id.fragment_registration_check_username_button -> onUsernameCheck()
+            R.id.fragment_registration_check_username_button -> onCheckUsernameButtonClick()
             R.id.text_view_fragment_registration_term -> {}
             R.id.button_fragment_registration_date -> setDate()
             R.id.button_fragment_registration_submit -> checkData()
@@ -147,6 +148,20 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         processSuccessRegistration()
     }
 
+    override fun isUsernameExists(existsUsernameModel: ExistsUsernameModel) {
+        if (existsUsernameModel.exists) {
+            displayMessage(msg = "Пользователь с таким именем уже существует!")
+        } else {
+            toolbar_title_text_view.show()
+            toolbar_back_text_view.show()
+            toolbar_left_corner_action_image_button.hide()
+            fragment_registration_username_linear_layout.hide()
+            fragment_registration_fields_scroll_view.show()
+
+            isUsernameChecked = true
+        }
+    }
+
     private fun onCloseButtonClick() {
         when (isUsernameChecked) {
             true -> {
@@ -157,15 +172,9 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         }
     }
 
-    private fun onUsernameCheck() {
+    private fun onCheckUsernameButtonClick() {
         if (edit_text_view_fragment_registration_username.text.isNotBlank()) {
-            toolbar_title_text_view.show()
-            toolbar_back_text_view.show()
-            toolbar_left_corner_action_image_button.hide()
-            fragment_registration_username_linear_layout.hide()
-            fragment_registration_fields_scroll_view.show()
-
-            isUsernameChecked = true
+            presenter.checkUsername(username = edit_text_view_fragment_registration_username.text.toString())
         } else {
             displayMessage(msg = getString(R.string.registration_fill_field))
         }

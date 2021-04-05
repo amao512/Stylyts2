@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.auth.TokenModel
+import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -83,10 +83,10 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
         include_base_progress.hide()
     }
 
-    override fun processLoginUser(tokenModel: TokenModel) {
-        tokenModel.let {
-            currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.access)
-            currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.refresh)
+    override fun processLoginUser(authModel: AuthModel) {
+        authModel.let {
+            currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.token?.access)
+            currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.token?.refresh)
 
             startActivity(Intent(currentActivity, MainActivity::class.java))
             currentActivity.finish()

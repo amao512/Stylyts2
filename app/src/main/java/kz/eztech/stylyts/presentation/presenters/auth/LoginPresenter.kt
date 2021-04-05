@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.auth
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.auth.TokenModel
+import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.usecases.auth.LoginUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.auth.LoginContract
@@ -28,11 +28,12 @@ class LoginPresenter @Inject constructor(
 
     override fun loginUser(data: HashMap<String, Any>) {
         view.displayProgress()
+
         loginUseCase.initParams(data)
-        loginUseCase.execute(object : DisposableSingleObserver<TokenModel>(){
-            override fun onSuccess(t: TokenModel) {
+        loginUseCase.execute(object : DisposableSingleObserver<AuthModel>(){
+            override fun onSuccess(t: AuthModel) {
                 view.processViewAction {
-                    processLoginUser(t)
+                    processLoginUser(authModel = t)
                 }
             }
 
