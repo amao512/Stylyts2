@@ -12,7 +12,7 @@ import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
-class UserSubsFragment : BaseFragment<MainActivity>(),EmptyContract.View {
+class UserSubsFragment : BaseFragment<MainActivity>(), EmptyContract.View {
 
     private lateinit var adapter: UserSubViewPagerAdapter
 
@@ -20,11 +20,16 @@ class UserSubsFragment : BaseFragment<MainActivity>(),EmptyContract.View {
         super.onResume()
 
         currentActivity.displayBottomNavigationView()
+
         view_pager_fragment_user_subs.adapter = adapter
-        TabLayoutMediator(tab_bar_fragment_user_subs, view_pager_fragment_user_subs) { tab, position ->
-            when(position){
-                0 -> {tab.text = "250 Подписчики"}
-                1 -> {tab.text = "131 Подписки"}
+
+        TabLayoutMediator(
+            tab_bar_fragment_user_subs,
+            view_pager_fragment_user_subs
+        ) { tab, position ->
+            when (position) {
+                0 -> tab.text = "250 Подписчики"
+                1 -> tab.text = "131 Подписки"
             }
         }.attach()
     }
@@ -34,13 +39,13 @@ class UserSubsFragment : BaseFragment<MainActivity>(),EmptyContract.View {
     override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
-        with(include_toolbar_user_subs){
+        with(include_toolbar_user_subs) {
             toolbar_left_corner_action_image_button.show()
             toolbar_back_text_view.show()
             toolbar_title_text_view.show()
             toolbar_right_corner_action_image_button.hide()
 
-            customizeActionToolBar(this,"ruslan")
+            customizeActionToolBar(this, "ruslan")
         }
     }
 

@@ -3,13 +3,13 @@ package kz.eztech.stylyts.presentation.fragments.profile
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
@@ -39,6 +39,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     UniversalViewClickListener, EditorListener, DialogChooserListener {
 
     @Inject lateinit var presenter: ProfilePresenter
+    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
@@ -283,10 +284,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         userModel.avatar?.let {
             text_view_fragment_profile_user_short_name.hide()
 
-            Glide.with(currentActivity)
-                .load(it)
-                .centerCrop()
-                .into(shapeable_image_view_fragment_profile_avatar)
+            imageLoader.load(
+                url = it,
+                target = shapeable_image_view_fragment_profile_avatar
+            )
         } ?: run {
             shapeable_image_view_fragment_profile_avatar.hide()
             text_view_fragment_profile_user_short_name.show()

@@ -9,8 +9,10 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.db.LocalDataSource
+import kz.eztech.stylyts.data.helpers.ImageLoader
 import kz.eztech.stylyts.data.repository.collection_constructor.FilteredItemsRepository
 import kz.eztech.stylyts.data.repository.collection_constructor.ShopCategoryRepository
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.repository.collection_constructor.FilteredItemsDomainRepository
 import kz.eztech.stylyts.domain.repository.collection_constructor.ShopCategoryDomainRepository
 import javax.inject.Named
@@ -59,4 +61,7 @@ class ApplicationModule(private val mApplication: Application) {
 
     @Provides
     fun provideDataSource() = LocalDataSource(mApplication)
+
+    @Provides
+    fun provideImageLoader(): DomainImageLoader = ImageLoader()
 }

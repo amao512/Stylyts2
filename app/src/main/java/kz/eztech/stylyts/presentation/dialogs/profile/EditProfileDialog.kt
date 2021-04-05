@@ -1,34 +1,36 @@
 package kz.eztech.stylyts.presentation.dialogs.profile
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.EditProfileContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.EditProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.presentation.utils.extensions.*
 import javax.inject.Inject
 
 
@@ -40,11 +42,22 @@ class EditProfileDialog(
 ) : DialogFragment(), EditProfileContract.View, View.OnClickListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: EditProfilePresenter
+    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
     private lateinit var cameraResultLaunch: ActivityResultLauncher<Intent>
 
+    private val permissions = arrayOf(
+        Manifest.permission.CAMERA,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
+    )
+
     companion object {
+        private const val TAG = "TAG"
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private const val FULL_NAME_TEXT_FORMAT = "%s %s"
+
         const val TOKEN_ARGS_KEY = "token_args_key"
 
         fun getNewInstance(
@@ -160,7 +173,9 @@ class EditProfileDialog(
 
     override fun processUserModel(userModel: UserModel) {
         userModel.let { user ->
-            edit_text_dialog_edit_profile_name.setText("${user.firstName} ${user.lastName}")
+            edit_text_dialog_edit_profile_name.setText(
+                FULL_NAME_TEXT_FORMAT.format(user.firstName, user.lastName)
+            )
             edit_text_dialog_edit_profile_username.setText(user.username)
             edit_text_dialog_edit_profile_insta.setText(user.instagram)
             edit_text_dialog_edit_profile_site.setText(user.webSite)
@@ -168,10 +183,10 @@ class EditProfileDialog(
             user.avatar?.let {
                 text_view_fragment_profile_edit_user_short_name.hide()
 
-                Glide.with(this)
-                    .load(it)
-                    .centerCrop()
-                    .into(shapeable_image_view_fragment_profile_avatar)
+                imageLoader.load(
+                    url = it,
+                    target = shapeable_image_view_fragment_profile_avatar
+                )
             } ?: run {
                 text_view_fragment_profile_edit_user_short_name.text = getShortName(
                     firstName = user.firstName,
@@ -211,6 +226,21 @@ class EditProfileDialog(
         }
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                startCamera()
+            } else {
+                displayToast(context, msg = "Permissions not granted by the user.")
+                dismiss()
+            }
+        }
+    }
+
     private fun completeEditing() {
         val data = HashMap<String, Any>()
         val names: List<String> = edit_text_dialog_edit_profile_name.text.split(" ")
@@ -238,14 +268,8 @@ class EditProfileDialog(
             return
         }
 
-        data["web_site"] = when (webSite.isBlank()) {
-            true -> EMPTY_STRING
-            false -> webSite
-        }
-        data["instagram"] = when (instagram.isBlank()) {
-            true -> EMPTY_STRING
-            false -> instagram
-        }
+        data["web_site"] = checkStringValidation(text = webSite)
+        data["instagram"] = checkStringValidation(text = instagram)
 
         presenter.editProfile(
             token = getTokenFromArguments(),
@@ -253,17 +277,37 @@ class EditProfileDialog(
         )
     }
 
+    private fun checkStringValidation(text: String): String = when (text.isBlank()) {
+        true -> EMPTY_STRING
+        false -> text
+    }
+
     private fun openGalleryForImage() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        galleryResultLaunch.launch(intent)
+        galleryResultLaunch.launch(
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        )
     }
 
     private fun openCameraForImage() {
+        if (allPermissionsGranted()) {
+            startCamera()
+        } else {
+            ActivityCompat.requestPermissions(
+                activity as MainActivity,
+                permissions,
+                REQUEST_CODE_PERMISSIONS
+            )
+        }
+    }
+
+    private fun startCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
         try {
             cameraResultLaunch.launch(intent)
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+            Log.wtf(TAG, e)
+        }
     }
 
     private fun setProfileImage(uri: Uri?) {
@@ -277,18 +321,26 @@ class EditProfileDialog(
 
     private fun setProfileImageByBitmap(bitmap: Bitmap?) {
         bitmap?.let {
-            val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
+            try {
+                val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
 
-            file?.let {
-                presenter.changeProfilePhoto(
-                    token = getTokenFromArguments(),
-                    file = file
-                )
-                text_view_fragment_profile_edit_user_short_name.text = EMPTY_STRING
-                text_view_fragment_profile_edit_user_short_name.show()
+                file?.let {
+                    presenter.changeProfilePhoto(
+                        token = getTokenFromArguments(),
+                        file = file
+                    )
+                    text_view_fragment_profile_edit_user_short_name.text = EMPTY_STRING
+                    text_view_fragment_profile_edit_user_short_name.show()
+                }
+            } catch (e: Exception) {
+                Log.wtf(TAG, e)
             }
         }
     }
 
     private fun getTokenFromArguments(): String = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
+
+    private fun allPermissionsGranted() = permissions.all {
+        ContextCompat.checkSelfPermission(activity as MainActivity, it) == PackageManager.PERMISSION_GRANTED
+    }
 }

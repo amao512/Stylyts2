@@ -33,9 +33,7 @@ class UserCommentsFragment : BaseFragment<MainActivity>(), EmptyContract.View {
             toolbar_title_text_view.show()
             toolbar_right_corner_action_image_button.hide()
 
-            customizeActionToolBar(
-                toolbar = this,context.getString(R.string.toolbar_title_comments)
-            )
+            customizeActionToolBar(toolbar = this,context.getString(R.string.toolbar_title_comments))
         }
     }
 

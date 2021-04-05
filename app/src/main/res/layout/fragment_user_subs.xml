@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".common.presentation.fragments.shop.ShopFragment"
+    tools:context=".presentation.fragments.shop.ShopFragment"
     >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,7 +36,6 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/margin_size_8x"
                         >
 
                         <include
@@ -52,6 +51,7 @@
                         android:theme="@style/SearchView"
                         app:queryBackground="@android:color/transparent"
                         app:queryHint="Поиск"
+                        android:layout_marginTop="@dimen/margin_size_10x"
                         />
                 </LinearLayout>
 
