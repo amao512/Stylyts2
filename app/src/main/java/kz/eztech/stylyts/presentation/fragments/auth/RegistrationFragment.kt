@@ -174,7 +174,9 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
 
     private fun onCheckUsernameButtonClick() {
         if (edit_text_view_fragment_registration_username.text.isNotBlank()) {
-            presenter.checkUsername(username = edit_text_view_fragment_registration_username.text.toString())
+            presenter.checkUsername(
+                username = edit_text_view_fragment_registration_username.text.toString().toLowerCase()
+            )
         } else {
             displayMessage(msg = getString(R.string.registration_fill_field))
         }

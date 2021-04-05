@@ -61,6 +61,7 @@
                     android:hint="@string/username"
                     android:imeOptions="actionNext"
                     android:inputType="text|textPersonName"
+                    android:textAllCaps="false"
                     android:paddingHorizontal="@dimen/padding_size_24x"
                     android:paddingVertical="@dimen/padding_size_16x"
                     />
