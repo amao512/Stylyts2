@@ -6,8 +6,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.GenderCategory
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ShopCategoryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -15,17 +18,17 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopCategoryPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ShopItemFragment(
-    private var currentType: Int
+    private var position: Int
 ) : BaseFragment<MainActivity>(), ShopItemContract.View, SwipeRefreshLayout.OnRefreshListener,
     UniversalViewClickListener {
 
-    @Inject
-    lateinit var presenter: ShopCategoryPresenter
+    @Inject lateinit var presenter: ShopCategoryPresenter
 
     private lateinit var adapter: ShopCategoryAdapter
     private var itemClickListener: UniversalViewClickListener? = null
@@ -53,7 +56,8 @@ class ShopItemFragment(
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        adapter = ShopCategoryAdapter()
+        adapter = ShopCategoryAdapter(gender = position)
+
         recycler_view_fragment_shop_item.layoutManager = LinearLayoutManager(context)
         recycler_view_fragment_shop_item.adapter = adapter
         adapter.itemClickListener = this
@@ -90,8 +94,14 @@ class ShopItemFragment(
         swipe_refresh_fragment_shop_item.isRefreshing = false
     }
 
+    override fun processClothesTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
+        resultsModel.results?.let {
+            adapter.updateList(list = it)
+        }
+    }
+
     override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
-        when (currentType) {
+        when (position) {
             0 -> {
                 shopCategoryModel.menCategory?.let {
                     adapter.updateList(it)
@@ -107,16 +117,19 @@ class ShopItemFragment(
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         val data = HashMap<String, Any>()
-        data["currentGender"] = currentType
+        data["currentGender"] = this.position
         data["currentItem"] = item as GenderCategory
-        itemClickListener?.let {
-            it.onViewClicked(view, position, data)
-        }
+
+        itemClickListener?.onViewClicked(view, position, data)
     }
 
     override fun onResume() {
         super.onResume()
-        presenter.getCategory()
+        presenter.getClothesTypes(token = getTokenFromSharedPref())
         currentActivity.displayBottomNavigationView()
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

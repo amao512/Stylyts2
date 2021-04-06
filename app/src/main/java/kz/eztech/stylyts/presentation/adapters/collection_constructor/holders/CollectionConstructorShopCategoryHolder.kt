@@ -3,8 +3,8 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
-import kz.eztech.stylyts.domain.models.ClothesTypes
-import kz.eztech.stylyts.domain.models.GenderCategory
+import kz.eztech.stylyts.domain.models.shop.ClothesTypes
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -32,8 +32,8 @@ class CollectionConstructorShopCategoryHolder(
     }
 
 	private fun processGenderCategory(
-		genderCategory: GenderCategory,
-		position: Int
+        genderCategory: GenderCategory,
+        position: Int
 	) {
 		with(genderCategory) {
 			with(itemView) {
@@ -69,8 +69,8 @@ class CollectionConstructorShopCategoryHolder(
 	}
 
 	private fun processClothesTypes(
-		clothesTypes: ClothesTypes,
-		position: Int
+        clothesTypes: ClothesTypes,
+        position: Int
 	) {
 		with(clothesTypes) {
 			with(itemView) {

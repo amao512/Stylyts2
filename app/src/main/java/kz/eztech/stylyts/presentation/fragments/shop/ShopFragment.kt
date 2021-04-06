@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_shop.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.GenderCategory
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ShopViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -70,7 +70,7 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
         fragment_shop_view_pager.adapter = shopViewPagerAdapter
         TabLayoutMediator(fragment_shop_tab_layout, fragment_shop_view_pager) { tab, position ->
             when (position) {
-                0 -> tab.text = getString(R.string.for_him)
+                0 -> tab.text = getString(R.string.for_his)
                 1 -> tab.text = getString(R.string.for_her)
             }
         }.attach()

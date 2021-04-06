@@ -5,7 +5,7 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.usecases.shop.SaveCollectionConstructor
 import kz.eztech.stylyts.domain.usecases.collection_constructor.*

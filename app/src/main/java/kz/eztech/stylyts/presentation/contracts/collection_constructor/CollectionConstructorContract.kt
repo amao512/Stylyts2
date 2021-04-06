@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.collection_constructor
 import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.models.MainResult
 import java.io.File
 

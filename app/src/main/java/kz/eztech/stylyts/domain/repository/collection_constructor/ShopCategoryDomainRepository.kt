@@ -2,7 +2,7 @@ package kz.eztech.stylyts.domain.repository.collection_constructor
 
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.models.*
 import okhttp3.MultipartBody

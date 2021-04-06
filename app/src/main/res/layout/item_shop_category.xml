@@ -35,6 +35,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/text_view_item_shop_fragment"
         tools:src="@drawable/jacket"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>

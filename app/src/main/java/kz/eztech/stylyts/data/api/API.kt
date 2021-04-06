@@ -11,6 +11,7 @@ import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION_TO_ME
 import kz.eztech.stylyts.data.api.RestConstants.UPDATE_COLLECTION
 import kz.eztech.stylyts.domain.models.*
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*

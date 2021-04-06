@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.domain.models
+package kz.eztech.stylyts.domain.models.shop
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose

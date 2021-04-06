@@ -13,8 +13,8 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.BrandModel
 import kz.eztech.stylyts.domain.models.BrandsModel
-import kz.eztech.stylyts.domain.models.GenderCategory
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorFilterAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener

@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.usecases.collection_constructor.GetFilteredItemsUseCase
 import kz.eztech.stylyts.domain.usecases.collection_constructor.GetCategoryUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction

@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.ClothesTypes
+import kz.eztech.stylyts.domain.models.shop.ClothesTypes
 import kz.eztech.stylyts.presentation.adapters.holders.ShopItemListHolder
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 

@@ -2,7 +2,7 @@ package kz.eztech.stylyts.domain.usecases.collection_constructor
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.repository.collection_constructor.ShopCategoryDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject

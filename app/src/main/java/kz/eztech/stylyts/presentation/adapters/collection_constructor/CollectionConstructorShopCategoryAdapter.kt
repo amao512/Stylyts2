@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.GenderCategory
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.CollectionConstructorShopCategoryHolder

@@ -43,6 +43,7 @@ class StylytsApp : Application(){
             .profileModule(ProfileModule())
             .addressModule(AddressModule())
             .searchModule(SearchModule(mApplication = this))
+            .clothesModule(ClothesModule())
             .collectionConstructorModule(CollectionConstructorModule())
             .collectionModule(CollectionModule())
             .build()

@@ -4,6 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.API
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.*
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.repository.collection_constructor.ShopCategoryDomainRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject

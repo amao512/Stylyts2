@@ -29,8 +29,8 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.GenderCategory
-import kz.eztech.stylyts.domain.models.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
+import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.data.models.SharedConstants

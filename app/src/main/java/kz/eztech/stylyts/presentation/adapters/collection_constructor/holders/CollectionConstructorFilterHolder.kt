@@ -10,8 +10,8 @@ import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.domain.models.ClothesTypes
-import kz.eztech.stylyts.domain.models.GenderCategory
+import kz.eztech.stylyts.domain.models.shop.ClothesTypes
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
 
 /**
  * Created by Ruslan Erdenoff on 05.02.2021.
