@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.data.api
 
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import retrofit2.Response
@@ -24,8 +23,9 @@ interface AuthApi {
         @Field("last_name") lastName: String,
         @Field("gender") gender: String,
         @Field("dob") dateOfBirth: String,
-        @Field("is_brand") isBrand: Boolean,
-    ): Single<Response<UserModel>>
+        @Field("should_send_mail") shouldSendMail: Boolean,
+        @Field("is_brand") isBrand: Boolean
+    ): Single<Response<AuthModel>>
 
     @FormUrlEncoded
     @POST(RestConstants.LOGIN_USER)

@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.auth
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.view.View
 import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.findNavController
@@ -9,9 +10,11 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_registration.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
+import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.auth.RegistrationContract
@@ -126,14 +129,17 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         data["date_of_birth"] = "$mYear-$mMonth-$mDayOfMonth"
         data["is_brand"] = false
         data["username"] = edit_text_view_fragment_registration_username.text.toString()
+            .toLowerCase(Locale.getDefault())
         data["gender"] = "male"
+        data["should_send_mail"] = fragment_registration_should_send_mail_check_box.isChecked
 
         presenter.registerUser(data)
     }
 
     override fun processSuccessRegistration() {
-        currentActivity.onBackPressed()
         displayMessage(msg = getString(R.string.registration_success))
+        startActivity(Intent(currentActivity, MainActivity::class.java))
+        currentActivity.finish()
     }
 
     override fun displayProgress() {
@@ -144,13 +150,18 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         include_base_progress.hide()
     }
 
-    override fun processUser(userModel: UserModel) {
-        processSuccessRegistration()
+    override fun processUser(authModel: AuthModel) {
+        authModel.let {
+            currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.token?.access)
+            currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.token?.refresh)
+
+            processSuccessRegistration()
+        }
     }
 
     override fun isUsernameExists(existsUsernameModel: ExistsUsernameModel) {
         if (existsUsernameModel.exists) {
-            displayMessage(msg = "Пользователь с таким именем уже существует!")
+            displayMessage(msg = getString(R.string.registration_username_is_already_exists))
         } else {
             toolbar_title_text_view.show()
             toolbar_back_text_view.show()
@@ -175,7 +186,8 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
     private fun onCheckUsernameButtonClick() {
         if (edit_text_view_fragment_registration_username.text.isNotBlank()) {
             presenter.checkUsername(
-                username = edit_text_view_fragment_registration_username.text.toString().toLowerCase()
+                username = edit_text_view_fragment_registration_username.text.toString()
+                    .toLowerCase(Locale.getDefault())
             )
         } else {
             displayMessage(msg = getString(R.string.registration_fill_field))

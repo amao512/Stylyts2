@@ -251,19 +251,19 @@ class EditProfileDialog(
             if (names[0].isNotBlank()) {
                 data["first_name"] = names[0]
             } else {
-                displayMessage(msg = getString(R.string.fill_names_throught_space))
+                displayMessage(msg = getString(R.string.edit_profile_fill_names_through_space))
 
                 return
             }
             if (names[1].isNotBlank()) {
                 data["last_name"] = names[1]
             } else {
-                displayMessage(msg = getString(R.string.fill_names_throught_space))
+                displayMessage(msg = getString(R.string.edit_profile_fill_names_through_space))
 
                 return
             }
         } else {
-            displayMessage(msg = getString(R.string.fill_names_throught_space))
+            displayMessage(msg = getString(R.string.edit_profile_fill_names_through_space))
 
             return
         }

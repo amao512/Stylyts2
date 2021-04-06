@@ -25,6 +25,7 @@
     <string name="registration_fill_empty_fields">Заполните пустые поля</string>
     <string name="registration_success">Успешно</string>
     <string name="registration_fill_field">Пожалуйста, заполните поле</string>
+    <string name="registration_username_is_already_exists">Пользователь с таким именем уже существует!</string>
 
     <string name="fragment_restore_password_forgot_password_title">Забыли Пароль?</string>
     <string name="fragment_restore_password_forgot_password_description">Пожалуйста введите ваш Email адрес и мы сразу вышлем ваш на пароль вам на почту.</string>
@@ -271,4 +272,7 @@
 
     <string name="chats_title">Чат</string>
     <string name="chats_empty_subtitle">Қазіргі уақытта сізде басқа қолданушылармен чаттар жоқ. Іздеу кезінде қажет пайдаланушыны немесе дүкенді табыңыз немесе оған бетте кіріп, сұхбат бастаңыз.</string>
+
+    <string name="edit_profile_fill_data">Заполните данные</string>
+    <string name="edit_profile_fill_names_through_space">Заполните имя и фамилию через пробел!</string>
 </resources>

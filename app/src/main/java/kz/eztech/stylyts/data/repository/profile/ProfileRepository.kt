@@ -1,13 +1,12 @@
 package kz.eztech.stylyts.data.repository.profile
 
-import android.util.Log
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.data.api.ProfileApi
 import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
-import kz.eztech.stylyts.domain.models.ResultsModel
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
@@ -38,7 +37,6 @@ class ProfileRepository @Inject constructor(
             instagram = data["instagram"] as String,
             webSite = data["web_site"] as String
         ).map {
-            Log.d("TAG", "$it")
             when (it.isSuccessful) {
                 true -> it.body()
                 else -> throw NetworkException(it)

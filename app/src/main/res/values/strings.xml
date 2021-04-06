@@ -20,10 +20,11 @@
     <string name="fragment_registration_notification_info_reject_checkbox">I don\'t want to receive promotional emails from Style App.</string>
     <string name="registration_create_username_title">Create username</string>
     <string name="registration_create_username_subtitle">Create username for your new account. You can also change it later</string>
-    <string name="registration_passwords_not_match">Пароли несовпадают</string>
-    <string name="registration_fill_empty_fields">Заполните пустые поля</string>
-    <string name="registration_success">Успешно</string>
-    <string name="registration_fill_field">Пожалуйста, заполните поле</string>
+    <string name="registration_passwords_not_match">Password mismatch</string>
+    <string name="registration_fill_empty_fields">Fill empty fields</string>
+    <string name="registration_success">Success</string>
+    <string name="registration_fill_field">Please, fill field</string>
+    <string name="registration_username_is_already_exists">Username is already exists!</string>
 
     <string name="fragment_restore_password_forgot_password_title">Forgot password?</string>
     <string name="fragment_restore_password_forgot_password_description">Please enter your Email address and we will immediately send your password to your email.</string>
@@ -124,7 +125,7 @@
     <string name="collection_accept_cancel_users">Отметить пользователя</string>
     <string name="collection_accept_publish_social_networks">Публикация в соц сетях</string>
 
-    <string name="edit_profile_change_photo">Изменить фото профиля</string>
+    <string name="edit_profile_change_photo">Change profile photo</string>
 
     <string name="profile_name">Name</string>
     <string name="profile_username">Username</string>
@@ -156,14 +157,14 @@
     <string name="card_save">Сохранить карту</string>
     <string name="card_prefer_payment">Предпочитаемый способ оплаты</string>
 
-    <string name="clean_background_clean_text">Убрать фон</string>
+    <string name="clean_background_clean_text">Remove background</string>
     <string name="clean_background_add_wardrobe">Добавить в мой гардероб</string>
 
     <string name="collection_constructor_create_title">Создайте свой образ</string>
     <string name="collection_constructor_create_subtitle">Чтобы выбрать понравившуюся вещь,\nкликните на нее 2 раза</string>
     <string name="collection_constructor_select_category">Выберите категорию вещей</string>
 
-    <string name="collection_detail_change_outfit">изменить образ</string>
+    <string name="collection_detail_change_outfit">change outfit</string>
 
     <string name="constructor_holder_create_outfit">СОЗДАТЬ ОБРАЗ</string>
     <string name="constructor_holder_create_publish">СОЗДАТЬ ПУБЛИКАЦИЮ</string>
@@ -198,13 +199,13 @@
     <string name="search_item_items">Clothes</string>
     <string name="subscribe">Follow</string>
 
-    <string name="card_fragment_add_way_payment">Добавить Способ Оплаты</string>
+    <string name="card_fragment_add_way_payment">Add a payment method</string>
 
-    <string name="collection_detail_fragment_publishes">Публикация</string>
+    <string name="collection_detail_fragment_publishes">Publication</string>
 
-    <string name="saved_settings_title">Сохраненное</string>
-    <string name="saved_settings_save">Сохранить</string>
-    <string name="saved_settings_save_subtitle">Сохраняйте публикации и образы, которые хотите посмотреть позже. Только вы сможете просматривать сохраненные вами обьекты.</string>
+    <string name="saved_settings_title">Saved</string>
+    <string name="saved_settings_save">Save</string>
+    <string name="saved_settings_save_subtitle">Save publications and outfits you want to watch later. Only you can view the objects you have saved.</string>
 
     <string name="dialog_exit_title">You definitely want to log out of your %s account?</string>
     <string name="dialog_exit_positive_text">Exit</string>
@@ -226,7 +227,7 @@
     <string name="collection_constructor_add_by_barcode">Добавить по штрихкоду</string>
     <string name="collection_constructor_add_by_photo">Добавить по фото</string>
     <string name="collection_constructor_error_load_data">Не удалось загрузить данные</string>
-    <string name="collection_constructor_add_category">Добавить категорию</string>
+    <string name="collection_constructor_add_category">Add catgory</string>
 
     <string name="clean_background_title">Добавить вещь</string>
     <string name="clean_background_convert_error">Ошибка при конвертировании фотографии</string>
@@ -234,7 +235,7 @@
     <string name="constructor_filter_clear">Cleaer</string>
     <string name="constructor_filter_reset">Reset</string>
 
-    <string name="create_collection_create_outfit">Создать образ</string>
+    <string name="create_collection_create_outfit">Create outfit</string>
     <string name="create_collection_ready">Done</string>
 
     <string name="save_item_accept_add_item">Добавить вещь</string>
@@ -270,6 +271,7 @@
 
     <string name="chats_title">Chats</string>
     <string name="chats_empty_subtitle">You do not currently have chats with other users. Find the user or store you need in the search, or go to him on the page and start a chat.</string>
-    <string name="fill_data">Заполните данные</string>
-    <string name="fill_names_throught_space">Заполните имя и фамилию через пробел!</string>
+
+    <string name="edit_profile_fill_data">Заполните данные</string>
+    <string name="edit_profile_fill_names_through_space">Заполните имя и фамилию через пробел!</string>
 </resources>

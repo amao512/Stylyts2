@@ -94,7 +94,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
     }
 
     override fun checkData() {
-        val email = editText_fragment_login_email.text
+        val email = editText_fragment_login_username.text
         val password = editText_fragment_login_password.text
 
         if (email.isNotEmpty() && password.isNotEmpty()) {
@@ -104,7 +104,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
 
             presenter.loginUser(data)
         } else {
-            displayMessage(msg = getString(R.string.fill_data))
+            displayMessage(msg = getString(R.string.edit_profile_fill_data))
         }
     }
 }
