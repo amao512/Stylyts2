@@ -11,6 +11,7 @@
     <string name="fragment_login_sign_in">Sign in</string>
     <string name="fragment_login_no_account">Don\'t have an account?</string>
     <string name="fragment_login_sign_up">Sign up</string>
+    <string name="fragment_username">Username</string>
 
     <string name="fragment_registration_appbar_title">Sign up</string>
     <string name="fragment_registration_birth_date">Date of birth(месяц/день/год)</string>

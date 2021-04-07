@@ -12,6 +12,7 @@
     <string name="fragment_login_sign_in">Кіру</string>
     <string name="fragment_login_no_account">Нет аккаунта?</string>
     <string name="fragment_login_sign_up">Зарегестрироваться</string>
+    <string name="fragment_username">Логин</string>
 
     <string name="fragment_registration_appbar_title">Регистрация</string>
     <string name="fragment_registration_birth_date">Дата рождения(месяц/день/год)</string>

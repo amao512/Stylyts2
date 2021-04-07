@@ -208,6 +208,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
 
         val dpd = DatePickerDialog(
             currentActivity,
+            R.style.DialogTheme,
             { _, year, monthOfYear, dayOfMonth ->
                 mYear = year
                 mMonth = monthOfYear

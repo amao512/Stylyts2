@@ -98,7 +98,6 @@
         <item name="iconifiedByDefault">false</item>
     </style>
 
-
     <style name="BaseBottomSheetDialogCommon" parent="@style/Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="bottomSheetStyle">@style/CommonBottomSheet</item>
@@ -117,4 +116,8 @@
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
+    <!-- Theme.AppCompat.Light is not a dialog theme -->
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/app_black</item>
+    </style>
 </resources>
