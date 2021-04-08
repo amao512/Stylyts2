@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.presentation.fragments.auth
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.view.View
 import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_registration.*
@@ -19,6 +19,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.auth.RegistrationContract
 import kz.eztech.stylyts.presentation.presenters.auth.RegistrationPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.DateFormatSymbols
@@ -35,6 +36,10 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
     private var mYear: Int? = null
     private var mMonth: Int? = null
     private var mDayOfMonth: Int? = null
+
+    companion object {
+        private const val DATE_TEXT_FORMAT = "%s / %s / %s"
+    }
 
     override fun customizeActionBar() {
         with(include_toolbar) {
@@ -131,7 +136,7 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
         data["username"] = edit_text_view_fragment_registration_username.text.toString()
             .toLowerCase(Locale.getDefault())
         data["gender"] = "male"
-        data["should_send_mail"] = fragment_registration_should_send_mail_check_box.isChecked
+        data["should_send_mail"] = !fragment_registration_should_send_mail_check_box.isChecked
 
         presenter.registerUser(data)
     }
@@ -206,19 +211,26 @@ class RegistrationFragment : BaseFragment<AuthorizationActivity>(), Registration
             }
         }
 
-        val dpd = DatePickerDialog(
-            currentActivity,
-            R.style.DialogTheme,
-            { _, year, monthOfYear, dayOfMonth ->
-                mYear = year
-                mMonth = monthOfYear
-                mDayOfMonth = dayOfMonth
-                button_fragment_registration_date.text = "$mDayOfMonth / ${DateFormatSymbols().getMonths()[mMonth!! - 1]} / $mYear"
+        val materialDatePicker = MaterialDatePicker.Builder.datePicker()
+            .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+            .setTheme(R.style.ThemeOverlay_App_DatePicker)
+            .build()
 
-            },
-            mYear!!, mMonth!!, mDayOfMonth!!
-        )
+        materialDatePicker.show(childFragmentManager, EMPTY_STRING)
 
-        dpd.show()
+        materialDatePicker.addOnPositiveButtonClickListener {
+            val calendar = Calendar.getInstance()
+            calendar.time = Date(it)
+
+            mYear = calendar.get(Calendar.YEAR)
+            mMonth = calendar.get(Calendar.MONTH) + 1
+            mDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+
+            button_fragment_registration_date.text = DATE_TEXT_FORMAT.format(
+                mDayOfMonth,
+                DateFormatSymbols().months[mMonth!! - 1],
+                mYear
+            )
+        }
     }
 }
