@@ -4,9 +4,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
-import kz.eztech.stylyts.domain.usecases.collection.GetClothesTypesUseCase
-import kz.eztech.stylyts.domain.usecases.collection_constructor.GetCategoryUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemContract
 import javax.inject.Inject
@@ -17,14 +15,13 @@ import javax.inject.Inject
 
 class ShopCategoryPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
-    private val getClothesTypesUseCase: GetClothesTypesUseCase,
-    private val getCategoryUseCase: GetCategoryUseCase
+    private val getClothesTypesUseCase: GetClothesTypesUseCase
 ) : ShopItemContract.Presenter {
 
     private lateinit var view: ShopItemContract.View
 
     override fun disposeRequests() {
-        getCategoryUseCase.clear()
+        getClothesTypesUseCase.clear()
     }
 
     override fun attach(view: ShopItemContract.View) {
@@ -48,27 +45,6 @@ class ShopCategoryPresenter @Inject constructor(
                     displayMessage(msg = errorHelper.processError(e))
                     hideProgress()
                 }
-            }
-        })
-    }
-
-    override fun getCategory() {
-        view.displayProgress()
-        getCategoryUseCase.execute(object : DisposableSingleObserver<ShopCategoryModel>(){
-            override fun onSuccess(t: ShopCategoryModel) {
-                view.processViewAction {
-                    hideProgress()
-                    processShopCategories(t)
-                }
-
-            }
-
-            override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(errorHelper.processError(e))
-                }
-
             }
         })
     }

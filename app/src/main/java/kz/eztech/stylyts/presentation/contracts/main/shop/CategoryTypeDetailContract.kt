@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.main.shop
 
-import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -9,9 +10,15 @@ import kz.eztech.stylyts.presentation.base.BaseView
  */
 interface CategoryTypeDetailContract {
     interface View: BaseView {
-        fun processTypeDetail(model: CategoryTypeDetailModel)
+
+        fun processTypeDetail(resultsModel: ResultsModel<ClothesModel>)
     }
     interface Presenter: BasePresenter<View> {
-        fun getShopCategoryTypeDetail(typeId:Int,gender:String)
+
+        fun getCategoryTypeDetail(
+            token: String,
+            gender: String,
+            clothesCategoryId: String
+        )
     }
 }

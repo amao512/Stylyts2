@@ -6,17 +6,20 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ClothesTypeModel(
+data class ClothesImage(
     @SerializedName("id")
     @Expose
     val id: Int?,
-    @SerializedName("title")
+    @SerializedName("image")
     @Expose
-    val title: String?,
-    @SerializedName("men_cover_photo")
+    val image: String?,
+    @SerializedName("is_cover_photo")
     @Expose
-    val menCoverPhoto: String?,
-    @SerializedName("women_cover_photo")
+    val isCoverPhoto: Boolean,
+    @SerializedName("is_constructor_photo")
     @Expose
-    val womenCoverPhoto: String?
+    val isConstructorPhoto: Boolean,
+    @SerializedName("clothes")
+    @Expose
+    val clothes: Int?
 ) : Parcelable

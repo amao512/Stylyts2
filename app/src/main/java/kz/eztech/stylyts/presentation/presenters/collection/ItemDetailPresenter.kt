@@ -1,10 +1,12 @@
 package kz.eztech.stylyts.presentation.presenters.collection
 
+import android.util.Log
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
 import kz.eztech.stylyts.domain.usecases.collection.GetItemByBarcodeUseCase
-import kz.eztech.stylyts.domain.usecases.collection.GetItemDetailUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.ItemDetailContract
 import javax.inject.Inject
@@ -14,24 +16,33 @@ import javax.inject.Inject
  */
 class ItemDetailPresenter @Inject constructor(
     private var errorHelper: ErrorHelper,
-    private var getItemDetailUseCase: GetItemDetailUseCase,
+    private val getClothesByIdUseCase: GetClothesByIdUseCase,
     private var getItemByBarcodeUseCase: GetItemByBarcodeUseCase
 ) : ItemDetailContract.Presenter {
 
     private lateinit var view: ItemDetailContract.View
 
-    override fun getItemDetail(
+    override fun disposeRequests() {
+        getClothesByIdUseCase.clear()
+        getItemByBarcodeUseCase.clear()
+    }
+
+    override fun attach(view: ItemDetailContract.View) {
+        this.view = view
+    }
+
+    override fun getClothesById(
         token: String,
-        id: Int
+        clothesId: String
     ) {
         view.displayProgress()
 
-        getItemDetailUseCase.initParams(token,id)
-        getItemDetailUseCase.execute(object : DisposableSingleObserver<ClothesMainModel>(){
-            override fun onSuccess(t: ClothesMainModel) {
+        getClothesByIdUseCase.initParams(token, clothesId)
+        getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
+            override fun onSuccess(t: ClothesModel) {
                 view.processViewAction {
                     hideProgress()
-                    processItemDetail(t)
+                    processClothes(t)
                 }
             }
 
@@ -44,22 +55,15 @@ class ItemDetailPresenter @Inject constructor(
         })
     }
 
-    override fun disposeRequests() {
-        getItemDetailUseCase.clear()
-    }
-
-    override fun attach(view: ItemDetailContract.View) {
-        this.view = view
-    }
-    
     override fun getItemByBarcode(token: String, value: String) {
         view.displayProgress()
-        getItemByBarcodeUseCase.initParams(token,value)
-        getItemByBarcodeUseCase.execute(object : DisposableSingleObserver<ClothesMainModel>(){
+        getItemByBarcodeUseCase.initParams(token, value)
+        getItemByBarcodeUseCase.execute(object : DisposableSingleObserver<ClothesMainModel>() {
             override fun onSuccess(t: ClothesMainModel) {
                 view.processViewAction {
                     hideProgress()
-                    processItemDetail(t)
+//                    processClothes(t)
+                    Log.d("TAG", t.toString())
                 }
             }
 

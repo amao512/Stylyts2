@@ -18,6 +18,7 @@ import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesColor
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.ClothesSize
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -27,21 +28,21 @@ import kz.eztech.stylyts.presentation.contracts.collection.ItemDetailContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.ItemDetailChooserDialog
 import kz.eztech.stylyts.presentation.presenters.collection.ItemDetailPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
 
 class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View,
-    View.OnClickListener,
-    DialogChooserListener {
+    View.OnClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: ItemDetailPresenter
     @Inject lateinit var ds: LocalDataSource
 
     private lateinit var chooserDialog: ItemDetailChooserDialog
 
-    private var currentClotheModel: ClothesMainModel? = null
+    private var currentClothesModel: ClothesModel? = null
     private var currentClotheId: Int = -1
 
     private enum class CART_STATE { NONE, EDIT, DONE }
@@ -53,6 +54,10 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     private var barCode: String? = null
 
     private var disposables = CompositeDisposable()
+
+    companion object {
+        const val CLOTHE_ID = "clothe_id"
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_item_detail
 
@@ -86,11 +91,11 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey("clotheModel")) {
-                currentClotheModel = it.getParcelable("clotheModel")
+                currentClothesModel = it.getParcelable("clotheModel")
             }
 
-            if (it.containsKey("itemId")) {
-                currentClotheId = it.getInt("itemId")
+            if (it.containsKey(CLOTHE_ID)) {
+                currentClotheId = it.getInt(CLOTHE_ID)
             }
 
             if (it.containsKey("barcode_code")) {
@@ -102,23 +107,26 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        currentClotheModel?.let {
+        currentClothesModel?.let {
             chooserDialog = ItemDetailChooserDialog()
             chooserDialog.setChoiceListener(this)
+
             val imageArray = ArrayList<String>()
-            it.cover_photo?.let { photo ->
-                imageArray.add(photo)
+            it.images?.map { clothesImage ->
+                imageArray.add(clothesImage.image ?: EMPTY_STRING)
             }
+
             val imageAdapter = ImagesViewPagerAdapter(imageArray)
             view_pager_fragment_item_detail_photos_holder.adapter = imageAdapter
-            page_indicator_fragment_item_detail_pager_selector.visibility = View.VISIBLE
+
+            page_indicator_fragment_item_detail_pager_selector.show()
             page_indicator_fragment_item_detail_pager_selector.attachToPager(
                 view_pager_fragment_item_detail_photos_holder
             )
 
 
-            text_view_fragment_item_detail_brand_name.text =
-                "${it.brand?.first_name} ${it.brand?.last_name}"
+//            text_view_fragment_item_detail_brand_name.text =
+//                "${it.brand?.first_name} ${it.brand?.last_name}"
             text_view_fragment_item_detail_item_name.text = it.title
             text_view_fragment_item_detail_item_price.text =
                 "${NumberFormat.getInstance().format(it.cost)} ${it.currency}"
@@ -129,28 +137,24 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         } ?: run {
             barCode?.let {
                 presenter.getItemByBarcode(
-                    currentActivity.getSharedPrefByKey<String>(
-                        SharedConstants.ACCESS_TOKEN_KEY
-                    ) ?: "", it
+                    token = getTokenFromSharedPref(),
+                    value = it
                 )
             } ?: run {
                 if (currentClotheId != -1) {
-                    presenter.getItemDetail(
-                        currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: "",
-                        currentClotheId
+                    presenter.getClothesById(
+                        token = getTokenFromSharedPref(),
+                        clothesId = currentClotheId.toString()
                     )
                 } else {
                     displayMessage("Не удалось прогрузить страницу")
-                    presenter.getItemDetail(
-                        currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: "",
-                        43
+                    presenter.getClothesById(
+                        getTokenFromSharedPref(),
+                        clothesId = 43.toString()
                     )
                 }
             }
-
-
         }
-
     }
 
     override fun onResume() {
@@ -169,26 +173,12 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.button_fragment_item_detail_create_collection -> {
-                currentClotheModel?.let {
-                    val itemsList = ArrayList<ClothesMainModel>()
-                    val bundle = Bundle()
-                    itemsList.add(it)
-                    bundle.putParcelableArrayList("items", itemsList)
-                    findNavController().navigate(
-                        R.id.action_itemDetailFragment_to_createCollectionFragment,
-                        bundle
-                    )
-                }
-
-            }
-            R.id.button_fragment_item_detail_add_to_cart -> {
-                processState()
-            }
+            R.id.button_fragment_item_detail_create_collection -> createOutfit()
+            R.id.button_fragment_item_detail_add_to_cart -> processState()
             R.id.frame_layout_fragment_item_detail_text_size -> {
                 val bundle = Bundle()
-                currentClotheModel?.clothes_sizes?.let {
-                    bundle.putParcelableArrayList("sizeItems", ArrayList(it))
+                currentClothesModel?.clothesSizes?.let {
+                    bundle.putStringArrayList("sizeItems", ArrayList(it))
                 } ?: run {
                     displayMessage("Нет размеров")
                 }
@@ -197,8 +187,8 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             }
             R.id.frame_layout_fragment_item_detail_text_color -> {
                 val bundle = Bundle()
-                currentClotheModel?.clothes_colors?.let {
-                    bundle.putParcelableArrayList("colorItems", ArrayList(it))
+                currentClothesModel?.clothesColors?.let {
+                    bundle.putStringArrayList("colorItems", ArrayList(it))
                 } ?: run {
                     displayMessage("Нет цветов")
                 }
@@ -242,7 +232,6 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
                 }
             }
         }
-
     }
 
     private fun processState() {
@@ -262,24 +251,24 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
                 if (currentColor == null || currentSize == null) {
                     displayMessage("Вы не выбрали цвет или размер")
                 } else {
-                    processCart()
+//                    processCart()
                 }
             }
         }
     }
 
-    override fun processItemDetail(model: ClothesMainModel) {
+    override fun processClothes(clothesModel: ClothesModel) {
         currentClotheId = -2
-        currentClotheModel = model
+        currentClothesModel = clothesModel
         initializeViews()
     }
 
     private fun processCart() {
-        currentClotheModel?.currentColor = currentColor
-        currentClotheModel?.currentSize = currentSize
+//        currentClothesModel?.currentColor = currentColor
+//        currentClothesModel?.currentSize = currentSize
         disposables.clear()
         disposables.add(
-            ds.insert(CartMapper.mapToEntity(currentClotheModel as ClothesMainModel))
+            ds.insert(CartMapper.mapToEntity(currentClothesModel as ClothesMainModel))
                 .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
                     val cartDialog = CartDialog()
                     cartDialog.show(childFragmentManager, "Cart")
@@ -304,4 +293,21 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    private fun createOutfit() {
+        currentClothesModel?.let {
+            val itemsList = ArrayList<ClothesModel>()
+            val bundle = Bundle()
+            itemsList.add(it)
+            bundle.putParcelableArrayList("items", itemsList)
+            findNavController().navigate(
+                R.id.action_itemDetailFragment_to_createCollectionFragment,
+                bundle
+            )
+        }
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
+    }
 }

@@ -2,7 +2,8 @@ package kz.eztech.stylyts.presentation.presenters.shop
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.CategoryTypeDetailModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.usecases.collection_constructor.GetCategoryTypeDetailUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
@@ -11,17 +12,13 @@ import javax.inject.Inject
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
-class CategoryTypeDetailFragmentPresenter:CategoryTypeDetailContract.Presenter {
-    private var errorHelper: ErrorHelper
+class CategoryTypeDetailFragmentPresenter @Inject constructor(
+    private var errorHelper: ErrorHelper,
     private var getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase
+) : CategoryTypeDetailContract.Presenter {
+
     private lateinit var view: CategoryTypeDetailContract.View
-    @Inject
-    constructor(errorHelper: ErrorHelper,
-                getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase
-    ){
-        this.getCategoryTypeDetailUseCase = getCategoryTypeDetailUseCase
-        this.errorHelper = errorHelper
-    }
+
     override fun disposeRequests() {
         getCategoryTypeDetailUseCase.clear()
     }
@@ -30,22 +27,29 @@ class CategoryTypeDetailFragmentPresenter:CategoryTypeDetailContract.Presenter {
         this.view = view
     }
 
-    override fun getShopCategoryTypeDetail(typeId:Int,gender:String) {
+    override fun getCategoryTypeDetail(
+        token: String,
+        gender: String,
+        clothesCategoryId: String
+    ) {
         view.displayProgress()
-        val map = HashMap<String,Any>()
-        map["id"] = typeId
-        map["gender_type"] = gender
-        getCategoryTypeDetailUseCase.initParams(map)
-        getCategoryTypeDetailUseCase.execute(object : DisposableSingleObserver<CategoryTypeDetailModel>(){
-            override fun onSuccess(t: CategoryTypeDetailModel) {
+
+        val data = HashMap<String, Any>()
+        data["category_id"] = clothesCategoryId
+        data["gender_type"] = gender
+
+        getCategoryTypeDetailUseCase.initParams(token, data)
+        getCategoryTypeDetailUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
-                    view.processTypeDetail(t)
+                    processTypeDetail(resultsModel = t)
                     hideProgress()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
                     hideProgress()
                 }
             }

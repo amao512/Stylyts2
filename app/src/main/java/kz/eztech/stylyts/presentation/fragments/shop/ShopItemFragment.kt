@@ -7,9 +7,7 @@ import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ShopCategoryAdapter
@@ -71,7 +69,7 @@ class ShopItemFragment(
     override fun processPostInitialization() {}
 
     override fun onRefresh() {
-        presenter.getCategory()
+        presenter.getClothesTypes(token = getTokenFromSharedPref())
     }
 
     override fun disposeRequests() {
@@ -100,25 +98,16 @@ class ShopItemFragment(
         }
     }
 
-    override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
-        when (position) {
-            0 -> {
-                shopCategoryModel.menCategory?.let {
-                    adapter.updateList(it)
-                }
-            }
-            1 -> {
-                shopCategoryModel.femaleCategory?.let {
-                    adapter.updateList(it)
-                }
-            }
-        }
-    }
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        item as ClothesTypeModel
 
-    override fun onViewClicked(view: View, position: Int, item: Any?) {
         val data = HashMap<String, Any>()
-        data["currentGender"] = this.position
-        data["currentItem"] = item as GenderCategory
+        data[ShopItemListFragment.CLOTHES_TYPE_GENDER] = this.position
+        data[ShopItemListFragment.CLOTHES_TYPE] = item
 
         itemClickListener?.onViewClicked(view, position, data)
     }

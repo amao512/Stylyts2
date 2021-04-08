@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_shop.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.shop.GenderCategory
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ShopViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -97,13 +97,14 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
         position: Int,
         item: Any?
     ) {
-        with(item as HashMap<String, Any>) {
-            val currentItem = this["currentItem"] as GenderCategory
-            val currentGender = this["currentGender"] as Int
+        with(item as HashMap<*, *>) {
+            val clothesCategoryId = this[ShopItemListFragment.CLOTHES_TYPE] as ClothesTypeModel
+            val clothesTypeGender = this[ShopItemListFragment.CLOTHES_TYPE_GENDER] as Int
 
             val bundle = Bundle()
-            bundle.putInt("currentGender", currentGender)
-            bundle.putParcelable("currentItem", currentItem)
+            bundle.putInt(ShopItemListFragment.CLOTHES_TYPE_GENDER, clothesTypeGender)
+            bundle.putParcelable(ShopItemListFragment.CLOTHES_TYPE, clothesCategoryId)
+
             findNavController().navigate(R.id.action_shopFragment_to_shopItemListFragment, bundle)
         }
     }

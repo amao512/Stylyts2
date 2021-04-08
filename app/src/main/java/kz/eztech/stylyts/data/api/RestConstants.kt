@@ -35,6 +35,9 @@ object RestConstants {
     const val SEARCH_USER_BY_USERNAME: String = "auth/profile/"
 
     // Clothes
+    const val GET_CLOTHES: String = "clothes"
+    const val GET_CLOTHES_BY_ID = "clothes/{id}"
+    const val GET_CLOTHES_CATEGORIES: String = "clothes/categories"
     const val GET_CLOTHES_TYPES: String = "clothes/types"
 
     // Post

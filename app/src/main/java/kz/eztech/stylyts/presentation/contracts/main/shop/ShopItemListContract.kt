@@ -1,5 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.main.shop
 
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -8,9 +10,13 @@ import kz.eztech.stylyts.presentation.base.BaseView
  */
 interface ShopItemListContract {
     interface View : BaseView {
-
+        fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>)
     }
-    interface Presenter: BasePresenter<View> {
 
+    interface Presenter: BasePresenter<View> {
+        fun getCategoriesByType(
+            token: String,
+            clothesTypeId: Int
+        )
     }
 }

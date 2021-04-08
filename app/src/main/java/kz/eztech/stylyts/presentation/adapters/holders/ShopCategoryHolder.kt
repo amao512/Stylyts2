@@ -28,7 +28,7 @@ class ShopCategoryHolder(
 
                 text_view_item_shop_fragment.text = title
                 constraint_layout_item_shop_category.setOnClickListener {
-//                    adapter.itemClickListener?.onViewClicked(it, position, item)
+                    adapter.itemClickListener?.onViewClicked(it, position, item)
                 }
             }
         }
@@ -38,8 +38,7 @@ class ShopCategoryHolder(
         with(clothesTypeModel) {
             return when (gender) {
                 0 -> menCoverPhoto ?: EMPTY_STRING
-                1 -> womenCoverPhoto ?: EMPTY_STRING
-                else -> defaultCoverPhoto ?: EMPTY_STRING
+                else -> womenCoverPhoto ?: EMPTY_STRING
             }
         }
     }

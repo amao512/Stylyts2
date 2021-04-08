@@ -25,6 +25,7 @@ import kz.eztech.stylyts.presentation.fragments.collection_constructor.PhotoChoo
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopItemListFragment
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -70,6 +71,7 @@ interface ApplicationComponent {
     fun inject(fragment: CardFragment)
     fun inject(fragment: SearchFragment)
     fun inject(fragment: SearchItemFragment)
+    fun inject(fragment: ShopItemListFragment)
 
     fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)
