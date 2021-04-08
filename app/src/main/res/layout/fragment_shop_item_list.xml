@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,14 +28,18 @@
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/fragment_category_shop_result_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/fragment_category_shop_results_button"
+        style="@style/TitleText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginHorizontal="@dimen/margin_size_24x"
         android:layout_marginBottom="@dimen/margin_size_16x"
-        android:backgroundTint="@color/black"
-        android:text="Показать результаты (333)"
+        android:backgroundTint="@color/app_dark_blue_gray"
+        android:text="@string/button_show_results"
         android:textAllCaps="false"
         android:textColor="@color/white"
+        android:textSize="@dimen/text_size_14x"
+        app:cornerRadius="@dimen/button_corners_radius"
         />
 </FrameLayout>

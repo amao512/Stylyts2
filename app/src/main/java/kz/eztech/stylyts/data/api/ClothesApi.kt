@@ -33,7 +33,14 @@ interface ClothesApi {
     ): Single<Response<ResultsModel<ClothesCategoryModel>>>
 
     @GET(RestConstants.GET_CLOTHES)
-    fun getCategoryTypeDetail(
+    fun getClothesByType(
+        @Header("Authorization") token: String,
+        @Query("clothes_type") clothesTypeId: String,
+        @Query("gender") gender: String
+    ): Single<Response<ResultsModel<ClothesModel>>>
+
+    @GET(RestConstants.GET_CLOTHES)
+    fun getClothesByCategory(
         @Header("Authorization") token: String,
         @Query("gender") gender: String,
         @Query("clothes_category") clothesCategoryId: String

@@ -24,20 +24,21 @@ import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-
 class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDetailContract.View,
-    UniversalViewClickListener {
+    UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: CategoryTypeDetailFragmentPresenter
     private lateinit var adapter: CategoryTypeDetailAdapter
 
     private var gender: String = GENDER_MALE
-    private var categoryId: Int? = null
-    private var title: String? = null
+    private var categoryId: Int = 0
+    private var typeId: Int = 0
+    private var title: String = EMPTY_STRING
 
     companion object {
         const val CLOTHES_GENDER = "clothes_gender"
         const val CLOTHES_CATEGORY_ID = "clothes_category_id"
+        const val CLOTHES_TYPE_ID = "clothes_type_id"
         const val CLOTHES_CATEGORY_TITLE = "clothes_category_title"
         const val GENDER_MALE = "M"
         const val GENDER_FEMALE = "F"
@@ -49,17 +50,19 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
     override fun customizeActionBar() {
         with(include_toolbar_profile) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
-            toolbar_title_text_view.show()
-            toolbar_right_corner_action_image_button.show()
-            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
-            toolbar_right_corner_action_image_button.setOnClickListener {
-                val cartDialog = CartDialog()
-                cartDialog.show(childFragmentManager, "Cart")
-            }
+            toolbar_bottom_border_view.hide()
 
-            customizeActionToolBar(this, title ?: "Одежда")
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.show()
+            toolbar_left_corner_action_image_button.setOnClickListener(this@CategoryTypeDetailFragment)
+
+            toolbar_title_text_view.show()
+
+            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
+            toolbar_right_corner_action_image_button.show()
+            toolbar_right_corner_action_image_button.setOnClickListener(this@CategoryTypeDetailFragment)
+
+            customizeActionToolBar(toolbar = this, title = title)
         }
     }
 
@@ -79,8 +82,11 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             if (it.containsKey(CLOTHES_CATEGORY_ID)) {
                 categoryId = it.getInt(CLOTHES_CATEGORY_ID)
             }
+            if (it.containsKey(CLOTHES_TYPE_ID)) {
+                typeId = it.getInt(CLOTHES_TYPE_ID)
+            }
             if (it.containsKey(CLOTHES_CATEGORY_TITLE)) {
-                title = it.getString(CLOTHES_CATEGORY_TITLE)
+                title = it.getString(CLOTHES_CATEGORY_TITLE) ?: EMPTY_STRING
             }
         }
     }
@@ -91,7 +97,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
                 item as ClothesModel
 
                 val bundle = Bundle()
-                bundle.putInt(ItemDetailFragment.CLOTHE_ID, item.id ?: 0)
+                bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id ?: 0)
 
                 findNavController().navigate(
                     R.id.action_categoryTypeDetailFragment_to_itemDetailFragment,
@@ -111,17 +117,25 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
     override fun onResume() {
         super.onResume()
-        currentActivity.displayBottomNavigationView()
+        currentActivity.hideBottomNavigationView()
     }
 
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getCategoryTypeDetail(
-            token = getTokenFromSharedPref(),
-            gender = gender,
-            clothesCategoryId = categoryId.toString()
-        )
+        if (categoryId == 0 && typeId != 0) {
+            presenter.getClothesByType(
+                token = getTokenFromSharedPref(),
+                gender = gender,
+                typeId = typeId.toString()
+            )
+        } else {
+            presenter.getCategoryTypeDetail(
+                token = getTokenFromSharedPref(),
+                gender = gender,
+                clothesCategoryId = categoryId.toString()
+            )
+        }
     }
 
     override fun disposeRequests() {
@@ -138,9 +152,18 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
     override fun hideProgress() {}
 
-    override fun processTypeDetail(resultsModel: ResultsModel<ClothesModel>) {
+    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
         resultsModel.results?.let {
             adapter.updateList(list = it)
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
+            R.id.toolbar_right_corner_action_image_button -> CartDialog().show(
+                childFragmentManager, EMPTY_STRING
+            )
         }
     }
 

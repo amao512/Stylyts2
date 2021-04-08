@@ -13,7 +13,7 @@ import javax.inject.Named
 /**
  * Created by Asylzhan Seytbek on 08.04.2021.
  */
-class GetClothesCategoryUseCase @Inject constructor(
+class GetClothesCategoriesByTypeUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val clothesDomainRepository: ClothesDomainRepository
@@ -23,14 +23,10 @@ class GetClothesCategoryUseCase @Inject constructor(
     private var typeId: Int = 0
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesCategoryModel>> {
-        return if (typeId == 0) {
-            clothesDomainRepository.getClothesCategories(token)
-        } else {
-            clothesDomainRepository.getClothesCategoriesByType(
-                token = token,
-                typeId = typeId.toString()
-            )
-        }
+        return clothesDomainRepository.getClothesCategoriesByType(
+            token = token,
+            typeId = typeId.toString()
+        )
     }
 
     fun initParams(

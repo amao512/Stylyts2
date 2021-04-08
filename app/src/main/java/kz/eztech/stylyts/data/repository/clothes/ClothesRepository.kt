@@ -47,11 +47,27 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getCategoryTypeDetail(
+    override fun getClothesByType(
         token: String,
         data: HashMap<String, Any>
     ): Single<ResultsModel<ClothesModel>> {
-        return api.getCategoryTypeDetail(
+        return api.getClothesByType(
+            token = token,
+            clothesTypeId = data["type_id"] as String,
+            gender = data["gender_type"] as String
+        ).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothesByCategory(
+        token: String,
+        data: HashMap<String, Any>
+    ): Single<ResultsModel<ClothesModel>> {
+        return api.getClothesByCategory(
             token = token,
             gender = data["gender_type"] as String,
             clothesCategoryId = data["category_id"] as String

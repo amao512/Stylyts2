@@ -29,7 +29,6 @@ import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.ItemDetailChooserDialog
 import kz.eztech.stylyts.presentation.presenters.collection.ItemDetailPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -56,7 +55,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     private var disposables = CompositeDisposable()
 
     companion object {
-        const val CLOTHE_ID = "clothe_id"
+        const val CLOTHES_ID = "clothes_id"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_item_detail
@@ -65,16 +64,15 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
     override fun customizeActionBar() {
         with(include_toolbar_item_detail) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.show()
+            toolbar_left_corner_action_image_button.setOnClickListener(this@ItemDetailFragment)
+
             toolbar_title_text_view.show()
 
-            toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
-            toolbar_right_corner_action_image_button.setOnClickListener {
-                val cartDialog = CartDialog()
-                cartDialog.show(childFragmentManager, "Cart")
-            }
+            toolbar_right_corner_action_image_button.show()
+            toolbar_right_corner_action_image_button.setOnClickListener(this@ItemDetailFragment)
 
             customizeActionToolBar(toolbar = this, title = "zara")
         }
@@ -94,8 +92,8 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
                 currentClothesModel = it.getParcelable("clotheModel")
             }
 
-            if (it.containsKey(CLOTHE_ID)) {
-                currentClotheId = it.getInt(CLOTHE_ID)
+            if (it.containsKey(CLOTHES_ID)) {
+                currentClotheId = it.getInt(CLOTHES_ID)
             }
 
             if (it.containsKey("barcode_code")) {
@@ -159,7 +157,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
     override fun onResume() {
         super.onResume()
-        currentActivity.displayBottomNavigationView()
+        currentActivity.hideBottomNavigationView()
     }
 
     override fun initializeListeners() {
@@ -216,6 +214,10 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
                     objectAnimator.start()
                 }
             }
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
+            R.id.toolbar_right_corner_action_image_button -> CartDialog().show(
+                childFragmentManager, EMPTY_STRING
+            )
         }
     }
 
@@ -254,6 +256,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 //                    processCart()
                 }
             }
+            else -> {}
         }
     }
 

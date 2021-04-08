@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.fragments.shop
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -11,13 +12,13 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ShopItemListAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
-import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemListPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -26,14 +27,16 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,
-    UniversalViewClickListener {
+    UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: ShopItemListPresenter
 
     private lateinit var adapter: ShopItemListAdapter
     private lateinit var clothesType: ClothesTypeModel
+    private lateinit var selectedCategoryTitle: String
 
     private var clothesTypeGender: Int = 0
+    private var selectedCategoryId: Int = 0
 
     companion object {
         const val CLOTHES_TYPE_GENDER = "clothes_type_gender"
@@ -46,20 +49,22 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
     override fun customizeActionBar() {
         with(include_toolbar_profile) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
-            toolbar_title_text_view.show()
+            toolbar_bottom_border_view.hide()
 
-            toolbar_right_corner_action_image_button.show()
-            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
-            toolbar_right_corner_action_image_button.setOnClickListener {
-                val cartDialog = CartDialog()
-                cartDialog.show(childFragmentManager, "Cart")
-            }
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.show()
+            toolbar_left_corner_action_image_button.setOnClickListener(this@ShopItemListFragment)
+
+            toolbar_title_text_view.show()
+            toolbar_right_text_text_view.text = getString(R.string.constructor_filter_reset)
+            toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_gray_hint))
+            toolbar_right_text_text_view.isClickable = false
+            toolbar_right_text_text_view.show()
+            toolbar_right_text_text_view.setOnClickListener(this@ShopItemListFragment)
 
             customizeActionToolBar(
                 toolbar = this,
-                title = clothesType.title ?: "Одежда"
+                title = clothesType.title ?: EMPTY_STRING
             )
         }
     }
@@ -77,6 +82,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             if (it.containsKey(CLOTHES_TYPE)) {
                 it.getParcelable<ClothesTypeModel>(CLOTHES_TYPE)?.let { clothesTypeModel ->
                     clothesType = clothesTypeModel
+                    selectedCategoryTitle = clothesTypeModel.title ?: EMPTY_STRING
                 }
             }
 
@@ -97,15 +103,22 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
     override fun onResume() {
         super.onResume()
-        currentActivity.displayBottomNavigationView()
+        currentActivity.hideBottomNavigationView()
     }
 
-    override fun initializeListeners() {}
+    override fun initializeListeners() {
+        fragment_category_shop_results_button.setOnClickListener(this)
+    }
 
     override fun processPostInitialization() {
         presenter.getCategoriesByType(
             token = getTokenFromSharedPref(),
             clothesTypeId = clothesType.id ?: 0
+        )
+        presenter.getClothesResultsByType(
+            token = getTokenFromSharedPref(),
+            typeId = clothesType.id.toString(),
+            gender = getCurrentGender()
         )
     }
 
@@ -125,19 +138,13 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         item: Any?
     ) {
         with(item as ClothesCategoryModel) {
-            val bundle = Bundle()
-            val gender = when (clothesTypeGender) {
-                0 -> CategoryTypeDetailFragment.GENDER_MALE
-                1 -> CategoryTypeDetailFragment.GENDER_FEMALE
-                else -> CategoryTypeDetailFragment.GENDER_MALE
-            }
-            bundle.putString(CategoryTypeDetailFragment.CLOTHES_GENDER, gender)
-            bundle.putInt(CategoryTypeDetailFragment.CLOTHES_CATEGORY_ID, id ?: 1)
-            bundle.putString(CategoryTypeDetailFragment.CLOTHES_CATEGORY_TITLE, title)
+            selectedCategoryId = id ?: 0
+            selectedCategoryTitle = title ?: EMPTY_STRING
 
-            findNavController().navigate(
-                R.id.action_shopItemListFragment_to_categoryTypeDetailFragment,
-                bundle
+            presenter.getClothesResultsByCategory(
+                token = getTokenFromSharedPref(),
+                gender = getCurrentGender(),
+                clothesCategoryId = id.toString()
             )
         }
     }
@@ -145,6 +152,41 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     override fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>) {
         resultsModel.results?.let {
             adapter.updateList(list = it)
+        }
+    }
+
+    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
+        fragment_category_shop_results_button.text = getString(
+            R.string.button_show_results,
+            resultsModel.count.toString()
+        )
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
+            R.id.fragment_category_shop_results_button -> showClothesResults()
+        }
+    }
+
+    private fun showClothesResults() {
+        val bundle = Bundle()
+        bundle.putString(CategoryTypeDetailFragment.CLOTHES_GENDER, getCurrentGender())
+        bundle.putInt(CategoryTypeDetailFragment.CLOTHES_CATEGORY_ID, selectedCategoryId)
+        bundle.putInt(CategoryTypeDetailFragment.CLOTHES_TYPE_ID, clothesType.id ?: 0)
+        bundle.putString(CategoryTypeDetailFragment.CLOTHES_CATEGORY_TITLE, selectedCategoryTitle)
+
+        findNavController().navigate(
+            R.id.action_shopItemListFragment_to_categoryTypeDetailFragment,
+            bundle
+        )
+    }
+
+    private fun getCurrentGender(): String {
+        return when (clothesTypeGender) {
+            0 -> CategoryTypeDetailFragment.GENDER_MALE
+            1 -> CategoryTypeDetailFragment.GENDER_FEMALE
+            else -> CategoryTypeDetailFragment.GENDER_MALE
         }
     }
 

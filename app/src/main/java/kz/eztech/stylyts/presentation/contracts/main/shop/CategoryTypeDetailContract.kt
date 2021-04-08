@@ -11,9 +11,15 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface CategoryTypeDetailContract {
     interface View: BaseView {
 
-        fun processTypeDetail(resultsModel: ResultsModel<ClothesModel>)
+        fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
     }
     interface Presenter: BasePresenter<View> {
+
+        fun getClothesByType(
+            token: String,
+            typeId: String,
+            gender: String,
+        )
 
         fun getCategoryTypeDetail(
             token: String,

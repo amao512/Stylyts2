@@ -17,7 +17,12 @@ interface ClothesDomainRepository {
         typeId: String
     ): Single<ResultsModel<ClothesCategoryModel>>
 
-    fun getCategoryTypeDetail(
+    fun getClothesByType(
+        token: String,
+        data: HashMap<String, Any>
+    ): Single<ResultsModel<ClothesModel>>
+
+    fun getClothesByCategory(
         token: String,
         data: HashMap<String, Any>
     ): Single<ResultsModel<ClothesModel>>

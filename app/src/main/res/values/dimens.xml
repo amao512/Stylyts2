@@ -144,4 +144,6 @@
     <dimen name="report_problem_edit_text_height">200dp</dimen>
 
     <dimen name="search_view_height">34dp</dimen>
+
+    <dimen name="button_corners_radius">10dp</dimen>
 </resources>
