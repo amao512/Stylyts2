@@ -56,17 +56,17 @@ class ProfilePresenter @Inject constructor(
 
 		filterList.add(
             CollectionFilterModel(
-			id = 1,
-			name = application.getString(R.string.filter_list_filter),
-			icon = R.drawable.ic_filter
-		)
+				id = 1,
+				name = application.getString(R.string.filter_list_filter),
+				icon = R.drawable.ic_filter
+			)
         )
 		filterList.add(
             CollectionFilterModel(
-			id = 2,
-			name = application.getString(R.string.filter_list_publishes),
-			isChosen = true
-		)
+				id = 2,
+				name = application.getString(R.string.filter_list_publishes),
+				isChosen = true
+			)
         )
 		filterList.add(CollectionFilterModel(id = 3, name = application.getString(R.string.filter_list_photo_outfits)))
 		filterList.add(CollectionFilterModel(id = 4, name = application.getString(R.string.filter_list_wardrobe)))

@@ -18,7 +18,7 @@ data class ClothesModel(
     val clothesCategory: String?,
     @SerializedName("images")
     @Expose
-    val images: List<ClothesImage>?,
+    val imageModels: List<ClothesImageModel>?,
     @SerializedName("clothes_sizes")
     @Expose
     val clothesSizes: List<String>?,

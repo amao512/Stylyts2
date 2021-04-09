@@ -32,7 +32,13 @@ class ShopItemListAdapter : BaseAdapter() {
 
     fun onCheckPosition(position: Int) {
         val category = currentList[position] as ClothesCategoryModel
-        category.isChecked = !category.isChecked
+        val firstCategory = currentList[0] as ClothesCategoryModel
+
+        if (position != 0 && firstCategory.isChecked && category.isChecked) {
+            category.isChecked = true
+        } else {
+            category.isChecked = !category.isChecked
+        }
 
         currentList.forEach {
             it as ClothesCategoryModel

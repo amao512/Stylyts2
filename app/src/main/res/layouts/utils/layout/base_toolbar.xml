@@ -77,6 +77,33 @@
         tools:text="SomeText"
         />
 
+    <LinearLayout
+        android:id="@+id/base_toolbar_title_with_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <TextView
+            android:id="@+id/base_toolbar_small_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextRegularBold"
+            tools:text="Title"
+            />
+
+        <TextView
+            android:id="@+id/base_toolbar_small_title_sub_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextRegular"
+            tools:text="Subtitle"
+            />
+    </LinearLayout>
+
     <View
         android:id="@+id/toolbar_bottom_border_view"
         android:layout_width="match_parent"

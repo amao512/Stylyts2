@@ -4,6 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.ClothesApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
@@ -86,6 +87,30 @@ class ClothesRepository @Inject constructor(
         return api.getClothesById(
             token = token,
             clothesId = clothesId
+        ).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothesBrands(token: String): Single<ResultsModel<ClothesBrandModel>> {
+        return api.getClothesBrands(token).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothesBrandById(
+        token: String,
+        brandId: String
+    ): Single<ClothesBrandModel> {
+        return api.getClothesBrandById(
+            token = token,
+            brandId = brandId
         ).map {
             when (it.isSuccessful) {
                 true -> it.body()

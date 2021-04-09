@@ -3,7 +3,9 @@ package kz.eztech.stylyts.presentation.presenters.shop
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByTypeUseCase
 import kz.eztech.stylyts.domain.usecases.collection_constructor.GetCategoryTypeDetailUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class CategoryTypeDetailFragmentPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
-    private val getClothesByTypeUseCase: GetClothesByTypeUseCase
+    private val getClothesByTypeUseCase: GetClothesByTypeUseCase,
+    private val getClothesBrandsUseCase: GetClothesBrandsUseCase
 ) : CategoryTypeDetailContract.Presenter {
 
     private lateinit var view: CategoryTypeDetailContract.View
@@ -24,6 +27,7 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
     override fun disposeRequests() {
         getCategoryTypeDetailUseCase.clear()
         getClothesByTypeUseCase.clear()
+        getClothesBrandsUseCase.clear()
     }
 
     override fun attach(view: CategoryTypeDetailContract.View) {
@@ -73,6 +77,23 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
                     processClothesResults(resultsModel = t)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
+
+    override fun getClothesBrands(token: String) {
+        getClothesBrandsUseCase.initParams(token)
+        getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
+                view.processViewAction {
+                    processClothesBrands(resultsModel = t)
                 }
             }
 

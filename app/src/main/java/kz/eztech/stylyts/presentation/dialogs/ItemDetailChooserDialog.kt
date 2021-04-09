@@ -12,53 +12,61 @@ import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
 /**
  * Created by Ruslan Erdenoff on 28.01.2021.
  */
-class ItemDetailChooserDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_bottom_item_detail_chooser),View.OnClickListener {
+class ItemDetailChooserDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_bottom_item_detail_chooser), View.OnClickListener {
+
     private var currentSize: List<ClothesSize>? = null
     private var currentColor: List<ClothesColor>? = null
-    private var currentItem:Any? = null
+    private var currentItem: Any? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.let {
-            if(it.containsKey("sizeItems")){
-                currentSize = it.getParcelableArrayList<ClothesSize>("sizeItems")
+            if (it.containsKey("sizeItems")) {
+                currentSize = it.getParcelableArrayList("sizeItems")
+
                 currentSize?.let { sizeModel ->
-                    if(sizeModel.isNotEmpty()){
+                    if (sizeModel.isNotEmpty()) {
                         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                                requireContext(), R.layout.item_style, sizeModel.map { it.size }
+                            requireContext(), R.layout.item_style, sizeModel.map { it.size }
                         )
                         list_view_dialog_bottom_item_detail_chooser_list.adapter = adapter
                         currentItem = sizeModel[0]
                         list_view_dialog_bottom_item_detail_chooser_list.setOnItemClickListener { parent, view, position, id ->
-        
+
                             currentItem = sizeModel[position]
-                            listener?.onChoice(list_view_dialog_bottom_item_detail_chooser_list,currentItem)
+                            listener?.onChoice(
+                                list_view_dialog_bottom_item_detail_chooser_list,
+                                currentItem
+                            )
                             dismiss()
                         }
-                    }else{
-                       dismiss()
+                    } else {
+                        dismiss()
                     }
                 }
             }
-            if (it.containsKey("colorItems")){
-                currentColor = it.getParcelableArrayList<ClothesColor>("colorItems")
+            if (it.containsKey("colorItems")) {
+                currentColor = it.getParcelableArrayList("colorItems")
                 currentColor?.let { colorModel ->
-                    if(colorModel.isNotEmpty()){
+                    if (colorModel.isNotEmpty()) {
                         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                                requireContext(), R.layout.item_style, colorModel.map { it.color }
+                            requireContext(), R.layout.item_style, colorModel.map { it.color }
                         )
                         list_view_dialog_bottom_item_detail_chooser_list.adapter = adapter
                         currentItem = colorModel[0]
                         list_view_dialog_bottom_item_detail_chooser_list.setOnItemClickListener { parent, view, position, id ->
                             currentItem = colorModel[position]
-                            listener?.onChoice(list_view_dialog_bottom_item_detail_chooser_list,currentItem)
+                            listener?.onChoice(
+                                list_view_dialog_bottom_item_detail_chooser_list,
+                                currentItem
+                            )
                             dismiss()
                         }
-                    }else{
+                    } else {
                         dismiss()
                     }
-                   
+
                 }
             }
 
@@ -69,14 +77,14 @@ class ItemDetailChooserDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_bot
         initializeListeners()
     }
 
-    private fun initializeListeners(){
+    private fun initializeListeners() {
         text_view_dialog_bottom_item_detail_chooser_done.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
-        when(v?.id){
+        when (v?.id) {
             R.id.text_view_dialog_bottom_item_detail_chooser_done -> {
-                listener?.onChoice(v,currentItem)
+                listener?.onChoice(v, currentItem)
                 dismiss()
             }
         }

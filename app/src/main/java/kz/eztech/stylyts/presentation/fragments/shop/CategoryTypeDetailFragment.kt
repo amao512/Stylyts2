@@ -8,10 +8,13 @@ import kotlinx.android.synthetic.main.fragment_category_type_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
+import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
@@ -28,7 +31,8 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: CategoryTypeDetailFragmentPresenter
-    private lateinit var adapter: CategoryTypeDetailAdapter
+    private lateinit var clothesAdapter: CategoryTypeDetailAdapter
+    private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
 
     private var gender: String = GENDER_MALE
     private var categoryId: Int = 0
@@ -56,13 +60,12 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             toolbar_left_corner_action_image_button.show()
             toolbar_left_corner_action_image_button.setOnClickListener(this@CategoryTypeDetailFragment)
 
-            toolbar_title_text_view.show()
-
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setOnClickListener(this@CategoryTypeDetailFragment)
 
-            customizeActionToolBar(toolbar = this, title = title)
+            base_toolbar_small_title_text_view.text = title
+            base_toolbar_title_with_subtitle.show()
         }
     }
 
@@ -104,15 +107,20 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
                     bundle
                 )
             }
+            R.id.frame_layout_item_collection_filter -> brandsFilterAdapter.onChooseItem(position)
         }
     }
 
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        adapter = CategoryTypeDetailAdapter()
-        recycler_view_fragment_category_type_detail.adapter = adapter
-        adapter.itemClickListener = this
+        brandsFilterAdapter = CollectionsFilterAdapter()
+        brandsFilterAdapter.itemClickListener = this
+        fragment_category_type_detail_brands_recycler_view.adapter = brandsFilterAdapter
+
+        clothesAdapter = CategoryTypeDetailAdapter()
+        clothesAdapter.itemClickListener = this
+        recycler_view_fragment_category_type_detail.adapter = clothesAdapter
     }
 
     override fun onResume() {
@@ -123,6 +131,8 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
+        presenter.getClothesBrands(token = getTokenFromSharedPref())
+
         if (categoryId == 0 && typeId != 0) {
             presenter.getClothesByType(
                 token = getTokenFromSharedPref(),
@@ -153,9 +163,42 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     override fun hideProgress() {}
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        resultsModel.results?.let {
-            adapter.updateList(list = it)
+        with (include_toolbar_profile) {
+            resultsModel.count?.let { count ->
+                base_toolbar_small_title_sub_text_view.text = getString(
+                    if (count == 1) {
+                        R.string.toolbar_positions_text_format
+                    } else {
+                        R.string.toolbar_position_text_format
+                    },
+                    resultsModel.count.toString()
+                )
+            }
         }
+
+        resultsModel.results?.let {
+            clothesAdapter.updateList(list = it)
+        }
+    }
+
+    override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
+        val filterList = mutableListOf<CollectionFilterModel>()
+
+        filterList.add(
+            CollectionFilterModel(
+                id = 0,
+                name = getString(R.string.filter_list_filter),
+                icon = R.drawable.ic_filter
+            )
+        )
+
+        resultsModel.results?.map {
+            filterList.add(
+                CollectionFilterModel(id = it.id, name = it.title)
+            )
+        }
+
+        brandsFilterAdapter.updateList(list = filterList)
     }
 
     override fun onClick(v: View?) {

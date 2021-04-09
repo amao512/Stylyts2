@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ClothesImage(
+data class ClothesImageModel(
     @SerializedName("id")
     @Expose
     val id: Int?,

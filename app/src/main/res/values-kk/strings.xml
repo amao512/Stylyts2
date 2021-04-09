@@ -278,4 +278,7 @@
     <string name="edit_profile_fill_names_through_space">Заполните имя и фамилию через пробел!</string>
 
     <string name="button_show_results">Показать результаты : (%s)</string>
+
+    <string name="toolbar_positions_text_format">%s Позиции</string>
+    <string name="toolbar_position_text_format">%s Позиция</string>
 </resources>

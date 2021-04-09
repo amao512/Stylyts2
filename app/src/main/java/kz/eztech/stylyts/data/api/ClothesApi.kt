@@ -2,6 +2,7 @@ package kz.eztech.stylyts.data.api
 
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
@@ -51,4 +52,15 @@ interface ClothesApi {
         @Header("Authorization") token: String,
         @Path("id") clothesId: String
     ): Single<Response<ClothesModel>>
+
+    @GET(RestConstants.GET_CLOTHES_BRANDS)
+    fun getClothesBrands(
+        @Header("Authorization") token: String
+    ): Single<Response<ResultsModel<ClothesBrandModel>>>
+
+    @GET(RestConstants.GET_CLOTHES_BRAND_BY_ID)
+    fun getClothesBrandById(
+        @Header("Authorization") token: String,
+        @Path("brand_id") brandId: String
+    ): Single<Response<ClothesBrandModel>>
 }

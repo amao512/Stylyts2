@@ -5,10 +5,9 @@
     android:id="@+id/linear_layout_item_shop_item_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="@dimen/margin_size_24x"
-    android:layout_marginTop="@dimen/margin_size_16x"
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical"
+    android:paddingTop="@dimen/padding_size_8x"
     >
 
     <CheckedTextView
@@ -16,10 +15,11 @@
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_size_16x"
         android:checkMark="?android:attr/listChoiceIndicatorSingle"
         android:checkMarkTint="@color/app_dark_blue_gray"
         android:gravity="center"
+        android:paddingStart="@dimen/padding_size_24x"
+        android:paddingEnd="@dimen/padding_size_16x"
         android:textColor="@color/app_dark_blue_gray"
         tools:text="Брюки"
         />
@@ -28,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/little_divider_height"
         android:layout_marginTop="@dimen/margin_size_10x"
+        android:layout_marginStart="@dimen/margin_size_24x"
         android:background="@color/app_light_gray"
         />
 </LinearLayout>
