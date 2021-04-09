@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.adapters
 
 import android.view.View
+import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
@@ -27,5 +28,34 @@ class ShopItemListAdapter : BaseAdapter() {
 
     override fun getViewHolder(view: View): BaseViewHolder {
         return ShopItemListHolder(view, this)
+    }
+
+    fun onCheckPosition(position: Int) {
+        val category = currentList[position] as ClothesCategoryModel
+        category.isChecked = !category.isChecked
+
+        currentList.forEach {
+            it as ClothesCategoryModel
+
+            if (position == 0) {
+                it.isChecked = category.isChecked
+            } else {
+                it.isChecked = it.id == category.id && category.isChecked
+            }
+        }
+
+        val diffCallback = getDiffUtilCallBack(currentList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
+
+        notifyDataSetChanged()
+    }
+
+    fun onResetChecking() {
+        currentList.forEach {
+            (it as ClothesCategoryModel).isChecked = false
+        }
+
+        notifyDataSetChanged()
     }
 }

@@ -20,6 +20,8 @@ class ShopItemListHolder(
         with(item as ClothesCategoryModel) {
             with(itemView) {
                 text_view_item_shop_item_list.text = title
+                text_view_item_shop_item_list.isChecked = isChecked
+
                 linear_layout_item_shop_item_list.setOnClickListener {
                     adapter.itemClickListener?.onViewClicked(it, position, item)
                 }

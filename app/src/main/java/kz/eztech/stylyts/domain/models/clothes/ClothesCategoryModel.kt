@@ -16,4 +16,6 @@ data class ClothesCategoryModel(
     @SerializedName("body_part")
     @Expose
     val bodyPart: Int?
-)
+) {
+    var isChecked: Boolean = false
+}

@@ -37,6 +37,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
     private var clothesTypeGender: Int = 0
     private var selectedCategoryId: Int = 0
+    private var isCheckedItem: Boolean = false
 
     companion object {
         const val CLOTHES_TYPE_GENDER = "clothes_type_gender"
@@ -57,9 +58,9 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
             toolbar_title_text_view.show()
             toolbar_right_text_text_view.text = getString(R.string.constructor_filter_reset)
-            toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_gray_hint))
-            toolbar_right_text_text_view.isClickable = false
+            toolbar_right_text_text_view.isClickable = isCheckedItem
             toolbar_right_text_text_view.show()
+            setResetTextColor()
             toolbar_right_text_text_view.setOnClickListener(this@ShopItemListFragment)
 
             customizeActionToolBar(
@@ -137,22 +138,42 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         position: Int,
         item: Any?
     ) {
-        with(item as ClothesCategoryModel) {
-            selectedCategoryId = id ?: 0
-            selectedCategoryTitle = title ?: EMPTY_STRING
-
-            presenter.getClothesResultsByCategory(
-                token = getTokenFromSharedPref(),
-                gender = getCurrentGender(),
-                clothesCategoryId = id.toString()
-            )
+        when (view.id) {
+            R.id.linear_layout_item_shop_item_list -> onCheckCategory(item, position)
         }
     }
 
     override fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>) {
+        val preparedResults: MutableList<ClothesCategoryModel> = mutableListOf()
+        preparedResults.add(
+            ClothesCategoryModel(
+                id = 0,
+                clothesType = clothesType,
+                title = clothesType.title,
+                bodyPart = clothesType.id
+            )
+        )
         resultsModel.results?.let {
-            adapter.updateList(list = it)
+            preparedResults.addAll(it)
         }
+        preparedResults.add(
+            ClothesCategoryModel(
+                id = 43,
+                clothesType = clothesType,
+                title = "Одежда",
+                bodyPart = clothesType.id
+            )
+        )
+        preparedResults.add(
+            ClothesCategoryModel(
+                id = 9,
+                clothesType = clothesType,
+                title = "Штаны",
+                bodyPart = clothesType.id
+            )
+        )
+
+        adapter.updateList(list = preparedResults)
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
@@ -166,6 +187,32 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_category_shop_results_button -> showClothesResults()
+            R.id.toolbar_right_text_text_view -> resetCategories()
+        }
+    }
+
+    private fun onCheckCategory(
+        item: Any?,
+        position: Int
+    ) {
+        with(item as ClothesCategoryModel) {
+            adapter.onCheckPosition(position)
+
+            if (!item.isChecked) {
+                resetCategories()
+            } else {
+                selectedCategoryId = id ?: 0
+                selectedCategoryTitle = title ?: EMPTY_STRING
+                isCheckedItem = item.isChecked
+
+                setResetTextColor()
+            }
+
+            presenter.getClothesResultsByCategory(
+                token = getTokenFromSharedPref(),
+                gender = getCurrentGender(),
+                clothesCategoryId = id.toString()
+            )
         }
     }
 
@@ -182,12 +229,34 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         )
     }
 
+    private fun resetCategories() {
+        if (isCheckedItem) {
+            adapter.onResetChecking()
+
+            selectedCategoryId = 0
+            selectedCategoryTitle = clothesType.title ?: EMPTY_STRING
+            isCheckedItem = false
+
+            setResetTextColor()
+        }
+    }
+
     private fun getCurrentGender(): String {
         return when (clothesTypeGender) {
             0 -> CategoryTypeDetailFragment.GENDER_MALE
             1 -> CategoryTypeDetailFragment.GENDER_FEMALE
             else -> CategoryTypeDetailFragment.GENDER_MALE
         }
+    }
+
+    private fun setResetTextColor() {
+        include_toolbar_profile.toolbar_right_text_text_view.setTextColor(
+            if (isCheckedItem) {
+                ContextCompat.getColor(requireContext(), R.color.app_light_orange)
+            } else {
+                ContextCompat.getColor(requireContext(), R.color.app_gray_hint)
+            }
+        )
     }
 
     private fun getTokenFromSharedPref(): String {
