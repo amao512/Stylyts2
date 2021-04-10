@@ -71,9 +71,9 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:spi_dotColor="#9EFFFFFF"
-                        app:spi_dotSelectedColor="#fff"
-                        app:spi_dotSelectedSize="8dp"
+                        app:spi_dotColor="@color/app_dark_blue_gray_half"
+                        app:spi_dotSelectedColor="@color/app_dark"
+                        app:spi_dotSelectedSize="7dp"
                         app:spi_dotSize="6dp"
                         app:spi_visibleDotCount="5"
                         app:spi_visibleDotThreshold="2"
@@ -149,7 +149,8 @@
                         android:background="@color/white"
                         android:orientation="vertical"
                         android:paddingHorizontal="@dimen/padding_size_24x"
-                        android:paddingVertical="@dimen/padding_size_16x"
+                        android:paddingTop="@dimen/padding_size_16x"
+                        android:paddingBottom="@dimen/padding_size_8x"
                         >
 
                         <LinearLayout
@@ -264,7 +265,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_size_24x"
-                        android:layout_marginBottom="@dimen/margin_size_16x"
+                        android:layout_marginBottom="@dimen/margin_size_8x"
                         android:gravity="start"
                         android:imeOptions="actionNext"
                         android:padding="@dimen/padding_size_10x"
@@ -275,7 +276,6 @@
                         app:backgroundTint="@color/app_dark_blue_gray"
                         app:cornerRadius="@dimen/corner_radius_default"
                         />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -291,7 +291,8 @@
                         android:animateLayoutChanges="true"
                         android:background="@drawable/rectangle_white_gray_corners"
                         android:orientation="vertical"
-                        android:padding="@dimen/padding_size_24x"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_16x"
                         >
 
                         <FrameLayout
@@ -337,7 +338,8 @@
                         android:animateLayoutChanges="true"
                         android:background="@drawable/rectangle_white_gray_corners"
                         android:orientation="vertical"
-                        android:padding="@dimen/padding_size_24x"
+                        android:paddingHorizontal="@dimen/padding_size_24x"
+                        android:paddingVertical="@dimen/padding_size_16x"
                         >
 
                         <FrameLayout
@@ -373,6 +375,7 @@
                             android:layout_gravity="start|center"
                             android:layout_marginTop="@dimen/margin_size_16x"
                             android:textColor="#4F4B4B"
+                            android:visibility="gone"
                             tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
                             />
                     </LinearLayout>

@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linear_layout_item_shop_item_list"
+    android:id="@+id/item_category_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -11,7 +11,7 @@
     >
 
     <CheckedTextView
-        android:id="@+id/text_view_item_shop_item_list"
+        android:id="@+id/item_filter_check_title_checked_text_view"
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

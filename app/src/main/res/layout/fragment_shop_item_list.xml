@@ -23,7 +23,7 @@
             android:id="@+id/recycler_view_fragment_shop_item_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_shop_item_list"
+            tools:listitem="@layout/item_filter_check"
             />
     </LinearLayout>
 

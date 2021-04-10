@@ -13,12 +13,13 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
+import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.CategoryTypeDetailFragmentPresenter
@@ -31,7 +32,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: CategoryTypeDetailFragmentPresenter
-    private lateinit var clothesAdapter: CategoryTypeDetailAdapter
+    private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
 
     private var gender: String = GENDER_MALE
@@ -96,18 +97,8 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
-            R.id.linear_layout_item_category_type_detail -> {
-                item as ClothesModel
-
-                val bundle = Bundle()
-                bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id ?: 0)
-
-                findNavController().navigate(
-                    R.id.action_categoryTypeDetailFragment_to_itemDetailFragment,
-                    bundle
-                )
-            }
-            R.id.frame_layout_item_collection_filter -> brandsFilterAdapter.onChooseItem(position)
+            R.id.item_clothes_detail_linear_layout -> onClothesItemClick(item)
+            R.id.frame_layout_item_collection_filter -> onBrandFilterClick(position)
         }
     }
 
@@ -118,7 +109,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         brandsFilterAdapter.itemClickListener = this
         fragment_category_type_detail_brands_recycler_view.adapter = brandsFilterAdapter
 
-        clothesAdapter = CategoryTypeDetailAdapter()
+        clothesAdapter = ClothesDetailAdapter()
         clothesAdapter.itemClickListener = this
         recycler_view_fragment_category_type_detail.adapter = clothesAdapter
     }
@@ -167,9 +158,9 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             resultsModel.count?.let { count ->
                 base_toolbar_small_title_sub_text_view.text = getString(
                     if (count == 1) {
-                        R.string.toolbar_positions_text_format
-                    } else {
                         R.string.toolbar_position_text_format
+                    } else {
+                        R.string.toolbar_positions_text_format
                     },
                     resultsModel.count.toString()
                 )
@@ -208,6 +199,27 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
                 childFragmentManager, EMPTY_STRING
             )
         }
+    }
+
+    private fun onClothesItemClick(item: Any?) {
+        item as ClothesModel
+
+        val bundle = Bundle()
+        bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id ?: 0)
+
+        findNavController().navigate(
+            R.id.action_categoryTypeDetailFragment_to_itemDetailFragment,
+            bundle
+        )
+    }
+
+    private fun onBrandFilterClick(position: Int) {
+        if (position == 0) {
+            FilterDialog.getNewInstance(
+                token = getTokenFromSharedPref(),
+                itemClickListener = this
+            ).show(childFragmentManager, EMPTY_STRING)
+        } else brandsFilterAdapter.onChooseItem(position)
     }
 
     private fun getTokenFromSharedPref(): String {

@@ -1,17 +1,18 @@
-package kz.eztech.stylyts.presentation.adapters
+package kz.eztech.stylyts.presentation.adapters.clothes
 
 import android.view.View
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.holders.CategoryTypeDetailHolder
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
-class CategoryTypeDetailAdapter: BaseAdapter() {
+class ClothesDetailAdapter: BaseAdapter() {
 
-	override fun getLayoutId(): Int = R.layout.item_category_type_detail
+	override fun getLayoutId(): Int = R.layout.item_clothes_detail
 	
 	override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
 		return object : BaseDiffUtilCallBack(currentList, list){
@@ -26,6 +27,6 @@ class CategoryTypeDetailAdapter: BaseAdapter() {
 	}
 	
 	override fun getViewHolder(view: View): BaseViewHolder {
-		return CategoryTypeDetailHolder(view,this)
+		return ClothesDetailViewHolder(view,this)
 	}
 }

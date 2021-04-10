@@ -16,7 +16,7 @@
         >
 
         <TextView
-            android:id="@+id/item_filter_group_title"
+            android:id="@+id/item_filter_title"
             style="@style/TextRegular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -28,7 +28,7 @@
             />
 
         <ImageView
-            android:id="@+id/item_filter_group_arrow"
+            android:id="@+id/item_filter_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

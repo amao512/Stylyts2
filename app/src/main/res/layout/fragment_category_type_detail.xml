@@ -30,6 +30,6 @@
         android:paddingHorizontal="@dimen/padding_size_8x"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="2"
-        tools:listitem="@layout/item_category_type_detail"
+        tools:listitem="@layout/item_clothes_detail"
         />
 </LinearLayout>

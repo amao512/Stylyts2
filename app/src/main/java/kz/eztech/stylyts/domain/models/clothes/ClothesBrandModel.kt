@@ -22,4 +22,6 @@ data class ClothesBrandModel(
     @SerializedName("modified_at")
     @Expose
     val modifiedAt: String?
-)
+) {
+    var isChecked: Boolean = false
+}

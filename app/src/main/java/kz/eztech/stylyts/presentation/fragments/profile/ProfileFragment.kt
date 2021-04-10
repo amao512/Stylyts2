@@ -25,7 +25,7 @@ import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
-import kz.eztech.stylyts.presentation.dialogs.profile.FilterProfileDialog
+import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
@@ -301,7 +301,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun onFilterClick(position: Int) {
         when (position) {
-            0 -> FilterProfileDialog().show(childFragmentManager, EMPTY_STRING)
+            0 -> FilterDialog.getNewInstance(
+                token = getTokenFromSharedPref(),
+                itemClickListener = this
+            ).show(childFragmentManager, EMPTY_STRING)
             1 -> {
                 presenter.getPublications(
                     token = getTokenFromSharedPref(),

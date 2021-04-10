@@ -15,7 +15,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ShopItemListAdapter
+import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
@@ -31,7 +31,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
     @Inject lateinit var presenter: ShopItemListPresenter
 
-    private lateinit var adapter: ShopItemListAdapter
+    private lateinit var filterCheckAdapter: FilterCheckAdapter
     private lateinit var clothesType: ClothesTypeModel
     private lateinit var selectedCategoryTitle: String
 
@@ -96,10 +96,10 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        adapter = ShopItemListAdapter()
+        filterCheckAdapter = FilterCheckAdapter()
         recycler_view_fragment_shop_item_list.layoutManager = LinearLayoutManager(currentActivity)
-        recycler_view_fragment_shop_item_list.adapter = adapter
-        adapter.itemClickListener = this
+        recycler_view_fragment_shop_item_list.adapter = filterCheckAdapter
+        filterCheckAdapter.itemClickListener = this
     }
 
     override fun onResume() {
@@ -139,7 +139,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         item: Any?
     ) {
         when (view.id) {
-            R.id.linear_layout_item_shop_item_list -> onCheckCategory(item, position)
+            R.id.item_filter_check_title_checked_text_view -> onCheckCategory(item, position)
         }
     }
 
@@ -156,24 +156,8 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         resultsModel.results?.let {
             preparedResults.addAll(it)
         }
-        preparedResults.add(
-            ClothesCategoryModel(
-                id = 43,
-                clothesType = clothesType,
-                title = "Одежда",
-                bodyPart = clothesType.id
-            )
-        )
-        preparedResults.add(
-            ClothesCategoryModel(
-                id = 9,
-                clothesType = clothesType,
-                title = "Штаны",
-                bodyPart = clothesType.id
-            )
-        )
 
-        adapter.updateList(list = preparedResults)
+        filterCheckAdapter.updateList(list = preparedResults)
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
@@ -195,9 +179,9 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         item: Any?,
         position: Int
     ) {
-        with(item as ClothesCategoryModel) {
-            adapter.onCheckPosition(position)
+        filterCheckAdapter.onCheckPosition(position)
 
+        with(item as ClothesCategoryModel) {
             if (!item.isChecked) {
                 resetCategories()
             } else {
@@ -231,7 +215,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
     private fun resetCategories() {
         if (isCheckedItem) {
-            adapter.onResetChecking()
+            filterCheckAdapter.onResetChecking()
 
             selectedCategoryId = 0
             selectedCategoryTitle = clothesType.title ?: EMPTY_STRING

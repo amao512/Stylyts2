@@ -15,6 +15,7 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.UserSearchDialog
+import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.settings.ExitDialog
 import kz.eztech.stylyts.presentation.fragments.address.AddressFragment
 import kz.eztech.stylyts.presentation.fragments.auth.LoginFragment
@@ -78,4 +79,5 @@ interface ApplicationComponent {
     fun inject(dialog: EditProfileDialog)
     fun inject(dialog: ExitDialog)
     fun inject(dialog: CreateCollectionAcceptDialog)
+    fun inject(dialog: FilterDialog)
 }

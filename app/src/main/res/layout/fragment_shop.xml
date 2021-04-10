@@ -45,31 +45,25 @@
                             />
                     </FrameLayout>
 
-                    <LinearLayout
+                    <FrameLayout
                         android:id="@+id/fragment_shop_search_view"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/search_view_height"
                         android:layout_marginHorizontal="@dimen/margin_size_16x"
                         android:layout_marginTop="@dimen/margin_size_10x"
                         android:background="@drawable/rounded_rectangle_gray"
-                        android:gravity="center_vertical"
                         android:paddingHorizontal="@dimen/padding_size_20x"
                         >
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_search"
-                            />
-
                         <TextView
+                            style="@style/Bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_size_12x"
                             android:text="@string/search"
                             android:textColor="@color/app_gray_hint"
+                            android:layout_gravity="center"
                             />
-                    </LinearLayout>
+                    </FrameLayout>
 
                 </LinearLayout>
 

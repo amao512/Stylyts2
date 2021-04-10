@@ -276,8 +276,17 @@
     <string name="edit_profile_fill_data">Заполните данные</string>
     <string name="edit_profile_fill_names_through_space">Заполните имя и фамилию через пробел!</string>
 
-    <string name="button_show_results">Show results : (%s)</string>
+    <string name="button_show_results">Show results : %s</string>
 
     <string name="toolbar_positions_text_format">%s Positions</string>
     <string name="toolbar_position_text_format">%s Position</string>
+
+    <string name="add_to_cart_error">Вы не выбрали цвет или размер</string>
+    <string name="there_are_not_sizes">Нет размеров</string>
+    <string name="there_are_not_colors">Нет цветов</string>
+
+    <string name="filter_categories">Categories</string>
+    <string name="filter_brands">Brands</string>
+    <string name="filter_colors">Colors</string>
+    <string name="filter_costs">Price range</string>
 </resources>

@@ -5,18 +5,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_item_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.LocalDataSource
-import kz.eztech.stylyts.data.db.entities.CartMapper
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesColor
-import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.ClothesSize
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
@@ -71,13 +67,11 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             toolbar_left_corner_action_image_button.show()
             toolbar_left_corner_action_image_button.setOnClickListener(this@ItemDetailFragment)
 
-            toolbar_title_text_view.show()
-
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setOnClickListener(this@ItemDetailFragment)
 
-            customizeActionToolBar(toolbar = this, title = "zara")
+            toolbar_title_text_view.show()
         }
     }
 
@@ -170,6 +164,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     }
 
     override fun processClothesBrand(clothesBrandModel: ClothesBrandModel) {
+        include_toolbar_item_detail.toolbar_title_text_view.text = clothesBrandModel.title
         text_view_fragment_item_detail_brand_name.text = clothesBrandModel.title
     }
 
@@ -195,8 +190,8 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         chooserDialog.setChoiceListener(this)
 
         val imageArray = ArrayList<String>()
-        clothesModel.imageModels?.map { clothesImage ->
-            imageArray.add(clothesImage.image ?: EMPTY_STRING)
+        clothesModel.coverImages?.map { image ->
+            imageArray.add(image)
         }
 
         val imageAdapter = ImagesViewPagerAdapter(imageArray)
@@ -243,17 +238,18 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             CART_STATE.NONE -> {
                 currentState = CART_STATE.EDIT
 
+                button_fragment_item_detail_create_collection.hide()
                 linear_layout_fragment_item_detail_cart_holder.setBackgroundColor(
                     getColor(currentActivity, R.color.app_very_light_gray)
                 )
-                linear_layout_fragment_item_detail_choosers_holder.visibility = View.VISIBLE
-                frame_layout_fragment_item_detail_text_share.visibility = View.VISIBLE
+                linear_layout_fragment_item_detail_choosers_holder.show()
+                frame_layout_fragment_item_detail_text_share.show()
             }
             CART_STATE.EDIT -> {
                 if (currentColor == null || currentSize == null) {
-                    displayMessage("Вы не выбрали цвет или размер")
+                    displayMessage(msg = getString(R.string.add_to_cart_error))
                 } else {
-//                    processCart()
+                    processCart()
                 }
             }
             else -> {}
@@ -272,7 +268,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
             bundle.putParcelableArrayList("sizeItems", ArrayList(clothesSizes))
         } ?: run {
-            displayMessage("Нет размеров")
+            displayMessage(msg = getString(R.string.there_are_not_sizes))
         }
         chooserDialog.arguments = bundle
         chooserDialog.show(parentFragmentManager, "Chooser")
@@ -290,7 +286,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
             bundle.putParcelableArrayList("colorItems", ArrayList(clothesColors))
         } ?: run {
-            displayMessage("Нет цветов")
+            displayMessage(msg = getString(R.string.there_are_not_colors))
         }
         chooserDialog.arguments = bundle
         chooserDialog.show(parentFragmentManager, "Chooser")
@@ -323,15 +319,14 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     private fun processCart() {
 //        currentClothesModel?.currentColor = currentColor
 //        currentClothesModel?.currentSize = currentSize
-        disposables.clear()
-        disposables.add(
-            ds.insert(CartMapper.mapToEntity(currentClothesModel as ClothesMainModel))
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-                    val cartDialog = CartDialog()
-                    cartDialog.show(childFragmentManager, "Cart")
-                }
-        )
-
+//        disposables.clear()
+//        disposables.add(
+//            ds.insert(CartMapper.mapToEntity(currentClothesModel as ClothesModel))
+//                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+//                    val cartDialog = CartDialog()
+//                    cartDialog.show(childFragmentManager, "Cart")
+//                }
+//        )
     }
 
     private fun createOutfit() {

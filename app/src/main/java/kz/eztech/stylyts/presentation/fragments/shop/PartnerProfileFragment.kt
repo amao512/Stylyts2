@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.fragment_partner_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.CategoryTypeDetailAdapter
+import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -23,7 +23,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContract.View,
     UniversalViewClickListener {
 
-    private lateinit var adapter: CategoryTypeDetailAdapter
+    private lateinit var adapter: ClothesDetailAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
 
     override fun getLayoutId(): Int = R.layout.fragment_partner_profile
@@ -62,7 +62,7 @@ class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContr
         for (i in 0..11) {
             dummyList.add(ClothesTypeDataModel(title = "Кожанная куртка", cost = 12000))
         }
-        adapter = CategoryTypeDetailAdapter()
+        adapter = ClothesDetailAdapter()
         recycler_view_fragment_partner_profile_items_list.layoutManager =
             GridLayoutManager(context, 2)
         recycler_view_fragment_partner_profile_items_list.adapter = adapter

@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linear_layout_item_category_type_detail"
+    android:id="@+id/item_clothes_detail_linear_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_size_8x"
@@ -16,7 +16,7 @@
         >
 
         <ImageView
-            android:id="@+id/image_view_item_category_type_detail"
+            android:id="@+id/item_clothes_detail_image_view"
             android:layout_width="@dimen/category_type_detail_image_width"
             android:layout_height="@dimen/category_type_detail_image_height"
             android:layout_gravity="center"
@@ -33,7 +33,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/text_view_item_category_type_detail_title"
+        android:id="@+id/item_clothes_detail_title_text_view"
         style="@style/SubtitleTextBold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         />
 
     <TextView
-        android:id="@+id/text_view_item_category_type_detail_sub_title"
+        android:id="@+id/item_clothes_detail_sub_title_text_view"
         style="@style/TextRegular"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         />
 
     <TextView
-        android:id="@+id/text_view_item_category_type_detail_cost"
+        android:id="@+id/item_clothes_detail_cost_text_view"
         style="@style/TextRegularBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

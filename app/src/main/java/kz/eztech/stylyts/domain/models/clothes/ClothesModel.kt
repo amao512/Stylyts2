@@ -16,9 +16,12 @@ data class ClothesModel(
     @SerializedName("clothes_category")
     @Expose
     val clothesCategory: String?,
-    @SerializedName("images")
+    @SerializedName("constructor_image")
     @Expose
-    val imageModels: List<ClothesImageModel>?,
+    val constructorImage: String?,
+    @SerializedName("cover_images")
+    @Expose
+    val coverImages: List<String>?,
     @SerializedName("clothes_sizes")
     @Expose
     val clothesSizes: List<String>?,

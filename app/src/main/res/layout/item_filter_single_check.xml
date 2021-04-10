@@ -8,7 +8,7 @@
     >
 
     <CheckedTextView
-        android:id="@+id/item_filter_item_title_checked_text_view"
+        android:id="@+id/item_filter_single_check_title_checked_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_size_40x"
