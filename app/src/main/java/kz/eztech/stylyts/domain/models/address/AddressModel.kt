@@ -1,45 +1,20 @@
 package kz.eztech.stylyts.domain.models.address
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-
 /**
- * Created by Asylzhan Seytbek on 14.03.2021.
+ * Created by Asylzhan Seytbek on 11.04.2021.
  */
 data class AddressModel(
-    @SerializedName("id")
-    @Expose
-    val id: String?,
-    @SerializedName("user")
-    @Expose
-    val user: String?,
-    @SerializedName("country")
-    @Expose
-    val country: String?,
-    @SerializedName("city")
-    @Expose
-    val city: String?,
-    @SerializedName("street")
-    @Expose
-    val street: String?,
-    @SerializedName("apartment")
-    @Expose
-    val apartment: String?,
-    @SerializedName("entrance")
-    @Expose
-    val entrance: String?,
-    @SerializedName("floor")
-    @Expose
-    val floor: String?,
-    @SerializedName("door_phone")
-    @Expose
-    val doorPhone: String?,
-    @SerializedName("postal_code")
-    @Expose
-    val postalCode: String?,
-    @SerializedName("comment")
-    @Expose
-    val comment: String?
+    val id: Int,
+    val user: String,
+    val country: String,
+    val city: String,
+    val street: String,
+    val apartment: String,
+    val entrance: String,
+    val floor: String,
+    val doorPhone: String,
+    val postalCode: String,
+    val comment: String
 ) {
     var isDefaultAddress: Boolean = false
 }

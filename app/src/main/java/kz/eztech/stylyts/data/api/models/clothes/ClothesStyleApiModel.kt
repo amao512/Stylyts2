@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.data.api.models
+package kz.eztech.stylyts.data.api.models.clothes
 
 import android.os.Parcelable
 import com.google.gson.annotations.Expose

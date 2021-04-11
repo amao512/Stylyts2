@@ -147,9 +147,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
         val defaultAddressId: Int = currentActivity.getSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY) ?: 0
 
         addressList.forEach {
-            if (it.id?.toInt() == defaultAddressId) {
-                it.isDefaultAddress = true
-            }
+            it.isDefaultAddress = it.id == defaultAddressId
         }
 
         addressAdapter.updateList(addressList)
@@ -171,7 +169,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     }
 
     override fun setDefaultAddress(addressModel: AddressModel) {
-        currentActivity.saveSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY, addressModel.id?.toInt())
+        currentActivity.saveSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY, addressModel.id)
 
         processPostInitialization()
     }
@@ -179,7 +177,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     override fun onSwipeDelete(addressModel: AddressModel) {
         presenter.deleteAddress(
             token = getTokenFromSharedPref(),
-            addressId = addressModel.id ?: EMPTY_STRING
+            addressId = addressModel.id.toString()
         )
     }
 

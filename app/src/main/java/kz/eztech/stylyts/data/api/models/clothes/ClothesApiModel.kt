@@ -1,7 +1,8 @@
-package kz.eztech.stylyts.data.api.models
+package kz.eztech.stylyts.data.api.models.clothes
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kz.eztech.stylyts.data.api.models.OwnerApiModel
 
 data class ClothesApiModel(
     @SerializedName("id")

@@ -2,13 +2,13 @@ package kz.eztech.stylyts.presentation.presenters.address
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.usecases.address.DeleteAddressUseCase
 import kz.eztech.stylyts.domain.usecases.address.GetAddressUseCase
 import kz.eztech.stylyts.domain.usecases.address.PostAddressUseCase
-import kz.eztech.stylyts.presentation.contracts.address.AddressContract
 import kz.eztech.stylyts.presentation.base.processViewAction
+import kz.eztech.stylyts.presentation.contracts.address.AddressContract
 import javax.inject.Inject
 
 class AddressPresenter @Inject constructor(
@@ -31,11 +31,10 @@ class AddressPresenter @Inject constructor(
 
     override fun getAllAddress(token: String){
         getAddressUseCase.initParams(token)
-        getAddressUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<AddressModel>>() {
-
-            override fun onSuccess(t: ResultsApiModel<AddressModel>) {
+        getAddressUseCase.execute(object : DisposableSingleObserver<ResultsModel<AddressModel>>() {
+            override fun onSuccess(t: ResultsModel<AddressModel>) {
                 view.processViewAction {
-                    t.results?.let {
+                    t.results.let {
                         if (it.isNotEmpty()) {
                             processAddressList(addressList = it)
                             hideEmpty()
@@ -61,7 +60,6 @@ class AddressPresenter @Inject constructor(
     ) {
         postAddressUseCase.initParams(token, data)
         postAddressUseCase.execute(object : DisposableSingleObserver<AddressModel>() {
-
             override fun onSuccess(t: AddressModel) {
                 view.processViewAction {
                     processAddress(addressModel = t)

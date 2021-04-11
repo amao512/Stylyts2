@@ -3,10 +3,10 @@ package kz.eztech.stylyts.data.api.network
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
-import kz.eztech.stylyts.data.api.models.ClothesBrandApiModel
-import kz.eztech.stylyts.data.api.models.ClothesCategoryApiModel
-import kz.eztech.stylyts.data.api.models.ClothesApiModel
-import kz.eztech.stylyts.data.api.models.ClothesTypeApiModel
+import kz.eztech.stylyts.data.api.models.clothes.ClothesBrandApiModel
+import kz.eztech.stylyts.data.api.models.clothes.ClothesCategoryApiModel
+import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
+import kz.eztech.stylyts.data.api.models.clothes.ClothesTypeApiModel
 import retrofit2.Response
 import retrofit2.http.*
 

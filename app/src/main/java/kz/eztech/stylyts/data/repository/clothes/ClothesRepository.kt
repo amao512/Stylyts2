@@ -3,8 +3,8 @@ package kz.eztech.stylyts.data.repository.clothes
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.ClothesApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.ClothesApiModelMapper
-import kz.eztech.stylyts.data.mappers.ClothesBrandApiModelMapper
+import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
+import kz.eztech.stylyts.data.mappers.clothes.ClothesBrandApiModelMapper
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel

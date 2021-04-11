@@ -1,6 +1,6 @@
-package kz.eztech.stylyts.data.mappers
+package kz.eztech.stylyts.data.mappers.clothes
 
-import kz.eztech.stylyts.data.api.models.ClothesTypeApiModel
+import kz.eztech.stylyts.data.api.models.clothes.ClothesTypeApiModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject

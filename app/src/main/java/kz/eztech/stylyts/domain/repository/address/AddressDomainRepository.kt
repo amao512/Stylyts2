@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.domain.repository.address
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 
 interface AddressDomainRepository {
@@ -13,7 +13,7 @@ interface AddressDomainRepository {
 
     fun getAllAddress(
         token: String
-    ): Single<ResultsApiModel<AddressModel>>
+    ): Single<ResultsModel<AddressModel>>
 
     fun deleteAddress(
         token: String,
