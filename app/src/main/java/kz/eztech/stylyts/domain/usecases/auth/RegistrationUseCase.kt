@@ -17,13 +17,28 @@ class RegistrationUseCase @Inject constructor(
     private var authorizationDomainRepository: AuthorizationDomainRepository
 ) : BaseUseCase<AuthModel>(executorThread, uiThread) {
 
-    private lateinit var data: HashMap<String, Any>
+    private lateinit var fieldStringMap: Map<String, String>
+    private lateinit var fieldBooleanMap: Map<String, Boolean>
 
     override fun createSingleObservable(): Single<AuthModel> {
-        return authorizationDomainRepository.registerUser(data)
+        return authorizationDomainRepository.registerUser(fieldStringMap, fieldBooleanMap)
     }
 
     fun initParams(data: HashMap<String, Any>) {
-        this.data = data
+        val fieldStringMap = HashMap<String, String>()
+        val fieldBooleanMap = HashMap<String, Boolean>()
+
+        fieldStringMap["username"] = data["username"] as String
+        fieldStringMap["email"] = data["email"] as String
+        fieldStringMap["password"] = data["password"] as String
+        fieldStringMap["first_name"] = data["first_name"] as String
+        fieldStringMap["last_name"] = data["last_name"] as String
+        fieldStringMap["gender"] = data["gender"] as String
+        fieldStringMap["date_of_birth"] = data["date_of_birth"] as String
+        fieldBooleanMap["should_send_mail"] = data["should_send_mail"] as Boolean
+        fieldBooleanMap["is_brand"] = data["is_brand"] as Boolean
+
+        this.fieldStringMap = fieldStringMap
+        this.fieldBooleanMap = fieldBooleanMap
     }
 }

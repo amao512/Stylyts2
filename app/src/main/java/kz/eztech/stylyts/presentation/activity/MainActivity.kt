@@ -42,9 +42,8 @@ class MainActivity : BaseActivity(), MainActivityContract.View {
     }
 
     override fun processRefresh(tokenModel: TokenModel) {
-        tokenModel.access?.let {
-            saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it)
-        }
+        saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, tokenModel.access)
+        saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, tokenModel.refresh)
     }
 
     fun hideBottomNavigationView() {

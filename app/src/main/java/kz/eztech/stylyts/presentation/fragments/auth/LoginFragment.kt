@@ -85,8 +85,8 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
 
     override fun processLoginUser(authModel: AuthModel) {
         authModel.let {
-            currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.token?.access)
-            currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.token?.refresh)
+            currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.token.access)
+            currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.token.refresh)
 
             startActivity(Intent(currentActivity, MainActivity::class.java))
             currentActivity.finish()

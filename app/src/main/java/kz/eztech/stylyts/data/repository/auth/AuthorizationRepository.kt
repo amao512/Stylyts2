@@ -1,9 +1,9 @@
 package kz.eztech.stylyts.data.repository.auth
 
-import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.AuthApi
 import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.data.mappers.auth.AuthApiModelMapper
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import kz.eztech.stylyts.domain.repository.auth.AuthorizationDomainRepository
@@ -13,24 +13,20 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
 class AuthorizationRepository @Inject constructor(
-    private var api: AuthApi
+    private val api: AuthApi,
+    private val authApiModelMapper: AuthApiModelMapper
 ) : AuthorizationDomainRepository {
 
-    override fun registerUser(data: HashMap<String, Any>): Single<AuthModel> {
+    override fun registerUser(
+        fieldStringMap: Map<String, String>,
+        fieldBooleanMap: Map<String, Boolean>
+    ): Single<AuthModel> {
         return api.registerUser(
-            username = data["username"] as String,
-            email = data["email"] as String,
-            password = data["password"] as String,
-            firstName = data["first_name"] as String,
-            lastName = data["last_name"] as String,
-            gender = data["gender"] as String,
-            dateOfBirth = data["date_of_birth"] as String,
-            shouldSendMail = data["should_send_mail"] as Boolean,
-            isBrand = data["is_brand"] as Boolean
+            fieldStringMap = fieldStringMap,
+            fieldBooleanMap = fieldBooleanMap
         ).map {
-            Log.d("TAG", it.toString())
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> authApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }
@@ -42,7 +38,7 @@ class AuthorizationRepository @Inject constructor(
             password = data["password"] as String
         ).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> authApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }

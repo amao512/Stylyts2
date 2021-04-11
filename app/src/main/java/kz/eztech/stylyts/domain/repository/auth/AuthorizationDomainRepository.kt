@@ -9,7 +9,10 @@ import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
  */
 interface AuthorizationDomainRepository {
 
-    fun registerUser(data: HashMap<String, Any>): Single<AuthModel>
+    fun registerUser(
+        fieldStringMap: Map<String, String>,
+        fieldBooleanMap: Map<String, Boolean>
+    ): Single<AuthModel>
 
     fun loginUser(data: HashMap<String, Any>): Single<AuthModel>
 

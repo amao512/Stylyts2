@@ -3,13 +3,15 @@ package kz.eztech.stylyts.data.repository.main
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.MainApi
 import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.data.mappers.auth.TokenApiModelMapper
 import kz.eztech.stylyts.domain.models.ErrorModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.domain.repository.main.MainDomainRepository
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
-    private val api: MainApi
+    private val api: MainApi,
+    private val tokenApiModelMapper: TokenApiModelMapper
 ) : MainDomainRepository {
 
     override fun verifyToken(token: String): Single<ErrorModel> {
@@ -24,7 +26,7 @@ class MainRepository @Inject constructor(
     override fun refreshToken(refresh: String): Single<TokenModel> {
         return api.refreshToken(refresh).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> tokenApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }

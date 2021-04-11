@@ -2,10 +2,11 @@ package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.data.api.models.auth.AuthApiModel
 import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import retrofit2.Response
 import retrofit2.http.Field
+import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
@@ -17,23 +18,16 @@ interface AuthApi {
     @FormUrlEncoded
     @POST(RestConstants.REGISTER_USER)
     fun registerUser(
-        @Field("username") username: String,
-        @Field("email") email: String,
-        @Field("password") password: String,
-        @Field("first_name") firstName: String,
-        @Field("last_name") lastName: String,
-        @Field("gender") gender: String,
-        @Field("dob") dateOfBirth: String,
-        @Field("should_send_mail") shouldSendMail: Boolean,
-        @Field("is_brand") isBrand: Boolean
-    ): Single<Response<AuthModel>>
+        @FieldMap fieldStringMap: Map<String, String>,
+        @FieldMap fieldBooleanMap: Map<String, Boolean>
+    ): Single<Response<AuthApiModel>>
 
     @FormUrlEncoded
     @POST(RestConstants.LOGIN_USER)
     fun loginUser(
         @Field("username") username: String,
         @Field("password") password: String
-    ): Single<Response<AuthModel>>
+    ): Single<Response<AuthApiModel>>
 
     @FormUrlEncoded
     @POST(RestConstants.IS_USERNAME_EXISTS)

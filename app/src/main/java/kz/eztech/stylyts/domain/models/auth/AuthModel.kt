@@ -1,14 +1,8 @@
 package kz.eztech.stylyts.domain.models.auth
 
-import com.google.gson.annotations.Expose
-import com.google.gson.annotations.SerializedName
-import kz.eztech.stylyts.data.api.models.user.UserApiModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 
 data class AuthModel(
-    @SerializedName("token")
-    @Expose
-    val token: TokenModel?,
-    @SerializedName("user")
-    @Expose
-    val user: UserApiModel?
+    val token: TokenModel,
+    val user: UserModel
 )
