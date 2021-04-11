@@ -2,7 +2,7 @@ package kz.eztech.stylyts.data.repository.auth
 
 import android.util.Log
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.AuthApi
+import kz.eztech.stylyts.data.api.network.AuthApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel

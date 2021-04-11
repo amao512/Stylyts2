@@ -1,6 +1,7 @@
-package kz.eztech.stylyts.data.api
+package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
+import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.ErrorModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import retrofit2.Response

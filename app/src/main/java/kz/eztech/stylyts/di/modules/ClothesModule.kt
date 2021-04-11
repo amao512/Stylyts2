@@ -2,7 +2,7 @@ package kz.eztech.stylyts.di.modules
 
 import dagger.Module
 import dagger.Provides
-import kz.eztech.stylyts.data.api.ClothesApi
+import kz.eztech.stylyts.data.api.network.ClothesApi
 import kz.eztech.stylyts.data.repository.clothes.ClothesRepository
 import kz.eztech.stylyts.domain.repository.clothes.ClothesDomainRepository
 import retrofit2.Retrofit

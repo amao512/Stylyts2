@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.data.repository.main
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.MainApi
+import kz.eztech.stylyts.data.api.network.MainApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.ErrorModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel

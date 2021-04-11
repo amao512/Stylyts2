@@ -14,7 +14,6 @@ import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
@@ -46,7 +45,7 @@ class FilterPresenter @Inject constructor(
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 getPreparedCategories(
                     token = token,
-                    results = t,
+                    resultsApi = t,
                     onCategories = {
                         view.processViewAction {
                             processClothesCategories(list = it)
@@ -113,15 +112,15 @@ class FilterPresenter @Inject constructor(
 
     private fun getPreparedCategories(
         token: String,
-        results: ResultsModel<ClothesTypeModel>,
+        resultsApi: ResultsModel<ClothesTypeModel>,
         onCategories: (List<CategoryFilterSingleCheckGenre>) -> Unit
     ) {
         val list: MutableList<CategoryFilterSingleCheckGenre> = mutableListOf()
 
-        results.results?.map { type ->
+        resultsApi.results.map { type ->
             getClothesCategoriesByType(
                 token = token,
-                typeId = type.id ?: 0,
+                typeId = type.id,
                 onResults = { resultsModel ->
                     val preparedResults: MutableList<ClothesCategoryModel> = mutableListOf()
 
@@ -134,12 +133,12 @@ class FilterPresenter @Inject constructor(
                         )
                     )
 
-                    resultsModel.results?.let {
+                    resultsModel.results.let {
                         preparedResults.addAll(it)
 
                         list.add(
                             CategoryFilterSingleCheckGenre(
-                                title = type.title ?: EMPTY_STRING,
+                                title = type.title,
                                 filterItems = preparedResults
                             )
                         )
@@ -157,17 +156,18 @@ class FilterPresenter @Inject constructor(
         onResults: (ResultsModel<ClothesCategoryModel>) -> Unit
     ) {
         getClothesCategoriesByTypeUseCase.initParams(token, typeId)
-        getClothesCategoriesByTypeUseCase.execute(object :
-            DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
-            override fun onSuccess(t: ResultsModel<ClothesCategoryModel>) {
-                onResults(t)
-            }
+        getClothesCategoriesByTypeUseCase.execute(
+            object : DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
+                override fun onSuccess(t: ResultsModel<ClothesCategoryModel>) {
+                    onResults(t)
+                }
 
-            override fun onError(e: Throwable) {
-                view.processViewAction {
-                    displayMessage(msg = errorHelper.processError(e))
+                override fun onError(e: Throwable) {
+                    view.processViewAction {
+                        displayMessage(msg = errorHelper.processError(e))
+                    }
                 }
             }
-        })
+        )
     }
 }

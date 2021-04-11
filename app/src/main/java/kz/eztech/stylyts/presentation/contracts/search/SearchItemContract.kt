@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.search
 
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
-import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -9,7 +9,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface SearchItemContract {
 
     interface View : BaseView {
-        fun processSearch(resultsModel: ResultsModel<UserModel>)
+        fun processSearch(resultsModel: ResultsApiModel<UserModel>)
 
         fun processUserFromLocalDb(userList: List<UserSearchEntity>)
     }

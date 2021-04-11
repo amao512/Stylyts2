@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.presentation.contracts.main
 
-import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.MainLentaModel
+import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.domain.models.ResultsModel
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
@@ -14,7 +14,7 @@ interface MainContract{
 
         fun processCollections(model: MainLentaModel)
 
-        fun processMyPublications(resultsModel: ResultsModel<PublicationModel>)
+        fun processMyPublications(resultsModel: ResultsApiModel<PublicationModel>)
     }
     interface Presenter: BasePresenter<View> {
 

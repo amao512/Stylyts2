@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.data.api
+package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants.GET_BRANDS

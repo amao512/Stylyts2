@@ -3,7 +3,7 @@ package kz.eztech.stylyts.di.modules
 import android.app.Application
 import dagger.Module
 import dagger.Provides
-import kz.eztech.stylyts.data.api.SearchAPI
+import kz.eztech.stylyts.data.api.network.SearchAPI
 import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.repository.search.SearchRepository
 import kz.eztech.stylyts.domain.repository.search.SearchDomainRepository

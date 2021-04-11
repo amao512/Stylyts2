@@ -181,18 +181,14 @@ class FilterDialog(
     }
 
     override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
-        resultsModel.results?.let {
-            filterCheckAdapter.updateList(list = it)
-        }
+        filterCheckAdapter.updateList(list = resultsModel.results)
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        resultsModel.totalCount?.let { count ->
-            fragment_category_shop_results_button.text = getString(
-                R.string.button_show_results,
-                count.toString()
-            )
-        }
+        fragment_category_shop_results_button.text = getString(
+            R.string.button_show_results,
+            resultsModel.totalCount.toString()
+        )
     }
 
     private fun openFilterGroup(
@@ -240,10 +236,10 @@ class FilterDialog(
         if (!category.isChecked) {
             selectedClothesCategory = when (position) {
                 0 -> position
-                else -> category.id ?: 0
+                else -> category.id
             }
 
-            selectedClothesType = category.clothesType?.id ?: 0
+            selectedClothesType = category.clothesType.id
         }
 
         categoryFilterExpandableAdapter.onChildCheckChanged(view, !category.isChecked, position)
@@ -258,11 +254,9 @@ class FilterDialog(
         isCheckedItem = !brand.isChecked
 
         if (!brand.isChecked) {
-            brand.id?.let {
-                selectedClothesBrand = when (position) {
-                    0 -> position
-                    else -> it
-                }
+            selectedClothesBrand = when (position) {
+                0 -> position
+                else -> brand.id
             }
         }
 

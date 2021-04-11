@@ -2,7 +2,7 @@ package kz.eztech.stylyts.di.modules
 
 import dagger.Module
 import dagger.Provides
-import kz.eztech.stylyts.data.api.CollectionConstructorApi
+import kz.eztech.stylyts.data.api.network.CollectionConstructorApi
 import kz.eztech.stylyts.data.repository.collection_constructor.CollectionConstructorRepository
 import kz.eztech.stylyts.domain.repository.collection_constructor.CollectionConstructorDomainRepository
 import retrofit2.Retrofit

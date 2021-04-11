@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.data.repository.search
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.SearchAPI
+import kz.eztech.stylyts.data.api.network.SearchAPI
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.repository.search.SearchDomainRepository
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class SearchRepository @Inject constructor(
     override fun getUserByUsername(
         token: String,
         username: String
-    ): Single<ResultsModel<UserModel>> {
+    ): Single<ResultsApiModel<UserModel>> {
         return api.searchUserByUsername(token, username).map {
             when (it.isSuccessful) {
                 true -> it.body()

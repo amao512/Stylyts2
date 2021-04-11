@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.address
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.usecases.address.DeleteAddressUseCase
 import kz.eztech.stylyts.domain.usecases.address.GetAddressUseCase
@@ -31,9 +31,9 @@ class AddressPresenter @Inject constructor(
 
     override fun getAllAddress(token: String){
         getAddressUseCase.initParams(token)
-        getAddressUseCase.execute(object : DisposableSingleObserver<ResultsModel<AddressModel>>() {
+        getAddressUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<AddressModel>>() {
 
-            override fun onSuccess(t: ResultsModel<AddressModel>) {
+            override fun onSuccess(t: ResultsApiModel<AddressModel>) {
                 view.processViewAction {
                     t.results?.let {
                         if (it.isNotEmpty()) {

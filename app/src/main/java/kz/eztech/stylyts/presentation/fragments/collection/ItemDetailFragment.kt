@@ -190,7 +190,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         chooserDialog.setChoiceListener(this)
 
         val imageArray = ArrayList<String>()
-        clothesModel.coverImages?.map { image ->
+        clothesModel.coverImages.map { image ->
             imageArray.add(image)
         }
 

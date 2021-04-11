@@ -9,7 +9,7 @@ import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.usecases.search.SearchUserUseCase
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
 import javax.inject.Inject
@@ -40,8 +40,8 @@ class SearchItemPresenter @Inject constructor(
         username: String
     ) {
         searchUserUseCase.initParams(token, username)
-        searchUserUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
-            override fun onSuccess(t: ResultsModel<UserModel>) {
+        searchUserUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<UserModel>>() {
+            override fun onSuccess(t: ResultsApiModel<UserModel>) {
                 view.processViewAction {
                     hideProgress()
                     processSearch(t)

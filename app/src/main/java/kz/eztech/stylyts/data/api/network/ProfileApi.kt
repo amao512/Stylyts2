@@ -1,9 +1,10 @@
-package kz.eztech.stylyts.data.api
+package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
+import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -44,5 +45,5 @@ interface ProfileApi {
     @GET(RestConstants.GET_MY_POSTS)
     fun getMyCollections(
         @Header("Authorization") token: String
-    ): Single<Response<ResultsModel<PublicationModel>>>
+    ): Single<Response<ResultsApiModel<PublicationModel>>>
 }

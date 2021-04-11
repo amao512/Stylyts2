@@ -7,8 +7,8 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterItemCheckViewHolder
+import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.

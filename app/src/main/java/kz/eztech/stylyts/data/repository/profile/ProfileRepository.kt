@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.data.repository.profile
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.ProfileApi
+import kz.eztech.stylyts.data.api.network.ProfileApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
 import okhttp3.MultipartBody
@@ -74,7 +74,7 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    override fun getMyPublications(token: String): Single<ResultsModel<PublicationModel>> {
+    override fun getMyPublications(token: String): Single<ResultsApiModel<PublicationModel>> {
         return api.getMyCollections(
             token = token
         ).map {

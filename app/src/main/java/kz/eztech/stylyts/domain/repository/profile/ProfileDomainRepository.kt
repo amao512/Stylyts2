@@ -3,7 +3,7 @@ package kz.eztech.stylyts.domain.repository.profile
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import okhttp3.MultipartBody
 
 /**
@@ -28,5 +28,5 @@ interface ProfileDomainRepository {
         userId: String
     ): Single<UserModel>
 
-    fun getMyPublications(token: String): Single<ResultsModel<PublicationModel>>
+    fun getMyPublications(token: String): Single<ResultsApiModel<PublicationModel>>
 }

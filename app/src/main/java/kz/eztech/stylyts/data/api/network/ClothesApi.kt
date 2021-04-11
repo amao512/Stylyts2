@@ -1,11 +1,12 @@
-package kz.eztech.stylyts.data.api
+package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.data.api.RestConstants
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.data.api.models.ClothesBrandApiModel
+import kz.eztech.stylyts.data.api.models.ClothesCategoryApiModel
+import kz.eztech.stylyts.data.api.models.ClothesApiModel
+import kz.eztech.stylyts.data.api.models.ClothesTypeApiModel
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -17,39 +18,39 @@ interface ClothesApi {
     @GET(RestConstants.GET_CLOTHES_TYPES)
     fun getClothesTypes(
         @Header("Authorization") token: String
-    ): Single<Response<ResultsModel<ClothesTypeModel>>>
+    ): Single<Response<ResultsApiModel<ClothesTypeApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_CATEGORIES)
     fun getClothesCategories(
         @Header("Authorization") token: String
-    ): Single<Response<ResultsModel<ClothesCategoryModel>>>
+    ): Single<Response<ResultsApiModel<ClothesCategoryApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_CATEGORIES)
     fun getClothesCategoriesByType(
         @Header("Authorization") token: String,
         @Query("clothes_type") clothesTypeId: String
-    ): Single<Response<ResultsModel<ClothesCategoryModel>>>
+    ): Single<Response<ResultsApiModel<ClothesCategoryApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_BY_ID)
     fun getClothesById(
         @Header("Authorization") token: String,
         @Path("id") clothesId: String
-    ): Single<Response<ClothesModel>>
+    ): Single<Response<ClothesApiModel>>
 
     @GET(RestConstants.GET_CLOTHES_BRANDS)
     fun getClothesBrands(
         @Header("Authorization") token: String
-    ): Single<Response<ResultsModel<ClothesBrandModel>>>
+    ): Single<Response<ResultsApiModel<ClothesBrandApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_BRAND_BY_ID)
     fun getClothesBrandById(
         @Header("Authorization") token: String,
         @Path("brand_id") brandId: String
-    ): Single<Response<ClothesBrandModel>>
+    ): Single<Response<ClothesBrandApiModel>>
 
     @GET(RestConstants.GET_CLOTHES)
     fun getClothes(
         @Header("Authorization") token: String,
         @QueryMap(encoded = true) queryMap: Map<String, String>
-    ): Single<Response<ResultsModel<ClothesModel>>>
+    ): Single<Response<ResultsApiModel<ClothesApiModel>>>
 }

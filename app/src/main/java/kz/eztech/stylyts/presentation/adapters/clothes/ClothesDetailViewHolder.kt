@@ -24,7 +24,7 @@ class ClothesDetailViewHolder(
         with(item as ClothesModel) {
             with(itemView) {
                 item_clothes_detail_title_text_view.text = title
-                item_clothes_detail_sub_title_text_view.text = description ?: title
+                item_clothes_detail_sub_title_text_view.text = description
                 item_clothes_detail_cost_text_view.text = context.getString(
                     R.string.price_tenge_text_format,
                     NumberFormat.getInstance().format(cost)
@@ -38,17 +38,13 @@ class ClothesDetailViewHolder(
         }
     }
 
-    private fun loadCoverPhoto(coverImages: List<String>?) {
+    private fun loadCoverPhoto(coverImages: List<String>) {
         with (itemView) {
-            coverImages?.map {
+            coverImages.map {
                 Glide.with(item_clothes_detail_image_view.context)
                     .load(it)
                     .centerCrop()
                     .into(item_clothes_detail_image_view)
-            } ?: run {
-                Glide.with(this)
-                    .load(resources.getIdentifier("jacket", "drawable", context.packageName))
-                    .into(this.item_clothes_detail_image_view)
             }
         }
     }

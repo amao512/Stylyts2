@@ -93,9 +93,7 @@ class ShopItemFragment(
     }
 
     override fun processClothesTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
-        resultsModel.results?.let {
-            adapter.updateList(list = it)
-        }
+        adapter.updateList(list = resultsModel.results)
     }
 
     override fun onViewClicked(

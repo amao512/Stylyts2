@@ -1,11 +1,11 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.domain.models.ResultsModel
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
@@ -24,7 +24,7 @@ interface ProfileContract {
 
         fun processFilter(filterList: List<CollectionFilterModel>)
 
-        fun processMyPublications(resultsModel: ResultsModel<PublicationModel>)
+        fun processMyPublications(resultsModel: ResultsApiModel<PublicationModel>)
     }
 
     interface Presenter : BasePresenter<View> {

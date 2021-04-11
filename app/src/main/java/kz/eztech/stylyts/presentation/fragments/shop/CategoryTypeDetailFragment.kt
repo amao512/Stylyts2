@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_category_type_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.api.models.ClothesApiModel
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.ResultsModel
@@ -155,21 +156,17 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
         with (include_toolbar_profile) {
-            resultsModel.totalCount?.let { count ->
-                base_toolbar_small_title_sub_text_view.text = getString(
-                    if (count == 1) {
-                        R.string.toolbar_position_text_format
-                    } else {
-                        R.string.toolbar_positions_text_format
-                    },
-                    count.toString()
-                )
-            }
+            base_toolbar_small_title_sub_text_view.text = getString(
+                if (resultsModel.totalCount == 1) {
+                    R.string.toolbar_position_text_format
+                } else {
+                    R.string.toolbar_positions_text_format
+                },
+                resultsModel.totalCount.toString()
+            )
         }
 
-        resultsModel.results?.let {
-            clothesAdapter.updateList(list = it)
-        }
+        clothesAdapter.updateList(list = resultsModel.results)
     }
 
     override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
@@ -183,7 +180,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             )
         )
 
-        resultsModel.results?.map {
+        resultsModel.results.map {
             filterList.add(
                 CollectionFilterModel(id = it.id, name = it.title)
             )
@@ -205,7 +202,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         item as ClothesModel
 
         val bundle = Bundle()
-        bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id ?: 0)
+        bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(
             R.id.action_categoryTypeDetailFragment_to_itemDetailFragment,

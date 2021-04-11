@@ -2,7 +2,7 @@ package kz.eztech.stylyts.di.modules
 
 import dagger.Module
 import dagger.Provides
-import kz.eztech.stylyts.data.api.AddressApi
+import kz.eztech.stylyts.data.api.network.AddressApi
 import kz.eztech.stylyts.data.repository.address.AddressRepository
 import kz.eztech.stylyts.domain.repository.address.AddressDomainRepository
 import retrofit2.Retrofit

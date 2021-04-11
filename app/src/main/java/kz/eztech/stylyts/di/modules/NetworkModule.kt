@@ -10,7 +10,7 @@ import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.BuildConfig
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.data.api.API
+import kz.eztech.stylyts.data.api.network.API
 import kz.eztech.stylyts.data.helpers.MyTLSSocketFactory
 import okhttp3.Cache
 import okhttp3.ConnectionSpec

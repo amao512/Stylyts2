@@ -2,7 +2,7 @@ package kz.eztech.stylyts.di.modules
 
 import dagger.Module
 import dagger.Provides
-import kz.eztech.stylyts.data.api.MainApi
+import kz.eztech.stylyts.data.api.network.MainApi
 import kz.eztech.stylyts.data.repository.main.MainLentaRepository
 import kz.eztech.stylyts.data.repository.main.MainRepository
 import kz.eztech.stylyts.domain.repository.main.MainDomainRepository

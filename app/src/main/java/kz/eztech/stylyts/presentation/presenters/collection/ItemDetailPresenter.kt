@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.presenters.collection
 
-import android.util.Log
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ClothesMainModel
@@ -87,7 +86,6 @@ class ItemDetailPresenter @Inject constructor(
                 view.processViewAction {
                     hideProgress()
 //                    processClothes(t)
-                    Log.d("TAG", t.toString())
                 }
             }
 

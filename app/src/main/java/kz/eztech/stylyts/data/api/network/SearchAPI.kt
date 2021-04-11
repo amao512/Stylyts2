@@ -1,8 +1,9 @@
-package kz.eztech.stylyts.data.api
+package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
+import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.UserModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -17,5 +18,5 @@ interface SearchAPI {
     fun searchUserByUsername(
         @Header("Authorization") token: String,
         @Query("search") username: String
-    ): Single<Response<ResultsModel<UserModel>>>
+    ): Single<Response<ResultsApiModel<UserModel>>>
 }

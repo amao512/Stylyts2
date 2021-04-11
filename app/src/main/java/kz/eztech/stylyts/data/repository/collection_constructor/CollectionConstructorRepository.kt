@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.data.repository.collection_constructor
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.CollectionConstructorApi
+import kz.eztech.stylyts.data.api.network.CollectionConstructorApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.repository.collection_constructor.CollectionConstructorDomainRepository

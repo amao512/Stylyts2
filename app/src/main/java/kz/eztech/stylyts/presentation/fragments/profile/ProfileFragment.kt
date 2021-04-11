@@ -12,7 +12,7 @@ import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
@@ -195,8 +195,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         adapterFilter.updateList(filterList)
     }
 
-    override fun processMyPublications(resultsModel: ResultsModel<PublicationModel>) {
-        resultsModel.results?.let {
+    override fun processMyPublications(resultsApiModel: ResultsApiModel<PublicationModel>) {
+        resultsApiModel.results?.let {
             gridAdapter.updateList(it)
         }
     }

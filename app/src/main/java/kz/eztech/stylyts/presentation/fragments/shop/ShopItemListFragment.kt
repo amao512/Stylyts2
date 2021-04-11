@@ -65,7 +65,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
             customizeActionToolBar(
                 toolbar = this,
-                title = clothesType.title ?: EMPTY_STRING
+                title = clothesType.title
             )
         }
     }
@@ -83,7 +83,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             if (it.containsKey(CLOTHES_TYPE)) {
                 it.getParcelable<ClothesTypeModel>(CLOTHES_TYPE)?.let { clothesTypeModel ->
                     clothesType = clothesTypeModel
-                    selectedCategoryTitle = clothesTypeModel.title ?: EMPTY_STRING
+                    selectedCategoryTitle = clothesTypeModel.title
                 }
             }
 
@@ -114,11 +114,11 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     override fun processPostInitialization() {
         presenter.getCategoriesByType(
             token = getTokenFromSharedPref(),
-            clothesTypeId = clothesType.id ?: 0
+            clothesTypeId = clothesType.id
         )
         presenter.getClothesResultsByType(
             token = getTokenFromSharedPref(),
-            typeId = clothesType.id ?: 0,
+            typeId = clothesType.id,
             gender = getCurrentGender()
         )
     }
@@ -153,10 +153,8 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
                 bodyPart = clothesType.id
             )
         )
-        resultsModel.results?.let {
-            preparedResults.addAll(it)
-        }
 
+        preparedResults.addAll(resultsModel.results)
         filterCheckAdapter.updateList(list = preparedResults)
     }
 
@@ -185,8 +183,8 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             if (!item.isChecked) {
                 resetCategories()
             } else {
-                selectedCategoryId = id ?: 0
-                selectedCategoryTitle = title ?: EMPTY_STRING
+                selectedCategoryId = id
+                selectedCategoryTitle = title
                 isCheckedItem = item.isChecked
 
                 setResetTextColor()
@@ -195,7 +193,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             presenter.getClothesResultsByCategory(
                 token = getTokenFromSharedPref(),
                 gender = getCurrentGender(),
-                clothesCategoryId = id ?: 0
+                clothesCategoryId = id
             )
         }
     }
@@ -204,7 +202,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         val bundle = Bundle()
         bundle.putString(CategoryTypeDetailFragment.CLOTHES_GENDER, getCurrentGender())
         bundle.putInt(CategoryTypeDetailFragment.CLOTHES_CATEGORY_ID, selectedCategoryId)
-        bundle.putInt(CategoryTypeDetailFragment.CLOTHES_TYPE_ID, clothesType.id ?: 0)
+        bundle.putInt(CategoryTypeDetailFragment.CLOTHES_TYPE_ID, clothesType.id)
         bundle.putString(CategoryTypeDetailFragment.CLOTHES_CATEGORY_TITLE, selectedCategoryTitle)
 
         findNavController().navigate(
@@ -218,7 +216,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             filterCheckAdapter.onResetChecking()
 
             selectedCategoryId = 0
-            selectedCategoryTitle = clothesType.title ?: EMPTY_STRING
+            selectedCategoryTitle = clothesType.title
             isCheckedItem = false
 
             setResetTextColor()

@@ -12,7 +12,7 @@ import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import javax.inject.Inject
 
 /**
@@ -149,8 +149,8 @@ class ProfilePresenter @Inject constructor(
 
 	private fun getOwnPublications(token: String) {
 		getMyPublicationsUseCase.initParams(token)
-		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PublicationModel>>() {
-			override fun onSuccess(t: ResultsModel<PublicationModel>) {
+		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<PublicationModel>>() {
+			override fun onSuccess(t: ResultsApiModel<PublicationModel>) {
 				view.processViewAction {
 					hideProgress()
 					processMyPublications(t)

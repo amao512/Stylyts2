@@ -1,14 +1,14 @@
 package kz.eztech.stylyts.presentation.presenters.main
 
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.MainLentaModel
+import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.usecases.main.MainLentaUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
-import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
-import kz.eztech.stylyts.domain.models.ResultsModel
 import javax.inject.Inject
 
 /**
@@ -46,8 +46,8 @@ class MainLentaPresenter @Inject constructor(
 		view.displayProgress()
 
 		getMyPublicationsUseCase.initParams(token)
-		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PublicationModel>>() {
-			override fun onSuccess(t: ResultsModel<PublicationModel>) {
+		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<PublicationModel>>() {
+			override fun onSuccess(t: ResultsApiModel<PublicationModel>) {
 				view.processViewAction {
 					hideProgress()
 					processMyPublications(resultsModel = t)
