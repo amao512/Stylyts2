@@ -40,6 +40,10 @@ class FilterDialog(
     private var isOpenedFilter = false
     private var isCheckedItem: Boolean = false
 
+    private var selectedClothesType: Int = 0
+    private var selectedClothesCategory: Int = 0
+    private var selectedClothesBrand: Int = 0
+
     companion object {
         private const val TOKEN_ARGS = "token_args"
 
@@ -78,6 +82,7 @@ class FilterDialog(
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> closeFilterGroup()
+            R.id.toolbar_right_text_text_view -> {}
         }
     }
 
@@ -87,9 +92,9 @@ class FilterDialog(
         item: Any?
     ) {
         when (item) {
-            is FilterModel -> openFilterGroup(position)
-            is ClothesCategoryModel -> {}
-            is ClothesBrandModel -> filterCheckAdapter.onCheckPosition(position)
+            is FilterModel -> openFilterGroup(position, item)
+            is ClothesCategoryModel -> selectClothesCategory(position, item)
+            is ClothesBrandModel -> selectClothesBrand(position, item)
         }
     }
 
@@ -171,18 +176,23 @@ class FilterDialog(
     override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
         resultsModel.results?.let {
             filterCheckAdapter.updateList(list = it)
-            dialog_filter_recycler_view.adapter = filterCheckAdapter
-
-            isOpenedFilter = true
         }
     }
 
-    private fun openFilterGroup(position: Int) {
+    private fun openFilterGroup(
+        position: Int,
+        filterModel: FilterModel
+    ) {
         when (position) {
             0 -> presenter.getClothesTypes(token = getTokenFromArguments())
-            1 -> presenter.getClothesBrands(token = getTokenFromArguments())
+            1 -> {
+                dialog_filter_recycler_view.adapter = filterCheckAdapter
+                presenter.getClothesBrands(token = getTokenFromArguments())
+            }
         }
 
+        dialog_filter_title.hide()
+        toolbar_title_text_view.text = filterModel.title
         toolbar_left_corner_action_image_button.setBackgroundResource(
             R.drawable.ic_baseline_keyboard_arrow_left_24
         )
@@ -193,11 +203,56 @@ class FilterDialog(
         dialog_filter_recycler_view.adapter = filterAdapter
         with (dialog_filter_toolbar) {
             if (isOpenedFilter) {
+                dialog_filter_title.show()
+                toolbar_title_text_view.text = getString(R.string.filter_list_filter)
                 toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_close_24)
+
                 isOpenedFilter = false
             } else {
                 dismiss()
             }
+        }
+    }
+
+    private fun selectClothesCategory(
+        position: Int,
+        category: ClothesCategoryModel
+    ) {
+        category.let {
+            isCheckedItem = it.isChecked
+
+            if (it.isChecked) {
+                selectedClothesCategory = if (position == 0) {
+                    it.clothesType?.id ?: 0
+                } else {
+                    it.id ?: 0
+                }
+
+                selectedClothesType = it.clothesType?.id ?: 0
+            }
+
+            setResetTextColor()
+        }
+    }
+
+    private fun selectClothesBrand(
+        position: Int,
+        brand: ClothesBrandModel
+    ) {
+        filterCheckAdapter.onCheckPosition(position)
+
+        brand.let {
+            isCheckedItem = it.isChecked
+
+            if (it.isChecked) {
+                selectedClothesBrand = if (position == 0) {
+                    position
+                } else {
+                    brand.id ?: 0
+                }
+            }
+
+            setResetTextColor()
         }
     }
 

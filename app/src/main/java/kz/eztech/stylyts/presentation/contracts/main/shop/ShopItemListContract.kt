@@ -21,8 +21,8 @@ interface ShopItemListContract {
 
         fun getClothesResultsByType(
             token: String,
-            typeId: String,
             gender: String,
+            typeId: Int
         )
 
         fun getClothesResultsByCategory(

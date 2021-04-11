@@ -48,38 +48,6 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesByType(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<ResultsModel<ClothesModel>> {
-        return api.getClothesByType(
-            token = token,
-            clothesTypeId = data["type_id"] as String,
-            gender = data["gender_type"] as String
-        ).map {
-            when (it.isSuccessful) {
-                true -> it.body()
-                false -> throw NetworkException(it)
-            }
-        }
-    }
-
-    override fun getClothesByCategory(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<ResultsModel<ClothesModel>> {
-        return api.getClothesByCategory(
-            token = token,
-            gender = data["gender_type"] as String,
-            clothesCategoryId = data["category_id"] as String
-        ).map {
-            when (it.isSuccessful) {
-                true -> it.body()
-                false -> throw NetworkException(it)
-            }
-        }
-    }
-
     override fun getClothesById(
         token: String,
         clothesId: String
@@ -111,6 +79,21 @@ class ClothesRepository @Inject constructor(
         return api.getClothesBrandById(
             token = token,
             brandId = brandId
+        ).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothes(
+        token: String,
+        queryMap: Map<String, String>
+    ): Single<ResultsModel<ClothesModel>> {
+        return api.getClothes(
+            token = token,
+            queryMap = queryMap
         ).map {
             when (it.isSuccessful) {
                 true -> it.body()

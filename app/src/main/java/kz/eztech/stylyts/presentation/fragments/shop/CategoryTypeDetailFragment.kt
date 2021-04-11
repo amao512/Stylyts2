@@ -128,13 +128,13 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             presenter.getClothesByType(
                 token = getTokenFromSharedPref(),
                 gender = gender,
-                typeId = typeId.toString()
+                typeId = typeId
             )
         } else {
             presenter.getCategoryTypeDetail(
                 token = getTokenFromSharedPref(),
                 gender = gender,
-                clothesCategoryId = categoryId.toString()
+                clothesCategoryId = categoryId
             )
         }
     }

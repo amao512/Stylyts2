@@ -18,16 +18,6 @@ interface ClothesDomainRepository {
         typeId: String
     ): Single<ResultsModel<ClothesCategoryModel>>
 
-    fun getClothesByType(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<ResultsModel<ClothesModel>>
-
-    fun getClothesByCategory(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<ResultsModel<ClothesModel>>
-
     fun getClothesById(
         token: String,
         clothesId: String
@@ -39,4 +29,9 @@ interface ClothesDomainRepository {
         token: String,
         brandId: String
     ): Single<ClothesBrandModel>
+
+    fun getClothes(
+        token: String,
+        queryMap: Map<String, String>
+    ): Single<ResultsModel<ClothesModel>>
 }

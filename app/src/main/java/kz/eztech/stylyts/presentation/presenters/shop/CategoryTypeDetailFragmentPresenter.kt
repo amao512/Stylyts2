@@ -6,8 +6,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByTypeUseCase
-import kz.eztech.stylyts.domain.usecases.collection_constructor.GetCategoryTypeDetailUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
 import javax.inject.Inject
@@ -17,17 +16,15 @@ import javax.inject.Inject
  */
 class CategoryTypeDetailFragmentPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
-    private val getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
-    private val getClothesByTypeUseCase: GetClothesByTypeUseCase,
-    private val getClothesBrandsUseCase: GetClothesBrandsUseCase
+    private val getClothesBrandsUseCase: GetClothesBrandsUseCase,
+    private val getClothesUseCase: GetClothesUseCase
 ) : CategoryTypeDetailContract.Presenter {
 
     private lateinit var view: CategoryTypeDetailContract.View
 
     override fun disposeRequests() {
-        getCategoryTypeDetailUseCase.clear()
-        getClothesByTypeUseCase.clear()
         getClothesBrandsUseCase.clear()
+        getClothesUseCase.clear()
     }
 
     override fun attach(view: CategoryTypeDetailContract.View) {
@@ -37,16 +34,17 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
     override fun getCategoryTypeDetail(
         token: String,
         gender: String,
-        clothesCategoryId: String
+        clothesCategoryId: Int
     ) {
         view.displayProgress()
 
-        val data = HashMap<String, Any>()
-        data["category_id"] = clothesCategoryId
-        data["gender_type"] = gender
+        getClothesUseCase.initParams(
+            token = token,
+            gender = gender,
+            clothesCategoryId = clothesCategoryId
+        )
 
-        getCategoryTypeDetailUseCase.initParams(token, data)
-        getCategoryTypeDetailUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+        getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
                     processClothesResults(resultsModel = t)
@@ -65,15 +63,20 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
 
     override fun getClothesByType(
         token: String,
-        typeId: String,
+        typeId: Int,
         gender: String
     ) {
+        getClothesUseCase.initParams(
+            token = token,
+            gender = gender,
+            clothesTypeId = typeId
+        )
+
         val data = HashMap<String, Any>()
         data["type_id"] = typeId
         data["gender_type"] = gender
 
-        getClothesByTypeUseCase.initParams(token, data)
-        getClothesByTypeUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+        getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
                     processClothesResults(resultsModel = t)

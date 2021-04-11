@@ -118,7 +118,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         )
         presenter.getClothesResultsByType(
             token = getTokenFromSharedPref(),
-            typeId = clothesType.id.toString(),
+            typeId = clothesType.id ?: 0,
             gender = getCurrentGender()
         )
     }

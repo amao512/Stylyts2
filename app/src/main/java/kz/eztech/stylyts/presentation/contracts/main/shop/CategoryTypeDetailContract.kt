@@ -20,14 +20,14 @@ interface CategoryTypeDetailContract {
 
         fun getClothesByType(
             token: String,
-            typeId: String,
+            typeId: Int,
             gender: String,
         )
 
         fun getCategoryTypeDetail(
             token: String,
             gender: String,
-            clothesCategoryId: String
+            clothesCategoryId: Int
         )
 
         fun getClothesBrands(

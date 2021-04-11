@@ -10,24 +10,43 @@ import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 
-class GetClothesByTypeUseCase @Inject constructor(
+class GetClothesUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val clothesDomainRepository: ClothesDomainRepository
 ) : BaseUseCase<ResultsModel<ClothesModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var data: HashMap<String, Any>
+    private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
-        return clothesDomainRepository.getClothesByType(token, data)
+        return clothesDomainRepository.getClothes(token, queryMap)
     }
 
     fun initParams(
         token: String,
-        data: HashMap<String, Any>
+        gender: String,
+        clothesTypeId: Int = 0,
+        clothesCategoryId: Int = 0,
+        clothesBrandId: Int = 0
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.data = data
+
+        val queryMap: MutableMap<String, String> = HashMap()
+        queryMap["gender"] = gender
+
+        if (clothesTypeId != 0) {
+            queryMap["clothes_type"] = clothesTypeId.toString()
+        }
+
+        if (clothesCategoryId != 0) {
+            queryMap["clothes_category"] = clothesCategoryId.toString()
+        }
+
+        if (clothesBrandId != 0) {
+            queryMap["clothes_brand"] = clothesBrandId.toString()
+        }
+
+        this.queryMap = queryMap
     }
 }
