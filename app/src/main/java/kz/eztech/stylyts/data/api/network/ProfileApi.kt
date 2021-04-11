@@ -3,7 +3,7 @@ package kz.eztech.stylyts.data.api.network
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -17,7 +17,7 @@ interface ProfileApi {
     @GET(RestConstants.GET_MY_PROFILE)
     fun getMyProfile(
         @Header("Authorization") token: String
-    ): Single<Response<UserModel>>
+    ): Single<Response<UserApiModel>>
 
     @FormUrlEncoded
     @PATCH(RestConstants.EDIT_PROFILE)
@@ -27,20 +27,20 @@ interface ProfileApi {
         @Field("last_name") lastName: String,
         @Field("instagram") instagram: String,
         @Field("web_site") webSite: String
-    ): Single<Response<UserModel>>
+    ): Single<Response<UserApiModel>>
 
     @Multipart
     @PATCH(RestConstants.EDIT_PROFILE)
     fun setProfilePhoto(
         @Header("Authorization") token: String,
         @Part avatar: MultipartBody.Part?
-    ): Single<Response<UserModel>>
+    ): Single<Response<UserApiModel>>
 
     @GET(RestConstants.GET_USER_BY_ID)
     fun getUserProfileById(
         @Header("Authorization") token: String,
         @Path("user_id") userId: String
-    ): Single<Response<UserModel>>
+    ): Single<Response<UserApiModel>>
 
     @GET(RestConstants.GET_MY_POSTS)
     fun getMyCollections(

@@ -5,6 +5,9 @@ import kz.eztech.stylyts.domain.models.OwnerModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
+/**
+ * Created by Asylzhan Seytbek on 11.04.2021.
+ */
 class OwnerApiModelMapper @Inject constructor() {
 
     fun map(data: OwnerApiModel?): OwnerModel {

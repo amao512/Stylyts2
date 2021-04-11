@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.filter
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.profile.FilterModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder

@@ -8,7 +8,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
@@ -124,9 +124,9 @@ class SearchItemFragment(
         fragment_search_item_recycler_view.show()
     }
 
-    override fun processSearch(resultsModel: ResultsApiModel<UserModel>) {
+    override fun processSearch(resultsModel: ResultsApiModel<UserApiModel>) {
         resultsModel.results?.let {
-            val userList: MutableList<UserModel> = mutableListOf()
+            val userList: MutableList<UserApiModel> = mutableListOf()
 
             it.map { user ->
                 if (user.id != currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)) {
@@ -166,7 +166,7 @@ class SearchItemFragment(
         val bundle = Bundle()
 
         when (item) {
-            is UserModel -> {
+            is UserApiModel -> {
                 bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id ?: 0)
                 presenter.saveUserToLocaleDb(user = item)
             }

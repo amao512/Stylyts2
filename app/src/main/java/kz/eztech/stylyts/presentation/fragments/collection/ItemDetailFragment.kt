@@ -14,7 +14,6 @@ import kz.eztech.stylyts.data.db.LocalDataSource
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesColor
 import kz.eztech.stylyts.domain.models.ClothesSize
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
@@ -156,16 +155,6 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         currentClotheId = -2
         currentClothesModel = clothesModel
         initializeViews()
-
-        presenter.getClothesBrand(
-            token = getTokenFromSharedPref(),
-            brandId = currentClothesModel?.clothesBrand?.id.toString()
-        )
-    }
-
-    override fun processClothesBrand(clothesBrandModel: ClothesBrandModel) {
-        include_toolbar_item_detail.toolbar_title_text_view.text = clothesBrandModel.title
-        text_view_fragment_item_detail_brand_name.text = clothesBrandModel.title
     }
 
     override fun processPostInitialization() {}
@@ -188,6 +177,9 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     private fun fillClothesModel(clothesModel: ClothesModel) {
         chooserDialog = ItemDetailChooserDialog()
         chooserDialog.setChoiceListener(this)
+
+        include_toolbar_item_detail.toolbar_title_text_view.text = clothesModel.clothesBrand.title
+        text_view_fragment_item_detail_brand_name.text = clothesModel.clothesBrand.title
 
         val imageArray = ArrayList<String>()
         clothesModel.coverImages.map { image ->

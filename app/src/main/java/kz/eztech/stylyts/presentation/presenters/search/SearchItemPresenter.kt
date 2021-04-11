@@ -5,7 +5,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
@@ -40,8 +40,8 @@ class SearchItemPresenter @Inject constructor(
         username: String
     ) {
         searchUserUseCase.initParams(token, username)
-        searchUserUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<UserModel>>() {
-            override fun onSuccess(t: ResultsApiModel<UserModel>) {
+        searchUserUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<UserApiModel>>() {
+            override fun onSuccess(t: ResultsApiModel<UserApiModel>) {
                 view.processViewAction {
                     hideProgress()
                     processSearch(t)
@@ -77,7 +77,7 @@ class SearchItemPresenter @Inject constructor(
         )
     }
 
-    override fun saveUserToLocaleDb(user: UserModel) {
+    override fun saveUserToLocaleDb(user: UserApiModel) {
         val userSearchEntity = UserSearchEntity(
             id = user.id,
             avatar = user.avatar,

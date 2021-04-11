@@ -1,11 +1,12 @@
 package kz.eztech.stylyts.data.repository.profile
 
 import io.reactivex.Single
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.network.ProfileApi
 import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject
@@ -14,13 +15,14 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class ProfileRepository @Inject constructor(
-    private var api: ProfileApi
+    private var api: ProfileApi,
+    private val userApiModelMapper: UserApiModelMapper
 ) : ProfileDomainRepository {
 
     override fun getUserProfile(token: String): Single<UserModel> {
         return api.getMyProfile(token).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> userApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }
@@ -38,7 +40,7 @@ class ProfileRepository @Inject constructor(
             webSite = data["web_site"] as String
         ).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> userApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }
@@ -53,7 +55,7 @@ class ProfileRepository @Inject constructor(
             avatar = avatar
         ).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> userApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }
@@ -68,7 +70,7 @@ class ProfileRepository @Inject constructor(
             userId = userId
         ).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> userApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }

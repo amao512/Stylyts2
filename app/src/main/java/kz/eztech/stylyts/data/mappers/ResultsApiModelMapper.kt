@@ -19,6 +19,9 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import javax.inject.Inject
 
+/**
+ * Created by Asylzhan Seytbek on 11.04.2021.
+ */
 class ResultsApiModelMapper @Inject constructor(
     private val clothesApiModelMapper: ClothesApiModelMapper,
     private val clothesCategoryApiModelMapper: ClothesCategoryApiModelMapper,

@@ -3,16 +3,16 @@ package kz.eztech.stylyts.presentation.presenters.profile
 import android.app.Application
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileByIdUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
-import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import javax.inject.Inject
 
 /**

@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.filter
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.profile.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 

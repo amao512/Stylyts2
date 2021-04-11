@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.domain.models
+package kz.eztech.stylyts.data.api.models.user
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by Ruslan Erdenoff on 24.12.2020.
  */
-data class UserModel(
+data class UserApiModel(
 	@SerializedName("id")
 	@Expose
 	val id: Int?,

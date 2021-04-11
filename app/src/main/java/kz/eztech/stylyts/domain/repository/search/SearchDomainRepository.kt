@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.domain.repository.search
 
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 
 /**
@@ -12,5 +12,5 @@ interface SearchDomainRepository {
     fun getUserByUsername(
         token: String,
         username: String
-    ): Single<ResultsApiModel<UserModel>>
+    ): Single<ResultsApiModel<UserApiModel>>
 }

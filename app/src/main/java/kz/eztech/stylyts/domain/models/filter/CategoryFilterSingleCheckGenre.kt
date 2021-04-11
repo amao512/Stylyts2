@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.domain.models.profile
+package kz.eztech.stylyts.domain.models.filter
 
 import android.os.Parcel
 import android.os.Parcelable

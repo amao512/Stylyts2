@@ -7,7 +7,7 @@ import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.profile.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.presentation.adapters.filter.holders.CategoryExpandableViewHolder
 import kz.eztech.stylyts.presentation.adapters.filter.holders.CategoryItemExpandableViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener

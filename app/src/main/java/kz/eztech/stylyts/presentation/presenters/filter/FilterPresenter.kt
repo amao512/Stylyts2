@@ -7,7 +7,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.profile.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase

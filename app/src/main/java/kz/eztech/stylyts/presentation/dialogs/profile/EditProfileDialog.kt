@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.EditProfileContract
@@ -41,8 +41,10 @@ class EditProfileDialog(
     private val editorListener: EditorListener
 ) : DialogFragment(), EditProfileContract.View, View.OnClickListener, UniversalViewClickListener {
 
-    @Inject lateinit var presenter: EditProfilePresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
+    @Inject
+    lateinit var presenter: EditProfilePresenter
+    @Inject
+    lateinit var imageLoader: DomainImageLoader
 
     private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
     private lateinit var cameraResultLaunch: ActivityResultLauncher<Intent>
@@ -130,17 +132,19 @@ class EditProfileDialog(
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        galleryResultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                setProfileImage(uri = result.data?.data)
+        galleryResultLaunch =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    setProfileImage(uri = result.data?.data)
+                }
             }
-        }
 
-        cameraResultLaunch = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK) {
-                setProfileImageByBitmap(bitmap = result.data?.extras?.get("data") as? Bitmap)
+        cameraResultLaunch =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    setProfileImageByBitmap(bitmap = result.data?.extras?.get("data") as? Bitmap)
+                }
             }
-        }
     }
 
     override fun initializeViews() {}
@@ -172,27 +176,25 @@ class EditProfileDialog(
     override fun hideProgress() {}
 
     override fun processUserModel(userModel: UserModel) {
-        userModel.let { user ->
-            edit_text_dialog_edit_profile_name.setText(
-                FULL_NAME_TEXT_FORMAT.format(user.firstName, user.lastName)
+        edit_text_dialog_edit_profile_name.setText(
+            FULL_NAME_TEXT_FORMAT.format(userModel.firstName, userModel.lastName)
+        )
+        edit_text_dialog_edit_profile_username.setText(userModel.username)
+        edit_text_dialog_edit_profile_insta.setText(userModel.instagram)
+        edit_text_dialog_edit_profile_site.setText(userModel.webSite)
+
+        if (userModel.avatar.isBlank()) {
+            text_view_fragment_profile_edit_user_short_name.text = getShortName(
+                firstName = userModel.firstName,
+                lastName = userModel.lastName
             )
-            edit_text_dialog_edit_profile_username.setText(user.username)
-            edit_text_dialog_edit_profile_insta.setText(user.instagram)
-            edit_text_dialog_edit_profile_site.setText(user.webSite)
+        } else {
+            text_view_fragment_profile_edit_user_short_name.hide()
+            imageLoader.load(
+                url = userModel.avatar,
+                target = shapeable_image_view_fragment_profile_avatar
+            )
 
-            user.avatar?.let {
-                text_view_fragment_profile_edit_user_short_name.hide()
-
-                imageLoader.load(
-                    url = it,
-                    target = shapeable_image_view_fragment_profile_avatar
-                )
-            } ?: run {
-                text_view_fragment_profile_edit_user_short_name.text = getShortName(
-                    firstName = user.firstName,
-                    lastName = user.lastName
-                )
-            }
         }
     }
 
@@ -338,9 +340,13 @@ class EditProfileDialog(
         }
     }
 
-    private fun getTokenFromArguments(): String = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
+    private fun getTokenFromArguments(): String =
+        arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
 
     private fun allPermissionsGranted() = permissions.all {
-        ContextCompat.checkSelfPermission(activity as MainActivity, it) == PackageManager.PERMISSION_GRANTED
+        ContextCompat.checkSelfPermission(
+            activity as MainActivity,
+            it
+        ) == PackageManager.PERMISSION_GRANTED
     }
 }

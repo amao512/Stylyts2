@@ -16,8 +16,8 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.profile.CategoryFilterSingleCheckGenre
-import kz.eztech.stylyts.domain.models.profile.FilterModel
+import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.adapters.filter.CategoryFilterExpandableAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter

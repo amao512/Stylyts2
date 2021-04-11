@@ -5,7 +5,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_user_info.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
@@ -26,7 +26,7 @@ class UserSearchHolder(
     ) {
         with(itemView) {
             when (item) {
-                is UserModel -> {
+                is UserApiModel -> {
                     displayAvatar(
                         avatar = item.avatar,
                         name = item.firstName,

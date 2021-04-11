@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.contracts.collection
 
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -13,8 +12,6 @@ interface ItemDetailContract {
     interface View : BaseView {
 
         fun processClothes(clothesModel: ClothesModel)
-
-        fun processClothesBrand(clothesBrandModel: ClothesBrandModel)
     }
 
     interface Presenter : BasePresenter<View> {
@@ -22,11 +19,6 @@ interface ItemDetailContract {
         fun getClothesById(
             token: String,
             clothesId: String
-        )
-
-        fun getClothesBrand(
-            token: String,
-            brandId: String
         )
 
         fun getItemByBarcode(

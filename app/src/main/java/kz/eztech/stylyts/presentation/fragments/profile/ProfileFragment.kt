@@ -8,12 +8,12 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
@@ -23,9 +23,9 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
+import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
-import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
@@ -180,11 +180,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun processProfile(userModel: UserModel) {
         userModel.run {
-            userId = id ?: 0
-            currentName = firstName ?: EMPTY_STRING
-            currentNickname = username ?: EMPTY_STRING
-            currentSurname = lastName ?: EMPTY_STRING
-            currentGender = gender ?: "M"
+            userId = id
+            currentName = firstName
+            currentNickname = username
+            currentSurname = lastName
+            currentGender = gender
         }
 
         fillProfileInfo(userModel = userModel)
@@ -195,8 +195,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         adapterFilter.updateList(filterList)
     }
 
-    override fun processMyPublications(resultsApiModel: ResultsApiModel<PublicationModel>) {
-        resultsApiModel.results?.let {
+    override fun processMyPublications(resultsModel: ResultsApiModel<PublicationModel>) {
+        resultsModel.results?.let {
             gridAdapter.updateList(it)
         }
     }
@@ -283,17 +283,19 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun loadProfilePhoto(userModel: UserModel) {
-        userModel.avatar?.let {
-            text_view_fragment_profile_user_short_name.hide()
-
-            imageLoader.load(
-                url = it,
-                target = shapeable_image_view_fragment_profile_avatar
-            )
-        } ?: run {
+        if (userModel.avatar.isBlank()) {
             shapeable_image_view_fragment_profile_avatar.hide()
             text_view_fragment_profile_user_short_name.show()
-            text_view_fragment_profile_user_short_name.text = getShortName(userModel.firstName, userModel.lastName)
+            text_view_fragment_profile_user_short_name.text = getShortName(
+                firstName = userModel.firstName,
+                lastName = userModel.lastName
+            )
+        } else {
+            text_view_fragment_profile_user_short_name.hide()
+            imageLoader.load(
+                url = userModel.avatar,
+                target = shapeable_image_view_fragment_profile_avatar
+            )
         }
     }
 

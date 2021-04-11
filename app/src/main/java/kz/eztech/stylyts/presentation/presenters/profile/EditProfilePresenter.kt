@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.profile
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.UserModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.profile.ChangeProfilePhotoUseCase
 import kz.eztech.stylyts.domain.usecases.profile.EditProfileUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
