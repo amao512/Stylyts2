@@ -5,11 +5,13 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.profile.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -19,7 +21,8 @@ class FilterPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getClothesTypesUseCase: GetClothesTypesUseCase,
     private val getClothesCategoriesByTypeUseCase: GetClothesCategoriesByTypeUseCase,
-    private val getClothesBrandsUseCase: GetClothesBrandsUseCase
+    private val getClothesBrandsUseCase: GetClothesBrandsUseCase,
+    private val getClothesUseCase: GetClothesUseCase
 ) : FilterContract.Presenter {
 
     private lateinit var view: FilterContract.View
@@ -28,6 +31,7 @@ class FilterPresenter @Inject constructor(
         getClothesTypesUseCase.clear()
         getClothesCategoriesByTypeUseCase.clear()
         getClothesBrandsUseCase.clear()
+        getClothesUseCase.clear()
     }
 
     override fun attach(view: FilterContract.View) {
@@ -67,6 +71,35 @@ class FilterPresenter @Inject constructor(
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
                 view.processViewAction {
                     processClothesBrands(resultsModel = t)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
+
+    override fun getClothesResults(
+        token: String,
+        gender: String,
+        clothesTypeId: Int,
+        clothesCategoryId: Int,
+        clothesBrandId: Int
+    ) {
+        getClothesUseCase.initParams(
+            token = token,
+            gender = gender,
+            clothesTypeId = clothesTypeId,
+            clothesCategoryId = clothesCategoryId,
+            clothesBrandId = clothesBrandId
+        )
+        getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesModel>) {
+                view.processViewAction {
+                    processClothesResults(resultsModel = t)
                 }
             }
 

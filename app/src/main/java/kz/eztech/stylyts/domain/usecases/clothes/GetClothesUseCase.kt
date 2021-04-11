@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.domain.usecases.clothes
 
+import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
@@ -20,6 +21,8 @@ class GetClothesUseCase @Inject constructor(
     private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
+        Log.d("TAG", queryMap.toString())
+
         return clothesDomainRepository.getClothes(token, queryMap)
     }
 
@@ -44,7 +47,7 @@ class GetClothesUseCase @Inject constructor(
         }
 
         if (clothesBrandId != 0) {
-            queryMap["clothes_brand"] = clothesBrandId.toString()
+            queryMap["brand"] = clothesBrandId.toString()
         }
 
         this.queryMap = queryMap

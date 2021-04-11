@@ -16,14 +16,12 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 import javax.inject.Inject
 
-
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class CollectionConstructorPresenter @Inject constructor(
 	private var errorHelper: ErrorHelper,
 	private var getCategoryUseCase: GetCategoryUseCase,
-	private var getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase,
 	private var getStylesUseCase: GetStylesUseCase,
 	private var getFilteredItemsUseCase: GetFilteredItemsUseCase,
 	private var saveCollectionConstructor: SaveCollectionConstructor,
@@ -35,7 +33,6 @@ class CollectionConstructorPresenter @Inject constructor(
 
 	override fun disposeRequests() {
 		getCategoryUseCase.clear()
-		getCategoryTypeDetailUseCase.clear()
 		getStylesUseCase.clear()
 		saveCollectionConstructor.clear()
 		getFilteredItemsUseCase.clear()

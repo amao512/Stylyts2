@@ -217,7 +217,8 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         if (position == 0) {
             FilterDialog.getNewInstance(
                 token = getTokenFromSharedPref(),
-                itemClickListener = this
+                itemClickListener = this,
+                gender = gender
             ).show(childFragmentManager, EMPTY_STRING)
         } else brandsFilterAdapter.onChooseItem(position)
     }

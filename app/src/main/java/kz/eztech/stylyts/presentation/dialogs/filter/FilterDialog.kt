@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.dialogs.filter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.profile.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.profile.FilterModel
 import kz.eztech.stylyts.presentation.adapters.filter.CategoryFilterExpandableAdapter
@@ -29,7 +31,8 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class FilterDialog(
-    private val itemClickListener: UniversalViewClickListener
+    private val itemClickListener: UniversalViewClickListener,
+    private val currentGender: String
 ) : DialogFragment(), FilterContract.View, View.OnClickListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: FilterPresenter
@@ -49,9 +52,10 @@ class FilterDialog(
 
         fun getNewInstance(
             token: String,
-            itemClickListener: UniversalViewClickListener
+            itemClickListener: UniversalViewClickListener,
+            gender: String
         ): FilterDialog {
-            val filterDialog = FilterDialog(itemClickListener)
+            val filterDialog = FilterDialog(itemClickListener, gender)
             val bundle = Bundle()
 
             bundle.putString(TOKEN_ARGS, token)
@@ -77,6 +81,7 @@ class FilterDialog(
         customizeActionBar()
         initializeViews()
         initializeListeners()
+        processPostInitialization()
     }
 
     override fun onClick(v: View?) {
@@ -93,7 +98,7 @@ class FilterDialog(
     ) {
         when (item) {
             is FilterModel -> openFilterGroup(position, item)
-            is ClothesCategoryModel -> selectClothesCategory(position, item)
+            is ClothesCategoryModel -> selectClothesCategory(view, position, item)
             is ClothesBrandModel -> selectClothesBrand(position, item)
         }
     }
@@ -144,7 +149,9 @@ class FilterDialog(
         toolbar_left_corner_action_image_button.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        getFilterResults()
+    }
 
     override fun disposeRequests() {}
 
@@ -176,6 +183,15 @@ class FilterDialog(
     override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
         resultsModel.results?.let {
             filterCheckAdapter.updateList(list = it)
+        }
+    }
+
+    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
+        resultsModel.totalCount?.let { count ->
+            fragment_category_shop_results_button.text = getString(
+                R.string.button_show_results,
+                count.toString()
+            )
         }
     }
 
@@ -215,45 +231,56 @@ class FilterDialog(
     }
 
     private fun selectClothesCategory(
+        view: View,
         position: Int,
         category: ClothesCategoryModel
     ) {
-        category.let {
-            isCheckedItem = it.isChecked
+        isCheckedItem = !category.isChecked
 
-            if (it.isChecked) {
-                selectedClothesCategory = if (position == 0) {
-                    it.clothesType?.id ?: 0
-                } else {
-                    it.id ?: 0
-                }
-
-                selectedClothesType = it.clothesType?.id ?: 0
+        if (!category.isChecked) {
+            selectedClothesCategory = when (position) {
+                0 -> position
+                else -> category.id ?: 0
             }
 
-            setResetTextColor()
+            selectedClothesType = category.clothesType?.id ?: 0
         }
+
+        categoryFilterExpandableAdapter.onChildCheckChanged(view, !category.isChecked, position)
+        getFilterResults()
+        setResetTextColor()
     }
 
     private fun selectClothesBrand(
         position: Int,
         brand: ClothesBrandModel
     ) {
-        filterCheckAdapter.onCheckPosition(position)
+        isCheckedItem = !brand.isChecked
 
-        brand.let {
-            isCheckedItem = it.isChecked
-
-            if (it.isChecked) {
-                selectedClothesBrand = if (position == 0) {
-                    position
-                } else {
-                    brand.id ?: 0
+        if (!brand.isChecked) {
+            brand.id?.let {
+                selectedClothesBrand = when (position) {
+                    0 -> position
+                    else -> it
                 }
             }
-
-            setResetTextColor()
         }
+
+        filterCheckAdapter.onCheckPosition(position)
+        getFilterResults()
+        setResetTextColor()
+    }
+
+    private fun getFilterResults() {
+        Log.d("TAG", "brand - $selectedClothesBrand")
+
+        presenter.getClothesResults(
+            token = getTokenFromArguments(),
+            gender = currentGender,
+            clothesCategoryId = selectedClothesCategory,
+            clothesTypeId = selectedClothesType,
+            clothesBrandId = selectedClothesBrand
+        )
     }
 
     private fun getFilterList(): List<FilterModel> {

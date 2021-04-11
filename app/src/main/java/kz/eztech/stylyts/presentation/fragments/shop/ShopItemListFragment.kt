@@ -195,7 +195,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             presenter.getClothesResultsByCategory(
                 token = getTokenFromSharedPref(),
                 gender = getCurrentGender(),
-                clothesCategoryId = id.toString()
+                clothesCategoryId = id ?: 0
             )
         }
     }

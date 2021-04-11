@@ -7,7 +7,6 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
-import kz.eztech.stylyts.domain.usecases.collection_constructor.GetCategoryTypeDetailUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
 import javax.inject.Inject
@@ -18,8 +17,7 @@ import javax.inject.Inject
 class ShopItemListPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getClothesUseCase: GetClothesUseCase,
-    private val getClothesCategoriesByTypeUseCase: GetClothesCategoriesByTypeUseCase,
-    private var getCategoryTypeDetailUseCase: GetCategoryTypeDetailUseCase
+    private val getClothesCategoriesByTypeUseCase: GetClothesCategoriesByTypeUseCase
 ) : ShopItemListContract.Presenter {
 
     private lateinit var view: ShopItemListContract.View
@@ -27,7 +25,6 @@ class ShopItemListPresenter @Inject constructor(
     override fun disposeRequests() {
         getClothesUseCase.clear()
         getClothesCategoriesByTypeUseCase.clear()
-        getCategoryTypeDetailUseCase.clear()
     }
 
     override fun attach(view: ShopItemListContract.View) {
@@ -83,14 +80,14 @@ class ShopItemListPresenter @Inject constructor(
     override fun getClothesResultsByCategory(
         token: String,
         gender: String,
-        clothesCategoryId: String
+        clothesCategoryId: Int
     ) {
-        val data = HashMap<String, Any>()
-        data["category_id"] = clothesCategoryId
-        data["gender_type"] = gender
-
-        getCategoryTypeDetailUseCase.initParams(token, data)
-        getCategoryTypeDetailUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+        getClothesUseCase.initParams(
+            token = token,
+            gender = gender,
+            clothesCategoryId = clothesCategoryId
+        )
+        getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processClothesResults(resultsModel = t)
             }

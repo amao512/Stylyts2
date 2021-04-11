@@ -50,6 +50,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var currentName = EMPTY_STRING
     private var currentNickname = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
+    private var currentGender = EMPTY_STRING
     private var chosenFilterPosition = 1
 
     companion object {
@@ -183,6 +184,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             currentName = firstName ?: EMPTY_STRING
             currentNickname = username ?: EMPTY_STRING
             currentSurname = lastName ?: EMPTY_STRING
+            currentGender = gender ?: "M"
         }
 
         fillProfileInfo(userModel = userModel)
@@ -303,7 +305,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         when (position) {
             0 -> FilterDialog.getNewInstance(
                 token = getTokenFromSharedPref(),
-                itemClickListener = this
+                itemClickListener = this,
+                gender = currentGender
             ).show(childFragmentManager, EMPTY_STRING)
             1 -> {
                 presenter.getPublications(
