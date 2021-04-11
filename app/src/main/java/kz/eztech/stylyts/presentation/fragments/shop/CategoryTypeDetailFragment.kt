@@ -155,14 +155,14 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
         with (include_toolbar_profile) {
-            resultsModel.count?.let { count ->
+            resultsModel.totalCount?.let { count ->
                 base_toolbar_small_title_sub_text_view.text = getString(
                     if (count == 1) {
                         R.string.toolbar_position_text_format
                     } else {
                         R.string.toolbar_positions_text_format
                     },
-                    resultsModel.count.toString()
+                    count.toString()
                 )
             }
         }

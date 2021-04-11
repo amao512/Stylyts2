@@ -159,7 +159,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
         presenter.getClothesBrand(
             token = getTokenFromSharedPref(),
-            brandId = currentClothesModel?.clothesBrand.toString()
+            brandId = currentClothesModel?.clothesBrand?.id.toString()
         )
     }
 

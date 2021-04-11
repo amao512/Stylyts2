@@ -4,15 +4,18 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class ResultsModel<T>(
-    @SerializedName("count")
+    @SerializedName("page")
     @Expose
-    val count: Int?,
-    @SerializedName("next")
+    val page: Int?,
+    @SerializedName("total_pages")
     @Expose
-    val next: Int?,
-    @SerializedName("previous")
+    val totalPages: Int?,
+    @SerializedName("page_size")
     @Expose
-    val previous: Int?,
+    val pageSize: Int?,
+    @SerializedName("total_count")
+    @Expose
+    val totalCount: Int?,
     @SerializedName("results")
     @Expose
     val results: List<T>?

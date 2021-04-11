@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import kz.eztech.stylyts.domain.models.OwnerModel
 
 @Parcelize
 data class ClothesModel(
@@ -12,10 +13,10 @@ data class ClothesModel(
     val id: Int?,
     @SerializedName("clothes_style")
     @Expose
-    val clothesStyle: String?,
+    val clothesStyle: ClothesStyleModel?,
     @SerializedName("clothes_category")
     @Expose
-    val clothesCategory: String?,
+    val clothesCategory: ClothesCategoryModel?,
     @SerializedName("constructor_image")
     @Expose
     val constructorImage: String?,
@@ -57,8 +58,8 @@ data class ClothesModel(
     val modifiedAt: String?,
     @SerializedName("owner")
     @Expose
-    val owner: Int?,
+    val owner: OwnerModel?,
     @SerializedName("clothes_brand")
     @Expose
-    val clothesBrand: Int?,
+    val clothesBrand: ClothesBrandModel?,
 ) : Parcelable

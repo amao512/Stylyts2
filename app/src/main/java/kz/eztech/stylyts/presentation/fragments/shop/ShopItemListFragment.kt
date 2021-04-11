@@ -163,7 +163,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
         fragment_category_shop_results_button.text = getString(
             R.string.button_show_results,
-            resultsModel.count.toString()
+            resultsModel.totalCount.toString()
         )
     }
 

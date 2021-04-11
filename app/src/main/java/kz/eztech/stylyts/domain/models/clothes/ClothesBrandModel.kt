@@ -1,8 +1,12 @@
 package kz.eztech.stylyts.domain.models.clothes
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class ClothesBrandModel(
     @SerializedName("id")
     @Expose
@@ -22,6 +26,7 @@ data class ClothesBrandModel(
     @SerializedName("modified_at")
     @Expose
     val modifiedAt: String?
-) {
+) : Parcelable {
+    @IgnoredOnParcel
     var isChecked: Boolean = false
 }
