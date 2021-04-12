@@ -17,7 +17,7 @@ data class ClothesModel(
     val description: String,
     val gender: String,
     val cost: Int,
-    val saleCost: Int,
+    val salePrice: Int,
     val currency: String,
     val productCode: String,
     val createdAt: String,

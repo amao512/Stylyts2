@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.animation.ObjectAnimator
+import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat.getColor
@@ -199,6 +200,17 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             NumberFormat.getInstance().format(clothesModel.cost),
             clothesModel.currency
         )
+
+        if (clothesModel.salePrice != 0) {
+            text_view_fragment_item_detail_item_price.apply {
+                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
+            fragment_item_details_sale_price_text_view.text = SPACE_TEXT_FORMAT.format(
+                NumberFormat.getInstance().format(clothesModel.salePrice),
+                clothesModel.currency
+            )
+            fragment_item_details_sale_price_text_view.show()
+        }
 
         text_view_fragment_item_detail_description.text = clothesModel.description
     }

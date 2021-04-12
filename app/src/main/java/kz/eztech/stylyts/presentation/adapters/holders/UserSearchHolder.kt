@@ -88,17 +88,22 @@ class UserSearchHolder(
     ) {
         with(itemView) {
             avatar?.let {
-                item_user_info_user_avatar_shapeable_image_view.show()
-                item_user_info_user_short_name_text_view.hide()
+                if (it.isBlank()) {
+                    item_user_info_user_avatar_shapeable_image_view.hide()
+                    item_user_info_user_short_name_text_view.show()
+                    item_user_info_user_short_name_text_view.text = getShortName(firstName, lastName)
+                } else {
+                    item_user_info_user_avatar_shapeable_image_view.show()
+                    item_user_info_user_short_name_text_view.hide()
 
-                Glide.with(context)
-                    .load(it)
-                    .centerCrop()
-                    .into(item_user_info_user_avatar_shapeable_image_view)
+                    Glide.with(context)
+                        .load(it)
+                        .centerCrop()
+                        .into(item_user_info_user_avatar_shapeable_image_view)
+                }
             } ?: run {
                 item_user_info_user_avatar_shapeable_image_view.hide()
                 item_user_info_user_short_name_text_view.show()
-
                 item_user_info_user_short_name_text_view.text = getShortName(firstName, lastName)
             }
         }

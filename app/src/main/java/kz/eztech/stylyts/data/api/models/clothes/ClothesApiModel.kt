@@ -38,9 +38,9 @@ data class ClothesApiModel(
     @SerializedName("cost")
     @Expose
     val cost: Int?,
-    @SerializedName("sale_cost")
+    @SerializedName("sale_price")
     @Expose
-    val saleCost: Int?,
+    val salePrice: Int?,
     @SerializedName("currency")
     @Expose
     val currency: String?,
