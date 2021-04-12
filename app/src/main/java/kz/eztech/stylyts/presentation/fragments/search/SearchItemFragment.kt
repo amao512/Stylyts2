@@ -3,6 +3,8 @@ package kz.eztech.stylyts.presentation.fragments.search
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_search_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -209,12 +211,18 @@ class SearchItemFragment(
     }
 
     private fun initializeAdapter() {
-        fragment_search_item_recycler_view.adapter = when (position) {
-            USERS_POSITION -> when (isHistory) {
-                true -> userSearchHistoryAdapter
-                false -> userSearchAdapter
+        when (position) {
+            USERS_POSITION -> {
+                fragment_search_item_recycler_view.layoutManager = LinearLayoutManager(requireContext())
+                fragment_search_item_recycler_view.adapter = when (isHistory) {
+                    true -> userSearchHistoryAdapter
+                    false -> userSearchAdapter
+                }
             }
-            else -> clothesAdapter
+            else -> {
+                fragment_search_item_recycler_view.layoutManager = GridLayoutManager(requireContext(), 2)
+                fragment_search_item_recycler_view.adapter = clothesAdapter
+            }
         }
     }
 

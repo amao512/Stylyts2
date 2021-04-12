@@ -51,6 +51,7 @@ interface ClothesApi {
     @GET(RestConstants.GET_CLOTHES)
     fun getClothes(
         @Header("Authorization") token: String,
-        @QueryMap(encoded = true) queryMap: Map<String, String>
+        @QueryMap(encoded = true) stringQueryMap: Map<String, String>,
+        @QueryMap(encoded = true) booleanQueryMap: Map<String, Boolean>
     ): Single<Response<ResultsApiModel<ClothesApiModel>>>
 }

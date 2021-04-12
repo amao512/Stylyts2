@@ -8,9 +8,11 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.profile.*
 import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase
 import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
@@ -32,7 +34,8 @@ class ProfilePresenter @Inject constructor(
     private val getFollowersUseCase: GetFollowersUseCase,
     private val getFollowingsUseCase: GetFollowingsUseCase,
 	private val followUserUseCase: FollowUserUseCase,
-	private val unfollowUserUseCase: UnfollowUserUseCase
+	private val unfollowUserUseCase: UnfollowUserUseCase,
+	private val getClothesUseCase: GetClothesUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View
@@ -78,14 +81,20 @@ class ProfilePresenter @Inject constructor(
 		filterList.add(
             CollectionFilterModel(
 				id = 2,
-				name = application.getString(R.string.filter_list_publishes),
-				isChosen = true
+				name = application.getString(R.string.filter_list_publishes)
 			)
         )
 		filterList.add(CollectionFilterModel(id = 3, name = application.getString(R.string.filter_list_photo_outfits)))
-		filterList.add(CollectionFilterModel(id = 4, name = application.getString(R.string.filter_list_wardrobe)))
 
 		if (isOwnProfile) {
+			filterList.add(
+				CollectionFilterModel(
+					id = 4,
+					name = application.getString(R.string.filter_list_wardrobe),
+					isChosen = true
+				)
+			)
+
 			filterList.add(
 				CollectionFilterModel(
 					id = 5,
@@ -178,6 +187,27 @@ class ProfilePresenter @Inject constructor(
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					processSuccessUnfollowing()
+				}
+			}
+		})
+	}
+
+	override fun getWardrobe(token: String) {
+		getClothesUseCase.initParams(
+			token = token,
+			gender = "M",
+			isMyWardrobe = true
+		)
+		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+			override fun onSuccess(t: ResultsModel<ClothesModel>) {
+				view.processViewAction {
+					processWardrobeResults(resultsModel = t)
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(msg = errorHelper.processError(e))
 				}
 			}
 		})

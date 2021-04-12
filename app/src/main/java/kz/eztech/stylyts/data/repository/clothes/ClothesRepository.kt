@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.data.repository.clothes
 
+import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.ClothesApi
 import kz.eztech.stylyts.data.exception.NetworkException
@@ -95,11 +96,13 @@ class ClothesRepository @Inject constructor(
 
     override fun getClothes(
         token: String,
-        queryMap: Map<String, String>
+        stringQueryMap: Map<String, String>,
+        booleanQueryMap: Map<String, Boolean>
     ): Single<ResultsModel<ClothesModel>> {
         return api.getClothes(
             token = token,
-            queryMap = queryMap
+            stringQueryMap = stringQueryMap,
+            booleanQueryMap = booleanQueryMap
         ).map {
             when (it.isSuccessful) {
                 true -> resultsApiModelMapper.mapClothesResults(data = it.body())

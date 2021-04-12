@@ -4,6 +4,7 @@ import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -36,6 +37,8 @@ interface ProfileContract {
         fun processSuccessFollowing(followSuccessModel: FollowSuccessModel)
 
         fun processSuccessUnfollowing()
+
+        fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>)
     }
 
     interface Presenter : BasePresenter<View> {
@@ -71,5 +74,7 @@ interface ProfileContract {
             token: String,
             userId: Int
         )
+
+        fun getWardrobe(token: String)
     }
 }

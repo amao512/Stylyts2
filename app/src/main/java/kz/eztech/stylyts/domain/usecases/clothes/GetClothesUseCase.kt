@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.domain.usecases.clothes
 
-import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
@@ -18,12 +17,15 @@ class GetClothesUseCase @Inject constructor(
 ) : BaseUseCase<ResultsModel<ClothesModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var queryMap: Map<String, String>
+    private lateinit var stringQueryMap: Map<String, String>
+    private lateinit var booleanQueryMap: Map<String, Boolean>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
-        Log.d("TAG", queryMap.toString())
-
-        return clothesDomainRepository.getClothes(token, queryMap)
+        return clothesDomainRepository.getClothes(
+            token = token,
+            stringQueryMap = stringQueryMap,
+            booleanQueryMap = booleanQueryMap
+        )
     }
 
     fun initParams(
@@ -31,25 +33,33 @@ class GetClothesUseCase @Inject constructor(
         gender: String,
         clothesTypeId: Int = 0,
         clothesCategoryId: Int = 0,
-        clothesBrandId: Int = 0
+        clothesBrandId: Int = 0,
+        isMyWardrobe: Boolean = false
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
-        val queryMap: MutableMap<String, String> = HashMap()
-        queryMap["gender"] = gender
+        val stringQueryMap: MutableMap<String, String> = HashMap()
+        val booleanQueryMap: MutableMap<String, Boolean> = HashMap()
+
+        stringQueryMap["gender"] = gender
 
         if (clothesTypeId != 0) {
-            queryMap["clothes_type"] = clothesTypeId.toString()
+            stringQueryMap["clothes_type"] = clothesTypeId.toString()
         }
 
         if (clothesCategoryId != 0) {
-            queryMap["clothes_category"] = clothesCategoryId.toString()
+            stringQueryMap["clothes_category"] = clothesCategoryId.toString()
         }
 
         if (clothesBrandId != 0) {
-            queryMap["brand"] = clothesBrandId.toString()
+            stringQueryMap["brand"] = clothesBrandId.toString()
         }
 
-        this.queryMap = queryMap
+        if (isMyWardrobe) {
+            booleanQueryMap["in_my_wardrobe"] = isMyWardrobe
+        }
+
+        this.stringQueryMap = stringQueryMap
+        this.booleanQueryMap = booleanQueryMap
     }
 }

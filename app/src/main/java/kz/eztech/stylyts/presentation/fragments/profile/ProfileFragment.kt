@@ -15,11 +15,13 @@ import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
+import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -31,6 +33,7 @@ import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
+import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
@@ -48,6 +51,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
+    private lateinit var wardrobeAdapter: ClothesDetailAdapter
 
     private var isOwnProfile: Boolean = true
     private var userId: Int = 0
@@ -57,7 +61,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var currentUsername = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
     private var currentGender = EMPTY_STRING
-    private var chosenFilterPosition = 1
+    private var chosenFilterPosition = 3
 
     companion object {
         const val USER_ID_BUNDLE_KEY = "user_id"
@@ -107,6 +111,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun initializeViewsData() {
         adapterFilter = CollectionsFilterAdapter()
         gridAdapter = GridImageAdapter()
+
+        wardrobeAdapter = ClothesDetailAdapter()
+        wardrobeAdapter.itemClickListener = this
     }
 
     override fun initializeViews() {
@@ -149,10 +156,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         )
 
         when (chosenFilterPosition) {
-            1 -> presenter.getPublications(
-                token = getTokenFromSharedPref(),
-                isOwnProfile = isOwnProfile
-            )
+            3 -> presenter.getWardrobe(token = getTokenFromSharedPref())
         }
     }
 
@@ -230,12 +234,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.frame_layout_fragment_profile_my_addresses -> {
                 findNavController().navigate(R.id.action_profileFragment_to_addressProfileFragment)
             }
-            R.id.fragment_profile_edit_text_view -> {
-                EditProfileDialog.getNewInstance(
-                    token = getTokenFromSharedPref(),
-                    editorListener = this
-                ).show(childFragmentManager, "Cart")
-            }
+            R.id.fragment_profile_edit_text_view -> EditProfileDialog.getNewInstance(
+                token = getTokenFromSharedPref(),
+                editorListener = this
+            ).show(childFragmentManager, "Cart")
             R.id.frame_layout_fragment_profile_cards -> {
                 findNavController().navigate(R.id.action_profileFragment_to_cardFragment)
             }
@@ -274,10 +276,15 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    override fun onViewClicked(view: View, position: Int, item: Any?) {
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
         when (view.id) {
             R.id.frame_layout_item_collection_filter -> onFilterClick(position)
-            R.id.shapeable_image_view_item_collection_image -> onCollectionClick(item)
+            R.id.shapeable_image_view_item_collection_image -> onCollectionItemClick(item)
+            R.id.item_clothes_detail_linear_layout -> onWardrobeItemClick(item)
         }
     }
 
@@ -350,6 +357,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
+    override fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>) {
+        wardrobeAdapter.updateList(list = resultsModel.results)
+        recycler_view_fragment_profile_items_list.adapter = wardrobeAdapter
+    }
+
     private fun fillProfileInfo(userModel: UserModel) {
         include_toolbar_profile.toolbar_title_text_view.text = userModel.username
         text_view_fragment_profile_user_name.text = userModel.firstName
@@ -384,15 +396,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 itemClickListener = this,
                 gender = currentGender
             ).show(childFragmentManager, EMPTY_STRING)
-            1 -> {
-                presenter.getPublications(
-                    token = getTokenFromSharedPref(),
-                    isOwnProfile = isOwnProfile
-                )
-                adapterFilter.onChooseItem(position)
-            }
+            1 -> onPublicationsFilterClick(position)
             2 -> adapterFilter.onChooseItem(position)
-            3 -> adapterFilter.onChooseItem(position)
+            3 -> onWardrobeFilterClick(position)
             4 -> processMyData()
             5 ->  CreatorChooserDialog().apply {
                 setChoiceListener(listener = this@ProfileFragment)
@@ -400,13 +406,35 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    private fun onCollectionClick(item: Any?) {
+    private fun onPublicationsFilterClick(position: Int) {
+        presenter.getPublications(
+            token = getTokenFromSharedPref(),
+            isOwnProfile = isOwnProfile
+        )
+        adapterFilter.onChooseItem(position)
+    }
+
+    private fun onWardrobeFilterClick(position: Int) {
+        presenter.getWardrobe(token = getTokenFromSharedPref())
+        adapterFilter.onChooseItem(position)
+    }
+
+    private fun onCollectionItemClick(item: Any?) {
         item as PublicationModel
 
         val bundle = Bundle()
         bundle.putParcelable("model", item)
 
         findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
+    }
+
+    private fun onWardrobeItemClick(item: Any?) {
+        item as ClothesModel
+
+        val bundle = Bundle()
+        bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
+
+        findNavController().navigate(R.id.action_profileFragment_to_itemDetailFragment, bundle)
     }
 
     private fun navigateToCameraFragment(mode: Int) {

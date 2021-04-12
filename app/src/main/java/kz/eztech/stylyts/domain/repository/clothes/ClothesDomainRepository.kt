@@ -32,6 +32,7 @@ interface ClothesDomainRepository {
 
     fun getClothes(
         token: String,
-        queryMap: Map<String, String>
+        stringQueryMap: Map<String, String>,
+        booleanQueryMap: Map<String, Boolean>
     ): Single<ResultsModel<ClothesModel>>
 }

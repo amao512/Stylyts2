@@ -98,6 +98,10 @@
             android:id="@+id/action_profileFragment_to_userSubsFragment"
             app:destination="@id/userSubsFragment"
             />
+        <action
+            android:id="@+id/action_profileFragment_to_itemDetailFragment"
+            app:destination="@id/itemDetailFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
