@@ -25,4 +25,24 @@ class UserApiModelMapper @Inject constructor() {
             instagram = data?.instagram ?: EMPTY_STRING
         )
     }
+
+    fun map(data: List<UserApiModel>?): List<UserModel> {
+        data ?: return emptyList()
+
+        return data.map {
+            UserModel(
+                id = it.id ?: 0,
+                email = it.email ?: EMPTY_STRING,
+                username = it.username ?: EMPTY_STRING,
+                avatar = it.avatar ?: EMPTY_STRING,
+                firstName = it.firstName ?: EMPTY_STRING,
+                lastName = it.lastName ?: EMPTY_STRING,
+                isBrand = it.isBrand,
+                dateOfBirth = it.dateOfBirth ?: EMPTY_STRING,
+                gender = it.gender ?: "M",
+                webSite = it.webSite ?: EMPTY_STRING,
+                instagram = it.instagram ?: EMPTY_STRING
+            )
+        }
+    }
 }

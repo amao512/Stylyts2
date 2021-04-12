@@ -24,7 +24,7 @@ object RestConstants {
     // User
     const val GET_MY_PROFILE: String = "profiles/me"
     const val EDIT_PROFILE: String = "profiles/me"
-    const val GET_USER_BY_ID: String = "auth/profile/{user_id}/"
+    const val GET_USER_BY_ID: String = "profiles/{user_id}"
 
     // Address
     const val POST_ADDRESS: String = "addresses"
@@ -32,7 +32,8 @@ object RestConstants {
     const val DELETE_ADDRESS: String = "addresses/{address_id}"
 
     // Search
-    const val SEARCH_USER_BY_USERNAME: String = "auth/profile/"
+    const val SEARCH_USER_BY_USERNAME: String = "profiles"
+    const val SEARCH_CLOTHES_BY_TITLE: String = "clothes"
 
     // Clothes
     const val GET_CLOTHES: String = "clothes"

@@ -17,6 +17,6 @@ interface SearchAPI {
     @GET(RestConstants.SEARCH_USER_BY_USERNAME)
     fun searchUserByUsername(
         @Header("Authorization") token: String,
-        @Query("search") username: String
+        @Query("username") username: String
     ): Single<Response<ResultsApiModel<UserApiModel>>>
 }

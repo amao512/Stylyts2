@@ -8,8 +8,8 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.data.api.models.user.UserApiModel
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
@@ -124,18 +124,17 @@ class SearchItemFragment(
         fragment_search_item_recycler_view.show()
     }
 
-    override fun processSearch(resultsModel: ResultsApiModel<UserApiModel>) {
-        resultsModel.results?.let {
-            val userList: MutableList<UserApiModel> = mutableListOf()
+    override fun processSearch(resultsModel: ResultsModel<UserModel>) {
+        val userList: MutableList<UserModel> = mutableListOf()
+        val currentUser = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
-            it.map { user ->
-                if (user.id != currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)) {
-                    userList.add(user)
-                }
+        resultsModel.results.map { user ->
+            if (user.id != currentUser && !user.isBrand) {
+                userList.add(user)
             }
-
-            userSearchAdapter.updateList(list = userList)
         }
+
+        userSearchAdapter.updateList(list = userList)
     }
 
     override fun processUserFromLocalDb(userList: List<UserSearchEntity>) {
@@ -166,8 +165,8 @@ class SearchItemFragment(
         val bundle = Bundle()
 
         when (item) {
-            is UserApiModel -> {
-                bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id ?: 0)
+            is UserModel -> {
+                bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id)
                 presenter.saveUserToLocaleDb(user = item)
             }
             is UserSearchEntity -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id ?: 0)

@@ -87,6 +87,7 @@ class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,
         authModel.let {
             currentActivity.saveSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY, it.token.access)
             currentActivity.saveSharedPrefByKey(SharedConstants.REFRESH_TOKEN_KEY, it.token.refresh)
+            currentActivity.saveSharedPrefByKey(SharedConstants.USER_ID_KEY, it.user.id)
 
             startActivity(Intent(currentActivity, MainActivity::class.java))
             currentActivity.finish()

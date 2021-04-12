@@ -5,9 +5,8 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_user_info.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
-import kz.eztech.stylyts.data.api.models.user.UserApiModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -24,73 +23,89 @@ class UserSearchHolder(
         item: Any,
         position: Int
     ) {
-        with(itemView) {
-            when (item) {
-                is UserApiModel -> {
-                    displayAvatar(
-                        avatar = item.avatar,
-                        name = item.firstName,
-                        lastName = item.lastName
-                    )
+        when (item) {
+            is UserModel -> processUserModel(item, position)
+            is UserSearchEntity -> processUserFromHistory(item, position)
+        }
+    }
 
-                    displayUserInfo(
-                        name = item.firstName,
-                        lastName = item.lastName,
-                        username = EMPTY_STRING
-                    )
+    private fun processUserModel(
+        user: UserModel,
+        position: Int
+    ) {
+        displayAvatar(
+            avatar = user.avatar,
+            firstName = user.firstName,
+            lastName = user.lastName
+        )
 
-                    linear_layout_item_user_info_container.setOnClickListener {
-                        adapter.itemClickListener?.onViewClicked(it, position, item)
-                    }
-                }
-                is UserSearchEntity -> {
-                    displayAvatar(
-                        avatar = item.avatar,
-                        name = item.name,
-                        lastName = item.lastName
-                    )
+        displayUserInfo(
+            firstName = user.firstName,
+            lastName = user.lastName,
+            username = user.username
+        )
 
-                    displayUserInfo(
-                        name = item.name,
-                        lastName = item.lastName,
-                        username = item.username
-                    )
+        with (itemView) {
+            linear_layout_item_user_info_container.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, user)
+            }
+        }
+    }
 
-                    item_user_info_remove_image_view.show()
+    private fun processUserFromHistory(
+        user: UserSearchEntity,
+        position: Int
+    ) {
+        displayAvatar(
+            avatar = user.avatar,
+            firstName = user.name,
+            lastName = user.lastName
+        )
 
-                    linear_layout_item_user_info_container.setOnClickListener {
-                        adapter.itemClickListener?.onViewClicked(it, position, item)
-                    }
+        displayUserInfo(
+            firstName = user.name,
+            lastName = user.lastName,
+            username = user.username
+        )
 
-                    item_user_info_remove_image_view.setOnClickListener {
-                        adapter.itemClickListener?.onViewClicked(it, position, item)
-                    }
-                }
+        with (itemView) {
+            item_user_info_remove_image_view.show()
+
+            linear_layout_item_user_info_container.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, user)
+            }
+
+            item_user_info_remove_image_view.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, user)
             }
         }
     }
 
     private fun displayAvatar(
         avatar: String?,
-        name: String?,
+        firstName: String?,
         lastName: String?
     ) {
         with(itemView) {
             avatar?.let {
                 item_user_info_user_avatar_shapeable_image_view.show()
                 item_user_info_user_short_name_text_view.hide()
-                Glide.with(context).load(it).into(item_user_info_user_avatar_shapeable_image_view)
+
+                Glide.with(context)
+                    .load(it)
+                    .centerCrop()
+                    .into(item_user_info_user_avatar_shapeable_image_view)
             } ?: run {
                 item_user_info_user_avatar_shapeable_image_view.hide()
                 item_user_info_user_short_name_text_view.show()
 
-                item_user_info_user_short_name_text_view.text = getShortName(name, lastName)
+                item_user_info_user_short_name_text_view.text = getShortName(firstName, lastName)
             }
         }
     }
 
     private fun displayUserInfo(
-        name: String?,
+        firstName: String?,
         lastName: String?,
         username: String?
     ) {
@@ -98,7 +113,7 @@ class UserSearchHolder(
             item_user_info_username_text_view.text = username
             item_user_info_full_name_text_view.text = context.getString(
                 R.string.full_name_text_format,
-                name,
+                firstName,
                 lastName
             )
         }

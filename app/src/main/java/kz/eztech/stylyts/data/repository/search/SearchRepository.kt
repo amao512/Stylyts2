@@ -3,8 +3,9 @@ package kz.eztech.stylyts.data.repository.search
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.SearchAPI
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.api.models.user.UserApiModel
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.search.SearchDomainRepository
 import javax.inject.Inject
 
@@ -12,16 +13,17 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 22.02.2021.
  */
 class SearchRepository @Inject constructor(
-    private var api: SearchAPI
+    private val api: SearchAPI,
+    private val resultsApiModelMapper: ResultsApiModelMapper
 ) : SearchDomainRepository {
 
     override fun getUserByUsername(
         token: String,
         username: String
-    ): Single<ResultsApiModel<UserApiModel>> {
+    ): Single<ResultsModel<UserModel>> {
         return api.searchUserByUsername(token, username).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> resultsApiModelMapper.mapUserResults(it.body())
                 else -> throw NetworkException(it)
             }
         }
