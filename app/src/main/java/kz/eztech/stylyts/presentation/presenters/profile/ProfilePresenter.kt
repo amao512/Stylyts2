@@ -8,9 +8,14 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.profile.*
+import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase
+import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
+import kz.eztech.stylyts.domain.usecases.user.GetFollowingsUseCase
+import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import javax.inject.Inject
@@ -19,13 +24,15 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class ProfilePresenter @Inject constructor(
-	private val application: Application,
-	private val errorHelper: ErrorHelper,
-	private val getProfileUseCase: GetProfileUseCase,
-	private val getProfileByIdUseCase: GetProfileByIdUseCase,
-	private val getMyPublicationsUseCase: GetMyPublicationsUseCase,
-	private val getFollowersUseCase: GetFollowersUseCase,
-	private val getFollowingsUseCase: GetFollowingsUseCase
+    private val application: Application,
+    private val errorHelper: ErrorHelper,
+    private val getProfileUseCase: GetProfileUseCase,
+    private val getProfileByIdUseCase: GetProfileByIdUseCase,
+    private val getMyPublicationsUseCase: GetMyPublicationsUseCase,
+    private val getFollowersUseCase: GetFollowersUseCase,
+    private val getFollowingsUseCase: GetFollowingsUseCase,
+	private val followUserUseCase: FollowUserUseCase,
+	private val unfollowUserUseCase: UnfollowUserUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View
@@ -36,6 +43,8 @@ class ProfilePresenter @Inject constructor(
 		getMyPublicationsUseCase.clear()
 		getFollowersUseCase.clear()
 		getFollowingsUseCase.clear()
+		followUserUseCase.clear()
+		unfollowUserUseCase.clear()
     }
 
     override fun attach(view: ProfileContract.View) {
@@ -135,6 +144,40 @@ class ProfilePresenter @Inject constructor(
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					displayMessage(msg = errorHelper.processError(e))
+				}
+			}
+		})
+	}
+
+	override fun followUser(token: String, userId: Int) {
+		followUserUseCase.initParams(token, userId.toString())
+		followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
+			override fun onSuccess(t: FollowSuccessModel) {
+				view.processViewAction {
+					processSuccessFollowing(followSuccessModel = t)
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(msg = errorHelper.processError(e))
+				}
+			}
+		})
+	}
+
+	override fun unfollowUser(token: String, userId: Int) {
+		unfollowUserUseCase.initParams(token, userId.toString())
+		unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
+			override fun onSuccess(t: Any) {
+				view.processViewAction {
+					processSuccessUnfollowing()
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					processSuccessUnfollowing()
 				}
 			}
 		})

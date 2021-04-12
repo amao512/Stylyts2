@@ -9,11 +9,13 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -49,6 +51,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private var isOwnProfile: Boolean = true
     private var userId: Int = 0
+    private var isAlreadyFollow: Boolean = false
     private var isMyData = false
     private var currentName = EMPTY_STRING
     private var currentUsername = EMPTY_STRING
@@ -93,9 +96,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun initializePresenter() = presenter.attach(this)
 
     override fun initializeArguments() {
-        arguments?.getInt(USER_ID_BUNDLE_KEY)?.let {
-            isOwnProfile = false
-            userId = it
+        arguments?.let {
+            if (it.containsKey(USER_ID_BUNDLE_KEY)) {
+                userId = it.getInt(USER_ID_BUNDLE_KEY)
+                isOwnProfile = false
+            }
         }
     }
 
@@ -123,6 +128,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         linear_layout_fragment_profile_following_item.setOnClickListener(this)
         linear_layout_fragment_profile_photos_item.setOnClickListener(this)
         toolbar_left_corner_action_image_button.setOnClickListener(this)
+        fragment_profile_follow_text_view.setOnClickListener(this)
+        fragment_profile_unfollow_text_view.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -256,6 +263,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                     findNavController().navigateUp()
                 }
             }
+            R.id.fragment_profile_follow_text_view -> presenter.followUser(
+                token = getTokenFromSharedPref(),
+                userId = userId
+            )
+            R.id.fragment_profile_unfollow_text_view -> presenter.unfollowUser(
+                token = getTokenFromSharedPref(),
+                userId = userId
+            )
         }
     }
 
@@ -292,21 +307,51 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
         fragment_profile_followers_count.text = resultsModel.totalCount.toString()
+        val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+
+        resultsModel.results.map {
+            isAlreadyFollow = it.id == currentUserId
+        }
+
+        if (!isOwnProfile && !isAlreadyFollow) {
+            fragment_profile_edit_text_view.hide()
+            fragment_profile_follow_text_view.show()
+            fragment_profile_unfollow_text_view.hide()
+        }
+
+        if (!isOwnProfile && isAlreadyFollow) {
+            fragment_profile_edit_text_view.hide()
+            fragment_profile_follow_text_view.hide()
+            fragment_profile_unfollow_text_view.show()
+        }
     }
 
     override fun processFollowings(resultsModel: ResultsModel<FollowerModel>) {
         fragment_profile_followings_count.text = resultsModel.totalCount.toString()
     }
 
+    override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
+        val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+
+        if (!isOwnProfile && followSuccessModel.follower == currentUserId) {
+            fragment_profile_edit_text_view.hide()
+            fragment_profile_follow_text_view.hide()
+            fragment_profile_unfollow_text_view.show()
+        }
+    }
+
+    override fun processSuccessUnfollowing() {
+        if (!isOwnProfile) {
+            fragment_profile_edit_text_view.hide()
+            fragment_profile_follow_text_view.show()
+            fragment_profile_unfollow_text_view.hide()
+        }
+    }
+
     private fun fillProfileInfo(userModel: UserModel) {
         include_toolbar_profile.toolbar_title_text_view.text = userModel.username
         text_view_fragment_profile_user_name.text = userModel.firstName
         fragment_profile_photos_count.text = "${0}"
-
-        if (!isOwnProfile) {
-            fragment_profile_edit_text_view.hide()
-            fragment_profile_subscribe_text_view.show()
-        }
     }
 
     private fun loadProfilePhoto(userModel: UserModel) {

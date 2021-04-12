@@ -4,8 +4,8 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
-import kz.eztech.stylyts.domain.usecases.profile.GetFollowersUseCase
-import kz.eztech.stylyts.domain.usecases.profile.GetFollowingsUseCase
+import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
+import kz.eztech.stylyts.domain.usecases.user.GetFollowingsUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
 import javax.inject.Inject

@@ -28,7 +28,7 @@ object RestConstants {
     const val GET_FOLLOWERS_BY_ID: String = "profiles/{user_id}/followers"
     const val GET_FOLLOWINGS_BY_ID: String = "profiles/{user_id}/followings"
     const val FOLLOW_USER_BY_ID: String = "profiles/{user_id}/follow"
-    const val UNFOLLOW_USER_BY_ID: String = "profile/{user_id}/unfollow"
+    const val UNFOLLOW_USER_BY_ID: String = "profiles/{user_id}/unfollow"
 
     // Address
     const val POST_ADDRESS: String = "addresses"

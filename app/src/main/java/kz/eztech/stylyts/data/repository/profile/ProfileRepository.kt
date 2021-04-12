@@ -7,8 +7,6 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
 import okhttp3.MultipartBody
@@ -87,30 +85,6 @@ class ProfileRepository @Inject constructor(
             when (it.isSuccessful) {
                 true -> it.body()
                 else -> throw NetworkException(it)
-            }
-        }
-    }
-
-    override fun getFollowersById(
-        token: String,
-        userId: String
-    ): Single<ResultsModel<FollowerModel>> {
-        return api.getUserFollowers(token, userId).map {
-            when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapFollowerResults(data = it.body())
-                false -> throw NetworkException(it)
-            }
-        }
-    }
-
-    override fun getFollowingsById(
-        token: String,
-        userId: String
-    ): Single<ResultsModel<FollowerModel>> {
-        return api.getUserFollowings(token, userId).map {
-            when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapFollowerResults(data = it.body())
-                false -> throw NetworkException(it)
             }
         }
     }

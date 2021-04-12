@@ -47,7 +47,8 @@ import javax.inject.Singleton
     SearchModule::class,
     ClothesModule::class,
     CollectionConstructorModule::class,
-    CollectionModule::class
+    CollectionModule::class,
+    UserModule::class
 ])
 interface ApplicationComponent {
 

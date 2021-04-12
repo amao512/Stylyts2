@@ -4,6 +4,7 @@ import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
@@ -31,6 +32,10 @@ interface ProfileContract {
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
         fun processFollowings(resultsModel: ResultsModel<FollowerModel>)
+
+        fun processSuccessFollowing(followSuccessModel: FollowSuccessModel)
+
+        fun processSuccessUnfollowing()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -53,6 +58,16 @@ interface ProfileContract {
         )
 
         fun getFollowings(
+            token: String,
+            userId: Int
+        )
+
+        fun followUser(
+            token: String,
+            userId: Int
+        )
+
+        fun unfollowUser(
             token: String,
             userId: Int
         )
