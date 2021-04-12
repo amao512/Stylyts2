@@ -93,12 +93,13 @@
             android:text="@string/follow"
             android:textAllCaps="false"
             android:textColor="@color/white"
+            android:visibility="gone"
             app:backgroundTint="@color/app_light_orange"
             />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_item_user_subs_unfollow"
-            style="@style/TextRegular"
+            style="@style/TextRegularBold"
             android:layout_width="0dp"
             android:layout_height="@dimen/user_subs_button_height"
             android:layout_gravity="center"
@@ -107,9 +108,8 @@
             android:layout_weight="0.45"
             android:text="@string/unfollow"
             android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:visibility="gone"
-            app:backgroundTint="@color/app_light_gray"
+            android:textColor="@color/app_dark_blue_gray"
+            app:background="@drawable/rounded_rectangle_white_gray_corners"
             />
     </LinearLayout>
 

@@ -245,7 +245,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
                 bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWERS_POSITION)
 
-                findNavController().navigate(R.id.userSubsFragment, bundle)
+                findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
             }
             R.id.linear_layout_fragment_profile_following_item -> {
                 val bundle = Bundle()
@@ -253,7 +253,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
                 bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
 
-                findNavController().navigate(R.id.userSubsFragment, bundle)
+                findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
             }
             R.id.linear_layout_fragment_profile_photos_item -> {
                 findNavController().navigate(R.id.userSubsFragment)

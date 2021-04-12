@@ -34,6 +34,10 @@ class UserSubHolder(
                 button_item_user_subs_unfollow.hide()
                 button_item_user_subs_follow.show()
             }
+
+            itemView.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(itemView, position, item)
+            }
         }
     }
 }

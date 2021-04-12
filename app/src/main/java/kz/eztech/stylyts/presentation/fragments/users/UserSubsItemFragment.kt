@@ -1,6 +1,8 @@
 package kz.eztech.stylyts.presentation.fragments.users
 
 import android.os.Bundle
+import android.view.View
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_user_subs_item.*
 import kz.eztech.stylyts.R
@@ -13,11 +15,13 @@ import kz.eztech.stylyts.presentation.adapters.UserSubAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
-class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View {
+class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: UserSubsPresenter
     private lateinit var adapter: UserSubAdapter
@@ -72,6 +76,7 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
 
     override fun initializeViewsData() {
         adapter = UserSubAdapter()
+        adapter.itemClickListener = this
     }
 
     override fun initializeViews() {
@@ -110,6 +115,21 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
 
     override fun processFollowings(resultsModel: ResultsModel<FollowerModel>) {
         adapter.updateList(list = resultsModel.results)
+    }
+
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        when (item) {
+            is FollowerModel -> {
+                val bundle = Bundle()
+                bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id)
+
+                findNavController().navigate(R.id.action_userSubsFragment_to_profileFragment, bundle)
+            }
+        }
     }
 
     private fun getTokenFromSharedPref(): String {

@@ -94,6 +94,10 @@
             android:id="@+id/action_profileFragment_to_editProfileDialog"
             app:destination="@id/editProfileDialog"
             />
+        <action
+            android:id="@+id/action_profileFragment_to_userSubsFragment"
+            app:destination="@id/userSubsFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/shopFragment"
@@ -229,7 +233,12 @@
     <fragment
         android:id="@+id/userSubsFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment"
-        android:label="UserSubsFragment" />
+        android:label="UserSubsFragment" >
+        <action
+            android:id="@+id/action_userSubsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.settings.SettingsFragment"
