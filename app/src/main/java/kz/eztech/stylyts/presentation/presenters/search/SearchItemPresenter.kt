@@ -8,7 +8,9 @@ import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase
 import kz.eztech.stylyts.domain.usecases.search.SearchUserUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
@@ -20,7 +22,8 @@ import javax.inject.Inject
 class SearchItemPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val searchUserUseCase: SearchUserUseCase,
-    private val dataSource: SearchDataSource
+    private val dataSource: SearchDataSource,
+    private val searchClothesUseCase: SearchClothesUseCase
 ) : SearchItemContract.Presenter {
 
     private val disposable = CompositeDisposable()
@@ -33,9 +36,10 @@ class SearchItemPresenter @Inject constructor(
 
     override fun disposeRequests() {
         searchUserUseCase.clear()
+        searchClothesUseCase.clear()
     }
 
-    override fun getUserByUsername(
+    override fun searchUserByUsername(
         token: String,
         username: String
     ) {
@@ -44,7 +48,7 @@ class SearchItemPresenter @Inject constructor(
             override fun onSuccess(t: ResultsModel<UserModel>) {
                 view.processViewAction {
                     hideProgress()
-                    processSearch(t)
+                    processUserResults(t)
                 }
             }
 
@@ -104,5 +108,22 @@ class SearchItemPresenter @Inject constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
         )
+    }
+
+    override fun searchClothesByTitle(token: String, title: String) {
+        searchClothesUseCase.initParams(token, title)
+        searchClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesModel>) {
+                view.processViewAction {
+                    processClothesResults(resultsModel = t)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
     }
 }

@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.repository.search
 
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 
 /**
@@ -13,4 +14,9 @@ interface SearchDomainRepository {
         token: String,
         username: String
     ): Single<ResultsModel<UserModel>>
+
+    fun searchClothesByTitle(
+        token: String,
+        title: String
+    ): Single<ResultsModel<ClothesModel>>
 }

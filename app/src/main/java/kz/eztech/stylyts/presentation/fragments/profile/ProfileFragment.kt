@@ -99,7 +99,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         arguments?.let {
             if (it.containsKey(USER_ID_BUNDLE_KEY)) {
                 userId = it.getInt(USER_ID_BUNDLE_KEY)
-                isOwnProfile = false
+                isOwnProfile = userId == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
             }
         }
     }
@@ -306,23 +306,25 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
-        fragment_profile_followers_count.text = resultsModel.totalCount.toString()
-        val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+        resultsModel.results.let {
+            fragment_profile_followers_count.text = it.size.toString()
+            val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
-        resultsModel.results.map {
-            isAlreadyFollow = it.id == currentUserId
-        }
+            it.map { follower ->
+                isAlreadyFollow = follower.id == currentUserId
+            }
 
-        if (!isOwnProfile && !isAlreadyFollow) {
-            fragment_profile_edit_text_view.hide()
-            fragment_profile_follow_text_view.show()
-            fragment_profile_unfollow_text_view.hide()
-        }
+            if (!isOwnProfile && !isAlreadyFollow) {
+                fragment_profile_edit_text_view.hide()
+                fragment_profile_follow_text_view.show()
+                fragment_profile_unfollow_text_view.hide()
+            }
 
-        if (!isOwnProfile && isAlreadyFollow) {
-            fragment_profile_edit_text_view.hide()
-            fragment_profile_follow_text_view.hide()
-            fragment_profile_unfollow_text_view.show()
+            if (!isOwnProfile && isAlreadyFollow) {
+                fragment_profile_edit_text_view.hide()
+                fragment_profile_follow_text_view.hide()
+                fragment_profile_unfollow_text_view.show()
+            }
         }
     }
 

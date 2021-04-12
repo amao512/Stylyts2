@@ -9,13 +9,16 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
+import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
+import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchItemPresenter
@@ -38,6 +41,7 @@ class SearchItemFragment(
     @Inject lateinit var presenter: SearchItemPresenter
     private lateinit var userSearchAdapter: UserSearchAdapter
     private lateinit var userSearchHistoryAdapter: UserSearchHistoryAdapter
+    private lateinit var clothesAdapter: ClothesDetailAdapter
 
     private var query: String = EMPTY_STRING
     private var isHistory: Boolean = true
@@ -55,7 +59,7 @@ class SearchItemFragment(
     override fun customizeActionBar() {}
 
     override fun initializeDependency() {
-        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
     }
 
     override fun initializePresenter() = presenter.attach(view = this)
@@ -68,10 +72,13 @@ class SearchItemFragment(
 
         userSearchHistoryAdapter = UserSearchHistoryAdapter()
         userSearchHistoryAdapter.itemClickListener = this
+
+        clothesAdapter = ClothesDetailAdapter()
+        clothesAdapter.itemClickListener = this
     }
 
     override fun initializeViews() {
-        setUserAdapter()
+        initializeAdapter()
     }
 
     override fun initializeListeners() {
@@ -86,25 +93,18 @@ class SearchItemFragment(
     override fun processPostInitialization() {
         val oldQuery = currentActivity.getSharedPrefByKey(SharedConstants.QUERY_KEY) ?: EMPTY_STRING
         userSearchAdapter.clearList()
+        clothesAdapter.clearList()
 
         if (query.isBlank() && oldQuery.isNotEmpty()) {
-            presenter.getUserByUsername(
-                token = getTokenFromSharedPref(),
-                username = oldQuery
-            )
-            isHistory = false
-            setUserAdapter()
-        } else if (query.isBlank()) {
+            onSearch(oldQuery)
+            initializeAdapter()
+        } else if (query.isBlank() && position == 0) {
             presenter.getUserFromLocaleDb()
             isHistory = true
-            setUserAdapter()
+            initializeAdapter()
         } else {
-            presenter.getUserByUsername(
-                token = getTokenFromSharedPref(),
-                username = query
-            )
-            isHistory = false
-            setUserAdapter()
+            onSearch(query)
+            initializeAdapter()
         }
     }
 
@@ -124,7 +124,7 @@ class SearchItemFragment(
         fragment_search_item_recycler_view.show()
     }
 
-    override fun processSearch(resultsModel: ResultsModel<UserModel>) {
+    override fun processUserResults(resultsModel: ResultsModel<UserModel>) {
         val userList: MutableList<UserModel> = mutableListOf()
         val currentUser = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
@@ -138,7 +138,9 @@ class SearchItemFragment(
     }
 
     override fun processUserFromLocalDb(userList: List<UserSearchEntity>) {
-        userSearchHistoryAdapter.updateList(list = userList)
+        if (position == 0) {
+            userSearchHistoryAdapter.updateList(list = userList)
+        }
     }
 
     override fun onViewClicked(
@@ -152,6 +154,17 @@ class SearchItemFragment(
                 presenter.deleteUserFromLocalDb(userId = (item as UserSearchEntity).id ?: 0)
                 presenter.getUserFromLocaleDb()
             }
+            R.id.item_clothes_detail_linear_layout -> {
+                item as ClothesModel
+
+                val bundle = Bundle()
+                bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
+
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_itemDetailFragment,
+                    bundle
+                )
+            }
         }
     }
 
@@ -159,6 +172,26 @@ class SearchItemFragment(
         super.onDestroyView()
 
         currentActivity.saveSharedPrefByKey(SharedConstants.QUERY_KEY, query)
+    }
+
+    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
+        clothesAdapter.updateList(list = resultsModel.results)
+    }
+
+    private fun onSearch(query: String) {
+        when (position) {
+            0 -> {
+                presenter.searchUserByUsername(
+                    token = getTokenFromSharedPref(),
+                    username = query
+                )
+                isHistory = false
+            }
+            2 -> presenter.searchClothesByTitle(
+                token = getTokenFromSharedPref(),
+                title = query
+            )
+        }
     }
 
     private fun navigateToUserProfile(item: Any?) {
@@ -175,16 +208,17 @@ class SearchItemFragment(
         findNavController().navigate(R.id.action_searchFragment_to_profileFragment, bundle)
     }
 
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
-
-    private fun setUserAdapter() {
-        if (position == USERS_POSITION) {
-            fragment_search_item_recycler_view.adapter = when (isHistory) {
+    private fun initializeAdapter() {
+        fragment_search_item_recycler_view.adapter = when (position) {
+            USERS_POSITION -> when (isHistory) {
                 true -> userSearchHistoryAdapter
                 false -> userSearchAdapter
             }
+            else -> clothesAdapter
         }
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }
