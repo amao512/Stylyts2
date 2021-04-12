@@ -27,6 +27,8 @@ import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopItemListFragment
+import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
+import kz.eztech.stylyts.presentation.fragments.users.UserSubsItemFragment
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
@@ -73,6 +75,8 @@ interface ApplicationComponent {
     fun inject(fragment: SearchFragment)
     fun inject(fragment: SearchItemFragment)
     fun inject(fragment: ShopItemListFragment)
+    fun inject(fragment: UserSubsFragment)
+    fun inject(fragment: UserSubsItemFragment)
 
     fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)

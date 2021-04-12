@@ -290,4 +290,8 @@
     <string name="filter_brands">Бренды</string>
     <string name="filter_colors">Цвета</string>
     <string name="filter_costs">Диапазон цен</string>
+
+    <string name="unfollow">Отписаться</string>
+    <string name="followers_text_format">%s Подписчики</string>
+    <string name="followings_text_format">%s Подписки</string>
 </resources>

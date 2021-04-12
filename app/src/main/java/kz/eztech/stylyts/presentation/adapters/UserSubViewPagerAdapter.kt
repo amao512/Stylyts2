@@ -8,9 +8,20 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 /**
  * Created by Ruslan Erdenoff on 04.03.2021.
  */
-class UserSubViewPagerAdapter(fa: Fragment, var itemClickListener: UniversalViewClickListener? = null) : FragmentStateAdapter(fa) {
+class UserSubViewPagerAdapter(
+    fa: Fragment,
+    var itemClickListener: UniversalViewClickListener? = null,
+    private val userId: Int
+) : FragmentStateAdapter(fa) {
+
     private val NUM_PAGES = 2
+
     override fun getItemCount(): Int = NUM_PAGES
 
-    override fun createFragment(position: Int): Fragment = UserSubsItemFragment()
+    override fun createFragment(position: Int): Fragment {
+        return UserSubsItemFragment.getNewInstance(
+            position = position,
+            userId = userId
+        )
+    }
 }

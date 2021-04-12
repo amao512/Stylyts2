@@ -1,18 +1,48 @@
 package kz.eztech.stylyts.presentation.fragments.users
 
+import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_user_subs_item.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.UserSub
+import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSubAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
+import kz.eztech.stylyts.presentation.presenters.users.UserSubsPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import javax.inject.Inject
 
-class UserSubsItemFragment : BaseFragment<MainActivity>(), EmptyContract.View {
+class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View {
 
+    @Inject lateinit var presenter: UserSubsPresenter
     private lateinit var adapter: UserSubAdapter
+
+    private var position: Int = 0
+    private var userId: Int = 0
+
+    companion object {
+        private const val POSITION_ARGS = "position_args_key"
+        private const val USER_ID_ARGS = "user_id_args_key"
+
+        fun getNewInstance(
+            position: Int,
+            userId: Int
+        ): UserSubsItemFragment {
+            val fragment = UserSubsItemFragment()
+            val bundle = Bundle()
+
+            bundle.putInt(POSITION_ARGS, position)
+            bundle.putInt(USER_ID_ARGS, userId)
+            fragment.arguments = bundle
+
+            return fragment
+        }
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_user_subs_item
 
@@ -20,25 +50,28 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), EmptyContract.View {
 
     override fun customizeActionBar() {}
 
-    override fun initializeDependency() {}
+    override fun initializeDependency() {
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
+    }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() {
+        presenter.attach(view = this)
+    }
 
-    override fun initializeArguments() {}
+    override fun initializeArguments() {
+        arguments?.let {
+            if (it.containsKey(POSITION_ARGS)) {
+                position = it.getInt(POSITION_ARGS)
+            }
+
+            if (it.containsKey(USER_ID_ARGS)) {
+                userId = it.getInt(USER_ID_ARGS)
+            }
+        }
+    }
 
     override fun initializeViewsData() {
         adapter = UserSubAdapter()
-        val dummyList = ArrayList<UserSub>()
-        dummyList.add(UserSub(1, "Anton", "Zhakup", null, "antonidze"))
-        dummyList.add(UserSub(2, "Йоган", "Костин", null, "const"))
-        dummyList.add(UserSub(3, "Рафаил", "Некрасов ", null, "rafchik"))
-        dummyList.add(UserSub(4, "Lennox", "Gonzales", null, "gonzales"))
-        dummyList.add(UserSub(5, "Wesley", "Garcia", null, "girnay"))
-        dummyList.add(UserSub(6, "Kevin", "Lee", null, "leekev"))
-        dummyList.add(UserSub(7, "Валериан ", "Шуфрич", null, "asasa"))
-        dummyList.add(UserSub(8, "Юлий", "Журавлёв", null, "zhuraleekev"))
-        dummyList.add(UserSub(9, "Харитон", "Бачей", null, "leekev"))
-        adapter.updateList(dummyList)
     }
 
     override fun initializeViews() {
@@ -48,7 +81,18 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), EmptyContract.View {
 
     override fun initializeListeners() {}
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        when (position) {
+            0 -> presenter.getFollowers(
+                token = getTokenFromSharedPref(),
+                userId = userId
+            )
+            1 -> presenter.getFollowings(
+                token = getTokenFromSharedPref(),
+                userId = userId
+            )
+        }
+    }
 
     override fun disposeRequests() {}
 
@@ -59,4 +103,16 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), EmptyContract.View {
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
+        adapter.updateList(list = resultsModel.results)
+    }
+
+    override fun processFollowings(resultsModel: ResultsModel<FollowerModel>) {
+        adapter.updateList(list = resultsModel.results)
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
+    }
 }

@@ -3,6 +3,8 @@ package kz.eztech.stylyts.presentation.contracts.profile
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -25,6 +27,10 @@ interface ProfileContract {
         fun processFilter(filterList: List<CollectionFilterModel>)
 
         fun processMyPublications(resultsModel: ResultsApiModel<PublicationModel>)
+
+        fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
+
+        fun processFollowings(resultsModel: ResultsModel<FollowerModel>)
     }
 
     interface Presenter : BasePresenter<View> {
@@ -39,6 +45,16 @@ interface ProfileContract {
         fun getPublications(
             token: String,
             isOwnProfile: Boolean
+        )
+
+        fun getFollowers(
+            token: String,
+            userId: Int
+        )
+
+        fun getFollowings(
+            token: String,
+            userId: Int
         )
     }
 }

@@ -289,4 +289,8 @@
     <string name="filter_brands">Brands</string>
     <string name="filter_colors">Colors</string>
     <string name="filter_costs">Price range</string>
+
+    <string name="unfollow">unfollow</string>
+    <string name="followers_text_format">%s Followers</string>
+    <string name="followings_text_format">%s Followings</string>
 </resources>

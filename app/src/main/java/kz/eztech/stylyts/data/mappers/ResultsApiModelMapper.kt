@@ -1,17 +1,19 @@
 package kz.eztech.stylyts.data.mappers
 
-import kz.eztech.stylyts.data.api.models.*
+import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.address.AddressApiModel
 import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
 import kz.eztech.stylyts.data.api.models.clothes.ClothesBrandApiModel
 import kz.eztech.stylyts.data.api.models.clothes.ClothesCategoryApiModel
 import kz.eztech.stylyts.data.api.models.clothes.ClothesTypeApiModel
+import kz.eztech.stylyts.data.api.models.user.FollowerApiModel
 import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.data.mappers.address.AddressApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesBrandApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesCategoryApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesTypeApiModelMapper
+import kz.eztech.stylyts.data.mappers.user.FollowerApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
@@ -19,6 +21,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import javax.inject.Inject
 
@@ -31,7 +34,8 @@ class ResultsApiModelMapper @Inject constructor(
     private val clothesTypeApiModelMapper: ClothesTypeApiModelMapper,
     private val clothesBrandApiModelMapper: ClothesBrandApiModelMapper,
     private val addressApiModelMapper: AddressApiModelMapper,
-    private val userApiModelMapper: UserApiModelMapper
+    private val userApiModelMapper: UserApiModelMapper,
+    private val followerApiModelMapper: FollowerApiModelMapper
 ) {
 
     fun mapClothesResults(data: ResultsApiModel<ClothesApiModel>?): ResultsModel<ClothesModel> {
@@ -91,6 +95,16 @@ class ResultsApiModelMapper @Inject constructor(
             pageSize = data?.pageSize ?: 0,
             totalCount = data?.totalCount ?: 0,
             results = userApiModelMapper.map(data?.results)
+        )
+    }
+
+    fun mapFollowerResults(data: ResultsApiModel<FollowerApiModel>?): ResultsModel<FollowerModel> {
+        return ResultsModel(
+            page = data?.page ?: 0,
+            totalPages = data?.totalPages ?: 0,
+            pageSize = data?.pageSize ?: 0,
+            totalCount = data?.totalCount ?: 0,
+            results = followerApiModelMapper.map(data?.results)
         )
     }
 }

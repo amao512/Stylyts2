@@ -13,6 +13,8 @@ import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
@@ -27,6 +29,7 @@ import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
+import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -48,7 +51,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var userId: Int = 0
     private var isMyData = false
     private var currentName = EMPTY_STRING
-    private var currentNickname = EMPTY_STRING
+    private var currentUsername = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
     private var currentGender = EMPTY_STRING
     private var chosenFilterPosition = 1
@@ -129,6 +132,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             userId = userId.toString(),
             isOwnProfile = isOwnProfile
         )
+        presenter.getFollowers(
+            token = getTokenFromSharedPref(),
+            userId = userId
+        )
+        presenter.getFollowings(
+            token = getTokenFromSharedPref(),
+            userId
+        )
 
         when (chosenFilterPosition) {
             1 -> presenter.getPublications(
@@ -182,7 +193,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         userModel.run {
             userId = id
             currentName = firstName
-            currentNickname = username
+            currentUsername = username
             currentSurname = lastName
             currentGender = gender
         }
@@ -222,10 +233,20 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 findNavController().navigate(R.id.action_profileFragment_to_cardFragment)
             }
             R.id.linear_layout_fragment_profile_followers_item -> {
-                findNavController().navigate(R.id.userSubsFragment)
+                val bundle = Bundle()
+                bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
+                bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
+                bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWERS_POSITION)
+
+                findNavController().navigate(R.id.userSubsFragment, bundle)
             }
             R.id.linear_layout_fragment_profile_following_item -> {
-                findNavController().navigate(R.id.userSubsFragment)
+                val bundle = Bundle()
+                bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
+                bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
+                bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
+
+                findNavController().navigate(R.id.userSubsFragment, bundle)
             }
             R.id.linear_layout_fragment_profile_photos_item -> {
                 findNavController().navigate(R.id.userSubsFragment)
@@ -269,11 +290,17 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
+    override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
+        fragment_profile_followers_count.text = resultsModel.totalCount.toString()
+    }
+
+    override fun processFollowings(resultsModel: ResultsModel<FollowerModel>) {
+        fragment_profile_followings_count.text = resultsModel.totalCount.toString()
+    }
+
     private fun fillProfileInfo(userModel: UserModel) {
         include_toolbar_profile.toolbar_title_text_view.text = userModel.username
         text_view_fragment_profile_user_name.text = userModel.firstName
-        fragment_profile_followers_count.text = "${/*followers_count*/ 0}"
-        fragment_profile_followings_count.text = "${/*followings_count*/ 0}"
         fragment_profile_photos_count.text = "${0}"
 
         if (!isOwnProfile) {

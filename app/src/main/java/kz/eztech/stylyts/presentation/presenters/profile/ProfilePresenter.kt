@@ -7,10 +7,10 @@ import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
-import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
-import kz.eztech.stylyts.domain.usecases.profile.GetProfileByIdUseCase
-import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
+import kz.eztech.stylyts.domain.usecases.profile.*
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import javax.inject.Inject
@@ -23,14 +23,19 @@ class ProfilePresenter @Inject constructor(
 	private val errorHelper: ErrorHelper,
 	private val getProfileUseCase: GetProfileUseCase,
 	private val getProfileByIdUseCase: GetProfileByIdUseCase,
-	private val getMyPublicationsUseCase: GetMyPublicationsUseCase
+	private val getMyPublicationsUseCase: GetMyPublicationsUseCase,
+	private val getFollowersUseCase: GetFollowersUseCase,
+	private val getFollowingsUseCase: GetFollowingsUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View
 
 	override fun disposeRequests() {
         getProfileUseCase.clear()
+		getProfileByIdUseCase.clear()
 		getMyPublicationsUseCase.clear()
+		getFollowersUseCase.clear()
+		getFollowingsUseCase.clear()
     }
 
     override fun attach(view: ProfileContract.View) {
@@ -100,6 +105,40 @@ class ProfilePresenter @Inject constructor(
 			getOwnPublications(token)
 		}
     }
+
+	override fun getFollowers(token: String, userId: Int) {
+		getFollowersUseCase.initParams(token, userId)
+		getFollowersUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
+			override fun onSuccess(t: ResultsModel<FollowerModel>) {
+				view.processViewAction {
+					processFollowers(resultsModel = t)
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(msg = errorHelper.processError(e))
+				}
+			}
+		})
+	}
+
+	override fun getFollowings(token: String, userId: Int) {
+		getFollowingsUseCase.initParams(token, userId)
+		getFollowingsUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
+			override fun onSuccess(t: ResultsModel<FollowerModel>) {
+				view.processViewAction {
+					processFollowings(resultsModel = t)
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(msg = errorHelper.processError(e))
+				}
+			}
+		})
+	}
 
 	private fun getOwnProfile(token: String) {
 		getProfileUseCase.initParams(token)
