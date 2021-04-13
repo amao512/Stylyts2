@@ -22,7 +22,10 @@ interface FilterContract {
 
         fun getClothesTypes(token: String)
 
-        fun getClothesBrands(token: String)
+        fun getClothesBrands(
+            token: String,
+            title: String
+        )
 
         fun getClothesResults(
             token: String,

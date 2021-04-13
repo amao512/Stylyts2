@@ -21,6 +21,7 @@ import kz.eztech.stylyts.presentation.fragments.address.AddressFragment
 import kz.eztech.stylyts.presentation.fragments.auth.LoginFragment
 import kz.eztech.stylyts.presentation.fragments.auth.RefreshPasswordFragment
 import kz.eztech.stylyts.presentation.fragments.auth.RegistrationFragment
+import kz.eztech.stylyts.presentation.fragments.collection.CollectionsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.PhotoChooserFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
@@ -78,6 +79,7 @@ interface ApplicationComponent {
     fun inject(fragment: ShopItemListFragment)
     fun inject(fragment: UserSubsFragment)
     fun inject(fragment: UserSubsItemFragment)
+    fun inject(fragment: CollectionsFragment)
 
     fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)

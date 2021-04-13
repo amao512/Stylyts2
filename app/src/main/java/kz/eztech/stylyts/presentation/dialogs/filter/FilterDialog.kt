@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.dialogs.filter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -199,7 +198,10 @@ class FilterDialog(
             0 -> presenter.getClothesTypes(token = getTokenFromArguments())
             1 -> {
                 dialog_filter_recycler_view.adapter = filterCheckAdapter
-                presenter.getClothesBrands(token = getTokenFromArguments())
+                presenter.getClothesBrands(
+                    title = filterModel.title,
+                    token = getTokenFromArguments()
+                )
             }
         }
 
@@ -266,8 +268,6 @@ class FilterDialog(
     }
 
     private fun getFilterResults() {
-        Log.d("TAG", "brand - $selectedClothesBrand")
-
         presenter.getClothesResults(
             token = getTokenFromArguments(),
             gender = currentGender,

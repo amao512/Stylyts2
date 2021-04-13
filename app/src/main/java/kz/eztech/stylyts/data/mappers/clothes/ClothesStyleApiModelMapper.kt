@@ -13,4 +13,15 @@ class ClothesStyleApiModelMapper @Inject constructor() {
             title = data?.title ?: EMPTY_STRING
         )
     }
+
+    fun map(data: List<ClothesStyleApiModel>?): List<ClothesStyleModel> {
+        data ?: return emptyList()
+
+        return data.map {
+            ClothesStyleModel(
+                id = it.id ?: 0,
+                title = it.title ?: EMPTY_STRING
+            )
+        }
+    }
 }

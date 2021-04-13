@@ -7,10 +7,7 @@ import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesBrandApiModelMapper
 import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.repository.clothes.ClothesDomainRepository
 import javax.inject.Inject
 
@@ -25,6 +22,15 @@ class ClothesRepository @Inject constructor(
         return api.getClothesTypes(token).map {
             when (it.isSuccessful) {
                 true -> resultsApiModelMapper.mapTypeResults(data = it.body())
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothesStyles(token: String): Single<ResultsModel<ClothesStyleModel>> {
+        return api.getClothesStyles(token).map {
+            when (it.isSuccessful) {
+                true -> resultsApiModelMapper.mapStyleResults(data = it.body())
                 false -> throw NetworkException(it)
             }
         }

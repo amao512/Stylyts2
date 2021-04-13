@@ -3,10 +3,7 @@ package kz.eztech.stylyts.data.api.network
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
-import kz.eztech.stylyts.data.api.models.clothes.ClothesBrandApiModel
-import kz.eztech.stylyts.data.api.models.clothes.ClothesCategoryApiModel
-import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
-import kz.eztech.stylyts.data.api.models.clothes.ClothesTypeApiModel
+import kz.eztech.stylyts.data.api.models.clothes.*
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -19,6 +16,11 @@ interface ClothesApi {
     fun getClothesTypes(
         @Header("Authorization") token: String
     ): Single<Response<ResultsApiModel<ClothesTypeApiModel>>>
+
+    @GET(RestConstants.GET_CLOTHES_STYLES)
+    fun getClothesStyles(
+        @Header("Authorization") token: String
+    ): Single<Response<ResultsApiModel<ClothesStyleApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_CATEGORIES)
     fun getClothesCategories(

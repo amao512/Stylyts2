@@ -2,14 +2,13 @@ package kz.eztech.stylyts.domain.repository.clothes
 
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.clothes.*
 
 interface ClothesDomainRepository {
 
     fun getClothesTypes(token: String): Single<ResultsModel<ClothesTypeModel>>
+
+    fun getClothesStyles(token: String): Single<ResultsModel<ClothesStyleModel>>
 
     fun getClothesCategories(token: String): Single<ResultsModel<ClothesCategoryModel>>
 

@@ -3,29 +3,35 @@ package kz.eztech.stylyts.presentation.fragments.collection
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collections.*
-import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.MainResult
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionsContract
+import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.presenters.collection.CollectionsPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import javax.inject.Inject
 
 class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.View,
     UniversalViewClickListener {
 
+    @Inject lateinit var presenter: CollectionsPresenter
     private lateinit var filterAdapter: CollectionsFilterAdapter
-    private lateinit var filterList: ArrayList<CollectionFilterModel>
     private lateinit var pagerAdapter: CollectionsViewPagerAdapter
 
     override fun getLayoutId(): Int = R.layout.fragment_collections
@@ -45,34 +51,26 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         }
     }
 
-    override fun initializeDependency() {}
+    override fun initializeDependency() {
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
+    }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() {
+        presenter.attach(view = this)
+    }
 
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        filterList = ArrayList()
-        filterList.add(CollectionFilterModel(name = "Классика"))
-        filterList.add(CollectionFilterModel(name = "Уличный"))
-        filterList.add(CollectionFilterModel(name = "Casual"))
-        filterList.add(CollectionFilterModel(name = "Спортивный"))
-        filterList.add(CollectionFilterModel(name = "Произвольный"))
-        filterList.add(CollectionFilterModel(name = "Классика"))
-        filterList.add(CollectionFilterModel(name = "Уличный"))
-        filterList.add(CollectionFilterModel(name = "Casual"))
-        filterList.add(CollectionFilterModel(name = "Спортивный"))
-        filterList.add(CollectionFilterModel(name = "Произвольный"))
+        pagerAdapter = CollectionsViewPagerAdapter(this, this)
+
+        filterAdapter = CollectionsFilterAdapter()
+        filterAdapter.itemClickListener = this
     }
 
     override fun initializeViews() {
-        pagerAdapter = CollectionsViewPagerAdapter(this, this)
         view_pager_fragment_collections.isSaveEnabled = false
-        filterAdapter = CollectionsFilterAdapter()
-        recycler_view_fragment_collections_filter_list.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         recycler_view_fragment_collections_filter_list.adapter = filterAdapter
-        filterAdapter.updateList(filterList)
     }
 
     override fun onResume() {
@@ -109,12 +107,15 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
                     bundle
                 )
             }
+            is CollectionFilterModel -> onStyleItemClick(item, position)
         }
     }
 
     override fun initializeListeners() {}
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        presenter.getClothesStyles(token = getTokenFromSharedPref())
+    }
 
     override fun disposeRequests() {}
 
@@ -125,4 +126,41 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    override fun processClothesStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
+        val filterList = mutableListOf<CollectionFilterModel>()
+
+        filterList.add(
+            CollectionFilterModel(
+                id = 0,
+                name = getString(R.string.filter_list_filter),
+                icon = R.drawable.ic_filter
+            )
+        )
+
+        resultsModel.results.map {
+            filterList.add(
+                CollectionFilterModel(id = it.id, name = it.title)
+            )
+        }
+
+        filterAdapter.updateList(list = filterList)
+    }
+
+    private fun onStyleItemClick(
+        item: CollectionFilterModel,
+        position: Int
+    ) {
+        if (position == 0) {
+            FilterDialog.getNewInstance(
+                token = getTokenFromSharedPref(),
+                itemClickListener = this,
+                gender = item.gender ?: "M"
+            ).show(childFragmentManager, EMPTY_STRING)
+        } else filterAdapter.onChooseItem(position)
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
+    }
 }

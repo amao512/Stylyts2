@@ -14,6 +14,7 @@ import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
@@ -64,12 +65,40 @@ class FilterPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesBrands(token: String) {
+    override fun getClothesBrands(
+        token: String,
+        title: String
+    ) {
         getClothesBrandsUseCase.initParams(token)
         getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
                 view.processViewAction {
-                    processClothesBrands(resultsModel = t)
+                    val preparedResults: MutableList<ClothesBrandModel> = mutableListOf()
+
+                    preparedResults.add(
+                        ClothesBrandModel(
+                            id = 0,
+                            title = title,
+                            website = EMPTY_STRING,
+                            logo = EMPTY_STRING,
+                            createdAt = EMPTY_STRING,
+                            modifiedAt = EMPTY_STRING
+                        )
+                    )
+
+                    t.results.map {
+                        preparedResults.add(it)
+                    }
+
+                    val preparedResultsModel = ResultsModel(
+                        page = t.page,
+                        totalPages = t.totalPages,
+                        pageSize = t.pageSize,
+                        totalCount = t.totalCount,
+                        results = preparedResults
+                    )
+
+                    processClothesBrands(resultsModel = preparedResultsModel)
                 }
             }
 
