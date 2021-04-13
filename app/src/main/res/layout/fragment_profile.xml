@@ -227,7 +227,6 @@
                                 android:background="@drawable/rounded_rectangle_orange"
                                 android:gravity="center"
                                 android:paddingHorizontal="@dimen/padding_size_16x"
-                                android:paddingVertical="@dimen/padding_size_6x"
                                 android:text="@string/subscribe"
                                 android:textColor="@color/white"
                                 android:visibility="gone"

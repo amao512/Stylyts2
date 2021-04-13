@@ -294,4 +294,7 @@
     <string name="unfollow">Отписаться</string>
     <string name="followers_text_format">%s Подписчики</string>
     <string name="followings_text_format">%s Подписки</string>
+
+    <string name="saved">Сохранено</string>
+    <string name="can_not_load_page_error">Не удалось прогрузить страницу</string>
 </resources>

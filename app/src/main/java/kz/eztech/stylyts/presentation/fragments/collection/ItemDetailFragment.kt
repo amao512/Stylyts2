@@ -40,7 +40,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     private lateinit var chooserDialog: ItemDetailChooserDialog
 
     private var currentClothesModel: ClothesModel? = null
-    private var currentClotheId: Int = -1
+    private var currentClothesId: Int = -1
 
     private enum class CART_STATE { NONE, EDIT, DONE }
 
@@ -89,7 +89,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             }
 
             if (it.containsKey(CLOTHES_ID)) {
-                currentClotheId = it.getInt(CLOTHES_ID)
+                currentClothesId = it.getInt(CLOTHES_ID)
             }
 
             if (it.containsKey("barcode_code")) {
@@ -120,6 +120,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         frame_layout_fragment_item_detail_text_size.setOnClickListener(this)
         frame_layout_fragment_item_detail_text_color.setOnClickListener(this)
         linear_layout_fragment_item_detail_description_holder.setOnClickListener(this)
+        button_fragment_item_detail_add_to_wardrobe.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -132,6 +133,10 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.toolbar_right_corner_action_image_button -> CartDialog().show(
                 childFragmentManager, EMPTY_STRING
+            )
+            R.id.button_fragment_item_detail_add_to_wardrobe -> presenter.saveClothesToWardrobe(
+                token = getTokenFromSharedPref(),
+                clothesId = currentClothesModel?.id ?: 0
             )
         }
     }
@@ -152,7 +157,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     }
 
     override fun processClothes(clothesModel: ClothesModel) {
-        currentClotheId = -2
+        currentClothesId = -2
         currentClothesModel = clothesModel
         initializeViews()
     }
@@ -173,6 +178,10 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    override fun processSuccessSavedWardrobe() {
+        displayMessage(msg = getString(R.string.saved))
+    }
 
     private fun fillClothesModel(clothesModel: ClothesModel) {
         chooserDialog = ItemDetailChooserDialog()
@@ -221,13 +230,13 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
                 value = it
             )
         } ?: run {
-            if (currentClotheId != -1) {
+            if (currentClothesId != -1) {
                 presenter.getClothesById(
                     token = getTokenFromSharedPref(),
-                    clothesId = currentClotheId.toString()
+                    clothesId = currentClothesId.toString()
                 )
             } else {
-                displayMessage("Не удалось прогрузить страницу")
+                displayMessage(msg = getString(R.string.can_not_load_page_error))
                 presenter.getClothesById(
                     getTokenFromSharedPref(),
                     clothesId = 43.toString()
@@ -242,6 +251,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
                 currentState = CART_STATE.EDIT
 
                 button_fragment_item_detail_create_collection.hide()
+                button_fragment_item_detail_add_to_wardrobe.hide()
                 linear_layout_fragment_item_detail_cart_holder.setBackgroundColor(
                     getColor(currentActivity, R.color.app_very_light_gray)
                 )

@@ -35,4 +35,9 @@ interface ClothesDomainRepository {
         stringQueryMap: Map<String, String>,
         booleanQueryMap: Map<String, Boolean>
     ): Single<ResultsModel<ClothesModel>>
+
+    fun saveClothesToWardrobe(
+        token: String,
+        clothesId: String
+    ): Single<Any>
 }

@@ -156,7 +156,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         )
 
         when (chosenFilterPosition) {
-            3 -> presenter.getWardrobe(token = getTokenFromSharedPref())
+            3 -> if (isOwnProfile) presenter.getWardrobe(token = getTokenFromSharedPref())
         }
     }
 

@@ -293,4 +293,7 @@
     <string name="unfollow">unfollow</string>
     <string name="followers_text_format">%s Followers</string>
     <string name="followings_text_format">%s Followings</string>
+
+    <string name="saved">Saved</string>
+    <string name="can_not_load_page_error">Can not load page</string>
 </resources>

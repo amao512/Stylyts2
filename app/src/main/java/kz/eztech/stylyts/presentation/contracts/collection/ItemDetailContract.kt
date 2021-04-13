@@ -12,6 +12,8 @@ interface ItemDetailContract {
     interface View : BaseView {
 
         fun processClothes(clothesModel: ClothesModel)
+
+        fun processSuccessSavedWardrobe()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -24,6 +26,11 @@ interface ItemDetailContract {
         fun getItemByBarcode(
             token: String,
             value: String
+        )
+
+        fun saveClothesToWardrobe(
+            token: String,
+            clothesId: Int
         )
     }
 }

@@ -65,14 +65,14 @@
             tools:text="Emillie Johnson"
             />
 
-<!--                <TextView-->
-<!--                    style="@style/TextRegular"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:text="@string/following"-->
-<!--                    android:textColor="@color/app_gray_hint"-->
-<!--                    />-->
-
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/following"
+            android:textColor="@color/app_gray_hint"
+            android:visibility="gone"
+            />
     </LinearLayout>
 
     <ImageView
@@ -80,9 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/margin_size_16x"
+        android:layout_marginEnd="@dimen/margin_size_24x"
         android:src="@drawable/ic_close"
-        android:visibility="gone"
         />
-
 </LinearLayout>

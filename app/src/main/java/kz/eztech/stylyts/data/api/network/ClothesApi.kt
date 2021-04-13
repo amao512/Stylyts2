@@ -54,4 +54,10 @@ interface ClothesApi {
         @QueryMap(encoded = true) stringQueryMap: Map<String, String>,
         @QueryMap(encoded = true) booleanQueryMap: Map<String, Boolean>
     ): Single<Response<ResultsApiModel<ClothesApiModel>>>
+
+    @POST(RestConstants.SAVE_CLOTHES_TO_WARDROBE)
+    fun saveClothesToWardrobe(
+        @Header("Authorization") token: String,
+        @Path("clothes_id") clothesId: String
+    ): Single<Response<Any>>
 }

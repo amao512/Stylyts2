@@ -51,8 +51,8 @@
                         />
 
                     <ImageView
-                        android:layout_width="@dimen/favorite_button_size"
-                        android:layout_height="@dimen/favorite_button_size"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_size_24x"
                         android:layout_marginEnd="@dimen/margin_size_24x"
                         android:src="@drawable/ic_baseline_favorite_border_24"
@@ -295,6 +295,24 @@
                         android:imeOptions="actionNext"
                         android:padding="@dimen/padding_size_10x"
                         android:text="@string/create_outfit_with_item"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:backgroundTint="@color/app_dark_blue_gray_half"
+                        app:cornerRadius="@dimen/corner_radius_default"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_fragment_item_detail_add_to_wardrobe"
+                        style="@style/SubtitleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_size_24x"
+                        android:layout_marginBottom="@dimen/margin_size_8x"
+                        android:gravity="start"
+                        android:imeOptions="actionNext"
+                        android:padding="@dimen/padding_size_10x"
+                        android:text="@string/profile_add_to_wardrobe"
                         android:textAlignment="center"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
