@@ -1,10 +1,11 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.*
-import kz.eztech.stylyts.presentation.base.BasePresenter
-import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.domain.models.MainResult
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.presentation.base.BasePresenter
 import java.io.File
 
 /**
@@ -13,20 +14,20 @@ import java.io.File
 interface CollectionConstructorContract {
     interface View : MotionViewContract {
 
-        fun processShopCategories(shopCategoryModel: ShopCategoryModel)
+        fun processTypesResults(resultsModel: ResultsModel<kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel>)
 
-        fun processStyles(list: List<Style>)
+        fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>)
 
         fun processSuccess(result: MainResult?)
 
-        fun processFilteredItems(model: FilteredItemsModel)
+        fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun getCategory()
+        fun getTypes(token: String)
 
-        fun getShopCategoryTypeDetail(
+        fun getClothesByType(
             token: String,
             map: Map<String, Any>
         )

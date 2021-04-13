@@ -21,25 +21,23 @@ import com.bumptech.glide.request.transition.Transition
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
+import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.*
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopCategoryAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
-import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.shop.GenderCategory
-import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
-import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.domain.models.MainResult
-import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.*
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopCategoryAdapter
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionAcceptDialog
+import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CollectionConstructorPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils.createPngFileFromBitmap
@@ -64,14 +62,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	@Inject lateinit var presenter: CollectionConstructorPresenter
 
-    private lateinit var adapter: CollectionConstructorShopCategoryAdapter
+    private lateinit var typesAdapter: CollectionConstructorShopCategoryAdapter
     private lateinit var itemAdapter: CollectionConstructorShopItemAdapter
 	private lateinit var filterDialog: ConstructorFilterDialog
 
-    private val listOfItems = ArrayList<ClothesMainModel>()
+    private val listOfItems = ArrayList<ClothesModel>()
     private val listOfEntities = ArrayList<ImageEntity>()
     private val listOfIdsChosen = ArrayList<Int>()
-    private val listOfGenderCategory = ArrayList<GenderCategory>()
+    private val listOfTypes = ArrayList<ClothesTypeModel>()
     private val filterMap = HashMap<String, Any>()
 
 	private var isItems = false
@@ -79,7 +77,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private var currentType = 0
 	private var currentSaveMode = 1
 	private var currentId: Int = -1
-	private var currentStyle: Style? = null
+	private var currentStyle: ClothesStyleModel? = null
 	private var currentCollectionBitmap: Bitmap? = null
 	private var currentMainId: Int = -1
 
@@ -101,7 +99,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         arguments?.let {
             if (it.containsKey("items")) {
                 val handler = Handler(Looper.getMainLooper())
-                handler.postDelayed(Runnable {
+                handler.postDelayed({
 					it.getParcelableArrayList<ClothesMainModel>("items")?.let { it1 ->
 						it1.forEach { clothesMainModel ->
 							processInputImageToPlace(clothesMainModel)
@@ -128,14 +126,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		checkWritePermission()
 
         filterDialog = ConstructorFilterDialog()
-        adapter = CollectionConstructorShopCategoryAdapter()
+        typesAdapter = CollectionConstructorShopCategoryAdapter()
         itemAdapter = CollectionConstructorShopItemAdapter()
 
-		adapter.itemClickListener = this
+		typesAdapter.itemClickListener = this
 		itemAdapter.itemClickListener = this
 		itemAdapter.itemDoubleClickListener = this
 
-        recycler_view_fragment_collection_constructor_list.adapter = adapter
+        recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
         frame_layout_fragment_collection_constructor_images_container.attachView(motionViewContract = this)
 
         processDraggedItems()
@@ -149,7 +147,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         filterDialog.setChoiceListener(this)
     }
 
-    override fun processPostInitialization() = presenter.getCategory()
+    override fun processPostInitialization() = presenter.getTypes(token = getTokenFromSharedPref())
 
     override fun disposeRequests() = presenter.disposeRequests()
 
@@ -200,19 +198,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         }
     }
 
-    override fun processFilteredItems(model: FilteredItemsModel) {
+    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
         text_view_fragment_collection_constructor_category_next.hide()
         text_view_fragment_collection_constructor_category_filter.show()
 
         text_view_fragment_collection_constructor_category_back.show()
         text_view_fragment_collection_constructor_category_back.isClickable = true
+		recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
 
-        model.results?.let {
-            recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
-
-            itemAdapter.updateList(it)
-            isItems = true
-        }
+		itemAdapter.updateList(list = resultsModel.results)
+		isItems = true
     }
 
     override fun onChoice(v: View?, item: Any?) {
@@ -262,29 +257,22 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         }
     }
 
-	override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
-		when (currentType) {
-			0 -> shopCategoryModel.menCategory?.let {
-				addCameraCategories(genderCategoryList = it)
-				processCategory(genderCategoryList = it)
-			}
-			1 -> shopCategoryModel.femaleCategory?.let {
-				addCameraCategories(genderCategoryList = it)
-				processCategory(genderCategoryList = it)
-			}
-		}
+	override fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>) {
+		processCategory(
+			typesList = preparedTypes(list = resultsModel.results)
+		)
 	}
 
-	override fun processStyles(list: List<Style>) {
+	override fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
 		val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-			currentActivity, R.layout.item_style, list.map { it.title }
+			currentActivity, R.layout.item_style, resultsModel.results.map { it.title }
 		)
 		recycler_view_fragment_collection_constructor_list.hide()
 
 		list_view_fragment_collection_constructor_list_style.adapter = adapter
 		list_view_fragment_collection_constructor_list_style.show()
 		list_view_fragment_collection_constructor_list_style.setOnItemClickListener { _, _, position, _ ->
-			currentStyle = list[position]
+			currentStyle = resultsModel.results[position]
 			processPostImages()
 		}
 	}
@@ -312,22 +300,22 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 
 	private fun processInputImageToPlace(item: Any?) {
-		item as ClothesMainModel
+		item as ClothesModel
 
 		var photoUrl = EMPTY_STRING
 		var currentSameObject: ImageEntity? = null
 
-		item.cover_photo?.let { coverPhoto ->
+		item.constructorImage.let { coverPhoto ->
 			photoUrl = if (coverPhoto.contains("http", true)) {
 				coverPhoto
 			} else {
-				"http://178.170.221.31:8000${coverPhoto}"
+				"http://178.170.221.31${coverPhoto}"
 			}
 		}
 
 		if (listOfItems.isNotEmpty() && listOfEntities.isNotEmpty()) {
 			listOfEntities.forEach {
-				if (item.clothes_type?.body_part == it.item.clothes_type?.body_part) {
+				if (item.clothesCategory.bodyPart == it.item.clothesCategory.bodyPart) {
 					currentSameObject = it
 				}
 			}
@@ -336,7 +324,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		loadWithGlide(
 			photoUrl = photoUrl,
 			currentSameObject = currentSameObject,
-			clothesMainModel = item
+			clothesModel = item
 		)
 	}
 
@@ -369,7 +357,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private fun onCategoryBackClick() {
 		if (isStyle) {
-			recycler_view_fragment_collection_constructor_list.adapter = adapter
+			recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
 			recycler_view_fragment_collection_constructor_list.show()
 
 			list_view_fragment_collection_constructor_list_style.hide()
@@ -380,21 +368,21 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			isItems = false
 
 			checkIsListEmpty()
-			presenter.getCategory()
+			presenter.getTypes(token = getTokenFromSharedPref())
 		} else if (isItems) {
 			checkIsListEmpty()
 
 			text_view_fragment_collection_constructor_category_filter.hide()
-			recycler_view_fragment_collection_constructor_list.adapter = adapter
+			recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
 			text_view_fragment_collection_constructor_category_back.visibility = View.INVISIBLE
 			text_view_fragment_collection_constructor_category_back.isClickable = false
 
 			isItems = false
 			isStyle = false
 
-			presenter.getCategory()
+			presenter.getTypes(token = getTokenFromSharedPref())
 		} else {
-			presenter.getCategory()
+			presenter.getTypes(token = getTokenFromSharedPref())
 		}
 	}
 
@@ -418,25 +406,22 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		if (isItems) {
 			processInputImageToPlace(item)
 		} else {
-			(item as GenderCategory).run {
+			(item as ClothesTypeModel).run {
 				if (isExternal) {
 					onChoice(view, externalType)
 				} else {
-					currentId = item.id ?: 0
+					currentId = item.id
+					filterMap["clothes_type"] = item.id
 
-					item.clothes_types?.let { clothes ->
-						filterMap["clothes_type"] = clothes.map { it.id }.joinToString()
-
-						when (currentType) {
-							0 -> filterMap["gender"] = "M"
-							1 -> filterMap["gender"] = "F"
-						}
-
-						presenter.getShopCategoryTypeDetail(
-							token = getTokenFromSharedPref(),
-							map = filterMap
-						)
+					when (currentType) {
+						0 -> filterMap["gender"] = "M"
+						1 -> filterMap["gender"] = "F"
 					}
+
+					presenter.getClothesByType(
+						token = getTokenFromSharedPref(),
+						map = filterMap
+					)
 				}
 			}
 		}
@@ -447,7 +432,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			checkIsListEmpty()
 
 			text_view_fragment_collection_constructor_category_filter.hide()
-			recycler_view_fragment_collection_constructor_list.adapter = adapter
+			recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
 
 			text_view_fragment_collection_constructor_category_back.hide()
 			text_view_fragment_collection_constructor_category_back.isClickable = false
@@ -455,19 +440,19 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			isItems = false
 			isStyle = false
 
-			presenter.getCategory()
+			presenter.getTypes(token = getTokenFromSharedPref())
 		}
 	}
 
 	private fun showFilterResults(item: Any?) {
 		val map = item as HashMap<String, Any>
-		val clothes_type = filterMap["clothes_type"]
+		val clothesType = filterMap["clothes_type"]
 
 		filterMap.clear()
-		filterMap["clothes_type"] = clothes_type as String
+		filterMap["clothes_type"] = clothesType as String
 		filterMap.putAll(map)
 
-		presenter.getShopCategoryTypeDetail(
+		presenter.getClothesByType(
 			token = getTokenFromSharedPref(),
 			map = filterMap
 		)
@@ -488,9 +473,48 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		)
 	}
 
-	private fun addCameraCategories(genderCategoryList: ArrayList<GenderCategory>) {
-		genderCategoryList.add(
-			GenderCategory(
+	private fun preparedTypes(list: List<ClothesTypeModel>): List<ClothesTypeModel> {
+		val preparedResults: MutableList<ClothesTypeModel> = mutableListOf()
+
+		preparedResults.add(
+			ClothesTypeModel(
+				id = list[0].id,
+				title = list[0].title,
+				externalType = 1,
+				isChoosen = false,
+				externalImageId = R.drawable.ic_top_clothes_type
+			)
+		)
+		preparedResults.add(
+			ClothesTypeModel(
+				id = list.size + 1,
+				title = "Низ",
+				externalType = 1,
+				isChoosen = false,
+				externalImageId = R.drawable.ic_bottom_clothes_type
+			)
+		)
+		preparedResults.add(
+			ClothesTypeModel(
+				id = list.size + 1,
+				title = "Аксессуары",
+				externalType = 1,
+				isChoosen = false,
+				externalImageId = R.drawable.ic_artboard_clothes_type
+			)
+		)
+		preparedResults.add(
+			ClothesTypeModel(
+				id = list.size + 1,
+				title = "Обувь",
+				externalType = 1,
+				isChoosen = false,
+				externalImageId = R.drawable.ic_shoes_clothes_type
+			)
+		)
+		preparedResults.add(
+			ClothesTypeModel(
+				id = list.size + 1,
 				title = getString(R.string.collection_constructor_add_category),
 				isExternal = true,
 				externalType = 1,
@@ -498,8 +522,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				externalImageId = R.drawable.ic_add
 			)
 		)
-		genderCategoryList.add(
-			GenderCategory(
+		preparedResults.add(
+			ClothesTypeModel(
+				id = list.size + 1,
 				title = getString(R.string.collection_constructor_add_by_barcode),
 				isExternal = true,
 				externalType = 2,
@@ -507,8 +532,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				externalImageId = R.drawable.ic_baseline_qr_code_2_24
 			)
 		)
-		genderCategoryList.add(
-			GenderCategory(
+		preparedResults.add(
+			ClothesTypeModel(
+				id = list.size + 1,
 				title = getString(R.string.collection_constructor_add_by_photo),
 				isExternal = true,
 				externalType = 3,
@@ -516,19 +542,21 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				externalImageId = R.drawable.ic_camera
 			)
 		)
+
+		return preparedResults
 	}
 
-	private fun processCategory(genderCategoryList: ArrayList<GenderCategory>) {
+	private fun processCategory(typesList: List<ClothesTypeModel>) {
 		if (listOfIdsChosen.isNotEmpty()) {
 			listOfIdsChosen.forEach { type ->
-				genderCategoryList.find { it.id == type }?.isChoosen = true
+				typesList.find { it.id == type }?.isChoosen = true
 			}
 		}
 
-		listOfGenderCategory.clear()
-		listOfGenderCategory.addAll(genderCategoryList)
+		listOfTypes.clear()
+		listOfTypes.addAll(typesList)
 
-		adapter.updateList(listOfGenderCategory)
+		typesAdapter.updateList(listOfTypes)
 	}
 
 	private fun processPostImages() {
@@ -542,11 +570,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				clothes = clothesList,
 				clothes_location = clothesCollectionList,
 				author = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY),
-				total_price = listOfItems.sumBy { it.cost ?: 0 }.toFloat()
+				total_price = listOfItems.sumBy { it.cost }.toFloat()
 			)
 
 			constructorImagesContainer.unselectEntity()
 			currentCollectionBitmap = createBitmapScreenshot(constructorImagesContainer)
+
+			Log.d("TAG", collectionPostCreateModel.toString())
+			Log.d("TAG", currentCollectionBitmap.toString())
 
 			showCreateCollectionDialog(collectionPostCreateModel)
 		} else {
@@ -569,9 +600,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 
 	private fun loadWithGlide(
-        photoUrl: String,
-        currentSameObject: ImageEntity?,
-        clothesMainModel: ClothesMainModel
+		photoUrl: String,
+		currentSameObject: ImageEntity?,
+		clothesModel: ClothesModel
 	) {
 		Glide.with(currentActivity.applicationContext)
 			.asFile()
@@ -591,7 +622,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					frame_layout_fragment_collection_constructor_images_container.post {
 						runImagesContainer(
 							currentSameObject = currentSameObject,
-							clothesMainModel = clothesMainModel,
+							clothesModel = clothesModel,
 							resource = BitmapFactory.decodeFile(file.path, options)
 						)
 
@@ -612,7 +643,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun checkIsChosen() {
 		if (listOfIdsChosen.isNotEmpty()) {
 			listOfIdsChosen.forEach { type ->
-				listOfGenderCategory.find { it.id == type }?.isChoosen = true
+				listOfTypes.find { it.id == type }?.isChoosen = true
 			}
 		}
 	}
@@ -661,16 +692,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 
 	private fun runImagesContainer(
-        currentSameObject: ImageEntity?,
-        clothesMainModel: ClothesMainModel,
-        resource: Bitmap
+		currentSameObject: ImageEntity?,
+		clothesModel: ClothesModel,
+		resource: Bitmap
 	) {
 		currentSameObject?.let {
 			frame_layout_fragment_collection_constructor_images_container.deleteEntity(entity = it)
 		}
 
-		val measurements = getRelativeImageMeasurements(clothesMainModel)
-		val entity = getImageEntity(resource, clothesMainModel)
+		val measurements = getRelativeImageMeasurements(clothesModel)
+		val entity = getImageEntity(resource, clothesModel)
 
 		frame_layout_fragment_collection_constructor_images_container.addEntityAndPosition(entity = entity)
 
@@ -686,17 +717,17 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			entity.layer.postRotate(it.degree)
 		}
 
-		listOfItems.add(clothesMainModel)
+		listOfItems.add(clothesModel)
 		listOfEntities.add(entity)
 		listOfIdsChosen.add(currentId)
 	}
 
 	private fun getRelativeImageMeasurements(
-		clothesMainModel: ClothesMainModel
+		clothesModel: ClothesModel
 	): RelativeImageMeasurements? {
 		var measurements: RelativeImageMeasurements? = null
 
-		clothesMainModel.clothe_location?.let {
+		clothesModel.clothe_location?.let {
 			measurements = reMeasureEntity(
 				RelativeImageMeasurements(
 					it.point_x!!.toFloat(),
@@ -714,11 +745,11 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private fun getImageEntity(
 		resource: Bitmap,
-		clothesMainModel: ClothesMainModel
+		clothesModel: ClothesModel
 	): ImageEntity = ImageEntity(
 		layer = Layer(),
 		bitmap = resource,
-		item = clothesMainModel,
+		item = clothesModel,
 		canvasWidth = frame_layout_fragment_collection_constructor_images_container.width,
 		canvasHeight = frame_layout_fragment_collection_constructor_images_container.height
 	)

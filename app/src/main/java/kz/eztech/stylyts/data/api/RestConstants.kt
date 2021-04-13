@@ -49,6 +49,10 @@ object RestConstants {
     const val GET_CLOTHES_BRAND_BY_ID: String = "clothes/brands/{brand_id}"
     const val SAVE_CLOTHES_TO_WARDROBE: String = "clothes/{clothes_id}/save"
 
+    // Outfits
+    const val GET_OUTFITS = "outfits"
+    const val CREATE_OUTFIT: String = "outfits"
+
     // Post
     const val CREATE_POST: String = "post/"
     const val GET_MY_POSTS: String = "post/"
@@ -57,7 +61,6 @@ object RestConstants {
     const val GET_CATEGORIES: String = "clothes/category/"
     const val GET_CATEGORIES_DETAIL: String = "clothes/type/{id}/"
     const val GET_STYLES: String = "clothes/styles/"
-    const val SAVE_COLLECTION: String = "outfit/"
     const val UPDATE_COLLECTION: String = "outfit/{id}/"
     const val GET_COLLECTIONS: String = "outfit/"
     const val GET_ITEM_DETAIL: String = "clothes/item/{id}/"

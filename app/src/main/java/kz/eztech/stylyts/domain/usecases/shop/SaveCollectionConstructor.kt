@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.usecases.shop
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.repository.collection_constructor.ShopCategoryDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -29,7 +30,7 @@ class SaveCollectionConstructor @Inject constructor(
         token: String,
         data: ArrayList<MultipartBody.Part>
     ) {
-        this.token = "Bearer $token"
+        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.data = data
     }
 }

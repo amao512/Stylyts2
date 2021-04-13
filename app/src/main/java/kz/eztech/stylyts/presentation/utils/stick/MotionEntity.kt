@@ -1,8 +1,11 @@
 package kz.eztech.stylyts.presentation.utils.stick
 
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.PointF
 import androidx.annotation.IntRange
-import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.utils.stick.MathUtils.pointInTriangle
 
 /**
@@ -10,7 +13,7 @@ import kz.eztech.stylyts.presentation.utils.stick.MathUtils.pointInTriangle
  */
 abstract class MotionEntity(
     val layer: Layer,
-    val item: ClothesMainModel,
+    val item: ClothesModel,
     @IntRange(from = 1) var canvasWidth: Int,
     @IntRange(from = 1) var canvasHeight: Int
 ) {

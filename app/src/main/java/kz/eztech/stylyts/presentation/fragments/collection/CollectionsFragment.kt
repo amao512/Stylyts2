@@ -13,6 +13,7 @@ import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsViewPagerAdapter
@@ -99,7 +100,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         item: Any?
     ) {
         when (item) {
-            is MainResult -> {
+            is OutfitModel -> {
                 val bundle = Bundle()
                 bundle.putParcelable("model", item)
                 findNavController().navigate(

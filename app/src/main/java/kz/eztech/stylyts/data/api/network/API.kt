@@ -7,7 +7,7 @@ import kz.eztech.stylyts.data.api.RestConstants.GET_CATEGORIES_DETAIL
 import kz.eztech.stylyts.data.api.RestConstants.GET_COLLECTIONS
 import kz.eztech.stylyts.data.api.RestConstants.GET_FILTERED_ITEMS
 import kz.eztech.stylyts.data.api.RestConstants.GET_STYLES
-import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION
+import kz.eztech.stylyts.data.api.RestConstants.CREATE_OUTFIT
 import kz.eztech.stylyts.data.api.RestConstants.SAVE_COLLECTION_TO_ME
 import kz.eztech.stylyts.data.api.RestConstants.UPDATE_COLLECTION
 import kz.eztech.stylyts.domain.models.*
@@ -34,7 +34,7 @@ interface API {
     fun getStyles(@Header("Authorization") token: String): Single<Response<List<Style>>>
 
     @Multipart
-    @POST(SAVE_COLLECTION)
+    @POST(CREATE_OUTFIT)
     fun saveCollection(
         @Header("Authorization") token: String,
         //@PartMap partMap:Map<String, @JvmSuppressWildcards RequestBody> ,

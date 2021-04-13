@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.models.clothes
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kz.eztech.stylyts.domain.models.ClothesLocation
 import kz.eztech.stylyts.domain.models.OwnerModel
 
 @Parcelize
@@ -24,4 +25,6 @@ data class ClothesModel(
     val modifiedAt: String,
     val owner: OwnerModel,
     val clothesBrand: ClothesBrandModel,
+
+    var clothe_location: ClothesLocation? = null,
 ) : Parcelable

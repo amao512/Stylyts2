@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.annotation.Nullable
-import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 
 
 /**
@@ -13,7 +13,7 @@ import kz.eztech.stylyts.domain.models.ClothesMainModel
 class ImageEntity(
     layer: Layer,
     bitmap: Bitmap,
-    item: ClothesMainModel,
+    item: ClothesModel,
     @androidx.annotation.IntRange(from = 1) canvasWidth: Int,
     @androidx.annotation.IntRange(from = 1) canvasHeight: Int
 ) : MotionEntity(layer, item, canvasWidth, canvasHeight) {

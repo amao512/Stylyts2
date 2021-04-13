@@ -2,8 +2,9 @@ package kz.eztech.stylyts.presentation.presenters.collection
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.MainLentaModel
-import kz.eztech.stylyts.domain.usecases.main.MainLentaUseCase
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitsUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContract
 import javax.inject.Inject
@@ -12,25 +13,35 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 01.02.2021.
  */
 class CollectionsItemPresenter @Inject constructor(
-	private var errorHelper: ErrorHelper,
-	private var getCollectionsUseCase: MainLentaUseCase
+	private val errorHelper: ErrorHelper,
+	private val getOutfitsUseCase: GetOutfitsUseCase
 ) : CollectionItemContract.Presenter {
+
 	private lateinit var view: CollectionItemContract.View
 
-	override fun getCollections(
+	override fun disposeRequests() {
+		getOutfitsUseCase.clear()
+	}
+
+	override fun attach(view: CollectionItemContract.View) {
+		this.view = view
+	}
+
+	override fun getOutfits(
 		token: String,
 		map: Map<String, Any>?
 	) {
 		view.displayProgress()
 
-		getCollectionsUseCase.initParams(token,map)
-		getCollectionsUseCase.execute(object : DisposableSingleObserver<MainLentaModel>(){
-			override fun onSuccess(t: MainLentaModel) {
+		getOutfitsUseCase.initParams(token)
+		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>(){
+			override fun onSuccess(t: ResultsModel<OutfitModel>) {
 				view.processViewAction {
 					hideProgress()
-					processCollections(t)
+					processOutfits(t)
 				}
 			}
+
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					hideProgress()
@@ -38,13 +49,5 @@ class CollectionsItemPresenter @Inject constructor(
 				}
 			}
 		})
-	}
-	
-	override fun disposeRequests() {
-		getCollectionsUseCase.clear()
-	}
-	
-	override fun attach(view: CollectionItemContract.View) {
-		this.view = view
 	}
 }

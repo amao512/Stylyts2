@@ -9,10 +9,12 @@ import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
+import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitsUseCase
 import kz.eztech.stylyts.domain.usecases.profile.*
 import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase
 import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
@@ -35,7 +37,8 @@ class ProfilePresenter @Inject constructor(
     private val getFollowingsUseCase: GetFollowingsUseCase,
 	private val followUserUseCase: FollowUserUseCase,
 	private val unfollowUserUseCase: UnfollowUserUseCase,
-	private val getClothesUseCase: GetClothesUseCase
+	private val getClothesUseCase: GetClothesUseCase,
+	private val getOutfitsUseCase: GetOutfitsUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View
@@ -48,6 +51,7 @@ class ProfilePresenter @Inject constructor(
 		getFollowingsUseCase.clear()
 		followUserUseCase.clear()
 		unfollowUserUseCase.clear()
+		getOutfitsUseCase.clear()
     }
 
     override fun attach(view: ProfileContract.View) {
@@ -202,6 +206,23 @@ class ProfilePresenter @Inject constructor(
 			override fun onSuccess(t: ResultsModel<ClothesModel>) {
 				view.processViewAction {
 					processWardrobeResults(resultsModel = t)
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(msg = errorHelper.processError(e))
+				}
+			}
+		})
+	}
+
+	override fun getOutfits(token: String) {
+		getOutfitsUseCase.initParams(token)
+		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
+			override fun onSuccess(t: ResultsModel<OutfitModel>) {
+				view.processViewAction {
+					processOutfitResults(resultsModel = t)
 				}
 			}
 

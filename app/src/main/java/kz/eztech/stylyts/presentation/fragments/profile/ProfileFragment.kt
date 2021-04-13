@@ -16,6 +16,7 @@ import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -23,6 +24,7 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
+import kz.eztech.stylyts.presentation.adapters.collection.GridImageCollectionItemAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -52,6 +54,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
     private lateinit var wardrobeAdapter: ClothesDetailAdapter
+    private lateinit var outfitsAdapter: GridImageCollectionItemAdapter
 
     private var isOwnProfile: Boolean = true
     private var userId: Int = 0
@@ -114,6 +117,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         wardrobeAdapter = ClothesDetailAdapter()
         wardrobeAdapter.itemClickListener = this
+
+        outfitsAdapter = GridImageCollectionItemAdapter()
     }
 
     override fun initializeViews() {
@@ -362,6 +367,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         recycler_view_fragment_profile_items_list.adapter = wardrobeAdapter
     }
 
+    override fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>) {
+        outfitsAdapter.updateList(list = resultsModel.results)
+        recycler_view_fragment_profile_items_list.adapter = outfitsAdapter
+    }
+
     private fun fillProfileInfo(userModel: UserModel) {
         include_toolbar_profile.toolbar_title_text_view.text = userModel.username
         text_view_fragment_profile_user_name.text = userModel.firstName
@@ -397,7 +407,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 gender = currentGender
             ).show(childFragmentManager, EMPTY_STRING)
             1 -> onPublicationsFilterClick(position)
-            2 -> adapterFilter.onChooseItem(position)
+            2 -> onOutfitsFilterClick(position)
             3 -> onWardrobeFilterClick(position)
             4 -> processMyData()
             5 ->  CreatorChooserDialog().apply {
@@ -411,6 +421,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             token = getTokenFromSharedPref(),
             isOwnProfile = isOwnProfile
         )
+        adapterFilter.onChooseItem(position)
+    }
+
+    private fun onOutfitsFilterClick(position: Int) {
+        presenter.getOutfits(token = getTokenFromSharedPref())
         adapterFilter.onChooseItem(position)
     }
 

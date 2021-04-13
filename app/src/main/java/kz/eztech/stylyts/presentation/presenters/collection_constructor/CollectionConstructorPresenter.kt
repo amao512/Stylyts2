@@ -4,9 +4,12 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.*
 import kz.eztech.stylyts.presentation.base.processViewAction
-import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.models.MainResult
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesStylesUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.shop.SaveCollectionConstructor
 import kz.eztech.stylyts.domain.usecases.collection_constructor.*
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorContract
@@ -20,13 +23,16 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class CollectionConstructorPresenter @Inject constructor(
-	private var errorHelper: ErrorHelper,
-	private var getCategoryUseCase: GetCategoryUseCase,
-	private var getStylesUseCase: GetStylesUseCase,
-	private var getFilteredItemsUseCase: GetFilteredItemsUseCase,
-	private var saveCollectionConstructor: SaveCollectionConstructor,
-	private var updateCollectionUseCase: UpdateCollectionUseCase,
-	private var saveCollectionToMeUseCase: SaveCollectionToMeUseCase
+	private val errorHelper: ErrorHelper,
+	private val getCategoryUseCase: GetCategoryUseCase,
+	private val getStylesUseCase: GetStylesUseCase,
+	private val getFilteredItemsUseCase: GetFilteredItemsUseCase,
+	private val saveCollectionConstructor: SaveCollectionConstructor,
+	private val updateCollectionUseCase: UpdateCollectionUseCase,
+	private val saveCollectionToMeUseCase: SaveCollectionToMeUseCase,
+	private val getClothesTypesUseCase: GetClothesTypesUseCase,
+	private val getClothesUseCase: GetClothesUseCase,
+	private val getClothesStylesUseCase: GetClothesStylesUseCase
 ) : CollectionConstructorContract.Presenter{
 
 	private lateinit var view: CollectionConstructorContract.View
@@ -37,20 +43,24 @@ class CollectionConstructorPresenter @Inject constructor(
 		saveCollectionConstructor.clear()
 		getFilteredItemsUseCase.clear()
 		updateCollectionUseCase.clear()
+		getClothesTypesUseCase.clear()
+		getClothesUseCase.clear()
+		getClothesStylesUseCase.clear()
 	}
 	
 	override fun attach(view: CollectionConstructorContract.View) {
 		this.view = view
 	}
 	
-	override fun getCategory() {
+	override fun getTypes(token: String) {
 		view.displayProgress()
 
-		getCategoryUseCase.execute(object : DisposableSingleObserver<ShopCategoryModel>() {
-			override fun onSuccess(t: ShopCategoryModel) {
+		getClothesTypesUseCase.initParams(token)
+		getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel>>() {
+			override fun onSuccess(t: ResultsModel<kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel>) {
 				view.processViewAction {
+					processTypesResults(resultsModel = t)
 					hideProgress()
-					processShopCategories(t)
 				}
 			}
 
@@ -63,19 +73,21 @@ class CollectionConstructorPresenter @Inject constructor(
 		})
 	}
 	
-	override fun getShopCategoryTypeDetail(token: String, map: Map<String, Any>) {
+	override fun getClothesByType(token: String, map: Map<String, Any>) {
 		view.displayProgress()
 
-		getFilteredItemsUseCase.initParams(token,map)
-		getFilteredItemsUseCase.execute(object : DisposableSingleObserver<FilteredItemsModel>() {
-
-			override fun onSuccess(t: FilteredItemsModel) {
+		getClothesUseCase.initParams(
+			token = token,
+			gender = map["gender"] as String,
+			clothesTypeId = map["clothes_type"] as Int
+		)
+		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+			override fun onSuccess(t: ResultsModel<ClothesModel>) {
 				view.processViewAction {
-					view.processFilteredItems(t)
+					processClothesResults(resultsModel = t)
 					hideProgress()
 				}
 			}
-
 
 			override fun onError(e: Throwable) {
 				view.processViewAction {
@@ -89,11 +101,11 @@ class CollectionConstructorPresenter @Inject constructor(
 	override fun getStyles(token: String) {
 		view.displayProgress()
 
-		getStylesUseCase.initParam(token)
-		getStylesUseCase.execute(object : DisposableSingleObserver<List<Style>>() {
-			override fun onSuccess(t: List<Style>) {
+		getClothesStylesUseCase.initParams(token)
+		getClothesStylesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesStyleModel>>() {
+			override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {
 				view.processViewAction {
-					view.processStyles(t)
+					processStylesResults(resultsModel = t)
 					hideProgress()
 				}
 			}

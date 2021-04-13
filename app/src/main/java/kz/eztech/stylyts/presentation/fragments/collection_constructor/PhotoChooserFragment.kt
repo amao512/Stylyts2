@@ -35,6 +35,7 @@ import kz.eztech.stylyts.domain.models.FilteredItemsModel
 import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.PhotoChooserPresenter
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
@@ -61,7 +62,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(), PhotoChooserContract.
     private lateinit var createCollectionDialog: CreateCollectionAcceptDialog
     private lateinit var filterDialog: ConstructorFilterDialog
 
-    private val selectedList = ArrayList<ClothesMainModel>()
+    private val selectedList = ArrayList<ClothesModel>()
     private val filterMap = HashMap<String, Any>()
 
     private var photoUri: Uri? = null
@@ -161,7 +162,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(), PhotoChooserContract.
         checkEmptyList()
     }
 
-    private fun addClotheTag(clothe: ClothesMainModel) {
+    private fun addClotheTag(clothe: ClothesModel) {
         val layer = Layer()
         val textView = layoutInflater.inflate(
             R.layout.text_view_tag_element,
@@ -278,7 +279,7 @@ class PhotoChooserFragment : BaseFragment<MainActivity>(), PhotoChooserContract.
                     }
                 }
             }
-            is ClothesMainModel -> {
+            is ClothesModel -> {
                 when (view.id) {
                     R.id.shapeable_image_view_item_collection_image -> {
                         addClotheTag(item)

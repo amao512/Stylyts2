@@ -47,6 +47,7 @@ class StylytsApp : Application(){
             .collectionConstructorModule(CollectionConstructorModule())
             .collectionModule(CollectionModule())
             .userModule(UserModule())
+            .outfitsModule(OutfitsModule())
             .build()
 
         applicationComponent.inject(application = this)
