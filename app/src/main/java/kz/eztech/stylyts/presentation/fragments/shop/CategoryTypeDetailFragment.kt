@@ -98,7 +98,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
             R.id.item_clothes_detail_linear_layout -> onClothesItemClick(item)
-            R.id.frame_layout_item_collection_filter -> onBrandFilterClick(position)
+            R.id.frame_layout_item_collection_filter -> onBrandFilterClick(position, item as CollectionFilterModel)
         }
     }
 
@@ -181,7 +181,10 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
         resultsModel.results.map {
             filterList.add(
-                CollectionFilterModel(id = it.id, name = it.title)
+                CollectionFilterModel(
+                    id = it.id,
+                    name = it.title
+                )
             )
         }
 
@@ -209,14 +212,25 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         )
     }
 
-    private fun onBrandFilterClick(position: Int) {
+    private fun onBrandFilterClick(
+        position: Int,
+        item: CollectionFilterModel
+    ) {
         if (position == 0) {
             FilterDialog.getNewInstance(
                 token = getTokenFromSharedPref(),
                 itemClickListener = this,
                 gender = gender
             ).show(childFragmentManager, EMPTY_STRING)
-        } else brandsFilterAdapter.onChooseItem(position)
+        } else {
+            brandsFilterAdapter.onChooseItem(position)
+            presenter.getClothesByBrand(
+                token = getTokenFromSharedPref(),
+                gender = gender,
+                clothesCategoryId = categoryId,
+                clothesBrandId = item.id ?: 0
+            )
+        }
     }
 
     private fun getTokenFromSharedPref(): String {

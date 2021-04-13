@@ -98,7 +98,7 @@ class FilterDialog(
         when (item) {
             is FilterModel -> openFilterGroup(position, item)
             is ClothesCategoryModel -> selectClothesCategory(view, position, item)
-            is ClothesBrandModel -> selectClothesBrand(position, item)
+            is ClothesBrandModel -> selectClothesBrand(view, position, item)
         }
     }
 
@@ -250,6 +250,7 @@ class FilterDialog(
     }
 
     private fun selectClothesBrand(
+        view: View,
         position: Int,
         brand: ClothesBrandModel
     ) {
@@ -263,6 +264,7 @@ class FilterDialog(
         }
 
         filterCheckAdapter.onCheckPosition(position)
+
         getFilterResults()
         setResetTextColor()
     }

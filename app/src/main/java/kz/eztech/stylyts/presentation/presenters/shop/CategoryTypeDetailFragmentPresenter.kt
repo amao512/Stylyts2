@@ -107,4 +107,31 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
             }
         })
     }
+
+    override fun getClothesByBrand(
+        token: String,
+        gender: String,
+        clothesCategoryId: Int,
+        clothesBrandId: Int
+    ) {
+        getClothesUseCase.initParams(
+            token = token,
+            gender = gender,
+            clothesCategoryId = clothesCategoryId,
+            clothesBrandId = clothesBrandId
+        )
+        getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesModel>) {
+                view.processViewAction {
+                    processClothesResults(resultsModel = t)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
 }
