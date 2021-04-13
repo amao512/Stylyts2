@@ -8,6 +8,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 
@@ -59,14 +60,20 @@ class ClothesDetailViewHolder(
             }
 
             if (clothesModel.salePrice != 0) {
-                item_clothes_detail_sale_price_text_view.show()
+                item_clothes_detail_default_price_text_view.apply {
+                    text = context.getString(
+                        R.string.price_tenge_text_format,
+                        NumberFormat.getInstance().format(clothesModel.cost),
+                    )
+                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                }
+
+                item_clothes_detail_sale_prices_linear_layout.show()
+                item_clothes_detail_price_text_view.hide()
                 item_clothes_detail_sale_price_text_view.text = context.getString(
                     R.string.price_tenge_text_format,
                     NumberFormat.getInstance().format(clothesModel.salePrice),
                 )
-                item_clothes_detail_price_text_view.apply {
-                    paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                }
             }
         }
     }

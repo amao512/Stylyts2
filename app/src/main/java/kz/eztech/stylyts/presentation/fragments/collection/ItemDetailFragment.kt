@@ -54,7 +54,6 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
     companion object {
         const val CLOTHES_ID = "clothes_id"
-        private const val SPACE_TEXT_FORMAT = "%s %s"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_item_detail
@@ -196,18 +195,18 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         )
 
         text_view_fragment_item_detail_item_name.text = clothesModel.title
-        text_view_fragment_item_detail_item_price.text = SPACE_TEXT_FORMAT.format(
-            NumberFormat.getInstance().format(clothesModel.cost),
-            clothesModel.currency
+        text_view_fragment_item_detail_item_price.text = getString(
+            R.string.price_tenge_text_format,
+            NumberFormat.getInstance().format(clothesModel.cost)
         )
 
         if (clothesModel.salePrice != 0) {
             text_view_fragment_item_detail_item_price.apply {
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
-            fragment_item_details_sale_price_text_view.text = SPACE_TEXT_FORMAT.format(
-                NumberFormat.getInstance().format(clothesModel.salePrice),
-                clothesModel.currency
+            fragment_item_details_sale_price_text_view.text = getString(
+                R.string.price_tenge_text_format,
+                NumberFormat.getInstance().format(clothesModel.salePrice)
             )
             fragment_item_details_sale_price_text_view.show()
         }
