@@ -476,42 +476,19 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun preparedTypes(list: List<ClothesTypeModel>): List<ClothesTypeModel> {
 		val preparedResults: MutableList<ClothesTypeModel> = mutableListOf()
 
-		preparedResults.add(
-			ClothesTypeModel(
-				id = list[0].id,
-				title = list[0].title,
-				externalType = 1,
-				isChoosen = false,
-				externalImageId = R.drawable.ic_top_clothes_type
+		list.map {
+			preparedResults.add(
+				ClothesTypeModel(
+					id = it.id,
+					title = it.title,
+					menCoverPhoto = it.menCoverPhoto,
+					womenCoverPhoto = it.womenCoverPhoto,
+					externalType = 1,
+					isChoosen = false
+				)
 			)
-		)
-		preparedResults.add(
-			ClothesTypeModel(
-				id = list.size + 1,
-				title = "Низ",
-				externalType = 1,
-				isChoosen = false,
-				externalImageId = R.drawable.ic_bottom_clothes_type
-			)
-		)
-		preparedResults.add(
-			ClothesTypeModel(
-				id = list.size + 1,
-				title = "Аксессуары",
-				externalType = 1,
-				isChoosen = false,
-				externalImageId = R.drawable.ic_artboard_clothes_type
-			)
-		)
-		preparedResults.add(
-			ClothesTypeModel(
-				id = list.size + 1,
-				title = "Обувь",
-				externalType = 1,
-				isChoosen = false,
-				externalImageId = R.drawable.ic_shoes_clothes_type
-			)
-		)
+		}
+
 		preparedResults.add(
 			ClothesTypeModel(
 				id = list.size + 1,

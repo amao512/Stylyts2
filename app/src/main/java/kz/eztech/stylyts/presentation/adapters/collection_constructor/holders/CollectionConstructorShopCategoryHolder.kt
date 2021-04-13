@@ -47,9 +47,9 @@ class CollectionConstructorShopCategoryHolder(
 						adapter.itemClickListener?.onViewClicked(it, position, clothesType)
 					}
 				} else {
-					Glide.with(this)
+					Glide.with(image_view_item_collection_constructor_category_item_image_holder.context)
 						.load(menCoverPhoto)
-						.into(this.image_view_item_collection_constructor_category_item_image_holder)
+						.into(image_view_item_collection_constructor_category_item_image_holder)
 
 					text_view_item_collection_constructor_category_item_title.text = title
 
@@ -63,7 +63,6 @@ class CollectionConstructorShopCategoryHolder(
 						image_view_item_collection_constructor_category_item_image_chooser.hide()
 					}
 				}
-
 			}
 		}
 	}
