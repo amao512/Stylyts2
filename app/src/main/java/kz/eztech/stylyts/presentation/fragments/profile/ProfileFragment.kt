@@ -35,6 +35,7 @@ import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
+import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -119,6 +120,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         wardrobeAdapter.itemClickListener = this
 
         outfitsAdapter = GridImageCollectionItemAdapter()
+        outfitsAdapter.itemClickListener = this
     }
 
     override fun initializeViews() {
@@ -425,7 +427,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onOutfitsFilterClick(position: Int) {
-        presenter.getOutfits(token = getTokenFromSharedPref())
+        if (isOwnProfile) {
+            presenter.getOutfits(token = getTokenFromSharedPref())
+        }
         adapterFilter.onChooseItem(position)
     }
 
@@ -435,10 +439,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onCollectionItemClick(item: Any?) {
-        item as PublicationModel
+        item as OutfitModel
 
         val bundle = Bundle()
-        bundle.putParcelable("model", item)
+        bundle.putInt(CollectionDetailFragment.OUTFIT_ID_KEY, item.id)
 
         findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
     }

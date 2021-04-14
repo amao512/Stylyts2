@@ -51,6 +51,7 @@ object RestConstants {
 
     // Outfits
     const val GET_OUTFITS = "outfits"
+    const val GET_OUTFIT_BY_ID = "outfits/{outfit_id}"
     const val CREATE_OUTFIT: String = "outfits"
 
     // Post

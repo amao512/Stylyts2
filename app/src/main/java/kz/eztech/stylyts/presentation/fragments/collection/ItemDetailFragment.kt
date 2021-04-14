@@ -85,10 +85,6 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("clotheModel")) {
-                currentClothesModel = it.getParcelable("clotheModel")
-            }
-
             if (it.containsKey(CLOTHES_ID)) {
                 currentClothesId = it.getInt(CLOTHES_ID)
             }
@@ -122,6 +118,13 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         frame_layout_fragment_item_detail_text_color.setOnClickListener(this)
         linear_layout_fragment_item_detail_description_holder.setOnClickListener(this)
         button_fragment_item_detail_add_to_wardrobe.setOnClickListener(this)
+    }
+
+    override fun processPostInitialization() {
+        presenter.getClothesById(
+            token = getTokenFromSharedPref(),
+            clothesId = currentClothesId.toString()
+        )
     }
 
     override fun onClick(v: View?) {
@@ -161,8 +164,6 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         currentClothesModel = clothesModel
         initializeViews()
     }
-
-    override fun processPostInitialization() {}
 
     override fun disposeRequests() {
         disposables.clear()
@@ -286,7 +287,7 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
                 displayMessage(msg = getString(R.string.can_not_load_page_error))
                 presenter.getClothesById(
                     getTokenFromSharedPref(),
-                    clothesId = 43.toString()
+                    clothesId = currentClothesId.toString()
                 )
             }
         }

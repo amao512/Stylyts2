@@ -6,5 +6,13 @@ import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 
 interface OutfitsDomainRepository {
 
-    fun getOutfits(token: String): Single<ResultsModel<OutfitModel>>
+    fun getOutfits(
+        token: String,
+        booleanQueryMap: Map<String, Boolean>
+    ): Single<ResultsModel<OutfitModel>>
+
+    fun getOutfitById(
+        token: String,
+        outfitId: String
+    ): Single<OutfitModel>
 }

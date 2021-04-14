@@ -9,6 +9,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection.GridImageCollectionItemAdapter
+import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContract
@@ -37,21 +38,23 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     override fun customizeActionBar() {}
 
     override fun initializeDependency() {
-        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
     }
 
     override fun initializePresenter() {
-        presenter.attach(this)
+        presenter.attach(view = this)
     }
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
-
-    override fun initializeViews() {
+    override fun initializeViewsData() {
         adapter = GridImageCollectionItemAdapter()
         adapter.setOnClickListener(this)
+    }
+
+    override fun initializeViews() {
         recycler_view_fragment_collection_item.adapter = adapter
+        recycler_view_fragment_collection_item.addItemDecoration(GridSpacesItemDecoration(space = 16))
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {

@@ -3,31 +3,43 @@ package kz.eztech.stylyts.presentation.fragments.collection
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
-import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
-import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
-import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
+import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
+import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
+import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import java.text.NumberFormat
+import javax.inject.Inject
 
 class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailContract.View,
     UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
-    private lateinit var currentModel: PublicationModel
+    @Inject lateinit var presenter: CollectionDetailPresenter
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
+
+    private var currentOutfitId: Int = 0
+
+    companion object {
+        const val OUTFIT_ID_KEY = "outfit_id"
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_collection_detail
 
@@ -35,27 +47,27 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun customizeActionBar() {
         with(include_toolbar_collection_detail) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
             toolbar_title_text_view.show()
-            toolbar_right_corner_action_image_button.hide()
-            toolbar_right_text_text_view.hide()
+            toolbar_title_text_view.text = context.getString(R.string.collection_detail_fragment_publishes)
 
-            customizeActionToolBar(
-                toolbar = this,
-                title = context.getString(R.string.collection_detail_fragment_publishes)
-            )
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@CollectionDetailFragment)
+            toolbar_left_corner_action_image_button.show()
         }
     }
 
-    override fun initializeDependency() {}
+    override fun initializeDependency() {
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
+    }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() {
+        presenter.attach(view = this)
+    }
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("model")) {
-                currentModel = it.getParcelable("model") ?: PublicationModel()
+            if (it.containsKey(OUTFIT_ID_KEY)) {
+                currentOutfitId = it.getInt(OUTFIT_ID_KEY)
             }
         }
     }
@@ -66,10 +78,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     override fun initializeViews() {
-        this.recycler_view_fragment_collection_detail_additionals_list.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        this.recycler_view_fragment_collection_detail_additionals_list.adapter = additionalAdapter
-
+        recycler_view_fragment_collection_detail_additionals_list.adapter = additionalAdapter
         processPublication()
     }
 
@@ -78,14 +87,21 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         button_fragment_collection_detail_change_collection.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        presenter.getOutfitById(
+            token = getTokenFromSharedPref(),
+            outfitId = currentOutfitId.toString()
+        )
+    }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
             R.id.frame_layout_item_main_image_holder_container -> {
-                item as ClothesMainModel
+                item as ClothesModel
+
                 val bundle = Bundle()
-                bundle.putParcelable("clotheModel", item)
+                bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
+
                 findNavController().navigate(
                     R.id.action_collectionDetailFragment_to_itemDetailFragment,
                     bundle
@@ -132,6 +148,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                 findNavController().navigate(R.id.userCommentsFragment)
             }
             R.id.button_fragment_collection_detail_change_collection -> onChangeCollection()
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
         }
 
     }
@@ -152,47 +169,59 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun onChoice(v: View?, item: Any?) {
         when (v?.id) {
-            R.id.dialog_bottom_collection_context_delete_text_view -> {}
+            R.id.dialog_bottom_collection_context_delete_text_view -> {
+            }
+        }
+    }
+
+    override fun processOutfit(outfitModel: OutfitModel) {
+        additionalAdapter.updateList(list = outfitModel.clothes)
+        presenter.getOutfitOwner(
+            token = getTokenFromSharedPref(),
+            userId = outfitModel.author.id.toString()
+        )
+
+        Glide.with(image_view_fragment_collection_detail_imageholder.context)
+            .load(outfitModel.coverPhoto)
+            .into(image_view_fragment_collection_detail_imageholder)
+
+        text_view_fragment_collection_detail_comments_cost.text = getString(
+            R.string.price_tenge_text_format,
+            NumberFormat.getInstance().format(outfitModel.totalPrice)
+        )
+        text_view_fragment_collection_detail_comments_count.text = "Показать ${0} коммент."
+        text_view_fragment_collection_detail_date.text = DateFormatterHelper.formatISO_8601(
+            outfitModel.createdAt,
+            DateFormatterHelper.FORMAT_DATE_DD_MMMM
+        )
+    }
+
+    override fun processOutfitOwner(userModel: UserModel) {
+        text_view_fragment_collection_detail_partner_name.text = getString(
+            R.string.full_name_text_format,
+            userModel.firstName,
+            userModel.lastName
+        )
+
+        if (userModel.avatar.isBlank()) {
+            shapeable_image_view_fragment_collection_detail_profile_avatar.hide()
+            text_view_text_view_fragment_collection_detail_short_name.show()
+            text_view_text_view_fragment_collection_detail_short_name.text = getShortName(
+                firstName = userModel.firstName,
+                lastName = userModel.lastName
+            )
+        } else {
+            text_view_text_view_fragment_collection_detail_short_name.hide()
+
+            Glide.with(shapeable_image_view_fragment_collection_detail_profile_avatar.context)
+                .load(userModel.avatar)
+                .centerCrop()
+                .into(shapeable_image_view_fragment_collection_detail_profile_avatar)
         }
     }
 
     private fun processPublication() {
-        processCollectionInfo()
         processCollectionListeners()
-        loadCollectionPhoto()
-    }
-
-    private fun processCollectionInfo() {
-        //            clothes?.let {
-//                additionalAdapter.updateList(it)
-//            }
-        text_view_fragment_collection_detail_partner_name.text = "Author"
-//                "${author?.first_name} ${author?.last_name}"
-
-//            author?.avatar?.let {
-//                text_view_text_view_fragment_collection_detail_short_name.visibility = View.GONE
-//                Glide.with(requireContext()).load(it)
-//                    .into(shapeable_image_view_fragment_collection_detail_profile_avatar)
-//            } ?: run {
-        shapeable_image_view_fragment_collection_detail_profile_avatar.visibility =
-            View.GONE
-        text_view_text_view_fragment_collection_detail_short_name.visibility = View.VISIBLE
-        text_view_text_view_fragment_collection_detail_short_name.text = getShortName(
-            firstName = "Author",
-            lastName = "Name"
-        )
-//            }
-
-//            text_view_fragment_collection_detail_comments_cost.text =
-//                "${NumberFormat.getInstance().format(total_price)} $total_price_currency"
-//            text_view_fragment_collection_detail_comments_count.text =
-//                "Показать $comments_count коммент."
-//            text_view_fragment_collection_detail_date.text = "${
-//                DateFormatterHelper.formatISO_8601(
-//                    created_at,
-//                    DateFormatterHelper.FORMAT_DATE_DD_MMMM
-//                )
-//            }"
     }
 
     private fun processCollectionListeners() {
@@ -209,12 +238,6 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
     }
 
-    private fun loadCollectionPhoto() {
-        Glide.with(this)
-            .load(currentModel.imageOne)
-            .into(this.image_view_fragment_collection_detail_imageholder)
-    }
-
     private fun onChangeCollection() {
 //        currentModel.clothes?.let {
 //                    val itemsList = ArrayList<ClothesMainModel>()
@@ -226,5 +249,9 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 //                } ?: run {
 //                    findNavController().navigate(R.id.createCollectionFragment)
 //                }
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

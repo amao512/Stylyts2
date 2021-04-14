@@ -215,7 +215,7 @@ class ProfilePresenter @Inject constructor(
 	}
 
 	override fun getOutfits(token: String) {
-		getOutfitsUseCase.initParams(token)
+		getOutfitsUseCase.initParams(token, isMy = true)
 		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
 			override fun onSuccess(t: ResultsModel<OutfitModel>) {
 				view.processViewAction {

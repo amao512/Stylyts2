@@ -10,7 +10,6 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
@@ -20,7 +19,6 @@ import kz.eztech.stylyts.presentation.adapters.collection.CollectionsViewPagerAd
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionsContract
-import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -84,12 +82,8 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
             view_pager_fragment_collections
         ) { tab, position ->
             when (position) {
-                0 -> {
-                    tab.text = "Для нее"
-                }
-                1 -> {
-                    tab.text = "Для него"
-                }
+                0 -> tab.text = getString(R.string.for_his)
+                1 -> tab.text = getString(R.string.for_her)
             }
         }.attach()
     }
@@ -102,13 +96,14 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         when (item) {
             is OutfitModel -> {
                 val bundle = Bundle()
-                bundle.putParcelable("model", item)
+                bundle.putInt(CollectionDetailFragment.OUTFIT_ID_KEY, item.id)
+
                 findNavController().navigate(
                     R.id.action_collectionsFragment_to_collectionDetailFragment,
                     bundle
                 )
             }
-            is CollectionFilterModel -> onStyleItemClick(item, position)
+            is CollectionFilterModel -> filterAdapter.onChooseItem(position)
         }
     }
 
@@ -131,14 +126,6 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
     override fun processClothesStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
         val filterList = mutableListOf<CollectionFilterModel>()
 
-        filterList.add(
-            CollectionFilterModel(
-                id = 0,
-                name = getString(R.string.filter_list_filter),
-                icon = R.drawable.ic_filter
-            )
-        )
-
         resultsModel.results.map {
             filterList.add(
                 CollectionFilterModel(id = it.id, name = it.title)
@@ -146,19 +133,6 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         }
 
         filterAdapter.updateList(list = filterList)
-    }
-
-    private fun onStyleItemClick(
-        item: CollectionFilterModel,
-        position: Int
-    ) {
-        if (position == 0) {
-            FilterDialog.getNewInstance(
-                token = getTokenFromSharedPref(),
-                itemClickListener = this,
-                gender = item.gender ?: "M"
-            ).show(childFragmentManager, EMPTY_STRING)
-        } else filterAdapter.onChooseItem(position)
     }
 
     private fun getTokenFromSharedPref(): String {

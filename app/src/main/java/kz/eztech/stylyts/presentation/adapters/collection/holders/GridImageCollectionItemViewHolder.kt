@@ -24,7 +24,7 @@ class GridImageCollectionItemViewHolder(
                 .load(item.coverPhoto)
                 .into(shapeable_image_view_item_collection_image)
 
-            setOnClickListener { view ->
+            shapeable_image_view_item_collection_image.setOnClickListener { view ->
                 adapter.itemClickListener?.onViewClicked(view, position, item)
             }
         }
