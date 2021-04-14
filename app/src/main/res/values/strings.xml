@@ -296,4 +296,12 @@
 
     <string name="saved">Saved</string>
     <string name="can_not_load_page_error">Can not load page</string>
+
+    <string name="clothes_description_model_id">ID model:</string>
+    <string name="clothes_description_color">Color:</string>
+    <string name="clothes_description_item">Clothes:</string>
+
+    <string name="constructor_create_outfit_title">Create outfit</string>
+
+    <string name="close">Close</string>
 </resources>

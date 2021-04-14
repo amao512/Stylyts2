@@ -77,7 +77,7 @@
     <dimen name="bottom_dialog_top_small_divider_height">3dp</dimen>
 
     <dimen name="collection_constructor_list_height">120dp</dimen>
-    <dimen name="collection_item_image_height">350dp</dimen>
+    <dimen name="collection_item_image_height">400dp</dimen>
 
     <dimen name="collection_detail_user_photo_size">40dp</dimen>
     <dimen name="collection_detail_card_elevation">4dp</dimen>

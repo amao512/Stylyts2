@@ -4,9 +4,11 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.SaveClothesToWardrobeUseCase
 import kz.eztech.stylyts.domain.usecases.collection.GetItemByBarcodeUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.ItemDetailContract
 import javax.inject.Inject
@@ -18,7 +20,8 @@ class ItemDetailPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getClothesByIdUseCase: GetClothesByIdUseCase,
     private val getItemByBarcodeUseCase: GetItemByBarcodeUseCase,
-    private val saveClothesToWardrobeUseCase: SaveClothesToWardrobeUseCase
+    private val saveClothesToWardrobeUseCase: SaveClothesToWardrobeUseCase,
+    private val getUserByIdUseCase: GetUserByIdUseCase
 ) : ItemDetailContract.Presenter {
 
     private lateinit var view: ItemDetailContract.View
@@ -27,6 +30,7 @@ class ItemDetailPresenter @Inject constructor(
         getClothesByIdUseCase.clear()
         getItemByBarcodeUseCase.clear()
         saveClothesToWardrobeUseCase.clear()
+        getUserByIdUseCase.clear()
     }
 
     override fun attach(view: ItemDetailContract.View) {
@@ -53,6 +57,22 @@ class ItemDetailPresenter @Inject constructor(
                     hideProgress()
                     displayMessage(errorHelper.processError(e))
                 }
+            }
+        })
+    }
+
+    override fun getClothesOwner(
+        token: String,
+        userId: String
+    ) {
+        getUserByIdUseCase.initParams(token, userId)
+        getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+            override fun onSuccess(t: UserModel) {
+                view.processClothesOwner(userModel = t)
+            }
+
+            override fun onError(e: Throwable) {
+               view.displayMessage(msg = errorHelper.processError(e))
             }
         })
     }
@@ -84,15 +104,11 @@ class ItemDetailPresenter @Inject constructor(
         saveClothesToWardrobeUseCase.initParams(token, clothesId.toString())
         saveClothesToWardrobeUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
-                view.processViewAction {
-                    processSuccessSavedWardrobe()
-                }
+                view.processSuccessSavedWardrobe()
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    processSuccessSavedWardrobe()
-                }
+                view.processSuccessSavedWardrobe()
             }
         })
     }

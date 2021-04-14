@@ -81,6 +81,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private var currentCollectionBitmap: Bitmap? = null
 	private var currentMainId: Int = -1
 
+	companion object {
+		const val CLOTHES_ITEMS_KEY = "items"
+		const val MAIN_ID_KEY = "mainId"
+		const val CURRENT_TYPE_KEY = "currentType"
+	}
+
     override fun getLayoutId(): Int = R.layout.fragment_collection_constructor
 
     override fun getContractView(): BaseView = this
@@ -97,23 +103,23 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("items")) {
+            if (it.containsKey(CLOTHES_ITEMS_KEY)) {
                 val handler = Handler(Looper.getMainLooper())
                 handler.postDelayed({
-					it.getParcelableArrayList<ClothesMainModel>("items")?.let { it1 ->
-						it1.forEach { clothesMainModel ->
-							processInputImageToPlace(clothesMainModel)
+					it.getParcelableArrayList<ClothesModel>(CLOTHES_ITEMS_KEY)?.let { it1 ->
+						it1.forEach { clothesModel ->
+							processInputImageToPlace(clothesModel)
 						}
 					}
 				}, 500)
             }
 
-            if (it.containsKey("mainId")) {
-                currentMainId = it.getInt("mainId")
+            if (it.containsKey(MAIN_ID_KEY)) {
+                currentMainId = it.getInt(MAIN_ID_KEY)
             }
 
-            if (it.containsKey("currentType")) {
-                currentType = it.getInt("currentType")
+            if (it.containsKey(CURRENT_TYPE_KEY)) {
+                currentType = it.getInt(CURRENT_TYPE_KEY)
             }
         }
     }
@@ -126,7 +132,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		checkWritePermission()
 
         filterDialog = ConstructorFilterDialog()
-        typesAdapter = CollectionConstructorShopCategoryAdapter()
+        typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentType)
         itemAdapter = CollectionConstructorShopItemAdapter()
 
 		typesAdapter.itemClickListener = this
@@ -135,6 +141,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
         recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
         frame_layout_fragment_collection_constructor_images_container.attachView(motionViewContract = this)
+
+		text_view_fragment_collection_constructor_category_back.isClickable = false
+		text_view_fragment_collection_constructor_category_next.isClickable = false
 
         processDraggedItems()
     }
@@ -215,37 +224,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			showFilterResults(item)
         } else {
             when (item) {
-				is Map<*, *> -> {
-					val currentModel = item["model"] as CollectionPostCreateModel
-					currentSaveMode = item["mode"] as Int
-
-					getTokenFromSharedPref().let {
-						try {
-							currentCollectionBitmap?.let { bitmap ->
-								val file = createPngFileFromBitmap(requireContext(), bitmap)
-
-								file?.let { _ ->
-									if (currentMainId != -1) {
-										presenter.updateCollection(
-											it, currentMainId, currentModel, file
-										)
-									} else {
-										presenter.saveCollection(
-											it, currentModel, file
-										)
-									}
-								} ?: run {
-									errorLoadData()
-								}
-
-							} ?: run {
-								errorLoadData()
-							}
-						} catch (e: Exception) {
-							errorLoadData()
-						}
-					}
-				}
+				is Map<*, *> -> saveOutfit(item)
 				is Int -> {
 					when (item) {
 						1 -> {/* add category */}
@@ -279,12 +258,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	override fun deleteSelectedView(motionEntity: MotionEntity) {
 		val res = listOfEntities.remove(motionEntity)
-
 		val res2 = listOfItems.remove(motionEntity.item)
 		val res3 = listOfIdsChosen.remove(currentId)
 
+		val typeId = motionEntity.item.clothesCategory.clothesType.id
+
+		Log.d("TAG", typeId.toString())
 		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
+
 		processDraggedItems()
+		typesAdapter.removeChosenPosition(typeId)
 	}
 
 	override fun processSuccess(result: MainResult?) {
@@ -346,7 +329,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 
 	private fun processDraggedItems() {
-		val price = NumberFormat.getInstance().format(listOfItems.sumBy { it.cost ?: 0 })
+		val price = NumberFormat.getInstance().format(listOfItems.sumBy { it.cost })
 		text_view_fragment_collection_constructor_total_price.text = getString(R.string.price_tenge_text_format, price)
 
 		if (!isItems) {
@@ -458,6 +441,38 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		)
 	}
 
+	private fun saveOutfit(item: Map<*, *>) {
+		val currentModel = item["model"] as CollectionPostCreateModel
+		currentSaveMode = item["mode"] as Int
+
+		getTokenFromSharedPref().let {
+			try {
+				currentCollectionBitmap?.let { bitmap ->
+					val file = createPngFileFromBitmap(requireContext(), bitmap)
+
+					file?.let { _ ->
+						if (currentMainId != -1) {
+							presenter.updateCollection(
+								it, currentMainId, currentModel, file
+							)
+						} else {
+							presenter.saveCollection(
+								it, currentModel, file
+							)
+						}
+					} ?: run {
+						errorLoadData()
+					}
+
+				} ?: run {
+					errorLoadData()
+				}
+			} catch (e: Exception) {
+				errorLoadData()
+			}
+		}
+	}
+
 	private fun errorLoadData() {
 		hideProgress()
 		displayMessage(msg = getString(R.string.collection_constructor_error_load_data))
@@ -475,19 +490,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private fun preparedTypes(list: List<ClothesTypeModel>): List<ClothesTypeModel> {
 		val preparedResults: MutableList<ClothesTypeModel> = mutableListOf()
-
-		list.map {
-			preparedResults.add(
-				ClothesTypeModel(
-					id = it.id,
-					title = it.title,
-					menCoverPhoto = it.menCoverPhoto,
-					womenCoverPhoto = it.womenCoverPhoto,
-					externalType = 1,
-					isChoosen = false
-				)
-			)
-		}
+		preparedResults.addAll(list)
 
 		preparedResults.add(
 			ClothesTypeModel(
@@ -645,7 +648,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				)
 			)
 
-			clothesList.add(listOfItems[index].id ?: 0)
+			clothesList.add(listOfItems[index].id)
 		}
 
 		return clothesCollectionList

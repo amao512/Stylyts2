@@ -40,6 +40,49 @@
                     app:layout_collapseMode="parallax"
                     >
 
+                    <FrameLayout
+                        android:id="@+id/fragment_item_detail_avatar_holder"
+                        android:layout_width="@dimen/icon_size_36x"
+                        android:layout_height="@dimen/icon_size_36x"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/margin_size_24x"
+                        android:layout_marginTop="@dimen/margin_size_16x"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        >
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/fragment_detail_avatar_shapeable_image_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            app:shapeAppearanceOverlay="@style/circleImageView"
+                            />
+
+                        <TextView
+                            android:id="@+id/fragment_detail_user_short_name_text_view"
+                            style="@style/TitleTextBold"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/circle_gray"
+                            android:gravity="center"
+                            android:textSize="@dimen/text_size_14x"
+                            tools:text="RE"
+                            />
+                    </FrameLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_size_24x"
+                        android:src="@drawable/ic_baseline_favorite_border_24"
+                        app:layout_constraintBottom_toBottomOf="@id/fragment_item_detail_avatar_holder"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintTop_toTopOf="@id/fragment_item_detail_avatar_holder"
+
+                        />
+
                     <androidx.viewpager.widget.ViewPager
                         android:id="@+id/view_pager_fragment_item_detail_photos_holder"
                         android:layout_width="0dp"
@@ -47,21 +90,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_size_24x"
-                        android:layout_marginEnd="@dimen/margin_size_24x"
-                        android:src="@drawable/ic_baseline_favorite_border_24"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="1.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.0"
+                        app:layout_constraintTop_toBottomOf="@id/fragment_item_detail_avatar_holder"
                         />
 
                     <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
@@ -124,22 +153,34 @@
                         tools:text="Куртка кожанная"
                         />
 
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/text_view_fragment_item_detail_item_price"
+                        style="@style/TextRegularBold"
                         android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/margin_size_6x"
+                        tools:text="350 000 тг"
+                        />
+
+                    <LinearLayout
+                        android:id="@+id/fragment_item_detail_sale_prices_linear_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="@dimen/margin_size_6x"
                         android:orientation="horizontal"
+                        android:visibility="gone"
                         >
 
                         <TextView
-                            android:id="@+id/text_view_fragment_item_detail_item_price"
+                            android:id="@+id/text_view_fragment_item_detail_item_default_price"
                             style="@style/TextRegularBold"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_weight="1"
-                            tools:text="350 000 тг"
+                            android:gravity="end"
+                            tools:text="350 000 000 тг"
                             />
 
                         <TextView
@@ -147,13 +188,12 @@
                             style="@style/TextRegularBold"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_marginStart="@dimen/margin_size_8x"
                             android:layout_weight="1"
+                            android:gravity="start"
                             android:maxWidth="@dimen/category_type_detail_text_max_width"
                             android:textColor="@color/app_dark_red"
-                            android:visibility="gone"
-                            tools:text="35 0000 тг"
+                            tools:text="35 0000 000 тг"
                             />
                     </LinearLayout>
 
@@ -282,6 +322,7 @@
                                 android:text="@string/share"
                                 />
                         </FrameLayout>
+
                     </LinearLayout>
 
                     <com.google.android.material.button.MaterialButton
@@ -362,17 +403,104 @@
                                 />
                         </FrameLayout>
 
-                        <TextView
-                            android:id="@+id/text_view_fragment_item_detail_description"
-                            style="@style/TextRegular"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/fragment_item_detail_description_linear_layout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
                             android:layout_marginTop="@dimen/margin_size_16x"
-                            android:textColor="#4F4B4B"
+                            android:orientation="vertical"
                             android:visibility="gone"
-                            tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
-                            />
+                            >
+
+                            <TextView
+                                android:id="@+id/text_view_fragment_item_detail_description"
+                                style="@style/TextRegular"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="start|center"
+                                android:textColor="@color/text_black"
+                                tools:text="Классическая куртка с логотипом, кожанная, застежка спереди, длинные рукава, два вшитых кармана по бокам и дутый материал. ID модели: OMAA038R201850021048 Цвет: Black Beige"
+                                />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_size_12x"
+                                android:orientation="horizontal"
+                                >
+
+                                <TextView
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/clothes_description_model_id"
+                                    android:textStyle="bold"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/fragment_item_detail_description_id_text_view"
+                                    style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_size_4x"
+                                    android:textColor="@color/text_black"
+                                    tools:text="A038R201850021048"
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                >
+
+                                <TextView
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/clothes_description_color"
+                                    android:textStyle="bold"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/fragment_item_detail_description_color_text_view"
+                                    style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_size_4x"
+                                    android:textColor="@color/text_black"
+                                    tools:text="Black Beige"
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                >
+
+                                <TextView
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/clothes_description_item"
+                                    android:textStyle="bold"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/fragment_item_detail_description_author_text_view"
+                                    style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/margin_size_4x"
+                                    android:textColor="@color/text_black"
+                                    tools:text=""
+                                    />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout

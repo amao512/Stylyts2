@@ -27,7 +27,7 @@ class CollectionConstructorShopItemHolder(
         with(item as ClothesModel) {
             with(itemView) {
                 val doubleTapGesture = getDoubleTapGesture(
-					clothesMainModel = item,
+					clothesModel = item,
 					position = position
 				)
 
@@ -35,7 +35,7 @@ class CollectionConstructorShopItemHolder(
 					.load(constructorImage)
 					.into(this.image_view_item_collection_constructor_category_item_image_holder)
 
-                text_view_item_collection_constructor_category_item_title.text = title
+                text_view_item_collection_constructor_category_item_title.text = "${title.substring(0, 6)}..."
 
                 image_view_item_collection_constructor_category_item_image_holder.apply {
                     tag = "image_view_item_collection_constructor_category_item_image_holder_$position"
@@ -49,7 +49,7 @@ class CollectionConstructorShopItemHolder(
     }
 
 	private fun getDoubleTapGesture(
-		clothesMainModel: ClothesModel,
+		clothesModel: ClothesModel,
 		position: Int
 	): GestureDetector {
 		adapter as CollectionConstructorShopItemAdapter
@@ -67,7 +67,7 @@ class CollectionConstructorShopItemHolder(
 							it.onViewClicked(
 								image_view_item_collection_constructor_category_item_image_holder,
 								position,
-								clothesMainModel
+								clothesModel
 							)
 						}
 
@@ -78,7 +78,7 @@ class CollectionConstructorShopItemHolder(
 						adapter.itemDoubleClickListener?.onViewDoubleClicked(
 							image_view_item_collection_constructor_category_item_image_holder,
 							position,
-							clothesMainModel
+							clothesModel
 						)
 
 						return true

@@ -15,7 +15,8 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
  */
 class CollectionConstructorShopCategoryHolder(
 	itemView: View,
-	adapter: BaseAdapter
+	adapter: BaseAdapter,
+	private val gender: Int
 ) : BaseViewHolder(itemView, adapter) {
 
     override fun bindData(item: Any, position: Int) {
@@ -42,17 +43,13 @@ class CollectionConstructorShopCategoryHolder(
 						externalImageId
 					)
 					text_view_item_collection_constructor_category_item_title.text = title
-
 					image_view_item_collection_constructor_category_item_image_holder.setOnClickListener {
 						adapter.itemClickListener?.onViewClicked(it, position, clothesType)
 					}
 				} else {
-					Glide.with(image_view_item_collection_constructor_category_item_image_holder.context)
-						.load(menCoverPhoto)
-						.into(image_view_item_collection_constructor_category_item_image_holder)
+					fillCoverPhoto(clothesType)
 
-					text_view_item_collection_constructor_category_item_title.text = title
-
+					text_view_item_collection_constructor_category_item_title.text = clothesType.title
 					image_view_item_collection_constructor_category_item_image_holder.setOnClickListener {
 						adapter.itemClickListener?.onViewClicked(it, position, clothesType)
 					}
@@ -64,6 +61,17 @@ class CollectionConstructorShopCategoryHolder(
 					}
 				}
 			}
+		}
+	}
+
+	private fun fillCoverPhoto(clothesType: ClothesTypeModel) {
+		with (itemView) {
+			Glide.with(image_view_item_collection_constructor_category_item_image_holder.context)
+				.load(when (gender) {
+					0 -> clothesType.menCoverPhoto
+					else -> clothesType.womenCoverPhoto
+				})
+				.into(image_view_item_collection_constructor_category_item_image_holder)
 		}
 	}
 

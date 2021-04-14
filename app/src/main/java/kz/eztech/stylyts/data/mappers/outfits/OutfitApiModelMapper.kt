@@ -17,7 +17,24 @@ class OutfitApiModelMapper @Inject constructor(
         data ?: return emptyList()
 
         return data.map {
-            this.map(data = it)
+            OutfitModel(
+                id = it.id ?: 0,
+                clothes = clothesApiModelMapper.map(it.clothes),
+                author = ownerApiModelMapper.map(it.author),
+                title = it.title ?: EMPTY_STRING,
+                text = it.text ?: EMPTY_STRING,
+                gender = it.gender ?: "M",
+                totalPrice = it.totalPrice ?: 0,
+                currency = it.currency ?: EMPTY_STRING,
+                coverPhoto = it.coverPhoto ?: EMPTY_STRING,
+                livePhoto = it.livePhoto ?: EMPTY_STRING,
+                clothesLocation = clothesLocationApiModelMapper.map(it.clothesLocation),
+                constructorCode = it.constructorCode ?: EMPTY_STRING,
+                saved = it.saved,
+                createdAt = it.createdAt ?: EMPTY_STRING,
+                modified_at = it.modified_at ?: EMPTY_STRING,
+                style = it.style ?: 0
+            )
         }
     }
 

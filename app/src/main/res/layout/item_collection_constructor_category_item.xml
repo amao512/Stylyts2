@@ -56,7 +56,7 @@
             android:layout_width="@dimen/constructor_category_item_check_icon_size"
             android:layout_height="@dimen/constructor_category_item_check_icon_size"
             android:layout_gravity="top|end"
-            android:background="@drawable/circle_light_orange"
+            android:background="@drawable/circle_light_green"
             android:src="@drawable/ic_baseline_check_24"
             android:visibility="gone"
             />

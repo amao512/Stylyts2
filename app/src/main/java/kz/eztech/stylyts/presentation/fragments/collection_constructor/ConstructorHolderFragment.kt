@@ -12,8 +12,9 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.ConstructorHolderContract
 
-class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolderContract.View , MotionLayout.TransitionListener{
-    
+class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolderContract.View,
+    MotionLayout.TransitionListener {
+
     private lateinit var pagerAdapter: ConstructorPagerAdapter
 
     private val inputClotheList = ArrayList<ClothesTypeDataModel>()
@@ -37,13 +38,13 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
 
     override fun initializeArguments() {
         arguments?.let {
-            if(it.containsKey("items")){
+            if (it.containsKey("items")) {
                 it.getParcelableArrayList<ClothesTypeDataModel>("items")?.let { it1 ->
                     inputClotheList.addAll(it1)
                 }
             }
-            
-            if(it.containsKey("mainId")){
+
+            if (it.containsKey("mainId")) {
                 currentMainId = it.getInt("mainId")
             }
         }
@@ -53,19 +54,19 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
 
     override fun initializeViews() {
         val bundle = Bundle()
-        bundle.putParcelableArrayList("items",inputClotheList)
-        bundle.putInt("mainId",currentMainId)
-        pagerAdapter = ConstructorPagerAdapter(this,bundle)
+        bundle.putParcelableArrayList("items", inputClotheList)
+        bundle.putInt("mainId", currentMainId)
+        pagerAdapter = ConstructorPagerAdapter(this, bundle)
         view_pager_fragment_constructor_holder.isUserInputEnabled = false
         view_pager_fragment_constructor_holder.isSaveEnabled = false
     }
-    
+
     override fun onResume() {
         super.onResume()
         currentActivity.hideBottomNavigationView()
         view_pager_fragment_constructor_holder.adapter = pagerAdapter
     }
-    
+
     override fun initializeListeners() {
         motion_layout_fragment_constructor_holder_chooser.setTransitionListener(this)
     }
@@ -76,9 +77,7 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
 
     override fun displayMessage(msg: String) {}
 
-    override fun isFragmentVisible(): Boolean {
-        return isVisible
-    }
+    override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {}
 
@@ -89,16 +88,36 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
     override fun onTransitionChange(p0: MotionLayout?, p1: Int, p2: Int, p3: Float) {}
 
     override fun onTransitionCompleted(p0: MotionLayout?, p1: Int) {
-        when(motion_layout_fragment_constructor_holder_chooser.currentState){
+        when (motion_layout_fragment_constructor_holder_chooser.currentState) {
             motion_layout_fragment_constructor_holder_chooser.startState -> {
-                view_pager_fragment_constructor_holder.setCurrentItem(0,true)
-                text_view_fragment_constructor_holder_create_collection.setTextColor(getColor(currentActivity,R.color.white))
-                text_view_fragment_constructor_holder_create_post.setTextColor(getColor(currentActivity,R.color.app_gray))
+                view_pager_fragment_constructor_holder.setCurrentItem(0, true)
+                text_view_fragment_constructor_holder_create_collection.setTextColor(
+                    getColor(
+                        currentActivity,
+                        R.color.white
+                    )
+                )
+                text_view_fragment_constructor_holder_create_post.setTextColor(
+                    getColor(
+                        currentActivity,
+                        R.color.app_gray
+                    )
+                )
             }
             motion_layout_fragment_constructor_holder_chooser.endState -> {
-                view_pager_fragment_constructor_holder.setCurrentItem(1,true)
-                text_view_fragment_constructor_holder_create_collection.setTextColor(getColor(currentActivity,R.color.app_gray))
-                text_view_fragment_constructor_holder_create_post.setTextColor(getColor(currentActivity,R.color.white))
+                view_pager_fragment_constructor_holder.setCurrentItem(1, true)
+                text_view_fragment_constructor_holder_create_collection.setTextColor(
+                    getColor(
+                        currentActivity,
+                        R.color.app_gray
+                    )
+                )
+                text_view_fragment_constructor_holder_create_post.setTextColor(
+                    getColor(
+                        currentActivity,
+                        R.color.white
+                    )
+                )
             }
         }
     }

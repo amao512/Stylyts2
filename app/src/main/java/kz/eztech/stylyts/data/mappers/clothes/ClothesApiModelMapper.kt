@@ -10,7 +10,8 @@ class ClothesApiModelMapper @Inject constructor(
     private val clothesStyleApiModelMapper: ClothesStyleApiModelMapper,
     private val clothesCategoryApiModelMapper: ClothesCategoryApiModelMapper,
     private val ownerApiModelMapper: OwnerApiModelMapper,
-    private val clothesBrandApiModelMapper: ClothesBrandApiModelMapper
+    private val clothesBrandApiModelMapper: ClothesBrandApiModelMapper,
+    private val clothesSizeApiModelMapper: ClothesSizeApiModelMapper
 ) {
 
     fun map(data: List<ClothesApiModel>?): List<ClothesModel> {
@@ -23,8 +24,8 @@ class ClothesApiModelMapper @Inject constructor(
                 clothesCategory = clothesCategoryApiModelMapper.map(it.clothesCategory),
                 constructorImage = it.constructorImage ?: EMPTY_STRING,
                 coverImages = it.coverImages ?: emptyList(),
-                clothesSizes = it.clothesSizes ?: emptyList(),
-                clothesColors = it.clothesColors ?: emptyList(),
+                sizeInStock = clothesSizeApiModelMapper.map(it.sizeInStock),
+                clothesColor = it.clothesColor ?: EMPTY_STRING,
                 title = it.title ?: EMPTY_STRING,
                 description = it.description ?: EMPTY_STRING,
                 gender = it.description ?: "M",
@@ -47,8 +48,8 @@ class ClothesApiModelMapper @Inject constructor(
             clothesCategory = clothesCategoryApiModelMapper.map(data?.clothesCategory),
             constructorImage = data?.constructorImage ?: EMPTY_STRING,
             coverImages = data?.coverImages ?: emptyList(),
-            clothesSizes = data?.clothesSizes ?: emptyList(),
-            clothesColors = data?.clothesColors ?: emptyList(),
+            sizeInStock = clothesSizeApiModelMapper.map(data?.sizeInStock),
+            clothesColor = data?.clothesColor ?: EMPTY_STRING,
             title = data?.title ?: EMPTY_STRING,
             description = data?.description ?: EMPTY_STRING,
             gender = data?.description ?: "M",

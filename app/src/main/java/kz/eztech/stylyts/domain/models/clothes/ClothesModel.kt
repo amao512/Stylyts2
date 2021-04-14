@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.models.clothes
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import kz.eztech.stylyts.data.api.models.clothes.ClothesSizeApiModel
 import kz.eztech.stylyts.domain.models.ClothesLocation
 import kz.eztech.stylyts.domain.models.OwnerModel
 
@@ -12,8 +13,7 @@ data class ClothesModel(
     val clothesCategory: ClothesCategoryModel,
     val constructorImage: String,
     val coverImages: List<String>,
-    val clothesSizes: List<String>,
-    val clothesColors: List<String>,
+    val clothesColor: String,
     val title: String,
     val description: String,
     val gender: String,
@@ -25,6 +25,7 @@ data class ClothesModel(
     val modifiedAt: String,
     val owner: OwnerModel,
     val clothesBrand: ClothesBrandModel,
+    val sizeInStock: List<ClothesSizeModel>,
 
     var clothe_location: ClothesLocation? = null,
 ) : Parcelable

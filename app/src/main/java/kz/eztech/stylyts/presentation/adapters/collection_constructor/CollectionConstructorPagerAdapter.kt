@@ -27,7 +27,7 @@ class CollectionConstructorPagerAdapter(
 
     private fun getCollectionConstructor(currentType: Int): CollectionConstructorFragment {
         return CollectionConstructorFragment().apply {
-            args?.putInt("currentType", currentType)
+            args?.putInt(CollectionConstructorFragment.CURRENT_TYPE_KEY, currentType)
             arguments = args
         }
     }

@@ -4,7 +4,6 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.network.ProfileApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -17,8 +16,7 @@ import javax.inject.Inject
  */
 class ProfileRepository @Inject constructor(
     private var api: ProfileApi,
-    private val userApiModelMapper: UserApiModelMapper,
-    private val resultsApiModelMapper: ResultsApiModelMapper
+    private val userApiModelMapper: UserApiModelMapper
 ) : ProfileDomainRepository {
 
     override fun getUserProfile(token: String): Single<UserModel> {

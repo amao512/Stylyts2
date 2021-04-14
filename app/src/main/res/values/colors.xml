@@ -23,6 +23,8 @@
     <color name="app_dark">#3D3D3D</color>
     <color name="app_blue">#22A2EE</color>
 
+    <color name="text_black">#4F4B4B</color>
+
     <color name="toolbar_bg_gray">#FAFAFA</color>
     <color name="toolbar_border">#979797</color>
 

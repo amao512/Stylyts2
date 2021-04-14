@@ -16,10 +16,7 @@ import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitsUseCase
 import kz.eztech.stylyts.domain.usecases.profile.*
-import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase
-import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
-import kz.eztech.stylyts.domain.usecases.user.GetFollowingsUseCase
-import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
+import kz.eztech.stylyts.domain.usecases.user.*
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import javax.inject.Inject
@@ -31,21 +28,21 @@ class ProfilePresenter @Inject constructor(
     private val application: Application,
     private val errorHelper: ErrorHelper,
     private val getProfileUseCase: GetProfileUseCase,
-    private val getProfileByIdUseCase: GetProfileByIdUseCase,
+    private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getMyPublicationsUseCase: GetMyPublicationsUseCase,
     private val getFollowersUseCase: GetFollowersUseCase,
     private val getFollowingsUseCase: GetFollowingsUseCase,
-	private val followUserUseCase: FollowUserUseCase,
-	private val unfollowUserUseCase: UnfollowUserUseCase,
-	private val getClothesUseCase: GetClothesUseCase,
-	private val getOutfitsUseCase: GetOutfitsUseCase
+    private val followUserUseCase: FollowUserUseCase,
+    private val unfollowUserUseCase: UnfollowUserUseCase,
+    private val getClothesUseCase: GetClothesUseCase,
+    private val getOutfitsUseCase: GetOutfitsUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View
 
 	override fun disposeRequests() {
         getProfileUseCase.clear()
-		getProfileByIdUseCase.clear()
+		getUserByIdUseCase.clear()
 		getMyPublicationsUseCase.clear()
 		getFollowersUseCase.clear()
 		getFollowingsUseCase.clear()
@@ -262,8 +259,8 @@ class ProfilePresenter @Inject constructor(
 		token: String,
 		userId: String
 	) {
-		getProfileByIdUseCase.initParams(token, userId)
-		getProfileByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+		getUserByIdUseCase.initParams(token, userId)
+		getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
 				view.processViewAction {
 					hideProgress()

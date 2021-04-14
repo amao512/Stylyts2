@@ -20,12 +20,9 @@ data class ClothesApiModel(
     @SerializedName("cover_images")
     @Expose
     val coverImages: List<String>?,
-    @SerializedName("clothes_sizes")
+    @SerializedName("clothes_color")
     @Expose
-    val clothesSizes: List<String>?,
-    @SerializedName("clothes_colors")
-    @Expose
-    val clothesColors: List<String>?,
+    val clothesColor: String?,
     @SerializedName("title")
     @Expose
     val title: String?,
@@ -59,4 +56,7 @@ data class ClothesApiModel(
     @SerializedName("clothes_brand")
     @Expose
     val clothesBrand: ClothesBrandApiModel?,
+    @SerializedName("in_stock")
+    @Expose
+    val sizeInStock: List<ClothesSizeApiModel>?
 )

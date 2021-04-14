@@ -297,4 +297,12 @@
 
     <string name="saved">Сохранено</string>
     <string name="can_not_load_page_error">Не удалось прогрузить страницу</string>
+
+    <string name="clothes_description_model_id">ID модели:</string>
+    <string name="clothes_description_color">Цвет:</string>
+    <string name="clothes_description_item">Вещь:</string>
+
+    <string name="constructor_create_outfit_title">Создать образ</string>
+
+    <string name="close">Закрыть</string>
 </resources>

@@ -12,103 +12,96 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.Collection
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.ConstructorHolderContract
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 
-class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolderContract.View {
+class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
+    ConstructorHolderContract.View {
+
+    private lateinit var pagerAdapter: CollectionConstructorPagerAdapter
+
     private val inputClotheList = ArrayList<ClothesTypeDataModel>()
     private var currentMainId = -1
-    private lateinit var pagerAdapter: CollectionConstructorPagerAdapter
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_collection_constructor_holder
-    }
 
-    override fun getContractView(): BaseView {
-        return this
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_collection_constructor_holder
+
+    override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
-        with(include_toolbar_profile){
-            toolbar_left_corner_action_image_button.visibility = android.view.View.GONE
-            toolbar_back_text_view.visibility = android.view.View.VISIBLE
-            toolbar_title_text_view.visibility = android.view.View.VISIBLE
-            toolbar_right_corner_action_image_button.visibility = android.view.View.GONE
-            elevation = 0f
-            customizeActionToolBar(this, "Создать образ")
+        with(include_toolbar_profile) {
+            toolbar_left_corner_action_image_button.hide()
+            toolbar_title_text_view.show()
+            toolbar_right_corner_action_image_button.hide()
+
+            toolbar_back_text_view.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            toolbar_back_text_view.text = context.getString(R.string.close)
+            toolbar_back_text_view.show()
+
+            customizeActionToolBar(
+                toolbar = this,
+                title = context.getString(R.string.constructor_create_outfit_title)
+            )
         }
     }
 
-    override fun initializeDependency() {
+    override fun initializeDependency() {}
 
-    }
-
-    override fun initializePresenter() {
-
-    }
+    override fun initializePresenter() {}
 
     override fun initializeArguments() {
         arguments?.let {
-            if(it.containsKey("items")){
+            if (it.containsKey("items")) {
                 it.getParcelableArrayList<ClothesTypeDataModel>("items")?.let { it1 ->
                     inputClotheList.addAll(it1)
                 }
             }
 
-            if(it.containsKey("mainId")){
+            if (it.containsKey("mainId")) {
                 currentMainId = it.getInt("mainId")
             }
         }
     }
 
-    override fun initializeViewsData() {
-
-    }
+    override fun initializeViewsData() {}
 
     override fun initializeViews() {
         val bundle = Bundle()
-        bundle.putParcelableArrayList("items",inputClotheList)
-        bundle.putInt("mainId",currentMainId)
-        pagerAdapter = CollectionConstructorPagerAdapter(this,bundle)
+        bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, inputClotheList)
+        bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentMainId)
+        pagerAdapter = CollectionConstructorPagerAdapter(this, bundle)
 
 
         view_pager_fragment_collection_constructor_holder.isUserInputEnabled = false
         view_pager_fragment_collection_constructor_holder.isSaveEnabled = false
     }
 
-    override fun initializeListeners() {
-
-    }
+    override fun initializeListeners() {}
 
     override fun onResume() {
         super.onResume()
+
         view_pager_fragment_collection_constructor_holder.adapter = pagerAdapter
-        TabLayoutMediator(tab_bar_fragment_collection_constructor_holder, view_pager_fragment_collection_constructor_holder) { tab, position ->
-            when(position){
-                0 -> {tab.text = "Для него"}
-                1 -> {tab.text = "Для нее"}
+
+        TabLayoutMediator(
+            tab_bar_fragment_collection_constructor_holder,
+            view_pager_fragment_collection_constructor_holder
+        ) { tab, position ->
+            when (position) {
+                0 -> tab.text = getString(R.string.for_his)
+                1 -> tab.text = getString(R.string.for_her)
             }
         }.attach()
     }
 
-    override fun processPostInitialization() {
+    override fun processPostInitialization() {}
 
-    }
+    override fun disposeRequests() {}
 
-    override fun disposeRequests() {
+    override fun displayMessage(msg: String) {}
 
-    }
+    override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayMessage(msg: String) {
+    override fun displayProgress() {}
 
-    }
-
-    override fun isFragmentVisible(): Boolean {
-        return isVisible
-    }
-
-    override fun displayProgress() {
-
-    }
-
-    override fun hideProgress() {
-
-    }
+    override fun hideProgress() {}
 }

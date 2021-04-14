@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/margin_size_16x"
                     android:layout_marginEnd="@dimen/margin_size_12x"
-                    android:background="@drawable/circle_light_orange"
+                    android:background="@drawable/circle_light_green"
                     android:padding="@dimen/padding_size_8x"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/frame_layout_fragment_photo_post_creator_camera"

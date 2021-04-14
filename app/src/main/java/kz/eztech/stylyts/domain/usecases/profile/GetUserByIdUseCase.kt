@@ -9,7 +9,7 @@ import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 
-class GetProfileByIdUseCase @Inject constructor(
+class GetUserByIdUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private var profileDomainRepository: ProfileDomainRepository

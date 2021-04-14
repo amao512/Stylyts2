@@ -105,7 +105,7 @@
                 android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
                 android:gravity="start|center"
                 android:text="@string/back"
-                android:visibility="gone"
+                android:visibility="invisible"
                 />
 
             <TextView
@@ -128,7 +128,7 @@
                 android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
                 android:gravity="end|center"
                 android:text="@string/next"
-                android:visibility="gone"
+                android:visibility="invisible"
                 />
 
             <TextView
