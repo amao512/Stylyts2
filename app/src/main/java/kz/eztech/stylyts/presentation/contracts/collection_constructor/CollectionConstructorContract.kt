@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
-import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import java.io.File
 
@@ -18,7 +18,7 @@ interface CollectionConstructorContract {
 
         fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>)
 
-        fun processSuccess(result: MainResult?)
+        fun processSuccessSaving(outfitModel: OutfitModel?)
 
         fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
     }

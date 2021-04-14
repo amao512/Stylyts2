@@ -8,6 +8,7 @@ import kz.eztech.stylyts.data.mappers.outfits.OutfitApiModelMapper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.repository.outfits.OutfitsDomainRepository
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class OutfitsRepository @Inject constructor(
@@ -15,6 +16,18 @@ class OutfitsRepository @Inject constructor(
     private val resultsApiModelMapper: ResultsApiModelMapper,
     private val outfitApiModelMapper: OutfitApiModelMapper
 ) : OutfitsDomainRepository {
+
+    override fun saveOutfit(
+        token: String,
+        data: ArrayList<MultipartBody.Part>
+    ): Single<OutfitModel> {
+        return api.saveOutfit(token, data).map {
+            when (it.isSuccessful) {
+                true -> outfitApiModelMapper.map(data = it.body())
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 
     override fun getOutfits(
         token: String,

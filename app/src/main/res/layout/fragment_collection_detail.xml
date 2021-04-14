@@ -103,21 +103,17 @@
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <com.google.android.material.card.MaterialCardView
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:clickable="true"
-                    app:cardCornerRadius="@dimen/corner_radius_default"
-                    app:cardElevation="@dimen/collection_detail_card_elevation"
-                    app:cardMaxElevation="@dimen/collection_detail_card_max_elevation"
+                    android:background="@drawable/rounded_rectangle_very_light_gray_white_corners_half_transparent"
                     >
 
                     <ImageView
                         android:id="@+id/image_view_fragment_collection_detail_imageholder"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/collection_detail_image_size"
-                        android:background="?attr/selectableItemBackground"
                         android:scaleType="centerInside"
                         tools:src="@drawable/auth_bg"
                         />
@@ -131,7 +127,7 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:src="@drawable/ic_safe_flag_empty"
                         />
-                </com.google.android.material.card.MaterialCardView>
+                </FrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view_fragment_collection_detail_additionals_list"

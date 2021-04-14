@@ -146,4 +146,7 @@
     <dimen name="search_view_height">34dp</dimen>
 
     <dimen name="button_corners_radius">10dp</dimen>
+
+    <dimen name="clothes_detail_item_width">164dp</dimen>
+    <dimen name="clothes_detail_item_height">214dp</dimen>
 </resources>

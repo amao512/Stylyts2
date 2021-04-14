@@ -22,10 +22,13 @@ import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.*
+import kz.eztech.stylyts.domain.models.ClothesCollection
+import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopCategoryAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
@@ -191,6 +194,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
 				onCategoryItemImageClick(item)
 			}
+			R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
+				onCategoryItemImageClick(item)
+			}
         }
     }
 
@@ -203,6 +209,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         when (view.id) {
 			R.id.image_view_item_collection_constructor_category_item_image_holder -> {
 				onCategoryItemImageDoubleClick()
+			}
+			R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
+				onCategoryItemImageClick(item)
 			}
         }
     }
@@ -270,8 +279,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		typesAdapter.removeChosenPosition(typeId)
 	}
 
-	override fun processSuccess(result: MainResult?) {
-		result?.let {
+	override fun processSuccessSaving(outfitModel: OutfitModel?) {
+		outfitModel?.let {
 			when (currentSaveMode) {
 				1 -> successAddedNavigateUp()
 				2 -> saveCollection(model = it)
@@ -570,8 +579,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		findNavController().navigateUp()
 	}
 
-	private fun saveCollection(model: MainResult) {
-		model.id?.let {
+	private fun saveCollection(model: OutfitModel) {
+		model.id.let {
 			presenter.saveCollectionToMe(
 				token = getTokenFromSharedPref(),
 				id = it

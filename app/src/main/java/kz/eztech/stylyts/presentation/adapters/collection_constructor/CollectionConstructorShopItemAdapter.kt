@@ -16,7 +16,7 @@ class CollectionConstructorShopItemAdapter : BaseAdapter() {
 
     var itemDoubleClickListener: UniversalViewDoubleClickListener? = null
 
-    override fun getLayoutId(): Int = R.layout.item_collection_constructor_category_item
+    override fun getLayoutId(): Int = R.layout.item_collection_constructor_clothes
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {

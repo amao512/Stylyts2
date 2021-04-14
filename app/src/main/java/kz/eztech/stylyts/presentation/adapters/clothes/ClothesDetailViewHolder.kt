@@ -44,7 +44,6 @@ class ClothesDetailViewHolder(
             coverImages.map {
                 Glide.with(item_clothes_detail_image_view.context)
                     .load(it)
-                    .centerCrop()
                     .into(item_clothes_detail_image_view)
             }
         }

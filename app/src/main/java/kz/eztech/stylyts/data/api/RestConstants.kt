@@ -72,7 +72,7 @@ object RestConstants {
 
     const val GET_BRANDS: String = "clothes/brands/"
     
-    const val SAVE_COLLECTION_TO_ME = "outfit/{id}/save/"
+    const val SAVE_COLLECTION_TO_ME = "outfits/{id}/save"
     
     const val SEARCH_USER_BY_NAME = "auth/search/"
 
