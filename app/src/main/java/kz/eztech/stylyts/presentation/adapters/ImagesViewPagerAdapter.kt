@@ -37,12 +37,12 @@ class ImagesViewPagerAdapter(val images: ArrayList<String>) : PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
         val inflater = container.context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val view = inflater.inflate(R.layout.pager_item_vp_image, null)
 
         Glide.with(container.context).load(
-           images[position]
-        ).listener(object : RequestListener<Drawable>{
+            images[position]
+        ).listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
                 model: Any?,
@@ -59,7 +59,12 @@ class ImagesViewPagerAdapter(val images: ArrayList<String>) : PagerAdapter() {
                 dataSource: DataSource?,
                 isFirstResource: Boolean
             ): Boolean {
-                view.imageViewSlidePhoto.startAnimation(AnimationUtils.loadAnimation(view.context,R.anim.item_detail_animation))
+                view.imageViewSlidePhoto.startAnimation(
+                    AnimationUtils.loadAnimation(
+                        view.context,
+                        R.anim.item_detail_animation
+                    )
+                )
                 return false
             }
         })
@@ -68,7 +73,7 @@ class ImagesViewPagerAdapter(val images: ArrayList<String>) : PagerAdapter() {
         (container as ViewPager).addView(view, 0)
 
         view.setOnClickListener {
-            mItemImageClickListener?.onViewClicked(view,position, images)
+            mItemImageClickListener?.onViewClicked(view, position, images)
         }
 
         return view
