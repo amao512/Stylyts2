@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_clothes_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.db.LocalDataSource
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesColor
 import kz.eztech.stylyts.domain.models.ClothesSize
@@ -25,9 +24,10 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection.ItemDetailContract
+import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.ItemDetailChooserDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
-import kz.eztech.stylyts.presentation.presenters.collection.ItemDetailPresenter
+import kz.eztech.stylyts.presentation.presenters.collection.ClothesDetailPresenter
 import kz.eztech.stylyts.presentation.utils.ColorUtils
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
@@ -39,8 +39,7 @@ import javax.inject.Inject
 class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View,
     View.OnClickListener, DialogChooserListener {
 
-    @Inject lateinit var presenter: ItemDetailPresenter
-    @Inject lateinit var ds: LocalDataSource
+    @Inject lateinit var presenter: ClothesDetailPresenter
 
     private lateinit var chooserDialog: ItemDetailChooserDialog
 
@@ -207,6 +206,10 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.V
         }
     }
 
+    override fun processInsertingCart() {
+        CartDialog().show(childFragmentManager, "Cart")
+    }
+
     private fun fillClothesModel(clothesModel: ClothesModel) {
         chooserDialog = ItemDetailChooserDialog()
         chooserDialog.setChoiceListener(this)
@@ -308,11 +311,11 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.V
                 fragment_clothes_detail_text_share_frame_layout.show()
             }
             CART_STATE.EDIT -> {
-                if (currentColor == null || currentSize == null) {
-                    displayMessage(msg = getString(R.string.add_to_cart_error))
-                } else {
+//                if (currentColor == null || currentSize == null) {
+//                    displayMessage(msg = getString(R.string.add_to_cart_error))
+//                } else {
                     processCart()
-                }
+//                }
             }
             else -> {}
         }
@@ -379,16 +382,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.V
     }
 
     private fun processCart() {
-//        currentClothesModel?.currentColor = currentColor
-//        currentClothesModel?.currentSize = currentSize
-//        disposables.clear()
-//        disposables.add(
-//            ds.insert(CartMapper.mapToEntity(currentClothesModel as ClothesModel))
-//                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-//                    val cartDialog = CartDialog()
-//                    cartDialog.show(childFragmentManager, "Cart")
-//                }
-//        )
+        presenter.insertToCart(clothesModel = currentClothesModel as ClothesModel)
     }
 
     private fun createOutfit() {

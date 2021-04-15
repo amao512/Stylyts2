@@ -9,6 +9,7 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.db.LocalDataSource
+import kz.eztech.stylyts.data.db.cart.CartDataSource
 import kz.eztech.stylyts.data.helpers.ImageLoader
 import kz.eztech.stylyts.data.repository.collection_constructor.FilteredItemsRepository
 import kz.eztech.stylyts.data.repository.collection_constructor.ShopCategoryRepository
@@ -61,6 +62,9 @@ class ApplicationModule(private val mApplication: Application) {
 
     @Provides
     fun provideDataSource() = LocalDataSource(mApplication)
+
+    @Provides
+    fun provideCartDataSource() = CartDataSource(mApplication)
 
     @Provides
     fun provideImageLoader(): DomainImageLoader = ImageLoader()

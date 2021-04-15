@@ -17,6 +17,8 @@ interface ItemDetailContract {
         fun processClothesOwner(userModel: UserModel)
 
         fun processSuccessSavedWardrobe()
+
+        fun processInsertingCart()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -40,5 +42,7 @@ interface ItemDetailContract {
             token: String,
             clothesId: Int
         )
+
+        fun insertToCart(clothesModel: ClothesModel)
     }
 }

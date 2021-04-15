@@ -1,11 +1,10 @@
-package kz.eztech.stylyts.data.db.dao
+package kz.eztech.stylyts.data.db.cart
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import io.reactivex.Observable
-import kz.eztech.stylyts.data.db.entities.CartEntity
 
 /**
  * Created by Ruslan Erdenoff on 29.01.2021.
