@@ -20,7 +20,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
-import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.CategoryTypeDetailFragmentPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -204,7 +204,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         item as ClothesModel
 
         val bundle = Bundle()
-        bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(
             R.id.action_categoryTypeDetailFragment_to_itemDetailFragment,

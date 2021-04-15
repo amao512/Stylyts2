@@ -118,9 +118,9 @@
     </fragment>
     <fragment
         android:id="@+id/itemDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment"
         android:label="fragment_item_detail"
-        tools:layout="@layout/fragment_item_detail" >
+        tools:layout="@layout/fragment_clothes_detail" >
         <action
             android:id="@+id/action_itemDetailFragment_to_createCollectionFragment"
             app:destination="@id/createCollectionFragment" />

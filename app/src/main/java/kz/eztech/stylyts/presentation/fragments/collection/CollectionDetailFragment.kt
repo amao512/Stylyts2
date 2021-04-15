@@ -100,7 +100,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                 item as ClothesModel
 
                 val bundle = Bundle()
-                bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
+                bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
                 findNavController().navigate(
                     R.id.action_collectionDetailFragment_to_itemDetailFragment,

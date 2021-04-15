@@ -4,7 +4,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionItemFragment
-import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
 import kz.eztech.stylyts.presentation.fragments.main.MainFragment
 import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
@@ -69,7 +69,7 @@ interface ApplicationComponent {
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: CollectionConstructorFragment)
     fun inject(fragment: MainFragment)
-    fun inject(fragment: ItemDetailFragment)
+    fun inject(fragmentClothes: ClothesDetailFragment)
     fun inject(fragment: PhotoChooserFragment)
     fun inject(fragment: CollectionItemFragment)
     fun inject(fragment: ConstructorFilterDialog)

@@ -20,7 +20,7 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearch
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
-import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchItemPresenter
@@ -160,7 +160,7 @@ class SearchItemFragment(
                 item as ClothesModel
 
                 val bundle = Bundle()
-                bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
+                bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
                 findNavController().navigate(
                     R.id.action_searchFragment_to_itemDetailFragment,

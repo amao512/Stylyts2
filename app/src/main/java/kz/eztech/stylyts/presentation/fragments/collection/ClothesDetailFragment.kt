@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_item_detail.*
+import kotlinx.android.synthetic.main.base_toolbar.*
+import kotlinx.android.synthetic.main.fragment_clothes_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.LocalDataSource
@@ -36,7 +36,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View,
+class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View,
     View.OnClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: ItemDetailPresenter
@@ -61,15 +61,15 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         const val CLOTHES_ID = "clothes_id"
     }
 
-    override fun getLayoutId(): Int = R.layout.fragment_item_detail
+    override fun getLayoutId(): Int = R.layout.fragment_clothes_detail
 
     override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
-        with(include_toolbar_item_detail) {
+        with(fragment_clothes_detail_toolbar) {
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
-            toolbar_left_corner_action_image_button.setOnClickListener(this@ItemDetailFragment)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@ClothesDetailFragment)
 
             background = ContextCompat.getDrawable(requireContext(), R.color.toolbar_bg_gray)
         }
@@ -111,13 +111,13 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     }
 
     override fun initializeListeners() {
-        button_fragment_item_detail_create_collection.setOnClickListener(this)
+        fragment_clothes_detail_create_collection_text_view.setOnClickListener(this)
 
-        button_fragment_item_detail_add_to_cart.setOnClickListener(this)
-        frame_layout_fragment_item_detail_text_size.setOnClickListener(this)
-        frame_layout_fragment_item_detail_text_color.setOnClickListener(this)
-        linear_layout_fragment_item_detail_description_holder.setOnClickListener(this)
-        button_fragment_item_detail_add_to_wardrobe.setOnClickListener(this)
+        fragment_clothes_detail_add_to_cart_text_view.setOnClickListener(this)
+        fragment_clothes_detail_text_size_frame_layout.setOnClickListener(this)
+        fragment_clothes_detail_text_color_frame_layout.setOnClickListener(this)
+        fragment_clothes_detail_description_holder_linear_layout.setOnClickListener(this)
+        fragment_clothes_detail_add_to_wardrobe_text_view.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -129,15 +129,15 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.button_fragment_item_detail_create_collection -> createOutfit()
-            R.id.button_fragment_item_detail_add_to_cart -> processState()
-            R.id.frame_layout_fragment_item_detail_text_size -> showClothesSizes()
-            R.id.frame_layout_fragment_item_detail_text_color -> {
+            R.id.fragment_clothes_detail_create_collection_text_view -> createOutfit()
+            R.id.fragment_clothes_detail_add_to_cart_text_view -> processState()
+            R.id.fragment_clothes_detail_text_size_frame_layout -> showClothesSizes()
+            R.id.fragment_clothes_detail_text_color_frame_layout -> {
 //                showClothesColors()
             }
-            R.id.linear_layout_fragment_item_detail_description_holder -> showClothesDescription()
+            R.id.fragment_clothes_detail_description_holder_linear_layout -> showClothesDescription()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.button_fragment_item_detail_add_to_wardrobe -> presenter.saveClothesToWardrobe(
+            R.id.fragment_clothes_detail_add_to_wardrobe_text_view -> presenter.saveClothesToWardrobe(
                 token = getTokenFromSharedPref(),
                 clothesId = currentClothesModel?.id ?: 0
             )
@@ -149,11 +149,11 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             when (currentItem) {
                 is ClothesSize -> {
                     currentSize = currentItem
-                    text_view_fragment_item_detail_text_size.text = currentSize?.size
+                    fragment_clothes_detail_text_size_text_view.text = currentSize?.size
                 }
                 is ClothesColor -> {
                     currentColor = currentItem
-                    text_view_fragment_item_detail_text_color.text = currentColor?.color
+                    fragment_clothes_detail_text_color_text_view.text = currentColor?.color
                 }
             }
         }
@@ -185,25 +185,25 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     }
 
     override fun processClothesOwner(userModel: UserModel) {
-        fragment_item_detail_description_author_text_view.text = getString(
+        fragment_clothes_detail_desc_author_text_view.text = getString(
             R.string.full_name_text_format,
             userModel.firstName,
             userModel.lastName
         )
 
         if (userModel.avatar.isBlank()) {
-            fragment_detail_avatar_shapeable_image_view.hide()
-            fragment_detail_user_short_name_text_view.text = getShortName(
+            fragment_clothes_detail_avatar_shapeable_image_view.hide()
+            fragment_clothes_detail_user_short_name_text_view.text = getShortName(
                 firstName = userModel.firstName,
                 lastName = userModel.lastName
             )
         } else {
-            fragment_detail_user_short_name_text_view.hide()
+            fragment_clothes_detail_user_short_name_text_view.hide()
 
-            Glide.with(fragment_detail_avatar_shapeable_image_view.context)
+            Glide.with(fragment_clothes_detail_avatar_shapeable_image_view.context)
                 .load(userModel.avatar)
                 .centerCrop()
-                .into(fragment_detail_avatar_shapeable_image_view)
+                .into(fragment_clothes_detail_avatar_shapeable_image_view)
         }
     }
 
@@ -211,8 +211,8 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
         chooserDialog = ItemDetailChooserDialog()
         chooserDialog.setChoiceListener(this)
 
-        text_view_fragment_item_detail_brand_name.text = clothesModel.clothesBrand.title
-        text_view_fragment_item_detail_item_name.text = clothesModel.title
+        fragment_clothes_detail_brand_title_text_view.text = clothesModel.clothesBrand.title
+        fragment_clothes_detail_clothes_title_text_view.text = clothesModel.title
 
         fillImages(clothesModel)
         fillPrice(clothesModel)
@@ -226,37 +226,38 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
 
     private fun fillImages(clothesModel: ClothesModel) {
         val imageArray = ArrayList<String>()
+
         clothesModel.coverImages.map { image ->
             imageArray.add(image)
         }
 
         val imageAdapter = ImagesViewPagerAdapter(imageArray)
-        view_pager_fragment_item_detail_photos_holder.adapter = imageAdapter
+        fragment_clothes_detail_photos_holder_view_pager.adapter = imageAdapter
 
-        page_indicator_fragment_item_detail_pager_selector.show()
-        page_indicator_fragment_item_detail_pager_selector.attachToPager(
-            view_pager_fragment_item_detail_photos_holder
+        fragment_clothes_detail_photos_pager_indicator.show()
+        fragment_clothes_detail_photos_pager_indicator.attachToPager(
+            fragment_clothes_detail_photos_holder_view_pager
         )
     }
 
     private fun fillPrice(clothesModel: ClothesModel) {
         if (clothesModel.salePrice != 0) {
-            text_view_fragment_item_detail_item_price.hide()
-            text_view_fragment_item_detail_item_default_price.apply {
+            fragment_clothes_detail_price_text_view.hide()
+            fragment_clothes_detail_default_price_text_view.apply {
                 text = getString(
                     R.string.price_tenge_text_format,
                     NumberFormat.getInstance().format(clothesModel.cost)
                 )
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
-            fragment_item_details_sale_price_text_view.text = getString(
+            fragment_clothes_detail_sale_price_text_view.text = getString(
                 R.string.price_tenge_text_format,
                 NumberFormat.getInstance().format(clothesModel.salePrice)
             )
-            fragment_item_detail_sale_prices_linear_layout.show()
+            fragment_clothes_detail_sale_prices_linear_layout.show()
         } else {
-            fragment_item_detail_sale_prices_linear_layout.hide()
-            text_view_fragment_item_detail_item_price.text = getString(
+            fragment_clothes_detail_sale_prices_linear_layout.hide()
+            fragment_clothes_detail_price_text_view.text = getString(
                 R.string.price_tenge_text_format,
                 NumberFormat.getInstance().format(clothesModel.cost)
             )
@@ -264,9 +265,9 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     }
 
     private fun fillDescription(clothesModel: ClothesModel) {
-        text_view_fragment_item_detail_description.text = clothesModel.description
-        fragment_item_detail_description_id_text_view.text = clothesModel.id.toString()
-        fragment_item_detail_description_color_text_view.text = ColorUtils.getColorTitleFromHex(
+        fragment_clothes_detail_desc_text_view.text = clothesModel.description
+        fragment_clothes_detail_desc_id_text_view.text = clothesModel.id.toString()
+        fragment_clothes_detail_desc_color_text_view.text = ColorUtils.getColorTitleFromHex(
             hex = clothesModel.clothesColor
         )
     }
@@ -298,13 +299,13 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
             CART_STATE.NONE -> {
                 currentState = CART_STATE.EDIT
 
-                button_fragment_item_detail_create_collection.hide()
-                button_fragment_item_detail_add_to_wardrobe.hide()
-                linear_layout_fragment_item_detail_cart_holder.setBackgroundColor(
+                fragment_clothes_detail_create_collection_text_view.hide()
+                fragment_clothes_detail_add_to_wardrobe_text_view.hide()
+                fragment_clothes_detail_cart_holder_linear_layout.setBackgroundColor(
                     getColor(currentActivity, R.color.app_very_light_gray)
                 )
-                linear_layout_fragment_item_detail_choosers_holder.show()
-                frame_layout_fragment_item_detail_text_share.show()
+                fragment_clothes_detail_chooser_holder_linear_layout.show()
+                fragment_clothes_detail_text_share_frame_layout.show()
             }
             CART_STATE.EDIT -> {
                 if (currentColor == null || currentSize == null) {
@@ -354,17 +355,17 @@ class ItemDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.View
     }
 
     private fun showClothesDescription() {
-        if (fragment_item_detail_description_linear_layout.visibility == View.VISIBLE) {
-            fragment_item_detail_description_linear_layout.hide()
+        if (fragment_clothes_detail_description_linear_layout.visibility == View.VISIBLE) {
+            fragment_clothes_detail_description_linear_layout.hide()
             startObjectAnimator(
-                view = image_view_fragment_item_detail_description_arrow,
+                view = fragment_clothes_detail_description_arrow_image_view,
                 y = 0.0f
             )
 
         } else {
-            fragment_item_detail_description_linear_layout.show()
+            fragment_clothes_detail_description_linear_layout.show()
             startObjectAnimator(
-                view = image_view_fragment_item_detail_description_arrow,
+                view = fragment_clothes_detail_description_arrow_image_view,
                 y = 180.0f
             )
         }

@@ -140,8 +140,8 @@ dependencies {
     //Lottie
     implementation 'com.airbnb.android:lottie:3.6.1'
 
-    //pagerindicator
-    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.0.5"
+    // Scrolling Pager Indicator
+    implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.1"
 
     //Ml kit barcode
     implementation 'com.google.mlkit:barcode-scanning:16.1.0'

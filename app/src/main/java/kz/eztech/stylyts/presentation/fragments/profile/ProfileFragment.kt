@@ -36,7 +36,7 @@ import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
-import kz.eztech.stylyts.presentation.fragments.collection.ItemDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
@@ -451,7 +451,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         item as ClothesModel
 
         val bundle = Bundle()
-        bundle.putInt(ItemDetailFragment.CLOTHES_ID, item.id)
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(R.id.action_profileFragment_to_itemDetailFragment, bundle)
     }

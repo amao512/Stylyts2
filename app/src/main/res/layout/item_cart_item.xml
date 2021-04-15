@@ -55,7 +55,7 @@
             />
 
         <LinearLayout
-            android:id="@+id/linear_layout_fragment_item_detail_choosers_holder"
+            android:id="@+id/fragment_clothes_detail_chooser_holder_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_size_8x"
