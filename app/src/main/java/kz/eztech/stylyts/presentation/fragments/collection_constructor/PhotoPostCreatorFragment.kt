@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -31,7 +30,9 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.PhotoLibraryAdapter
 import java.io.File
 
-class PhotoPostCreatorFragment : BaseFragment<MainActivity>(), EmptyContract.View,
+class PhotoPostCreatorFragment(
+    private val inPager: Boolean = false
+) : BaseFragment<MainActivity>(), EmptyContract.View,
     LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, UniversalViewClickListener {
 
     private lateinit var photoAdapter: PhotoLibraryAdapter
@@ -55,17 +56,7 @@ class PhotoPostCreatorFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
 
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = getString(R.string.next)
-            toolbar_right_text_text_view.setOnClickListener {
-                photoUri?.let {
-                    val bundle = Bundle()
-                    bundle.putParcelable("uri", photoUri)
-
-                    findNavController().navigate(
-                        R.id.action_photoPostCreatorFragment_to_photoChooserFragment,
-                        bundle
-                    )
-                }
-            }
+            toolbar_right_text_text_view.setOnClickListener(this@PhotoPostCreatorFragment)
 
             customizeActionToolBar(
                 toolbar = this,
@@ -259,8 +250,34 @@ class PhotoPostCreatorFragment : BaseFragment<MainActivity>(), EmptyContract.Vie
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.frame_layout_fragment_photo_post_creator_camera -> {
-                findNavController().navigate(R.id.action_photoPostCreatorFragment_to_cameraFragment)
+            R.id.frame_layout_fragment_photo_post_creator_camera -> onCameraClick()
+            R.id.toolbar_right_text_text_view -> onNextClick()
+        }
+    }
+
+    private fun onCameraClick() {
+        if (inPager) {
+            findNavController().navigate(R.id.action_createCollectionFragment_to_cameraFragment)
+        } else {
+            findNavController().navigate(R.id.action_photoPostCreatorFragment_to_cameraFragment)
+        }
+    }
+
+    private fun onNextClick() {
+        photoUri?.let {
+            Log.d("TAG", "error $it")
+            val bundle = Bundle()
+            bundle.putParcelable("uri", photoUri)
+            if (inPager) {
+                findNavController().navigate(
+                    R.id.action_createCollectionFragment_to_photoChooserFragment,
+                    bundle
+                )
+            } else {
+                findNavController().navigate(
+                    R.id.action_photoPostCreatorFragment_to_photoChooserFragment,
+                    bundle
+                )
             }
         }
     }

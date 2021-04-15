@@ -23,7 +23,7 @@ class ConstructorPagerAdapter(
             0 -> CollectionConstructorHolderFragment().apply {
                 arguments = args
             }
-            1 -> PhotoPostCreatorFragment().apply {
+            1 -> PhotoPostCreatorFragment(inPager = true).apply {
                 arguments = args
             }
             else -> CollectionConstructorHolderFragment()

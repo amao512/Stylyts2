@@ -342,12 +342,17 @@
                     android:orientation="vertical"
                     >
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/toolbar_border"
+                        />
+
                     <LinearLayout
                         android:id="@+id/fragment_clothes_detail_description_holder_linear_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:animateLayoutChanges="true"
-                        android:background="@drawable/rectangle_white_gray_corners"
                         android:orientation="vertical"
                         android:paddingHorizontal="@dimen/padding_size_24x"
                         android:paddingVertical="@dimen/padding_size_16x"

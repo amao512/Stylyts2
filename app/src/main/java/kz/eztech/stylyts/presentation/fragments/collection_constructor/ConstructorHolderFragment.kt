@@ -20,19 +20,13 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
     private val inputClotheList = ArrayList<ClothesTypeDataModel>()
     private var currentMainId = -1
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_constructor_holder
-    }
+    override fun getLayoutId(): Int = R.layout.fragment_constructor_holder
 
-    override fun getContractView(): BaseView {
-        return this
-    }
+    override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {}
 
-    override fun initializeDependency() {
-
-    }
+    override fun initializeDependency() {}
 
     override fun initializePresenter() {}
 
