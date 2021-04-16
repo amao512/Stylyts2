@@ -56,6 +56,44 @@ class FilterCheckAdapter : BaseAdapter() {
         notifyDataSetChanged()
     }
 
+    fun getCheckedCategoryList(): List<Int> {
+        val checkedList: MutableList<Int> = mutableListOf()
+        val copyCurrentList: MutableList<ClothesCategoryModel> = mutableListOf()
+
+        currentList.map {
+            copyCurrentList.add(it as ClothesCategoryModel)
+        }
+
+        copyCurrentList.removeAt(0)
+
+        copyCurrentList.map {
+            if (it.isChecked) {
+                checkedList.add(it.id)
+            }
+        }
+
+        return checkedList
+    }
+
+    fun getCheckedBrandList(): List<Int> {
+        val checkedList: MutableList<Int> = mutableListOf()
+        val copyCurrentList: MutableList<ClothesBrandModel> = mutableListOf()
+
+        currentList.map {
+            copyCurrentList.add(it as ClothesBrandModel)
+        }
+
+        copyCurrentList.removeAt(0)
+
+        copyCurrentList.map {
+            if (it.isChecked) {
+                checkedList.add(it.id)
+            }
+        }
+
+        return checkedList
+    }
+
     private fun compareCategoryList(
         list: List<Any>,
         oldItemPosition: Int,
@@ -76,20 +114,18 @@ class FilterCheckAdapter : BaseAdapter() {
     ) {
         val firstCategory = currentList[0] as ClothesCategoryModel
 
-        if (position != 0 && firstCategory.isChecked && category.isChecked) {
-            category.isChecked = true
-        } else {
-            category.isChecked = !category.isChecked
-        }
+        if (position == 0) {
+            firstCategory.isChecked = !firstCategory.isChecked
 
-        currentList.forEach {
-            it as ClothesCategoryModel
-
-            if (position == 0) {
-                it.isChecked = category.isChecked
-            } else {
-                it.isChecked = it.id == category.id && category.isChecked
+            currentList.forEach {
+                (it as ClothesCategoryModel).isChecked = firstCategory.isChecked
             }
+        } else {
+            if (firstCategory.isChecked) {
+                firstCategory.isChecked = false
+            }
+
+            category.isChecked = !category.isChecked
         }
     }
 
@@ -99,20 +135,18 @@ class FilterCheckAdapter : BaseAdapter() {
     ) {
         val firstBrand = currentList[0] as ClothesBrandModel
 
-        if (position != 0 && firstBrand.isChecked && brand.isChecked) {
-            brand.isChecked = true
-        } else {
-            brand.isChecked = !brand.isChecked
-        }
+        if (position == 0) {
+            firstBrand.isChecked = !firstBrand.isChecked
 
-        currentList.forEach {
-            it as ClothesBrandModel
-
-            if (position == 0) {
-                it.isChecked = brand.isChecked
-            } else {
-                it.isChecked = it.id == brand.id && brand.isChecked
+            currentList.forEach {
+                (it as ClothesBrandModel).isChecked = firstBrand.isChecked
             }
+        } else {
+            if (firstBrand.isChecked) {
+                firstBrand.isChecked = false
+            }
+
+            brand.isChecked = !brand.isChecked
         }
     }
 }

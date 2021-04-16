@@ -113,16 +113,16 @@ class FilterPresenter @Inject constructor(
     override fun getClothesResults(
         token: String,
         gender: String,
-        clothesTypeId: Int,
-        clothesCategoryId: Int,
-        clothesBrandId: Int
+        typeIdList: List<Int>,
+        categoryIdList: List<Int>,
+        brandIdList: List<Int>
     ) {
         getClothesUseCase.initParams(
             token = token,
             gender = gender,
-            clothesTypeId = clothesTypeId,
-            clothesCategoryId = clothesCategoryId,
-            clothesBrandId = clothesBrandId
+            typeIdList = typeIdList,
+            categoryIdList = categoryIdList,
+            brandIdList = brandIdList
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

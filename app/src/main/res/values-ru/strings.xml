@@ -305,4 +305,7 @@
     <string name="constructor_create_outfit_title">Создать образ</string>
 
     <string name="close">Закрыть</string>
+    <string name="currency_kzt">KZT</string>
+    <string name="min">Минимумм</string>
+    <string name="max">Максимум</string>
 </resources>

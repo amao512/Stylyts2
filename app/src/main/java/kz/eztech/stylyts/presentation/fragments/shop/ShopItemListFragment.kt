@@ -36,7 +36,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     private lateinit var selectedCategoryTitle: String
 
     private var clothesTypeGender: Int = 0
-    private var selectedCategoryId: Int = 0
+    private var selectedCategoryIdList: ArrayList<Int> = arrayListOf()
     private var isCheckedItem: Boolean = false
 
     companion object {
@@ -118,7 +118,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         )
         presenter.getClothesResultsByType(
             token = getTokenFromSharedPref(),
-            typeId = clothesType.id,
+            typeIdList = arrayListOf(clothesType.id),
             gender = getCurrentGender()
         )
     }
@@ -179,21 +179,28 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     ) {
         filterCheckAdapter.onCheckPosition(position)
 
-        with(item as ClothesCategoryModel) {
-            if (!item.isChecked) {
-                resetCategories()
-            } else {
-                selectedCategoryId = id
-                selectedCategoryTitle = title
-                isCheckedItem = item.isChecked
+        val list = filterCheckAdapter.getCheckedCategoryList()
 
-                setResetTextColor()
+        selectedCategoryIdList.clear()
+        selectedCategoryIdList.addAll(list)
+        isCheckedItem = list.isNotEmpty()
+
+        with(item as ClothesCategoryModel) {
+            selectedCategoryTitle = when (selectedCategoryIdList.size) {
+                1 -> {
+                   if (item.isChecked) {
+                       title
+                   } else item.clothesType.title
+                }
+                else -> item.clothesType.title
             }
+
+            setResetTextColor()
 
             presenter.getClothesResultsByCategory(
                 token = getTokenFromSharedPref(),
                 gender = getCurrentGender(),
-                clothesCategoryId = id
+                categoryIdList = selectedCategoryIdList
             )
         }
     }
@@ -201,7 +208,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     private fun showClothesResults() {
         val bundle = Bundle()
         bundle.putString(CategoryTypeDetailFragment.CLOTHES_GENDER, getCurrentGender())
-        bundle.putInt(CategoryTypeDetailFragment.CLOTHES_CATEGORY_ID, selectedCategoryId)
+        bundle.putIntegerArrayList(CategoryTypeDetailFragment.CLOTHES_CATEGORY_ID_LIST, selectedCategoryIdList)
         bundle.putInt(CategoryTypeDetailFragment.CLOTHES_TYPE_ID, clothesType.id)
         bundle.putString(CategoryTypeDetailFragment.CLOTHES_CATEGORY_TITLE, selectedCategoryTitle)
 
@@ -215,7 +222,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         if (isCheckedItem) {
             filterCheckAdapter.onResetChecking()
 
-            selectedCategoryId = 0
+            selectedCategoryIdList.retainAll(selectedCategoryIdList)
             selectedCategoryTitle = clothesType.title
             isCheckedItem = false
 

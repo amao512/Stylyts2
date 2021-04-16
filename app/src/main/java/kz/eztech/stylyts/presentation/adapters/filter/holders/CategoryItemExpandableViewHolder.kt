@@ -18,6 +18,8 @@ class CategoryItemExpandableViewHolder(
         with (itemView) {
             item_filter_single_check_title_checked_text_view.text = category.title
             item_filter_single_check_title_checked_text_view.setOnClickListener {
+                category.isChecked = !category.isChecked
+
                 itemClickListener.onViewClicked(
                     view = item_filter_single_check_title_checked_text_view,
                     position = position,

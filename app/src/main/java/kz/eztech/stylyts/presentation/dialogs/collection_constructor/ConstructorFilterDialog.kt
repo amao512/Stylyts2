@@ -161,8 +161,8 @@ class ConstructorFilterDialog : DialogFragment(), View.OnClickListener,
     }
 
     override fun initializeViews() {
-        frame_layout_dialog_filter_constructor_main.visibility = View.VISIBLE
-        recycler_view_dialog_filter_constructor_list.visibility = View.GONE
+        frame_layout_dialog_filter_constructor_main.show()
+        recycler_view_dialog_filter_constructor_list.hide()
     }
 
     override fun initializeListeners() {
@@ -206,7 +206,6 @@ class ConstructorFilterDialog : DialogFragment(), View.OnClickListener,
 			}
         }
     }
-
 
     override fun processPostInitialization() {}
 

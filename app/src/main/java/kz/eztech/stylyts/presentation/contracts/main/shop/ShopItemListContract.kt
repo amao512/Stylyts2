@@ -22,13 +22,13 @@ interface ShopItemListContract {
         fun getClothesResultsByType(
             token: String,
             gender: String,
-            typeId: Int
+            typeIdList: List<Int>
         )
 
         fun getClothesResultsByCategory(
             token: String,
             gender: String,
-            clothesCategoryId: Int
+            categoryIdList: List<Int>
         )
 
         fun getCategoriesByType(

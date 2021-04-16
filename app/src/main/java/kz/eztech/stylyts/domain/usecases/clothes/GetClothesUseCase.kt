@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.domain.usecases.clothes
 
+import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
@@ -21,6 +22,8 @@ class GetClothesUseCase @Inject constructor(
     private lateinit var booleanQueryMap: Map<String, Boolean>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
+        Log.d("TAG", "$stringQueryMap")
+
         return clothesDomainRepository.getClothes(
             token = token,
             stringQueryMap = stringQueryMap,
@@ -31,9 +34,9 @@ class GetClothesUseCase @Inject constructor(
     fun initParams(
         token: String,
         gender: String,
-        clothesTypeId: Int = 0,
-        clothesCategoryId: Int = 0,
-        clothesBrandId: Int = 0,
+        typeIdList: List<Int> = emptyList(),
+        categoryIdList: List<Int> = emptyList(),
+        brandIdList: List<Int> = emptyList(),
         isMyWardrobe: Boolean = false
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
@@ -43,16 +46,16 @@ class GetClothesUseCase @Inject constructor(
 
         stringQueryMap["gender"] = gender
 
-        if (clothesTypeId != 0) {
-            stringQueryMap["clothes_type"] = clothesTypeId.toString()
+        if (typeIdList.isNotEmpty()) {
+            stringQueryMap["clothes_type"] = typeIdList.joinToString(",")
         }
 
-        if (clothesCategoryId != 0) {
-            stringQueryMap["clothes_category"] = clothesCategoryId.toString()
+        if (categoryIdList.isNotEmpty()) {
+            stringQueryMap["clothes_category"] = categoryIdList.joinToString(",")
         }
 
-        if (clothesBrandId != 0) {
-            stringQueryMap["brand"] = clothesBrandId.toString()
+        if (brandIdList.isNotEmpty()) {
+            stringQueryMap["brand"] = brandIdList.joinToString(",")
         }
 
         if (isMyWardrobe) {

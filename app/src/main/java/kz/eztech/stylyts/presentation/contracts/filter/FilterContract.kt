@@ -30,9 +30,9 @@ interface FilterContract {
         fun getClothesResults(
             token: String,
             gender: String,
-            clothesTypeId: Int = 0,
-            clothesCategoryId: Int = 0,
-            clothesBrandId: Int = 0
+            typeIdList: List<Int> = emptyList(),
+            categoryIdList: List<Int> = emptyList(),
+            brandIdList: List<Int> = emptyList()
         )
     }
 }

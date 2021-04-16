@@ -221,7 +221,7 @@
     <string name="personal_settings_notification">Notification</string>
     <string name="personal_settings_push_notification">Push Notification</string>
 
-    <string name="price_tenge_text_format">%s tenges</string>
+    <string name="price_tenge_text_format">%s KZT</string>
 
     <string name="collection_constructor_success_added">Success added</string>
     <string name="collection_constructor_not_all_data_filled">Не все данные заполнены</string>
@@ -304,4 +304,7 @@
     <string name="constructor_create_outfit_title">Create outfit</string>
 
     <string name="close">Close</string>
+    <string name="currency_kzt">KZT</string>
+    <string name="min">Min</string>
+    <string name="max">Max</string>
 </resources>

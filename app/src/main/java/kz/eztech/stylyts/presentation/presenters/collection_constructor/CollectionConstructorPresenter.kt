@@ -80,7 +80,7 @@ class CollectionConstructorPresenter @Inject constructor(
         getClothesUseCase.initParams(
             token = token,
             gender = map["gender"] as String,
-            clothesTypeId = map["clothes_type"] as Int
+            typeIdList = arrayListOf(map["clothes_type"] as Int)
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

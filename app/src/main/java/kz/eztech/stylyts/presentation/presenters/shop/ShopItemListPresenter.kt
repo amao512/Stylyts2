@@ -55,12 +55,12 @@ class ShopItemListPresenter @Inject constructor(
     override fun getClothesResultsByType(
         token: String,
         gender: String,
-        typeId: Int
+        typeIdList: List<Int>
     ) {
         getClothesUseCase.initParams(
             token = token,
             gender = gender,
-            clothesTypeId = typeId
+            typeIdList = typeIdList
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
@@ -80,12 +80,12 @@ class ShopItemListPresenter @Inject constructor(
     override fun getClothesResultsByCategory(
         token: String,
         gender: String,
-        clothesCategoryId: Int
+        categoryIdList: List<Int>
     ) {
         getClothesUseCase.initParams(
             token = token,
             gender = gender,
-            clothesCategoryId = clothesCategoryId
+            categoryIdList = categoryIdList
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

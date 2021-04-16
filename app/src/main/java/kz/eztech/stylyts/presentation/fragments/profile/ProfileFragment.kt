@@ -213,7 +213,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             currentName = firstName
             currentUsername = username
             currentSurname = lastName
-            currentGender = gender
+            currentGender = when (gender) {
+                "male" -> "M"
+                else -> "F"
+            }
         }
 
         fillProfileInfo(userModel = userModel)

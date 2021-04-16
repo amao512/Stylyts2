@@ -6,6 +6,7 @@ import com.thoughtbot.expandablecheckrecyclerview.CheckableChildRecyclerViewAdap
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.presentation.adapters.filter.holders.CategoryExpandableViewHolder
@@ -14,7 +15,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 
 class CategoryFilterExpandableAdapter(
-    categoryFilterSingleGroupList: List<CategoryFilterSingleCheckGenre>,
+    private val categoryFilterSingleGroupList: List<CategoryFilterSingleCheckGenre>,
     private val itemClickListener: UniversalViewClickListener
 ) : CheckableChildRecyclerViewAdapter<CategoryExpandableViewHolder, CategoryItemExpandableViewHolder>(categoryFilterSingleGroupList) {
 
@@ -60,5 +61,27 @@ class CategoryFilterExpandableAdapter(
         childIndex: Int
     ) {
         holderExpandable?.onBind(group?.items?.get(childIndex) as ClothesCategoryModel)
+    }
+
+    fun getCheckedCategoryList(): List<Int> {
+        val checkedList: MutableList<Int> = mutableListOf()
+
+        categoryFilterSingleGroupList.map {
+            val copyCurrentList: MutableList<ClothesCategoryModel> = mutableListOf()
+
+            it.items.map { item ->
+                copyCurrentList.add(item as ClothesCategoryModel)
+            }
+
+            copyCurrentList.removeAt(0)
+
+            copyCurrentList.map { item ->
+                if (item.isChecked) {
+                    checkedList.add(item.id)
+                }
+            }
+        }
+
+        return checkedList
     }
 }

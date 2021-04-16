@@ -42,9 +42,9 @@ class FilterDialog(
     private var isOpenedFilter = false
     private var isCheckedItem: Boolean = false
 
-    private var selectedClothesType: Int = 0
-    private var selectedClothesCategory: Int = 0
-    private var selectedClothesBrand: Int = 0
+    private var selectedClothesType: MutableList<Int> = mutableListOf()
+    private var selectedClothesCategoryList: MutableList<Int> = mutableListOf()
+    private var selectedClothesBrandList: MutableList<Int> = mutableListOf()
 
     companion object {
         private const val TOKEN_ARGS = "token_args"
@@ -96,9 +96,9 @@ class FilterDialog(
         item: Any?
     ) {
         when (item) {
-            is FilterModel -> openFilterGroup(position, item)
+            is FilterModel -> openFilterGroup(position)
             is ClothesCategoryModel -> selectClothesCategory(view, position, item)
-            is ClothesBrandModel -> selectClothesBrand(view, position, item)
+            is ClothesBrandModel -> selectClothesBrand(position)
         }
     }
 
@@ -149,7 +149,11 @@ class FilterDialog(
     }
 
     override fun processPostInitialization() {
-        getFilterResults()
+        presenter.getClothesTypes(token = getTokenFromArguments())
+        presenter.getClothesBrands(
+            title = getString(R.string.filter_brands),
+            token = getTokenFromArguments()
+        )
     }
 
     override fun disposeRequests() {}
@@ -175,8 +179,6 @@ class FilterDialog(
             categoryFilterSingleGroupList = list,
             itemClickListener = this
         )
-
-        dialog_filter_recycler_view.adapter = categoryFilterExpandableAdapter
     }
 
     override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
@@ -190,36 +192,24 @@ class FilterDialog(
         )
     }
 
-    private fun openFilterGroup(
-        position: Int,
-        filterModel: FilterModel
-    ) {
+    private fun openFilterGroup(position: Int) {
         when (position) {
-            0 -> presenter.getClothesTypes(token = getTokenFromArguments())
-            1 -> {
-                dialog_filter_recycler_view.adapter = filterCheckAdapter
-                presenter.getClothesBrands(
-                    title = filterModel.title,
-                    token = getTokenFromArguments()
-                )
-            }
+            0 -> onCategoriesClick()
+            1 -> onBrandsClick()
+            3 -> onPriceRangeClick()
         }
-
-        dialog_filter_title.hide()
-        toolbar_title_text_view.text = filterModel.title
-        toolbar_left_corner_action_image_button.setBackgroundResource(
-            R.drawable.ic_baseline_keyboard_arrow_left_24
-        )
-        isOpenedFilter = true
     }
 
     private fun closeFilterGroup() {
         dialog_filter_recycler_view.adapter = filterAdapter
         with (dialog_filter_toolbar) {
             if (isOpenedFilter) {
-                dialog_filter_title.show()
                 toolbar_title_text_view.text = getString(R.string.filter_list_filter)
                 toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_close_24)
+
+                dialog_filter_title.show()
+                dialog_filter_recycler_view.show()
+                dialog_filter_range_price_holder.hide()
 
                 isOpenedFilter = false
             } else {
@@ -233,49 +223,65 @@ class FilterDialog(
         position: Int,
         category: ClothesCategoryModel
     ) {
-        isCheckedItem = !category.isChecked
+        categoryFilterExpandableAdapter.onChildCheckChanged(view, category.isChecked, position)
 
-        if (!category.isChecked) {
-            selectedClothesCategory = when (position) {
-                0 -> position
-                else -> category.id
-            }
+        val list = categoryFilterExpandableAdapter.getCheckedCategoryList()
 
-            selectedClothesType = category.clothesType.id
-        }
+        selectedClothesCategoryList.clear()
+        selectedClothesCategoryList.addAll(list)
+        isCheckedItem = selectedClothesBrandList.isNotEmpty() || selectedClothesCategoryList.isNotEmpty()
 
-        categoryFilterExpandableAdapter.onChildCheckChanged(view, !category.isChecked, position)
         getFilterResults()
         setResetTextColor()
     }
 
-    private fun selectClothesBrand(
-        view: View,
-        position: Int,
-        brand: ClothesBrandModel
-    ) {
-        isCheckedItem = !brand.isChecked
-
-        if (!brand.isChecked) {
-            selectedClothesBrand = when (position) {
-                0 -> position
-                else -> brand.id
-            }
-        }
-
+    private fun selectClothesBrand(position: Int) {
         filterCheckAdapter.onCheckPosition(position)
+
+        val list = filterCheckAdapter.getCheckedBrandList()
+
+        selectedClothesBrandList.clear()
+        selectedClothesBrandList.addAll(list)
+        isCheckedItem = selectedClothesBrandList.isNotEmpty() || selectedClothesCategoryList.isNotEmpty()
 
         getFilterResults()
         setResetTextColor()
+    }
+
+    private fun onCategoriesClick() {
+        processOpenedFilterGroup(title = getString(R.string.filter_categories))
+        dialog_filter_recycler_view.adapter = categoryFilterExpandableAdapter
+    }
+
+    private fun onBrandsClick() {
+        processOpenedFilterGroup(title = getString(R.string.filter_brands))
+        dialog_filter_recycler_view.adapter = filterCheckAdapter
+    }
+
+    private fun onPriceRangeClick() {
+        processOpenedFilterGroup(title = getString(R.string.filter_costs))
+
+        dialog_filter_title.hide()
+        dialog_filter_recycler_view.hide()
+        dialog_filter_range_price_holder.show()
+    }
+
+    private fun processOpenedFilterGroup(title: String) {
+        dialog_filter_title.hide()
+        toolbar_title_text_view.text = title
+        toolbar_left_corner_action_image_button.setBackgroundResource(
+            R.drawable.ic_baseline_keyboard_arrow_left_24
+        )
+        isOpenedFilter = true
     }
 
     private fun getFilterResults() {
         presenter.getClothesResults(
             token = getTokenFromArguments(),
             gender = currentGender,
-            clothesCategoryId = selectedClothesCategory,
-            clothesTypeId = selectedClothesType,
-            clothesBrandId = selectedClothesBrand
+            categoryIdList = selectedClothesCategoryList,
+            typeIdList = selectedClothesType,
+            brandIdList = selectedClothesBrandList
         )
     }
 

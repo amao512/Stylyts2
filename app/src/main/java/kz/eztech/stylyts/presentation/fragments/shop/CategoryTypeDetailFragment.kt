@@ -36,13 +36,13 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
 
     private var gender: String = GENDER_MALE
-    private var categoryId: Int = 0
-    private var typeId: Int = 0
+    private var categoryIdList: ArrayList<Int> = arrayListOf()
+    private var typeIdList: ArrayList<Int> = arrayListOf()
     private var title: String = EMPTY_STRING
 
     companion object {
         const val CLOTHES_GENDER = "clothes_gender"
-        const val CLOTHES_CATEGORY_ID = "clothes_category_id"
+        const val CLOTHES_CATEGORY_ID_LIST = "clothes_category_id_list"
         const val CLOTHES_TYPE_ID = "clothes_type_id"
         const val CLOTHES_CATEGORY_TITLE = "clothes_category_title"
         const val GENDER_MALE = "M"
@@ -83,11 +83,11 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             if (it.containsKey(CLOTHES_GENDER)) {
                 gender = it.getString(CLOTHES_GENDER) ?: GENDER_MALE
             }
-            if (it.containsKey(CLOTHES_CATEGORY_ID)) {
-                categoryId = it.getInt(CLOTHES_CATEGORY_ID)
+            if (it.containsKey(CLOTHES_CATEGORY_ID_LIST)) {
+                categoryIdList = it.getIntegerArrayList(CLOTHES_CATEGORY_ID_LIST) ?: arrayListOf()
             }
             if (it.containsKey(CLOTHES_TYPE_ID)) {
-                typeId = it.getInt(CLOTHES_TYPE_ID)
+                typeIdList.add(it.getInt(CLOTHES_TYPE_ID))
             }
             if (it.containsKey(CLOTHES_CATEGORY_TITLE)) {
                 title = it.getString(CLOTHES_CATEGORY_TITLE) ?: EMPTY_STRING
@@ -124,17 +124,17 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     override fun processPostInitialization() {
         presenter.getClothesBrands(token = getTokenFromSharedPref())
 
-        if (categoryId == 0 && typeId != 0) {
+        if (categoryIdList.isEmpty() && typeIdList.isNotEmpty()) {
             presenter.getClothesByType(
                 token = getTokenFromSharedPref(),
                 gender = gender,
-                typeId = typeId
+                typeIdList = typeIdList
             )
         } else {
             presenter.getCategoryTypeDetail(
                 token = getTokenFromSharedPref(),
                 gender = gender,
-                clothesCategoryId = categoryId
+                categoryIdList = categoryIdList
             )
         }
     }
@@ -227,8 +227,8 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             presenter.getClothesByBrand(
                 token = getTokenFromSharedPref(),
                 gender = gender,
-                clothesCategoryId = categoryId,
-                clothesBrandId = item.id ?: 0
+                categoryIdList = categoryIdList,
+                brandIdList = arrayListOf(item.id ?: 0)
             )
         }
     }

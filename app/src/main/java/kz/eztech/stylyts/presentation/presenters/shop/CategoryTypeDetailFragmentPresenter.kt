@@ -34,14 +34,14 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
     override fun getCategoryTypeDetail(
         token: String,
         gender: String,
-        clothesCategoryId: Int
+        categoryIdList: List<Int>
     ) {
         view.displayProgress()
 
         getClothesUseCase.initParams(
             token = token,
             gender = gender,
-            clothesCategoryId = clothesCategoryId
+            categoryIdList = categoryIdList
         )
 
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
@@ -63,17 +63,17 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
 
     override fun getClothesByType(
         token: String,
-        typeId: Int,
+        typeIdList: List<Int>,
         gender: String
     ) {
         getClothesUseCase.initParams(
             token = token,
             gender = gender,
-            clothesTypeId = typeId
+            typeIdList = typeIdList
         )
 
         val data = HashMap<String, Any>()
-        data["type_id"] = typeId
+        data["type_id"] = typeIdList
         data["gender_type"] = gender
 
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
@@ -111,14 +111,14 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
     override fun getClothesByBrand(
         token: String,
         gender: String,
-        clothesCategoryId: Int,
-        clothesBrandId: Int
+        categoryIdList: List<Int>,
+        brandIdList: List<Int>
     ) {
         getClothesUseCase.initParams(
             token = token,
             gender = gender,
-            clothesCategoryId = clothesCategoryId,
-            clothesBrandId = clothesBrandId
+            categoryIdList = categoryIdList,
+            brandIdList = brandIdList
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

@@ -20,14 +20,14 @@ interface CategoryTypeDetailContract {
 
         fun getClothesByType(
             token: String,
-            typeId: Int,
+            typeIdList: List<Int>,
             gender: String,
         )
 
         fun getCategoryTypeDetail(
             token: String,
             gender: String,
-            clothesCategoryId: Int
+            categoryIdList: List<Int>
         )
 
         fun getClothesBrands(
@@ -37,8 +37,8 @@ interface CategoryTypeDetailContract {
         fun getClothesByBrand(
             token: String,
             gender: String,
-            clothesCategoryId: Int,
-            clothesBrandId: Int
+            categoryIdList: List<Int>,
+            brandIdList: List<Int>
         )
     }
 }
