@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.fragments.collection_constructor
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PointF
@@ -12,12 +13,15 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -134,22 +138,25 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     override fun initializeViews() {
 		checkWritePermission()
 
-        filterDialog = ConstructorFilterDialog()
-        typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentType)
-        itemAdapter = CollectionConstructorShopItemAdapter()
+		filterDialog = ConstructorFilterDialog()
+		typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentType)
+		itemAdapter = CollectionConstructorShopItemAdapter()
 
 		typesAdapter.itemClickListener = this
 		itemAdapter.itemClickListener = this
 		itemAdapter.itemDoubleClickListener = this
 
-        recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
-        frame_layout_fragment_collection_constructor_images_container.attachView(motionViewContract = this)
+		recycler_view_fragment_collection_constructor_list.itemAnimator = DefaultItemAnimator()
+		recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
+
+		frame_layout_fragment_collection_constructor_images_container.attachView(motionViewContract = this)
 
 		text_view_fragment_collection_constructor_category_back.isClickable = false
 		text_view_fragment_collection_constructor_category_next.isClickable = false
 
-        processDraggedItems()
-    }
+		initializeBottomSheetBehaviorItems()
+		processDraggedItems()
+	}
 
     override fun initializeListeners() {
         text_view_fragment_collection_constructor_total_price.setOnClickListener(this)
@@ -341,6 +348,37 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				)
 			}
 		}
+	}
+
+	private fun initializeBottomSheetBehaviorItems() {
+		val bottomSheetBehavior = BottomSheetBehavior.from(fragment_collection_constructor_frame_layout_bottom_holder)
+
+		bottomSheetBehavior.peekHeight = 370
+		bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+		bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+			override fun onStateChanged(bottomSheet: View, newState: Int) {
+				when (newState) {
+					BottomSheetBehavior.STATE_COLLAPSED -> {
+						recycler_view_fragment_collection_constructor_list.layoutManager = LinearLayoutManager(
+							requireContext(),
+							RecyclerView.HORIZONTAL,
+							false
+						)
+					}
+					BottomSheetBehavior.STATE_EXPANDED -> {
+						recycler_view_fragment_collection_constructor_list.layoutManager = GridLayoutManager(
+							requireContext(),
+							4,
+							GridLayoutManager.VERTICAL,
+							false
+						)
+					}
+				}
+			}
+
+			override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+		})
 	}
 
 	private fun processDraggedItems() {

@@ -6,18 +6,19 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/margin_size_8x"
+    android:layout_marginBottom="@dimen/margin_size_8x"
     android:orientation="vertical"
     >
 
     <TextView
         android:id="@+id/text_view_item_collection_constructor_category_item_title"
         style="@style/TextRegular"
-        android:layout_width="wrap_content"
+        android:layout_width="85dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:ellipsize="end"
         android:gravity="center"
-        android:maxWidth="@dimen/constructor_category_item_text_max_width"
+        android:maxWidth="80dp"
         android:singleLine="true"
         android:textAlignment="center"
         android:textColor="@color/app_gray_hint"

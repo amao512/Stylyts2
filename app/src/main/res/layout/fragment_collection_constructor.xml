@@ -1,172 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/outfit_bg_color"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".presentation.fragments.collection_constructor.CollectionConstructorFragment"
     >
 
-    <kz.eztech.stylyts.presentation.utils.stick.MotionView
-        android:id="@+id/frame_layout_fragment_collection_constructor_images_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <LinearLayout
-        android:id="@+id/frame_layout_fragment_collection_constructor_images_container_placeholder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/outfit_bg_color"
-        android:gravity="center"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/frame_layout_fragment_collection_constructor_images_container"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-
-        <TextView
-            style="@style/SubtitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/collection_constructor_create_title"
-            />
-
-        <TextView
-            style="@style/TextRegular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_size_6x"
-            android:text="@string/collection_constructor_create_subtitle"
-            android:textAlignment="center"
-            />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/text_view_fragment_collection_constructor_total_price"
-        style="@style/TextRegularBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_size_24x"
-        android:layout_marginBottom="@dimen/margin_size_24x"
-        android:background="@drawable/rounded_rectangle_orange"
-        android:paddingVertical="@dimen/padding_size_6x"
-        android:paddingStart="@dimen/padding_size_24x"
-        android:paddingEnd="@dimen/padding_size_12x"
-        android:textAlignment="textEnd"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/frame_layout_fragment_collection_constructor_images_container"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="1 000 тг"
-        />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:animateLayoutChanges="true"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/padding_size_16x"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="match_parent"
         >
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/padding_size_12x"
-            android:weightSum="1"
+            android:layout_height="match_parent"
+            android:background="@color/outfit_bg_color"
+            android:paddingBottom="180dp"
             >
 
-            <TextView
-                android:id="@+id/text_view_fragment_collection_constructor_category_back"
-                style="@style/TextRegular"
+            <kz.eztech.stylyts.presentation.utils.stick.MotionView
+                android:id="@+id/frame_layout_fragment_collection_constructor_images_container"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left|center"
-                android:layout_weight="0.2"
-                android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
-                android:gravity="start|center"
-                android:text="@string/back"
-                android:visibility="invisible"
+                android:layout_height="0dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 />
 
+            <LinearLayout
+                android:id="@+id/frame_layout_fragment_collection_constructor_images_container_placeholder"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/outfit_bg_color"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@+id/frame_layout_fragment_collection_constructor_images_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <TextView
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/collection_constructor_create_title"
+                    />
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_size_6x"
+                    android:text="@string/collection_constructor_create_subtitle"
+                    android:textAlignment="center"
+                    />
+            </LinearLayout>
+
             <TextView
+                android:id="@+id/text_view_fragment_collection_constructor_total_price"
                 style="@style/TextRegularBold"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.6"
-                android:text="@string/collection_constructor_select_category"
-                android:textAlignment="center"
+                android:layout_marginEnd="@dimen/margin_size_24x"
+                android:layout_marginBottom="@dimen/margin_size_24x"
+                android:background="@drawable/rounded_rectangle_orange"
+                android:paddingVertical="@dimen/padding_size_6x"
+                android:paddingStart="@dimen/padding_size_24x"
+                android:paddingEnd="@dimen/padding_size_12x"
+                android:textAlignment="textEnd"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/frame_layout_fragment_collection_constructor_images_container"
+                app:layout_constraintVertical_bias="1.0"
+                tools:text="1 000 тг"
                 />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
-                android:id="@+id/text_view_fragment_collection_constructor_category_next"
-                style="@style/TextRegular"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center"
-                android:layout_weight="0.2"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
-                android:gravity="end|center"
-                android:text="@string/next"
-                android:visibility="invisible"
-                />
-
-            <TextView
-                android:id="@+id/text_view_fragment_collection_constructor_category_filter"
-                style="@style/TextRegular"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|center"
-                android:layout_weight="0.2"
-                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                android:gravity="end|center"
-                android:text="@string/filter_list_filter"
-                android:visibility="gone"
-                />
-        </LinearLayout>
-
-        <include
-            android:id="@+id/progress_bar_fragment_collection_constructor"
-            layout="@layout/base_progress_small"
-            android:visibility="gone"
-            />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_fragment_collection_constructor_list"
+        <FrameLayout
+            android:id="@+id/fragment_collection_constructor_frame_layout_bottom_holder"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/collection_constructor_list_height"
+            android:layout_height="match_parent"
             android:background="@color/white"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_collection_constructor_category_item"
-            />
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            >
 
-        <ListView
-            android:id="@+id/list_view_fragment_collection_constructor_list_style"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/collection_constructor_list_height"
-            android:visibility="gone"
-            />
-    </LinearLayout>
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/padding_size_16x"
+                    >
+
+                    <View
+                        android:layout_width="30dp"
+                        android:layout_height="4dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/margin_size_10x"
+                        android:background="@drawable/rounded_rectangle_dark_gray_half_transparent"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/padding_size_12x"
+                        android:paddingVertical="@dimen/padding_size_10x"
+                        android:weightSum="1"
+                        >
+
+                        <TextView
+                            android:id="@+id/text_view_fragment_collection_constructor_category_back"
+                            style="@style/TextRegular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:layout_weight="0.2"
+                            android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
+                            android:gravity="start|center"
+                            android:text="@string/back"
+                            android:visibility="invisible"
+                            />
+
+                        <TextView
+                            style="@style/TextRegularBold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="0.6"
+                            android:text="@string/collection_constructor_select_category"
+                            android:textAlignment="center"
+                            />
+
+                        <TextView
+                            android:id="@+id/text_view_fragment_collection_constructor_category_next"
+                            style="@style/TextRegular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center"
+                            android:layout_weight="0.2"
+                            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
+                            android:gravity="end|center"
+                            android:text="@string/next"
+                            android:visibility="invisible"
+                            />
+
+                        <TextView
+                            android:id="@+id/text_view_fragment_collection_constructor_category_filter"
+                            style="@style/TextRegular"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center"
+                            android:layout_weight="0.2"
+                            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                            android:gravity="end|center"
+                            android:text="@string/filter_list_filter"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+
+                    <include
+                        android:id="@+id/progress_bar_fragment_collection_constructor"
+                        layout="@layout/base_progress_small"
+                        android:visibility="gone"
+                        />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_fragment_collection_constructor_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:clipToPadding="false"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:paddingEnd="@dimen/margin_size_8x"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_collection_constructor_category_item"
+                        />
+
+                    <ListView
+                        android:id="@+id/list_view_fragment_collection_constructor_list_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        />
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+        </FrameLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>

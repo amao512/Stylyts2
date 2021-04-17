@@ -25,13 +25,15 @@
         android:id="@+id/toolbar_back_text_view"
         style="@style/TextRegular"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_gravity="start|center"
         android:layout_marginStart="@dimen/margin_size_12x"
         android:drawablePadding="@dimen/padding_size_12x"
         android:gravity="center"
         android:text="@string/back"
         android:visibility="gone"
+        android:paddingVertical="@dimen/padding_size_8x"
+        android:paddingEnd="@dimen/padding_size_8x"
         app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_left_24"
         />
 
