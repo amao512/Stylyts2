@@ -28,4 +28,5 @@ data class ClothesModel(
     val sizeInStock: List<ClothesSizeModel>,
 
     var clothe_location: ClothesLocation? = null,
+    var isChosen: Boolean = false
 ) : Parcelable

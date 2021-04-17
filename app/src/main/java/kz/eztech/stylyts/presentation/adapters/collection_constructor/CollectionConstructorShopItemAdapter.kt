@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
 import android.view.View
+import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
@@ -35,5 +36,37 @@ class CollectionConstructorShopItemAdapter : BaseAdapter() {
             itemView = view,
             adapter = this
         )
+    }
+
+    fun choosePosition(clothesId: Int) {
+        currentList.map {
+            it as ClothesModel
+
+            if (clothesId == it.id) {
+                it.isChosen = true
+            }
+        }
+
+        val diffCallback = getDiffUtilCallBack(currentList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
+
+        notifyDataSetChanged()
+    }
+
+    fun removeChosenPosition(clothesId: Int) {
+        currentList.map {
+            it as ClothesModel
+
+            if (clothesId == it.id) {
+                it.isChosen = false
+            }
+        }
+
+        val diffCallback = getDiffUtilCallBack(currentList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
+
+        notifyDataSetChanged()
     }
 }

@@ -195,7 +195,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				onCategoryItemImageClick(item)
 			}
 			R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
-				onCategoryItemImageClick(item)
+				removeSelectedEntityFromMotionView(item)
 			}
         }
     }
@@ -214,18 +214,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				onCategoryItemImageClick(item)
 			}
         }
-    }
-
-    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        text_view_fragment_collection_constructor_category_next.hide()
-        text_view_fragment_collection_constructor_category_filter.show()
-
-        text_view_fragment_collection_constructor_category_back.show()
-        text_view_fragment_collection_constructor_category_back.isClickable = true
-		recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
-
-		itemAdapter.updateList(list = resultsModel.results)
-		isItems = true
     }
 
     override fun onChoice(v: View?, item: Any?) {
@@ -251,6 +239,24 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		)
 	}
 
+	override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
+		if (listOfItems.isNotEmpty()) {
+			listOfItems.forEach { clothes ->
+				resultsModel.results.find { it.id == clothes.id }?.isChosen = true
+			}
+		}
+
+		text_view_fragment_collection_constructor_category_next.hide()
+		text_view_fragment_collection_constructor_category_filter.show()
+
+		text_view_fragment_collection_constructor_category_back.show()
+		text_view_fragment_collection_constructor_category_back.isClickable = true
+		recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
+
+		itemAdapter.updateList(list = resultsModel.results)
+		isItems = true
+	}
+
 	override fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
 		val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
 			currentActivity, R.layout.item_style, resultsModel.results.map { it.title }
@@ -270,13 +276,11 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		val res2 = listOfItems.remove(motionEntity.item)
 		val res3 = listOfIdsChosen.remove(currentId)
 
-		val typeId = motionEntity.item.clothesCategory.clothesType.id
-
-		Log.d("TAG", typeId.toString())
-		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
-
 		processDraggedItems()
-		typesAdapter.removeChosenPosition(typeId)
+		typesAdapter.removeChosenPosition(typeId = motionEntity.item.clothesCategory.clothesType.id)
+		itemAdapter.removeChosenPosition(clothesId = motionEntity.item.id)
+
+		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
 	}
 
 	override fun processSuccessSaving(outfitModel: OutfitModel?) {
@@ -293,6 +297,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private fun processInputImageToPlace(item: Any?) {
 		item as ClothesModel
+
+		itemAdapter.choosePosition(clothesId = item.id)
 
 		var photoUrl = EMPTY_STRING
 		var currentSameObject: ImageEntity? = null
@@ -435,6 +441,17 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			presenter.getTypes(token = getTokenFromSharedPref())
 		}
 	}
+
+	private fun removeSelectedEntityFromMotionView(item: Any?) {
+		item as ClothesModel
+
+		frame_layout_fragment_collection_constructor_images_container.getEntities().map {
+			if (it.item.id == item.id) {
+				frame_layout_fragment_collection_constructor_images_container.removeEntity(it)
+			}
+		}
+	}
+
 
 	private fun showFilterResults(item: Any?) {
 		val map = item as HashMap<String, Any>

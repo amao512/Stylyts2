@@ -12,6 +12,8 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.
@@ -38,6 +40,12 @@ class CollectionConstructorShopItemHolder(
 					.into(this.image_view_item_collection_constructor_clothes_item_image_holder)
 
 				text_view_item_collection_constructor_clothes_item_title.text = title
+
+				if (isChosen) {
+					image_view_item_collection_constructor_clothes_item_image_chooser.show()
+				} else {
+					image_view_item_collection_constructor_clothes_item_image_chooser.hide()
+				}
 
 				image_view_item_collection_constructor_clothes_item_image_holder.apply {
                     tag = "image_view_item_collection_constructor_category_item_image_holder_$position"

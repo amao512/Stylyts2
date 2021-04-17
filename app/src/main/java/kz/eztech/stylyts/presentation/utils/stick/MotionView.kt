@@ -136,6 +136,15 @@ class MotionView : FrameLayout {
 		}
 	}
 
+	fun removeEntity(entity: MotionEntity?) {
+		if (entity != null) {
+			entities.remove(entity)
+			motionViewContract?.deleteSelectedView(entity)
+			invalidate()
+			unselectEntity()
+		}
+	}
+
 	fun addEntityAndPosition(entity: MotionEntity?, isCustom:Boolean?=false) {
 		if (entity != null) {
 			initEntityBorder(entity)
