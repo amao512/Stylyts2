@@ -246,21 +246,20 @@ class ConstructorFilterDialog : DialogFragment(), View.OnClickListener,
 
     private fun processCurrentMode(mode: ConstructorFilterMode) {
         currentMode = mode
-        frame_layout_dialog_filter_constructor_main.visibility = View.GONE
-        recycler_view_dialog_filter_constructor_list.visibility = View.VISIBLE
+
+        frame_layout_dialog_filter_constructor_main.hide()
+        recycler_view_dialog_filter_constructor_list.show()
+
         customizeFilterToolBar()
+
         when (currentMode) {
 			ConstructorFilterMode.MAIN -> {
 				customizeActionBar()
 				initializeViews()
 			}
 			ConstructorFilterMode.WARDROBE -> {}
-			ConstructorFilterMode.CATEGORIES -> {
-				presenter.getCategories()
-			}
-			ConstructorFilterMode.BRANDS -> {
-				presenter.getBrands()
-			}
+			ConstructorFilterMode.CATEGORIES -> presenter.getCategories()
+			ConstructorFilterMode.BRANDS -> presenter.getBrands()
 			ConstructorFilterMode.COLORS -> {}
 			ConstructorFilterMode.PRICE_RANGE -> {}
 			ConstructorFilterMode.DISCOUNT -> {}

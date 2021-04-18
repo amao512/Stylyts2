@@ -83,6 +83,8 @@ class PhotoPostCreatorFragment(
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
+        currentActivity.hideBottomNavigationView()
+
         when (mode) {
             0 -> switchToCameraPicture()
             else -> {
@@ -265,17 +267,19 @@ class PhotoPostCreatorFragment(
 
     private fun onNextClick() {
         photoUri?.let {
-            Log.d("TAG", "error $it")
             val bundle = Bundle()
-            bundle.putParcelable("uri", photoUri)
+            bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
+
             if (inPager) {
+                bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
+
                 findNavController().navigate(
-                    R.id.action_createCollectionFragment_to_photoChooserFragment,
+                    R.id.action_createCollectionFragment_to_createCollectionAcceptDialog,
                     bundle
                 )
             } else {
                 findNavController().navigate(
-                    R.id.action_photoPostCreatorFragment_to_photoChooserFragment,
+                    R.id.createCollectionAcceptDialog,
                     bundle
                 )
             }

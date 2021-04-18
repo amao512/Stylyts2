@@ -2,7 +2,6 @@ package kz.eztech.stylyts.presentation.fragments.collection_constructor
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PointF
@@ -13,11 +12,13 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.LinearLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -41,7 +42,6 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionAcceptDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
@@ -280,12 +280,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	override fun deleteSelectedView(motionEntity: MotionEntity) {
 		val res = listOfEntities.remove(motionEntity)
-		val res2 = listOfItems.remove(motionEntity.item)
+		val res2 = listOfItems.remove(motionEntity.clothesItem)
 		val res3 = listOfIdsChosen.remove(currentId)
 
 		processDraggedItems()
-		typesAdapter.removeChosenPosition(typeId = motionEntity.item.clothesCategory.clothesType.id)
-		itemAdapter.removeChosenPosition(clothesId = motionEntity.item.id)
+		typesAdapter.removeChosenPosition(typeId = motionEntity.clothesItem.clothesCategory.clothesType.id)
+		itemAdapter.removeChosenPosition(clothesId = motionEntity.clothesItem.id)
 
 		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
 	}
@@ -320,7 +320,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 		if (listOfItems.isNotEmpty() && listOfEntities.isNotEmpty()) {
 			listOfEntities.forEach {
-				if (item.clothesCategory.bodyPart == it.item.clothesCategory.bodyPart) {
+				if (item.clothesCategory.bodyPart == it.clothesItem.clothesCategory.bodyPart) {
 					currentSameObject = it
 				}
 			}
@@ -484,7 +484,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		item as ClothesModel
 
 		frame_layout_fragment_collection_constructor_images_container.getEntities().map {
-			if (it.item.id == item.id) {
+			if (it.clothesItem.id == item.id) {
 				frame_layout_fragment_collection_constructor_images_container.removeEntity(it)
 			}
 		}
@@ -719,11 +719,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 
 	private fun showCreateCollectionDialog(collectionPostCreateModel: CollectionPostCreateModel) {
-		val createCollectionDialog = CreateCollectionAcceptDialog()
-
-		createCollectionDialog.arguments = getCollectionPostBundle(collectionPostCreateModel)
-		createCollectionDialog.setChoiceListener(this@CollectionConstructorFragment)
-		createCollectionDialog.show(childFragmentManager, "PhotoChossoserTag")
+		findNavController().navigate(
+			R.id.createCollectionAcceptDialog,
+			getCollectionPostBundle(collectionPostCreateModel)
+		)
 	}
 
 	private fun getCollectionPostBundle(collectionPostCreateModel: CollectionPostCreateModel): Bundle {

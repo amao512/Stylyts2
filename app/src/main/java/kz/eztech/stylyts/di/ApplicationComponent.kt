@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.di
 
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionAcceptDialog
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionItemFragment
 import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
@@ -24,7 +24,7 @@ import kz.eztech.stylyts.presentation.fragments.auth.RegistrationFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
-import kz.eztech.stylyts.presentation.fragments.collection_constructor.PhotoChooserFragment
+import kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment
@@ -70,7 +70,7 @@ interface ApplicationComponent {
     fun inject(fragment: CollectionConstructorFragment)
     fun inject(fragment: MainFragment)
     fun inject(fragmentClothes: ClothesDetailFragment)
-    fun inject(fragment: PhotoChooserFragment)
+    fun inject(dialog: PhotoChooserDialog)
     fun inject(fragment: CollectionItemFragment)
     fun inject(fragment: ConstructorFilterDialog)
     fun inject(fragment: CleanBackgroundFragment)
@@ -88,6 +88,6 @@ interface ApplicationComponent {
     fun inject(dialog: UserSearchDialog)
     fun inject(dialog: EditProfileDialog)
     fun inject(dialog: ExitDialog)
-    fun inject(dialog: CreateCollectionAcceptDialog)
+    fun inject(fragment: CreateCollectionAcceptFragment)
     fun inject(dialog: FilterDialog)
 }

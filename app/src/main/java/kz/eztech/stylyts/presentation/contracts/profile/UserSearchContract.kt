@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
-import kz.eztech.stylyts.domain.models.ProfileModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -10,7 +11,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface UserSearchContract {
 
     interface View : BaseView {
-        fun processUser(list: List<ProfileModel>)
+
+        fun processUserResults(resultsModel: ResultsModel<UserModel>)
     }
 
     interface Presenter : BasePresenter<View> {

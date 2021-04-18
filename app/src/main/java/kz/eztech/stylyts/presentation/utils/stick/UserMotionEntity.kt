@@ -5,15 +5,15 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PointF
 import androidx.annotation.IntRange
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.utils.stick.MathUtils.pointInTriangle
 
 /**
  * Created by Ruslan Erdenoff on 13.01.2021.
  */
-abstract class MotionEntity(
+abstract class UserMotionEntity(
     val layer: Layer,
-    val clothesItem: ClothesModel,
+    val item: UserModel,
     @IntRange(from = 1) var canvasWidth: Int,
     @IntRange(from = 1) var canvasHeight: Int
 ) {
@@ -80,7 +80,7 @@ abstract class MotionEntity(
     fun moveToCanvasCenter() {
         moveCenterTo(PointF(canvasWidth * 0.5f, canvasHeight * 0.5f))
     }
-    
+
     fun moveToPoint(point:PointF) {
         moveCenterTo(point)
     }
@@ -144,7 +144,7 @@ abstract class MotionEntity(
         val y3: Float = destPoints.get(5)
         val x4: Float = destPoints.get(6)
         val y4: Float = destPoints.get(7)
-        
+
         val xC: Float = customPoints.get(0)
         val yC: Float = customPoints.get(1)
 
@@ -152,7 +152,7 @@ abstract class MotionEntity(
         /*icons.forEach {
 
         }*/
-        
+
         deleteIcon?.let {
             try {
                 when (it.position) {
@@ -162,12 +162,12 @@ abstract class MotionEntity(
                     BitmapStickerIcon.RIGHT_BOTOM -> configIconMatrix(it, x4, y4, rotation)
                     BitmapStickerIcon.CUSTOM -> configCustomIconMatrix(it, (x3 - width/8).toFloat(), (y3 - height/2.5).toFloat(), 0f)
                 }
-    
+
                 when (it.position) {
                     BitmapStickerIcon.CUSTOM -> it.drawSmallRadius(canvas, borderPaint)
                     else -> it.draw(canvas, borderPaint)
                 }
-                
+
             }catch (e:Exception){}
 
         }
@@ -181,7 +181,7 @@ abstract class MotionEntity(
         //icon.matrix.postRotate(rotation, (icon.width / 2).toFloat(), (icon.height / 2).toFloat())
         icon.matrix.postTranslate(x - icon.width / 2, y - icon.height / 2)
     }
-    
+
     fun configCustomIconMatrix(icon: BitmapStickerIcon, x: Float, y: Float,
                                padding: Float){
         icon.x = x

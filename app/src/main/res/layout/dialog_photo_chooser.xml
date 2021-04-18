@@ -7,7 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.collection_constructor.PhotoChooserFragment"
+    android:background="@color/white"
+    tools:context=".presentation.dialogs.collection_constructor.PhotoChooserDialog"
     >
 
     <include
@@ -55,6 +56,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_size_16x"
                 android:layout_marginTop="@dimen/margin_size_24x"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_main_image_detail"
                 android:visibility="gone"
                 />
 
@@ -67,6 +71,7 @@
                 >
 
                 <TextView
+                    android:id="@+id/dialog_photo_chooser_tap_text_view"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

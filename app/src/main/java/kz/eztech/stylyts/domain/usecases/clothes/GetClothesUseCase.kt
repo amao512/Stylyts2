@@ -8,6 +8,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.repository.clothes.ClothesDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -33,7 +34,7 @@ class GetClothesUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        gender: String,
+        gender: String = EMPTY_STRING,
         typeIdList: List<Int> = emptyList(),
         categoryIdList: List<Int> = emptyList(),
         brandIdList: List<Int> = emptyList(),
@@ -44,7 +45,9 @@ class GetClothesUseCase @Inject constructor(
         val stringQueryMap: MutableMap<String, String> = HashMap()
         val booleanQueryMap: MutableMap<String, Boolean> = HashMap()
 
-        stringQueryMap["gender"] = gender
+        if (gender.isNotBlank()) {
+            stringQueryMap["gender"] = gender
+        }
 
         if (typeIdList.isNotEmpty()) {
             stringQueryMap["clothes_type"] = typeIdList.joinToString(",")

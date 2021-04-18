@@ -2,7 +2,9 @@ package kz.eztech.stylyts.presentation.contracts.collection
 
 import android.net.Uri
 import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.MotionViewContract
 
@@ -10,14 +12,25 @@ import kz.eztech.stylyts.presentation.contracts.collection_constructor.MotionVie
  * Created by Ruslan Erdenoff on 23.12.2020.
  */
 interface PhotoChooserContract {
-    interface View: MotionViewContract {
+    interface View : MotionViewContract {
+
         fun updatePhoto(path: Uri?)
-        fun processFilteredItems(model: FilteredItemsModel)
-        fun processShopCategories(shopCategoryModel: ShopCategoryModel)
-        fun getFilterMap():HashMap<String,Any>
+
+        fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>)
+
+        fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
+
+        fun getFilterMap(): HashMap<String, Any>
     }
-    interface Presenter: BasePresenter<View> {
-        fun getCategory(token:String)
-        fun getShopCategoryTypeDetail(token:String, map:Map<String,Any>)
+
+    interface Presenter : BasePresenter<View> {
+
+        fun getCategory(token: String)
+
+        fun getClothes(
+            token: String,
+            typeIdList: List<Int> = emptyList(),
+            categoryIdList: List<Int> = emptyList()
+        )
     }
 }

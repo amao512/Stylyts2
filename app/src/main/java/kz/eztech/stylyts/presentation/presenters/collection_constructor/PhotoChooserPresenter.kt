@@ -2,10 +2,11 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.FilteredItemsModel
-import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
-import kz.eztech.stylyts.domain.usecases.collection_constructor.GetFilteredItemsUseCase
-import kz.eztech.stylyts.domain.usecases.collection_constructor.GetCategoryUseCase
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.PhotoChooserContract
 import javax.inject.Inject
@@ -14,16 +15,17 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 01.02.2021.
  */
 class PhotoChooserPresenter @Inject constructor(
-    private var errorHelper: ErrorHelper,
-    private var getCategoryUseCase: GetCategoryUseCase,
-    private var getFilteredItemsUseCase: GetFilteredItemsUseCase
+    private val errorHelper: ErrorHelper,
+    private val getClothesTypesUseCase: GetClothesTypesUseCase,
+    private val getClothesUseCase: GetClothesUseCase
 ) : PhotoChooserContract.Presenter {
 
     private lateinit var view: PhotoChooserContract.View
 
     override fun disposeRequests() {
-        getCategoryUseCase.clear()
-        getFilteredItemsUseCase.clear()
+        view.disposeRequests()
+        getClothesTypesUseCase.clear()
+        getClothesUseCase.clear()
     }
 
     override fun attach(view: PhotoChooserContract.View) {
@@ -33,51 +35,40 @@ class PhotoChooserPresenter @Inject constructor(
     override fun getCategory(token: String) {
         view.displayProgress()
 
-        getCategoryUseCase.execute(object : DisposableSingleObserver<ShopCategoryModel>() {
-            override fun onSuccess(t: ShopCategoryModel) {
+        getClothesTypesUseCase.initParams(token)
+        getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 view.processViewAction {
+                    processTypesResults(resultsModel = t)
                     hideProgress()
-                    processShopCategories(t)
-
-                    t.menCategory?.let {
-                        if (it.isNotEmpty()) {
-                            it[0].clothes_types?.let { clothes ->
-                                if (clothes.isNotEmpty()) {
-                                    clothes.map { clothesTypes ->
-                                        clothesTypes.id
-                                    }?.let { it1 ->
-                                        val map = view.getFilterMap()
-                                        map["clothes_type"] = it1.joinToString()
-                                        getShopCategoryTypeDetail(token, map)
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
                     hideProgress()
-                    displayMessage(errorHelper.processError(e))
+                    displayMessage(msg = errorHelper.processError(e))
                 }
             }
         })
     }
 
-    override fun getShopCategoryTypeDetail(
+    override fun getClothes(
         token: String,
-        map: Map<String, Any>
+        typeIdList: List<Int>,
+        categoryIdList: List<Int>
     ) {
         view.displayProgress()
 
-        getFilteredItemsUseCase.initParams(token, map)
-        getFilteredItemsUseCase.execute(object : DisposableSingleObserver<FilteredItemsModel>() {
-
-            override fun onSuccess(t: FilteredItemsModel) {
+        getClothesUseCase.initParams(
+            token = token,
+            typeIdList = typeIdList,
+            categoryIdList = categoryIdList
+        )
+        getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
-                    view.processFilteredItems(t)
+                    processClothesResults(resultsModel = t)
                     hideProgress()
                 }
             }

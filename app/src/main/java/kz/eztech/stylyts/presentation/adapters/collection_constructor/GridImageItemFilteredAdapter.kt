@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.GridImageItemFilteredViewHolder
@@ -21,8 +21,8 @@ class GridImageItemFilteredAdapter : BaseAdapter(){
                 oldItemPosition: Int,
                 newItemPosition: Int
             ): Boolean {
-                return (currentList[oldItemPosition] as ClothesMainModel).id ==
-                        (list[newItemPosition] as ClothesMainModel).id
+                return (currentList[oldItemPosition] as ClothesModel).id ==
+                        (list[newItemPosition] as ClothesModel).id
             }
         }
     }

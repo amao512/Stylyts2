@@ -21,12 +21,13 @@
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_view_dialog_user_search"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/search_view_height"
             android:layout_weight="0.85"
             android:inputType="text"
             android:theme="@style/SearchView"
             app:queryBackground="@android:color/transparent"
             app:queryHint="Поиск"
+            app:searchIcon="@drawable/ic_search"
             />
 
         <TextView
@@ -48,6 +49,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/margin_size_8x"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_user_info"
         />
 </LinearLayout>

@@ -6,50 +6,64 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_user_search.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ProfileModel
-import kz.eztech.stylyts.presentation.base.DialogChooserListener
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
+import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.profile.UserSearchContract
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.presenters.search.UserSearchPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.displayToast
+import javax.inject.Inject
 
 /**
  * Created by Ruslan Erdenoff on 22.02.2021.
  */
-class UserSearchDialog : DialogFragment(), DialogChooserListener, UserSearchContract.View,
+class UserSearchDialog(
+    private val chooserListener: DialogChooserListener? = null
+) : DialogFragment(), DialogChooserListener, UserSearchContract.View,
     SearchView.OnQueryTextListener, UniversalViewClickListener {
 
-//    @Inject
-//    lateinit var itemPresenter: SearchItemPresenter
+    @Inject lateinit var presenter: UserSearchPresenter
+    private lateinit var usersAdapter: UserSearchAdapter
 
-    private lateinit var adapter: UserSearchAdapter
+    private var currentQuery: String = EMPTY_STRING
 
-    private var currentQuery: String = ""
+    companion object {
+        private const val TOKEN_KEY = "token_key"
 
-    internal var listener: DialogChooserListener? = null
+        fun getNewInstance(
+            token: String,
+            chooserListener: DialogChooserListener? = null
+        ): UserSearchDialog {
+            val dialog = UserSearchDialog(chooserListener)
+            val bundle = Bundle()
+
+            bundle.putString(TOKEN_KEY, token)
+            dialog.arguments = bundle
+
+            return dialog
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        initializeDependency()
-        initializePresenter()
-        return inflater.inflate(R.layout.dialog_user_search, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.dialog_user_search, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initializeDependency()
+        initializePresenter()
         initializeViewsData()
-        initializeArguments()
-        customizeActionBar()
         initializeViews()
         initializeListeners()
         processPostInitialization()
@@ -57,58 +71,30 @@ class UserSearchDialog : DialogFragment(), DialogChooserListener, UserSearchCont
 
     override fun onChoice(v: View?, item: Any?) {}
 
-    override fun processUser(list: List<ProfileModel>) {
-        adapter.updateList(list)
-    }
-
     override fun customizeActionBar() {}
 
     override fun initializeDependency() {
-        (requireContext().applicationContext as StylytsApp).applicationComponent.inject(this)
+        (activity?.application as StylytsApp).applicationComponent.inject(dialog = this)
     }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() {
+        presenter.attach(view = this)
+    }
 
     override fun initializeArguments() {}
 
-    override fun onQueryTextSubmit(query: String): Boolean {
-        currentQuery = query
-//        itemPresenter.getUserByUsername(
-//			(activity as MainActivity).getSharedPrefByKey<String>(
-//				SharedConstants.TOKEN_KEY
-//			) ?: "", currentQuery
-//		)
-        return false
-    }
-
-    override fun onQueryTextChange(newText: String): Boolean {
-        currentQuery = newText
-        /*if(newText.length % 2 == 0 && newText.isNotEmpty()){
-            presenter.getUserByUsername((activity as MainActivity).getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"",currentQuery)
-        }else if(newText.isEmpty()){
-            presenter.getUserByUsername((activity as MainActivity).getSharedPrefByKey<String>(SharedConstants.TOKEN_KEY)?:"",currentQuery)
-        }*/
-//        itemPresenter.getUserByUsername(
-//			(activity as MainActivity).getSharedPrefByKey<String>(
-//				SharedConstants.TOKEN_KEY
-//			) ?: "", currentQuery
-//		)
-        return false
-    }
-
     override fun initializeViewsData() {
-        adapter = UserSearchAdapter()
+        usersAdapter = UserSearchAdapter()
+        usersAdapter.setOnClickListener(this)
     }
 
     override fun initializeViews() {
-        recycler_view_dialog_user_search_list.layoutManager = LinearLayoutManager(requireContext())
-        recycler_view_dialog_user_search_list.adapter = adapter
+        recycler_view_dialog_user_search_list.adapter = usersAdapter
 
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         search_view_dialog_user_search.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
         search_view_dialog_user_search.setOnQueryTextListener(this)
-        adapter.setOnClickListener(this)
     }
 
     override fun initializeListeners() {
@@ -117,28 +103,34 @@ class UserSearchDialog : DialogFragment(), DialogChooserListener, UserSearchCont
         }
     }
 
-    override fun onViewClicked(view: View, position: Int, item: Any?) {
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
         when (view.id) {
             R.id.linear_layout_item_user_info_container -> {
-                listener?.onChoice(view, item)
+                chooserListener?.onChoice(view, item)
+                dismiss()
             }
         }
     }
 
     override fun processPostInitialization() {
-//        itemPresenter.getUserByUsername(
-//			(activity as MainActivity).getSharedPrefByKey<String>(
-//				SharedConstants.TOKEN_KEY
-//			) ?: "", currentQuery
-//		)
+        presenter.getUserByUsername(
+            token = getTokenFromArgs(),
+            username = currentQuery
+        )
     }
 
     override fun disposeRequests() {
-//        itemPresenter.disposeRequests()
+        presenter.disposeRequests()
     }
 
     override fun displayMessage(msg: String) {
-        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
+        view?.let {
+            displayToast(it.context, msg)
+        }
     }
 
     override fun isFragmentVisible(): Boolean = isVisible
@@ -149,7 +141,42 @@ class UserSearchDialog : DialogFragment(), DialogChooserListener, UserSearchCont
 
     override fun getTheme(): Int = R.style.FullScreenDialog
 
-    fun setChoiceListener(listener: DialogChooserListener) {
-        this.listener = listener
+    override fun onQueryTextSubmit(query: String): Boolean {
+        currentQuery = query
+        presenter.getUserByUsername(
+            token = getTokenFromArgs(),
+            username = currentQuery
+        )
+
+        return false
     }
+
+    override fun onQueryTextChange(newText: String): Boolean {
+        currentQuery = newText
+
+        if (newText.length % 2 == 0 && newText.isNotEmpty()) {
+            presenter.getUserByUsername(
+                token = getTokenFromArgs(),
+                username = currentQuery
+            )
+        } else if (newText.isEmpty()) {
+            presenter.getUserByUsername(
+                token = getTokenFromArgs(),
+                username = currentQuery
+            )
+        }
+
+        presenter.getUserByUsername(
+            token = getTokenFromArgs(),
+            username = currentQuery
+        )
+
+        return false
+    }
+
+    override fun processUserResults(resultsModel: ResultsModel<UserModel>) {
+        usersAdapter.updateList(list = resultsModel.results)
+    }
+
+    private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 }
