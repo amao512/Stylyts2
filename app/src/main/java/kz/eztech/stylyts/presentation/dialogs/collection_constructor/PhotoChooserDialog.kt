@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.dialog_photo_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.MotionItemModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
@@ -154,7 +155,7 @@ class PhotoChooserDialog(
 
         motion_view_fragment_photo_chooser_tags_container.apply {
             setCustomDeleteIcon(R.drawable.ic_baseline_close_20)
-            setFlexible(false)
+            setFlexible(isFlexible = false)
             attachView(motionViewContract = this@PhotoChooserDialog)
             setTapListener(listener = this@PhotoChooserDialog)
         }
@@ -168,7 +169,7 @@ class PhotoChooserDialog(
     }
 
     override fun deleteSelectedView(motionEntity: MotionEntity) {
-        selectedList.remove(motionEntity.clothesItem)
+        selectedList.remove(motionEntity.item)
         selectedAdapter.updateList(selectedList)
         checkEmptyList()
     }
@@ -192,6 +193,86 @@ class PhotoChooserDialog(
     override fun processPostInitialization() {
         presenter.getCategory(token = getTokenFromArgs())
         presenter.getClothes(token = getTokenFromArgs())
+
+        selectedList.map {
+            val layer = Layer()
+            val textView = layoutInflater.inflate(
+                R.layout.text_view_tag_element,
+                motion_view_fragment_photo_chooser_tags_container,
+                false
+            ) as TextView
+
+            textView.text = it.title
+            motion_view_fragment_photo_chooser_tags_container.addView(textView)
+
+            val observer = textView.viewTreeObserver
+
+            if (observer.isAlive) {
+                observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        val resource = createBitmapScreenshot(textView)
+                        val entity = ImageEntity(
+                            layer,
+                            resource,
+                            item = MotionItemModel(item = it),
+                            canvasHeight = motion_view_fragment_photo_chooser_tags_container.width,
+                            canvasWidth = motion_view_fragment_photo_chooser_tags_container.height
+                        )
+                        motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(
+                            entity,
+                            true
+                        )
+                        textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        motion_view_fragment_photo_chooser_tags_container.removeView(textView)
+
+                        selectedList.add(it)
+                        selectedAdapter.updateList(selectedList)
+                    }
+                })
+            } else {
+                Log.wtf("observer", "not alive")
+            }
+        }
+
+        selectedUsers.map {
+            val layer = Layer()
+            val textView = layoutInflater.inflate(
+                R.layout.text_view_tag_element,
+                motion_view_fragment_photo_chooser_tags_container,
+                false
+            ) as TextView
+
+            textView.text = it.username
+            motion_view_fragment_photo_chooser_tags_container.addView(textView)
+
+            val observer = textView.viewTreeObserver
+
+            if (observer.isAlive) {
+                observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        val resource = createBitmapScreenshot(textView)
+
+                        val entity = ImageEntity(
+                            layer,
+                            resource,
+                            item = MotionItemModel(item = it),
+                            canvasHeight = motion_view_fragment_photo_chooser_tags_container.width,
+                            canvasWidth = motion_view_fragment_photo_chooser_tags_container.height
+                        )
+                        motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(
+                            entity,
+                            true
+                        )
+                        textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        motion_view_fragment_photo_chooser_tags_container.removeView(textView)
+
+                        selectedUsers.add(it)
+                    }
+                })
+            } else {
+                Log.wtf("observer", "not alive")
+            }
+        }
     }
 
     override fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>) {
@@ -262,9 +343,7 @@ class PhotoChooserDialog(
         }
 
         when (item) {
-            is UserModel -> {
-                selectedUsers.add(item)
-            }
+            is UserModel -> addUserTag(item)
         }
     }
 
@@ -315,6 +394,7 @@ class PhotoChooserDialog(
                     val entity = ImageEntity(
                         layer,
                         resource,
+                        item = MotionItemModel(item = userModel),
                         canvasHeight = motion_view_fragment_photo_chooser_tags_container.width,
                         canvasWidth = motion_view_fragment_photo_chooser_tags_container.height
                     )
@@ -326,8 +406,6 @@ class PhotoChooserDialog(
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
 
                     selectedUsers.add(userModel)
-                    selectedAdapter.updateList(selectedList)
-                    hideBottomSheet()
                 }
             })
         } else {
@@ -367,7 +445,7 @@ class PhotoChooserDialog(
                     val entity = ImageEntity(
                         layer,
                         resource,
-                        item = clothes,
+                        item = MotionItemModel(item = clothes),
                         canvasWidth = motion_view_fragment_photo_chooser_tags_container.width,
                         canvasHeight = motion_view_fragment_photo_chooser_tags_container.height
                     )
@@ -408,7 +486,7 @@ class PhotoChooserDialog(
     }
 
     private fun checkEmptyList() {
-        if (selectedList.isEmpty()) {
+        if (selectedList.isEmpty() || selectedUsers.isEmpty()) {
             recycler_view_fragment_photo_chooser_selected_list.hide()
             text_view_fragment_photo_chooser_empty_text.show()
             linear_layout_fragment_photo_chooser_desc_container.hide()

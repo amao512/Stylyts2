@@ -29,6 +29,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesCollection
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
+import kz.eztech.stylyts.domain.models.MotionItemModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
@@ -280,12 +281,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	override fun deleteSelectedView(motionEntity: MotionEntity) {
 		val res = listOfEntities.remove(motionEntity)
-		val res2 = listOfItems.remove(motionEntity.clothesItem)
+		val res2 = listOfItems.remove(motionEntity.item)
 		val res3 = listOfIdsChosen.remove(currentId)
 
 		processDraggedItems()
-		typesAdapter.removeChosenPosition(typeId = motionEntity.clothesItem.clothesCategory.clothesType.id)
-		itemAdapter.removeChosenPosition(clothesId = motionEntity.clothesItem.id)
+		typesAdapter.removeChosenPosition(typeId = (motionEntity.item as ClothesModel).clothesCategory.clothesType.id)
+		itemAdapter.removeChosenPosition(clothesId = motionEntity.item.id)
 
 		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
 	}
@@ -320,7 +321,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 		if (listOfItems.isNotEmpty() && listOfEntities.isNotEmpty()) {
 			listOfEntities.forEach {
-				if (item.clothesCategory.bodyPart == it.clothesItem.clothesCategory.bodyPart) {
+				if (item.clothesCategory.bodyPart == (it.item as ClothesModel).clothesCategory.bodyPart) {
 					currentSameObject = it
 				}
 			}
@@ -484,7 +485,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		item as ClothesModel
 
 		frame_layout_fragment_collection_constructor_images_container.getEntities().map {
-			if (it.clothesItem.id == item.id) {
+			if ((it.item as ClothesModel).id == item.id) {
 				frame_layout_fragment_collection_constructor_images_container.removeEntity(it)
 			}
 		}
@@ -792,7 +793,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	): ImageEntity = ImageEntity(
 		layer = Layer(),
 		bitmap = resource,
-		item = clothesModel,
+		item = MotionItemModel(item = clothesModel),
 		canvasWidth = frame_layout_fragment_collection_constructor_images_container.width,
 		canvasHeight = frame_layout_fragment_collection_constructor_images_container.height
 	)

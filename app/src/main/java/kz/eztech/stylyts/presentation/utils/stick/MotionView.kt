@@ -40,10 +40,6 @@ class MotionView : FrameLayout {
         fun onClothesEntitySelected(entity: MotionEntity?)
 
         fun onClothesEntityDoubleTap(entity: MotionEntity)
-
-        fun onUserEntitySelected(entity: UserMotionEntity?)
-
-        fun onUserEntityDoubleTap(entity: UserMotionEntity)
     }
 
     // layers
