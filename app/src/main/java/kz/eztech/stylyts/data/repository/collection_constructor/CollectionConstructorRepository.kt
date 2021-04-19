@@ -14,17 +14,11 @@ class CollectionConstructorRepository @Inject constructor(
 
     override fun createPost(
         token: String,
-        description: String,
-        hidden: Boolean,
-        tags: String,
-        imageOne: MultipartBody.Part
+        bodyList: List<MultipartBody.Part>
     ): Single<PublicationModel> {
         return constructorApi.createPost(
             token = token,
-            description = description,
-            hidden = hidden,
-            tags = tags,
-            imageOne = imageOne
+            bodyList = bodyList
         ).map {
             when (it.isSuccessful) {
                 true -> it.body()

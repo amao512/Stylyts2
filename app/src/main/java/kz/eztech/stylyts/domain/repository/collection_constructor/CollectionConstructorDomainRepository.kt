@@ -8,9 +8,6 @@ interface CollectionConstructorDomainRepository {
 
     fun createPost(
         token: String,
-        description: String,
-        hidden: Boolean,
-        tags: String,
-        imageOne: MultipartBody.Part
+        bodyList: List<MultipartBody.Part>
     ): Single<PublicationModel>
 }

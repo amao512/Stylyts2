@@ -15,6 +15,7 @@ import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -45,15 +46,18 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private lateinit var chooserDialog: CreateCollectionChooserDialog
     private lateinit var userSearchDialog: UserSearchDialog
 
+    private var mode: Int = OUTFIT_MODE
     private var currentModel: CollectionPostCreateModel? = null
     private var currentBitmap: Bitmap? = null
     private var currentPhotoUri: Uri? = null
     private var isPhotoChooser = false
-    private var selectedList: List<ClothesModel>? = null
+    private var selectedList: ArrayList<ClothesModel>? = null
     private var selectedUsers: ArrayList<UserModel>? = null
-    private var hashMap = HashMap<String, Any>()
 
     companion object {
+        const val OUTFIT_MODE = 0
+        const val POST_MODE = 1
+        const val MODE_KEY = "mode_key"
         const val COLLECTION_MODEL_KEY = "collectionModel"
         const val PHOTO_BITMAP_KEY = "photoBitmap"
         const val PHOTO_URI_KEY = "photoUri"
@@ -67,11 +71,13 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     override fun customizeActionBar() {
         with(include_toolbar_dialog_create_collection) {
-            toolbar_back_text_view.show()
-            toolbar_back_text_view.setOnClickListener(this@CreateCollectionAcceptFragment)
-
             toolbar_title_text_view.show()
-            toolbar_title_text_view.text = context.getString(R.string.create_collection_create_outfit)
+            toolbar_title_text_view.text =
+                context.getString(R.string.create_collection_create_outfit)
+
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@CreateCollectionAcceptFragment)
+            toolbar_left_corner_action_image_button.show()
 
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = context.getString(R.string.create_collection_ready)
@@ -98,7 +104,12 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         )
     }
 
-    override fun initializeViews() {}
+    override fun initializeViews() {
+        when (mode) {
+            OUTFIT_MODE -> frame_layout_dialog_create_collection_accept_choose_clothes.hide()
+            POST_MODE -> frame_layout_dialog_create_collection_accept_choose_clothes.show()
+        }
+    }
 
     override fun initializeListeners() {
         chooserDialog.setChoiceListener(this)
@@ -146,26 +157,21 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             if (it.containsKey(CLOTHES_KEY)) {
                 selectedList = it.getParcelableArrayList(CLOTHES_KEY)
             }
+            if (it.containsKey(MODE_KEY)) {
+                mode = it.getInt(MODE_KEY)
+            }
         }
     }
 
     override fun onChoice(v: View?, item: Any?) {
         when (item) {
             is Int -> {
-//                currentModel?.let {
-//                    hashMap["model"] = it
-//                    when (item) {
-//                        1 -> hashMap["mode"] = 1
-//                        2 -> hashMap["mode"] = 2
-//                        3 -> hashMap["mode"] = 3
-//                    }
-//
-//                    listener?.onChoice(
-//                        v = include_toolbar_dialog_create_collection.toolbar_right_text_text_view,
-//                        item = hashMap
-//                    )
-//                    findNavController().navigateUp()
-//                }
+                when (mode) {
+                    OUTFIT_MODE -> currentModel?.let {
+                        saveOutfit(it)
+                    }
+                    POST_MODE -> savePost()
+                }
             }
             is UserModel -> selectedUsers?.let {
                 if (!it.contains(item)) it.add(item)
@@ -186,10 +192,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
                 processPhotoChooser()
             }
-        }
-
-        when (v?.id) {
-            R.id.dialog_bottom_create_collection_chooser_common_line -> onChoicePublication()
         }
     }
 
@@ -213,11 +215,17 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                     chooserListener = this
                 ).show(childFragmentManager, EMPTY_STRING)
             }
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
         }
     }
 
     override fun processPublications(publicationModel: PublicationModel) {
         findNavController().popBackStack(R.id.profileFragment, false)
+    }
+
+    override fun processSuccessSaving(outfitModel: OutfitModel?) {
+        displayMessage(msg = getString(R.string.collection_constructor_success_added))
+        findNavController().navigateUp()
     }
 
     private fun processPhotos() {
@@ -254,21 +262,19 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    private fun onChoicePublication() {
+    private fun savePost() {
         try {
             if (currentBitmap != null && currentPhotoUri == null) {
                 currentBitmap?.let {
-                    val file: File? = FileUtils.createPngFileFromBitmap(requireContext(), it)
-
-                    createPost(file)
+                    createPost(
+                        FileUtils.createPngFileFromBitmap(requireContext(), it)
+                    )
                 }
             }
 
             if (currentPhotoUri != null && currentBitmap == null) {
                 currentPhotoUri?.let {
-                    val file = File(it.path)
-
-                    createPost(file)
+                    createPost(File(it.path))
                 }
             }
         } catch (e: Exception) {
@@ -281,11 +287,39 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             presenter.createPublications(
                 token = getTokenFromSharedPref(),
                 description = edit_text_view_dialog_create_collection_accept_sign.text.toString(),
-                tags = EMPTY_STRING,
-                hidden = false,
-                file = file
+                file = file,
+                selectedClothes = selectedList,
+                selectedUsers = selectedUsers
             )
         }
+    }
+
+    private fun saveOutfit(item: CollectionPostCreateModel) {
+        getTokenFromSharedPref().let {
+            try {
+                currentBitmap?.let { bitmap ->
+                    val file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
+
+                    file?.let { _ ->
+                        presenter.saveCollection(
+                            it, item, file
+                        )
+                    } ?: run {
+                        errorLoadData()
+                    }
+
+                } ?: run {
+                    errorLoadData()
+                }
+            } catch (e: Exception) {
+                errorLoadData()
+            }
+        }
+    }
+
+    private fun errorLoadData() {
+        hideProgress()
+        displayMessage(msg = getString(R.string.collection_constructor_error_load_data))
     }
 
     private fun getTokenFromSharedPref(): String {

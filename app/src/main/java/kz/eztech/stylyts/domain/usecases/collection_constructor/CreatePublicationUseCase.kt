@@ -10,40 +10,24 @@ import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Named
 
-class CreateCollectionUseCase @Inject constructor(
+class CreatePublicationUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val collectionConstructorDomainRepository: CollectionConstructorDomainRepository
 ) : BaseUseCase<PublicationModel>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var description: String
-    private lateinit var tags: String
-    private lateinit var imageOne: MultipartBody.Part
-
-    private var hidden: Boolean = false
+    private lateinit var bodyList: List<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<PublicationModel> {
-        return collectionConstructorDomainRepository.createPost(
-            token = token,
-            description = description,
-            tags = tags,
-            imageOne = imageOne,
-            hidden = hidden
-        )
+        return collectionConstructorDomainRepository.createPost(token, bodyList)
     }
 
     fun initParams(
         token: String,
-        description: String,
-        tags: String,
-        imageOne: MultipartBody.Part,
-        hidden: Boolean
+        bodyList: List<MultipartBody.Part>
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.description = description
-        this.tags = tags
-        this.imageOne = imageOne
-        this.hidden = hidden
+        this.bodyList = bodyList
     }
 }

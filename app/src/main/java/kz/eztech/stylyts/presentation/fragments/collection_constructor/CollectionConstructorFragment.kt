@@ -729,8 +729,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun getCollectionPostBundle(collectionPostCreateModel: CollectionPostCreateModel): Bundle {
 		val bundle = Bundle()
 
-		bundle.putParcelable("collectionModel", collectionPostCreateModel)
-		bundle.putParcelable("photoBitmap", currentCollectionBitmap)
+		bundle.putParcelable(CreateCollectionAcceptFragment.COLLECTION_MODEL_KEY, collectionPostCreateModel)
+		bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_BITMAP_KEY, currentCollectionBitmap)
+		bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.OUTFIT_MODE)
 
 		return bundle
 	}

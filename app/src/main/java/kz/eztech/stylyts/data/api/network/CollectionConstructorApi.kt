@@ -13,9 +13,6 @@ interface CollectionConstructorApi {
     @POST(RestConstants.CREATE_POST)
     fun createPost(
         @Header("Authorization") token: String,
-        @Part("description") description: String,
-        @Part("hidden") hidden: Boolean,
-        @Part("tags") tags: String,
-        @Part imageOne: MultipartBody.Part
+        @Part bodyList: List<MultipartBody.Part>
     ) : Single<Response<PublicationModel>>
 }

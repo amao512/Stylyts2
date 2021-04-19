@@ -49,19 +49,16 @@ class PhotoPostCreatorFragment(
 
     override fun customizeActionBar() {
         with(include_toolbar_fragment_photo_post_creator) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@PhotoPostCreatorFragment)
+            toolbar_left_corner_action_image_button.show()
+
+            toolbar_title_text_view.text = context.getString(R.string.post_creator_title)
             toolbar_title_text_view.show()
-            toolbar_right_corner_action_image_button.hide()
 
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = getString(R.string.next)
             toolbar_right_text_text_view.setOnClickListener(this@PhotoPostCreatorFragment)
-
-            customizeActionToolBar(
-                toolbar = this,
-                title = context.getString(R.string.post_creator_title)
-            )
         }
     }
 
@@ -254,6 +251,7 @@ class PhotoPostCreatorFragment(
         when (v?.id) {
             R.id.frame_layout_fragment_photo_post_creator_camera -> onCameraClick()
             R.id.toolbar_right_text_text_view -> onNextClick()
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
         }
     }
 
@@ -268,7 +266,9 @@ class PhotoPostCreatorFragment(
     private fun onNextClick() {
         photoUri?.let {
             val bundle = Bundle()
+
             bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
+            bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
 
             if (inPager) {
                 bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
