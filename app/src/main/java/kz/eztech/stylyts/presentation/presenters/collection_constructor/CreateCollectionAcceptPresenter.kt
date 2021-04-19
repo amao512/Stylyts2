@@ -60,6 +60,7 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         }
 
         bodyList.add(MultipartBody.Part.createFormData("description", description))
+        bodyList.add(MultipartBody.Part.createFormData("tags", ""))
 
         createPublicationUseCase.initParams(token, bodyList)
         createPublicationUseCase.execute(object : DisposableSingleObserver<PublicationModel>() {

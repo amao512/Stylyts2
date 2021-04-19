@@ -24,7 +24,6 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CreateCollectionAcceptContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.UserSearchDialog
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CreateCollectionAcceptPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
@@ -44,15 +43,14 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     lateinit var presenter: CreateCollectionAcceptPresenter
 
     private lateinit var chooserDialog: CreateCollectionChooserDialog
-    private lateinit var userSearchDialog: UserSearchDialog
 
-    private var mode: Int = OUTFIT_MODE
+    private var currentMode: Int = OUTFIT_MODE
     private var currentModel: CollectionPostCreateModel? = null
     private var currentBitmap: Bitmap? = null
     private var currentPhotoUri: Uri? = null
     private var isPhotoChooser = false
-    private var selectedList: ArrayList<ClothesModel>? = null
-    private var selectedUsers: ArrayList<UserModel>? = null
+    private var selectedList = ArrayList<ClothesModel>()
+    private var selectedUsers = ArrayList<UserModel>()
 
     companion object {
         const val OUTFIT_MODE = 0
@@ -63,6 +61,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         const val PHOTO_URI_KEY = "photoUri"
         const val IS_CHOOSER_KEY = "isChooser"
         const val CLOTHES_KEY = "clothes"
+        const val USERS_KEY = "users"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_create_collection_accept
@@ -98,16 +97,18 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             setChoiceListener(listener = this@CreateCollectionAcceptFragment)
         }
         selectedUsers = ArrayList()
-        userSearchDialog = UserSearchDialog.getNewInstance(
-            token = getTokenFromSharedPref(),
-            chooserListener = this
-        )
     }
 
     override fun initializeViews() {
-        when (mode) {
-            OUTFIT_MODE -> frame_layout_dialog_create_collection_accept_choose_clothes.hide()
-            POST_MODE -> frame_layout_dialog_create_collection_accept_choose_clothes.show()
+        when (currentMode) {
+            OUTFIT_MODE -> {
+                frame_layout_dialog_create_collection_accept_choose_clothes.hide()
+                fragment_create_collection_accept_divier_one.hide()
+            }
+            POST_MODE -> {
+                frame_layout_dialog_create_collection_accept_choose_clothes.show()
+                fragment_create_collection_accept_divier_one.show()
+            }
         }
     }
 
@@ -155,10 +156,12 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 isPhotoChooser = it.getBoolean(IS_CHOOSER_KEY)
             }
             if (it.containsKey(CLOTHES_KEY)) {
-                selectedList = it.getParcelableArrayList(CLOTHES_KEY)
+                it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let { list ->
+                    selectedList = list
+                }
             }
             if (it.containsKey(MODE_KEY)) {
-                mode = it.getInt(MODE_KEY)
+                currentMode = it.getInt(MODE_KEY)
             }
         }
     }
@@ -166,31 +169,27 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     override fun onChoice(v: View?, item: Any?) {
         when (item) {
             is Int -> {
-                when (mode) {
+                when (currentMode) {
                     OUTFIT_MODE -> currentModel?.let {
                         saveOutfit(it)
                     }
                     POST_MODE -> savePost()
                 }
             }
-            is UserModel -> selectedUsers?.let {
-                if (!it.contains(item)) it.add(item)
-
-                PhotoChooserDialog.getNewInstance(
-                    token = getTokenFromSharedPref(),
-                    photoUri = currentPhotoUri,
-                    chooserListener = this,
-                    mode = PhotoChooserDialog.USERS_MODE
-                ).show(childFragmentManager, EMPTY_STRING)
-
-                updateUserView()
-            }
             is Bundle -> {
-                selectedList = item.getParcelableArrayList(CLOTHES_KEY)
+                item.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let {
+                    selectedList = it
+                }
+                item.getParcelableArrayList<UserModel>(USERS_KEY)?.let {
+                    selectedUsers = it
+                }
                 currentPhotoUri = item.getParcelable(PHOTO_URI_KEY)
                 isPhotoChooser = item.getBoolean(IS_CHOOSER_KEY)
+                currentMode = item.getInt(MODE_KEY)
 
+                initializeViews()
                 processPhotoChooser()
+                updateUserView()
             }
         }
     }
@@ -198,7 +197,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.frame_layout_dialog_create_collection_accept_user_search -> {
-                userSearchDialog.show(childFragmentManager, "UserSearchDialog")
+                showPhotoChooserDialog(mode = PhotoChooserDialog.USERS_MODE)
             }
             R.id.toolbar_back_text_view -> findNavController().navigateUp()
             R.id.toolbar_right_text_text_view -> {
@@ -209,11 +208,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 chooserDialog.show(childFragmentManager, "ChooserDialog")
             }
             R.id.frame_layout_dialog_create_collection_accept_choose_clothes -> {
-                PhotoChooserDialog.getNewInstance(
-                    token = getTokenFromSharedPref(),
-                    photoUri = currentPhotoUri,
-                    chooserListener = this
-                ).show(childFragmentManager, EMPTY_STRING)
+                showPhotoChooserDialog(mode = PhotoChooserDialog.CLOTHES_MODE)
             }
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
         }
@@ -244,11 +239,13 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     private fun processPhotoChooser() {
         if (isPhotoChooser) {
-            frame_layout_dialog_create_collection_accept_choose_clothes.show()
-            frame_layout_dialog_create_collection_accept_choose_clothes.setOnClickListener(this)
-
-            selectedList?.let {
-                text_view_dialog_create_collection_items_count.text = "${it.count()} вещ."
+            if (selectedList.isNotEmpty()) {
+                text_view_dialog_create_collection_items_count.text = getString(
+                    R.string.clothes_count_text_format,
+                    selectedList.count().toString()
+                )
+            } else {
+                text_view_dialog_create_collection_items_count.hide()
             }
         }
     }
@@ -256,10 +253,31 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private fun updateUserView() {
         text_view_dialog_create_collection_user_count.show()
 
-        selectedUsers?.let {
-            if (it.isNotEmpty())
-                text_view_dialog_create_collection_user_count.text = "${it.count()} юзер."
+        if (selectedUsers.isNotEmpty()) {
+            text_view_dialog_create_collection_user_count.text = getString(
+                R.string.clothes_count_text_format,
+                selectedUsers.count().toString()
+            )
+        } else {
+            text_view_dialog_create_collection_user_count.hide()
         }
+    }
+
+    private fun showPhotoChooserDialog(mode: Int) {
+        PhotoChooserDialog.getNewInstance(
+            token = getTokenFromSharedPref(),
+            chooserListener = this,
+            clothesList = selectedList,
+            usersList = selectedUsers,
+            mode = currentMode
+        ).apply {
+            setMode(mode = mode)
+            setPhotoUri(uri = currentPhotoUri)
+            setPhotoBitmap(bitmap = currentBitmap)
+        }.show(childFragmentManager, EMPTY_STRING)
+
+        selectedList.clear()
+        selectedUsers.clear()
     }
 
     private fun savePost() {
@@ -273,12 +291,12 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             }
 
             if (currentPhotoUri != null && currentBitmap == null) {
-                currentPhotoUri?.let {
-                    createPost(File(it.path))
+                currentPhotoUri?.path?.let {
+                    createPost(File(it))
                 }
             }
         } catch (e: Exception) {
-            Log.e("TAG", e.localizedMessage)
+            Log.e("TAG", e.localizedMessage ?: EMPTY_STRING)
         }
     }
 

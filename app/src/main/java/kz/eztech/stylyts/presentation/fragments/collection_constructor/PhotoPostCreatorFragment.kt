@@ -119,15 +119,18 @@ class PhotoPostCreatorFragment(
     ) {
         item as String
 
-        if (listOfChosenImages.contains(item)) {
+        photoUri = if (listOfChosenImages.contains(item)) {
             listOfChosenImages.remove(item)
             photoAdapter.notifyItemChanged(position, -1)
+
+            null
         } else {
             listOfChosenImages.add(item)
             photoAdapter.notifyItemChanged(position, listOfChosenImages.count())
+
+            Uri.fromFile(File(item))
         }
 
-        photoUri = Uri.fromFile(File(item))
         Glide.with(currentActivity)
             .load(photoUri)
             .into(image_view_fragment_photo_post_creator)
@@ -264,7 +267,7 @@ class PhotoPostCreatorFragment(
     }
 
     private fun onNextClick() {
-        photoUri?.let {
+        if (photoUri != null) {
             val bundle = Bundle()
 
             bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
@@ -283,6 +286,8 @@ class PhotoPostCreatorFragment(
                     bundle
                 )
             }
+        } else {
+            displayMessage(msg = getString(R.string.error_choose_photo))
         }
     }
 }

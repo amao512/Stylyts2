@@ -294,7 +294,7 @@ class ConstructorFilterDialog : DialogFragment(), View.OnClickListener,
     private fun processResetFilter() {}
 
     private fun processDismiss() {
-        listener?.onChoice(button_dialog_filter_constructor_submit, filterMap)
+//        listener?.onChoice(button_dialog_filter_constructor_submit, filterMap)
         dismiss()
     }
 

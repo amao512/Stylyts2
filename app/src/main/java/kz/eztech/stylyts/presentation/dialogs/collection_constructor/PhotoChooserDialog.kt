@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.dialogs.collection_constructor
 
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -45,41 +46,43 @@ import javax.inject.Inject
 
 class PhotoChooserDialog(
     private val chooserListener: DialogChooserListener? = null,
-    private val mode: Int = CLOTHES_MODE
+    private val selectedList: ArrayList<ClothesModel>,
+    private val selectedUsers: ArrayList<UserModel>,
+    private val currentMode: Int
 ) : DialogFragment(), PhotoChooserContract.View,
     UniversalViewClickListener,
     DialogChooserListener, MotionViewTapListener, View.OnClickListener {
 
-    @Inject lateinit var presenter: PhotoChooserPresenter
+    @Inject
+    lateinit var presenter: PhotoChooserPresenter
 
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var filteredAdapter: GridImageItemFilteredAdapter
     private lateinit var selectedAdapter: MainImagesAdditionalAdapter
     private lateinit var filterDialog: ConstructorFilterDialog
 
-    private val selectedList = ArrayList<ClothesModel>()
-    private val selectedUsers = ArrayList<UserModel>()
     private val filterMap = HashMap<String, Any>()
 
     private var photoUri: Uri? = null
+    private var photoBitmap: Bitmap? = null
+    private var mode: Int = CLOTHES_MODE
 
     companion object {
         private const val TOKEN_KEY = "token"
-        const val PHOTO_URI_KEY = "uri"
         const val CLOTHES_MODE = 0
         const val USERS_MODE = 1
 
         fun getNewInstance(
             token: String,
-            photoUri: Uri?,
-            chooserListener: DialogChooserListener? = null,
-            mode: Int = CLOTHES_MODE
+            chooserListener: DialogChooserListener?,
+            clothesList: ArrayList<ClothesModel>,
+            usersList: ArrayList<UserModel>,
+            mode: Int
         ): PhotoChooserDialog {
-            val dialog = PhotoChooserDialog(chooserListener, mode)
+            val dialog = PhotoChooserDialog(chooserListener, clothesList, usersList, mode)
             val bundle = Bundle()
 
             bundle.putString(TOKEN_KEY, token)
-            bundle.putParcelable(PHOTO_URI_KEY, photoUri)
             dialog.arguments = bundle
 
             return dialog
@@ -98,7 +101,6 @@ class PhotoChooserDialog(
         customizeActionBar()
         initializeDependency()
         initializePresenter()
-        initializeArguments()
         initializeViews()
         initializeListeners()
         processPostInitialization()
@@ -125,13 +127,7 @@ class PhotoChooserDialog(
         presenter.attach(this)
     }
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(PHOTO_URI_KEY)) {
-                photoUri = it.getParcelable(PHOTO_URI_KEY)
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {}
 
@@ -139,7 +135,16 @@ class PhotoChooserDialog(
         // Request camera permissions
         filterDialog = ConstructorFilterDialog()
         filterDialog.setChoiceListener(this)
-        updatePhoto(photoUri)
+
+        photoUri?.let {
+            updatePhoto(it)
+        }
+
+        photoBitmap?.let {
+            Glide.with(image_view_fragment_photo_chooser.context)
+                .load(it)
+                .into(image_view_fragment_photo_chooser)
+        }
 
         filteredAdapter = GridImageItemFilteredAdapter()
         filterAdapter = CollectionsFilterAdapter()
@@ -162,15 +167,30 @@ class PhotoChooserDialog(
 
         dialog_photo_chooser_tap_text_view.text = when (mode) {
             CLOTHES_MODE -> getString(R.string.photo_chooser_touch)
-            else -> "Коснитесь фото, чтобы отметить пользователей."
+            else -> getString(R.string.photo_user_choose_touch)
+        }
+
+        selectedList.map {
+            Log.d("TAG", "clothes - ${it.id}")
+            setClothesTag(clothesModel = it)
+        }
+
+        selectedUsers.map {
+            Log.d("TAG", "users - ${it.id}")
+            setUserTag(userModel = it)
         }
 
         hideBottomSheet()
     }
 
     override fun deleteSelectedView(motionEntity: MotionEntity) {
-        selectedList.remove(motionEntity.item)
-        selectedAdapter.updateList(selectedList)
+        when (motionEntity.item.item) {
+            is ClothesModel -> {
+                selectedList.remove(motionEntity.item.item)
+                selectedAdapter.updateList(selectedList)
+            }
+            is UserModel -> selectedUsers.remove(motionEntity.item.item)
+        }
         checkEmptyList()
     }
 
@@ -193,105 +213,28 @@ class PhotoChooserDialog(
     override fun processPostInitialization() {
         presenter.getCategory(token = getTokenFromArgs())
         presenter.getClothes(token = getTokenFromArgs())
-
-        selectedList.map {
-            val layer = Layer()
-            val textView = layoutInflater.inflate(
-                R.layout.text_view_tag_element,
-                motion_view_fragment_photo_chooser_tags_container,
-                false
-            ) as TextView
-
-            textView.text = it.title
-            motion_view_fragment_photo_chooser_tags_container.addView(textView)
-
-            val observer = textView.viewTreeObserver
-
-            if (observer.isAlive) {
-                observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-                        val resource = createBitmapScreenshot(textView)
-                        val entity = ImageEntity(
-                            layer,
-                            resource,
-                            item = MotionItemModel(item = it),
-                            canvasHeight = motion_view_fragment_photo_chooser_tags_container.width,
-                            canvasWidth = motion_view_fragment_photo_chooser_tags_container.height
-                        )
-                        motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(
-                            entity,
-                            true
-                        )
-                        textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                        motion_view_fragment_photo_chooser_tags_container.removeView(textView)
-
-                        selectedList.add(it)
-                        selectedAdapter.updateList(selectedList)
-                    }
-                })
-            } else {
-                Log.wtf("observer", "not alive")
-            }
-        }
-
-        selectedUsers.map {
-            val layer = Layer()
-            val textView = layoutInflater.inflate(
-                R.layout.text_view_tag_element,
-                motion_view_fragment_photo_chooser_tags_container,
-                false
-            ) as TextView
-
-            textView.text = it.username
-            motion_view_fragment_photo_chooser_tags_container.addView(textView)
-
-            val observer = textView.viewTreeObserver
-
-            if (observer.isAlive) {
-                observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                    override fun onGlobalLayout() {
-                        val resource = createBitmapScreenshot(textView)
-
-                        val entity = ImageEntity(
-                            layer,
-                            resource,
-                            item = MotionItemModel(item = it),
-                            canvasHeight = motion_view_fragment_photo_chooser_tags_container.width,
-                            canvasWidth = motion_view_fragment_photo_chooser_tags_container.height
-                        )
-                        motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(
-                            entity,
-                            true
-                        )
-                        textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                        motion_view_fragment_photo_chooser_tags_container.removeView(textView)
-
-                        selectedUsers.add(it)
-                    }
-                })
-            } else {
-                Log.wtf("observer", "not alive")
-            }
-        }
     }
 
     override fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>) {
         resultsModel.results.let {
             val preparedResults: MutableList<CollectionFilterModel> = mutableListOf()
 
-            preparedResults.add(CollectionFilterModel(
-                name = getString(R.string.filter_list_filter),
-                id = 0,
-                mode = 1,
-                icon = R.drawable.ic_filter
-            ))
+            preparedResults.add(
+                CollectionFilterModel(
+                    name = getString(R.string.filter_list_filter),
+                    id = 0,
+                    mode = 1,
+                    icon = R.drawable.ic_filter
+                )
+            )
 
             it.forEach { category ->
                 preparedResults.add(
                     CollectionFilterModel(name = category.title, id = category.id, mode = 0)
                 )
-                filterAdapter.updateList(preparedResults)
             }
+
+            filterAdapter.updateList(preparedResults)
         }
     }
 
@@ -343,7 +286,7 @@ class PhotoChooserDialog(
         }
 
         when (item) {
-            is UserModel -> addUserTag(item)
+            is UserModel -> setUserTag(item)
         }
     }
 
@@ -351,6 +294,18 @@ class PhotoChooserDialog(
         when (v?.id) {
             R.id.toolbar_right_text_text_view -> showCompleteDialog()
         }
+    }
+
+    fun setMode(mode: Int) {
+        this.mode = mode
+    }
+
+    fun setPhotoUri(uri: Uri?) {
+        this.photoUri = uri
+    }
+
+    fun setPhotoBitmap(bitmap: Bitmap?) {
+        this.photoBitmap = bitmap
     }
 
     private fun onFilterModelClicked(
@@ -374,7 +329,62 @@ class PhotoChooserDialog(
         }
     }
 
-    private fun addUserTag(userModel: UserModel) {
+    private fun onClothesClicked(
+        view: View,
+        clothesModel: ClothesModel
+    ) {
+        when (view.id) {
+            R.id.shapeable_image_view_item_collection_image -> {
+                setClothesTag(clothesModel)
+                hideBottomSheet()
+            }
+            R.id.frame_layout_item_main_image_holder_container -> {
+            }
+        }
+    }
+
+    private fun setClothesTag(clothesModel: ClothesModel) {
+        val layer = Layer()
+        val textView = layoutInflater.inflate(
+            R.layout.text_view_tag_element,
+            motion_view_fragment_photo_chooser_tags_container,
+            false
+        ) as TextView
+
+        textView.text = clothesModel.title
+        motion_view_fragment_photo_chooser_tags_container.addView(textView)
+
+        val observer = textView.viewTreeObserver
+
+        if (observer.isAlive) {
+            observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val resource = createBitmapScreenshot(textView)
+                    val entity = ImageEntity(
+                        layer,
+                        resource,
+                        item = MotionItemModel(item = clothesModel),
+                        canvasHeight = motion_view_fragment_photo_chooser_tags_container.width,
+                        canvasWidth = motion_view_fragment_photo_chooser_tags_container.height
+                    )
+                    motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(
+                        entity,
+                        true
+                    )
+                    textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    motion_view_fragment_photo_chooser_tags_container.removeView(textView)
+
+                    selectedList.add(clothesModel)
+                    selectedAdapter.updateList(selectedList)
+                    checkEmptyList()
+                }
+            })
+        } else {
+            Log.wtf("observer", "not alive")
+        }
+    }
+
+    private fun setUserTag(userModel: UserModel) {
         val layer = Layer()
         val textView = layoutInflater.inflate(
             R.layout.text_view_tag_element,
@@ -391,6 +401,7 @@ class PhotoChooserDialog(
             observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val resource = createBitmapScreenshot(textView)
+
                     val entity = ImageEntity(
                         layer,
                         resource,
@@ -413,59 +424,6 @@ class PhotoChooserDialog(
         }
     }
 
-    private fun onClothesClicked(
-        view: View,
-        clothesModel: ClothesModel
-    ) {
-        when (view.id) {
-            R.id.shapeable_image_view_item_collection_image -> {
-                addClothesTag(clothesModel)
-            }
-            R.id.frame_layout_item_main_image_holder_container -> {}
-        }
-    }
-
-    private fun addClothesTag(clothes: ClothesModel) {
-        val layer = Layer()
-        val textView = layoutInflater.inflate(
-            R.layout.text_view_tag_element,
-            motion_view_fragment_photo_chooser_tags_container,
-            false
-        ) as TextView
-
-        textView.text = clothes.title
-        motion_view_fragment_photo_chooser_tags_container.addView(textView)
-
-        val observer = textView.viewTreeObserver
-
-        if (observer.isAlive) {
-            observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val resource = createBitmapScreenshot(textView)
-                    val entity = ImageEntity(
-                        layer,
-                        resource,
-                        item = MotionItemModel(item = clothes),
-                        canvasWidth = motion_view_fragment_photo_chooser_tags_container.width,
-                        canvasHeight = motion_view_fragment_photo_chooser_tags_container.height
-                    )
-                    motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(
-                        entity,
-                        true
-                    )
-                    textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    motion_view_fragment_photo_chooser_tags_container.removeView(textView)
-
-                    selectedList.add(clothes)
-                    selectedAdapter.updateList(selectedList)
-                    hideBottomSheet()
-                }
-            })
-        } else {
-            Log.wtf("observer", "not alive")
-        }
-    }
-
     private fun showBottomSheet() {
         BottomSheetBehavior.from(bottom_sheet_clothes).apply {
             state = BottomSheetBehavior.STATE_EXPANDED
@@ -474,6 +432,7 @@ class PhotoChooserDialog(
         recycler_view_fragment_photo_chooser_selected_list.hide()
         linear_layout_fragment_photo_chooser_desc_container.hide()
         text_view_fragment_photo_chooser_empty_text.hide()
+        bottom_sheet_clothes.show()
     }
 
     private fun hideBottomSheet() {
@@ -486,13 +445,17 @@ class PhotoChooserDialog(
     }
 
     private fun checkEmptyList() {
-        if (selectedList.isEmpty() || selectedUsers.isEmpty()) {
+        if (selectedList.isEmpty()) {
             recycler_view_fragment_photo_chooser_selected_list.hide()
-            text_view_fragment_photo_chooser_empty_text.show()
             linear_layout_fragment_photo_chooser_desc_container.hide()
         } else {
             linear_layout_fragment_photo_chooser_desc_container.show()
             recycler_view_fragment_photo_chooser_selected_list.show()
+        }
+
+        if (selectedList.isEmpty() && selectedUsers.isEmpty()) {
+            text_view_fragment_photo_chooser_empty_text.show()
+        } else {
             text_view_fragment_photo_chooser_empty_text.hide()
         }
     }
@@ -519,9 +482,10 @@ class PhotoChooserDialog(
         bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
         bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
 
-        if (selectedList.isNotEmpty()) {
-            bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, selectedList)
-        }
+        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, selectedList)
+        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.USERS_KEY, selectedUsers)
+
+        bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, currentMode)
 
         chooserListener?.onChoice(null, bundle)
         dismiss()

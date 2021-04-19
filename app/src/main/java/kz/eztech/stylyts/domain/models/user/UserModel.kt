@@ -1,8 +1,12 @@
 package kz.eztech.stylyts.domain.models.user
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Created by Asylzhan Seytbek on 11.04.2021.
  */
+@Parcelize
 data class UserModel(
     val id: Int,
     val email: String,
@@ -15,4 +19,4 @@ data class UserModel(
     val gender: String,
     val webSite: String,
     val instagram: String,
-)
+) : Parcelable

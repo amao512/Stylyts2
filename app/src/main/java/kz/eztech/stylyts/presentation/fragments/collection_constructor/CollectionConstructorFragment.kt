@@ -281,12 +281,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	override fun deleteSelectedView(motionEntity: MotionEntity) {
 		val res = listOfEntities.remove(motionEntity)
-		val res2 = listOfItems.remove(motionEntity.item)
+		val res2 = listOfItems.remove(motionEntity.item.item as ClothesModel)
 		val res3 = listOfIdsChosen.remove(currentId)
 
 		processDraggedItems()
-		typesAdapter.removeChosenPosition(typeId = (motionEntity.item as ClothesModel).clothesCategory.clothesType.id)
-		itemAdapter.removeChosenPosition(clothesId = motionEntity.item.id)
+		typesAdapter.removeChosenPosition(typeId = (motionEntity.item.item).clothesCategory.clothesType.id)
+		itemAdapter.removeChosenPosition(clothesId = motionEntity.item.item.id)
 
 		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
 	}
@@ -321,7 +321,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 		if (listOfItems.isNotEmpty() && listOfEntities.isNotEmpty()) {
 			listOfEntities.forEach {
-				if (item.clothesCategory.bodyPart == (it.item as ClothesModel).clothesCategory.bodyPart) {
+				if (item.clothesCategory.bodyPart == (it.item.item as ClothesModel).clothesCategory.bodyPart) {
 					currentSameObject = it
 				}
 			}
@@ -485,7 +485,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		item as ClothesModel
 
 		frame_layout_fragment_collection_constructor_images_container.getEntities().map {
-			if ((it.item as ClothesModel).id == item.id) {
+			if ((it.item.item as ClothesModel).id == item.id) {
 				frame_layout_fragment_collection_constructor_images_container.removeEntity(it)
 			}
 		}

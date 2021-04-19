@@ -307,4 +307,9 @@
     <string name="currency_kzt">KZT</string>
     <string name="min">Min</string>
     <string name="max">Max</string>
+
+    <string name="error_choose_photo">Choose photo!</string>
+    <string name="photo_user_choose_touch">Коснитесь фото, чтобы отметить пользователей.</string>
+    <string name="users_count_text_format">%s users</string>
+    <string name="clothes_count_text_format">%s clothes</string>
 </resources>

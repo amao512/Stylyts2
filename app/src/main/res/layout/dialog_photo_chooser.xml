@@ -109,6 +109,7 @@
         <include
             android:id="@+id/bottom_sheet_clothes"
             layout="@layout/bottom_sheet_dialog_clothes_grid"
+            android:visibility="gone"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

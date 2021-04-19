@@ -23,8 +23,6 @@ class GetClothesUseCase @Inject constructor(
     private lateinit var booleanQueryMap: Map<String, Boolean>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
-        Log.d("TAG", "$stringQueryMap")
-
         return clothesDomainRepository.getClothes(
             token = token,
             stringQueryMap = stringQueryMap,
