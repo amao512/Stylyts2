@@ -72,7 +72,7 @@
     <dimen name="small_image_size">50dp</dimen>
     <dimen name="medium_image_size">60dp</dimen>
 
-    <dimen name="dialog_clothes_behavior_height">170dp</dimen>
+    <dimen name="dialog_clothes_behavior_height">200dp</dimen>
     <dimen name="bottom_dialog_top_small_divider_width">24dp</dimen>
     <dimen name="bottom_dialog_top_small_divider_height">3dp</dimen>
 

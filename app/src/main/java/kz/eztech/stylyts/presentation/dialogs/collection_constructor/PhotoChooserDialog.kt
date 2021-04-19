@@ -11,10 +11,11 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.*
+import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.view.*
 import kotlinx.android.synthetic.main.dialog_photo_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -101,6 +102,7 @@ class PhotoChooserDialog(
         customizeActionBar()
         initializeDependency()
         initializePresenter()
+        initializeViewsData()
         initializeViews()
         initializeListeners()
         processPostInitialization()
@@ -129,13 +131,17 @@ class PhotoChooserDialog(
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
-
-    override fun initializeViews() {
+    override fun initializeViewsData() {
         // Request camera permissions
         filterDialog = ConstructorFilterDialog()
         filterDialog.setChoiceListener(this)
 
+        filteredAdapter = GridImageItemFilteredAdapter()
+        filterAdapter = CollectionsFilterAdapter()
+        selectedAdapter = MainImagesAdditionalAdapter()
+    }
+
+    override fun initializeViews() {
         photoUri?.let {
             updatePhoto(it)
         }
@@ -146,15 +152,16 @@ class PhotoChooserDialog(
                 .into(image_view_fragment_photo_chooser)
         }
 
-        filteredAdapter = GridImageItemFilteredAdapter()
-        filterAdapter = CollectionsFilterAdapter()
-        selectedAdapter = MainImagesAdditionalAdapter()
-
-        recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
-        recycler_view_fragment_photo_chooser.adapter = filteredAdapter
-        recycler_view_fragment_photo_chooser.addItemDecoration(
-            GridSpacesItemDecoration(space = 16)
-        )
+        with (bottom_sheet_clothes) {
+            recycler_view_fragment_photo_chooser_filter_list.layoutManager = LinearLayoutManager(
+                context, LinearLayoutManager.HORIZONTAL, false
+            )
+            recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
+            recycler_view_fragment_photo_chooser.adapter = filteredAdapter
+            recycler_view_fragment_photo_chooser.addItemDecoration(
+                GridSpacesItemDecoration(space = 16)
+            )
+        }
 
         recycler_view_fragment_photo_chooser_selected_list.adapter = selectedAdapter
 
@@ -210,10 +217,7 @@ class PhotoChooserDialog(
         selectedAdapter.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {
-        presenter.getCategory(token = getTokenFromArgs())
-        presenter.getClothes(token = getTokenFromArgs())
-    }
+    override fun processPostInitialization() {}
 
     override fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>) {
         resultsModel.results.let {
@@ -425,6 +429,9 @@ class PhotoChooserDialog(
     }
 
     private fun showBottomSheet() {
+        presenter.getCategory(token = getTokenFromArgs())
+        presenter.getClothes(token = getTokenFromArgs())
+
         BottomSheetBehavior.from(bottom_sheet_clothes).apply {
             state = BottomSheetBehavior.STATE_EXPANDED
             isHideable = false

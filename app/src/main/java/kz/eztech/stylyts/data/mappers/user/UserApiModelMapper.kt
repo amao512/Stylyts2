@@ -22,7 +22,10 @@ class UserApiModelMapper @Inject constructor() {
             dateOfBirth = data?.dateOfBirth ?: EMPTY_STRING,
             gender = data?.gender ?: "M",
             webSite = data?.webSite ?: EMPTY_STRING,
-            instagram = data?.instagram ?: EMPTY_STRING
+            instagram = data?.instagram ?: EMPTY_STRING,
+            followersCount = data?.followersCount ?: 0,
+            followingsCount = data?.followingsCount ?: 0,
+            outfitsCount = data?.outfitsCount ?: 0
         )
     }
 
@@ -41,7 +44,10 @@ class UserApiModelMapper @Inject constructor() {
                 dateOfBirth = it.dateOfBirth ?: EMPTY_STRING,
                 gender = it.gender ?: "M",
                 webSite = it.webSite ?: EMPTY_STRING,
-                instagram = it.instagram ?: EMPTY_STRING
+                instagram = it.instagram ?: EMPTY_STRING,
+                followersCount = it.followersCount ?: 0,
+                followingsCount = it.followingsCount ?: 0,
+                outfitsCount = it.outfitsCount ?: 0
             )
         }
     }

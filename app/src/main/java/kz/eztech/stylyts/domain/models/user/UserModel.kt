@@ -19,4 +19,7 @@ data class UserModel(
     val gender: String,
     val webSite: String,
     val instagram: String,
+    val followersCount: Int,
+    val followingsCount: Int,
+    val outfitsCount: Int
 ) : Parcelable

@@ -98,13 +98,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
                     }
                 }
             }
-            mainAdapter.updateList(it)
+//            mainAdapter.updateList(it)
         }
     }
 
     override fun processMyPublications(resultsApiModel: ResultsApiModel<PublicationModel>) {
         resultsApiModel.results?.let {
-            mainAdapter.updateList(it)
+//            mainAdapter.updateList(it)
         }
     }
 

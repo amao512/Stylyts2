@@ -34,7 +34,6 @@
             android:id="@+id/recycler_view_fragment_photo_chooser_filter_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_collection_filter"
@@ -43,7 +42,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_fragment_photo_chooser"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:focusableInTouchMode="true"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"

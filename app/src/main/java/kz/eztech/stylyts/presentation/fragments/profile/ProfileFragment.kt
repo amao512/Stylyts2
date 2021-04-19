@@ -157,10 +157,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             token = getTokenFromSharedPref(),
             userId = userId
         )
-        presenter.getFollowings(
-            token = getTokenFromSharedPref(),
-            userId
-        )
 
         when (chosenFilterPosition) {
             3 -> if (isOwnProfile) presenter.getWardrobe(token = getTokenFromSharedPref())
@@ -324,7 +320,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
         resultsModel.results.let {
-            fragment_profile_followers_count.text = it.size.toString()
             val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
             it.map { follower ->
@@ -343,10 +338,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 fragment_profile_unfollow_text_view.show()
             }
         }
-    }
-
-    override fun processFollowings(resultsModel: ResultsModel<FollowerModel>) {
-        fragment_profile_followings_count.text = resultsModel.totalCount.toString()
     }
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
@@ -381,6 +372,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         include_toolbar_profile.toolbar_title_text_view.text = userModel.username
         text_view_fragment_profile_user_name.text = userModel.firstName
         fragment_profile_photos_count.text = "${0}"
+        fragment_profile_followers_count.text = userModel.followersCount.toString()
+        fragment_profile_followings_count.text = userModel.followingsCount.toString()
     }
 
     private fun loadProfilePhoto(userModel: UserModel) {

@@ -15,8 +15,12 @@ import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitsUseCase
-import kz.eztech.stylyts.domain.usecases.profile.*
-import kz.eztech.stylyts.domain.usecases.user.*
+import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
+import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase
+import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
+import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import javax.inject.Inject
@@ -31,7 +35,6 @@ class ProfilePresenter @Inject constructor(
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getMyPublicationsUseCase: GetMyPublicationsUseCase,
     private val getFollowersUseCase: GetFollowersUseCase,
-    private val getFollowingsUseCase: GetFollowingsUseCase,
     private val followUserUseCase: FollowUserUseCase,
     private val unfollowUserUseCase: UnfollowUserUseCase,
     private val getClothesUseCase: GetClothesUseCase,
@@ -45,7 +48,6 @@ class ProfilePresenter @Inject constructor(
 		getUserByIdUseCase.clear()
 		getMyPublicationsUseCase.clear()
 		getFollowersUseCase.clear()
-		getFollowingsUseCase.clear()
 		followUserUseCase.clear()
 		unfollowUserUseCase.clear()
 		getOutfitsUseCase.clear()
@@ -131,23 +133,6 @@ class ProfilePresenter @Inject constructor(
 			override fun onSuccess(t: ResultsModel<FollowerModel>) {
 				view.processViewAction {
 					processFollowers(resultsModel = t)
-				}
-			}
-
-			override fun onError(e: Throwable) {
-				view.processViewAction {
-					displayMessage(msg = errorHelper.processError(e))
-				}
-			}
-		})
-	}
-
-	override fun getFollowings(token: String, userId: Int) {
-		getFollowingsUseCase.initParams(token, userId)
-		getFollowingsUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
-			override fun onSuccess(t: ResultsModel<FollowerModel>) {
-				view.processViewAction {
-					processFollowings(resultsModel = t)
 				}
 			}
 

@@ -39,7 +39,7 @@ class CollectionConstructorShopItemHolder(
 					.load(constructorImage)
 					.into(this.image_view_item_collection_constructor_clothes_item_image_holder)
 
-				text_view_item_collection_constructor_clothes_item_title.text = title
+				text_view_item_collection_constructor_clothes_item_title.text = "${title.substring(0, 7)}..."
 
 				if (isChosen) {
 					image_view_item_collection_constructor_clothes_item_image_chooser.show()

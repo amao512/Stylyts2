@@ -42,7 +42,7 @@ class CollectionConstructorShopCategoryHolder(
 					image_view_item_collection_constructor_category_item_image_holder.setImageResource(
 						externalImageId
 					)
-					text_view_item_collection_constructor_category_item_title.text = title
+					text_view_item_collection_constructor_category_item_title.text = "${title.substring(0, 7)}..."
 					image_view_item_collection_constructor_category_item_image_holder.setOnClickListener {
 						adapter.itemClickListener?.onViewClicked(it, position, clothesType)
 					}

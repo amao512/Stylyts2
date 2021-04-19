@@ -50,4 +50,16 @@ data class UserApiModel(
 	@SerializedName("instagram")
 	@Expose
 	val instagram: String?,
+
+	@SerializedName("followers_count")
+	@Expose
+	val followersCount: Int?,
+
+	@SerializedName("followings_count")
+	@Expose
+	val followingsCount: Int?,
+
+	@SerializedName("outfits_count")
+	@Expose
+	val outfitsCount: Int?
 )

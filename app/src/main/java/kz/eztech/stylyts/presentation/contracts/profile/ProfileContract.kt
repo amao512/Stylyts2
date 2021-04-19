@@ -33,8 +33,6 @@ interface ProfileContract {
 
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
-        fun processFollowings(resultsModel: ResultsModel<FollowerModel>)
-
         fun processSuccessFollowing(followSuccessModel: FollowSuccessModel)
 
         fun processSuccessUnfollowing()
@@ -59,11 +57,6 @@ interface ProfileContract {
         )
 
         fun getFollowers(
-            token: String,
-            userId: Int
-        )
-
-        fun getFollowings(
             token: String,
             userId: Int
         )
