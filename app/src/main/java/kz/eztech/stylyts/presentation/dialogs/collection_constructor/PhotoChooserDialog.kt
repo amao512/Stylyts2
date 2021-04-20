@@ -62,10 +62,10 @@ class PhotoChooserDialog(
     private lateinit var filterDialog: ConstructorFilterDialog
 
     private val filterMap = HashMap<String, Any>()
-    private val selectedClothesEntities = ArrayList<ImageEntity>()
-    private val selectedUserEntities = ArrayList<ImageEntity>()
-    private val selectedList = ArrayList<ClothesModel>()
-    private val selectedUsers = ArrayList<UserModel>()
+    private val selectedClothesEntities: MutableList<ImageEntity> = mutableListOf()
+    private val selectedUserEntities: MutableList<ImageEntity> = mutableListOf()
+    private val selectedList: MutableList<ClothesModel> = mutableListOf()
+    private val selectedUsers: MutableList<UserModel> = mutableListOf()
 
     private var photoUri: Uri? = null
     private var photoBitmap: Bitmap? = null
@@ -141,14 +141,14 @@ class PhotoChooserDialog(
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey(CLOTHES_KEY)) {
-                it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let { clothes ->
-                    selectedList.addAll(clothes)
+                it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.map { clothes ->
+                    selectedList.add(clothes)
                 }
             }
 
             if (it.containsKey(USERS_KEY)) {
-                it.getParcelableArrayList<UserModel>(USERS_KEY)?.let { users ->
-                    selectedUsers.addAll(users)
+                it.getParcelableArrayList<UserModel>(USERS_KEY)?.map { users ->
+                    selectedUsers.add(users)
                 }
             }
         }
@@ -198,12 +198,12 @@ class PhotoChooserDialog(
         }
 
         selectedList.map {
-//            Log.d("TAG", "clothes - ${it.id}")
+            Log.d("TAG3", "clothes - ${it.id}")
             setClothesTag(clothesModel = it)
         }
 
         selectedUsers.map {
-//            Log.d("TAG", "users - ${it.id}")
+            Log.d("TAG3", "users - ${it.id}")
             setUserTag(userModel = it)
         }
 
@@ -378,13 +378,24 @@ class PhotoChooserDialog(
         ) as TextView
 
         textView.text = clothesModel.title
+
+        textView.id = clothesModel.id
+
         motion_view_fragment_photo_chooser_tags_container.addView(textView)
 
         val observer = textView.viewTreeObserver
 
+        Log.d("TAG2", "x - ${clothesModel.clothesLocation?.pointX}")
+        Log.d("TAG2", "y - ${clothesModel.clothesLocation?.pointY}")
+
         if (observer.isAlive) {
             observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
+                    clothesModel.clothesLocation?.let {
+                        textView.x = it.pointX.toFloat()
+                        textView.y = it.pointY.toFloat()
+                    }
+
                     val resource = createBitmapScreenshot(textView)
                     val entity = ImageEntity(
                         layer,

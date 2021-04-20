@@ -111,6 +111,13 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 fragment_create_collection_accept_divier_one.show()
             }
         }
+
+        selectedList.map {
+            Log.d("TAG3", "outside - ${it.id}")
+        }
+
+        processPhotoChooser()
+        updateUserView()
     }
 
     override fun initializeListeners() {
@@ -192,8 +199,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 currentMode = item.getInt(MODE_KEY)
 
                 initializeViews()
-                processPhotoChooser()
-                updateUserView()
             }
         }
     }
@@ -248,18 +253,22 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                     R.string.clothes_count_text_format,
                     selectedList.count().toString()
                 )
+                text_view_dialog_create_collection_items_count.show()
+            } else {
+                text_view_dialog_create_collection_items_count.hide()
             }
         }
     }
 
     private fun updateUserView() {
-        text_view_dialog_create_collection_user_count.show()
-
         if (selectedUsers.isNotEmpty()) {
             text_view_dialog_create_collection_user_count.text = getString(
                 R.string.users_count_text_format,
                 selectedUsers.count().toString()
             )
+            text_view_dialog_create_collection_user_count.show()
+        } else {
+            text_view_dialog_create_collection_user_count.hide()
         }
     }
 
