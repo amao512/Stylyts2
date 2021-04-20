@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.domain.usecases.collection_constructor
+package kz.eztech.stylyts.domain.usecases.posts
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -7,7 +7,7 @@ import kz.eztech.stylyts.data.api.models.posts.TagApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.repository.collection_constructor.CollectionConstructorDomainRepository
+import kz.eztech.stylyts.domain.repository.posts.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -15,10 +15,10 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import javax.inject.Inject
 import javax.inject.Named
 
-class CreatePublicationUseCase @Inject constructor(
+class CreatePostUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
-    private val collectionConstructorDomainRepository: CollectionConstructorDomainRepository
+    private val postsDomainRepository: PostsDomainRepository
 ) : BaseUseCase<PublicationModel>(executorThread, uiThread) {
 
     private lateinit var token: String
@@ -27,7 +27,7 @@ class CreatePublicationUseCase @Inject constructor(
     private lateinit var tags: TagsApiModel
 
     override fun createSingleObservable(): Single<PublicationModel> {
-        return collectionConstructorDomainRepository.createPost(
+        return postsDomainRepository.createPost(
             token = token,
             imageList = imageList,
             description = description,

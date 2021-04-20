@@ -9,21 +9,18 @@ import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.main.MainImageModel
-import kz.eztech.stylyts.domain.models.MainLentaModel
-import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.main.MainImagesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.presenters.main.MainLentaPresenter
+import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
+import kz.eztech.stylyts.domain.models.*
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -31,10 +28,10 @@ import javax.inject.Inject
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,
     UniversalViewClickListener {
 
-    @Inject lateinit var presenter: MainLentaPresenter
+    @Inject lateinit var presenter: MainLinePresenter
 
     lateinit var dummyList: ArrayList<MainImageModel>
-    lateinit var mainAdapter: MainImagesAdapter
+    lateinit var postsAdapter: MainImagesAdapter
 
     override fun customizeActionBar() {
         with(include_toolbar) {
@@ -59,13 +56,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        mainAdapter = MainImagesAdapter()
+        postsAdapter = MainImagesAdapter()
     }
 
     override fun initializeViews() {
         recycler_view_fragment_main_images_list.layoutManager = LinearLayoutManager(currentActivity)
-        recycler_view_fragment_main_images_list.adapter = mainAdapter
-        mainAdapter.itemClickListener = this
+        recycler_view_fragment_main_images_list.adapter = postsAdapter
+        postsAdapter.itemClickListener = this
     }
 
     override fun onResume() {
@@ -87,30 +84,12 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         }
     }
 
-    override fun processCollections(model: MainLentaModel) {
-        model.results?.let {
-            it.forEach { result ->
-                result.clothes_location?.let { locations ->
-                    result.clothes?.forEach { clothesMainModel ->
-                        clothesMainModel.clothe_location = locations.find { location ->
-                            location.clothes_id == clothesMainModel.id
-                        }
-                    }
-                }
-            }
-//            mainAdapter.updateList(it)
-        }
-    }
-
-    override fun processMyPublications(resultsApiModel: ResultsApiModel<PublicationModel>) {
-        resultsApiModel.results?.let {
-//            mainAdapter.updateList(it)
-        }
+    override fun processPostResults(resultsApiModel: ResultsModel<PostModel>) {
+        postsAdapter.updateList(list = resultsApiModel.results)
     }
 
     override fun processPostInitialization() {
-//        presenter.getCollections(token = getTokenFromSharedPref())
-        presenter.getMyPublications(token = getTokenFromSharedPref())
+        presenter.getPosts(token = getTokenFromSharedPref())
     }
 
     override fun disposeRequests() {}

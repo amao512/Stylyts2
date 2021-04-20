@@ -4,11 +4,9 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image.view.*
-import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
-import kz.eztech.stylyts.presentation.utils.DateFormatterHelper.FORMAT_DATE_DD_MMMM
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -22,9 +20,9 @@ class MainImageHolder(
 ) : BaseViewHolder(itemView, adapter) {
 
     override fun bindData(item: Any, position: Int) {
-        item as PublicationModel
+        item as PostModel
 
-        initializeAdapters()
+        initializeAdapters(postModel = item)
         processCollectionInfo(
             publicationModel = item,
             position = position
@@ -35,7 +33,7 @@ class MainImageHolder(
         )
     }
 
-    private fun initializeAdapters() {
+    private fun initializeAdapters(postModel: PostModel) {
         with (itemView) {
             val additionalAdapter = MainImagesAdditionalAdapter()
             additionalAdapter.itemClickListener = adapter.itemClickListener
@@ -50,7 +48,7 @@ class MainImageHolder(
     }
 
     private fun processCollectionInfo(
-        publicationModel: PublicationModel,
+        publicationModel: PostModel,
         position: Int
     ) {
         with (itemView) {
@@ -71,9 +69,9 @@ class MainImageHolder(
 
 
 //                }
-            constraint_layout_fragment_item_main_image_profile_container.setOnClickListener { thisView ->
-                adapter.itemClickListener?.onViewClicked(thisView, position, publicationModel)
-            }
+//            constraint_layout_fragment_item_main_image_profile_container.setOnClickListener { thisView ->
+//                adapter.itemClickListener?.onViewClicked(thisView, position, publicationModel)
+//            }
 //                button_item_main_image_change_collection.setOnClickListener { thisView ->
 //                    adapter.itemClickListener?.onViewClicked(thisView, position, item)
 //                }
@@ -85,18 +83,18 @@ class MainImageHolder(
 //                text_view_item_main_image_comments_count.setOnClickListener { thisView ->
 //                    adapter.itemClickListener?.onViewClicked(thisView, position, item)
 //                }
-            text_view_item_main_image_date.text =
-                "${DateFormatterHelper.formatISO_8601(publicationModel.created, FORMAT_DATE_DD_MMMM)}"
+//            text_view_item_main_image_date.text =
+//                "${DateFormatterHelper.formatISO_8601(publicationModel.created, FORMAT_DATE_DD_MMMM)}"
         }
     }
 
     private fun loadUserPhoto(
-        publicationModel: PublicationModel,
+        publicationModel: PostModel,
         position: Int
     ) {
         with (itemView) {
             Glide.with(this)
-                .load(publicationModel.imageOne)
+                .load(publicationModel.images[0])
                 .fitCenter()
                 .into(this.image_view_item_main_image_imageholder)
 

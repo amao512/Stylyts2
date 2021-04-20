@@ -4,17 +4,20 @@ import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.address.AddressApiModel
 import kz.eztech.stylyts.data.api.models.clothes.*
 import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
+import kz.eztech.stylyts.data.api.models.posts.PostApiModel
 import kz.eztech.stylyts.data.api.models.user.FollowerApiModel
 import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.data.mappers.address.AddressApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.*
 import kz.eztech.stylyts.data.mappers.outfits.OutfitApiModelMapper
+import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.FollowerApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import javax.inject.Inject
@@ -31,7 +34,8 @@ class ResultsApiModelMapper @Inject constructor(
     private val addressApiModelMapper: AddressApiModelMapper,
     private val userApiModelMapper: UserApiModelMapper,
     private val followerApiModelMapper: FollowerApiModelMapper,
-    private val outfitApiModelMapper: OutfitApiModelMapper
+    private val outfitApiModelMapper: OutfitApiModelMapper,
+    private val postApiModelMapper: PostApiModelMapper
 ) {
 
     fun mapClothesResults(data: ResultsApiModel<ClothesApiModel>?): ResultsModel<ClothesModel> {
@@ -121,6 +125,16 @@ class ResultsApiModelMapper @Inject constructor(
             pageSize = data?.pageSize ?: 0,
             totalCount = data?.totalCount ?: 0,
             results = outfitApiModelMapper.map(data?.results)
+        )
+    }
+
+    fun mapPostResults(data: ResultsApiModel<PostApiModel>?): ResultsModel<PostModel> {
+        return ResultsModel(
+            page = data?.page ?: 0,
+            totalPages = data?.totalPages ?: 0,
+            pageSize = data?.pageSize ?: 0,
+            totalCount = data?.totalCount ?: 0,
+            results = postApiModelMapper.map(data?.results)
         )
     }
 }

@@ -6,7 +6,7 @@ import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.usecases.collection_constructor.CreatePublicationUseCase
+import kz.eztech.stylyts.domain.usecases.posts.CreatePostUseCase
 import kz.eztech.stylyts.domain.usecases.collection_constructor.UpdateCollectionUseCase
 import kz.eztech.stylyts.domain.usecases.shop.SaveOutfitConstructorUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class CreateCollectionAcceptPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
-    private val createPublicationUseCase: CreatePublicationUseCase,
+    private val createPostUseCase: CreatePostUseCase,
     private val saveOutfitConstructorUseCase: SaveOutfitConstructorUseCase,
     private val updateCollectionUseCase: UpdateCollectionUseCase,
 ) : CreateCollectionAcceptContract.Presenter {
@@ -40,8 +40,8 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     ) {
         view.displayProgress()
 
-        createPublicationUseCase.initParams(token, postCreateModel)
-        createPublicationUseCase.execute(object : DisposableSingleObserver<PublicationModel>() {
+        createPostUseCase.initParams(token, postCreateModel)
+        createPostUseCase.execute(object : DisposableSingleObserver<PublicationModel>() {
             override fun onSuccess(t: PublicationModel) {
                 view.processViewAction {
                     hideProgress()

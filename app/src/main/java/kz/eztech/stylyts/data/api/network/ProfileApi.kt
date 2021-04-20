@@ -42,7 +42,7 @@ interface ProfileApi {
         @Path("user_id") userId: String
     ): Single<Response<UserApiModel>>
 
-    @GET(RestConstants.GET_MY_POSTS)
+    @GET(RestConstants.GET_POSTS)
     fun getMyCollections(
         @Header("Authorization") token: String
     ): Single<Response<ResultsApiModel<PublicationModel>>>
