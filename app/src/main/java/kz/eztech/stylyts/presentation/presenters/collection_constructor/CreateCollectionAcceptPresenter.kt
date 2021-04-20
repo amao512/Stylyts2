@@ -2,11 +2,10 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.domain.models.PublicationModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.usecases.collection_constructor.CreatePublicationUseCase
 import kz.eztech.stylyts.domain.usecases.collection_constructor.UpdateCollectionUseCase
 import kz.eztech.stylyts.domain.usecases.shop.SaveOutfitConstructorUseCase
@@ -35,34 +34,13 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun createPublications(
+    override fun createPost(
         token: String,
-        selectedClothes: ArrayList<ClothesModel>?,
-        selectedUsers: ArrayList<UserModel>?,
-        description: String,
-        file: File
+        postCreateModel: PostCreateModel
     ) {
         view.displayProgress()
 
-        val requestFile = file.asRequestBody(("image/*").toMediaTypeOrNull())
-        val body: MultipartBody.Part = MultipartBody.Part.createFormData("image_one", file.name, requestFile)
-
-        val bodyList = ArrayList<MultipartBody.Part>()
-
-        bodyList.add(body)
-        selectedClothes?.forEachIndexed { index, clothesModel ->
-            bodyList.add(
-                MultipartBody.Part.createFormData(
-                    "tags[${index}]lol",
-                    clothesModel.id.toString()
-                )
-            )
-        }
-
-        bodyList.add(MultipartBody.Part.createFormData("description", description))
-        bodyList.add(MultipartBody.Part.createFormData("tags", ""))
-
-        createPublicationUseCase.initParams(token, bodyList)
+        createPublicationUseCase.initParams(token, postCreateModel)
         createPublicationUseCase.execute(object : DisposableSingleObserver<PublicationModel>() {
             override fun onSuccess(t: PublicationModel) {
                 view.processViewAction {
@@ -80,67 +58,13 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         })
     }
 
-    override fun saveCollection(token: String, model: CollectionPostCreateModel, data: File) {
+    override fun saveCollection(token: String, model: OutfitCreateModel, data: File) {
         view.displayProgress()
 
-        val requestFile = data.asRequestBody(("image/*").toMediaTypeOrNull())
-        val body = MultipartBody.Part.createFormData("cover_photo", data.name, requestFile)
-        val clothesList = ArrayList<MultipartBody.Part>()
-        model.clothes?.forEach {
-            clothesList.add(MultipartBody.Part.createFormData("clothes", it.toString()))
-        }
-
-        clothesList.add(body)
-        model.clothes_location?.forEachIndexed { index, clothesCollection ->
-            clothesList.add(
-                MultipartBody.Part.createFormData(
-                    "clothes_location[${index}]clothes_id",
-                    clothesCollection.clothes_id.toString()
-                )
-            )
-            clothesList.add(
-                MultipartBody.Part.createFormData(
-                    "clothes_location[${index}]point_x",
-                    clothesCollection.point_x.toString()
-                )
-            )
-            clothesList.add(
-                MultipartBody.Part.createFormData(
-                    "clothes_location[${index}]point_y",
-                    clothesCollection.point_y.toString()
-                )
-            )
-            clothesList.add(
-                MultipartBody.Part.createFormData(
-                    "clothes_location[${index}]width",
-                    clothesCollection.width.toString()
-                )
-            )
-            clothesList.add(
-                MultipartBody.Part.createFormData(
-                    "clothes_location[${index}]height",
-                    clothesCollection.height.toString()
-                )
-            )
-            clothesList.add(
-                MultipartBody.Part.createFormData(
-                    "clothes_location[${index}]degree",
-                    clothesCollection.degree.toString()
-                )
-            )
-        }
-        clothesList.add(MultipartBody.Part.createFormData("title", model.title.toString()))
-        clothesList.add(MultipartBody.Part.createFormData("text", model.text.toString()))
-        clothesList.add(MultipartBody.Part.createFormData("style", model.style.toString()))
-        clothesList.add(MultipartBody.Part.createFormData("author", model.author.toString()))
-        clothesList.add(
-            MultipartBody.Part.createFormData(
-                "total_price",
-                model.total_price.toString()
-            )
+        saveOutfitConstructorUseCase.initParam(
+            token = token,
+            data = getClothesMultipartList(model, data)
         )
-
-        saveOutfitConstructorUseCase.initParam(token, clothesList)
         saveOutfitConstructorUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {
                 view.processViewAction {
@@ -161,35 +85,62 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     override fun updateCollection(
         token: String,
         id: Int,
-        model: CollectionPostCreateModel,
+        model: OutfitCreateModel,
         data: File
     ) {
         view.displayProgress()
+
+        updateCollectionUseCase.initParam(
+            token = token,
+            id = id,
+            data = getClothesMultipartList(model, data)
+        )
+        updateCollectionUseCase.execute(object : DisposableSingleObserver<Unit>() {
+            override fun onSuccess(t: Unit) {
+                view.processViewAction {
+                    view.processSuccessSaving(null)
+                    hideProgress()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(errorHelper.processError(e))
+                    hideProgress()
+                }
+            }
+        })
+    }
+
+    private fun getClothesMultipartList(
+        model: OutfitCreateModel,
+        data: File
+    ): ArrayList<MultipartBody.Part> {
         val requestFile = data.asRequestBody(("image/*").toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("cover_photo", data.name, requestFile)
         val clothesList = ArrayList<MultipartBody.Part>()
-        model.clothes?.forEach {
+        model.clothes.forEach {
             clothesList.add(MultipartBody.Part.createFormData("clothes", it.toString()))
         }
 
         clothesList.add(body)
-        model.clothes_location?.forEachIndexed { index, clothesCollection ->
+        model.itemLocation.forEachIndexed { index, clothesCollection ->
             clothesList.add(
                 MultipartBody.Part.createFormData(
                     "clothes_location[${index}]clothes_id",
-                    clothesCollection.clothes_id.toString()
+                    clothesCollection.id.toString()
                 )
             )
             clothesList.add(
                 MultipartBody.Part.createFormData(
                     "clothes_location[${index}]point_x",
-                    clothesCollection.point_x.toString()
+                    clothesCollection.pointX.toString()
                 )
             )
             clothesList.add(
                 MultipartBody.Part.createFormData(
                     "clothes_location[${index}]point_y",
-                    clothesCollection.point_y.toString()
+                    clothesCollection.pointY.toString()
                 )
             )
             clothesList.add(
@@ -218,25 +169,10 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         clothesList.add(
             MultipartBody.Part.createFormData(
                 "total_price",
-                model.total_price.toString()
+                model.totalPrice.toString()
             )
         )
 
-        updateCollectionUseCase.initParam(token, id, clothesList)
-        updateCollectionUseCase.execute(object : DisposableSingleObserver<Unit>() {
-            override fun onSuccess(t: Unit) {
-                view.processViewAction {
-                    view.processSuccessSaving(null)
-                    hideProgress()
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                view.processViewAction {
-                    displayMessage(errorHelper.processError(e))
-                    hideProgress()
-                }
-            }
-        })
+        return clothesList
     }
 }

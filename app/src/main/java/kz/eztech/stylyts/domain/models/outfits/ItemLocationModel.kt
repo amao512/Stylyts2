@@ -4,8 +4,8 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class ClothesLocationModel(
-    var clothesId: Int,
+data class ItemLocationModel(
+    var id: Int,
     var pointX: Double,
     var pointY: Double,
     var width: Double,

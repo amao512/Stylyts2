@@ -12,10 +12,11 @@ import kotlinx.android.synthetic.main.fragment_create_collection_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -45,7 +46,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private lateinit var chooserDialog: CreateCollectionChooserDialog
 
     private var currentMode: Int = OUTFIT_MODE
-    private var currentModel: CollectionPostCreateModel? = null
+    private var currentModel: OutfitCreateModel? = null
     private var currentBitmap: Bitmap? = null
     private var currentPhotoUri: Uri? = null
     private var isPhotoChooser = false
@@ -56,7 +57,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         const val OUTFIT_MODE = 0
         const val POST_MODE = 1
         const val MODE_KEY = "mode_key"
-        const val COLLECTION_MODEL_KEY = "collectionModel"
+        const val OUTFIT_MODEL_KEY = "outfitModel"
         const val PHOTO_BITMAP_KEY = "photoBitmap"
         const val PHOTO_URI_KEY = "photoUri"
         const val IS_CHOOSER_KEY = "isChooser"
@@ -143,8 +144,8 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey(COLLECTION_MODEL_KEY)) {
-                currentModel = it.getParcelable(COLLECTION_MODEL_KEY)
+            if (it.containsKey(OUTFIT_MODEL_KEY)) {
+                currentModel = it.getParcelable(OUTFIT_MODEL_KEY)
             }
             if (it.containsKey(PHOTO_BITMAP_KEY)) {
                 currentBitmap = it.getParcelable(PHOTO_BITMAP_KEY)
@@ -177,11 +178,14 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 }
             }
             is Bundle -> {
-                item.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let {
-                    selectedList = it
+                selectedList.clear()
+                selectedUsers.clear()
+
+                item.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.map {
+                    selectedList.add(it)
                 }
-                item.getParcelableArrayList<UserModel>(USERS_KEY)?.let {
-                    selectedUsers = it
+                item.getParcelableArrayList<UserModel>(USERS_KEY)?.map {
+                    selectedUsers.add(it)
                 }
                 currentPhotoUri = item.getParcelable(PHOTO_URI_KEY)
                 isPhotoChooser = item.getBoolean(IS_CHOOSER_KEY)
@@ -244,8 +248,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                     R.string.clothes_count_text_format,
                     selectedList.count().toString()
                 )
-            } else {
-                text_view_dialog_create_collection_items_count.hide()
             }
         }
     }
@@ -255,11 +257,9 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
         if (selectedUsers.isNotEmpty()) {
             text_view_dialog_create_collection_user_count.text = getString(
-                R.string.clothes_count_text_format,
+                R.string.users_count_text_format,
                 selectedUsers.count().toString()
             )
-        } else {
-            text_view_dialog_create_collection_user_count.hide()
         }
     }
 
@@ -275,9 +275,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             setPhotoUri(uri = currentPhotoUri)
             setPhotoBitmap(bitmap = currentBitmap)
         }.show(childFragmentManager, EMPTY_STRING)
-
-        selectedList.clear()
-        selectedUsers.clear()
     }
 
     private fun savePost() {
@@ -302,17 +299,21 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     private fun createPost(file: File?) {
         file?.let {
-            presenter.createPublications(
-                token = getTokenFromSharedPref(),
+            val model = PostCreateModel(
                 description = edit_text_view_dialog_create_collection_accept_sign.text.toString(),
-                file = file,
-                selectedClothes = selectedList,
-                selectedUsers = selectedUsers
+                clothesList = selectedList,
+                userList = selectedUsers,
+                imageFile = file
+            )
+
+            presenter.createPost(
+                token = getTokenFromSharedPref(),
+                postCreateModel = model
             )
         }
     }
 
-    private fun saveOutfit(item: CollectionPostCreateModel) {
+    private fun saveOutfit(item: OutfitCreateModel) {
         getTokenFromSharedPref().let {
             try {
                 currentBitmap?.let { bitmap ->

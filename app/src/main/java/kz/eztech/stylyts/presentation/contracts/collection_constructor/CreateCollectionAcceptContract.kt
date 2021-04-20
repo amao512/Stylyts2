@@ -1,12 +1,13 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
-import kz.eztech.stylyts.presentation.base.BasePresenter
-import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.presentation.base.BasePresenter
+import kz.eztech.stylyts.presentation.base.BaseView
 import java.io.File
 
 interface CreateCollectionAcceptContract {
@@ -20,24 +21,21 @@ interface CreateCollectionAcceptContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun createPublications(
+        fun createPost(
             token: String,
-            selectedClothes: ArrayList<ClothesModel>?,
-            selectedUsers: ArrayList<UserModel>?,
-            description: String,
-            file: File
+            postCreateModel: PostCreateModel
         )
 
         fun saveCollection(
             token: String,
-            model: CollectionPostCreateModel,
+            model: OutfitCreateModel,
             data: File
         )
 
         fun updateCollection(
             token: String,
             id: Int,
-            model: CollectionPostCreateModel,
+            model: OutfitCreateModel,
             data: File
         )
     }

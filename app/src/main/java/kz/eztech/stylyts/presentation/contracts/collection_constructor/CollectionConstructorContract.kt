@@ -1,12 +1,10 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
-import java.io.File
 
 /**
  * Created by Ruslan Erdenoff on 21.12.2020.
@@ -33,19 +31,6 @@ interface CollectionConstructorContract {
         )
 
         fun getStyles(token: String)
-
-        fun saveCollection(
-            token: String,
-            model: CollectionPostCreateModel,
-            data: File
-        )
-
-        fun updateCollection(
-            token: String,
-            id: Int,
-            model: CollectionPostCreateModel,
-            data: File
-        )
 
         fun saveCollectionToMe(
             token: String,

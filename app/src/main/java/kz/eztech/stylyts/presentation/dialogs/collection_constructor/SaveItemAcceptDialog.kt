@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_save_item_accept.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.CollectionPostCreateModel
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -22,7 +21,6 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 class SaveItemAcceptDialog : DialogFragment() {
 
     private var listener: DialogChooserListener? = null
-    private var currentModel: CollectionPostCreateModel? = null
     private var currentBitmap: Bitmap? = null
     private var currentPhotoUri: Uri? = null
 

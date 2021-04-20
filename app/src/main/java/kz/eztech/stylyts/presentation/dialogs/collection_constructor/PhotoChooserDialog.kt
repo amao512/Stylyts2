@@ -11,7 +11,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
@@ -24,6 +23,7 @@ import kz.eztech.stylyts.domain.models.MotionItemModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.GridImageItemFilteredAdapter
@@ -36,6 +36,7 @@ import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.PhotoChooserPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.extensions.displayToast
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -47,8 +48,6 @@ import javax.inject.Inject
 
 class PhotoChooserDialog(
     private val chooserListener: DialogChooserListener? = null,
-    private val selectedList: ArrayList<ClothesModel>,
-    private val selectedUsers: ArrayList<UserModel>,
     private val currentMode: Int
 ) : DialogFragment(), PhotoChooserContract.View,
     UniversalViewClickListener,
@@ -63,6 +62,10 @@ class PhotoChooserDialog(
     private lateinit var filterDialog: ConstructorFilterDialog
 
     private val filterMap = HashMap<String, Any>()
+    private val selectedClothesEntities = ArrayList<ImageEntity>()
+    private val selectedUserEntities = ArrayList<ImageEntity>()
+    private val selectedList = ArrayList<ClothesModel>()
+    private val selectedUsers = ArrayList<UserModel>()
 
     private var photoUri: Uri? = null
     private var photoBitmap: Bitmap? = null
@@ -70,6 +73,9 @@ class PhotoChooserDialog(
 
     companion object {
         private const val TOKEN_KEY = "token"
+        private const val CLOTHES_KEY = "clothes"
+        private const val USERS_KEY = "users"
+
         const val CLOTHES_MODE = 0
         const val USERS_MODE = 1
 
@@ -80,10 +86,12 @@ class PhotoChooserDialog(
             usersList: ArrayList<UserModel>,
             mode: Int
         ): PhotoChooserDialog {
-            val dialog = PhotoChooserDialog(chooserListener, clothesList, usersList, mode)
+            val dialog = PhotoChooserDialog(chooserListener, mode)
             val bundle = Bundle()
 
             bundle.putString(TOKEN_KEY, token)
+            bundle.putParcelableArrayList(CLOTHES_KEY, clothesList)
+            bundle.putParcelableArrayList(USERS_KEY, usersList)
             dialog.arguments = bundle
 
             return dialog
@@ -102,6 +110,7 @@ class PhotoChooserDialog(
         customizeActionBar()
         initializeDependency()
         initializePresenter()
+        initializeArguments()
         initializeViewsData()
         initializeViews()
         initializeListeners()
@@ -129,7 +138,21 @@ class PhotoChooserDialog(
         presenter.attach(this)
     }
 
-    override fun initializeArguments() {}
+    override fun initializeArguments() {
+        arguments?.let {
+            if (it.containsKey(CLOTHES_KEY)) {
+                it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let { clothes ->
+                    selectedList.addAll(clothes)
+                }
+            }
+
+            if (it.containsKey(USERS_KEY)) {
+                it.getParcelableArrayList<UserModel>(USERS_KEY)?.let { users ->
+                    selectedUsers.addAll(users)
+                }
+            }
+        }
+    }
 
     override fun initializeViewsData() {
         // Request camera permissions
@@ -153,9 +176,6 @@ class PhotoChooserDialog(
         }
 
         with (bottom_sheet_clothes) {
-            recycler_view_fragment_photo_chooser_filter_list.layoutManager = LinearLayoutManager(
-                context, LinearLayoutManager.HORIZONTAL, false
-            )
             recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
             recycler_view_fragment_photo_chooser.adapter = filteredAdapter
             recycler_view_fragment_photo_chooser.addItemDecoration(
@@ -178,12 +198,12 @@ class PhotoChooserDialog(
         }
 
         selectedList.map {
-            Log.d("TAG", "clothes - ${it.id}")
+//            Log.d("TAG", "clothes - ${it.id}")
             setClothesTag(clothesModel = it)
         }
 
         selectedUsers.map {
-            Log.d("TAG", "users - ${it.id}")
+//            Log.d("TAG", "users - ${it.id}")
             setUserTag(userModel = it)
         }
 
@@ -193,10 +213,14 @@ class PhotoChooserDialog(
     override fun deleteSelectedView(motionEntity: MotionEntity) {
         when (motionEntity.item.item) {
             is ClothesModel -> {
+                selectedClothesEntities.remove(motionEntity)
                 selectedList.remove(motionEntity.item.item)
                 selectedAdapter.updateList(selectedList)
             }
-            is UserModel -> selectedUsers.remove(motionEntity.item.item)
+            is UserModel -> {
+                selectedUserEntities.remove(motionEntity)
+                selectedUsers.remove(motionEntity.item.item)
+            }
         }
         checkEmptyList()
     }
@@ -279,13 +303,12 @@ class PhotoChooserDialog(
                 findNavController().navigateUp()
             }
             R.id.button_dialog_filter_constructor_submit -> {
-                val map = item as HashMap<String, Any>
-                val clothesType = filterMap["clothes_type"]
-
-                filterMap.clear()
-                filterMap["clothes_type"] = clothesType as String
-                filterMap.putAll(map)
-
+//                val map = item as HashMap<String, Any>
+//                val clothesType = filterMap["clothes_type"]
+//
+//                filterMap.clear()
+//                filterMap["clothes_type"] = clothesType as String
+//                filterMap.putAll(map)
             }
         }
 
@@ -342,8 +365,7 @@ class PhotoChooserDialog(
                 setClothesTag(clothesModel)
                 hideBottomSheet()
             }
-            R.id.frame_layout_item_main_image_holder_container -> {
-            }
+            R.id.frame_layout_item_main_image_holder_container -> {}
         }
     }
 
@@ -378,6 +400,7 @@ class PhotoChooserDialog(
                     textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
 
+                    selectedClothesEntities.add(entity)
                     selectedList.add(clothesModel)
                     selectedAdapter.updateList(selectedList)
                     checkEmptyList()
@@ -420,6 +443,7 @@ class PhotoChooserDialog(
                     textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
 
+                    selectedUserEntities.add(entity)
                     selectedUsers.add(userModel)
                 }
             })
@@ -489,13 +513,62 @@ class PhotoChooserDialog(
         bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
         bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
 
-        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, selectedList)
-        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.USERS_KEY, selectedUsers)
+        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, setLocationToClothes())
+        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.USERS_KEY, setLocationToUsers())
 
         bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, currentMode)
 
         chooserListener?.onChoice(null, bundle)
+
         dismiss()
+    }
+
+    private fun setLocationToClothes(): ArrayList<ClothesModel> {
+        val clothes = ArrayList<ClothesModel>()
+
+        selectedClothesEntities.forEachIndexed { index, imageView ->
+            val result = RelativeMeasureUtil.measureEntity(
+                imageView,
+                motion_view_fragment_photo_chooser_tags_container
+            )
+
+            selectedList[index].clothesLocation = ItemLocationModel(
+                id = (selectedClothesEntities[index].item.item as ClothesModel).id,
+                pointX = result.point_x.toDouble(),
+                pointY = result.point_y.toDouble(),
+                width = 0.0,
+                height = 0.0,
+                degree = 0.0
+            )
+
+            clothes.add(selectedList[index])
+        }
+
+        return clothes
+    }
+
+    private fun setLocationToUsers(): ArrayList<UserModel> {
+        val users = ArrayList<UserModel>()
+
+        selectedUserEntities.forEachIndexed { index, imageView ->
+            val result = RelativeMeasureUtil.measureEntity(
+                imageView,
+                motion_view_fragment_photo_chooser_tags_container
+            )
+
+            selectedUsers[index].userLocation = ItemLocationModel(
+                id = (selectedUserEntities[index].item.item as UserModel).id,
+                pointX = result.point_x.toDouble(),
+                pointY = result.point_y.toDouble(),
+                width = 0.0,
+                height = 0.0,
+                degree = 0.0
+            )
+
+            users.add(selectedUsers[index])
+        }
+
+        return users
     }
 
     private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
