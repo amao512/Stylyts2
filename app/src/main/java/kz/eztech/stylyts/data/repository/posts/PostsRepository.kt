@@ -5,7 +5,7 @@ import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.data.api.network.PostsApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
-import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.posts.PostsDomainRepository
@@ -14,23 +14,22 @@ import javax.inject.Inject
 
 class PostsRepository @Inject constructor(
     private val api: PostsApi,
-    private val resultsApiModelMapper: ResultsApiModelMapper
+    private val resultsApiModelMapper: ResultsApiModelMapper,
+    private val postApiModelMapper: PostApiModelMapper
 ) : PostsDomainRepository {
 
     override fun createPost(
         token: String,
-        description: String,
-        imageList: List<MultipartBody.Part>,
+        multipartList: List<MultipartBody.Part>,
         tags: TagsApiModel
-    ): Single<PublicationModel> {
+    ): Single<PostModel> {
         return api.createPost(
             token = token,
-            description = description,
-            imageList = imageList,
+            multipartList = multipartList,
             tagsBody = tags
         ).map {
             when (it.isSuccessful) {
-                true -> it.body()
+                true -> postApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }

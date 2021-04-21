@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
+import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -19,56 +19,56 @@ class MainImageHolder(
     adapter: BaseAdapter
 ) : BaseViewHolder(itemView, adapter) {
 
+    private lateinit var additionalAdapter: MainImagesAdditionalAdapter
+
     override fun bindData(item: Any, position: Int) {
         item as PostModel
 
         initializeAdapters(postModel = item)
         processCollectionInfo(
-            publicationModel = item,
+            postModel = item,
             position = position
         )
         loadUserPhoto(
             publicationModel = item,
             position = position
         )
+
+        Log.d("TAG3", "$item")
     }
 
     private fun initializeAdapters(postModel: PostModel) {
-        with (itemView) {
-            val additionalAdapter = MainImagesAdditionalAdapter()
-            additionalAdapter.itemClickListener = adapter.itemClickListener
+        additionalAdapter = MainImagesAdditionalAdapter()
+        additionalAdapter.itemClickListener = adapter.itemClickListener
 
-            this.recycler_view_item_main_image_additionals_list.layoutManager = LinearLayoutManager(
-                context,
-                LinearLayoutManager.HORIZONTAL,
-                false
-            )
-            this.recycler_view_item_main_image_additionals_list.adapter = additionalAdapter
+        with (itemView) {
+            recycler_view_item_main_image_additionals_list.adapter = additionalAdapter
+            postModel.clothes?.let {
+                additionalAdapter.updateList(list = it)
+            }
         }
     }
 
     private fun processCollectionInfo(
-        publicationModel: PostModel,
+        postModel: PostModel,
         position: Int
     ) {
         with (itemView) {
-            //                clothes?.let {
-//                    additionalAdapter.updateList(it)
-//                }
-            text_view_item_main_image_partner_name.text = "Author Name"
-//                    "${author?.first_name} ${author?.last_name}"
+            postModel.owner?.let {
+                text_view_item_main_image_partner_name.text = "${it.firstName} ${it.lastName}"
 
-//                author?.avatar?.let {
-//                    text_view_item_main_image_short_name.visibility = View.GONE
-//                    Glide.with(itemView).load(it)
-//                        .into(shapeable_image_view_item_main_image_profile_avatar)
-//                } ?: run {
-            shapeable_image_view_item_main_image_profile_avatar.hide()
-            text_view_item_main_image_short_name.show()
-            text_view_item_main_image_short_name.text = getShortName("Author", "Name")
+                if (it.avatar.isBlank()) {
+                    shapeable_image_view_item_main_image_profile_avatar.hide()
+                    text_view_item_main_image_short_name.show()
+                    text_view_item_main_image_short_name.text = getShortName(it.firstName, it.lastName)
+                } else {
+                    text_view_item_main_image_short_name.hide()
+                    Glide.with(shapeable_image_view_item_main_image_profile_avatar.context)
+                        .load(it.avatar)
+                        .into(shapeable_image_view_item_main_image_profile_avatar)
+                }
+            }
 
-
-//                }
 //            constraint_layout_fragment_item_main_image_profile_container.setOnClickListener { thisView ->
 //                adapter.itemClickListener?.onViewClicked(thisView, position, publicationModel)
 //            }

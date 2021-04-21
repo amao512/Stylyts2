@@ -12,11 +12,11 @@ import kotlinx.android.synthetic.main.fragment_create_collection_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -219,8 +219,9 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    override fun processPublications(publicationModel: PublicationModel) {
-        findNavController().popBackStack(R.id.profileFragment, false)
+    override fun processSuccessPost(postModel: PostModel) {
+        Log.d("TAG3", "success - $postModel")
+        findNavController().navigateUp()
     }
 
     override fun processSuccessSaving(outfitModel: OutfitModel?) {

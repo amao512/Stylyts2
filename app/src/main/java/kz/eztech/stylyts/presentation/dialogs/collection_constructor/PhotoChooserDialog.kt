@@ -378,14 +378,16 @@ class PhotoChooserDialog(
         Log.d("TAG2", "x - ${clothesModel.clothesLocation?.pointX}")
         Log.d("TAG2", "y - ${clothesModel.clothesLocation?.pointY}")
 
+        clothesModel.clothesLocation?.let {
+            layer.postTranslate(
+                dx = it.pointX.toFloat(),
+                dy = it.pointY.toFloat()
+            )
+        }
+
         if (observer.isAlive) {
             observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    clothesModel.clothesLocation?.let {
-                        textView.x = it.pointX.toFloat()
-                        textView.y = it.pointY.toFloat()
-                    }
-
                     val resource = createBitmapScreenshot(textView)
                     val entity = ImageEntity(
                         layer,
@@ -394,6 +396,7 @@ class PhotoChooserDialog(
                         canvasHeight = motion_view_fragment_photo_chooser_tags_container.width,
                         canvasWidth = motion_view_fragment_photo_chooser_tags_container.height
                     )
+
                     motion_view_fragment_photo_chooser_tags_container.addEntityAndPosition(
                         entity,
                         true

@@ -9,16 +9,16 @@ import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
-class CollectionConstructorModule {
+class PostsModule {
 
     @Provides
     @Singleton
-    fun provideConstructorApi(retrofit: Retrofit): PostsApi {
+    internal fun providePostsApi(retrofit: Retrofit): PostsApi {
         return retrofit.create(PostsApi::class.java)
     }
 
     @Provides
-    fun provideConstructorRepository(constructorDomainRepository: PostsRepository): PostsDomainRepository {
-        return constructorDomainRepository
+    fun providePostsRepository(postsDomainRepository: PostsRepository): PostsDomainRepository {
+        return postsDomainRepository
     }
 }

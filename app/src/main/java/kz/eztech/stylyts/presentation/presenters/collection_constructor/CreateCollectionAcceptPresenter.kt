@@ -2,10 +2,10 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.posts.CreatePostUseCase
 import kz.eztech.stylyts.domain.usecases.collection_constructor.UpdateCollectionUseCase
 import kz.eztech.stylyts.domain.usecases.shop.SaveOutfitConstructorUseCase
@@ -41,11 +41,11 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         view.displayProgress()
 
         createPostUseCase.initParams(token, postCreateModel)
-        createPostUseCase.execute(object : DisposableSingleObserver<PublicationModel>() {
-            override fun onSuccess(t: PublicationModel) {
+        createPostUseCase.execute(object : DisposableSingleObserver<PostModel>() {
+            override fun onSuccess(t: PostModel) {
                 view.processViewAction {
                     hideProgress()
-                    processPublications(publicationModel = t)
+                    processSuccessPost(postModel = t)
                 }
             }
 

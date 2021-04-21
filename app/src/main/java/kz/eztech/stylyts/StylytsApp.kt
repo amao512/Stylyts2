@@ -44,7 +44,7 @@ class StylytsApp : Application(){
             .addressModule(AddressModule())
             .searchModule(SearchModule(mApplication = this))
             .clothesModule(ClothesModule())
-            .collectionConstructorModule(CollectionConstructorModule())
+            .postsModule(PostsModule())
             .collectionModule(CollectionModule())
             .userModule(UserModule())
             .outfitsModule(OutfitsModule())

@@ -11,9 +11,7 @@ import kz.eztech.stylyts.presentation.adapters.holders.MainImageHolder
  */
 class MainImagesAdapter : BaseAdapter(){
 
-    override fun getLayoutId(): Int {
-        return R.layout.item_main_image
-    }
+    override fun getLayoutId(): Int = R.layout.item_main_image
 
     override fun getViewHolder(view: View): MainImageHolder {
         return MainImageHolder(

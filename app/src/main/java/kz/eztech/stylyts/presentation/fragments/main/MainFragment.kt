@@ -3,14 +3,18 @@ package kz.eztech.stylyts.presentation.fragments.main
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.MainResult
+import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.main.MainImageModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.main.MainImagesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -19,8 +23,6 @@ import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.domain.models.*
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -30,8 +32,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     @Inject lateinit var presenter: MainLinePresenter
 
-    lateinit var dummyList: ArrayList<MainImageModel>
-    lateinit var postsAdapter: MainImagesAdapter
+    private lateinit var dummyList: ArrayList<MainImageModel>
+    private lateinit var postsAdapter: MainImagesAdapter
+
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
+    }
 
     override fun customizeActionBar() {
         with(include_toolbar) {
@@ -50,24 +57,18 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun initializePresenter() {
-        presenter.attach(this)
+        presenter.attach(view = this)
     }
 
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
         postsAdapter = MainImagesAdapter()
+        postsAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
-        recycler_view_fragment_main_images_list.layoutManager = LinearLayoutManager(currentActivity)
         recycler_view_fragment_main_images_list.adapter = postsAdapter
-        postsAdapter.itemClickListener = this
-    }
-
-    override fun onResume() {
-        super.onResume()
-        currentActivity.displayBottomNavigationView()
     }
 
     override fun initializeListeners() {
@@ -82,10 +83,6 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.image_view_item_main_image_imageholder -> onCollectionImageClicked(item)
             R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.userCommentsFragment)
         }
-    }
-
-    override fun processPostResults(resultsApiModel: ResultsModel<PostModel>) {
-        postsAdapter.updateList(list = resultsApiModel.results)
     }
 
     override fun processPostInitialization() {
@@ -116,6 +113,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun hideProgress() {
         progress_bar_fragment_main_lenta.hide()
+    }
+
+    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
+        postsAdapter.updateList(list = resultsModel.results)
     }
 
     private fun onProfileClicked() {

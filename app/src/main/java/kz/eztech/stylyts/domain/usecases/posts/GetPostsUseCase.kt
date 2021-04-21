@@ -7,6 +7,8 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.posts.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import javax.inject.Inject
 import javax.inject.Named
 

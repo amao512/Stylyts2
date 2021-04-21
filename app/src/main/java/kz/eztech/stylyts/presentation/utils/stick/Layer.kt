@@ -2,9 +2,6 @@ package kz.eztech.stylyts.presentation.utils.stick
 
 import androidx.annotation.FloatRange
 
-
-
-
 /**
  * Created by Ruslan Erdenoff on 13.01.2021.
  */

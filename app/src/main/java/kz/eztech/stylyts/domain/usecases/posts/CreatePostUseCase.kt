@@ -5,8 +5,8 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.posts.TagApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.posts.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -19,18 +19,16 @@ class CreatePostUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val postsDomainRepository: PostsDomainRepository
-) : BaseUseCase<PublicationModel>(executorThread, uiThread) {
+) : BaseUseCase<PostModel>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var description: String
-    private lateinit var imageList: List<MultipartBody.Part>
+    private lateinit var multipartList: List<MultipartBody.Part>
     private lateinit var tags: TagsApiModel
 
-    override fun createSingleObservable(): Single<PublicationModel> {
+    override fun createSingleObservable(): Single<PostModel> {
         return postsDomainRepository.createPost(
             token = token,
-            imageList = imageList,
-            description = description,
+            multipartList = multipartList,
             tags = tags
         )
     }
@@ -40,14 +38,14 @@ class CreatePostUseCase @Inject constructor(
         postCreateModel: PostCreateModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.description = postCreateModel.description
 
-        val bodyList = ArrayList<MultipartBody.Part>()
+        val multipartList = ArrayList<MultipartBody.Part>()
         val requestFile = postCreateModel.imageFile.asRequestBody(("image/*").toMediaTypeOrNull())
 
-        bodyList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, requestFile))
+        multipartList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, requestFile))
+        multipartList.add(MultipartBody.Part.createFormData("description", postCreateModel.description))
 
-        this.imageList = bodyList
+        this.multipartList = multipartList
 
         val clothesTags: MutableList<TagApiModel> = mutableListOf()
         postCreateModel.clothesList.map {

@@ -48,7 +48,7 @@ import javax.inject.Singleton
     AddressModule::class,
     SearchModule::class,
     ClothesModule::class,
-    CollectionConstructorModule::class,
+    PostsModule::class,
     CollectionModule::class,
     UserModule::class,
     OutfitsModule::class

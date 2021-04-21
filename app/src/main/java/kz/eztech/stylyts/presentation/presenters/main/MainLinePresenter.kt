@@ -34,15 +34,15 @@ class MainLinePresenter @Inject constructor(
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				view.processViewAction {
-					hideProgress()
 					processPostResults(resultsModel = t)
+					hideProgress()
 				}
 			}
 
 			override fun onError(e: Throwable) {
 				view.processViewAction {
 					hideProgress()
-					displayMessage(errorHelper.processError(e))
+					displayMessage(msg = errorHelper.processError(e))
 				}
 			}
 		})
