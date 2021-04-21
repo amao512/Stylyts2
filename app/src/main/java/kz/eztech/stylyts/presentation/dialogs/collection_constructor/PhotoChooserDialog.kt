@@ -142,13 +142,13 @@ class PhotoChooserDialog(
         arguments?.let {
             if (it.containsKey(CLOTHES_KEY)) {
                 it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.map { clothes ->
-                    selectedList.add(clothes)
+                    setClothesTag(clothesModel = clothes)
                 }
             }
 
             if (it.containsKey(USERS_KEY)) {
                 it.getParcelableArrayList<UserModel>(USERS_KEY)?.map { users ->
-                    selectedUsers.add(users)
+                    setUserTag(userModel = users)
                 }
             }
         }
@@ -195,16 +195,6 @@ class PhotoChooserDialog(
         dialog_photo_chooser_tap_text_view.text = when (mode) {
             CLOTHES_MODE -> getString(R.string.photo_chooser_touch)
             else -> getString(R.string.photo_user_choose_touch)
-        }
-
-        selectedList.map {
-            Log.d("TAG3", "clothes - ${it.id}")
-            setClothesTag(clothesModel = it)
-        }
-
-        selectedUsers.map {
-            Log.d("TAG3", "users - ${it.id}")
-            setUserTag(userModel = it)
         }
 
         hideBottomSheet()

@@ -112,10 +112,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             }
         }
 
-        selectedList.map {
-            Log.d("TAG3", "outside - ${it.id}")
-        }
-
         processPhotoChooser()
         updateUserView()
     }
