@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_item_list.*
 import kz.eztech.stylyts.R
@@ -14,6 +13,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -34,9 +34,9 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     private lateinit var filterCheckAdapter: FilterCheckAdapter
     private lateinit var clothesType: ClothesTypeModel
     private lateinit var selectedCategoryTitle: String
+    private lateinit var currentFilter: FilterModel
 
     private var clothesTypeGender: Int = 0
-    private var selectedCategoryIdList: ArrayList<Int> = arrayListOf()
     private var isCheckedItem: Boolean = false
 
     companion object {
@@ -93,13 +93,15 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         }
     }
 
-    override fun initializeViewsData() {}
+    override fun initializeViewsData() {
+        filterCheckAdapter = FilterCheckAdapter()
+        filterCheckAdapter.setOnClickListener(listener = this)
+
+        currentFilter = FilterModel()
+    }
 
     override fun initializeViews() {
-        filterCheckAdapter = FilterCheckAdapter()
-        recycler_view_fragment_shop_item_list.layoutManager = LinearLayoutManager(currentActivity)
         recycler_view_fragment_shop_item_list.adapter = filterCheckAdapter
-        filterCheckAdapter.itemClickListener = this
     }
 
     override fun onResume() {
@@ -112,14 +114,17 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     }
 
     override fun processPostInitialization() {
+        setCurrentGender()
+
+        currentFilter.typeIdList = arrayListOf(clothesType.id)
+
         presenter.getCategoriesByType(
             token = getTokenFromSharedPref(),
             clothesTypeId = clothesType.id
         )
         presenter.getClothesResultsByType(
             token = getTokenFromSharedPref(),
-            typeIdList = arrayListOf(clothesType.id),
-            gender = getCurrentGender()
+            filterModel = currentFilter
         )
     }
 
@@ -178,15 +183,10 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         position: Int
     ) {
         filterCheckAdapter.onCheckPosition(position)
-
-        val list = filterCheckAdapter.getCheckedCategoryList()
-
-        selectedCategoryIdList.clear()
-        selectedCategoryIdList.addAll(list)
-        isCheckedItem = list.isNotEmpty()
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedCategoryList()
 
         with(item as ClothesCategoryModel) {
-            selectedCategoryTitle = when (selectedCategoryIdList.size) {
+            selectedCategoryTitle = when (currentFilter.categoryIdList.size) {
                 1 -> {
                    if (item.isChecked) {
                        title
@@ -195,21 +195,25 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
                 else -> item.clothesType.title
             }
 
+            checkEmptyFilter()
             setResetTextColor()
+            setCurrentGender()
 
             presenter.getClothesResultsByCategory(
                 token = getTokenFromSharedPref(),
-                gender = getCurrentGender(),
-                categoryIdList = selectedCategoryIdList
+                filterModel = currentFilter
             )
         }
     }
 
+    private fun checkEmptyFilter() {
+        isCheckedItem = currentFilter.categoryIdList.isNotEmpty()
+    }
+
     private fun showClothesResults() {
         val bundle = Bundle()
-        bundle.putString(CategoryTypeDetailFragment.CLOTHES_GENDER, getCurrentGender())
-        bundle.putIntegerArrayList(CategoryTypeDetailFragment.CLOTHES_CATEGORY_ID_LIST, selectedCategoryIdList)
-        bundle.putInt(CategoryTypeDetailFragment.CLOTHES_TYPE_ID, clothesType.id)
+
+        bundle.putParcelable(CategoryTypeDetailFragment.FILTER_KEY, currentFilter)
         bundle.putString(CategoryTypeDetailFragment.CLOTHES_CATEGORY_TITLE, selectedCategoryTitle)
 
         findNavController().navigate(
@@ -221,17 +225,16 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     private fun resetCategories() {
         if (isCheckedItem) {
             filterCheckAdapter.onResetChecking()
-
-            selectedCategoryIdList.retainAll(selectedCategoryIdList)
+            currentFilter.categoryIdList = emptyList()
             selectedCategoryTitle = clothesType.title
-            isCheckedItem = false
 
+            checkEmptyFilter()
             setResetTextColor()
         }
     }
 
-    private fun getCurrentGender(): String {
-        return when (clothesTypeGender) {
+    private fun setCurrentGender() {
+        currentFilter.gender = when (clothesTypeGender) {
             0 -> CategoryTypeDetailFragment.GENDER_MALE
             1 -> CategoryTypeDetailFragment.GENDER_FEMALE
             else -> CategoryTypeDetailFragment.GENDER_MALE

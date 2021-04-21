@@ -5,6 +5,7 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesStylesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
@@ -74,8 +75,10 @@ class CollectionConstructorPresenter @Inject constructor(
 
         getClothesUseCase.initParams(
             token = token,
-            gender = map["gender"] as String,
-            typeIdList = arrayListOf(map["clothes_type"] as Int)
+            filterModel = FilterModel(
+                gender = map["gender"] as String,
+                typeIdList = arrayListOf(map["clothes_type"] as Int)
+            )
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

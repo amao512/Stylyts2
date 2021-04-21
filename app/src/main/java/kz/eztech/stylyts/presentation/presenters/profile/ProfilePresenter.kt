@@ -9,6 +9,7 @@ import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -181,8 +182,9 @@ class ProfilePresenter @Inject constructor(
 	override fun getWardrobe(token: String) {
 		getClothesUseCase.initParams(
 			token = token,
-			gender = "M",
-			isMyWardrobe = true
+			filterModel = FilterModel(
+				isMyWardrobe = true
+			)
 		)
 		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
 			override fun onSuccess(t: ResultsModel<ClothesModel>) {

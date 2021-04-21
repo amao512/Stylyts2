@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.filter
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.filter.FilterItemModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
@@ -18,8 +18,8 @@ class FilterAdapter : BaseAdapter() {
                 oldItemPosition: Int,
                 newItemPosition: Int
             ): Boolean {
-                return (currentList[oldItemPosition] as FilterModel).hashCode() ==
-                        (list[newItemPosition] as FilterModel).hashCode()
+                return (currentList[oldItemPosition] as FilterItemModel).hashCode() ==
+                        (list[newItemPosition] as FilterItemModel).hashCode()
             }
         }
     }

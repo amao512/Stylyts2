@@ -5,6 +5,7 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -33,15 +34,13 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
 
     override fun getCategoryTypeDetail(
         token: String,
-        gender: String,
-        categoryIdList: List<Int>
+        filterModel: FilterModel
     ) {
         view.displayProgress()
 
         getClothesUseCase.initParams(
             token = token,
-            gender = gender,
-            categoryIdList = categoryIdList
+            filterModel = filterModel
         )
 
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
@@ -63,18 +62,12 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
 
     override fun getClothesByType(
         token: String,
-        typeIdList: List<Int>,
-        gender: String
+        filterModel: FilterModel
     ) {
         getClothesUseCase.initParams(
             token = token,
-            gender = gender,
-            typeIdList = typeIdList
+            filterModel = filterModel
         )
-
-        val data = HashMap<String, Any>()
-        data["type_id"] = typeIdList
-        data["gender_type"] = gender
 
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
@@ -110,15 +103,11 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
 
     override fun getClothesByBrand(
         token: String,
-        gender: String,
-        categoryIdList: List<Int>,
-        brandIdList: List<Int>
+        filterModel: FilterModel
     ) {
         getClothesUseCase.initParams(
             token = token,
-            gender = gender,
-            categoryIdList = categoryIdList,
-            brandIdList = brandIdList
+            filterModel = filterModel
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

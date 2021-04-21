@@ -8,6 +8,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
@@ -112,17 +113,11 @@ class FilterPresenter @Inject constructor(
 
     override fun getClothesResults(
         token: String,
-        gender: String,
-        typeIdList: List<Int>,
-        categoryIdList: List<Int>,
-        brandIdList: List<Int>
+        filterModel: FilterModel
     ) {
         getClothesUseCase.initParams(
             token = token,
-            gender = gender,
-            typeIdList = typeIdList,
-            categoryIdList = categoryIdList,
-            brandIdList = brandIdList
+            filterModel = filterModel
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

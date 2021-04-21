@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.main.shop
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -20,14 +21,12 @@ interface CategoryTypeDetailContract {
 
         fun getClothesByType(
             token: String,
-            typeIdList: List<Int>,
-            gender: String,
+            filterModel: FilterModel
         )
 
         fun getCategoryTypeDetail(
             token: String,
-            gender: String,
-            categoryIdList: List<Int>
+            filterModel: FilterModel
         )
 
         fun getClothesBrands(
@@ -36,9 +35,7 @@ interface CategoryTypeDetailContract {
 
         fun getClothesByBrand(
             token: String,
-            gender: String,
-            categoryIdList: List<Int>,
-            brandIdList: List<Int>
+            filterModel: FilterModel
         )
     }
 }

@@ -16,6 +16,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.FilterItemModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.adapters.filter.CategoryFilterExpandableAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterAdapter
@@ -38,13 +39,10 @@ class FilterDialog(
     private lateinit var filterAdapter: FilterAdapter
     private lateinit var categoryFilterExpandableAdapter: CategoryFilterExpandableAdapter
     private lateinit var filterCheckAdapter: FilterCheckAdapter
+    private lateinit var currentFilter: FilterModel
 
     private var isOpenedFilter = false
     private var isCheckedItem: Boolean = false
-
-    private var selectedClothesType: MutableList<Int> = mutableListOf()
-    private var selectedClothesCategoryList: MutableList<Int> = mutableListOf()
-    private var selectedClothesBrandList: MutableList<Int> = mutableListOf()
 
     companion object {
         private const val TOKEN_ARGS = "token_args"
@@ -78,28 +76,10 @@ class FilterDialog(
         initializeDependency()
         initializePresenter()
         customizeActionBar()
+        initializeViewsData()
         initializeViews()
         initializeListeners()
         processPostInitialization()
-    }
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> closeFilterGroup()
-            R.id.toolbar_right_text_text_view -> {}
-        }
-    }
-
-    override fun onViewClicked(
-        view: View,
-        position: Int,
-        item: Any?
-    ) {
-        when (item) {
-            is FilterModel -> openFilterGroup(position)
-            is ClothesCategoryModel -> selectClothesCategory(view, position, item)
-            is ClothesBrandModel -> selectClothesBrand(position)
-        }
     }
 
     override fun customizeActionBar() {
@@ -131,7 +111,10 @@ class FilterDialog(
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
+    override fun initializeViewsData() {
+        currentFilter = FilterModel()
+        currentFilter.gender = currentGender
+    }
 
     override fun initializeViews() {
         filterAdapter = FilterAdapter()
@@ -146,6 +129,7 @@ class FilterDialog(
 
     override fun initializeListeners() {
         toolbar_left_corner_action_image_button.setOnClickListener(this)
+        fragment_category_shop_results_button.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -192,6 +176,33 @@ class FilterDialog(
         )
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.toolbar_left_corner_action_image_button -> closeFilterGroup()
+            R.id.toolbar_right_text_text_view -> {}
+            R.id.fragment_category_shop_results_button -> {
+                itemClickListener.onViewClicked(
+                    view = toolbar_left_corner_action_image_button,
+                    item = currentFilter,
+                    position = 0
+                )
+                dismiss()
+            }
+        }
+    }
+
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        when (item) {
+            is FilterItemModel -> openFilterGroup(position)
+            is ClothesCategoryModel -> selectClothesCategory(view, position, item)
+            is ClothesBrandModel -> selectClothesBrand(position)
+        }
+    }
+
     private fun openFilterGroup(position: Int) {
         when (position) {
             0 -> onCategoriesClick()
@@ -224,26 +235,18 @@ class FilterDialog(
         category: ClothesCategoryModel
     ) {
         categoryFilterExpandableAdapter.onChildCheckChanged(view, category.isChecked, position)
+        currentFilter.categoryIdList = categoryFilterExpandableAdapter.getCheckedCategoryList()
 
-        val list = categoryFilterExpandableAdapter.getCheckedCategoryList()
-
-        selectedClothesCategoryList.clear()
-        selectedClothesCategoryList.addAll(list)
-        isCheckedItem = selectedClothesBrandList.isNotEmpty() || selectedClothesCategoryList.isNotEmpty()
-
+        checkEmptyFilter()
         getFilterResults()
         setResetTextColor()
     }
 
     private fun selectClothesBrand(position: Int) {
         filterCheckAdapter.onCheckPosition(position)
+        currentFilter.brandIdList = filterCheckAdapter.getCheckedBrandList()
 
-        val list = filterCheckAdapter.getCheckedBrandList()
-
-        selectedClothesBrandList.clear()
-        selectedClothesBrandList.addAll(list)
-        isCheckedItem = selectedClothesBrandList.isNotEmpty() || selectedClothesCategoryList.isNotEmpty()
-
+        checkEmptyFilter()
         getFilterResults()
         setResetTextColor()
     }
@@ -278,19 +281,16 @@ class FilterDialog(
     private fun getFilterResults() {
         presenter.getClothesResults(
             token = getTokenFromArguments(),
-            gender = currentGender,
-            categoryIdList = selectedClothesCategoryList,
-            typeIdList = selectedClothesType,
-            brandIdList = selectedClothesBrandList
+            filterModel = currentFilter
         )
     }
 
-    private fun getFilterList(): List<FilterModel> {
-        val list: MutableList<FilterModel> = mutableListOf()
-        list.add(FilterModel(title = getString(R.string.filter_categories)))
-        list.add(FilterModel(title = getString(R.string.filter_brands)))
-        list.add(FilterModel(title = getString(R.string.filter_colors)))
-        list.add(FilterModel(title = getString(R.string.filter_costs)))
+    private fun getFilterList(): List<FilterItemModel> {
+        val list: MutableList<FilterItemModel> = mutableListOf()
+        list.add(FilterItemModel(title = getString(R.string.filter_categories)))
+        list.add(FilterItemModel(title = getString(R.string.filter_brands)))
+        list.add(FilterItemModel(title = getString(R.string.filter_colors)))
+        list.add(FilterItemModel(title = getString(R.string.filter_costs)))
 
         return list
     }
@@ -303,6 +303,12 @@ class FilterDialog(
                 ContextCompat.getColor(requireContext(), R.color.app_gray_hint)
             }
         )
+    }
+
+    private fun checkEmptyFilter() {
+        isCheckedItem = currentFilter.brandIdList.isNotEmpty() ||
+                currentFilter.categoryIdList.isNotEmpty() ||
+                currentFilter.typeIdList.isNotEmpty()
     }
 
     private fun getTokenFromArguments(): String {

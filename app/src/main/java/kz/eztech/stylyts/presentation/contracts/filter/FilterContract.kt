@@ -4,6 +4,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -29,10 +30,7 @@ interface FilterContract {
 
         fun getClothesResults(
             token: String,
-            gender: String,
-            typeIdList: List<Int> = emptyList(),
-            categoryIdList: List<Int> = emptyList(),
-            brandIdList: List<Int> = emptyList()
+            filterModel: FilterModel
         )
     }
 }

@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.filter.holders
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_filter.view.*
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.filter.FilterItemModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 
@@ -15,7 +15,7 @@ class FilterViewHolder(
         item: Any,
         position: Int
     ) {
-        item as FilterModel
+        item as FilterItemModel
 
         with(itemView) {
             item_filter_title.text = item.title

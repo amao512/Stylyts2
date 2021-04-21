@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.shop
 
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
@@ -51,16 +50,14 @@ class ShopItemFragment(
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
-
-    override fun initializeViews() {
+    override fun initializeViewsData() {
         adapter = ShopCategoryAdapter(gender = position)
-
-        recycler_view_fragment_shop_item.layoutManager = LinearLayoutManager(context)
-        recycler_view_fragment_shop_item.adapter = adapter
-        adapter.itemClickListener = this
+        adapter.setOnClickListener(listener = this)
     }
 
+    override fun initializeViews() {
+        recycler_view_fragment_shop_item.adapter = adapter
+    }
 
     override fun initializeListeners() {
         swipe_refresh_fragment_shop_item.setOnRefreshListener(this)

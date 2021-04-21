@@ -5,6 +5,7 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -62,8 +63,10 @@ class PhotoChooserPresenter @Inject constructor(
 
         getClothesUseCase.initParams(
             token = token,
-            typeIdList = typeIdList,
-            categoryIdList = categoryIdList
+            filterModel = FilterModel(
+                typeIdList = typeIdList,
+                categoryIdList = categoryIdList
+            )
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

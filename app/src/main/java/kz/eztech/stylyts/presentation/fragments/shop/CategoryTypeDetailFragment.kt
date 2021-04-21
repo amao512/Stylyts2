@@ -12,6 +12,7 @@ import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
@@ -34,19 +35,20 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     @Inject lateinit var presenter: CategoryTypeDetailFragmentPresenter
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
+    private lateinit var currentFilter: FilterModel
 
-    private var gender: String = GENDER_MALE
-    private var categoryIdList: ArrayList<Int> = arrayListOf()
-    private var typeIdList: ArrayList<Int> = arrayListOf()
     private var title: String = EMPTY_STRING
 
     companion object {
-        const val CLOTHES_GENDER = "clothes_gender"
-        const val CLOTHES_CATEGORY_ID_LIST = "clothes_category_id_list"
-        const val CLOTHES_TYPE_ID = "clothes_type_id"
         const val CLOTHES_CATEGORY_TITLE = "clothes_category_title"
+        const val FILTER_KEY = "filter_model"
         const val GENDER_MALE = "M"
         const val GENDER_FEMALE = "F"
+    }
+
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_category_type_detail
@@ -71,7 +73,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     }
 
     override fun initializeDependency() {
-        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
     }
 
     override fun initializePresenter() {
@@ -79,16 +81,15 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     }
 
     override fun initializeArguments() {
+        currentFilter = FilterModel()
+
         arguments?.let {
-            if (it.containsKey(CLOTHES_GENDER)) {
-                gender = it.getString(CLOTHES_GENDER) ?: GENDER_MALE
+            if (it.containsKey(FILTER_KEY)) {
+                it.getParcelable<FilterModel>(FILTER_KEY)?.let { filter ->
+                    currentFilter = filter
+                }
             }
-            if (it.containsKey(CLOTHES_CATEGORY_ID_LIST)) {
-                categoryIdList = it.getIntegerArrayList(CLOTHES_CATEGORY_ID_LIST) ?: arrayListOf()
-            }
-            if (it.containsKey(CLOTHES_TYPE_ID)) {
-                typeIdList.add(it.getInt(CLOTHES_TYPE_ID))
-            }
+
             if (it.containsKey(CLOTHES_CATEGORY_TITLE)) {
                 title = it.getString(CLOTHES_CATEGORY_TITLE) ?: EMPTY_STRING
             }
@@ -100,23 +101,31 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             R.id.item_clothes_detail_linear_layout -> onClothesItemClick(item)
             R.id.frame_layout_item_collection_filter -> onBrandFilterClick(position, item as CollectionFilterModel)
         }
+
+        when (item) {
+            is FilterModel -> {
+                currentFilter.categoryIdList = item.categoryIdList
+                currentFilter.brandIdList = item.brandIdList
+
+                presenter.getClothesByType(
+                    token = getTokenFromSharedPref(),
+                    filterModel = currentFilter
+                )
+            }
+        }
     }
 
-    override fun initializeViewsData() {}
-
-    override fun initializeViews() {
+    override fun initializeViewsData() {
         brandsFilterAdapter = CollectionsFilterAdapter()
-        brandsFilterAdapter.itemClickListener = this
-        fragment_category_type_detail_brands_recycler_view.adapter = brandsFilterAdapter
+        brandsFilterAdapter.setOnClickListener(listener = this)
 
         clothesAdapter = ClothesDetailAdapter()
-        clothesAdapter.itemClickListener = this
-        recycler_view_fragment_category_type_detail.adapter = clothesAdapter
+        clothesAdapter.setOnClickListener(listener = this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        currentActivity.hideBottomNavigationView()
+    override fun initializeViews() {
+        fragment_category_type_detail_brands_recycler_view.adapter = brandsFilterAdapter
+        recycler_view_fragment_category_type_detail.adapter = clothesAdapter
     }
 
     override fun initializeListeners() {}
@@ -124,17 +133,15 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     override fun processPostInitialization() {
         presenter.getClothesBrands(token = getTokenFromSharedPref())
 
-        if (categoryIdList.isEmpty() && typeIdList.isNotEmpty()) {
+        if (currentFilter.categoryIdList.isEmpty() && currentFilter.typeIdList.isNotEmpty()) {
             presenter.getClothesByType(
                 token = getTokenFromSharedPref(),
-                gender = gender,
-                typeIdList = typeIdList
+                filterModel = currentFilter
             )
         } else {
             presenter.getCategoryTypeDetail(
                 token = getTokenFromSharedPref(),
-                gender = gender,
-                categoryIdList = categoryIdList
+                filterModel = currentFilter
             )
         }
     }
@@ -220,15 +227,13 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             FilterDialog.getNewInstance(
                 token = getTokenFromSharedPref(),
                 itemClickListener = this,
-                gender = gender
+                gender = currentFilter.gender
             ).show(childFragmentManager, EMPTY_STRING)
         } else {
             brandsFilterAdapter.onChooseItem(position)
             presenter.getClothesByBrand(
                 token = getTokenFromSharedPref(),
-                gender = gender,
-                categoryIdList = categoryIdList,
-                brandIdList = arrayListOf(item.id ?: 0)
+                filterModel = currentFilter
             )
         }
     }

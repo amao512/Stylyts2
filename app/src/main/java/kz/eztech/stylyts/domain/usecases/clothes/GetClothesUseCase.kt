@@ -1,14 +1,13 @@
 package kz.eztech.stylyts.domain.usecases.clothes
 
-import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.repository.clothes.ClothesDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -32,35 +31,31 @@ class GetClothesUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        gender: String = EMPTY_STRING,
-        typeIdList: List<Int> = emptyList(),
-        categoryIdList: List<Int> = emptyList(),
-        brandIdList: List<Int> = emptyList(),
-        isMyWardrobe: Boolean = false
+        filterModel: FilterModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
         val stringQueryMap: MutableMap<String, String> = HashMap()
         val booleanQueryMap: MutableMap<String, Boolean> = HashMap()
 
-        if (gender.isNotBlank()) {
-            stringQueryMap["gender"] = gender
+        if (filterModel.gender.isNotBlank()) {
+            stringQueryMap["gender"] = filterModel.gender
         }
 
-        if (typeIdList.isNotEmpty()) {
-            stringQueryMap["clothes_type"] = typeIdList.joinToString(",")
+        if (filterModel.typeIdList.isNotEmpty()) {
+            stringQueryMap["clothes_type"] = filterModel.typeIdList.joinToString(",")
         }
 
-        if (categoryIdList.isNotEmpty()) {
-            stringQueryMap["clothes_category"] = categoryIdList.joinToString(",")
+        if (filterModel.categoryIdList.isNotEmpty()) {
+            stringQueryMap["clothes_category"] = filterModel.categoryIdList.joinToString(",")
         }
 
-        if (brandIdList.isNotEmpty()) {
-            stringQueryMap["brand"] = brandIdList.joinToString(",")
+        if (filterModel.brandIdList.isNotEmpty()) {
+            stringQueryMap["brand"] = filterModel.brandIdList.joinToString(",")
         }
 
-        if (isMyWardrobe) {
-            booleanQueryMap["in_my_wardrobe"] = isMyWardrobe
+        if (filterModel.isMyWardrobe) {
+            booleanQueryMap["in_my_wardrobe"] = filterModel.isMyWardrobe
         }
 
         this.stringQueryMap = stringQueryMap

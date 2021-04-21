@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
@@ -16,6 +17,7 @@ import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -291,6 +293,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.frame_layout_item_collection_filter -> onFilterClick(position)
             R.id.shapeable_image_view_item_collection_image -> onCollectionItemClick(item)
             R.id.item_clothes_detail_linear_layout -> onWardrobeItemClick(item)
+        }
+
+        when (item) {
+            is FilterModel -> {
+                Log.d("TAG4", "profile = $item")
+            }
         }
     }
 
