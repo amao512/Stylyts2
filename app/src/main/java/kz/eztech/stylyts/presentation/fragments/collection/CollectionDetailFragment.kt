@@ -11,6 +11,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
@@ -35,10 +36,14 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     @Inject lateinit var presenter: CollectionDetailPresenter
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
 
-    private var currentOutfitId: Int = 0
+    private var currentId: Int = 0
+    private var currentMode: Int = OUTFIT_MODE
 
     companion object {
-        const val OUTFIT_ID_KEY = "outfit_id"
+        const val ID_KEY = "outfit_id"
+        const val MODE_KEY = "mode_key"
+        const val OUTFIT_MODE = 0
+        const val POST_MODE = 1
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_collection_detail
@@ -66,8 +71,12 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey(OUTFIT_ID_KEY)) {
-                currentOutfitId = it.getInt(OUTFIT_ID_KEY)
+            if (it.containsKey(ID_KEY)) {
+                currentId = it.getInt(ID_KEY)
+            }
+
+            if (it.containsKey(MODE_KEY)) {
+                currentMode = it.getInt(MODE_KEY)
             }
         }
     }
@@ -88,10 +97,16 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     override fun processPostInitialization() {
-        presenter.getOutfitById(
-            token = getTokenFromSharedPref(),
-            outfitId = currentOutfitId.toString()
-        )
+        when (currentMode) {
+            OUTFIT_MODE -> presenter.getOutfitById(
+                token = getTokenFromSharedPref(),
+                outfitId = currentId.toString()
+            )
+            POST_MODE -> presenter.getPostById(
+                token = getTokenFromSharedPref(),
+                postId = currentId
+            )
+        }
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
@@ -176,7 +191,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun processOutfit(outfitModel: OutfitModel) {
         additionalAdapter.updateList(list = outfitModel.clothes)
-        presenter.getOutfitOwner(
+        presenter.getOwner(
             token = getTokenFromSharedPref(),
             userId = outfitModel.author.id.toString()
         )
@@ -196,7 +211,22 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         )
     }
 
-    override fun processOutfitOwner(userModel: UserModel) {
+    override fun processPost(postModel: PostModel) {
+        presenter.getOwner(
+            token = getTokenFromSharedPref(),
+            userId = postModel.author.toString()
+        )
+        presenter.getPostClothesByTag(
+            token = getTokenFromSharedPref(),
+            clothesTag = postModel.tags.clothesTags
+        )
+
+        Glide.with(image_view_fragment_collection_detail_imageholder.context)
+            .load(postModel.images[0])
+            .into(image_view_fragment_collection_detail_imageholder)
+    }
+
+    override fun processOwner(userModel: UserModel) {
         text_view_fragment_collection_detail_partner_name.text = getString(
             R.string.full_name_text_format,
             userModel.firstName,
@@ -218,6 +248,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                 .centerCrop()
                 .into(shapeable_image_view_fragment_collection_detail_profile_avatar)
         }
+    }
+
+    override fun processPostClothes(results: List<ClothesModel>) {
+        additionalAdapter.updateList(list = results)
     }
 
     private fun processPublication() {

@@ -2,9 +2,14 @@ package kz.eztech.stylyts.presentation.presenters.collection
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
+import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
@@ -13,7 +18,9 @@ import javax.inject.Inject
 class CollectionDetailPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getOutfitByIdUseCase: GetOutfitByIdUseCase,
-    private val getUserByIdUseCase: GetUserByIdUseCase
+    private val getUserByIdUseCase: GetUserByIdUseCase,
+    private val getPostByIdUseCase: GetPostByIdUseCase,
+    private val getClothesByIdUseCase: GetClothesByIdUseCase
 ) : CollectionDetailContract.Presenter {
 
     private lateinit var view: CollectionDetailContract.View
@@ -21,6 +28,8 @@ class CollectionDetailPresenter @Inject constructor(
     override fun disposeRequests() {
         view.disposeRequests()
         getOutfitByIdUseCase.clear()
+        getPostByIdUseCase.clear()
+        getClothesByIdUseCase.clear()
     }
 
     override fun attach(view: CollectionDetailContract.View) {
@@ -48,16 +57,56 @@ class CollectionDetailPresenter @Inject constructor(
         })
     }
 
-    override fun getOutfitOwner(token: String, userId: String) {
+    override fun getOwner(token: String, userId: String) {
         getUserByIdUseCase.initParams(token, userId)
         getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
-                view.processOutfitOwner(userModel = t)
+                view.processOwner(userModel = t)
             }
 
             override fun onError(e: Throwable) {
                view.displayMessage(msg = errorHelper.processError(e))
             }
         })
+    }
+
+    override fun getPostById(token: String, postId: Int) {
+        view.displayProgress()
+
+        getPostByIdUseCase.initParams(token, postId)
+        getPostByIdUseCase.execute(object : DisposableSingleObserver<PostModel>() {
+            override fun onSuccess(t: PostModel) {
+                view.processViewAction {
+                    processPost(postModel = t)
+                    hideProgress()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideProgress()
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
+
+    override fun getPostClothesByTag(token: String, clothesTag: List<TagModel>) {
+        val clothes: MutableList<ClothesModel> = mutableListOf()
+
+        clothesTag.map {
+            getClothesByIdUseCase.initParams(token, it.id.toString())
+            getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
+                override fun onSuccess(t: ClothesModel) {
+                    clothes.add(t)
+                }
+
+                override fun onError(e: Throwable) {
+                    view.displayMessage(msg = errorHelper.processError(e))
+                }
+            })
+        }
+
+        view.processPostClothes(results = clothes)
     }
 }

@@ -438,7 +438,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         item as OutfitModel
 
         val bundle = Bundle()
-        bundle.putInt(CollectionDetailFragment.OUTFIT_ID_KEY, item.id)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
 
         findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
     }

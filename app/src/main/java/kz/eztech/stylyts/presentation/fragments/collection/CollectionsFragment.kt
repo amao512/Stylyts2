@@ -96,7 +96,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         when (item) {
             is OutfitModel -> {
                 val bundle = Bundle()
-                bundle.putInt(CollectionDetailFragment.OUTFIT_ID_KEY, item.id)
+                bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
 
                 findNavController().navigate(
                     R.id.action_collectionsFragment_to_collectionDetailFragment,

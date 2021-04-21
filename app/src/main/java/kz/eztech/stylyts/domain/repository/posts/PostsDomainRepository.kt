@@ -15,4 +15,9 @@ interface PostsDomainRepository {
     ): Single<PostModel>
 
     fun getPosts(token: String): Single<ResultsModel<PostModel>>
+
+    fun getPostById(
+        token: String,
+        postId: String
+    ): Single<PostModel>
 }

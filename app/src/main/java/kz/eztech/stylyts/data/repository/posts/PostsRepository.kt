@@ -43,4 +43,16 @@ class PostsRepository @Inject constructor(
             }
         }
     }
+
+    override fun getPostById(
+        token: String,
+        postId: String
+    ): Single<PostModel> {
+        return api.getPostById(token, postId).map {
+            when (it.isSuccessful) {
+                true -> postApiModelMapper.map(data = it.body())
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 }

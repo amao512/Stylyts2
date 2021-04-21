@@ -23,4 +23,10 @@ interface PostsApi {
     fun getPosts(
         @Header("Authorization") token: String
     ): Single<Response<ResultsApiModel<PostApiModel>>>
+
+    @GET(RestConstants.GET_POST_BY_ID)
+    fun getPostById(
+        @Header("Authorization") token: String,
+        @Path("post_id") postId: String
+    ): Single<Response<PostApiModel>>
 }

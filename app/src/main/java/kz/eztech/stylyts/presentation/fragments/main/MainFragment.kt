@@ -11,7 +11,6 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.MainResult
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.main.MainImageModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -20,6 +19,7 @@ import kz.eztech.stylyts.presentation.adapters.main.MainImagesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
+import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -156,10 +156,11 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     private fun onCollectionImageClicked(item: Any?) {
-        item as PublicationModel
+        item as PostModel
 
         val bundle = Bundle()
-        bundle.putParcelable("model", item)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
 
         findNavController().navigate(R.id.action_mainFragment_to_collectionDetailFragment, bundle)
     }
