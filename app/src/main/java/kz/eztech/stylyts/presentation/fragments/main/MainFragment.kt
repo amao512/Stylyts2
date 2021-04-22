@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
+import kotlinx.android.synthetic.main.dialog_bottom_collection_context.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -23,6 +22,8 @@ import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
 import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -78,7 +79,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
-            R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked()
+            R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked(item)
             R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
             R.id.item_main_image_root_view -> onCollectionImageClicked(item)
@@ -128,37 +129,35 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun onChoice(v: View?, item: Any?) {
         when (v?.id) {
             R.id.dialog_bottom_collection_context_delete_text_view -> onPostDeleteContextClicked(item)
+            R.id.dialog_bottom_collection_context_change_text_view -> onChangeCollectionClicked(item)
         }
     }
 
-    private fun onProfileClicked() {
-        val bundle = Bundle()
-        bundle.putInt("items", 1)
+    private fun onProfileClicked(item: Any?) {
+        item as PostModel
 
-        findNavController().navigate(
-            R.id.action_mainFragment_to_partnerProfileFragment,
-            bundle
-        )
+        val bundle = Bundle()
+        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author)
+
+        findNavController().navigate(R.id.profileFragment, bundle)
     }
 
     private fun onChangeCollectionClicked(item: Any?) {
-        item as MainResult
+        item as PostModel
 
-        item.clothes?.let {
-            val itemsList = ArrayList<ClothesMainModel>()
+        item.clothes.let {
+            val itemsList = ArrayList<ClothesModel>()
 
             itemsList.addAll(it)
 
             val bundle = Bundle()
-            bundle.putParcelableArrayList("items", itemsList)
-            bundle.putInt("mainId", item.id ?: 0)
+            bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
+            bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, item.id)
 
             findNavController().navigate(
                 R.id.action_mainFragment_to_createCollectionFragment,
                 bundle
             )
-        } ?: run {
-            findNavController().navigate(R.id.action_mainFragment_to_createCollectionFragment)
         }
     }
 

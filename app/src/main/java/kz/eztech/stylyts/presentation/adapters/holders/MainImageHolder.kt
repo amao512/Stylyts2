@@ -54,7 +54,7 @@ class MainImageHolder(
             }
 
             constraint_layout_fragment_item_main_image_profile_container.setOnClickListener { thisView ->
-//                adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
+                adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
             }
             button_item_main_image_change_collection.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
@@ -122,6 +122,7 @@ class MainImageHolder(
 
                     Glide.with(shapeable_image_view_item_main_image_profile_avatar.context)
                         .load(it.avatar)
+                        .centerCrop()
                         .into(shapeable_image_view_item_main_image_profile_avatar)
                 }
             }

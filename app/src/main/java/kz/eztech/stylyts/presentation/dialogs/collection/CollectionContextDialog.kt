@@ -35,5 +35,10 @@ class CollectionContextDialog(
         dialog_bottom_collection_cancel_archive_text_view.setOnClickListener {
             dismiss()
         }
+
+        dialog_bottom_collection_context_change_text_view.setOnClickListener {
+            listener?.onChoice(it, item)
+            dismiss()
+        }
     }
 }

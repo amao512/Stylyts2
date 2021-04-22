@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -21,6 +22,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
 import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
 import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
@@ -36,6 +39,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     @Inject lateinit var presenter: CollectionDetailPresenter
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
+    private lateinit var currentOutfitModel: OutfitModel
+    private lateinit var currentPostModel: PostModel
 
     private var currentId: Int = 0
     private var currentMode: Int = OUTFIT_MODE
@@ -60,6 +65,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.setOnClickListener(this@CollectionDetailFragment)
             toolbar_left_corner_action_image_button.show()
+
+            background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)
         }
     }
 
@@ -90,12 +97,13 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun initializeViews() {
         recycler_view_fragment_collection_detail_additionals_list.adapter = additionalAdapter
-        processPublication()
     }
 
     override fun initializeListeners() {
         text_view_fragment_collection_detail_comments_count.setOnClickListener(this)
         button_fragment_collection_detail_change_collection.setOnClickListener(this)
+        constraint_layout_fragment_collection_detail_profile_container.setOnClickListener(this)
+        imageButton.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -124,50 +132,17 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                     bundle
                 )
             }
-            R.id.button_fragment_collection_detail_change_collection -> {
-//                currentModel.clothes?.let {
-//                    val itemsList = ArrayList<ClothesTypeDataModel>()
-//                    val bundle = Bundle()
-//                    it.forEach { clothe ->
-//                        itemsList.add(
-//                            ClothesTypeDataModel(
-//                                id = clothe.id,
-//                                title = clothe.title,
-//                                cover_photo = clothe.cover_photo,
-//                                cost = clothe.cost,
-//                                sale_cost = clothe.sale_cost,
-//                                currency = clothe.currency,
-//                                clothes_types = clothe.clothes_type,
-//                                gender = clothe.gender,
-//                                constructor_photo = clothe.constructor_photo,
-//                                isLocated = true,
-//
-//                                )
-//                        )
-//                    }
-//                    bundle.putParcelableArrayList("items", itemsList)
-//                    findNavController().navigate(R.id.createCollectionFragment, bundle)
-//                } ?: run {
-//                    findNavController().navigate(R.id.createCollectionFragment)
-//                }
-            }
-            R.id.constraint_layout_fragment_collection_detail_profile_container -> {
-                val bundle = Bundle()
-                findNavController().navigate(R.id.partnerProfileFragment, bundle)
-            }
-
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.text_view_fragment_collection_detail_comments_count -> {
-                findNavController().navigate(R.id.userCommentsFragment)
-            }
-            R.id.button_fragment_collection_detail_change_collection -> onChangeCollection()
+            R.id.text_view_fragment_collection_detail_comments_count -> findNavController().navigate(R.id.userCommentsFragment)
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
+            R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
+            R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
+            R.id.imageButton -> onContextMenuClick()
         }
-
     }
 
     override fun disposeRequests() {}
@@ -186,18 +161,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun onChoice(v: View?, item: Any?) {
         when (v?.id) {
-            R.id.dialog_bottom_collection_context_delete_text_view -> {
-                when (currentMode) {
-                    OUTFIT_MODE -> presenter.deleteOutfit(
-                        token = getTokenFromSharedPref(),
-                        outfitId = currentId
-                    )
-                    POST_MODE -> presenter.deletePost(
-                        token = getTokenFromSharedPref(),
-                        postId =  currentId
-                    )
-                }
-            }
+            R.id.dialog_bottom_collection_context_delete_text_view -> onDeleteContextClicked()
+            R.id.dialog_bottom_collection_context_change_text_view -> onChangeButtonClick()
         }
     }
 
@@ -209,6 +174,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         )
         loadImages(images = arrayListOf(outfitModel.coverPhoto))
 
+        currentOutfitModel = outfitModel
         isOwn = outfitModel.author.id == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
         text_view_fragment_collection_detail_comments_cost.text = getString(
@@ -230,6 +196,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             userId = postModel.author.toString()
         )
 
+        currentPostModel = postModel
         isOwn = postModel.author == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
         loadImages(images = postModel.images)
@@ -263,10 +230,6 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         findNavController().navigateUp()
     }
 
-    private fun processPublication() {
-        processCollectionListeners()
-    }
-
     private fun loadImages(images: List<String>) {
         val imageArray = ArrayList<String>()
 
@@ -288,31 +251,56 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         )
     }
 
-    private fun processCollectionListeners() {
-        constraint_layout_fragment_collection_detail_profile_container.setOnClickListener {
-//            adapter.itemClickListener?.onViewClicked(thisView, position, item)
+    private fun onProfileClick() {
+        val bundle = Bundle()
+
+        when (currentMode) {
+            OUTFIT_MODE -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, currentOutfitModel.author.id)
+            POST_MODE -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, currentPostModel.author)
         }
-        button_fragment_collection_detail_change_collection.setOnClickListener {
-            //adapter.itemClickListener?.onViewClicked(thisView,position,item)
-        }
-        imageButton.setOnClickListener {
-            CollectionContextDialog(isOwn = isOwn).apply {
-                setChoiceListener(listener = this@CollectionDetailFragment)
-            }.show(childFragmentManager, EMPTY_STRING)
-        }
+
+        findNavController().navigate(R.id.profileFragment, bundle)
     }
 
-    private fun onChangeCollection() {
-//        currentModel.clothes?.let {
-//                    val itemsList = ArrayList<ClothesMainModel>()
-//                    itemsList.addAll(it)
-//                    val bundle = Bundle()
-//                    bundle.putParcelableArrayList("items", itemsList)
-//                    bundle.putInt("mainId", currentModel.id ?: 0)
-//                    findNavController().navigate(R.id.createCollectionFragment, bundle)
-//                } ?: run {
-//                    findNavController().navigate(R.id.createCollectionFragment)
-//                }
+    private fun onChangeButtonClick() {
+        val bundle = Bundle()
+        val itemsList = ArrayList<ClothesModel>()
+
+        when (currentMode) {
+            OUTFIT_MODE -> currentOutfitModel.clothes.let {
+                itemsList.addAll(it)
+
+                bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
+                bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentOutfitModel.id)
+            }
+            POST_MODE -> currentPostModel.clothes.let {
+                itemsList.addAll(it)
+
+                bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
+                bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentPostModel.id)
+            }
+        }
+
+        findNavController().navigate(R.id.createCollectionFragment, bundle)
+    }
+
+    private fun onContextMenuClick() {
+        CollectionContextDialog(isOwn = isOwn).apply {
+            setChoiceListener(listener = this@CollectionDetailFragment)
+        }.show(childFragmentManager, EMPTY_STRING)
+    }
+
+    private fun onDeleteContextClicked() {
+        when (currentMode) {
+            OUTFIT_MODE -> presenter.deleteOutfit(
+                token = getTokenFromSharedPref(),
+                outfitId = currentId
+            )
+            POST_MODE -> presenter.deletePost(
+                token = getTokenFromSharedPref(),
+                postId =  currentId
+            )
+        }
     }
 
     private fun getTokenFromSharedPref(): String {
