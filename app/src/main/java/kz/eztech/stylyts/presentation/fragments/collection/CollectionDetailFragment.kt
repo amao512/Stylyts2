@@ -14,6 +14,7 @@ import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -195,10 +196,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             token = getTokenFromSharedPref(),
             userId = outfitModel.author.id.toString()
         )
-
-        Glide.with(image_view_fragment_collection_detail_imageholder.context)
-            .load(outfitModel.coverPhoto)
-            .into(image_view_fragment_collection_detail_imageholder)
+        loadImages(images = arrayListOf(outfitModel.coverPhoto))
 
         text_view_fragment_collection_detail_comments_cost.text = getString(
             R.string.price_tenge_text_format,
@@ -212,18 +210,14 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     override fun processPost(postModel: PostModel) {
+        additionalAdapter.updateList(list = postModel.clothes)
+
         presenter.getOwner(
             token = getTokenFromSharedPref(),
             userId = postModel.author.toString()
         )
-        presenter.getPostClothesByTag(
-            token = getTokenFromSharedPref(),
-            clothesTag = postModel.tags.clothesTags
-        )
 
-        Glide.with(image_view_fragment_collection_detail_imageholder.context)
-            .load(postModel.images[0])
-            .into(image_view_fragment_collection_detail_imageholder)
+        loadImages(images = postModel.images)
     }
 
     override fun processOwner(userModel: UserModel) {
@@ -250,12 +244,29 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
     }
 
-    override fun processPostClothes(results: List<ClothesModel>) {
-        additionalAdapter.updateList(list = results)
-    }
-
     private fun processPublication() {
         processCollectionListeners()
+    }
+
+    private fun loadImages(images: List<String>) {
+        val imageArray = ArrayList<String>()
+
+        images.let {
+            it.map { image ->
+                imageArray.add(image)
+            }
+        }
+
+        val imageAdapter = ImagesViewPagerAdapter(
+            images = imageArray,
+            withAnimation = false
+        )
+
+        fragment_collection_detail_photos_holder_view_pager.adapter = imageAdapter
+        fragment_collection_detail_photos_pager_indicator.show()
+        fragment_collection_detail_photos_pager_indicator.attachToPager(
+            fragment_collection_detail_photos_holder_view_pager
+        )
     }
 
     private fun processCollectionListeners() {

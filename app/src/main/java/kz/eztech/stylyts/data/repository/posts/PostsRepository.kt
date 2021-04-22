@@ -55,4 +55,13 @@ class PostsRepository @Inject constructor(
             }
         }
     }
+
+    override fun getHomepagePosts(token: String): Single<ResultsModel<PostModel>> {
+        return api.getHomePagePosts(token).map {
+            when (it.isSuccessful) {
+                true -> resultsApiModelMapper.mapPostResults(data = it.body())
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 }

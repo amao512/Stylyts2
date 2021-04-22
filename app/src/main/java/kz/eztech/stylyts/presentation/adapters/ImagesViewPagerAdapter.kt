@@ -21,53 +21,58 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 /**
  * Created by ZhenisMadiyar on 05,Февраль,2019
  */
-class ImagesViewPagerAdapter(val images: ArrayList<String>) : PagerAdapter() {
+class ImagesViewPagerAdapter(
+    private val images: ArrayList<String>,
+    private val withAnimation: Boolean = true
+) : PagerAdapter() {
 
     override fun getCount(): Int = images.size
 
-    override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view == `object`
-    }
+    override fun isViewFromObject(view: View, `object`: Any): Boolean = view == `object`
 
     var mItemImageClickListener: UniversalViewClickListener? = null
+
     fun setOnImageClickListener(click: UniversalViewClickListener) {
         mItemImageClickListener = click
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
 
-        val inflater = container.context
-            .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = container.context.getSystemService(
+            Context.LAYOUT_INFLATER_SERVICE
+        ) as LayoutInflater
         val view = inflater.inflate(R.layout.pager_item_vp_image, null)
 
-        Glide.with(container.context).load(
-            images[position]
-        ).listener(object : RequestListener<Drawable> {
-            override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Drawable>?,
-                isFirstResource: Boolean
-            ): Boolean {
-                return false;
-            }
+        Glide.with(container.context)
+            .load(images[position])
+            .listener(object : RequestListener<Drawable> {
 
-            override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?,
-                target: Target<Drawable>?,
-                dataSource: DataSource?,
-                isFirstResource: Boolean
-            ): Boolean {
-                view.imageViewSlidePhoto.startAnimation(
-                    AnimationUtils.loadAnimation(
-                        view.context,
-                        R.anim.item_detail_animation
-                    )
-                )
-                return false
-            }
-        })
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean = false
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    if (withAnimation) {
+                        view.imageViewSlidePhoto.startAnimation(
+                            AnimationUtils.loadAnimation(
+                                view.context,
+                                R.anim.item_detail_animation
+                            )
+                        )
+                    }
+
+                    return false
+                }
+            })
             .into(view.imageViewSlidePhoto)
 
         (container as ViewPager).addView(view, 0)

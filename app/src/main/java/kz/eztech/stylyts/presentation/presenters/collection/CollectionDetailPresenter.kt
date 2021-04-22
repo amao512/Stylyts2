@@ -2,12 +2,9 @@ package kz.eztech.stylyts.presentation.presenters.collection
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
-import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.domain.models.user.UserModel
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
@@ -19,8 +16,7 @@ class CollectionDetailPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getOutfitByIdUseCase: GetOutfitByIdUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
-    private val getPostByIdUseCase: GetPostByIdUseCase,
-    private val getClothesByIdUseCase: GetClothesByIdUseCase
+    private val getPostByIdUseCase: GetPostByIdUseCase
 ) : CollectionDetailContract.Presenter {
 
     private lateinit var view: CollectionDetailContract.View
@@ -29,7 +25,6 @@ class CollectionDetailPresenter @Inject constructor(
         view.disposeRequests()
         getOutfitByIdUseCase.clear()
         getPostByIdUseCase.clear()
-        getClothesByIdUseCase.clear()
     }
 
     override fun attach(view: CollectionDetailContract.View) {
@@ -89,24 +84,5 @@ class CollectionDetailPresenter @Inject constructor(
                 }
             }
         })
-    }
-
-    override fun getPostClothesByTag(token: String, clothesTag: List<TagModel>) {
-        val clothes: MutableList<ClothesModel> = mutableListOf()
-
-        clothesTag.map {
-            getClothesByIdUseCase.initParams(token, it.id.toString())
-            getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
-                override fun onSuccess(t: ClothesModel) {
-                    clothes.add(t)
-                }
-
-                override fun onError(e: Throwable) {
-                    view.displayMessage(msg = errorHelper.processError(e))
-                }
-            })
-        }
-
-        view.processPostClothes(results = clothes)
     }
 }

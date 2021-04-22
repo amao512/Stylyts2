@@ -10,7 +10,7 @@ data class PostModel(
     val images: List<String>,
     val tags: TagsModel,
     val hidden: Boolean,
+    val clothes: List<ClothesModel>,
 
     var owner: UserModel? = null,
-    var clothes: List<ClothesModel>? = null,
 )

@@ -29,4 +29,9 @@ interface PostsApi {
         @Header("Authorization") token: String,
         @Path("post_id") postId: String
     ): Single<Response<PostApiModel>>
+
+    @GET(RestConstants.GET_HOMEPAGE_POSTS)
+    fun getHomePagePosts(
+        @Header("Authorization") token: String
+    ): Single<Response<ResultsApiModel<PostApiModel>>>
 }

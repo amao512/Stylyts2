@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_main_image_root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -72,23 +73,51 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/item_main_image_image_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_16x"
         android:clickable="true"
+        android:focusable="true"
         app:cardCornerRadius="@dimen/corner_radius_default"
         app:cardElevation="0dp"
         app:cardMaxElevation="0dp"
         >
 
-        <ImageView
-            android:id="@+id/image_view_item_main_image_imageholder"
+        <LinearLayout
+            android:id="@+id/item_main_images_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/collection_detail_image_size"
-            android:background="?attr/selectableItemBackground"
-            android:scaleType="centerInside"
-            tools:src="@drawable/auth_bg"
-            />
+            android:orientation="vertical"
+            >
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/item_main_image_photos_holder_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
+                />
+
+            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                android:id="@+id/item_main_image_photos_pager_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:spi_dotColor="@color/app_dark_blue_gray_half"
+                app:spi_dotSelectedColor="@color/app_dark"
+                app:spi_dotSelectedSize="7dp"
+                app:spi_dotSize="6dp"
+                app:spi_visibleDotCount="5"
+                app:spi_visibleDotThreshold="2"
+                />
+        </LinearLayout>
 
         <ImageButton
             android:layout_width="wrap_content"

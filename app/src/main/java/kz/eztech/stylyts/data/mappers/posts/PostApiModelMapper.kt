@@ -1,12 +1,14 @@
 package kz.eztech.stylyts.data.mappers.posts
 
 import kz.eztech.stylyts.data.api.models.posts.PostApiModel
+import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
 class PostApiModelMapper @Inject constructor(
-    private val tagsApiModelMapper: TagsApiModelMapper
+    private val tagsApiModelMapper: TagsApiModelMapper,
+    private val clothesApiModelMapper: ClothesApiModelMapper
 ) {
 
     fun map(data: List<PostApiModel>?): List<PostModel> {
@@ -19,7 +21,8 @@ class PostApiModelMapper @Inject constructor(
                 author = it.author ?: 0,
                 images = it.images ?: emptyList(),
                 tags = tagsApiModelMapper.map(data = it.tags),
-                hidden = it.hidden
+                hidden = it.hidden,
+                clothes = clothesApiModelMapper.map(data = it.clothes)
             )
         }
     }
@@ -31,7 +34,8 @@ class PostApiModelMapper @Inject constructor(
             author = data?.author ?: 0,
             images = data?.images ?: emptyList(),
             tags = tagsApiModelMapper.map(data = data?.tags),
-            hidden = data?.hidden ?: false
+            hidden = data?.hidden ?: false,
+            clothes = clothesApiModelMapper.map(data = data?.clothes)
         )
     }
 }

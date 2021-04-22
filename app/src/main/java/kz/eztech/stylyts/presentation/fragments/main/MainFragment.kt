@@ -12,13 +12,14 @@ import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesMainModel
 import kz.eztech.stylyts.domain.models.MainResult
 import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.main.MainImageModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.main.MainImagesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
+import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
@@ -31,8 +32,6 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     UniversalViewClickListener {
 
     @Inject lateinit var presenter: MainLinePresenter
-
-    private lateinit var dummyList: ArrayList<MainImageModel>
     private lateinit var postsAdapter: MainImagesAdapter
 
     override fun onResume() {
@@ -53,7 +52,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun initializeDependency() {
-        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
     }
 
     override fun initializePresenter() {
@@ -80,7 +79,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked()
             R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
-            R.id.image_view_item_main_image_imageholder -> onCollectionImageClicked(item)
+            R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
             R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.userCommentsFragment)
         }
     }
@@ -134,10 +133,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
         item.clothes?.let {
             val itemsList = ArrayList<ClothesMainModel>()
+
             itemsList.addAll(it)
+
             val bundle = Bundle()
             bundle.putParcelableArrayList("items", itemsList)
             bundle.putInt("mainId", item.id ?: 0)
+
             findNavController().navigate(
                 R.id.action_mainFragment_to_createCollectionFragment,
                 bundle
@@ -148,10 +150,11 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     private fun onClothesItemClicked(item: Any?) {
-        item as ClothesMainModel
+        item as ClothesModel
 
         val bundle = Bundle()
-        bundle.putParcelable("clotheModel", item)
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+
         findNavController().navigate(R.id.action_mainFragment_to_itemDetailFragment, bundle)
     }
 

@@ -13,13 +13,6 @@ class MainImagesAdapter : BaseAdapter(){
 
     override fun getLayoutId(): Int = R.layout.item_main_image
 
-    override fun getViewHolder(view: View): MainImageHolder {
-        return MainImageHolder(
-            itemView = view,
-            adapter = this
-        )
-    }
-
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
             override fun getAreContentsTheSame(
@@ -29,5 +22,12 @@ class MainImagesAdapter : BaseAdapter(){
                 return currentList[oldItemPosition].hashCode() == list[newItemPosition].hashCode()
             }
         }
+    }
+
+    override fun getViewHolder(view: View): MainImageHolder {
+        return MainImageHolder(
+            itemView = view,
+            adapter = this
+        )
     }
 }

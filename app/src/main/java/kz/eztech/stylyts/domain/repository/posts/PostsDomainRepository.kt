@@ -20,4 +20,6 @@ interface PostsDomainRepository {
         token: String,
         postId: String
     ): Single<PostModel>
+
+    fun getHomepagePosts(token: String): Single<ResultsModel<PostModel>>
 }

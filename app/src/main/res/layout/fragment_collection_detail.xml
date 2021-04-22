@@ -110,13 +110,40 @@
                     android:background="@drawable/rounded_rectangle_very_light_gray_white_corners_half_transparent"
                     >
 
-                    <ImageView
-                        android:id="@+id/image_view_fragment_collection_detail_imageholder"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/collection_detail_image_size"
-                        android:scaleType="centerInside"
-                        tools:src="@drawable/auth_bg"
-                        />
+                        android:orientation="vertical"
+                        >
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/fragment_collection_detail_photos_holder_view_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
+                            />
+
+                        <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                            android:id="@+id/fragment_collection_detail_photos_pager_indicator"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:spi_dotColor="@color/app_dark_blue_gray_half"
+                            app:spi_dotSelectedColor="@color/app_dark"
+                            app:spi_dotSelectedSize="7dp"
+                            app:spi_dotSize="6dp"
+                            app:spi_visibleDotCount="5"
+                            app:spi_visibleDotThreshold="2"
+                            />
+                    </LinearLayout>
+
 
                     <ImageButton
                         android:layout_width="wrap_content"

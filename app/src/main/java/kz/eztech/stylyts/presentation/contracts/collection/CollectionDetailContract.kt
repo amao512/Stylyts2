@@ -21,8 +21,6 @@ interface CollectionDetailContract {
         fun processOwner(userModel: UserModel)
 
         fun processPost(postModel: PostModel)
-
-        fun processPostClothes(results: List<ClothesModel>)
     }
 
     interface Presenter: BasePresenter<View> {
@@ -40,11 +38,6 @@ interface CollectionDetailContract {
         fun getOwner(
             token: String,
             userId: String
-        )
-
-        fun getPostClothesByTag(
-            token: String,
-            clothesTag: List<TagModel>
         )
     }
 }

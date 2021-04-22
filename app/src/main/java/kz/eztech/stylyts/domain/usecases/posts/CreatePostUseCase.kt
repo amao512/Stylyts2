@@ -45,8 +45,6 @@ class CreatePostUseCase @Inject constructor(
         multipartList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, requestFile))
         multipartList.add(MultipartBody.Part.createFormData("description", postCreateModel.description))
 
-        this.multipartList = multipartList
-
         val clothesTags: MutableList<TagApiModel> = mutableListOf()
         postCreateModel.clothesList.map {
             clothesTags.add(
@@ -55,6 +53,9 @@ class CreatePostUseCase @Inject constructor(
                     pointX = it.clothesLocation?.pointX,
                     pointY = it.clothesLocation?.pointY
                 )
+            )
+            multipartList.add(
+                MultipartBody.Part.createFormData("clothes", it.id.toString())
             )
         }
 
@@ -69,6 +70,7 @@ class CreatePostUseCase @Inject constructor(
             )
         }
 
+        this.multipartList = multipartList
         this.tags = TagsApiModel(
             clothesTags = clothesTags,
             usersTags = userTags
