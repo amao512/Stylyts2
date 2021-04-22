@@ -28,4 +28,10 @@ interface OutfitsApi {
         @Header("Authorization") token: String,
         @Path("outfit_id") outfitId: String
     ): Single<Response<OutfitApiModel>>
+
+    @DELETE(RestConstants.DELETE_OUTFIT_BY_ID)
+    fun deleteOutfit(
+        @Header("Authorization") token: String,
+        @Path("outfit_id") outfitId: String
+    ): Single<Response<Any>>
 }

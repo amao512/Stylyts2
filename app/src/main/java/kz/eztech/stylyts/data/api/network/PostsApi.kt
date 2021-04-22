@@ -34,4 +34,10 @@ interface PostsApi {
     fun getHomePagePosts(
         @Header("Authorization") token: String
     ): Single<Response<ResultsApiModel<PostApiModel>>>
+
+    @DELETE(RestConstants.DELETE_POST_BY_ID)
+    fun deletePost(
+        @Header("Authorization") token: String,
+        @Path("post_id") postId: String
+    ): Single<Response<Any>>
 }

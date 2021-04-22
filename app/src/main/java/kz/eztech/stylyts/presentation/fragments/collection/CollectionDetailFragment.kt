@@ -39,6 +39,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     private var currentId: Int = 0
     private var currentMode: Int = OUTFIT_MODE
+    private var isOwn: Boolean = false
 
     companion object {
         const val ID_KEY = "outfit_id"
@@ -186,6 +187,16 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun onChoice(v: View?, item: Any?) {
         when (v?.id) {
             R.id.dialog_bottom_collection_context_delete_text_view -> {
+                when (currentMode) {
+                    OUTFIT_MODE -> presenter.deleteOutfit(
+                        token = getTokenFromSharedPref(),
+                        outfitId = currentId
+                    )
+                    POST_MODE -> presenter.deletePost(
+                        token = getTokenFromSharedPref(),
+                        postId =  currentId
+                    )
+                }
             }
         }
     }
@@ -197,6 +208,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             userId = outfitModel.author.id.toString()
         )
         loadImages(images = arrayListOf(outfitModel.coverPhoto))
+
+        isOwn = outfitModel.author.id == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
         text_view_fragment_collection_detail_comments_cost.text = getString(
             R.string.price_tenge_text_format,
@@ -216,6 +229,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             token = getTokenFromSharedPref(),
             userId = postModel.author.toString()
         )
+
+        isOwn = postModel.author == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
         loadImages(images = postModel.images)
     }
@@ -242,6 +257,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                 .centerCrop()
                 .into(shapeable_image_view_fragment_collection_detail_profile_avatar)
         }
+    }
+
+    override fun processSuccessDeleting() {
+        findNavController().navigateUp()
     }
 
     private fun processPublication() {
@@ -277,7 +296,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             //adapter.itemClickListener?.onViewClicked(thisView,position,item)
         }
         imageButton.setOnClickListener {
-            CollectionContextDialog().apply {
+            CollectionContextDialog(isOwn = isOwn).apply {
                 setChoiceListener(listener = this@CollectionDetailFragment)
             }.show(childFragmentManager, EMPTY_STRING)
         }

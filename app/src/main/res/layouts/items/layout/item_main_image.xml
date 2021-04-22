@@ -72,16 +72,11 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
         android:id="@+id/item_main_image_image_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_16x"
-        android:clickable="true"
-        android:focusable="true"
-        app:cardCornerRadius="@dimen/corner_radius_default"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
         >
 
         <LinearLayout
@@ -107,6 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_size_10x"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +124,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_safe_flag_empty"
             />
-    </com.google.android.material.card.MaterialCardView>
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_item_main_image_additionals_list"

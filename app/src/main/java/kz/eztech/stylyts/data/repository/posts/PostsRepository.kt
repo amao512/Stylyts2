@@ -64,4 +64,16 @@ class PostsRepository @Inject constructor(
             }
         }
     }
+
+    override fun deletePost(
+        token: String,
+        postId: String
+    ): Single<Any> {
+        return api.deletePost(token, postId).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 }

@@ -49,7 +49,7 @@ class MainImageHolder(
         position: Int
     ) {
         with (itemView) {
-            item_main_image_image_card_view.setOnClickListener { thisView ->
+            item_main_image_root_view.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
             }
 
@@ -70,6 +70,10 @@ class MainImageHolder(
 
             text_view_item_main_image_comments_count.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
+            }
+
+            imageButton.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, postModel)
             }
 
 //            text_view_item_main_image_date.text =

@@ -22,4 +22,9 @@ interface PostsDomainRepository {
     ): Single<PostModel>
 
     fun getHomepagePosts(token: String): Single<ResultsModel<PostModel>>
+
+    fun deletePost(
+        token: String,
+        postId: String
+    ): Single<Any>
 }

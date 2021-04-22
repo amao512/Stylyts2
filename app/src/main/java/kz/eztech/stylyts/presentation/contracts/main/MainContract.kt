@@ -13,10 +13,17 @@ interface MainContract {
     interface View : BaseView {
 
         fun processPostResults(resultsModel: ResultsModel<PostModel>)
+
+        fun processSuccessDeleting()
     }
 
     interface Presenter : BasePresenter<View> {
 
         fun getPosts(token: String)
+
+        fun deletePost(
+            token: String,
+            postId: Int
+        )
     }
 }

@@ -5,18 +5,31 @@ import android.view.View
 import kotlinx.android.synthetic.main.dialog_bottom_collection_context.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
+import kz.eztech.stylyts.presentation.utils.extensions.hide
 
-class CollectionContextDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_bottom_collection_context) {
+class CollectionContextDialog(
+    private val isOwn: Boolean = false,
+    private val item: Any? = null
+) : BaseRoundedBottomSheetDialog(R.layout.dialog_bottom_collection_context) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initializeViews()
         initializeListeners()
+    }
+
+    private fun initializeViews() {
+        if (!isOwn) {
+            dialog_bottom_collection_context_delete_text_view.hide()
+            dialog_bottom_collection_context_change_text_view.hide()
+        }
     }
 
     private fun initializeListeners() {
         dialog_bottom_collection_context_delete_text_view.setOnClickListener {
-            listener?.onChoice(it, null)
+            listener?.onChoice(it, item)
+            dismiss()
         }
 
         dialog_bottom_collection_cancel_archive_text_view.setOnClickListener {

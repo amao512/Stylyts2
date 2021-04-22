@@ -21,6 +21,8 @@ interface CollectionDetailContract {
         fun processOwner(userModel: UserModel)
 
         fun processPost(postModel: PostModel)
+
+        fun processSuccessDeleting()
     }
 
     interface Presenter: BasePresenter<View> {
@@ -38,6 +40,16 @@ interface CollectionDetailContract {
         fun getOwner(
             token: String,
             userId: String
+        )
+
+        fun deleteOutfit(
+            token: String,
+            outfitId: Int
+        )
+
+        fun deletePost(
+            token: String,
+            postId: Int
         )
     }
 }

@@ -8,5 +8,6 @@ data class PostCreateModel(
     val description: String,
     val clothesList: List<ClothesModel>,
     val userList: List<UserModel>,
+    val images: List<File>,
     val imageFile: File
 )

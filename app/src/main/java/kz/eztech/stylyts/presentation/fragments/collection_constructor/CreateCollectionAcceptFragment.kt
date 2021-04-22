@@ -52,6 +52,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private var isPhotoChooser = false
     private var selectedList = ArrayList<ClothesModel>()
     private var selectedUsers = ArrayList<UserModel>()
+    private var listOfChosenImages = ArrayList<String>()
 
     companion object {
         const val OUTFIT_MODE = 0
@@ -60,6 +61,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         const val OUTFIT_MODEL_KEY = "outfitModel"
         const val PHOTO_BITMAP_KEY = "photoBitmap"
         const val PHOTO_URI_KEY = "photoUri"
+        const val CHOSEN_PHOTOS_KEY = "chooser_photos"
         const val IS_CHOOSER_KEY = "isChooser"
         const val CLOTHES_KEY = "clothes"
         const val USERS_KEY = "users"
@@ -166,6 +168,11 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             }
             if (it.containsKey(MODE_KEY)) {
                 currentMode = it.getInt(MODE_KEY)
+            }
+            if (it.containsKey(CHOSEN_PHOTOS_KEY)) {
+                it.getStringArrayList(CHOSEN_PHOTOS_KEY)?.let { list ->
+                    listOfChosenImages = list
+                }
             }
         }
     }
@@ -305,11 +312,20 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     private fun createPost(file: File?) {
         file?.let {
+            val images = ArrayList<File>()
+
+            listOfChosenImages.map {
+                FileUtils.getUriFromString(it)?.path?.let { file ->
+                    images.add(File(file))
+                }
+            }
+
             val model = PostCreateModel(
                 description = edit_text_view_dialog_create_collection_accept_sign.text.toString(),
                 clothesList = selectedList,
                 userList = selectedUsers,
-                imageFile = file
+                imageFile = file,
+                images = images
             )
 
             presenter.createPost(

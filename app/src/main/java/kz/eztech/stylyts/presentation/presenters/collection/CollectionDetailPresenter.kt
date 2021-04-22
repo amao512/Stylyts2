@@ -5,7 +5,9 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.usecases.outfits.DeleteOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
+import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -16,7 +18,9 @@ class CollectionDetailPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getOutfitByIdUseCase: GetOutfitByIdUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
-    private val getPostByIdUseCase: GetPostByIdUseCase
+    private val getPostByIdUseCase: GetPostByIdUseCase,
+    private val deleteOutfitUseCase: DeleteOutfitUseCase,
+    private val deletePostUseCase: DeletePostUseCase
 ) : CollectionDetailContract.Presenter {
 
     private lateinit var view: CollectionDetailContract.View
@@ -25,6 +29,8 @@ class CollectionDetailPresenter @Inject constructor(
         view.disposeRequests()
         getOutfitByIdUseCase.clear()
         getPostByIdUseCase.clear()
+        deleteOutfitUseCase.clear()
+        deletePostUseCase.clear()
     }
 
     override fun attach(view: CollectionDetailContract.View) {
@@ -81,6 +87,54 @@ class CollectionDetailPresenter @Inject constructor(
                 view.processViewAction {
                     hideProgress()
                     displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
+
+    override fun deleteOutfit(
+        token: String,
+        outfitId: Int
+    ) {
+        view.displayProgress()
+
+        deleteOutfitUseCase.initParams(token, outfitId)
+        deleteOutfitUseCase.execute(object : DisposableSingleObserver<Any>() {
+            override fun onSuccess(t: Any) {
+                view.processViewAction {
+                    hideProgress()
+                    processSuccessDeleting()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideProgress()
+                    processSuccessDeleting()
+                }
+            }
+        })
+    }
+
+    override fun deletePost(
+        token: String,
+        postId: Int
+    ) {
+        view.displayProgress()
+
+        deletePostUseCase.initParams(token, postId)
+        deletePostUseCase.execute(object : DisposableSingleObserver<Any>() {
+            override fun onSuccess(t: Any) {
+                view.processViewAction {
+                    hideProgress()
+                    processSuccessDeleting()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideProgress()
+                    processSuccessDeleting()
                 }
             }
         })

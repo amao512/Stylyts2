@@ -53,12 +53,14 @@ object RestConstants {
     const val GET_OUTFITS = "outfits"
     const val GET_OUTFIT_BY_ID = "outfits/{outfit_id}"
     const val CREATE_OUTFIT: String = "outfits"
+    const val DELETE_OUTFIT_BY_ID: String = "outfits/{outfit_id}"
 
     // Post
     const val GET_HOMEPAGE_POSTS: String = "homepage"
     const val CREATE_POST: String = "posts"
     const val GET_POSTS: String = "posts"
     const val GET_POST_BY_ID: String = "posts/{post_id}"
+    const val DELETE_POST_BY_ID: String = "posts/{post_id}"
 
     //ShopCategories
     const val GET_CATEGORIES: String = "clothes/category/"

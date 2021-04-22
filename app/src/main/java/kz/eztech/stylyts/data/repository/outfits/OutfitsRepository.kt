@@ -52,4 +52,16 @@ class OutfitsRepository @Inject constructor(
             }
         }
     }
+
+    override fun deleteOutfit(
+        token: String,
+        outfitId: String
+    ): Single<Any> {
+        return api.deleteOutfit(token, outfitId).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 }

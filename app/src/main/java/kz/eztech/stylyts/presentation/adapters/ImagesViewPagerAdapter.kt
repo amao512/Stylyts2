@@ -45,6 +45,7 @@ class ImagesViewPagerAdapter(
 
         Glide.with(container.context)
             .load(images[position])
+            .centerCrop()
             .listener(object : RequestListener<Drawable> {
 
                 override fun onLoadFailed(

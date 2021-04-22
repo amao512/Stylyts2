@@ -22,4 +22,9 @@ interface OutfitsDomainRepository {
         token: String,
         outfitId: String
     ): Single<OutfitModel>
+
+    fun deleteOutfit(
+        token: String,
+        outfitId: String
+    ): Single<Any>
 }

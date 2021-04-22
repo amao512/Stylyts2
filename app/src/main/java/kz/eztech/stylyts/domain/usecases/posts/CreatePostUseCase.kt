@@ -42,8 +42,24 @@ class CreatePostUseCase @Inject constructor(
         val multipartList = ArrayList<MultipartBody.Part>()
         val requestFile = postCreateModel.imageFile.asRequestBody(("image/*").toMediaTypeOrNull())
 
-        multipartList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, requestFile))
         multipartList.add(MultipartBody.Part.createFormData("description", postCreateModel.description))
+        multipartList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, requestFile))
+
+        var count = 2
+
+        postCreateModel.images.map {
+            val request = it.asRequestBody(("image/*").toMediaTypeOrNull())
+
+            multipartList.add(
+                when (count) {
+                    2 -> MultipartBody.Part.createFormData("image_two", it.name, request)
+                    3 -> MultipartBody.Part.createFormData("image_three", it.name, request)
+                    else -> MultipartBody.Part.createFormData("image_four", it.name, request)
+                }
+            )
+
+            count++
+        }
 
         val clothesTags: MutableList<TagApiModel> = mutableListOf()
         postCreateModel.clothesList.map {

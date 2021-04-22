@@ -18,7 +18,9 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.main.MainImagesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
+import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
 import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -29,7 +31,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,
-    UniversalViewClickListener {
+    UniversalViewClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: MainLinePresenter
     private lateinit var postsAdapter: MainImagesAdapter
@@ -79,8 +81,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked()
             R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
-            R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
+            R.id.item_main_image_root_view -> onCollectionImageClicked(item)
             R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.userCommentsFragment)
+            R.id.imageButton -> onContextMenuClicked(item)
         }
     }
 
@@ -116,6 +119,16 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         postsAdapter.updateList(list = resultsModel.results)
+    }
+
+    override fun processSuccessDeleting() {
+        processPostInitialization()
+    }
+
+    override fun onChoice(v: View?, item: Any?) {
+        when (v?.id) {
+            R.id.dialog_bottom_collection_context_delete_text_view -> onPostDeleteContextClicked(item)
+        }
     }
 
     private fun onProfileClicked() {
@@ -166,6 +179,25 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
 
         findNavController().navigate(R.id.action_mainFragment_to_collectionDetailFragment, bundle)
+    }
+
+    private fun onContextMenuClicked(item: Any?) {
+        item as PostModel
+
+        val isOwn = item.author == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+
+        CollectionContextDialog(isOwn, item).apply {
+            setChoiceListener(listener = this@MainFragment)
+        }.show(childFragmentManager, EMPTY_STRING)
+    }
+
+    private fun onPostDeleteContextClicked(item: Any?) {
+        item as PostModel
+
+        presenter.deletePost(
+            token = getTokenFromSharedPref(),
+            postId = item.id
+        )
     }
 
     private fun getTokenFromSharedPref(): String {

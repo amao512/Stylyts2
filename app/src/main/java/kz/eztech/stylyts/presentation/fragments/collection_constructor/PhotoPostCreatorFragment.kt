@@ -125,6 +125,12 @@ class PhotoPostCreatorFragment(
 
             null
         } else {
+            if (listOfChosenImages.size == 4) {
+                displayMessage(msg = "Только 4 фото!")
+
+                return
+            }
+
             listOfChosenImages.add(item)
             photoAdapter.notifyItemChanged(position, listOfChosenImages.count())
 
@@ -270,8 +276,13 @@ class PhotoPostCreatorFragment(
         if (photoUri != null) {
             val bundle = Bundle()
 
-            bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
+            if (listOfChosenImages.isNotEmpty()) {
+                listOfChosenImages.removeLast()
+            }
+
             bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
+            bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
+            bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, listOfChosenImages)
 
             if (inPager) {
                 bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
