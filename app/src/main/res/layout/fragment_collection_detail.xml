@@ -34,7 +34,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/padding_size_24x"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,6 +44,8 @@
                     android:id="@+id/constraint_layout_fragment_collection_detail_profile_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/padding_size_24x"
+                    android:paddingTop="@dimen/padding_size_24x"
                     >
 
                     <FrameLayout
@@ -106,8 +107,8 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_size_24x"
                     android:layout_marginTop="@dimen/margin_size_16x"
-                    android:background="@drawable/rounded_rectangle_very_light_gray_white_corners_half_transparent"
                     >
 
                     <LinearLayout
@@ -132,6 +133,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/margin_size_10x"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -160,12 +162,13 @@
                     android:id="@+id/recycler_view_fragment_collection_detail_additionals_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/margin_size_24x"
+                    android:clipToPadding="false"
                     android:fadingEdge="vertical"
                     android:fadingEdgeLength="@dimen/collection_detail_list_fade"
                     android:fillViewport="false"
                     android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/padding_size_24x"
                     android:requiresFadingEdge="vertical|horizontal"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_main_image_detail"
@@ -176,6 +179,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_16x"
                     android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/padding_size_24x"
                     >
 
                     <ImageButton
@@ -224,6 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_8x"
+                    android:paddingHorizontal="@dimen/padding_size_24x"
                     android:textStyle="bold"
                     tools:text="65 550 KZT"
                     />
@@ -234,6 +239,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_8x"
+                    android:paddingHorizontal="@dimen/padding_size_24x"
                     android:textColor="@color/app_gray"
                     tools:text="Показать 53 комментарий..."
                     />
@@ -244,6 +250,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_size_8x"
+                    android:paddingHorizontal="@dimen/padding_size_24x"
                     android:textColor="@color/app_gray"
                     tools:text="21 сентября"
                     />
