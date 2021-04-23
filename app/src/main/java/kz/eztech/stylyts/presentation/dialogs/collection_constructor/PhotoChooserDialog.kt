@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.dialogs.collection_constructor
 
 import android.graphics.Bitmap
+import android.graphics.PointF
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -375,16 +376,6 @@ class PhotoChooserDialog(
 
         val observer = textView.viewTreeObserver
 
-        Log.d("TAG2", "x - ${clothesModel.clothesLocation?.pointX}")
-        Log.d("TAG2", "y - ${clothesModel.clothesLocation?.pointY}")
-
-        clothesModel.clothesLocation?.let {
-            layer.postTranslate(
-                dx = it.pointX.toFloat(),
-                dy = it.pointY.toFloat()
-            )
-        }
-
         if (observer.isAlive) {
             observer.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
@@ -401,6 +392,13 @@ class PhotoChooserDialog(
                         entity,
                         true
                     )
+
+                    clothesModel.clothesLocation?.let {
+                        entity.setPoint(
+                            PointF(it.pointX.toFloat(), it.pointY.toFloat())
+                        )
+                    }
+
                     textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
 
@@ -444,6 +442,13 @@ class PhotoChooserDialog(
                         entity,
                         true
                     )
+
+                    userModel.userLocation?.let {
+                        entity.setPoint(
+                            PointF(it.pointX.toFloat(), it.pointY.toFloat())
+                        )
+                    }
+
                     textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
 

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
-import kotlinx.android.synthetic.main.dialog_bottom_collection_context.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
@@ -82,7 +81,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked(item)
             R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
-            R.id.item_main_image_root_view -> onCollectionImageClicked(item)
+            R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
             R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.userCommentsFragment)
             R.id.imageButton -> onContextMenuClicked(item)
         }

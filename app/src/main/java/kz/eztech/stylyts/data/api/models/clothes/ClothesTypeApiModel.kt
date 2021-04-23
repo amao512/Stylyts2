@@ -15,5 +15,11 @@ data class ClothesTypeApiModel(
     val menCoverPhoto: String?,
     @SerializedName("women_cover_photo")
     @Expose
-    val womenCoverPhoto: String?
+    val womenCoverPhoto: String?,
+    @SerializedName("men_constructor_photo")
+    @Expose
+    val menConstructorPhoto: String?,
+    @SerializedName("women_constructor_photo")
+    @Expose
+    val womenConstructorPhoto: String?
 )

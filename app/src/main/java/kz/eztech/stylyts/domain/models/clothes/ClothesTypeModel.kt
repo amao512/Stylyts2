@@ -10,6 +10,8 @@ data class ClothesTypeModel(
     val title: String,
     var menCoverPhoto: String = EMPTY_STRING,
     var womenCoverPhoto: String = EMPTY_STRING,
+    var menConstructorPhoto: String = EMPTY_STRING,
+    var womenConstructorPhoto: String = EMPTY_STRING,
 
     var isExternal: Boolean = false,
     var externalTitle: String? = null,

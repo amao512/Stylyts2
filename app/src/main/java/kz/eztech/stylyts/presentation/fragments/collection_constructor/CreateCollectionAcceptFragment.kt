@@ -14,9 +14,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -226,14 +224,9 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    override fun processSuccessPost(postModel: PostModel) {
-        Log.d("TAG3", "success - $postModel")
-        findNavController().navigateUp()
-    }
-
-    override fun processSuccessSaving(outfitModel: OutfitModel?) {
+    override fun processSuccessSaving() {
         displayMessage(msg = getString(R.string.collection_constructor_success_added))
-        findNavController().navigateUp()
+        findNavController().navigate(R.id.mainFragment)
     }
 
     private fun processPhotos() {

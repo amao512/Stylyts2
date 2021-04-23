@@ -126,6 +126,66 @@
             android:background="?android:attr/selectableItemBackground"
             android:src="@drawable/ic_safe_flag_empty"
             />
+
+        <FrameLayout
+            android:id="@+id/item_main_image_clothes_tags_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+
+        <FrameLayout
+            android:id="@+id/item_main_image_users_tags_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="bottom|start"
+            android:paddingBottom="@dimen/padding_size_24x"
+            android:paddingHorizontal="@dimen/padding_size_8x"
+            >
+
+            <FrameLayout
+                android:id="@+id/dialog_photo_chooser_clothes_tags_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/circle_black"
+                android:layout_marginEnd="@dimen/margin_size_10x"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_t_shirts"
+                    />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/dialog_photo_chooser_user_tags_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/circle_black"
+                android:backgroundTint="@color/app_black_half"
+                android:visibility="gone"
+                >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_person"
+                    />
+            </FrameLayout>
+
+        </LinearLayout>
+
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView

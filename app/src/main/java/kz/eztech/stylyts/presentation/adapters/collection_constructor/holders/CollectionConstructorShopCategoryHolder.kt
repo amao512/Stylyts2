@@ -68,8 +68,8 @@ class CollectionConstructorShopCategoryHolder(
 		with (itemView) {
 			Glide.with(image_view_item_collection_constructor_category_item_image_holder.context)
 				.load(when (gender) {
-					0 -> clothesType.menCoverPhoto
-					else -> clothesType.womenCoverPhoto
+					0 -> clothesType.menConstructorPhoto
+					else -> clothesType.womenConstructorPhoto
 				})
 				.into(image_view_item_collection_constructor_category_item_image_holder)
 		}

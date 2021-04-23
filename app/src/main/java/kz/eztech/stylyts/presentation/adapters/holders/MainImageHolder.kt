@@ -1,8 +1,11 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image.view.*
+import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
@@ -32,6 +35,7 @@ class MainImageHolder(
             position = position
         )
         loadUserPhoto(postModel = item)
+        loadTags(postModel = item)
     }
 
     private fun initializeAdapters(postModel: PostModel) {
@@ -49,7 +53,7 @@ class MainImageHolder(
         position: Int
     ) {
         with (itemView) {
-            item_main_image_root_view.setOnClickListener { thisView ->
+            item_main_image_image_card_view.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
             }
 
@@ -124,6 +128,79 @@ class MainImageHolder(
                         .load(it.avatar)
                         .centerCrop()
                         .into(shapeable_image_view_item_main_image_profile_avatar)
+                }
+            }
+        }
+    }
+
+    private fun loadTags(postModel: PostModel) {
+        checkEmptyTags(postModel)
+        initializeTagListener()
+
+
+        with (itemView) {
+            postModel.tags.clothesTags.map {
+                val textView = LayoutInflater.from(item_main_image_clothes_tags_container.context).inflate(
+                    R.layout.text_view_tag_element,
+                    item_main_image_clothes_tags_container,
+                    false
+                ) as TextView
+
+                textView.x = it.pointX.toFloat()
+                textView.y = it.pointY.toFloat()
+
+                postModel.clothes.map { clothes ->
+                    if (clothes.id == it.id) {
+                        textView.text = clothes.title
+
+                        item_main_image_clothes_tags_container.addView(textView)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkEmptyTags(postModel: PostModel) {
+        with (itemView) {
+            postModel.tags.let {
+                if (it.clothesTags.isEmpty()) {
+                    dialog_photo_chooser_clothes_tags_icon.hide()
+                } else {
+                    dialog_photo_chooser_clothes_tags_icon.show()
+                }
+
+                if (it.usersTags.isEmpty()) {
+                    dialog_photo_chooser_user_tags_icon.hide()
+                } else {
+                    dialog_photo_chooser_user_tags_icon.show()
+                }
+            }
+        }
+    }
+
+    private fun initializeTagListener() {
+        with (itemView) {
+            dialog_photo_chooser_clothes_tags_icon.setOnClickListener {
+                if (item_main_image_clothes_tags_container.visibility == View.GONE) {
+                    item_main_image_clothes_tags_container.show()
+                } else {
+                    item_main_image_clothes_tags_container.hide()
+                }
+            }
+
+            item_main_image_photos_holder_view_pager.setOnClickListener {
+                if (item_main_image_clothes_tags_container.visibility == View.GONE) {
+                    item_main_image_clothes_tags_container.show()
+                } else {
+                    item_main_image_clothes_tags_container.hide()
+                }
+            }
+
+            dialog_photo_chooser_user_tags_icon.setOnClickListener {
+                if (item_main_image_users_tags_container.visibility == View.GONE) {
+                    item_main_image_users_tags_container.show()
+                } else {
+                    item_main_image_users_tags_container.hide()
                 }
             }
         }

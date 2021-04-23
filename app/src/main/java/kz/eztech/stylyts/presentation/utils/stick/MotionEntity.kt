@@ -25,6 +25,7 @@ abstract class MotionEntity(
     protected val customPoints = FloatArray(2) // x0, y0, x1, y1, x2, y2, x3, y3, x0, y0
     private var borderPaint = Paint()
     private var deleteIcon: BitmapStickerIcon? = null
+
     //private val icons = ArrayList<BitmapStickerIcon>()
     protected fun updateMatrix() {
         // init matrix to E - identity matrix
@@ -80,15 +81,24 @@ abstract class MotionEntity(
     fun moveToCanvasCenter() {
         moveCenterTo(PointF(canvasWidth * 0.5f, canvasHeight * 0.5f))
     }
-    
-    fun moveToPoint(point:PointF) {
+
+    fun moveToPoint(point: PointF) {
         moveCenterTo(point)
     }
+
     fun moveCenterTo(moveToCenter: PointF) {
         val currentCenter = absoluteCenter()
         layer.postTranslate(
-            1.0f * (moveToCenter.x - currentCenter.x) / canvasWidth,
-            1.0f * (moveToCenter.y - currentCenter.y) / canvasHeight
+            dx = 1.0f * (moveToCenter.x - currentCenter.x) / canvasWidth,
+            dy = 1.0f * (moveToCenter.y - currentCenter.y) / canvasHeight
+        )
+    }
+
+    fun setPoint(point: PointF) {
+        val currentCenter = absoluteCenter()
+        layer.postTranslate(
+            dx = ((point.x * 10.0f) - currentCenter.x) / canvasWidth,
+            dy = ((point.y * 10.0f) - currentCenter.y) / canvasHeight
         )
     }
 
@@ -144,7 +154,7 @@ abstract class MotionEntity(
         val y3: Float = destPoints.get(5)
         val x4: Float = destPoints.get(6)
         val y4: Float = destPoints.get(7)
-        
+
         val xC: Float = customPoints.get(0)
         val yC: Float = customPoints.get(1)
 
@@ -152,7 +162,7 @@ abstract class MotionEntity(
         /*icons.forEach {
 
         }*/
-        
+
         deleteIcon?.let {
             try {
                 when (it.position) {
@@ -160,30 +170,40 @@ abstract class MotionEntity(
                     BitmapStickerIcon.RIGHT_TOP -> configIconMatrix(it, x2, y2, rotation)
                     BitmapStickerIcon.LEFT_BOTTOM -> configIconMatrix(it, x3, y3, rotation)
                     BitmapStickerIcon.RIGHT_BOTOM -> configIconMatrix(it, x4, y4, rotation)
-                    BitmapStickerIcon.CUSTOM -> configCustomIconMatrix(it, (x3 - width/8).toFloat(), (y3 - height/2.5).toFloat(), 0f)
+                    BitmapStickerIcon.CUSTOM -> configCustomIconMatrix(
+                        it,
+                        (x3 - width / 8).toFloat(),
+                        (y3 - height / 2.5).toFloat(),
+                        0f
+                    )
                 }
-    
+
                 when (it.position) {
                     BitmapStickerIcon.CUSTOM -> it.drawSmallRadius(canvas, borderPaint)
                     else -> it.draw(canvas, borderPaint)
                 }
-                
-            }catch (e:Exception){}
+
+            } catch (e: Exception) {
+            }
 
         }
     }
 
-    fun configIconMatrix(icon: BitmapStickerIcon, x: Float, y: Float,
-                         rotation: Float) {
+    fun configIconMatrix(
+        icon: BitmapStickerIcon, x: Float, y: Float,
+        rotation: Float
+    ) {
         icon.x = x
         icon.y = y
         icon.matrix.reset()
         //icon.matrix.postRotate(rotation, (icon.width / 2).toFloat(), (icon.height / 2).toFloat())
         icon.matrix.postTranslate(x - icon.width / 2, y - icon.height / 2)
     }
-    
-    fun configCustomIconMatrix(icon: BitmapStickerIcon, x: Float, y: Float,
-                               padding: Float){
+
+    fun configCustomIconMatrix(
+        icon: BitmapStickerIcon, x: Float, y: Float,
+        padding: Float
+    ) {
         icon.x = x
         icon.y = y
         icon.matrix.reset()
@@ -195,7 +215,7 @@ abstract class MotionEntity(
         this.borderPaint = borderPaint
     }
 
-    fun findCurrentIconTouched(downX:Float,downY:Float): BitmapStickerIcon? {
+    fun findCurrentIconTouched(downX: Float, downY: Float): BitmapStickerIcon? {
         /*
         for (icon in icons) {
             val x: Float = icon.getX() - downX
@@ -209,14 +229,18 @@ abstract class MotionEntity(
             val x: Float = it.getX() - downX
             val y: Float = it.getY() - downY
             val distance_pow_2 = x * x + y * y
-            if (distance_pow_2 <= Math.pow((it.getIconRadius() + it.getIconRadius()).toDouble(), 2.0)) {
+            if (distance_pow_2 <= Math.pow(
+                    (it.getIconRadius() + it.getIconRadius()).toDouble(),
+                    2.0
+                )
+            ) {
                 return it
             }
         }
         return null
     }
 
-    fun setIcon(icon: BitmapStickerIcon){
+    fun setIcon(icon: BitmapStickerIcon) {
         //icons.clear()
         //icons.add(icon)
         deleteIcon = icon

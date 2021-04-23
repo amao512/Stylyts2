@@ -45,14 +45,14 @@ class CreateCollectionAcceptPresenter @Inject constructor(
             override fun onSuccess(t: PostModel) {
                 view.processViewAction {
                     hideProgress()
-                    processSuccessPost(postModel = t)
+                    processSuccessSaving()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
                     hideProgress()
-                    errorHelper.processError(e)
+                    processSuccessSaving()
                 }
             }
         })
@@ -68,14 +68,14 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         saveOutfitConstructorUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {
                 view.processViewAction {
-                    view.processSuccessSaving(outfitModel = t)
+                    processSuccessSaving()
                     hideProgress()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
-                    view.processSuccessSaving(outfitModel = null)
+                    processSuccessSaving()
                     hideProgress()
                 }
             }
@@ -98,14 +98,14 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         updateCollectionUseCase.execute(object : DisposableSingleObserver<Unit>() {
             override fun onSuccess(t: Unit) {
                 view.processViewAction {
-                    view.processSuccessSaving(null)
+                    processSuccessSaving()
                     hideProgress()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
-                    displayMessage(errorHelper.processError(e))
+                    displayMessage(msg = errorHelper.processError(e))
                     hideProgress()
                 }
             }

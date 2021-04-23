@@ -12,7 +12,9 @@ class ClothesTypeApiModelMapper @Inject constructor() {
             id = data?.id ?: 0,
             title = data?.title ?: EMPTY_STRING,
             menCoverPhoto = data?.menCoverPhoto ?: EMPTY_STRING,
-            womenCoverPhoto = data?.womenCoverPhoto ?: EMPTY_STRING
+            womenCoverPhoto = data?.womenCoverPhoto ?: EMPTY_STRING,
+            menConstructorPhoto = data?.menConstructorPhoto ?: EMPTY_STRING,
+            womenConstructorPhoto = data?.womenConstructorPhoto ?: EMPTY_STRING
         )
     }
 
@@ -24,7 +26,9 @@ class ClothesTypeApiModelMapper @Inject constructor() {
                 id = it.id ?: 0,
                 title = it.title ?: EMPTY_STRING,
                 menCoverPhoto = it.menCoverPhoto ?: EMPTY_STRING,
-                womenCoverPhoto = it.womenCoverPhoto ?: EMPTY_STRING
+                womenCoverPhoto = it.womenCoverPhoto ?: EMPTY_STRING,
+                menConstructorPhoto = it.menConstructorPhoto ?: EMPTY_STRING,
+                womenConstructorPhoto = it.womenConstructorPhoto ?: EMPTY_STRING
             )
         }
     }
