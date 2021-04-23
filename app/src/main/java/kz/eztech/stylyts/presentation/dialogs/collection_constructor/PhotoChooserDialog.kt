@@ -449,6 +449,7 @@ class PhotoChooserDialog(
 
                     selectedUserEntities.add(entity)
                     selectedUsers.add(userModel)
+                    checkEmptyList()
                 }
             })
         } else {
@@ -483,9 +484,17 @@ class PhotoChooserDialog(
         if (selectedList.isEmpty()) {
             recycler_view_fragment_photo_chooser_selected_list.hide()
             linear_layout_fragment_photo_chooser_desc_container.hide()
+            dialog_photo_chooser_clothes_tags_icon.hide()
         } else {
             linear_layout_fragment_photo_chooser_desc_container.show()
             recycler_view_fragment_photo_chooser_selected_list.show()
+            dialog_photo_chooser_clothes_tags_icon.show()
+        }
+
+        if (selectedUsers.isEmpty()) {
+            dialog_photo_chooser_user_tags_icon.hide()
+        } else {
+            dialog_photo_chooser_user_tags_icon.show()
         }
 
         if (selectedList.isEmpty() && selectedUsers.isEmpty()) {

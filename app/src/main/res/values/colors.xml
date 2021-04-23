@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="app_black">#17181A</color>
+    <color name="app_black_half">#474545</color>
     <color name="app_dark_blue_gray">#2F3641</color>
     <color name="app_dark_blue_gray_half">#802F3641</color>
     <color name="app_light_gray">#D4D4D4</color>
