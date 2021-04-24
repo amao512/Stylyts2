@@ -1,7 +1,9 @@
 package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -132,6 +134,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                     bundle
                 )
             }
+            R.id.imageViewSlidePhoto -> onShowTags()
         }
     }
 
@@ -142,6 +145,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
             R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
             R.id.imageButton -> onContextMenuClick()
+            R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
+            R.id.fragment_collection_detail_user_tags_icon -> onShowUsersTags()
         }
     }
 
@@ -200,6 +205,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         isOwn = postModel.author == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
         loadImages(images = postModel.images)
+        loadTags(postModel = postModel)
     }
 
     override fun processOwner(userModel: UserModel) {
@@ -243,12 +249,76 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             images = imageArray,
             withAnimation = false
         )
+        imageAdapter.mItemImageClickListener = this
 
         fragment_collection_detail_photos_holder_view_pager.adapter = imageAdapter
         fragment_collection_detail_photos_pager_indicator.show()
         fragment_collection_detail_photos_pager_indicator.attachToPager(
             fragment_collection_detail_photos_holder_view_pager
         )
+    }
+
+    private fun loadTags(postModel: PostModel) {
+        checkEmptyTags(postModel)
+
+        postModel.tags.clothesTags.map {
+            val textView = LayoutInflater.from(fragment_collection_detail_clothes_tags_container.context).inflate(
+                R.layout.text_view_tag_element,
+                fragment_collection_detail_clothes_tags_container,
+                false
+            ) as TextView
+
+            textView.x = it.pointX.toFloat()
+            textView.y = it.pointY.toFloat()
+
+            postModel.clothes.map { clothes ->
+                if (clothes.id == it.id) {
+                    textView.text = clothes.title
+
+                    fragment_collection_detail_clothes_tags_container.addView(textView)
+                }
+            }
+        }
+
+        fragment_collection_detail_clothes_tags_icon.setOnClickListener(this)
+        fragment_collection_detail_user_tags_icon.setOnClickListener(this)
+    }
+
+    private fun checkEmptyTags(postModel: PostModel) {
+        postModel.tags.let {
+            if (it.clothesTags.isEmpty()) {
+                fragment_collection_detail_clothes_tags_icon.hide()
+            } else {
+                fragment_collection_detail_clothes_tags_icon.show()
+            }
+
+            if (it.usersTags.isEmpty()) {
+                fragment_collection_detail_user_tags_icon.hide()
+            } else {
+                fragment_collection_detail_user_tags_icon.show()
+            }
+        }
+    }
+
+    private fun onShowClothesTags() {
+        if (fragment_collection_detail_clothes_tags_container.visibility == View.GONE) {
+            fragment_collection_detail_clothes_tags_container.show()
+        } else {
+            fragment_collection_detail_clothes_tags_container.hide()
+        }
+    }
+
+    private fun onShowUsersTags() {
+        if (fragment_collection_detail_users_tags_container.visibility == View.GONE) {
+            fragment_collection_detail_users_tags_container.show()
+        } else {
+            fragment_collection_detail_users_tags_container.hide()
+        }
+    }
+
+    private fun onShowTags() {
+        onShowClothesTags()
+        onShowUsersTags()
     }
 
     private fun onProfileClick() {

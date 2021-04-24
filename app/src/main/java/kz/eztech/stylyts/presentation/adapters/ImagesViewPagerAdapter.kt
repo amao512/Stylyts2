@@ -78,8 +78,8 @@ class ImagesViewPagerAdapter(
 
         (container as ViewPager).addView(view, 0)
 
-        view.setOnClickListener {
-            mItemImageClickListener?.onViewClicked(view, position, images)
+        view.imageViewSlidePhoto.setOnClickListener {
+            mItemImageClickListener?.onViewClicked(view.imageViewSlidePhoto, position, images)
         }
 
         return view

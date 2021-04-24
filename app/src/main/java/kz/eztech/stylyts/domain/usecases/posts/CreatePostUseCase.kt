@@ -54,7 +54,8 @@ class CreatePostUseCase @Inject constructor(
                 when (count) {
                     2 -> MultipartBody.Part.createFormData("image_two", it.name, request)
                     3 -> MultipartBody.Part.createFormData("image_three", it.name, request)
-                    else -> MultipartBody.Part.createFormData("image_four", it.name, request)
+                    4 -> MultipartBody.Part.createFormData("image_four", it.name, request)
+                    else -> MultipartBody.Part.createFormData("image_five", it.name, request)
                 }
             )
 

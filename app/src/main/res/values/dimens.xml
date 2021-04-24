@@ -126,7 +126,7 @@
 
     <dimen name="profile_income_item_detail_image_size">50dp</dimen>
 
-    <dimen name="shop_category_image_height">90dp</dimen>
+    <dimen name="shop_category_image_height">122dp</dimen>
 
     <dimen name="user_subs_button_height">45dp</dimen>
 

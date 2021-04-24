@@ -21,7 +21,8 @@ interface PostsApi {
 
     @GET(RestConstants.GET_POSTS)
     fun getPosts(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<PostApiModel>>>
 
     @GET(RestConstants.GET_POST_BY_ID)

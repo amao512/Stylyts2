@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.adapters.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_image.view.*
-import kz.eztech.stylyts.domain.models.PublicationModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 
 /**
@@ -18,16 +18,16 @@ class GridImageViewHolder(itemView: View, adapter: BaseAdapter) :
     ) {
         with(itemView) {
             when (item) {
-                is PublicationModel -> {
-                    Glide.with(this)
-                        .load(item.imageOne)
-                        .centerCrop()
-                        .into(shapeable_image_view_item_collection_image)
+                is PostModel -> {
+                    if (item.images.isNotEmpty()) {
+                        Glide.with(shapeable_image_view_item_collection_image.context)
+                            .load(item.images[0])
+                            .centerCrop()
+                            .into(shapeable_image_view_item_collection_image)
+                    }
 
                     shapeable_image_view_item_collection_image.setOnClickListener { view ->
-                        adapter.itemClickListener?.let {
-                            it.onViewClicked(view, position, item)
-                        }
+                        adapter.itemClickListener?.onViewClicked(view, position, item)
                     }
                 }
             }

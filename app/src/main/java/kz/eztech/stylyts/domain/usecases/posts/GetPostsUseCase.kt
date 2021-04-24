@@ -21,9 +21,10 @@ class GetPostsUseCase @Inject constructor(
 ) : BaseUseCase<ResultsModel<PostModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
+    private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<PostModel>> {
-        return postsDomainRepository.getPosts(token)
+        return postsDomainRepository.getPosts(token, queryMap)
             .map {
                 it.results.forEach { post ->
                     getUserByIdUseCase.initParams(token.substring(4), post.author.toString())
@@ -40,7 +41,18 @@ class GetPostsUseCase @Inject constructor(
             }
     }
 
-    fun initParams(token: String) {
+    fun initParams(
+        token: String,
+        authorId: Int = 0
+    ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+
+        val map = HashMap<String, String>()
+
+        if (authorId != 0) {
+            map["author"] = authorId.toString()
+        }
+
+        this.queryMap = map
     }
 }

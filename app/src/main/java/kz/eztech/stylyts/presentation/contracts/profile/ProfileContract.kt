@@ -1,11 +1,10 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -29,7 +28,7 @@ interface ProfileContract {
 
         fun processFilter(filterList: List<CollectionFilterModel>)
 
-        fun processMyPublications(resultsModel: ResultsApiModel<PublicationModel>)
+        fun processPostResults(resultsModel: ResultsModel<PostModel>)
 
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
@@ -51,9 +50,9 @@ interface ProfileContract {
 
         fun getFilerList(isOwnProfile: Boolean)
 
-        fun getPublications(
+        fun getPosts(
             token: String,
-            isOwnProfile: Boolean
+            authorId: Int
         )
 
         fun getFollowers(

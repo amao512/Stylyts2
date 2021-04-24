@@ -112,6 +112,7 @@
                     >
 
                     <LinearLayout
+                        android:id="@+id/fragment_collection_detail_image_holder"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/collection_detail_image_size"
                         android:orientation="vertical"
@@ -122,6 +123,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
+                            android:duplicateParentState="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -156,6 +158,66 @@
                         android:background="?android:attr/selectableItemBackground"
                         android:src="@drawable/ic_safe_flag_empty"
                         />
+
+                    <FrameLayout
+                        android:id="@+id/fragment_collection_detail_clothes_tags_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        />
+
+                    <FrameLayout
+                        android:id="@+id/fragment_collection_detail_users_tags_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="bottom|start"
+                        android:paddingBottom="@dimen/padding_size_24x"
+                        android:paddingHorizontal="@dimen/padding_size_8x"
+                        >
+
+                        <FrameLayout
+                            android:id="@+id/fragment_collection_detail_clothes_tags_icon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/circle_black"
+                            android:layout_marginEnd="@dimen/margin_size_10x"
+                            android:visibility="gone"
+                            >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_t_shirts"
+                                />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:id="@+id/fragment_collection_detail_user_tags_icon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:background="@drawable/circle_black"
+                            android:backgroundTint="@color/app_black_half"
+                            android:visibility="gone"
+                            >
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:src="@drawable/ic_person"
+                                />
+                        </FrameLayout>
+
+                    </LinearLayout>
+
                 </FrameLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

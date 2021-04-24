@@ -3,20 +3,19 @@ package kz.eztech.stylyts.presentation.presenters.profile
 import android.app.Application
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitsUseCase
-import kz.eztech.stylyts.domain.usecases.profile.GetMyPublicationsUseCase
+import kz.eztech.stylyts.domain.usecases.posts.GetPostsUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase
@@ -34,12 +33,12 @@ class ProfilePresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getProfileUseCase: GetProfileUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
-    private val getMyPublicationsUseCase: GetMyPublicationsUseCase,
     private val getFollowersUseCase: GetFollowersUseCase,
     private val followUserUseCase: FollowUserUseCase,
     private val unfollowUserUseCase: UnfollowUserUseCase,
     private val getClothesUseCase: GetClothesUseCase,
-    private val getOutfitsUseCase: GetOutfitsUseCase
+    private val getOutfitsUseCase: GetOutfitsUseCase,
+	private val getPostsUseCase: GetPostsUseCase
 ) : ProfileContract.Presenter {
 
 	private lateinit var view: ProfileContract.View
@@ -47,11 +46,11 @@ class ProfilePresenter @Inject constructor(
 	override fun disposeRequests() {
         getProfileUseCase.clear()
 		getUserByIdUseCase.clear()
-		getMyPublicationsUseCase.clear()
 		getFollowersUseCase.clear()
 		followUserUseCase.clear()
 		unfollowUserUseCase.clear()
 		getOutfitsUseCase.clear()
+		getPostsUseCase.clear()
     }
 
     override fun attach(view: ProfileContract.View) {
@@ -85,7 +84,8 @@ class ProfilePresenter @Inject constructor(
 		filterList.add(
             CollectionFilterModel(
 				id = 2,
-				name = application.getString(R.string.filter_list_publishes)
+				name = application.getString(R.string.filter_list_publishes),
+				isChosen = true
 			)
         )
 		filterList.add(CollectionFilterModel(id = 3, name = application.getString(R.string.filter_list_photo_outfits)))
@@ -94,8 +94,7 @@ class ProfilePresenter @Inject constructor(
 			filterList.add(
 				CollectionFilterModel(
 					id = 4,
-					name = application.getString(R.string.filter_list_wardrobe),
-					isChosen = true
+					name = application.getString(R.string.filter_list_wardrobe)
 				)
 			)
 
@@ -117,15 +116,28 @@ class ProfilePresenter @Inject constructor(
 		view.processFilter(filterList)
 	}
 
-    override fun getPublications(
+    override fun getPosts(
 		token: String,
-		isOwnProfile: Boolean
+		authorId: Int
 	) {
         view.displayProgress()
 
-		if (isOwnProfile) {
-			getOwnPublications(token)
-		}
+		getPostsUseCase.initParams(token, authorId)
+		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
+			override fun onSuccess(t: ResultsModel<PostModel>) {
+				view.processViewAction {
+					processPostResults(resultsModel = t)
+					hideProgress()
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(msg = errorHelper.processError(e))
+					hideProgress()
+				}
+			}
+		})
     }
 
 	override fun getFollowers(token: String, userId: Int) {
@@ -252,25 +264,6 @@ class ProfilePresenter @Inject constructor(
 				view.processViewAction {
 					hideProgress()
 					processProfile(t)
-				}
-			}
-
-			override fun onError(e: Throwable) {
-				view.processViewAction {
-					hideProgress()
-					displayMessage(errorHelper.processError(e))
-				}
-			}
-		})
-	}
-
-	private fun getOwnPublications(token: String) {
-		getMyPublicationsUseCase.initParams(token)
-		getMyPublicationsUseCase.execute(object : DisposableSingleObserver<ResultsApiModel<PublicationModel>>() {
-			override fun onSuccess(t: ResultsApiModel<PublicationModel>) {
-				view.processViewAction {
-					hideProgress()
-					processMyPublications(t)
 				}
 			}
 

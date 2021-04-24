@@ -9,16 +9,15 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -37,8 +36,8 @@ import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
-import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
@@ -67,7 +66,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var currentUsername = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
     private var currentGender = EMPTY_STRING
-    private var chosenFilterPosition = 3
 
     companion object {
         const val USER_ID_BUNDLE_KEY = "user_id"
@@ -159,10 +157,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             token = getTokenFromSharedPref(),
             userId = userId
         )
-
-        when (chosenFilterPosition) {
-            3 -> if (isOwnProfile) presenter.getWardrobe(token = getTokenFromSharedPref())
-        }
     }
 
     override fun disposeRequests() = presenter.disposeRequests()
@@ -217,6 +211,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             }
         }
 
+        presenter.getPosts(
+            token = getTokenFromSharedPref(),
+            authorId = userId
+        )
+
         fillProfileInfo(userModel = userModel)
         loadProfilePhoto(userModel = userModel)
     }
@@ -225,10 +224,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         adapterFilter.updateList(filterList)
     }
 
-    override fun processMyPublications(resultsModel: ResultsApiModel<PublicationModel>) {
-        resultsModel.results?.let {
-            gridAdapter.updateList(it)
-        }
+    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
+        gridAdapter.updateList(list = resultsModel.results)
+        recycler_view_fragment_profile_items_list.adapter = gridAdapter
     }
 
     override fun onClick(v: View?) {
@@ -291,14 +289,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     ) {
         when (view.id) {
             R.id.frame_layout_item_collection_filter -> onFilterClick(position)
-            R.id.shapeable_image_view_item_collection_image -> onCollectionItemClick(item)
-            R.id.item_clothes_detail_linear_layout -> onWardrobeItemClick(item)
         }
 
         when (item) {
-            is FilterModel -> {
-                Log.d("TAG4", "profile = $item")
-            }
+            is FilterModel -> Log.d("TAG4", "profile = $item")
+            is OutfitModel -> onOutfitItemClick(item)
+            is PostModel -> onPostItemClick(item)
+            is ClothesModel -> onWardrobeItemClick(item)
         }
     }
 
@@ -401,10 +398,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
-
     private fun onFilterClick(position: Int) {
         when (position) {
             0 -> FilterDialog.getNewInstance(
@@ -423,9 +416,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onPublicationsFilterClick(position: Int) {
-        presenter.getPublications(
+        presenter.getPosts(
             token = getTokenFromSharedPref(),
-            isOwnProfile = isOwnProfile
+            authorId = userId
         )
         adapterFilter.onChooseItem(position)
     }
@@ -442,11 +435,22 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         adapterFilter.onChooseItem(position)
     }
 
-    private fun onCollectionItemClick(item: Any?) {
+    private fun onOutfitItemClick(item: Any?) {
         item as OutfitModel
 
         val bundle = Bundle()
         bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
+
+        findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
+    }
+
+    private fun onPostItemClick(item: Any?) {
+        item as PostModel
+
+        val bundle = Bundle()
+        bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
 
         findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
     }
@@ -468,5 +472,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.action_profileFragment_to_cameraFragment,
             bundle
         )
+    }
+
+    private fun getTokenFromSharedPref(): String {
+        return currentActivity.getSharedPrefByKey(ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

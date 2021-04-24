@@ -151,7 +151,7 @@
             >
 
             <FrameLayout
-                android:id="@+id/dialog_photo_chooser_clothes_tags_icon"
+                android:id="@+id/item_main_image_clothes_tags_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/circle_black"
@@ -168,7 +168,7 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/dialog_photo_chooser_user_tags_icon"
+                android:id="@+id/item_main_image_user_tags_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/circle_black"

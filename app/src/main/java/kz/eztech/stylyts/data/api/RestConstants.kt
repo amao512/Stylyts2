@@ -36,7 +36,7 @@ object RestConstants {
     const val DELETE_ADDRESS: String = "addresses/{address_id}"
 
     // Search
-    const val SEARCH_USER_BY_USERNAME: String = "profiles"
+    const val SEARCH_USER_BY_USERNAME: String = "profiles/search"
     const val SEARCH_CLOTHES_BY_TITLE: String = "clothes"
 
     // Clothes

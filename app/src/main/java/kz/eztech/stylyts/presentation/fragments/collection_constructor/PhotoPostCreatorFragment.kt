@@ -125,8 +125,8 @@ class PhotoPostCreatorFragment(
 
             null
         } else {
-            if (listOfChosenImages.size == 4) {
-                displayMessage(msg = "Только 4 фото!")
+            if (listOfChosenImages.size == 5) {
+                displayMessage(msg = "Только 5 фото!")
 
                 return
             }

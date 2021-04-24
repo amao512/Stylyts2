@@ -5,6 +5,7 @@ import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import okhttp3.MultipartBody
+import retrofit2.http.QueryMap
 
 interface PostsDomainRepository {
 
@@ -14,7 +15,10 @@ interface PostsDomainRepository {
         tags: TagsApiModel
     ): Single<PostModel>
 
-    fun getPosts(token: String): Single<ResultsModel<PostModel>>
+    fun getPosts(
+        token: String,
+        queryMap: Map<String, String>
+    ): Single<ResultsModel<PostModel>>
 
     fun getPostById(
         token: String,

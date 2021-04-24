@@ -10,6 +10,7 @@ import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -21,7 +22,7 @@ import java.text.NumberFormat
 class MainImageHolder(
     itemView: View,
     adapter: BaseAdapter
-) : BaseViewHolder(itemView, adapter) {
+) : BaseViewHolder(itemView, adapter), UniversalViewClickListener, View.OnClickListener {
 
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
 
@@ -36,6 +37,22 @@ class MainImageHolder(
         )
         loadUserPhoto(postModel = item)
         loadTags(postModel = item)
+    }
+
+    override fun onViewClicked(view: View, position: Int, item: Any?) {
+        when (view.id) {
+            R.id.imageViewSlidePhoto -> {
+                onShowClothesTags()
+                onShowUsersTags()
+            }
+        }
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.item_main_image_clothes_tags_icon -> onShowClothesTags()
+            R.id.item_main_image_user_tags_icon -> onShowUsersTags()
+        }
     }
 
     private fun initializeAdapters(postModel: PostModel) {
@@ -98,6 +115,7 @@ class MainImageHolder(
            images = imageArray,
             withAnimation = false
         )
+        imageAdapter.mItemImageClickListener = this
 
         with (itemView) {
             item_main_image_photos_holder_view_pager.adapter = imageAdapter
@@ -135,7 +153,6 @@ class MainImageHolder(
 
     private fun loadTags(postModel: PostModel) {
         checkEmptyTags(postModel)
-        initializeTagListener()
 
 
         with (itemView) {
@@ -157,6 +174,9 @@ class MainImageHolder(
                     }
                 }
             }
+
+            item_main_image_clothes_tags_icon.setOnClickListener(this@MainImageHolder)
+            item_main_image_user_tags_icon.setOnClickListener(this@MainImageHolder)
         }
     }
 
@@ -164,44 +184,36 @@ class MainImageHolder(
         with (itemView) {
             postModel.tags.let {
                 if (it.clothesTags.isEmpty()) {
-                    dialog_photo_chooser_clothes_tags_icon.hide()
+                    item_main_image_clothes_tags_icon.hide()
                 } else {
-                    dialog_photo_chooser_clothes_tags_icon.show()
+                    item_main_image_clothes_tags_icon.show()
                 }
 
                 if (it.usersTags.isEmpty()) {
-                    dialog_photo_chooser_user_tags_icon.hide()
+                    item_main_image_user_tags_icon.hide()
                 } else {
-                    dialog_photo_chooser_user_tags_icon.show()
+                    item_main_image_user_tags_icon.show()
                 }
             }
         }
     }
 
-    private fun initializeTagListener() {
+    private fun onShowClothesTags() {
         with (itemView) {
-            dialog_photo_chooser_clothes_tags_icon.setOnClickListener {
-                if (item_main_image_clothes_tags_container.visibility == View.GONE) {
-                    item_main_image_clothes_tags_container.show()
-                } else {
-                    item_main_image_clothes_tags_container.hide()
-                }
+            if (item_main_image_clothes_tags_container.visibility == View.GONE) {
+                item_main_image_clothes_tags_container.show()
+            } else {
+                item_main_image_clothes_tags_container.hide()
             }
+        }
+    }
 
-            item_main_image_photos_holder_view_pager.setOnClickListener {
-                if (item_main_image_clothes_tags_container.visibility == View.GONE) {
-                    item_main_image_clothes_tags_container.show()
-                } else {
-                    item_main_image_clothes_tags_container.hide()
-                }
-            }
-
-            dialog_photo_chooser_user_tags_icon.setOnClickListener {
-                if (item_main_image_users_tags_container.visibility == View.GONE) {
-                    item_main_image_users_tags_container.show()
-                } else {
-                    item_main_image_users_tags_container.hide()
-                }
+    private fun onShowUsersTags() {
+        with (itemView) {
+            if (item_main_image_users_tags_container.visibility == View.GONE) {
+                item_main_image_users_tags_container.show()
+            } else {
+                item_main_image_users_tags_container.hide()
             }
         }
     }
