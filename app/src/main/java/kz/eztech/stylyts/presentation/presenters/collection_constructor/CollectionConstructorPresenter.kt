@@ -70,16 +70,13 @@ class CollectionConstructorPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesByType(token: String, map: Map<String, Any>) {
+    override fun getClothesByType(
+        token: String,
+        filterModel: FilterModel
+    ) {
         view.displayProgress()
 
-        getClothesUseCase.initParams(
-            token = token,
-            filterModel = FilterModel(
-                gender = map["gender"] as String,
-                typeIdList = arrayListOf(map["clothes_type"] as Int)
-            )
-        )
+        getClothesUseCase.initParams(token, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {

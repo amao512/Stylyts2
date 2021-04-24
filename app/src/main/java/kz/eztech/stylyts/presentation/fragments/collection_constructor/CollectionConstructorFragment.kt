@@ -32,6 +32,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
@@ -42,7 +43,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorContract
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
+import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
@@ -71,13 +72,13 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
     private lateinit var typesAdapter: CollectionConstructorShopCategoryAdapter
     private lateinit var itemAdapter: CollectionConstructorShopItemAdapter
-	private lateinit var filterDialog: ConstructorFilterDialog
+	private lateinit var filterDialog: FilterDialog
+	private lateinit var currentFilter: FilterModel
 
     private val listOfItems = ArrayList<ClothesModel>()
     private val listOfEntities = ArrayList<ImageEntity>()
     private val listOfIdsChosen = ArrayList<Int>()
     private val listOfTypes = ArrayList<ClothesTypeModel>()
-    private val filterMap = HashMap<String, Any>()
 
 	private var isItems = false
 	private var isStyle = false
@@ -133,18 +134,23 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
     override fun initializeViewsData() {
         linearLayout2.layoutTransition.setAnimateParentHierarchy(false)
-    }
 
-    override fun initializeViews() {
-		checkWritePermission()
-
-		filterDialog = ConstructorFilterDialog()
+		currentFilter = FilterModel()
+		filterDialog = FilterDialog.getNewInstance(
+			token = getTokenFromSharedPref(),
+			itemClickListener = this,
+			gender = getGender()
+		)
 		typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentType)
 		itemAdapter = CollectionConstructorShopItemAdapter()
 
 		typesAdapter.itemClickListener = this
 		itemAdapter.itemClickListener = this
 		itemAdapter.itemDoubleClickListener = this
+    }
+
+    override fun initializeViews() {
+		checkWritePermission()
 
 		recycler_view_fragment_collection_constructor_list.itemAnimator = DefaultItemAnimator()
 		recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
@@ -163,7 +169,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         text_view_fragment_collection_constructor_category_back.setOnClickListener(this)
         text_view_fragment_collection_constructor_category_next.setOnClickListener(this)
         text_view_fragment_collection_constructor_category_filter.setOnClickListener(this)
-        filterDialog.setChoiceListener(this)
+
     }
 
     override fun processPostInitialization() = presenter.getTypes(token = getTokenFromSharedPref())
@@ -204,6 +210,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
 				removeSelectedEntityFromMotionView(item)
 			}
+			R.id.toolbar_left_corner_action_image_button -> showFilterResults(item)
         }
     }
 
@@ -224,19 +231,15 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     }
 
     override fun onChoice(v: View?, item: Any?) {
-        if (v?.id == R.id.button_dialog_filter_constructor_submit) {
-			showFilterResults(item)
-        } else {
-            when (item) {
-				is Int -> {
-					when (item) {
-						1 -> {/* add category */}
-						2 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
-						3 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
-					}
+		when (item) {
+			is Int -> {
+				when (item) {
+					1 -> {/* add category */}
+					2 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
+					3 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
 				}
-            }
-        }
+			}
+		}
     }
 
 	override fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>) {
@@ -306,7 +309,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 		itemAdapter.choosePosition(clothesId = item.id)
 
-		var photoUrl = EMPTY_STRING
+		var photoUrl: String
 		var currentSameObject: ImageEntity? = null
 
 		item.constructorImage.let { coverPhoto ->
@@ -451,17 +454,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				if (isExternal) {
 					onChoice(view, externalType)
 				} else {
-					currentId = item.id
-					filterMap["clothes_type"] = item.id
-
-					when (currentType) {
-						0 -> filterMap["gender"] = "M"
-						1 -> filterMap["gender"] = "F"
-					}
-
 					presenter.getClothesByType(
 						token = getTokenFromSharedPref(),
-						map = filterMap
+						filterModel = currentFilter
 					)
 				}
 			}
@@ -495,18 +490,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		}
 	}
 
-
 	private fun showFilterResults(item: Any?) {
-		val map = item as HashMap<String, Any>
-		val clothesType = filterMap["clothes_type"]
-
-		filterMap.clear()
-		filterMap["clothes_type"] = clothesType as String
-		filterMap.putAll(map)
+		currentFilter = item as FilterModel
 
 		presenter.getClothesByType(
 			token = getTokenFromSharedPref(),
-			map = filterMap
+			filterModel = currentFilter
 		)
 	}
 
@@ -763,5 +752,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private fun getTokenFromSharedPref(): String {
 		return currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
+	}
+
+	private fun getGender(): String = when (currentType) {
+		0 -> "M"
+		else -> "F"
 	}
 }

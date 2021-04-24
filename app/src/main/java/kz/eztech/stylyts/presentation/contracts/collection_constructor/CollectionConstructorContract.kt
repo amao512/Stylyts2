@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.collection_constructor
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 
@@ -27,7 +28,7 @@ interface CollectionConstructorContract {
 
         fun getClothesByType(
             token: String,
-            map: Map<String, Any>
+            filterModel: FilterModel
         )
 
         fun getStyles(token: String)

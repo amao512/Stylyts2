@@ -57,6 +57,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var adapterFilter: CollectionsFilterAdapter
     private lateinit var wardrobeAdapter: ClothesDetailAdapter
     private lateinit var outfitsAdapter: GridImageCollectionItemAdapter
+    private lateinit var filterDialog: FilterDialog
+    private lateinit var currentFilter: FilterModel
 
     private var isOwnProfile: Boolean = true
     private var userId: Int = 0
@@ -113,6 +115,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun initializeViewsData() {
+        filterDialog = FilterDialog.getNewInstance(
+            token = getTokenFromSharedPref(),
+            itemClickListener = this,
+            gender = currentGender
+        )
+        currentFilter = FilterModel()
         adapterFilter = CollectionsFilterAdapter()
         gridAdapter = GridImageAdapter()
 
@@ -292,7 +300,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
 
         when (item) {
-            is FilterModel -> Log.d("TAG4", "profile = $item")
+            is FilterModel -> showFilterResults(item)
             is OutfitModel -> onOutfitItemClick(item)
             is PostModel -> onPostItemClick(item)
             is ClothesModel -> onWardrobeItemClick(item)
@@ -400,11 +408,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun onFilterClick(position: Int) {
         when (position) {
-            0 -> FilterDialog.getNewInstance(
-                token = getTokenFromSharedPref(),
-                itemClickListener = this,
-                gender = currentGender
-            ).show(childFragmentManager, EMPTY_STRING)
+            0 -> filterDialog.show(childFragmentManager, EMPTY_STRING)
             1 -> onPublicationsFilterClick(position)
             2 -> onOutfitsFilterClick(position)
             3 -> onWardrobeFilterClick(position)
@@ -431,7 +435,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onWardrobeFilterClick(position: Int) {
-        presenter.getWardrobe(token = getTokenFromSharedPref())
+        if (isOwnProfile) {
+            currentFilter.isMyWardrobe = true
+        }
+
+        presenter.getWardrobe(
+            token = getTokenFromSharedPref(),
+            filterModel = currentFilter
+        )
         adapterFilter.onChooseItem(position)
     }
 
@@ -471,6 +482,19 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         findNavController().navigate(
             R.id.action_profileFragment_to_cameraFragment,
             bundle
+        )
+    }
+
+    private fun showFilterResults(item: Any?) {
+        currentFilter = item as FilterModel
+
+        if (isOwnProfile) {
+            currentFilter.isMyWardrobe = true
+        }
+
+        presenter.getWardrobe(
+            token = getTokenFromSharedPref(),
+            filterModel = currentFilter
         )
     }
 

@@ -191,12 +191,13 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun getWardrobe(token: String) {
+	override fun getWardrobe(
+		token: String,
+		filterModel: FilterModel
+	) {
 		getClothesUseCase.initParams(
 			token = token,
-			filterModel = FilterModel(
-				isMyWardrobe = true
-			)
+			filterModel = filterModel
 		)
 		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
 			override fun onSuccess(t: ResultsModel<ClothesModel>) {

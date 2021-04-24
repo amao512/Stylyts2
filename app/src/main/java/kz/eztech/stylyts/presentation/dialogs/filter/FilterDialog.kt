@@ -125,6 +125,11 @@ class FilterDialog(
         filterCheckAdapter.itemClickListener = this
 
         dialog_filter_recycler_view.adapter = filterAdapter
+
+        fragment_category_shop_results_button.text = getString(
+            R.string.button_show_results,
+            0.toString()
+        )
     }
 
     override fun initializeListeners() {

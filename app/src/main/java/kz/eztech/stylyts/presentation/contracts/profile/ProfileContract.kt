@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.profile
 import kz.eztech.stylyts.domain.models.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
@@ -70,7 +71,10 @@ interface ProfileContract {
             userId: Int
         )
 
-        fun getWardrobe(token: String)
+        fun getWardrobe(
+            token: String,
+            filterModel: FilterModel
+        )
 
         fun getOutfits(token: String)
     }
