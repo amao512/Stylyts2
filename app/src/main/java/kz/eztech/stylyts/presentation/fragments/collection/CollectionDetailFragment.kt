@@ -3,6 +3,8 @@ package kz.eztech.stylyts.presentation.fragments.collection
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -15,6 +17,7 @@ import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
@@ -260,28 +263,67 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     private fun loadTags(postModel: PostModel) {
         checkEmptyTags(postModel)
-
-        postModel.tags.clothesTags.map {
-            val textView = LayoutInflater.from(fragment_collection_detail_clothes_tags_container.context).inflate(
-                R.layout.text_view_tag_element,
-                fragment_collection_detail_clothes_tags_container,
-                false
-            ) as TextView
-
-            textView.x = it.pointX.toFloat()
-            textView.y = it.pointY.toFloat()
-
-            postModel.clothes.map { clothes ->
-                if (clothes.id == it.id) {
-                    textView.text = clothes.title
-
-                    fragment_collection_detail_clothes_tags_container.addView(textView)
-                }
-            }
-        }
+        loadClothesTags(postModel)
 
         fragment_collection_detail_clothes_tags_icon.setOnClickListener(this)
         fragment_collection_detail_user_tags_icon.setOnClickListener(this)
+    }
+
+    private fun loadClothesTags(postModel: PostModel) {
+        val container = fragment_collection_detail_clothes_tags_container
+        container.removeAllViews()
+
+        postModel.tags.clothesTags.map {
+            val textView = getTagTextView(container)
+
+            view?.viewTreeObserver
+                ?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        setTagPosition(
+                            tagModel = it,
+                            textView = textView,
+                            container = fragment_collection_detail_photos_holder_view_pager
+                        )
+
+                        postModel.clothes.map { clothes ->
+                            if (clothes.id == it.id) {
+                                textView.text = clothes.title
+
+                                if (textView.parent != null) {
+                                    container.removeView(textView)
+                                } else {
+                                    container.addView(textView)
+                                }
+                            }
+                        }
+                        view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
+        }
+    }
+
+    private fun getTagTextView(container: ViewGroup): TextView {
+        val textView =  LayoutInflater.from(container.context).inflate(
+            R.layout.text_view_tag_element,
+            container,
+            false
+        ) as TextView
+
+        textView.setPadding(10, 4, 10, 4)
+
+        return textView
+    }
+
+    private fun setTagPosition(
+        tagModel: TagModel,
+        textView: View,
+        container: View
+    ) {
+        val containerX = container.width / 100
+        val containerY = container.height / 100
+
+        textView.x = tagModel.pointX.toFloat() * containerX.toFloat()
+        textView.y = tagModel.pointY.toFloat() * containerY.toFloat()
     }
 
     private fun checkEmptyTags(postModel: PostModel) {

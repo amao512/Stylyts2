@@ -2,11 +2,14 @@ package kz.eztech.stylyts.presentation.adapters.holders
 
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
@@ -153,35 +156,78 @@ class MainImageHolder(
 
     private fun loadTags(postModel: PostModel) {
         checkEmptyTags(postModel)
-
+        loadClothesTags(postModel)
 
         with (itemView) {
-            postModel.tags.clothesTags.map {
-                val textView = LayoutInflater.from(item_main_image_clothes_tags_container.context).inflate(
-                    R.layout.text_view_tag_element,
-                    item_main_image_clothes_tags_container,
-                    false
-                ) as TextView
-
-                textView.x = it.pointX.toFloat()
-                textView.y = it.pointY.toFloat()
-
-                postModel.clothes.map { clothes ->
-                    if (clothes.id == it.id) {
-                        textView.text = clothes.title
-
-                        item_main_image_clothes_tags_container.addView(textView)
-                    }
-                }
-            }
-
             item_main_image_clothes_tags_icon.setOnClickListener(this@MainImageHolder)
             item_main_image_user_tags_icon.setOnClickListener(this@MainImageHolder)
         }
     }
 
+    private fun loadClothesTags(postModel: PostModel) {
+        with (itemView) {
+            val container = item_main_image_clothes_tags_container
+            container.removeAllViews()
+
+            postModel.tags.clothesTags.map {
+                val textView = getTagTextView(container)
+
+                itemView.viewTreeObserver
+                    .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                        override fun onGlobalLayout() {
+                            setTagPosition(
+                                tagModel = it,
+                                textView = textView,
+                                container = item_main_image_photos_holder_view_pager
+                            )
+
+                            postModel.clothes.map { clothes ->
+                                if (clothes.id == it.id) {
+                                    textView.text = clothes.title
+
+                                    if (textView.parent != null) {
+                                        container.removeView(textView)
+                                    } else {
+                                        container.addView(textView)
+                                    }
+                                }
+                            }
+
+                            itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        }
+                    })
+            }
+        }
+    }
+
+    private fun getTagTextView(container: ViewGroup): TextView {
+        val textView =  LayoutInflater.from(container.context).inflate(
+            R.layout.text_view_tag_element,
+            container,
+            false
+        ) as TextView
+
+        textView.setPadding(10, 4, 10, 4)
+
+        return textView
+    }
+
+    private fun setTagPosition(
+        tagModel: TagModel,
+        textView: View,
+        container: View
+    ) {
+        val containerX = container.width / 100
+        val containerY = container.height / 100
+
+        textView.x = tagModel.pointX.toFloat() * containerX.toFloat()
+        textView.y = tagModel.pointY.toFloat() * containerY.toFloat()
+    }
+
     private fun checkEmptyTags(postModel: PostModel) {
         with (itemView) {
+            item_main_image_clothes_tags_container.hide()
+
             postModel.tags.let {
                 if (it.clothesTags.isEmpty()) {
                     item_main_image_clothes_tags_icon.hide()

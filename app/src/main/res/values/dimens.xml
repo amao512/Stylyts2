@@ -82,7 +82,7 @@
     <dimen name="collection_detail_user_photo_size">40dp</dimen>
     <dimen name="collection_detail_card_elevation">4dp</dimen>
     <dimen name="collection_detail_card_max_elevation">6dp</dimen>
-    <dimen name="collection_detail_image_size">500dp</dimen>
+    <dimen name="collection_detail_image_size">495dp</dimen>
     <dimen name="collection_detail_list_fade">30dp</dimen>
 
     <dimen name="post_creator_image_height">300dp</dimen>
