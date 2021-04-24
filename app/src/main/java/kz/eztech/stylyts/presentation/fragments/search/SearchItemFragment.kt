@@ -207,7 +207,7 @@ class SearchItemFragment(
             is UserSearchEntity -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id ?: 0)
         }
 
-        findNavController().navigate(R.id.action_searchFragment_to_profileFragment, bundle)
+        findNavController().navigate(R.id.action_searchFragment_to_nav_profile, bundle)
     }
 
     private fun initializeAdapter() {

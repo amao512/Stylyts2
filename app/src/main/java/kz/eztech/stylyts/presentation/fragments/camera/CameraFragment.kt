@@ -383,7 +383,7 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
             if (rawValue.isNotEmpty()) {
                 val bundle = Bundle()
                 bundle.putString("barcode_code", rawValue)
-                findNavController().navigate(R.id.itemDetailFragment, bundle)
+                findNavController().navigate(R.id.clothesDetailFragment, bundle)
             }
         }
     }

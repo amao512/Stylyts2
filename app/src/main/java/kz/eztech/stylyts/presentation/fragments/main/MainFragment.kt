@@ -82,7 +82,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
             R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
-            R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.userCommentsFragment)
+            R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.action_mainFragment_to_userCommentsFragment)
             R.id.imageButton -> onContextMenuClicked(item)
         }
     }
@@ -154,7 +154,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, item.id)
 
             findNavController().navigate(
-                R.id.action_mainFragment_to_createCollectionFragment,
+                R.id.action_mainFragment_to_nav_create_collection,
                 bundle
             )
         }
@@ -166,7 +166,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         val bundle = Bundle()
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
-        findNavController().navigate(R.id.action_mainFragment_to_itemDetailFragment, bundle)
+        findNavController().navigate(R.id.action_mainFragment_to_clothesDetailFragment, bundle)
     }
 
     private fun onCollectionImageClicked(item: Any?) {

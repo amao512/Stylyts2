@@ -693,7 +693,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.OUTFIT_MODE)
 
 		findNavController().navigate(
-			R.id.createCollectionAcceptDialog,
+			R.id.createCollectionAcceptFragment,
 			bundle
 		)
 	}

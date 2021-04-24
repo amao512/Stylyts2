@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_profile"
+    app:startDestination="@id/profileFragment"
+    >
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile"
+        >
+        <action
+            android:id="@+id/action_profileFragment_to_profileIncomeFragment"
+            app:destination="@id/profileIncomeFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_collectionDetailFragment"
+            app:destination="@id/collectionDetailFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_addressProfileFragment"
+            app:destination="@id/addressProfileFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_cardFragment"
+            app:destination="@id/cardFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_photoPostCreatorFragment"
+            app:destination="@id/photoPostCreatorFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_userSubsFragment"
+            app:destination="@id/userSubsFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_itemDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileIncomeFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.ProfileIncomeFragment"
+        android:label="fragment_profile_income"
+        tools:layout="@layout/fragment_profile_income"
+        >
+        <action
+            android:id="@+id/action_profileIncomeFragment_to_profileIncomeDetailFragment"
+            app:destination="@id/profileIncomeDetailFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileIncomeDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.ProfileIncomeDetailFragment"
+        android:label="ProfileIncomeDetailFragment"
+        tools:layout="@layout/fragment_profile_income_detail"
+        />
+
+    <fragment
+        android:id="@+id/collectionDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment"
+        android:label="CollectionDetailFragment"
+        tools:layout="@layout/fragment_collection_detail"
+        >
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_itemDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
+            />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_userCommentsFragment"
+            app:destination="@id/userCommentsFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/clothesDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment"
+        android:label="fragment_item_detail"
+        tools:layout="@layout/fragment_clothes_detail"
+        >
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
+            />
+    </fragment>
+
+    <include app:graph="@navigation/nav_create_collection" />
+
+    <fragment
+        android:id="@+id/addressProfileFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.address.AddressFragment"
+        android:label="fragment_address_profile"
+        tools:layout="@layout/fragment_address_profile"
+        />
+
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.CardFragment"
+        android:label="fragment_card"
+        tools:layout="@layout/fragment_card"
+        />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.settings.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings"
+        >
+        <action
+            android:id="@+id/action_settingsFragment_to_savedSettingsFragment"
+            app:destination="@id/savedSettingsFragment"
+            />
+        <action
+            android:id="@+id/action_settingsFragment_to_personalSettingsFragment"
+            app:destination="@id/personalSettingsFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/savedSettingsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.settings.SavedSettingsFragment"
+        android:label="fragment_saved_settings"
+        tools:layout="@layout/fragment_saved_settings"
+        />
+    <fragment
+        android:id="@+id/personalSettingsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.settings.PersonalSettingsFragment"
+        android:label="fragment_personal_settings"
+        tools:layout="@layout/fragment_personal_settings"
+        />
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.camera.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera"
+        >
+        <action
+            android:id="@+id/action_cameraFragment_to_photoChooserFragment"
+            app:destination="@id/photoChooserFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_cleanBackgroundFragment"
+            app:destination="@id/cleanBackgroundFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cleanBackgroundFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment"
+        android:label="fragment_clean_background"
+        tools:layout="@layout/fragment_clean_background"
+        />
+
+    <fragment
+        android:id="@+id/photoPostCreatorFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.PhotoPostCreatorFragment"
+        android:label="fragment_photo_post_creator"
+        tools:layout="@layout/fragment_photo_post_creator"
+        >
+        <action
+            android:id="@+id/action_photoPostCreatorFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            />
+        <action
+            android:id="@+id/action_photoPostCreatorFragment_to_photoChooserFragment"
+            app:destination="@id/photoChooserFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/photoChooserFragment"
+        android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog"
+        android:label="fragment_photo_chooser"
+        tools:layout="@layout/dialog_photo_chooser" />
+
+    <fragment
+        android:id="@+id/userSubsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment"
+        android:label="UserSubsFragment"
+        tools:layout="@layout/fragment_user_subs"
+        >
+        <action
+            android:id="@+id/action_userSubsFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/userCommentsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.users.UserCommentsFragment"
+        android:label="fragment_user_comments"
+        tools:layout="@layout/fragment_user_comments"
+        />
+</navigation>

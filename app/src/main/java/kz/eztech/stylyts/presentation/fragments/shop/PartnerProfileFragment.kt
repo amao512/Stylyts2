@@ -85,7 +85,7 @@ class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContr
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
-        findNavController().navigate(R.id.action_partnerProfileFragment_to_itemDetailFragment)
+        findNavController().navigate(R.id.clothesDetailFragment)
     }
 
     override fun initializeViews() {}

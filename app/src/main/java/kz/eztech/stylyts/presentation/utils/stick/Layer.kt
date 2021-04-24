@@ -21,6 +21,11 @@ class Layer {
         y = 0.0f
     }
 
+    fun resetPositions() {
+        x = 0.0f
+        y = 0.0f
+    }
+
     fun postScale(scaleDiff: Float) {
         val newVal = scale + scaleDiff
         if (newVal >= getMinScale() && newVal <= getMaxScale()) {

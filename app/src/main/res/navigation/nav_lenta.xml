@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_lenta"
+    app:startDestination="@id/mainFragment"
+    >
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.main.MainFragment"
+        android:label="fragment_main"
+        tools:layout="@layout/fragment_main"
+        >
+        <action
+            android:id="@+id/action_mainFragment_to_clothesDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+        <action
+            android:id="@+id/action_mainFragment_to_collectionDetailFragment"
+            app:destination="@id/collectionDetailFragment"
+            />
+        <action
+            android:id="@+id/action_mainFragment_to_chatsFragment"
+            app:destination="@id/chatsFragment"
+            />
+        <action
+            android:id="@+id/action_mainFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
+            />
+        <action
+            android:id="@+id/action_mainFragment_to_userCommentsFragment"
+            app:destination="@id/userCommentsFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/clothesDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment"
+        android:label="fragment_item_detail"
+        tools:layout="@layout/fragment_clothes_detail"
+        >
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/collectionDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment"
+        android:label="CollectionDetailFragment"
+        >
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_itemDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_nav_create_collection2"
+            app:destination="@id/nav_create_collection"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chatsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.chat.ChatsFragment"
+        android:label="fragment_chats"
+        tools:layout="@layout/fragment_chats"
+        />
+
+    <fragment
+        android:id="@+id/userCommentsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.users.UserCommentsFragment"
+        android:label="fragment_user_comments"
+        tools:layout="@layout/fragment_user_comments" />
+
+    <include app:graph="@navigation/nav_create_collection" />
+
+</navigation>

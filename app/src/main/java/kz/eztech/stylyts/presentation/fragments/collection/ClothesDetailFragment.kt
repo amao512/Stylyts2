@@ -393,10 +393,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.V
             itemsList.add(it)
             bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
 
-            findNavController().navigate(
-                R.id.action_itemDetailFragment_to_createCollectionFragment,
-                bundle
-            )
+            findNavController().navigate(R.id.action_clothesDetailFragment_to_nav_create_collection, bundle)
         }
     }
 

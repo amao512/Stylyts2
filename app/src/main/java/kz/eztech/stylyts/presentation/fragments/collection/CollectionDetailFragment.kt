@@ -143,7 +143,9 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.text_view_fragment_collection_detail_comments_count -> findNavController().navigate(R.id.userCommentsFragment)
+            R.id.text_view_fragment_collection_detail_comments_count -> {
+                findNavController().navigate(R.id.action_collectionDetailFragment_to_userCommentsFragment)
+            }
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
             R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
@@ -393,7 +395,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             }
         }
 
-        findNavController().navigate(R.id.createCollectionFragment, bundle)
+        findNavController().navigate(R.id.action_collectionDetailFragment_to_nav_create_collection, bundle)
     }
 
     private fun onContextMenuClick() {

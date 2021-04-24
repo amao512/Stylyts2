@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_search"
+    app:startDestination="@id/shopFragment"
+    >
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop"
+        >
+        <action
+            android:id="@+id/action_shopFragment_to_shopItemListFragment"
+            app:destination="@id/shopItemListFragment"
+            />
+        <action
+            android:id="@+id/action_shopFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/shopItemListFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopItemListFragment"
+        android:label="fragment_shop_item_list"
+        tools:layout="@layout/fragment_shop_item_list"
+        >
+        <action
+            android:id="@+id/action_shopItemListFragment_to_categoryTypeDetailFragment"
+            app:destination="@id/categoryTypeDetailFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryTypeDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment"
+        android:label="fragment_category_type_detail"
+        tools:layout="@layout/fragment_category_type_detail"
+        >
+        <action
+            android:id="@+id/action_categoryTypeDetailFragment_to_itemDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/clothesDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment"
+        android:label="fragment_item_detail"
+        tools:layout="@layout/fragment_clothes_detail"
+        >
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
+            />
+    </fragment>
+
+    <include app:graph="@navigation/nav_create_collection" />
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.search.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search"
+        >
+        <action
+            android:id="@+id/action_searchFragment_to_itemDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+        <action
+            android:id="@+id/action_searchFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            />
+    </fragment>
+    <include app:graph="@navigation/nav_profile" />
+
+</navigation>

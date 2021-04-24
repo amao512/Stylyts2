@@ -288,12 +288,12 @@ class PhotoPostCreatorFragment(
                 bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
 
                 findNavController().navigate(
-                    R.id.action_createCollectionFragment_to_createCollectionAcceptDialog,
+                    R.id.action_createCollectionFragment_to_createCollectionAcceptFragment,
                     bundle
                 )
             } else {
                 findNavController().navigate(
-                    R.id.createCollectionAcceptDialog,
+                    R.id.createCollectionAcceptFragment,
                     bundle
                 )
             }

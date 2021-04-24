@@ -226,7 +226,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     override fun processSuccessSaving() {
         displayMessage(msg = getString(R.string.collection_constructor_success_added))
-        findNavController().navigate(R.id.mainFragment)
+        findNavController().navigate(R.id.nav_lenta)
     }
 
     private fun processPhotos() {

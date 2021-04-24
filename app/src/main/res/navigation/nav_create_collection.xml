@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_create_collection"
+    app:startDestination="@id/createCollectionFragment"
+    >
+
+    <fragment
+        android:id="@+id/createCollectionFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.ConstructorHolderFragment"
+        android:label="fragment_create_collection"
+        tools:layout="@layout/fragment_constructor_holder"
+        >
+        <action
+            android:id="@+id/action_createCollectionFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_createCollectionFragment_to_createCollectionAcceptFragment"
+            app:destination="@id/createCollectionAcceptFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.camera.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_photoChooserFragment"
+            app:destination="@id/photoChooserFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_cleanBackgroundFragment"
+            app:destination="@id/cleanBackgroundFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/photoChooserFragment"
+        android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog"
+        android:label="fragment_photo_chooser"
+        tools:layout="@layout/dialog_photo_chooser" />
+
+    <fragment
+        android:id="@+id/createCollectionAcceptFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
+        android:label="CreateCollectionAcceptDialog"
+        tools:layout="@layout/fragment_create_collection_accept"
+        />
+
+    <fragment
+        android:id="@+id/cleanBackgroundFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment"
+        android:label="fragment_clean_background"
+        tools:layout="@layout/fragment_clean_background" />
+
+</navigation>
