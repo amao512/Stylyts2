@@ -266,6 +266,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun loadTags(postModel: PostModel) {
         checkEmptyTags(postModel)
         loadClothesTags(postModel)
+        loadUsersTags(postModel)
 
         fragment_collection_detail_clothes_tags_icon.setOnClickListener(this)
         fragment_collection_detail_user_tags_icon.setOnClickListener(this)
@@ -287,17 +288,45 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                             container = fragment_collection_detail_photos_holder_view_pager
                         )
 
-                        postModel.clothes.map { clothes ->
-                            if (clothes.id == it.id) {
-                                textView.text = clothes.title
+                        textView.text = it.title
 
-                                if (textView.parent != null) {
-                                    container.removeView(textView)
-                                } else {
-                                    container.addView(textView)
-                                }
-                            }
+                        if (textView.parent != null) {
+                            container.removeView(textView)
+                        } else {
+                            container.addView(textView)
                         }
+
+                        view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
+        }
+    }
+
+    private fun loadUsersTags(postModel: PostModel) {
+        val container = fragment_collection_detail_users_tags_container
+        container.removeAllViews()
+
+        postModel.tags.usersTags.map {
+            val textView = getTagTextView(container)
+            textView.backgroundTintList = resources.getColorStateList(R.color.app_dark_blue_gray)
+
+            view?.viewTreeObserver
+                ?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        setTagPosition(
+                            tagModel = it,
+                            textView = textView,
+                            container = fragment_collection_detail_photos_holder_view_pager
+                        )
+
+                        textView.text = it.title
+
+                        if (textView.parent != null) {
+                            container.removeView(textView)
+                        } else {
+                            container.addView(textView)
+                        }
+
                         view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     }
                 })

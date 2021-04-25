@@ -157,6 +157,7 @@ class MainImageHolder(
     private fun loadTags(postModel: PostModel) {
         checkEmptyTags(postModel)
         loadClothesTags(postModel)
+        loadUsersTags(postModel)
 
         with (itemView) {
             item_main_image_clothes_tags_icon.setOnClickListener(this@MainImageHolder)
@@ -181,16 +182,45 @@ class MainImageHolder(
                                 container = item_main_image_photos_holder_view_pager
                             )
 
-                            postModel.clothes.map { clothes ->
-                                if (clothes.id == it.id) {
-                                    textView.text = clothes.title
+                            textView.text = it.title
 
-                                    if (textView.parent != null) {
-                                        container.removeView(textView)
-                                    } else {
-                                        container.addView(textView)
-                                    }
-                                }
+                            if (textView.parent != null) {
+                                container.removeView(textView)
+                            } else {
+                                container.addView(textView)
+                            }
+
+                            itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        }
+                    })
+            }
+        }
+    }
+
+    private fun loadUsersTags(postModel: PostModel) {
+        with (itemView) {
+            val container = item_main_image_users_tags_container
+            container.removeAllViews()
+
+            postModel.tags.usersTags.map {
+                val textView = getTagTextView(container)
+                textView.backgroundTintList = resources.getColorStateList(R.color.app_dark_blue_gray)
+
+                itemView.viewTreeObserver
+                    .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                        override fun onGlobalLayout() {
+                            setTagPosition(
+                                tagModel = it,
+                                textView = textView,
+                                container = item_main_image_photos_holder_view_pager
+                            )
+
+                            textView.text = it.title
+
+                            if (textView.parent != null) {
+                                container.removeView(textView)
+                            } else {
+                                container.addView(textView)
                             }
 
                             itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)

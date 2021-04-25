@@ -54,8 +54,7 @@ class PhotoChooserDialog(
     UniversalViewClickListener,
     DialogChooserListener, MotionViewTapListener, View.OnClickListener {
 
-    @Inject
-    lateinit var presenter: PhotoChooserPresenter
+    @Inject lateinit var presenter: PhotoChooserPresenter
 
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var filteredAdapter: GridImageItemFilteredAdapter
@@ -362,15 +361,9 @@ class PhotoChooserDialog(
 
     private fun setClothesTag(clothesModel: ClothesModel) {
         val layer = Layer()
-        val textView = layoutInflater.inflate(
-            R.layout.text_view_tag_element,
-            motion_view_fragment_photo_chooser_tags_container,
-            false
-        ) as TextView
+        val textView = getTagTextView(motion_view_fragment_photo_chooser_tags_container)
 
         textView.text = clothesModel.title
-
-        textView.id = clothesModel.id
 
         motion_view_fragment_photo_chooser_tags_container.addView(textView)
 
@@ -415,13 +408,10 @@ class PhotoChooserDialog(
 
     private fun setUserTag(userModel: UserModel) {
         val layer = Layer()
-        val textView = layoutInflater.inflate(
-            R.layout.text_view_tag_element,
-            motion_view_fragment_photo_chooser_tags_container,
-            false
-        ) as TextView
-
+        val textView = getTagTextView(motion_view_fragment_photo_chooser_tags_container)
+        textView.backgroundTintList = resources.getColorStateList(R.color.app_dark_blue_gray)
         textView.text = userModel.username
+
         motion_view_fragment_photo_chooser_tags_container.addView(textView)
 
         val observer = textView.viewTreeObserver
@@ -460,6 +450,14 @@ class PhotoChooserDialog(
         } else {
             Log.wtf("observer", "not alive")
         }
+    }
+
+    private fun getTagTextView(container: ViewGroup): TextView {
+        return layoutInflater.inflate(
+            R.layout.text_view_tag_element,
+            container,
+            false
+        ) as TextView
     }
 
     private fun showBottomSheet() {

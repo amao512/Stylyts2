@@ -67,6 +67,7 @@ class CreatePostUseCase @Inject constructor(
             clothesTags.add(
                 TagApiModel(
                     id = it.id,
+                    title = it.title,
                     pointX = it.clothesLocation?.pointX,
                     pointY = it.clothesLocation?.pointY
                 )
@@ -81,6 +82,7 @@ class CreatePostUseCase @Inject constructor(
             userTags.add(
                 TagApiModel(
                     id = it.id,
+                    title = it.username,
                     pointX = it.userLocation?.pointX,
                     pointY = it.userLocation?.pointY
                 )

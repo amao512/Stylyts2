@@ -7,6 +7,9 @@ data class TagApiModel(
     @SerializedName("id")
     @Expose
     val id: Int?,
+    @SerializedName("title")
+    @Expose
+    val title: String?,
     @SerializedName("point_x")
     @Expose
     val pointX: Double?,
