@@ -69,7 +69,7 @@
     <string name="full_name_text_format">%s %s</string>
 
     <string name="filter_list_filter">Фильтр</string>
-    <string name="filter_list_photo_outfits">Фото образов</string>
+    <string name="filter_list_photo_outfits">Образы</string>
     <string name="filter_list_publishes">Публикации</string>
     <string name="filter_list_wardrobe">Гардероб</string>
     <string name="filter_list_my_data">Мои данные</string>

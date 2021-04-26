@@ -103,15 +103,13 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
         with(include_camera_toolbar) {
             setBackgroundColor(getColor(requireContext(), R.color.app_black_65))
 
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
-            toolbar_title_text_view.hide()
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_arrow_left_white)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@CameraFragment)
+            toolbar_left_corner_action_image_button.show()
 
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = getString(R.string.next)
             toolbar_right_text_text_view.setTextColor(getColor(requireContext(), R.color.app_light_orange))
-
-            customizeActionToolBar(toolbar = this)
         }
     }
 
@@ -152,6 +150,7 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.frame_layout_fragment_camera_take_picture -> takePicture()
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
         }
     }
 

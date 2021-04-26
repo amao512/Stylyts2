@@ -58,6 +58,11 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         const val POST_MODE = 1
     }
 
+    override fun onResume() {
+        super.onResume()
+        currentActivity.hideBottomNavigationView()
+    }
+
     override fun getLayoutId(): Int = R.layout.fragment_collection_detail
 
     override fun getContractView(): BaseView = this

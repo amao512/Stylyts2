@@ -16,9 +16,9 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
 import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
@@ -108,19 +108,10 @@ class SaveClothesAcceptDialog(
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.toolbar_back_text_view -> {
-                listener.onChoice(
-                    v = include_toolbar_dialog_save_clothes.toolbar_back_text_view,
-                    item = null
-                )
+            R.id.toolbar_left_corner_action_image_button -> {
                 dismiss()
             }
             R.id.toolbar_right_text_text_view -> {
-//                listener.onChoice(
-//                    v = include_toolbar_dialog_save_clothes.toolbar_right_text_text_view,
-//                    item = edit_text_view_dialog_save_clothes_accept_sign.text.toString()
-//                )
-//                dismiss()
                 presenter.createClothes(
                     token = getTokenFromArgs(),
                     clothesCreateModel = clothesCreateModel
@@ -145,9 +136,9 @@ class SaveClothesAcceptDialog(
 
     override fun customizeActionBar() {
         with(include_toolbar_dialog_save_clothes) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
-            toolbar_back_text_view.setOnClickListener(this@SaveClothesAcceptDialog)
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@SaveClothesAcceptDialog)
+            toolbar_left_corner_action_image_button.show()
 
             toolbar_title_text_view.show()
             toolbar_title_text_view.text = context.getString(R.string.save_item_accept_add_item)
@@ -155,6 +146,7 @@ class SaveClothesAcceptDialog(
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = context.getString(R.string.save_item_accept_ready)
             toolbar_right_text_text_view.setOnClickListener(this@SaveClothesAcceptDialog)
+
             setDoneButtonUnClickable()
         }
     }

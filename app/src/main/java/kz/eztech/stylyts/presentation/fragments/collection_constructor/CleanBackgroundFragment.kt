@@ -50,15 +50,14 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 
     override fun customizeActionBar() {
         with(include_toolbar_clean_background) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@CleanBackgroundFragment)
+            toolbar_left_corner_action_image_button.show()
 
             toolbar_title_text_view.show()
             toolbar_title_text_view.text = context.getString(R.string.clean_background_title)
 
             toolbar_right_text_text_view.hide()
-
-            customizeActionToolBar(toolbar = this)
         }
     }
 
@@ -98,6 +97,7 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
         when (v?.id) {
 			R.id.button_fragment_clean_background_image_clear_bg -> cleanImageBackground()
 			R.id.button_fragment_clean_background_image_add_to_wardrobe -> addToWardrobe()
+            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
         }
     }
 

@@ -20,7 +20,7 @@ class CreateClothesByImageUseCase @Inject constructor(
 ) : BaseUseCase<WardrobeModel>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var multipartList: List<MultipartBody.Part>
+    private lateinit var multipartList: ArrayList<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<WardrobeModel> {
         return wardrobeDomainRepository.createClothesByPhoto(token, multipartList)
@@ -32,7 +32,7 @@ class CreateClothesByImageUseCase @Inject constructor(
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
-        val multipartList: MutableList<MultipartBody.Part> = mutableListOf()
+        val multipartList = ArrayList<MultipartBody.Part>()
 
         multipartList.add(MultipartBody.Part.createFormData("title", clothesCreateModel.title))
         multipartList.add(MultipartBody.Part.createFormData("gender", clothesCreateModel.gender))

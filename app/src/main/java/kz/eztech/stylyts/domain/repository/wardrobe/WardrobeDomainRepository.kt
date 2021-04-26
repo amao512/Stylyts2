@@ -8,6 +8,6 @@ interface WardrobeDomainRepository {
 
     fun createClothesByPhoto(
         token: String,
-        multipartList: List<MultipartBody.Part>
+        multipartList: ArrayList<MultipartBody.Part>
     ): Single<WardrobeModel>
 }

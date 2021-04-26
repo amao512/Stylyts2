@@ -106,7 +106,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.V
 
     override fun onResume() {
         super.onResume()
-        currentActivity.hideBottomNavigationView()
+        currentActivity.displayBottomNavigationView()
     }
 
     override fun initializeListeners() {

@@ -68,7 +68,7 @@
     <string name="full_name_text_format">%s %s</string>
 
     <string name="filter_list_filter">Filter</string>
-    <string name="filter_list_photo_outfits">Photo of outfits</string>
+    <string name="filter_list_photo_outfits">Outfits</string>
     <string name="filter_list_publishes">Publications</string>
     <string name="filter_list_wardrobe">Wardrobe</string>
     <string name="filter_list_my_data">My data</string>

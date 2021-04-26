@@ -16,6 +16,6 @@ interface WardrobeApi {
     @POST(RestConstants.CREATE_CLOTHES_BY_PHOTO)
     fun createClothesByPhoto(
         @Header("Authorization") token: String,
-        @Part multipartList: List<MultipartBody.Part>
+        @Part multipartList: ArrayList<MultipartBody.Part>
     ): Single<Response<WardrobeApiModel>>
 }

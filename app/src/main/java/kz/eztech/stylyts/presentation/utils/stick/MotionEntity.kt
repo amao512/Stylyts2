@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PointF
-import android.util.Log
 import androidx.annotation.IntRange
 import kz.eztech.stylyts.domain.models.MotionItemModel
 import kz.eztech.stylyts.presentation.utils.stick.MathUtils.pointInTriangle
