@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterItemCheckViewHolder
@@ -25,6 +27,8 @@ class FilterCheckAdapter : BaseAdapter() {
             ): Boolean {
                 return when (list[0]) {
                     is ClothesCategoryModel -> compareCategoryList(list, oldItemPosition, newItemPosition)
+                    is ClothesTypeModel -> compareTypeList(list, oldItemPosition, newItemPosition)
+                    is ClothesStyleModel -> compareStyleList(list, oldItemPosition, newItemPosition)
                     else -> compareBrandList(list, oldItemPosition, newItemPosition)
                 }
             }
@@ -94,19 +98,55 @@ class FilterCheckAdapter : BaseAdapter() {
         return checkedList
     }
 
+    fun onSingleCheckItem(position: Int) {
+        when (val item = currentList[position]) {
+            is ClothesTypeModel -> onCheckTypeSingle(item)
+            is ClothesCategoryModel -> onCheckCategorySingle(item)
+            is ClothesStyleModel -> onCheckStyleSingle(item)
+        }
+
+        val diffCallback = getDiffUtilCallBack(currentList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
+
+        notifyDataSetChanged()
+    }
+
     private fun compareCategoryList(
         list: List<Any>,
         oldItemPosition: Int,
         newItemPosition: Int
-    ): Boolean = (currentList[oldItemPosition] as ClothesCategoryModel).id ==
-            (list[newItemPosition] as ClothesCategoryModel).id
+    ): Boolean {
+        return (currentList[oldItemPosition] as ClothesCategoryModel).id ==
+                (list[newItemPosition] as ClothesCategoryModel).id
+    }
+
+    private fun compareStyleList(
+        list: List<Any>,
+        oldItemPosition: Int,
+        newItemPosition: Int
+    ): Boolean {
+        return (currentList[oldItemPosition] as ClothesStyleModel).id ==
+                (list[newItemPosition] as ClothesStyleModel).id
+    }
+
+    private fun compareTypeList(
+        list: List<Any>,
+        oldItemPosition: Int,
+        newItemPosition: Int
+    ): Boolean {
+        return (currentList[oldItemPosition] as ClothesTypeModel).id ==
+                (list[newItemPosition] as ClothesTypeModel).id
+    }
 
     private fun compareBrandList(
         list: List<Any>,
         oldItemPosition: Int,
         newItemPosition: Int
-    ): Boolean = (currentList[oldItemPosition] as ClothesBrandModel).id ==
-            (list[newItemPosition] as ClothesBrandModel).id
+    ): Boolean {
+        return (currentList[oldItemPosition] as ClothesBrandModel).id ==
+                (list[newItemPosition] as ClothesBrandModel).id
+    }
 
     private fun checkCategory(
         category: ClothesCategoryModel,
@@ -147,6 +187,30 @@ class FilterCheckAdapter : BaseAdapter() {
             }
 
             brand.isChecked = !brand.isChecked
+        }
+    }
+
+    private fun onCheckTypeSingle(type: ClothesTypeModel) {
+        currentList.forEach {
+            it as ClothesTypeModel
+
+            it.isChecked = it.id == type.id
+        }
+    }
+
+    private fun onCheckCategorySingle(category: ClothesCategoryModel) {
+        currentList.forEach {
+            it as ClothesCategoryModel
+
+            it.isChecked = it.id == category.id
+        }
+    }
+
+    private fun onCheckStyleSingle(style: ClothesStyleModel) {
+        currentList.forEach {
+            it as ClothesStyleModel
+
+            it.isChecked = it.id == style.id
         }
     }
 }

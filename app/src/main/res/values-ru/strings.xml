@@ -313,4 +313,8 @@
     <string name="photo_user_choose_touch">Коснитесь фото, чтобы отметить пользователей.</string>
     <string name="users_count_text_format">%s юзер.</string>
     <string name="clothes_count_text_format">%s вещ.</string>
+
+    <string name="choose_clothes_type">Выберите тип вещей</string>
+    <string name="choose_clothes_category">Выберите категорию вещей</string>
+    <string name="choose_clothes_style">Выберите стиль вещей</string>
 </resources>

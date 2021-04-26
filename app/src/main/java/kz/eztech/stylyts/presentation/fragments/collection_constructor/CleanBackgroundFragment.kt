@@ -18,7 +18,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CleanBackgroundContract
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveItemAcceptDialog
+import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.presenters.CleanBackgroundPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
@@ -34,12 +34,15 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     DialogChooserListener {
 
     @Inject lateinit var presenter: CleanBackgroundPresenter
-    private lateinit var saveItemAcceptDialog: SaveItemAcceptDialog
 
     private val hashMap = HashMap<String, String>()
 
     private var photoUri: Uri? = null
     private var outputBitmap: Bitmap? = null
+
+    companion object {
+        const val URI_KEY = "uri"
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_clean_background
 
@@ -69,14 +72,14 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("uri")) {
-                photoUri = it.getParcelable("uri")
+            if (it.containsKey(URI_KEY)) {
+                photoUri = it.getParcelable(URI_KEY)
             }
         }
         photoUri?.let {
-            Glide.with(this)
+            Glide.with(image_view_fragment_clean_background_image.context)
                 .load(it)
-                .into(this.image_view_fragment_clean_background_image)
+                .into(image_view_fragment_clean_background_image)
         }
     }
 
@@ -84,10 +87,7 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
         RemoveBg.init(BuildConfig.REMOVE_BG_API_KEY)
     }
 
-    override fun initializeViews() {
-        saveItemAcceptDialog = SaveItemAcceptDialog()
-        saveItemAcceptDialog.setChoiceListener(this)
-    }
+    override fun initializeViews() {}
 
     override fun initializeListeners() {
         button_fragment_clean_background_image_clear_bg.setOnClickListener(this)
@@ -165,6 +165,8 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
                             outputBitmap
                         )
                         hideProgress()
+                        button_fragment_clean_background_image_add_to_wardrobe.show()
+                        button_fragment_clean_background_image_clear_bg.hide()
                     }
                 }
             })
@@ -172,18 +174,12 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     }
 
     private fun addToWardrobe() {
-        val bundle = Bundle()
-
-        outputBitmap?.let {
-            bundle.putParcelable("photoBitmap", it)
-        } ?: run {
-            photoUri?.let {
-                bundle.putParcelable("photoUri", it)
-            }
-        }
-
-        saveItemAcceptDialog.arguments = bundle
-        saveItemAcceptDialog.show(childFragmentManager, "SaveItemDialog")
+        SaveClothesAcceptDialog.getNewInstance(
+            token = getTokeFromSharedPref(),
+            photoBitmap = outputBitmap,
+            photoUri = photoUri,
+            listener = this
+        ).show(childFragmentManager, EMPTY_STRING)
     }
 
     private fun choiceImage(item: Any?) {

@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
@@ -477,7 +476,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun navigateToCameraFragment(mode: Int) {
         val bundle = Bundle()
-        bundle.putInt("mode", mode)
+        bundle.putInt(CameraFragment.MODE_KEY, mode)
 
         findNavController().navigate(
             R.id.action_profileFragment_to_cameraFragment,

@@ -27,6 +27,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -45,6 +46,7 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
         private const val RATIO_4_3_VALUE = 4.0 / 3.0
         private const val RATIO_16_9_VALUE = 16.0 / 9.0
 
+        const val MODE_KEY = "mode"
         const val BARCODE_MODE = 1
         const val PHOTO_MODE = 2
         const val GET_PHOTO_MODE = 3
@@ -119,8 +121,8 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("mode")) {
-                mode = it.getInt("mode")
+            if (it.containsKey(MODE_KEY)) {
+                mode = it.getInt(MODE_KEY)
             }
         }
     }
@@ -217,12 +219,10 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
 
     private fun navigateToCleanBackground(savedUri: Uri) {
         val bundle = Bundle()
-        bundle.putParcelable("uri", savedUri)
 
-        findNavController().navigate(
-            R.id.action_cameraFragment_to_cleanBackgroundFragment,
-            bundle
-        )
+        bundle.putParcelable(CleanBackgroundFragment.URI_KEY, savedUri)
+
+        findNavController().navigate(R.id.action_cameraFragment_to_cleanBackgroundFragment, bundle)
     }
 
     private fun startCamera() {

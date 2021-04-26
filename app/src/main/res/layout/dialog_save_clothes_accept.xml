@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    >
+
+    <include
+        android:id="@+id/include_toolbar_dialog_save_clothes"
+        layout="@layout/base_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_size_16x"
+        >
+
+        <ImageView
+            android:id="@+id/image_view_dialog_save_clothes_accept"
+            android:layout_width="@dimen/medium_image_size"
+            android:layout_height="@dimen/medium_image_size"
+            android:scaleType="fitCenter"
+            />
+
+        <EditText
+            android:id="@+id/edit_text_view_dialog_save_clothes_accept_sign"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="@string/collection_add_text"
+            android:imeOptions="actionNext"
+            android:inputType="text|textPersonName"
+            android:paddingHorizontal="@dimen/padding_size_24x"
+            android:paddingVertical="@dimen/padding_size_16x"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/small_divider_height"
+        android:background="@color/app_gray"
+        />
+
+    <include
+        android:id="@+id/dialog_save_clothes_small_progress_bar"
+        layout="@layout/base_progress_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_size_16x"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/dialog_save_clothes_accept_list_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/padding_size_6x"
+        >
+
+        <TextView
+            android:id="@+id/dialog_save_clothes_list_toolbar_back_text_view"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_weight="0.2"
+            android:drawableStart="@drawable/ic_baseline_keyboard_arrow_left_24"
+            android:gravity="start|center"
+            android:text="@string/back"
+            android:visibility="invisible"
+            />
+
+        <TextView
+            android:id="@+id/dialog_save_clothes_accept_list_title_text_view"
+            style="@style/TextRegularBold"
+            android:layout_width="0dp"
+            android:layout_weight="0.8"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/padding_size_10x"
+            tools:text="Выберите категорию данной вещи"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/dialog_save_clothes_list_toolbar_next_text_view"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center"
+            android:layout_weight="0.2"
+            android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_right_24"
+            android:gravity="end|center"
+            android:text="@string/next"
+            android:visibility="invisible"
+            />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dialog_save_clothes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_filter_check"
+        />
+</LinearLayout>

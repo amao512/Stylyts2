@@ -25,6 +25,7 @@ import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragm
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog
+import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment
@@ -51,7 +52,8 @@ import javax.inject.Singleton
     PostsModule::class,
     CollectionModule::class,
     UserModule::class,
-    OutfitsModule::class
+    OutfitsModule::class,
+    WardrobeModule::class
 ])
 interface ApplicationComponent {
 
@@ -90,4 +92,5 @@ interface ApplicationComponent {
     fun inject(dialog: ExitDialog)
     fun inject(fragment: CreateCollectionAcceptFragment)
     fun inject(dialog: FilterDialog)
+    fun inject(dialog: SaveClothesAcceptDialog)
 }
