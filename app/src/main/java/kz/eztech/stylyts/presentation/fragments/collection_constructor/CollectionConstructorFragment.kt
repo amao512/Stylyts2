@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.MotionItemModel
+import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel

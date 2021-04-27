@@ -32,6 +32,10 @@
             android:id="@+id/action_mainFragment_to_userCommentsFragment"
             app:destination="@id/userCommentsFragment"
             />
+        <action
+            android:id="@+id/action_mainFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            />
     </fragment>
 
     <fragment
@@ -75,5 +79,6 @@
         tools:layout="@layout/fragment_user_comments" />
 
     <include app:graph="@navigation/nav_create_collection" />
+    <include app:graph="@navigation/nav_profile" />
 
 </navigation>

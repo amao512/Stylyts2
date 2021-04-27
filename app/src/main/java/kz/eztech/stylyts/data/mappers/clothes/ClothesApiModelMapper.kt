@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.data.mappers.clothes
 
 import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
-import kz.eztech.stylyts.data.mappers.OwnerApiModelMapper
+import kz.eztech.stylyts.data.mappers.user.UserShortApiModelMapper
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
@@ -9,7 +9,7 @@ import javax.inject.Inject
 class ClothesApiModelMapper @Inject constructor(
     private val clothesStyleApiModelMapper: ClothesStyleApiModelMapper,
     private val clothesCategoryApiModelMapper: ClothesCategoryApiModelMapper,
-    private val ownerApiModelMapper: OwnerApiModelMapper,
+    private val userShortApiModelMapper: UserShortApiModelMapper,
     private val clothesBrandApiModelMapper: ClothesBrandApiModelMapper,
     private val clothesSizeApiModelMapper: ClothesSizeApiModelMapper
 ) {
@@ -35,7 +35,7 @@ class ClothesApiModelMapper @Inject constructor(
                 productCode = it.productCode ?: EMPTY_STRING,
                 createdAt = it.createdAt ?: EMPTY_STRING,
                 modifiedAt = it.modifiedAt ?: EMPTY_STRING,
-                owner = ownerApiModelMapper.map(it.owner),
+                userShort = userShortApiModelMapper.map(it.userShort),
                 clothesBrand = clothesBrandApiModelMapper.map(it.clothesBrand),
             )
         }
@@ -59,7 +59,7 @@ class ClothesApiModelMapper @Inject constructor(
             productCode = data?.productCode ?: EMPTY_STRING,
             createdAt = data?.createdAt ?: EMPTY_STRING,
             modifiedAt = data?.modifiedAt ?: EMPTY_STRING,
-            owner = ownerApiModelMapper.map(data?.owner),
+            userShort = userShortApiModelMapper.map(data?.userShort),
             clothesBrand = clothesBrandApiModelMapper.map(data?.clothesBrand),
         )
     }

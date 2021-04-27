@@ -4,7 +4,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
-import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.outfits.DeleteOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
@@ -54,19 +53,6 @@ class CollectionDetailPresenter @Inject constructor(
                     displayMessage(msg = errorHelper.processError(e))
                     hideProgress()
                 }
-            }
-        })
-    }
-
-    override fun getOwner(token: String, userId: String) {
-        getUserByIdUseCase.initParams(token, userId)
-        getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
-            override fun onSuccess(t: UserModel) {
-                view.processOwner(userModel = t)
-            }
-
-            override fun onError(e: Throwable) {
-               view.displayMessage(msg = errorHelper.processError(e))
             }
         })
     }

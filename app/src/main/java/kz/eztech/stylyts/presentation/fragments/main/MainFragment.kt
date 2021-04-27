@@ -136,9 +136,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         val bundle = Bundle()
-        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author)
+        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author.id)
 
-        findNavController().navigate(R.id.profileFragment, bundle)
+        findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
     }
 
     private fun onChangeCollectionClicked(item: Any?) {
@@ -182,7 +182,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     private fun onContextMenuClicked(item: Any?) {
         item as PostModel
 
-        val isOwn = item.author == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+        val isOwn = item.author.id == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
         CollectionContextDialog(isOwn, item).apply {
             setChoiceListener(listener = this@MainFragment)

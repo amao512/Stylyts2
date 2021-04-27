@@ -6,7 +6,6 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetHomePagePostsUseCase
-import kz.eztech.stylyts.domain.usecases.posts.GetPostsUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import javax.inject.Inject
@@ -16,7 +15,6 @@ import javax.inject.Inject
  */
 class MainLinePresenter @Inject constructor(
 	private val errorHelper: ErrorHelper,
-	private val getPostsUseCase: GetPostsUseCase,
 	private val getHomePagePostsUseCase: GetHomePagePostsUseCase,
 	private val deletePostUseCase: DeletePostUseCase
 ) : MainContract.Presenter {
@@ -24,7 +22,6 @@ class MainLinePresenter @Inject constructor(
 	private lateinit var view: MainContract.View
 
 	override fun disposeRequests() {
-		getPostsUseCase.clear()
 		getHomePagePostsUseCase.clear()
 		deletePostUseCase.clear()
 	}
@@ -36,8 +33,8 @@ class MainLinePresenter @Inject constructor(
 	override fun getPosts(token: String) {
 		view.displayProgress()
 
-		getPostsUseCase.initParams(token)
-		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
+		getHomePagePostsUseCase.initParams(token)
+		getHomePagePostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				view.processViewAction {
 					processPostResults(resultsModel = t)

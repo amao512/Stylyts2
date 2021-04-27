@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.data.mappers.outfits
 
 import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
-import kz.eztech.stylyts.data.mappers.OwnerApiModelMapper
+import kz.eztech.stylyts.data.mappers.user.UserShortApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class OutfitApiModelMapper @Inject constructor(
     private val clothesApiModelMapper: ClothesApiModelMapper,
-    private val ownerApiModelMapper: OwnerApiModelMapper,
+    private val userShortApiModelMapper: UserShortApiModelMapper,
     private val clothesLocationApiModelMapper: ClothesLocationApiModelMapper
 ) {
 
@@ -20,7 +20,7 @@ class OutfitApiModelMapper @Inject constructor(
             OutfitModel(
                 id = it.id ?: 0,
                 clothes = clothesApiModelMapper.map(it.clothes),
-                author = ownerApiModelMapper.map(it.author),
+                author = userShortApiModelMapper.map(it.author),
                 title = it.title ?: EMPTY_STRING,
                 text = it.text ?: EMPTY_STRING,
                 gender = it.gender ?: "M",
@@ -42,7 +42,7 @@ class OutfitApiModelMapper @Inject constructor(
         return OutfitModel(
             id = data?.id ?: 0,
             clothes = clothesApiModelMapper.map(data?.clothes),
-            author = ownerApiModelMapper.map(data?.author),
+            author = userShortApiModelMapper.map(data?.author),
             title = data?.title ?: EMPTY_STRING,
             text = data?.text ?: EMPTY_STRING,
             gender = data?.gender ?: "M",

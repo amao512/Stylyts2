@@ -132,24 +132,24 @@ class MainImageHolder(
 
     private fun loadUserPhoto(postModel: PostModel) {
         with (itemView) {
-            postModel.owner?.let {
-                text_view_item_main_image_partner_name.text = SPACE_TEXT_FORMAT.format(
-                    it.firstName,
-                    it.lastName
-                )
+            val author = postModel.author
 
-                if (it.avatar.isBlank()) {
-                    shapeable_image_view_item_main_image_profile_avatar.hide()
-                    text_view_item_main_image_short_name.show()
-                    text_view_item_main_image_short_name.text = getShortName(it.firstName, it.lastName)
-                } else {
-                    text_view_item_main_image_short_name.hide()
+            text_view_item_main_image_partner_name.text = SPACE_TEXT_FORMAT.format(
+                author.firstName,
+                author.lastName
+            )
 
-                    Glide.with(shapeable_image_view_item_main_image_profile_avatar.context)
-                        .load(it.avatar)
-                        .centerCrop()
-                        .into(shapeable_image_view_item_main_image_profile_avatar)
-                }
+            if (author.avatar.isBlank()) {
+                shapeable_image_view_item_main_image_profile_avatar.hide()
+                text_view_item_main_image_short_name.show()
+                text_view_item_main_image_short_name.text = getShortName(author.firstName, author.lastName)
+            } else {
+                text_view_item_main_image_short_name.hide()
+
+                Glide.with(shapeable_image_view_item_main_image_profile_avatar.context)
+                    .load(author.avatar)
+                    .centerCrop()
+                    .into(shapeable_image_view_item_main_image_profile_avatar)
             }
         }
     }

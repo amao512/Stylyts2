@@ -2,14 +2,14 @@ package kz.eztech.stylyts.domain.models.outfits
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import kz.eztech.stylyts.domain.models.OwnerModel
+import kz.eztech.stylyts.domain.models.user.UserShortModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 
 @Parcelize
 data class OutfitModel(
     val id: Int,
     val clothes: List<ClothesModel>,
-    val author: OwnerModel,
+    val author: UserShortModel,
     var title: String,
     var text: String,
     val gender: String,

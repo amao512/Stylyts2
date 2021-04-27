@@ -49,14 +49,21 @@
             android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
             app:destination="@id/nav_create_collection"
             />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            />
     </fragment>
 
     <include app:graph="@navigation/nav_create_collection" />
+
     <fragment
         android:id="@+id/userCommentsFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.users.UserCommentsFragment"
         android:label="fragment_user_comments"
         tools:layout="@layout/fragment_user_comments"
         />
+
+    <include app:graph="@navigation/nav_profile" />
 
 </navigation>

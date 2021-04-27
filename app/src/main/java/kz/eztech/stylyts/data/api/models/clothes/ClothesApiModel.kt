@@ -2,7 +2,7 @@ package kz.eztech.stylyts.data.api.models.clothes
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import kz.eztech.stylyts.data.api.models.OwnerApiModel
+import kz.eztech.stylyts.data.api.models.user.UserShortApiModel
 
 data class ClothesApiModel(
     @SerializedName("id")
@@ -52,7 +52,7 @@ data class ClothesApiModel(
     val modifiedAt: String?,
     @SerializedName("owner")
     @Expose
-    val owner: OwnerApiModel?,
+    val userShort: UserShortApiModel?,
     @SerializedName("clothes_brand")
     @Expose
     val clothesBrand: ClothesBrandApiModel?,

@@ -5,7 +5,7 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PointF
 import androidx.annotation.IntRange
-import kz.eztech.stylyts.domain.models.MotionItemModel
+import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.presentation.utils.stick.MathUtils.pointInTriangle
 
 /**

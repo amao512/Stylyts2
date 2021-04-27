@@ -3,6 +3,7 @@ package kz.eztech.stylyts.data.api.models.posts
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
+import kz.eztech.stylyts.data.api.models.user.UserShortApiModel
 
 data class PostApiModel(
     @SerializedName("id")
@@ -13,7 +14,7 @@ data class PostApiModel(
     val description: String?,
     @SerializedName("author")
     @Expose
-    val author: Int?,
+    val author: UserShortApiModel?,
     @SerializedName("images")
     @Expose
     val images: List<String>?,

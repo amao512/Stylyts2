@@ -18,7 +18,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
-import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.models.user.UserShortModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
@@ -183,14 +183,11 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun processOutfit(outfitModel: OutfitModel) {
         additionalAdapter.updateList(list = outfitModel.clothes)
-        presenter.getOwner(
-            token = getTokenFromSharedPref(),
-            userId = outfitModel.author.id.toString()
-        )
-        loadImages(images = arrayListOf(outfitModel.coverPhoto))
-
         currentOutfitModel = outfitModel
         isOwn = outfitModel.author.id == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+
+        processAuthor(userShortModel = outfitModel.author)
+        loadImages(images = arrayListOf(outfitModel.coverPhoto))
 
         text_view_fragment_collection_detail_comments_cost.text = getString(
             R.string.price_tenge_text_format,
@@ -205,38 +202,33 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun processPost(postModel: PostModel) {
         additionalAdapter.updateList(list = postModel.clothes)
-
-        presenter.getOwner(
-            token = getTokenFromSharedPref(),
-            userId = postModel.author.toString()
-        )
-
         currentPostModel = postModel
-        isOwn = postModel.author == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+        isOwn = postModel.author.id == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
+        processAuthor(userShortModel = postModel.author)
         loadImages(images = postModel.images)
         loadTags(postModel = postModel)
     }
 
-    override fun processOwner(userModel: UserModel) {
+    private fun processAuthor(userShortModel: UserShortModel) {
         text_view_fragment_collection_detail_partner_name.text = getString(
             R.string.full_name_text_format,
-            userModel.firstName,
-            userModel.lastName
+            userShortModel.firstName,
+            userShortModel.lastName
         )
 
-        if (userModel.avatar.isBlank()) {
+        if (userShortModel.avatar.isBlank()) {
             shapeable_image_view_fragment_collection_detail_profile_avatar.hide()
             text_view_text_view_fragment_collection_detail_short_name.show()
             text_view_text_view_fragment_collection_detail_short_name.text = getShortName(
-                firstName = userModel.firstName,
-                lastName = userModel.lastName
+                firstName = userShortModel.firstName,
+                lastName = userShortModel.lastName
             )
         } else {
             text_view_text_view_fragment_collection_detail_short_name.hide()
 
             Glide.with(shapeable_image_view_fragment_collection_detail_profile_avatar.context)
-                .load(userModel.avatar)
+                .load(userShortModel.avatar)
                 .centerCrop()
                 .into(shapeable_image_view_fragment_collection_detail_profile_avatar)
         }
@@ -404,10 +396,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
         when (currentMode) {
             OUTFIT_MODE -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, currentOutfitModel.author.id)
-            POST_MODE -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, currentPostModel.author)
+            POST_MODE -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, currentPostModel.author.id)
         }
 
-        findNavController().navigate(R.id.profileFragment, bundle)
+        findNavController().navigate(R.id.nav_profile, bundle)
     }
 
     private fun onChangeButtonClick() {
