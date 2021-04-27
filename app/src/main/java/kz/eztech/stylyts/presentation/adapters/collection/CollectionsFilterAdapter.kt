@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.collection
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.presentation.adapters.collection.holders.CollectionFilterHolder
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack

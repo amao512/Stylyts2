@@ -4,7 +4,7 @@ import android.view.View
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import kotlinx.android.synthetic.main.item_collection_filter.view.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.show

@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.domain.usecases.shop
+package kz.eztech.stylyts.domain.usecases.outfits
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
@@ -10,10 +10,7 @@ import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Named
 
-/**
- * Created by Ruslan Erdenoff on 25.12.2020.
- */
-class SaveOutfitConstructorUseCase @Inject constructor(
+class UpdateOutfitUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private var outfitsDomainRepository: OutfitsDomainRepository
@@ -26,8 +23,9 @@ class SaveOutfitConstructorUseCase @Inject constructor(
         return outfitsDomainRepository.saveOutfit(token, data)
     }
 
-    fun initParam(
+    fun initParams(
         token: String,
+        id: Int,
         data: ArrayList<MultipartBody.Part>
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)

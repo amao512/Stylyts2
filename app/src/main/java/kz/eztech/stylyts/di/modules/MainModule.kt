@@ -3,10 +3,8 @@ package kz.eztech.stylyts.di.modules
 import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.data.api.network.MainApi
-import kz.eztech.stylyts.data.repository.main.MainLentaRepository
 import kz.eztech.stylyts.data.repository.main.MainRepository
 import kz.eztech.stylyts.domain.repository.main.MainDomainRepository
-import kz.eztech.stylyts.domain.repository.main.MainLentaDomainRepository
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -22,10 +20,5 @@ class MainModule {
     @Provides
     fun provideMainRepository(mainRepository: MainRepository): MainDomainRepository {
         return mainRepository
-    }
-
-    @Provides
-    fun providesMainLentaRepository(mainLentaRepository: MainLentaRepository): MainLentaDomainRepository {
-        return mainLentaRepository
     }
 }

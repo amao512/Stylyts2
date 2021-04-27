@@ -1,11 +1,9 @@
 package kz.eztech.stylyts.data.repository.profile
 
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.network.ProfileApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
-import kz.eztech.stylyts.domain.models.PublicationModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.profile.ProfileDomainRepository
 import okhttp3.MultipartBody
@@ -71,17 +69,6 @@ class ProfileRepository @Inject constructor(
         ).map {
             when (it.isSuccessful) {
                 true -> userApiModelMapper.map(data = it.body())
-                else -> throw NetworkException(it)
-            }
-        }
-    }
-
-    override fun getMyPublications(token: String): Single<ResultsApiModel<PublicationModel>> {
-        return api.getMyCollections(
-            token = token
-        ).map {
-            when (it.isSuccessful) {
-                true -> it.body()
                 else -> throw NetworkException(it)
             }
         }

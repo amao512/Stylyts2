@@ -9,8 +9,6 @@ import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesStylesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
-import kz.eztech.stylyts.domain.usecases.collection_constructor.*
-import kz.eztech.stylyts.domain.usecases.shop.SaveOutfitConstructorUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorContract
 import javax.inject.Inject
@@ -20,12 +18,6 @@ import javax.inject.Inject
  */
 class CollectionConstructorPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
-    private val getCategoryUseCase: GetCategoryUseCase,
-    private val getStylesUseCase: GetStylesUseCase,
-    private val getFilteredItemsUseCase: GetFilteredItemsUseCase,
-    private val saveOutfitConstructorUseCase: SaveOutfitConstructorUseCase,
-    private val updateCollectionUseCase: UpdateCollectionUseCase,
-    private val saveCollectionToMeUseCase: SaveCollectionToMeUseCase,
     private val getClothesTypesUseCase: GetClothesTypesUseCase,
     private val getClothesUseCase: GetClothesUseCase,
     private val getClothesStylesUseCase: GetClothesStylesUseCase
@@ -34,11 +26,6 @@ class CollectionConstructorPresenter @Inject constructor(
     private lateinit var view: CollectionConstructorContract.View
 
     override fun disposeRequests() {
-        getCategoryUseCase.clear()
-        getStylesUseCase.clear()
-        saveOutfitConstructorUseCase.clear()
-        getFilteredItemsUseCase.clear()
-        updateCollectionUseCase.clear()
         getClothesTypesUseCase.clear()
         getClothesUseCase.clear()
         getClothesStylesUseCase.clear()
@@ -103,25 +90,6 @@ class CollectionConstructorPresenter @Inject constructor(
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {
                 view.processViewAction {
                     processStylesResults(resultsModel = t)
-                    hideProgress()
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                view.processViewAction {
-                    displayMessage(errorHelper.processError(e))
-                    hideProgress()
-                }
-            }
-        })
-    }
-
-    override fun saveCollectionToMe(token: String, id: Int) {
-        saveCollectionToMeUseCase.initParam(token, id)
-        saveCollectionToMeUseCase.execute(object : DisposableSingleObserver<Unit>() {
-            override fun onSuccess(t: Unit) {
-                view.processViewAction {
-                    view.processSuccessSaving(outfitModel = null)
                     hideProgress()
                 }
             }

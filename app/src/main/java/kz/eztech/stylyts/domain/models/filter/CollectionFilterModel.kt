@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.domain.models
+package kz.eztech.stylyts.domain.models.filter
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.

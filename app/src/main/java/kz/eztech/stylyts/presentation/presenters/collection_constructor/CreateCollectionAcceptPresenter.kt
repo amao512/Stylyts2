@@ -7,8 +7,8 @@ import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.posts.CreatePostUseCase
-import kz.eztech.stylyts.domain.usecases.collection_constructor.UpdateCollectionUseCase
-import kz.eztech.stylyts.domain.usecases.shop.SaveOutfitConstructorUseCase
+import kz.eztech.stylyts.domain.usecases.outfits.SaveOutfitUseCase
+import kz.eztech.stylyts.domain.usecases.outfits.UpdateOutfitUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CreateCollectionAcceptContract
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -20,8 +20,8 @@ import javax.inject.Inject
 class CreateCollectionAcceptPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val createPostUseCase: CreatePostUseCase,
-    private val saveOutfitConstructorUseCase: SaveOutfitConstructorUseCase,
-    private val updateCollectionUseCase: UpdateCollectionUseCase,
+    private val saveOutfitUseCase: SaveOutfitUseCase,
+    private val updateOutfitUseCase: UpdateOutfitUseCase,
 ) : CreateCollectionAcceptContract.Presenter {
 
     private lateinit var view: CreateCollectionAcceptContract.View
@@ -61,11 +61,11 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     override fun saveCollection(token: String, model: OutfitCreateModel, data: File) {
         view.displayProgress()
 
-        saveOutfitConstructorUseCase.initParam(
+        saveOutfitUseCase.initParam(
             token = token,
             data = getClothesMultipartList(model, data)
         )
-        saveOutfitConstructorUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
+        saveOutfitUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {
                 view.processViewAction {
                     processSuccessSaving()
@@ -90,13 +90,13 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     ) {
         view.displayProgress()
 
-        updateCollectionUseCase.initParam(
+        updateOutfitUseCase.initParams(
             token = token,
             id = id,
             data = getClothesMultipartList(model, data)
         )
-        updateCollectionUseCase.execute(object : DisposableSingleObserver<Unit>() {
-            override fun onSuccess(t: Unit) {
+        updateOutfitUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
+            override fun onSuccess(t: OutfitModel) {
                 view.processViewAction {
                     processSuccessSaving()
                     hideProgress()

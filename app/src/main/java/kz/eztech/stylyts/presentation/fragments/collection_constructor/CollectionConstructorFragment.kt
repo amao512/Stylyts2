@@ -27,15 +27,14 @@ import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopCategoryAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
@@ -290,18 +289,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		itemAdapter.removeChosenPosition(clothesId = motionEntity.item.item.id)
 
 		Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
-	}
-
-	override fun processSuccessSaving(outfitModel: OutfitModel?) {
-		outfitModel?.let {
-			when (currentSaveMode) {
-				1 -> successAddedNavigateUp()
-				2 -> saveCollection(model = it)
-				else -> successAddedNavigateUp()
-			}
-		} ?: run {
-			successAddedNavigateUp()
-		}
 	}
 
 	private fun processInputImageToPlace(item: Any?) {
@@ -588,15 +575,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun successAddedNavigateUp() {
 		displayMessage(msg = getString(R.string.collection_constructor_success_added))
 		findNavController().navigateUp()
-	}
-
-	private fun saveCollection(model: OutfitModel) {
-		model.id.let {
-			presenter.saveCollectionToMe(
-				token = getTokenFromSharedPref(),
-				id = it
-			)
-		}
 	}
 
 	private fun loadWithGlide(

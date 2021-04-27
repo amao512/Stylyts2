@@ -63,6 +63,7 @@ interface ApplicationComponent {
 
     fun inject(application: StylytsApp)
     fun inject(activity: MainActivity)
+
     fun inject(fragment: RegistrationFragment)
     fun inject(fragment: LoginFragment)
     fun inject(fragment: RefreshPasswordFragment)
@@ -71,8 +72,7 @@ interface ApplicationComponent {
     fun inject(fragment: ProfileFragment)
     fun inject(fragment: CollectionConstructorFragment)
     fun inject(fragment: MainFragment)
-    fun inject(fragmentClothes: ClothesDetailFragment)
-    fun inject(dialog: PhotoChooserDialog)
+    fun inject(fragment: ClothesDetailFragment)
     fun inject(fragment: CollectionItemFragment)
     fun inject(fragment: ConstructorFilterDialog)
     fun inject(fragment: CleanBackgroundFragment)
@@ -85,12 +85,13 @@ interface ApplicationComponent {
     fun inject(fragment: UserSubsItemFragment)
     fun inject(fragment: CollectionsFragment)
     fun inject(fragment: CollectionDetailFragment)
+    fun inject(fragment: CreateCollectionAcceptFragment)
 
+    fun inject(dialog: PhotoChooserDialog)
     fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)
     fun inject(dialog: EditProfileDialog)
     fun inject(dialog: ExitDialog)
-    fun inject(fragment: CreateCollectionAcceptFragment)
     fun inject(dialog: FilterDialog)
     fun inject(dialog: SaveClothesAcceptDialog)
 }

@@ -4,7 +4,6 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 
 /**
@@ -16,8 +15,6 @@ interface CollectionConstructorContract {
         fun processTypesResults(resultsModel: ResultsModel<kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel>)
 
         fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>)
-
-        fun processSuccessSaving(outfitModel: OutfitModel?)
 
         fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
     }
@@ -32,10 +29,5 @@ interface CollectionConstructorContract {
         )
 
         fun getStyles(token: String)
-
-        fun saveCollectionToMe(
-            token: String,
-            id: Int
-        )
     }
 }

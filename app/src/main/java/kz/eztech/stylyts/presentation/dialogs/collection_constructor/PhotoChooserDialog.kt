@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.view.*
 import kotlinx.android.synthetic.main.dialog_photo_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
