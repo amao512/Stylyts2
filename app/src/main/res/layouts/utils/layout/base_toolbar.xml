@@ -18,8 +18,8 @@
         android:layout_marginStart="@dimen/margin_size_12x"
         android:background="?attr/selectableItemBackground"
         android:paddingVertical="@dimen/padding_size_12x"
+        android:paddingStart="0dp"
         android:paddingEnd="@dimen/padding_size_12x"
-        android:visibility="gone"
         tools:src="@drawable/ic_baseline_keyboard_arrow_left_24"
         />
 
@@ -29,11 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start|center"
-        android:layout_marginStart="@dimen/margin_size_12x"
         android:drawablePadding="@dimen/padding_size_12x"
         android:gravity="center"
-        android:paddingVertical="@dimen/padding_size_8x"
-        android:paddingEnd="@dimen/padding_size_8x"
+        android:padding="@dimen/padding_size_8x"
+        android:background="?attr/selectableItemBackground"
         android:text="@string/back"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_left_24"
@@ -64,8 +63,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|end"
-        android:layout_marginEnd="@dimen/margin_size_12x"
         android:background="?attr/selectableItemBackground"
+        android:padding="@dimen/padding_size_12x"
         android:visibility="gone"
         tools:src="@drawable/ic_camera"
         />
@@ -76,7 +75,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|end"
-        android:layout_marginEnd="@dimen/margin_size_12x"
+        android:padding="@dimen/padding_size_12x"
+        android:background="?attr/selectableItemBackground"
         android:visibility="gone"
         tools:text="SomeText"
         />
