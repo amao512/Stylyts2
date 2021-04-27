@@ -9,10 +9,11 @@ import kotlinx.android.synthetic.main.fragment_collections.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsViewPagerAdapter
@@ -21,17 +22,23 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionsContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsPresenter
+import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.View,
-    UniversalViewClickListener {
+    UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: CollectionsPresenter
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var pagerAdapter: CollectionsViewPagerAdapter
+
+    private val shopItemViewModel: ShopItemViewModel by inject()
+
+    private var isOutfits: Boolean = true
 
     override fun getLayoutId(): Int = R.layout.fragment_collections
 
@@ -39,12 +46,13 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
     override fun customizeActionBar() {
         with(include_toolbar) {
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
             toolbar_left_corner_action_image_button.show()
-            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_camera)
-            toolbar_back_text_view.hide()
-            toolbar_title_text_view.hide()
-            toolbar_right_corner_action_image_button.show()
-            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_create_collection)
+
+            setRightToolbarButtons()
+            base_toolbar_right_double_buttons_left_image_button.setOnClickListener(this@CollectionsFragment)
+            base_toolbar_right_double_buttons_right_image_button.setOnClickListener(this@CollectionsFragment)
+            base_toolbar_double_right_buttons_linear_layout.show()
 
             customizeActionToolBar(this, getString(R.string.fragment_registration_appbar_title))
         }
@@ -61,10 +69,13 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        pagerAdapter = CollectionsViewPagerAdapter(this, this)
+        pagerAdapter = CollectionsViewPagerAdapter(
+            fa = this,
+            itemClickListener = this
+        )
 
         filterAdapter = CollectionsFilterAdapter()
-        filterAdapter.itemClickListener = this
+        filterAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
@@ -94,16 +105,48 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         item: Any?
     ) {
         when (item) {
-            is OutfitModel -> {
-                val bundle = Bundle()
-                bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
-
-                findNavController().navigate(
-                    R.id.action_collectionsFragment_to_collectionDetailFragment,
-                    bundle
-                )
-            }
+            is OutfitModel -> onOutfitClicked(item)
+            is PostModel -> onPostClicked(item)
             is CollectionFilterModel -> filterAdapter.onChooseItem(position)
+        }
+    }
+
+    private fun onOutfitClicked(outfitModel: OutfitModel) {
+        val bundle = Bundle()
+
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, outfitModel.id)
+
+        findNavController().navigate(
+            R.id.action_collectionsFragment_to_collectionDetailFragment,
+            bundle
+        )
+    }
+
+    private fun onPostClicked(postModel: PostModel) {
+        val bundle = Bundle()
+
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, postModel.id)
+
+        findNavController().navigate(
+            R.id.action_collectionsFragment_to_collectionDetailFragment,
+            bundle
+        )
+    }
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.base_toolbar_right_double_buttons_left_image_button -> {
+                if (isOutfits) {
+                    onRightButtonsClick()
+                }
+            }
+            R.id.base_toolbar_right_double_buttons_right_image_button -> {
+                if (!isOutfits) {
+                    onRightButtonsClick()
+                }
+            }
         }
     }
 
@@ -111,6 +154,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
     override fun processPostInitialization() {
         presenter.getClothesStyles(token = getTokenFromSharedPref())
+        shopItemViewModel.setCollectionMode(isOutfits)
     }
 
     override fun disposeRequests() {}
@@ -133,6 +177,33 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         }
 
         filterAdapter.updateList(list = filterList)
+    }
+
+    private fun onRightButtonsClick() {
+        isOutfits = !isOutfits
+        shopItemViewModel.setCollectionMode(isOutfits)
+        setRightToolbarButtons()
+        setStylesCondition()
+    }
+
+    private fun setRightToolbarButtons() {
+        with (include_toolbar) {
+            if (isOutfits) {
+                base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera_disabled)
+                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfits_focused)
+            } else {
+                base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera_focused)
+                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfits_disabled)
+            }
+        }
+    }
+
+    private fun setStylesCondition() {
+        if (isOutfits) {
+            recycler_view_fragment_collections_filter_list.show()
+        } else {
+            recycler_view_fragment_collections_filter_list.hide()
+        }
     }
 
     private fun getTokenFromSharedPref(): String {

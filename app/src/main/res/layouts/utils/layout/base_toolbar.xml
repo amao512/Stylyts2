@@ -20,6 +20,7 @@
         android:paddingVertical="@dimen/padding_size_12x"
         android:paddingStart="0dp"
         android:paddingEnd="@dimen/padding_size_12x"
+        android:visibility="gone"
         tools:src="@drawable/ic_baseline_keyboard_arrow_left_24"
         />
 
@@ -29,10 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start|center"
+        android:background="?attr/selectableItemBackground"
         android:drawablePadding="@dimen/padding_size_12x"
         android:gravity="center"
         android:padding="@dimen/padding_size_8x"
-        android:background="?attr/selectableItemBackground"
         android:text="@string/back"
         android:visibility="gone"
         app:drawableStartCompat="@drawable/ic_baseline_keyboard_arrow_left_24"
@@ -75,8 +76,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|end"
-        android:padding="@dimen/padding_size_12x"
         android:background="?attr/selectableItemBackground"
+        android:padding="@dimen/padding_size_12x"
         android:visibility="gone"
         tools:text="SomeText"
         />
@@ -106,6 +107,40 @@
             android:layout_height="wrap_content"
             tools:text="Subtitle"
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/base_toolbar_double_right_buttons_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|end"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
+
+        <ImageButton
+            android:id="@+id/base_toolbar_right_double_buttons_left_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="@dimen/padding_size_12x"
+            android:paddingStart="@dimen/padding_size_12x"
+            android:paddingEnd="@dimen/padding_size_10x"
+            android:src="@drawable/ic_camera_disabled"
+            />
+
+        <ImageButton
+            android:id="@+id/base_toolbar_right_double_buttons_right_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="@dimen/padding_size_12x"
+            android:paddingStart="@dimen/padding_size_10x"
+            android:paddingEnd="@dimen/padding_size_12x"
+            android:src="@drawable/ic_outfits_focused"
+            />
+
     </LinearLayout>
 
     <View

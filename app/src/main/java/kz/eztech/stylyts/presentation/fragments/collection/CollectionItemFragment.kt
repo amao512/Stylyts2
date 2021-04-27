@@ -7,15 +7,18 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.collection.GridImageCollectionItemAdapter
+import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsItemPresenter
+import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(),
@@ -23,7 +26,9 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     UniversalViewClickListener {
 
     @Inject lateinit var presenter: CollectionsItemPresenter
-    private lateinit var adapter: GridImageCollectionItemAdapter
+    private lateinit var adapter: GridImageAdapter
+
+    private val shopItemViewModel: ShopItemViewModel by inject()
 
     private var itemClickListener: UniversalViewClickListener? = null
 
@@ -48,7 +53,7 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        adapter = GridImageCollectionItemAdapter()
+        adapter = GridImageAdapter()
         adapter.setOnClickListener(this)
     }
 
@@ -71,13 +76,24 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
             1 -> map["gender"] = "F"
         }
 
-        presenter.getOutfits(
-            token = getTokenFromSharedPref(),
-            map = map
-        )
+        shopItemViewModel.isOutfits.observe(viewLifecycleOwner, {
+            when (it) {
+                true -> presenter.getOutfits(
+                    token = getTokenFromSharedPref(),
+                    map = map
+                )
+                false -> {
+                    presenter.getPosts(token = getTokenFromSharedPref())
+                }
+            }
+        })
     }
 
     override fun processOutfits(resultsModel: ResultsModel<OutfitModel>) {
+        adapter.updateList(list = resultsModel.results)
+    }
+
+    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         adapter.updateList(list = resultsModel.results)
     }
 
