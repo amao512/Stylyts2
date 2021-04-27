@@ -50,8 +50,8 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
             toolbar_left_corner_action_image_button.show()
 
             setRightToolbarButtons()
-            base_toolbar_right_double_buttons_left_image_button.setOnClickListener(this@CollectionsFragment)
-            base_toolbar_right_double_buttons_right_image_button.setOnClickListener(this@CollectionsFragment)
+            base_toolbar_right_double_buttons_left_button.setOnClickListener(this@CollectionsFragment)
+            base_toolbar_right_double_buttons_right_button.setOnClickListener(this@CollectionsFragment)
             base_toolbar_double_right_buttons_linear_layout.show()
 
             customizeActionToolBar(this, getString(R.string.fragment_registration_appbar_title))
@@ -137,12 +137,12 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.base_toolbar_right_double_buttons_left_image_button -> {
+            R.id.base_toolbar_right_double_buttons_left_button -> {
                 if (isOutfits) {
                     onRightButtonsClick()
                 }
             }
-            R.id.base_toolbar_right_double_buttons_right_image_button -> {
+            R.id.base_toolbar_right_double_buttons_right_button -> {
                 if (!isOutfits) {
                     onRightButtonsClick()
                 }
@@ -190,10 +190,10 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         with (include_toolbar) {
             if (isOutfits) {
                 base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera_disabled)
-                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfits_focused)
+                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfit_enabled)
             } else {
-                base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera_focused)
-                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfits_disabled)
+                base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera)
+                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfit_disabled)
             }
         }
     }

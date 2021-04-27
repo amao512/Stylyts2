@@ -119,27 +119,41 @@
         android:visibility="gone"
         >
 
-        <ImageButton
-            android:id="@+id/base_toolbar_right_double_buttons_left_image_button"
+        <FrameLayout
+            android:id="@+id/base_toolbar_right_double_buttons_left_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
             android:paddingVertical="@dimen/padding_size_12x"
             android:paddingStart="@dimen/padding_size_12x"
             android:paddingEnd="@dimen/padding_size_10x"
-            android:src="@drawable/ic_camera_disabled"
-            />
+            >
 
-        <ImageButton
-            android:id="@+id/base_toolbar_right_double_buttons_right_image_button"
+            <ImageView
+                android:id="@+id/base_toolbar_right_double_buttons_left_image_button"
+                android:layout_width="@dimen/icon_size_24x"
+                android:layout_height="@dimen/icon_size_24x"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_camera_disabled"
+                />
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/base_toolbar_right_double_buttons_right_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
             android:paddingVertical="@dimen/padding_size_12x"
             android:paddingStart="@dimen/padding_size_10x"
             android:paddingEnd="@dimen/padding_size_12x"
-            android:src="@drawable/ic_outfits_focused"
-            />
+            >
+
+            <ImageView
+                android:id="@+id/base_toolbar_right_double_buttons_right_image_button"
+                android:layout_width="@dimen/icon_size_24x"
+                android:layout_height="@dimen/icon_size_24x"
+                android:background="?attr/selectableItemBackground"
+                android:src="@drawable/ic_outfit_disabled"
+                />
+        </FrameLayout>
 
     </LinearLayout>
 
