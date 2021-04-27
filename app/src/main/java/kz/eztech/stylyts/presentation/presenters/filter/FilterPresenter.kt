@@ -8,6 +8,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
@@ -47,7 +48,7 @@ class FilterPresenter @Inject constructor(
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 getPreparedCategories(
                     token = token,
-                    resultsApi = t,
+                    resultsModel = t,
                     onCategories = {
                         view.processViewAction {
                             processClothesCategories(list = it)
@@ -74,21 +75,29 @@ class FilterPresenter @Inject constructor(
         getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
                 view.processViewAction {
-                    val preparedResults: MutableList<ClothesBrandModel> = mutableListOf()
+                    val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
 
                     preparedResults.add(
-                        ClothesBrandModel(
+                        FilterCheckModel(
                             id = 0,
-                            title = title,
-                            website = EMPTY_STRING,
-                            logo = EMPTY_STRING,
-                            createdAt = EMPTY_STRING,
-                            modifiedAt = EMPTY_STRING
+                            item = ClothesBrandModel(
+                                id = 0,
+                                title = title,
+                                website = EMPTY_STRING,
+                                logo = EMPTY_STRING,
+                                createdAt = EMPTY_STRING,
+                                modifiedAt = EMPTY_STRING
+                            )
                         )
                     )
 
                     t.results.map {
-                        preparedResults.add(it)
+                        preparedResults.add(
+                            FilterCheckModel(
+                                id = it.id,
+                                item = it
+                            )
+                        )
                     }
 
                     val preparedResultsModel = ResultsModel(
@@ -136,29 +145,39 @@ class FilterPresenter @Inject constructor(
 
     private fun getPreparedCategories(
         token: String,
-        resultsApi: ResultsModel<ClothesTypeModel>,
+        resultsModel: ResultsModel<ClothesTypeModel>,
         onCategories: (List<CategoryFilterSingleCheckGenre>) -> Unit
     ) {
         val list: MutableList<CategoryFilterSingleCheckGenre> = mutableListOf()
 
-        resultsApi.results.map { type ->
+        resultsModel.results.map { type ->
             getClothesCategoriesByType(
                 token = token,
                 typeId = type.id,
                 onResults = { resultsModel ->
-                    val preparedResults: MutableList<ClothesCategoryModel> = mutableListOf()
+                    val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
 
                     preparedResults.add(
-                        ClothesCategoryModel(
+                        FilterCheckModel(
                             id = type.id,
-                            title = type.title,
-                            clothesType = type,
-                            bodyPart = type.id
+                            item = ClothesCategoryModel(
+                                id = type.id,
+                                title = type.title,
+                                clothesType = type,
+                                bodyPart = type.id
+                            )
                         )
                     )
 
                     resultsModel.results.let {
-                        preparedResults.addAll(it)
+                        it.map { category ->
+                            preparedResults.add(
+                                FilterCheckModel(
+                                    id = category.id,
+                                    item = category
+                                )
+                            )
+                        }
 
                         list.add(
                             CategoryFilterSingleCheckGenre(

@@ -16,9 +16,10 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterItemModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
-import kz.eztech.stylyts.presentation.adapters.filter.CategoryFilterExpandableAdapter
+import kz.eztech.stylyts.presentation.adapters.filter.FilterExpandableAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
@@ -37,7 +38,7 @@ class FilterDialog(
 
     @Inject lateinit var presenter: FilterPresenter
     private lateinit var filterAdapter: FilterAdapter
-    private lateinit var categoryFilterExpandableAdapter: CategoryFilterExpandableAdapter
+    private lateinit var filterExpandableAdapter: FilterExpandableAdapter
     private lateinit var filterCheckAdapter: FilterCheckAdapter
     private lateinit var currentFilter: FilterModel
 
@@ -164,13 +165,13 @@ class FilterDialog(
     override fun hideProgress() {}
 
     override fun processClothesCategories(list: List<CategoryFilterSingleCheckGenre>) {
-        categoryFilterExpandableAdapter = CategoryFilterExpandableAdapter(
+        filterExpandableAdapter = FilterExpandableAdapter(
             categoryFilterSingleGroupList = list,
             itemClickListener = this
         )
     }
 
-    override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
+    override fun processClothesBrands(resultsModel: ResultsModel<FilterCheckModel>) {
         filterCheckAdapter.updateList(list = resultsModel.results)
     }
 
@@ -184,15 +185,8 @@ class FilterDialog(
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> closeFilterGroup()
-            R.id.toolbar_right_text_text_view -> {}
-            R.id.fragment_category_shop_results_button -> {
-                itemClickListener.onViewClicked(
-                    view = toolbar_left_corner_action_image_button,
-                    item = currentFilter,
-                    position = 0
-                )
-                dismiss()
-            }
+            R.id.toolbar_right_text_text_view -> onResetButtonClick()
+            R.id.fragment_category_shop_results_button -> onShowButtonClick()
         }
     }
 
@@ -203,8 +197,7 @@ class FilterDialog(
     ) {
         when (item) {
             is FilterItemModel -> openFilterGroup(position)
-            is ClothesCategoryModel -> selectClothesCategory(view, position, item)
-            is ClothesBrandModel -> selectClothesBrand(position)
+            is FilterCheckModel -> selectFilterItem(view, position, item)
         }
     }
 
@@ -234,13 +227,39 @@ class FilterDialog(
         }
     }
 
+    private fun onResetButtonClick() {
+        filterExpandableAdapter.onResetCheckedItems()
+        filterCheckAdapter.onResetCheckedItems()
+
+        currentFilter.typeIdList = emptyList()
+        currentFilter.categoryIdList = emptyList()
+        currentFilter.brandIdList = emptyList()
+
+        checkEmptyFilter()
+        setResetTextColor()
+    }
+
+    private fun selectFilterItem(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        item as FilterCheckModel
+
+        when (item.item) {
+            is ClothesCategoryModel -> selectClothesCategory(view, position, item)
+            is ClothesBrandModel -> selectClothesBrand(position)
+        }
+    }
+
     private fun selectClothesCategory(
         view: View,
         position: Int,
-        category: ClothesCategoryModel
+        filterCheck: FilterCheckModel
     ) {
-        categoryFilterExpandableAdapter.onChildCheckChanged(view, category.isChecked, position)
-        currentFilter.categoryIdList = categoryFilterExpandableAdapter.getCheckedCategoryList()
+        filterExpandableAdapter.onChildCheckChanged(view, filterCheck.isChecked, position)
+        currentFilter.categoryIdList = filterExpandableAdapter.getCheckedItemList()
+        currentFilter.typeIdList = filterExpandableAdapter.getCheckedFirstItemList()
 
         checkEmptyFilter()
         getFilterResults()
@@ -248,8 +267,8 @@ class FilterDialog(
     }
 
     private fun selectClothesBrand(position: Int) {
-        filterCheckAdapter.onCheckPosition(position)
-        currentFilter.brandIdList = filterCheckAdapter.getCheckedBrandList()
+        filterCheckAdapter.onMultipleCheckItem(position)
+        currentFilter.brandIdList = filterCheckAdapter.getCheckedItemList()
 
         checkEmptyFilter()
         getFilterResults()
@@ -258,7 +277,7 @@ class FilterDialog(
 
     private fun onCategoriesClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_categories))
-        dialog_filter_recycler_view.adapter = categoryFilterExpandableAdapter
+        dialog_filter_recycler_view.adapter = filterExpandableAdapter
     }
 
     private fun onBrandsClick() {
@@ -281,6 +300,15 @@ class FilterDialog(
             R.drawable.ic_baseline_keyboard_arrow_left_24
         )
         isOpenedFilter = true
+    }
+
+    private fun onShowButtonClick() {
+        itemClickListener.onViewClicked(
+            view = toolbar_left_corner_action_image_button,
+            item = currentFilter,
+            position = 0
+        )
+        dismiss()
     }
 
     private fun getFilterResults() {

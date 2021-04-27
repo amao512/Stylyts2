@@ -18,6 +18,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
 import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
@@ -128,9 +129,7 @@ class SaveClothesAcceptDialog(
         item: Any?
     ) {
         when (item) {
-            is ClothesTypeModel -> onTypeItemClicked(item, position)
-            is ClothesCategoryModel -> onCategoryItemClicked(item, position)
-            is ClothesStyleModel -> onStyleItemClicked(item, position)
+            is FilterCheckModel -> onFilterItemClicked(item, position)
         }
     }
 
@@ -236,7 +235,19 @@ class SaveClothesAcceptDialog(
 
     override fun processTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
         dialog_save_clothes_accept_list_title_text_view.text = getString(R.string.choose_clothes_type)
-        adapter.updateList(list = resultsModel.results)
+
+        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+
+        resultsModel.results.map {
+            preparedTypes.add(
+                FilterCheckModel(
+                    id = it.id,
+                    item = it
+                )
+            )
+        }
+
+        adapter.updateList(list = preparedTypes)
         listMode = TYPE_LIST_MODE
 
         setDoneButtonUnClickable()
@@ -245,7 +256,19 @@ class SaveClothesAcceptDialog(
 
     override fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>) {
         dialog_save_clothes_accept_list_title_text_view.text = getString(R.string.choose_clothes_category)
-        adapter.updateList(list = resultsModel.results)
+
+        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+
+        resultsModel.results.map {
+            preparedTypes.add(
+                FilterCheckModel(
+                    id = it.id,
+                    item = it
+                )
+            )
+        }
+
+        adapter.updateList(list = preparedTypes)
         listMode = CATEGORY_LIST_MODE
 
         setDoneButtonUnClickable()
@@ -254,7 +277,19 @@ class SaveClothesAcceptDialog(
 
     override fun processStyles(resultsModel: ResultsModel<ClothesStyleModel>) {
         dialog_save_clothes_accept_list_title_text_view.text = getString(R.string.choose_clothes_style)
-        adapter.updateList(list = resultsModel.results)
+
+        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+
+        resultsModel.results.map {
+            preparedTypes.add(
+                FilterCheckModel(
+                    id = it.id,
+                    item = it
+                )
+            )
+        }
+
+        adapter.updateList(list = preparedTypes)
         listMode = STYLE_LIST_MODE
 
         setListButtonsCondition()
@@ -328,6 +363,16 @@ class SaveClothesAcceptDialog(
         dialog_save_clothes_list_toolbar_back_text_view.isFocusable = false
     }
 
+    private fun onFilterItemClicked(
+        item: FilterCheckModel,
+        position: Int
+    ) {
+        when (item.item) {
+            is ClothesTypeModel -> onTypeItemClicked(item.item, position)
+            is ClothesCategoryModel -> onCategoryItemClicked(item.item, position)
+            is ClothesStyleModel -> onStyleItemClicked(item.item, position)
+        }
+    }
 
     private fun onTypeItemClicked(item: ClothesTypeModel, position: Int) {
         adapter.onSingleCheckItem(position)

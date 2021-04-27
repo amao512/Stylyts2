@@ -3,13 +3,12 @@ package kz.eztech.stylyts.domain.models.filter
 import android.os.Parcel
 import android.os.Parcelable
 import com.thoughtbot.expandablecheckrecyclerview.models.SingleCheckExpandableGroup
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 
 class CategoryFilterSingleCheckGenre : SingleCheckExpandableGroup {
 
     private var iconResId = 0
 
-    constructor(title: String, filterItems: List<ClothesCategoryModel>) : super(title, filterItems)
+    constructor(title: String, filterItems: List<FilterCheckModel>) : super(title, filterItems)
 
     constructor(parcel: Parcel) : super(parcel) {
         iconResId = parcel.readInt()

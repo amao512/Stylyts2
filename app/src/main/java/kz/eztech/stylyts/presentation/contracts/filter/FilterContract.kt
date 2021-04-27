@@ -1,9 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.filter
 
 import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
+import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -14,7 +14,7 @@ interface FilterContract {
 
         fun processClothesCategories(list: List<CategoryFilterSingleCheckGenre>)
 
-        fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>)
+        fun processClothesBrands(resultsModel: ResultsModel<FilterCheckModel>)
 
         fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
     }

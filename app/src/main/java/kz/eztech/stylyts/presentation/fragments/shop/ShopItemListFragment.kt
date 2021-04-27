@@ -13,6 +13,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
@@ -144,22 +145,33 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         item: Any?
     ) {
         when (view.id) {
-            R.id.item_filter_check_title_checked_text_view -> onCheckCategory(item, position)
+            R.id.item_filter_check_title_checked_text_view -> onCheckFilterItem(item, position)
         }
     }
 
     override fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>) {
-        val preparedResults: MutableList<ClothesCategoryModel> = mutableListOf()
+        val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
         preparedResults.add(
-            ClothesCategoryModel(
+            FilterCheckModel(
                 id = 0,
-                clothesType = clothesType,
-                title = clothesType.title,
-                bodyPart = clothesType.id
+                item = ClothesCategoryModel(
+                    id = 0,
+                    clothesType = clothesType,
+                    title = clothesType.title,
+                    bodyPart = clothesType.id
+                )
             )
         )
 
-        preparedResults.addAll(resultsModel.results)
+        resultsModel.results.map {
+            preparedResults.add(
+                FilterCheckModel(
+                    id = it.id,
+                    item = it
+                )
+            )
+        }
+
         filterCheckAdapter.updateList(list = preparedResults)
     }
 
@@ -178,21 +190,23 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         }
     }
 
-    private fun onCheckCategory(
+    private fun onCheckFilterItem(
         item: Any?,
         position: Int
     ) {
-        filterCheckAdapter.onCheckPosition(position)
-        currentFilter.categoryIdList = filterCheckAdapter.getCheckedCategoryList()
+        item as FilterCheckModel
 
-        with(item as ClothesCategoryModel) {
+        filterCheckAdapter.onMultipleCheckItem(position)
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemList()
+
+        with(item.item as ClothesCategoryModel) {
             selectedCategoryTitle = when (currentFilter.categoryIdList.size) {
                 1 -> {
                    if (item.isChecked) {
                        title
-                   } else item.clothesType.title
+                   } else item.item.clothesType.title
                 }
-                else -> item.clothesType.title
+                else -> item.item.clothesType.title
             }
 
             checkEmptyFilter()
@@ -224,7 +238,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
     private fun resetCategories() {
         if (isCheckedItem) {
-            filterCheckAdapter.onResetChecking()
+            filterCheckAdapter.onResetCheckedItems()
             currentFilter.categoryIdList = emptyList()
             selectedCategoryTitle = clothesType.title
 

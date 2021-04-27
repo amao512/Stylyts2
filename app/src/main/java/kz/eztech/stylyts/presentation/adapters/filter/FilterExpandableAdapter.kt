@@ -6,24 +6,23 @@ import com.thoughtbot.expandablecheckrecyclerview.CheckableChildRecyclerViewAdap
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
-import kz.eztech.stylyts.presentation.adapters.filter.holders.CategoryExpandableViewHolder
-import kz.eztech.stylyts.presentation.adapters.filter.holders.CategoryItemExpandableViewHolder
+import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
+import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterExpandableViewHolder
+import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterItemExpandableViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 
-class CategoryFilterExpandableAdapter(
+class FilterExpandableAdapter(
     private val categoryFilterSingleGroupList: List<CategoryFilterSingleCheckGenre>,
     private val itemClickListener: UniversalViewClickListener
-) : CheckableChildRecyclerViewAdapter<CategoryExpandableViewHolder, CategoryItemExpandableViewHolder>(categoryFilterSingleGroupList) {
+) : CheckableChildRecyclerViewAdapter<FilterExpandableViewHolder, FilterItemExpandableViewHolder>(categoryFilterSingleGroupList) {
 
     override fun onCreateGroupViewHolder(
         parent: ViewGroup?,
         viewType: Int
-    ): CategoryExpandableViewHolder {
-        return CategoryExpandableViewHolder(
+    ): FilterExpandableViewHolder {
+        return FilterExpandableViewHolder(
             LayoutInflater.from(parent?.context).inflate(
                 R.layout.item_filter,
                 parent,
@@ -33,7 +32,7 @@ class CategoryFilterExpandableAdapter(
     }
 
     override fun onBindGroupViewHolder(
-        holderCheckable: CategoryExpandableViewHolder?,
+        holderCheckable: FilterExpandableViewHolder?,
         flatPosition: Int,
         group: ExpandableGroup<*>?
     ) {
@@ -43,8 +42,8 @@ class CategoryFilterExpandableAdapter(
     override fun onCreateCheckChildViewHolder(
         parent: ViewGroup?,
         viewType: Int
-    ): CategoryItemExpandableViewHolder {
-        return CategoryItemExpandableViewHolder(
+    ): FilterItemExpandableViewHolder {
+        return FilterItemExpandableViewHolder(
             LayoutInflater.from(parent?.context).inflate(
                 R.layout.item_filter_single_check,
                 parent,
@@ -55,22 +54,22 @@ class CategoryFilterExpandableAdapter(
     }
 
     override fun onBindCheckChildViewHolder(
-        holderExpandable: CategoryItemExpandableViewHolder?,
+        holderExpandable: FilterItemExpandableViewHolder?,
         flatPosition: Int,
         group: CheckedExpandableGroup?,
         childIndex: Int
     ) {
-        holderExpandable?.onBind(group?.items?.get(childIndex) as ClothesCategoryModel)
+        holderExpandable?.onBind(group?.items?.get(childIndex) as FilterCheckModel)
     }
 
-    fun getCheckedCategoryList(): List<Int> {
+    fun getCheckedItemList(): List<Int> {
         val checkedList: MutableList<Int> = mutableListOf()
 
         categoryFilterSingleGroupList.map {
-            val copyCurrentList: MutableList<ClothesCategoryModel> = mutableListOf()
+            val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
 
             it.items.map { item ->
-                copyCurrentList.add(item as ClothesCategoryModel)
+                copyCurrentList.add(item as FilterCheckModel)
             }
 
             copyCurrentList.removeAt(0)
@@ -83,5 +82,33 @@ class CategoryFilterExpandableAdapter(
         }
 
         return checkedList
+    }
+
+    fun getCheckedFirstItemList(): List<Int> {
+        val checkedList: MutableList<Int> = mutableListOf()
+
+        categoryFilterSingleGroupList.map {
+            val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
+
+            copyCurrentList.add(it.items[0] as FilterCheckModel)
+
+            copyCurrentList.map { item ->
+                if (item.isChecked) {
+                    checkedList.add(item.id)
+                }
+            }
+        }
+
+        return checkedList
+    }
+
+    fun onResetCheckedItems() {
+        categoryFilterSingleGroupList.map {
+            it.items.map { item ->
+                (item as FilterCheckModel).isChecked = false
+            }
+        }
+
+        notifyDataSetChanged()
     }
 }

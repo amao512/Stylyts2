@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.domain.models.clothes
 
 import android.os.Parcelable
-import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -12,7 +11,4 @@ data class ClothesBrandModel(
     val logo: String,
     val createdAt: String,
     val modifiedAt: String
-) : Parcelable {
-    @IgnoredOnParcel
-    var isChecked: Boolean = false
-}
+) : Parcelable

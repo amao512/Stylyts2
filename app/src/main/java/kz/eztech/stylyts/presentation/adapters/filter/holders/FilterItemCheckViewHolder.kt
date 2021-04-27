@@ -6,6 +6,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
 
@@ -21,7 +22,9 @@ class FilterItemCheckViewHolder(
         item: Any,
         position: Int
     ) {
-        when (item) {
+        item as FilterCheckModel
+
+        when (item.item) {
             is ClothesCategoryModel -> processCategoryModel(item, position)
             is ClothesBrandModel -> processBrandModel(item, position)
             is ClothesTypeModel -> processTypeModel(item, position)
@@ -30,61 +33,69 @@ class FilterItemCheckViewHolder(
     }
 
     private fun processCategoryModel(
-        clothesCategory: ClothesCategoryModel,
+        filterCheckModel: FilterCheckModel,
         position: Int
     ) {
+        val clothesCategory = filterCheckModel.item as ClothesCategoryModel
+
         with(itemView) {
             fillTitle(
                 title = clothesCategory.title,
-                isChecked = clothesCategory.isChecked
+                isChecked = filterCheckModel.isChecked
             )
             item_filter_check_title_checked_text_view.setOnClickListener {
-                adapter.itemClickListener?.onViewClicked(it, position, clothesCategory)
+                adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
         }
     }
 
     private fun processBrandModel(
-        clothesBrand: ClothesBrandModel,
+        filterCheckModel: FilterCheckModel,
         position: Int
     ) {
+        val clothesBrand = filterCheckModel.item as ClothesBrandModel
+
         with(itemView) {
             fillTitle(
                 title = clothesBrand.title,
-                isChecked = clothesBrand.isChecked
+                isChecked = filterCheckModel.isChecked
             )
             item_filter_check_title_checked_text_view.setOnClickListener {
-                adapter.itemClickListener?.onViewClicked(it, position, clothesBrand)
+                adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
         }
     }
 
     private fun processTypeModel(
-        clothesTypeModel: ClothesTypeModel,
+        filterCheckModel: FilterCheckModel,
         position: Int
     ) {
+        val clothesType = filterCheckModel.item as ClothesTypeModel
+
         with(itemView) {
             fillTitle(
-                title = clothesTypeModel.title,
-                isChecked = clothesTypeModel.isChecked
+                title = clothesType.title,
+                isChecked = filterCheckModel.isChecked
             )
             item_filter_check_title_checked_text_view.setOnClickListener {
-                adapter.itemClickListener?.onViewClicked(it, position, clothesTypeModel)
+                adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
         }
     }
 
     private fun processStyleModel(
-        clothesStyleModel: ClothesStyleModel,
+        filterCheckModel: FilterCheckModel,
         position: Int
     ) {
+        val clothesStyle = filterCheckModel.item as ClothesStyleModel
+
         with(itemView) {
             fillTitle(
-                title = clothesStyleModel.title,
-                isChecked = clothesStyleModel.isChecked
+                title = clothesStyle.title,
+                isChecked = filterCheckModel.isChecked
             )
             item_filter_check_title_checked_text_view.setOnClickListener {
-                adapter.itemClickListener?.onViewClicked(it, position, clothesStyleModel)
+                adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
         }
     }

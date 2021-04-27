@@ -6,7 +6,5 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class ClothesStyleModel(
     val id: Int,
-    val title: String,
-
-    var isChecked: Boolean = false
+    val title: String
 ): Parcelable

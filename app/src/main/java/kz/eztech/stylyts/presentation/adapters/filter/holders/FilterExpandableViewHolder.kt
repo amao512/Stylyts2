@@ -5,7 +5,7 @@ import android.view.View
 import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 import kotlinx.android.synthetic.main.item_filter.view.*
 
-class CategoryExpandableViewHolder(
+class FilterExpandableViewHolder(
     itemView: View
 ) : GroupViewHolder(itemView) {
 
