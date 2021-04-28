@@ -10,6 +10,15 @@ data class FollowerApiModel(
     @SerializedName("username")
     @Expose
     val username: String?,
+    @SerializedName("first_name")
+    @Expose
+    val firstName: String?,
+    @SerializedName("last_name")
+    @Expose
+    val lastName: String?,
+    @SerializedName("avatar")
+    @Expose
+    val avatar: String?,
     @SerializedName("i_already_follow")
     @Expose
     val isAlreadyFollow: Boolean

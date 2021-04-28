@@ -9,6 +9,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSubAdapter
@@ -122,14 +123,46 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
         position: Int,
         item: Any?
     ) {
-        when (item) {
-            is FollowerModel -> {
-                val bundle = Bundle()
-                bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id)
-
-                findNavController().navigate(R.id.action_userSubsFragment_to_profileFragment, bundle)
-            }
+        when (view.id) {
+            R.id.linear_layout_item_user_info_container -> onNavigateToProfile(item)
+            R.id.button_item_user_subs_unfollow -> onUnFollowUser(item)
+            R.id.button_item_user_subs_follow -> onFollowUser(item)
         }
+    }
+
+    override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
+        adapter.setFollowingUser(followSuccessModel.id)
+    }
+
+    override fun processSuccessUnFollowing() {}
+
+    private fun onNavigateToProfile(item: Any?) {
+        item as FollowerModel
+
+        val bundle = Bundle()
+        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id)
+
+        findNavController().navigate(R.id.action_userSubsFragment_to_profileFragment, bundle)
+    }
+
+    private fun onFollowUser(item: Any?) {
+        item as FollowerModel
+
+        presenter.followUser(
+            token = getTokenFromSharedPref(),
+            userId = item.id
+        )
+    }
+
+    private fun onUnFollowUser(item: Any?) {
+        item as FollowerModel
+
+        presenter.unFollowUser(
+            token = getTokenFromSharedPref(),
+            userId = item.id
+        )
+
+        adapter.setUnFollowingUser(item)
     }
 
     private fun getTokenFromSharedPref(): String {

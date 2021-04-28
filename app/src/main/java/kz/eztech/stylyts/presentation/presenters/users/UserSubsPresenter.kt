@@ -3,9 +3,12 @@ package kz.eztech.stylyts.presentation.presenters.users
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
+import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase
 import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
 import kz.eztech.stylyts.domain.usecases.user.GetFollowingsUseCase
+import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
 import javax.inject.Inject
@@ -13,10 +16,23 @@ import javax.inject.Inject
 class UserSubsPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getFollowersUseCase: GetFollowersUseCase,
-    private val getFollowingsUseCase: GetFollowingsUseCase
+    private val getFollowingsUseCase: GetFollowingsUseCase,
+    private val followUserUseCase: FollowUserUseCase,
+    private val unfollowUserUseCase: UnfollowUserUseCase
 ) : UserSubsContract.Presenter {
 
     private lateinit var view: UserSubsContract.View
+
+    override fun disposeRequests() {
+        getFollowersUseCase.clear()
+        getFollowingsUseCase.clear()
+        followUserUseCase.clear()
+        unfollowUserUseCase.clear()
+    }
+
+    override fun attach(view: UserSubsContract.View) {
+        this.view = view
+    }
 
     override fun getFollowers(token: String, userId: Int) {
         getFollowersUseCase.initParams(token, userId)
@@ -52,12 +68,35 @@ class UserSubsPresenter @Inject constructor(
         })
     }
 
-    override fun disposeRequests() {
-        getFollowersUseCase.clear()
-        getFollowingsUseCase.clear()
+    override fun followUser(
+        token: String,
+        userId: Int
+    ) {
+        followUserUseCase.initParams(token, userId.toString())
+        followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
+            override fun onSuccess(t: FollowSuccessModel) {
+                view.processSuccessFollowing(followSuccessModel = t)
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
+            }
+        })
     }
 
-    override fun attach(view: UserSubsContract.View) {
-        this.view = view
+    override fun unFollowUser(
+        token: String,
+        userId: Int
+    ) {
+        unfollowUserUseCase.initParams(token, userId.toString())
+        unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
+            override fun onSuccess(t: Any) {
+                view.processSuccessUnFollowing()
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
+            }
+        })
     }
 }

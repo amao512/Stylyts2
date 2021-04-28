@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.users
 
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -12,6 +13,10 @@ interface UserSubsContract {
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
         fun processFollowings(resultsModel: ResultsModel<FollowerModel>)
+
+        fun processSuccessFollowing(followSuccessModel: FollowSuccessModel)
+
+        fun processSuccessUnFollowing()
     }
 
     interface Presenter: BasePresenter<View> {
@@ -22,6 +27,16 @@ interface UserSubsContract {
         )
 
         fun getFollowings(
+            token: String,
+            userId: Int
+        )
+
+        fun followUser(
+            token: String,
+            userId: Int
+        )
+
+        fun unFollowUser(
             token: String,
             userId: Int
         )

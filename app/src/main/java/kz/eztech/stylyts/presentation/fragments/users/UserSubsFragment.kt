@@ -9,6 +9,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.UserSubViewPagerAdapter
@@ -127,6 +128,10 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
         followingsCount = resultsModel.totalCount
         initializeTabLayout()
     }
+
+    override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {}
+
+    override fun processSuccessUnFollowing() {}
 
     override fun onClick(v: View?) {
         when (v?.id) {

@@ -14,6 +14,9 @@ class FollowerApiModelMapper @Inject constructor() {
             FollowerModel(
                 id = it.id ?: 0,
                 username = it.username ?: EMPTY_STRING,
+                firstName = it.firstName ?: EMPTY_STRING,
+                lastName = it.lastName ?: EMPTY_STRING,
+                avatar = it.avatar ?: EMPTY_STRING,
                 isAlreadyFollow = it.isAlreadyFollow
             )
         }
