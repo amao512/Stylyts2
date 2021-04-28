@@ -184,35 +184,35 @@
 
                         <FrameLayout
                             android:id="@+id/fragment_collection_detail_clothes_tags_icon"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="@dimen/tag_icon_size"
+                            android:layout_height="@dimen/tag_icon_size"
                             android:background="@drawable/circle_black"
                             android:layout_marginEnd="@dimen/margin_size_10x"
                             android:visibility="gone"
                             >
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/icon_size_20x"
+                                android:layout_height="@dimen/icon_size_20x"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_t_shirts"
+                                android:src="@drawable/ic_clothes_tag"
                                 />
                         </FrameLayout>
 
                         <FrameLayout
                             android:id="@+id/fragment_collection_detail_user_tags_icon"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="@dimen/tag_icon_size"
+                            android:layout_height="@dimen/tag_icon_size"
                             android:background="@drawable/circle_black"
                             android:backgroundTint="@color/app_black_half"
                             android:visibility="gone"
                             >
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="@dimen/icon_size_20x"
+                                android:layout_height="@dimen/icon_size_20x"
                                 android:layout_gravity="center"
-                                android:src="@drawable/ic_person"
+                                android:src="@drawable/ic_user_tag"
                                 />
                         </FrameLayout>
 
