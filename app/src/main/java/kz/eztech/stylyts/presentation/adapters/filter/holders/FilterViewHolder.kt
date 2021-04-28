@@ -19,10 +19,10 @@ class FilterViewHolder(
 
         with(itemView) {
             item_filter_title.text = item.title
-        }
 
-        itemView.setOnClickListener {
-            adapter.itemClickListener?.onViewClicked(itemView, position, item)
+            item_filter_root_view_frame_layout.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, item)
+            }
         }
     }
 }

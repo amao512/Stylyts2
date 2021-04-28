@@ -17,6 +17,7 @@ import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import java.util.*
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
@@ -40,11 +41,60 @@ class FilterPresenter @Inject constructor(
         this.view = view
     }
 
+    override fun getMyWardrobe(
+        token: String,
+        filterModel: FilterModel
+    ) {
+        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesModel>) {
+                val categoryList: MutableList<ClothesCategoryModel> = mutableListOf()
+
+                t.results.map {
+                    categoryList.add(it.clothesCategory)
+                }
+
+                val set: Set<ClothesCategoryModel> = HashSet(categoryList)
+                categoryList.clear()
+                categoryList.addAll(set)
+
+                val preparedList: MutableList<FilterCheckModel> = mutableListOf()
+                preparedList.add(
+                    FilterCheckModel(
+                        id = 0,
+                        item = ClothesCategoryModel(
+                            id = 0,
+                            title = "Мой гардероб",
+                            clothesType = ClothesTypeModel(id = 0, title = EMPTY_STRING),
+                            bodyPart = 0
+                        )
+                    )
+                )
+
+                categoryList.map {
+                    preparedList.add(
+                        FilterCheckModel(id = it.id, item = it)
+                    )
+                }
+
+                view.processWardrobe(preparedList)
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    displayMessage(msg = errorHelper.processError(e))
+                    hideProgress()
+                }
+            }
+        })
+    }
+
     override fun getClothesTypes(token: String) {
         view.displayProgress()
 
         getClothesTypesUseCase.initParams(token)
-        getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
+        getClothesTypesUseCase.execute(object :
+            DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 getPreparedCategories(
                     token = token,
@@ -72,7 +122,8 @@ class FilterPresenter @Inject constructor(
         title: String
     ) {
         getClothesBrandsUseCase.initParams(token)
-        getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
+        getClothesBrandsUseCase.execute(object :
+            DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
                 view.processViewAction {
                     val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
@@ -100,15 +151,7 @@ class FilterPresenter @Inject constructor(
                         )
                     }
 
-                    val preparedResultsModel = ResultsModel(
-                        page = t.page,
-                        totalPages = t.totalPages,
-                        pageSize = t.pageSize,
-                        totalCount = t.totalCount,
-                        results = preparedResults
-                    )
-
-                    processClothesBrands(resultsModel = preparedResultsModel)
+                    processClothesBrands(list = preparedResults)
                 }
             }
 

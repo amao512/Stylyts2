@@ -56,17 +56,13 @@ class PhotoChooserPresenter @Inject constructor(
 
     override fun getClothes(
         token: String,
-        typeIdList: List<Int>,
-        categoryIdList: List<Int>
+        filterModel: FilterModel
     ) {
         view.displayProgress()
 
         getClothesUseCase.initParams(
             token = token,
-            filterModel = FilterModel(
-                typeIdList = typeIdList,
-                categoryIdList = categoryIdList
-            )
+            filterModel = filterModel
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

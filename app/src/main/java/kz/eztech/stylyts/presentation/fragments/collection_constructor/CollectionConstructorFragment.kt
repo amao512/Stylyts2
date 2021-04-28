@@ -138,7 +138,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		filterDialog = FilterDialog.getNewInstance(
 			token = getTokenFromSharedPref(),
 			itemClickListener = this,
-			gender = getGender()
+			gender = getGender(),
+			isShowWardrobe = true
 		)
 		typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentType)
 		itemAdapter = CollectionConstructorShopItemAdapter()

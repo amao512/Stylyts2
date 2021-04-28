@@ -19,9 +19,9 @@ import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterItemModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
-import kz.eztech.stylyts.presentation.adapters.filter.FilterExpandableAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
+import kz.eztech.stylyts.presentation.adapters.filter.FilterExpandableAdapter
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.filter.FilterPresenter
@@ -33,7 +33,8 @@ import javax.inject.Inject
 
 class FilterDialog(
     private val itemClickListener: UniversalViewClickListener,
-    private val currentGender: String
+    private val currentGender: String,
+    private val isShowWardrobe: Boolean
 ) : DialogFragment(), FilterContract.View, View.OnClickListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: FilterPresenter
@@ -51,9 +52,10 @@ class FilterDialog(
         fun getNewInstance(
             token: String,
             itemClickListener: UniversalViewClickListener,
-            gender: String
+            gender: String,
+            isShowWardrobe: Boolean = false
         ): FilterDialog {
-            val filterDialog = FilterDialog(itemClickListener, gender)
+            val filterDialog = FilterDialog(itemClickListener, gender, isShowWardrobe)
             val bundle = Bundle()
 
             bundle.putString(TOKEN_ARGS, token)
@@ -140,10 +142,6 @@ class FilterDialog(
 
     override fun processPostInitialization() {
         presenter.getClothesTypes(token = getTokenFromArguments())
-        presenter.getClothesBrands(
-            title = getString(R.string.filter_brands),
-            token = getTokenFromArguments()
-        )
     }
 
     override fun disposeRequests() {}
@@ -171,8 +169,20 @@ class FilterDialog(
         )
     }
 
-    override fun processClothesBrands(resultsModel: ResultsModel<FilterCheckModel>) {
-        filterCheckAdapter.updateList(list = resultsModel.results)
+    override fun processClothesBrands(list: List<FilterCheckModel>) {
+        currentFilter.brandIdList.forEach { brand ->
+            list.find { it.id == brand }?.isChecked = true
+        }
+
+        filterCheckAdapter.updateList(list)
+    }
+
+    override fun processWardrobe(list: List<FilterCheckModel>) {
+        currentFilter.categoryIdList.forEach { category ->
+            list.find { it.id == category }?.isChecked = true
+        }
+
+        filterCheckAdapter.updateList(list)
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
@@ -195,17 +205,23 @@ class FilterDialog(
         position: Int,
         item: Any?
     ) {
-        when (item) {
-            is FilterItemModel -> openFilterGroup(position)
-            is FilterCheckModel -> selectFilterItem(view, position, item)
+        when (view.id) {
+            R.id.item_filter_single_check_title_checked_text_view -> selectCategoryItem(
+                view = view,
+                position = position,
+                filterCheck = item as FilterCheckModel
+            )
+            R.id.item_filter_check_title_checked_text_view -> selectFilterItem(position, item)
+            R.id.item_filter_root_view_frame_layout -> openFilterGroup(item as FilterItemModel)
         }
     }
 
-    private fun openFilterGroup(position: Int) {
-        when (position) {
-            0 -> onCategoriesClick()
-            1 -> onBrandsClick()
-            3 -> onPriceRangeClick()
+    private fun openFilterGroup(filterItemModel: FilterItemModel) {
+        when (filterItemModel.id) {
+            0 -> onMyWardrobeClick()
+            1 -> onCategoriesClick()
+            2 -> onBrandsClick()
+            4 -> onPriceRangeClick()
         }
     }
 
@@ -240,19 +256,22 @@ class FilterDialog(
     }
 
     private fun selectFilterItem(
-        view: View,
         position: Int,
         item: Any?
     ) {
         item as FilterCheckModel
 
         when (item.item) {
-            is ClothesCategoryModel -> selectClothesCategory(view, position, item)
+            is ClothesCategoryModel -> selectWardrobeItem(position)
             is ClothesBrandModel -> selectClothesBrand(position)
         }
+
+        checkEmptyFilter()
+        getFilterResults()
+        setResetTextColor()
     }
 
-    private fun selectClothesCategory(
+    private fun selectCategoryItem(
         view: View,
         position: Int,
         filterCheck: FilterCheckModel
@@ -266,13 +285,26 @@ class FilterDialog(
         setResetTextColor()
     }
 
+    private fun selectWardrobeItem(position: Int) {
+        filterCheckAdapter.onMultipleCheckItem(position)
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemList()
+    }
+
     private fun selectClothesBrand(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
         currentFilter.brandIdList = filterCheckAdapter.getCheckedItemList()
+    }
 
-        checkEmptyFilter()
-        getFilterResults()
-        setResetTextColor()
+    private fun onMyWardrobeClick() {
+        currentFilter.isMyWardrobe = true
+
+        presenter.getMyWardrobe(
+            token = getTokenFromArguments(),
+            filterModel = currentFilter
+        )
+
+        processOpenedFilterGroup(title = "Мой Гардероб")
+        dialog_filter_recycler_view.adapter = filterCheckAdapter
     }
 
     private fun onCategoriesClick() {
@@ -283,6 +315,11 @@ class FilterDialog(
     private fun onBrandsClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_brands))
         dialog_filter_recycler_view.adapter = filterCheckAdapter
+
+        presenter.getClothesBrands(
+            title = getString(R.string.filter_brands),
+            token = getTokenFromArguments()
+        )
     }
 
     private fun onPriceRangeClick() {
@@ -320,10 +357,15 @@ class FilterDialog(
 
     private fun getFilterList(): List<FilterItemModel> {
         val list: MutableList<FilterItemModel> = mutableListOf()
-        list.add(FilterItemModel(title = getString(R.string.filter_categories)))
-        list.add(FilterItemModel(title = getString(R.string.filter_brands)))
-        list.add(FilterItemModel(title = getString(R.string.filter_colors)))
-        list.add(FilterItemModel(title = getString(R.string.filter_costs)))
+
+        if (isShowWardrobe) {
+            list.add(FilterItemModel(id = 0, title = "Мой гардероб"))
+        }
+
+        list.add(FilterItemModel(id = 1, title = getString(R.string.filter_categories)))
+        list.add(FilterItemModel(id = 2, title = getString(R.string.filter_brands)))
+        list.add(FilterItemModel(id = 3, title = getString(R.string.filter_colors)))
+        list.add(FilterItemModel(id = 4, title = getString(R.string.filter_costs)))
 
         return list
     }

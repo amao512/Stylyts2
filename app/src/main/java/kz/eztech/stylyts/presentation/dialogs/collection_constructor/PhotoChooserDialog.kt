@@ -19,11 +19,12 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.view.*
 import kotlinx.android.synthetic.main.dialog_photo_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
@@ -32,6 +33,7 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImages
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection.PhotoChooserContract
+import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -59,7 +61,8 @@ class PhotoChooserDialog(
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var filteredAdapter: GridImageItemFilteredAdapter
     private lateinit var selectedAdapter: MainImagesAdditionalAdapter
-    private lateinit var filterDialog: ConstructorFilterDialog
+    private lateinit var filterDialog: FilterDialog
+    private lateinit var currentFilter: FilterModel
 
     private val filterMap = HashMap<String, Any>()
     private val selectedClothesEntities: MutableList<ImageEntity> = mutableListOf()
@@ -156,8 +159,13 @@ class PhotoChooserDialog(
 
     override fun initializeViewsData() {
         // Request camera permissions
-        filterDialog = ConstructorFilterDialog()
-        filterDialog.setChoiceListener(this)
+        currentFilter = FilterModel()
+        filterDialog = FilterDialog.getNewInstance(
+            token = getTokenFromArgs(),
+            itemClickListener = this,
+            gender = "M",
+            isShowWardrobe = true
+        )
 
         filteredAdapter = GridImageItemFilteredAdapter()
         filterAdapter = CollectionsFilterAdapter()
@@ -280,6 +288,13 @@ class PhotoChooserDialog(
         when (item) {
             is CollectionFilterModel -> onFilterModelClicked(position, item)
             is ClothesModel -> onClothesClicked(view, item)
+            is FilterModel -> {
+                currentFilter = item
+                presenter.getClothes(
+                    token = getTokenFromArgs(),
+                    filterModel = currentFilter
+                )
+            }
         }
     }
 
@@ -332,9 +347,11 @@ class PhotoChooserDialog(
         when (collectionFilterModel.mode) {
             0 -> {
                 collectionFilterModel.id?.let {
+                    currentFilter.typeIdList = listOf(it)
+
                     presenter.getClothes(
                         token = getTokenFromArgs(),
-                        typeIdList = listOf(it)
+                        filterModel = currentFilter
                     )
                 }
 
@@ -462,7 +479,10 @@ class PhotoChooserDialog(
 
     private fun showBottomSheet() {
         presenter.getCategory(token = getTokenFromArgs())
-        presenter.getClothes(token = getTokenFromArgs())
+        presenter.getClothes(
+            token = getTokenFromArgs(),
+            filterModel = currentFilter
+        )
 
         BottomSheetBehavior.from(bottom_sheet_clothes).apply {
             state = BottomSheetBehavior.STATE_EXPANDED
