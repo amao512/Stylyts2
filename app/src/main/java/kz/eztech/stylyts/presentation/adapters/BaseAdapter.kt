@@ -63,6 +63,12 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         diffResult.dispatchUpdatesTo(this)
     }
 
+    fun updateMoreList(list: List<Any>) {
+        currentList.addAll(list)
+
+        notifyDataSetChanged()
+    }
+
     fun updateListFull(list: List<Any>) {
         currentList.clear()
         currentList.addAll(list)

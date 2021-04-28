@@ -18,25 +18,36 @@ class GetOutfitsUseCase @Inject constructor(
 
     private lateinit var token: String
     private lateinit var booleanQueryMap: Map<String, Boolean>
+    private lateinit var stringQueryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<OutfitModel>> {
-        return outfitsDomainRepository.getOutfits(token, booleanQueryMap)
+        return outfitsDomainRepository.getOutfits(
+            token = token,
+            booleanQueryMap = booleanQueryMap,
+            stringQueryMap = stringQueryMap
+        )
     }
 
     fun initParams(
         token: String,
-        gender: String = "M",
-        isMy: Boolean = false
+        map: Map<String, Any>
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        val booleanQueryMap: MutableMap<String, Boolean> = HashMap()
 
+        val booleanQueryMap = HashMap<String, Boolean>()
+        val stringQueryMap = HashMap<String, String>()
 
+        if (map.containsKey("my")) {
+            booleanQueryMap["my"] = map["my"] as Boolean
+        }
 
-        if (isMy) {
-            booleanQueryMap["my"] = true
+        stringQueryMap["page"] = map["page"] as String
+
+        if (map.containsKey("gender")) {
+            stringQueryMap["gender"] = map["gender"] as String
         }
 
         this.booleanQueryMap = booleanQueryMap
+        this.stringQueryMap = stringQueryMap
     }
 }

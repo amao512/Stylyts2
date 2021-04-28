@@ -17,12 +17,22 @@ class GetHomePagePostsUseCase @Inject constructor(
 ) : BaseUseCase<ResultsModel<PostModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
+    private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<PostModel>> {
-        return postsDomainRepository.getHomepagePosts(token)
+        return postsDomainRepository.getHomepagePosts(token, queryMap)
     }
 
-    fun initParams(token: String) {
+    fun initParams(
+        token: String,
+        page: Int
+    ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+
+        val queryMap = HashMap<String, String>()
+
+        queryMap["page"] = page.toString()
+
+        this.queryMap = queryMap
     }
 }

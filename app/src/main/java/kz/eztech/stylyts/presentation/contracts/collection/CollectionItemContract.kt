@@ -22,9 +22,12 @@ interface CollectionItemContract {
 
         fun getOutfits(
             token: String,
-            map: Map<String, Any>?
+            map: Map<String, Any>
         )
 
-        fun getPosts(token: String)
+        fun getPosts(
+            token: String,
+            page: Int
+        )
     }
 }

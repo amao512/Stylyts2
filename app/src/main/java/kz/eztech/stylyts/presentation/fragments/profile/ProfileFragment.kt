@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.fragments.profile
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -67,6 +68,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var currentUsername = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
     private var currentGender = EMPTY_STRING
+    private var currentPage: Int = 1
+    private var isLastPage: Boolean = false
+    private var isPosts: Boolean = true
+    private var isOutfits: Boolean = false
+    private var isWardrobes: Boolean = false
 
     companion object {
         const val USER_ID_BUNDLE_KEY = "user_id"
@@ -164,6 +170,17 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             token = getTokenFromSharedPref(),
             userId = userId
         )
+
+        recycler_view_fragment_profile_items_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recycler_view_fragment_profile_items_list.canScrollVertically(1)
+                    && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!isLastPage) {
+                        getCollections()
+                    }
+                }
+            }
+        })
     }
 
     override fun disposeRequests() = presenter.disposeRequests()
@@ -220,7 +237,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         presenter.getPosts(
             token = getTokenFromSharedPref(),
-            authorId = userId
+            authorId = userId,
+            page = currentPage
         )
 
         fillProfileInfo(userModel = userModel)
@@ -232,8 +250,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
-        gridAdapter.updateList(list = resultsModel.results)
-        recycler_view_fragment_profile_items_list.adapter = gridAdapter
+        gridAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != currentPage) {
+            currentPage++
+        } else {
+            isLastPage = true
+        }
     }
 
     override fun onClick(v: View?) {
@@ -371,13 +394,42 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>) {
-        wardrobeAdapter.updateList(list = resultsModel.results)
-        recycler_view_fragment_profile_items_list.adapter = wardrobeAdapter
+        wardrobeAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != currentPage) {
+            currentPage++
+        } else {
+            isLastPage = true
+        }
     }
 
     override fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>) {
-        outfitsAdapter.updateList(list = resultsModel.results)
-        recycler_view_fragment_profile_items_list.adapter = outfitsAdapter
+        outfitsAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != currentPage) {
+            currentPage++
+        } else {
+            isLastPage = true
+        }
+    }
+
+    private fun getCollections() {
+        when {
+            isOutfits -> presenter.getOutfits(
+                token = getTokenFromSharedPref(),
+                page = currentPage
+            )
+            isPosts -> presenter.getPosts(
+                token = getTokenFromSharedPref(),
+                authorId = userId,
+                page = currentPage
+            )
+            isWardrobes -> presenter.getWardrobe(
+                token = getTokenFromSharedPref(),
+                filterModel = currentFilter,
+                page = currentPage
+            )
+        }
     }
 
     private fun fillProfileInfo(userModel: UserModel) {
@@ -419,30 +471,50 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onPublicationsFilterClick(position: Int) {
-        presenter.getPosts(
-            token = getTokenFromSharedPref(),
-            authorId = userId
-        )
+        currentPage = 1
+        isLastPage = false
+        isPosts = true
+        isWardrobes = false
+        isOutfits = false
+
+        getCollections()
+        recycler_view_fragment_profile_items_list.adapter = gridAdapter
+
         adapterFilter.onChooseItem(position)
+        gridAdapter.clearList()
     }
 
     private fun onOutfitsFilterClick(position: Int) {
         if (isOwnProfile) {
-            presenter.getOutfits(token = getTokenFromSharedPref())
+            currentPage = 1
+            isLastPage = false
+            isPosts = false
+            isWardrobes = false
+            isOutfits = true
+
+            getCollections()
         }
+        recycler_view_fragment_profile_items_list.adapter = outfitsAdapter
         adapterFilter.onChooseItem(position)
+        outfitsAdapter.clearList()
     }
 
     private fun onWardrobeFilterClick(position: Int) {
+        currentPage = 1
+        isLastPage = false
+        isPosts = false
+        isWardrobes = true
+        isOutfits = false
+
         if (isOwnProfile) {
             currentFilter.isMyWardrobe = true
         }
 
-        presenter.getWardrobe(
-            token = getTokenFromSharedPref(),
-            filterModel = currentFilter
-        )
+        recycler_view_fragment_profile_items_list.adapter = wardrobeAdapter
+
+        getCollections()
         adapterFilter.onChooseItem(position)
+        wardrobeAdapter.clearList()
     }
 
     private fun onOutfitItemClick(item: Any?) {
@@ -486,15 +558,17 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun showFilterResults(item: Any?) {
         currentFilter = item as FilterModel
+        isPosts = false
+        isWardrobes = true
+        isOutfits = false
 
         if (isOwnProfile) {
             currentFilter.isMyWardrobe = true
         }
 
-        presenter.getWardrobe(
-            token = getTokenFromSharedPref(),
-            filterModel = currentFilter
-        )
+        recycler_view_fragment_profile_items_list.adapter = wardrobeAdapter
+
+        getCollections()
     }
 
     private fun getTokenFromSharedPref(): String {

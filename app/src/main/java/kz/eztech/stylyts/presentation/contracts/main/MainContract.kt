@@ -19,7 +19,10 @@ interface MainContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getPosts(token: String)
+        fun getPosts(
+            token: String,
+            page: Int
+        )
 
         fun deletePost(
             token: String,

@@ -20,7 +20,8 @@ interface OutfitsApi {
     @GET(RestConstants.GET_OUTFITS)
     fun getOutfits(
         @Header("Authorization") token: String,
-        @QueryMap booleanQueryMap: Map<String, Boolean>
+        @QueryMap booleanQueryMap: Map<String, Boolean>,
+        @QueryMap stringQueryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<OutfitApiModel>>>
 
     @GET(RestConstants.GET_OUTFIT_BY_ID)

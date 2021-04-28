@@ -53,7 +53,8 @@ interface ProfileContract {
 
         fun getPosts(
             token: String,
-            authorId: Int
+            authorId: Int,
+            page: Int
         )
 
         fun getFollowers(
@@ -73,9 +74,13 @@ interface ProfileContract {
 
         fun getWardrobe(
             token: String,
-            filterModel: FilterModel
+            filterModel: FilterModel,
+            page: Int
         )
 
-        fun getOutfits(token: String)
+        fun getOutfits(
+            token: String,
+            page: Int
+        )
     }
 }

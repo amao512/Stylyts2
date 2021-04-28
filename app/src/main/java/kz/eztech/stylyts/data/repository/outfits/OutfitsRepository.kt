@@ -31,9 +31,14 @@ class OutfitsRepository @Inject constructor(
 
     override fun getOutfits(
         token: String,
-        booleanQueryMap: Map<String, Boolean>
+        booleanQueryMap: Map<String, Boolean>,
+        stringQueryMap: Map<String, String>
     ): Single<ResultsModel<OutfitModel>> {
-        return api.getOutfits(token, booleanQueryMap).map {
+        return api.getOutfits(
+            token = token,
+            booleanQueryMap = booleanQueryMap,
+            stringQueryMap = stringQueryMap
+        ).map {
             when (it.isSuccessful) {
                 true -> resultsApiModelMapper.mapOutfitResults(data = it.body())
                 false -> throw NetworkException(it)

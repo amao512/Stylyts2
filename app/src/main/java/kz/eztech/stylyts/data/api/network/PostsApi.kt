@@ -33,7 +33,8 @@ interface PostsApi {
 
     @GET(RestConstants.GET_HOMEPAGE_POSTS)
     fun getHomePagePosts(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<PostApiModel>>>
 
     @DELETE(RestConstants.DELETE_POST_BY_ID)

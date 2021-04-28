@@ -118,24 +118,17 @@ class ProfilePresenter @Inject constructor(
 
     override fun getPosts(
 		token: String,
-		authorId: Int
+		authorId: Int,
+		page: Int
 	) {
-        view.displayProgress()
-
-		getPostsUseCase.initParams(token, authorId)
+		getPostsUseCase.initParams(token, authorId, page)
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
-				view.processViewAction {
-					processPostResults(resultsModel = t)
-					hideProgress()
-				}
+				view.processPostResults(resultsModel = t)
 			}
 
 			override fun onError(e: Throwable) {
-				view.processViewAction {
-					displayMessage(msg = errorHelper.processError(e))
-					hideProgress()
-				}
+				view.displayMessage(msg = errorHelper.processError(e))
 			}
 		})
     }
@@ -193,11 +186,13 @@ class ProfilePresenter @Inject constructor(
 
 	override fun getWardrobe(
 		token: String,
-		filterModel: FilterModel
+		filterModel: FilterModel,
+		page: Int
 	) {
 		getClothesUseCase.initParams(
 			token = token,
-			filterModel = filterModel
+			filterModel = filterModel,
+			page
 		)
 		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
 			override fun onSuccess(t: ResultsModel<ClothesModel>) {
@@ -214,8 +209,16 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun getOutfits(token: String) {
-		getOutfitsUseCase.initParams(token, isMy = true)
+	override fun getOutfits(
+		token: String,
+		page: Int
+	) {
+		val map = HashMap<String, Any>()
+
+		map["my"] = true
+		map["page"] = page.toString()
+
+		getOutfitsUseCase.initParams(token, map)
 		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
 			override fun onSuccess(t: ResultsModel<OutfitModel>) {
 				view.processViewAction {

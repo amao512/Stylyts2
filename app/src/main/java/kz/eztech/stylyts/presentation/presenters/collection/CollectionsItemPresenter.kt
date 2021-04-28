@@ -33,11 +33,11 @@ class CollectionsItemPresenter @Inject constructor(
 
 	override fun getOutfits(
 		token: String,
-		map: Map<String, Any>?
+		map: Map<String, Any>
 	) {
 		view.displayProgress()
 
-		getOutfitsUseCase.initParams(token)
+		getOutfitsUseCase.initParams(token, map)
 		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>(){
 			override fun onSuccess(t: ResultsModel<OutfitModel>) {
 				view.processViewAction {
@@ -55,10 +55,13 @@ class CollectionsItemPresenter @Inject constructor(
 		})
 	}
 
-	override fun getPosts(token: String) {
+	override fun getPosts(
+		token: String,
+		page: Int
+	) {
 		view.displayProgress()
 
-		getPostsUseCase.initParams(token)
+		getPostsUseCase.initParams(token, page = page)
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				view.processViewAction {

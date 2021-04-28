@@ -25,7 +25,8 @@ class GetPostsUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        authorId: Int = 0
+        authorId: Int = 0,
+        page: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
@@ -34,6 +35,8 @@ class GetPostsUseCase @Inject constructor(
         if (authorId != 0) {
             map["author"] = authorId.toString()
         }
+
+        map["page"] = page.toString()
 
         this.queryMap = map
     }

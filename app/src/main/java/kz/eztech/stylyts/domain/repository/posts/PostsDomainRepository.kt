@@ -25,7 +25,10 @@ interface PostsDomainRepository {
         postId: String
     ): Single<PostModel>
 
-    fun getHomepagePosts(token: String): Single<ResultsModel<PostModel>>
+    fun getHomepagePosts(
+        token: String,
+        queryMap: Map<String, String>
+    ): Single<ResultsModel<PostModel>>
 
     fun deletePost(
         token: String,

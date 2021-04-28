@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.fragments.main
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -35,6 +36,11 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     @Inject lateinit var presenter: MainLinePresenter
     private lateinit var postsAdapter: MainImagesAdapter
+
+    private var currentPage: Int = 1
+    private var lastPage: Boolean = false
+
+    private lateinit var recyclerView: RecyclerView
 
     override fun onResume() {
         super.onResume()
@@ -69,7 +75,8 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun initializeViews() {
-        recycler_view_fragment_main_images_list.adapter = postsAdapter
+        recyclerView = recycler_view_fragment_main_images_list
+        recyclerView.adapter = postsAdapter
     }
 
     override fun initializeListeners() {
@@ -88,7 +95,17 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun processPostInitialization() {
-        presenter.getPosts(token = getTokenFromSharedPref())
+        getPosts()
+
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!lastPage) {
+                        getPosts()
+                    }
+                }
+            }
+        })
     }
 
     override fun disposeRequests() {}
@@ -110,15 +127,21 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun displayProgress() {
-        progress_bar_fragment_main_lenta.show()
+        fragment_main_more_small_progress_bar.show()
     }
 
     override fun hideProgress() {
-        progress_bar_fragment_main_lenta.hide()
+        fragment_main_more_small_progress_bar.hide()
     }
 
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
-        postsAdapter.updateList(list = resultsModel.results)
+        postsAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != currentPage) {
+            currentPage++
+        } else {
+            lastPage = true
+        }
     }
 
     override fun processSuccessDeleting() {
@@ -130,6 +153,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.dialog_bottom_collection_context_delete_text_view -> onPostDeleteContextClicked(item)
             R.id.dialog_bottom_collection_context_change_text_view -> onChangeCollectionClicked(item)
         }
+    }
+
+    private fun getPosts() {
+        presenter.getPosts(
+            token = getTokenFromSharedPref(),
+            page = currentPage
+        )
     }
 
     private fun onProfileClicked(item: Any?) {

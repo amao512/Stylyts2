@@ -4,6 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import okhttp3.MultipartBody
+import retrofit2.http.QueryMap
 
 interface OutfitsDomainRepository {
 
@@ -14,7 +15,8 @@ interface OutfitsDomainRepository {
 
     fun getOutfits(
         token: String,
-        booleanQueryMap: Map<String, Boolean>
+        booleanQueryMap: Map<String, Boolean>,
+        stringQueryMap: Map<String, String>
     ): Single<ResultsModel<OutfitModel>>
 
     fun getOutfitById(
