@@ -8,7 +8,15 @@ class CategoryFilterSingleCheckGenre : SingleCheckExpandableGroup {
 
     private var iconResId = 0
 
-    constructor(title: String, filterItems: List<FilterCheckModel>) : super(title, filterItems)
+    var position: Int = 0
+
+    constructor(
+        title: String,
+        filterItems: List<FilterCheckModel>,
+        position: Int
+    ) : super(title, filterItems) {
+        this.position = position
+    }
 
     constructor(parcel: Parcel) : super(parcel) {
         iconResId = parcel.readInt()

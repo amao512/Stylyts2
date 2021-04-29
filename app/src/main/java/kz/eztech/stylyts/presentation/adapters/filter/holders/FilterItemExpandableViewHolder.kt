@@ -23,8 +23,6 @@ class FilterItemExpandableViewHolder(
             item_filter_single_check_title_checked_text_view.isChecked = filterCheckModel.isChecked
 
             item_filter_single_check_title_checked_text_view.setOnClickListener {
-                filterCheckModel.isChecked = !filterCheckModel.isChecked
-
                 itemClickListener.onViewClicked(
                     view = item_filter_single_check_title_checked_text_view,
                     position = position,

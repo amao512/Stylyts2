@@ -229,7 +229,8 @@ class FilterPresenter @Inject constructor(
                         list.add(
                             CategoryFilterSingleCheckGenre(
                                 title = type.title,
-                                filterItems = preparedResults
+                                filterItems = preparedResults,
+                                position = type.id
                             )
                         )
 

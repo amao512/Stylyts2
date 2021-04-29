@@ -6,6 +6,7 @@ import com.thoughtbot.expandablecheckrecyclerview.CheckableChildRecyclerViewAdap
 import com.thoughtbot.expandablecheckrecyclerview.models.CheckedExpandableGroup
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterExpandableViewHolder
@@ -60,6 +61,34 @@ class FilterExpandableAdapter(
         childIndex: Int
     ) {
         holderExpandable?.onBind(group?.items?.get(childIndex) as FilterCheckModel)
+    }
+
+    fun onMultipleCheck(filterCheck: FilterCheckModel) {
+        val group = categoryFilterSingleGroupList.find { it.position == (filterCheck.item as ClothesCategoryModel).clothesType.id }
+
+        if (filterCheck.isCustom) {
+            filterCheck.isChecked = !filterCheck.isChecked
+
+            group?.items?.forEach {
+                (it as FilterCheckModel).isChecked = filterCheck.isChecked
+            }
+        } else {
+            group?.items?.forEach {
+                it as FilterCheckModel
+
+                val category = it.item as ClothesCategoryModel
+
+                if (it.isChecked && it.isCustom) {
+                    it.isChecked = false
+                }
+
+                if ((filterCheck.item as ClothesCategoryModel).id == category.id && !it.isCustom) {
+                    it.isChecked = !it.isChecked
+                }
+            }
+        }
+
+        notifyDataSetChanged()
     }
 
     fun getCheckedItemList(): List<Int> {

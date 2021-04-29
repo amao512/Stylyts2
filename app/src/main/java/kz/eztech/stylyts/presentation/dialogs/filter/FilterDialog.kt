@@ -223,8 +223,6 @@ class FilterDialog(
     ) {
         when (view.id) {
             R.id.item_filter_single_check_title_checked_text_view -> selectCategoryItem(
-                view = view,
-                position = position,
                 filterCheck = item as FilterCheckModel
             )
             R.id.item_filter_check_title_checked_text_view -> selectFilterItem(position, item)
@@ -268,6 +266,7 @@ class FilterDialog(
         currentFilter.typeIdList = emptyList()
         currentFilter.categoryIdList = emptyList()
         currentFilter.brandIdList = emptyList()
+        currentFilter.colorList = emptyList()
 
         checkEmptyFilter()
         setResetTextColor()
@@ -290,12 +289,8 @@ class FilterDialog(
         setResetTextColor()
     }
 
-    private fun selectCategoryItem(
-        view: View,
-        position: Int,
-        filterCheck: FilterCheckModel
-    ) {
-        filterExpandableAdapter.onChildCheckChanged(view, filterCheck.isChecked, position)
+    private fun selectCategoryItem(filterCheck: FilterCheckModel) {
+        filterExpandableAdapter.onMultipleCheck(filterCheck)
         currentFilter.categoryIdList = filterExpandableAdapter.getCheckedItemList()
         currentFilter.typeIdList = filterExpandableAdapter.getCheckedFirstItemList()
 
