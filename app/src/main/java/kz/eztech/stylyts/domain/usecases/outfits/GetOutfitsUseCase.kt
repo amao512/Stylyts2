@@ -4,6 +4,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.repository.outfits.OutfitsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -30,22 +31,23 @@ class GetOutfitsUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        map: Map<String, Any>
+        filterModel: FilterModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
         val booleanQueryMap = HashMap<String, Boolean>()
         val stringQueryMap = HashMap<String, String>()
 
-        if (map.containsKey("my")) {
-            booleanQueryMap["my"] = map["my"] as Boolean
+        if (filterModel.isMyWardrobe) {
+            booleanQueryMap["my"] = filterModel.isMyWardrobe
         }
 
-        stringQueryMap["page"] = map["page"] as String
-
-        if (map.containsKey("gender")) {
-            stringQueryMap["gender"] = map["gender"] as String
+        if (filterModel.page != 0) {
+            stringQueryMap["page"] = filterModel.page.toString()
         }
+
+        stringQueryMap["gender"] = filterModel.gender
+
 
         this.booleanQueryMap = booleanQueryMap
         this.stringQueryMap = stringQueryMap

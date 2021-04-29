@@ -47,10 +47,15 @@ interface ProfileContract {
 
         fun getFilerList(isOwnProfile: Boolean)
 
+        fun getCollections(
+            token: String,
+            mode: Int,
+            filterModel: FilterModel
+        )
+
         fun getPosts(
             token: String,
-            authorId: Int,
-            page: Int
+            filterModel: FilterModel
         )
 
         fun getFollowers(
@@ -70,13 +75,12 @@ interface ProfileContract {
 
         fun getWardrobe(
             token: String,
-            filterModel: FilterModel,
-            page: Int
+            filterModel: FilterModel
         )
 
         fun getOutfits(
             token: String,
-            page: Int
+            filterModel: FilterModel
         )
     }
 }

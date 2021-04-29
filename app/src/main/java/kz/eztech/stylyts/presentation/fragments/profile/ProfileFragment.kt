@@ -56,6 +56,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     @Inject lateinit var presenter: ProfilePresenter
     @Inject lateinit var imageLoader: DomainImageLoader
 
+    private lateinit var currentUser: UserModel
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
     private lateinit var wardrobeAdapter: ClothesDetailAdapter
@@ -80,17 +81,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var isOwnProfile: Boolean = true
     private var userId: Int = 0
     private var isAlreadyFollow: Boolean = false
-    private var currentName = EMPTY_STRING
-    private var currentUsername = EMPTY_STRING
-    private var currentSurname = EMPTY_STRING
-    private var currentGender = EMPTY_STRING
-    private var currentPage: Int = 1
-    private var isLastPage: Boolean = false
-    private var isPosts: Boolean = true
-    private var isOutfits: Boolean = false
-    private var isWardrobes: Boolean = false
+    private var collectionMode: Int = POSTS_MODE
 
     companion object {
+        private const val POSTS_MODE = 1
+        private const val OUTFITS_MODE = 2
+        private const val WARDROBE_MODE = 3
+
         const val USER_ID_BUNDLE_KEY = "user_id"
     }
 
@@ -121,7 +118,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun initializeDependency() {
-        (currentActivity.application as StylytsApp).applicationComponent.inject(this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
     }
 
     override fun initializePresenter() = presenter.attach(this)
@@ -140,11 +137,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         filterDialog = FilterDialog.getNewInstance(
             token = getTokenFromSharedPref(),
             itemClickListener = this,
-            gender = currentGender,
+            gender = currentFilter.gender,
             isShowDiscount = false
         ).apply {
             setFilter(filterModel = currentFilter)
         }
+
         adapterFilter = CollectionsFilterAdapter()
         gridAdapter = GridImageAdapter()
 
@@ -192,27 +190,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processPostInitialization() {
-        presenter.getFilerList(isOwnProfile)
-        presenter.getProfile(
-            token = getTokenFromSharedPref(),
-            userId = userId.toString(),
-            isOwnProfile = isOwnProfile
-        )
-        presenter.getFollowers(
-            token = getTokenFromSharedPref(),
-            userId = userId
-        )
-
-        collectionRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!collectionRecyclerView.canScrollVertically(1)
-                    && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!isLastPage) {
-                        getCollections()
-                    }
-                }
-            }
-        })
+        getFilterList()
+        getProfile()
+        getFollowers()
+        getCollections()
+        handleRecyclerViewScrolling()
     }
 
     override fun disposeRequests() = presenter.disposeRequests()
@@ -231,21 +213,15 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun processProfile(userModel: UserModel) {
         userModel.run {
+            currentUser = this
             userId = id
-            currentName = firstName
-            currentUsername = username
-            currentSurname = lastName
-            currentGender = when (gender) {
+
+            currentFilter.authorId = id
+            currentFilter.gender = when (gender) {
                 "male" -> "M"
                 else -> "F"
             }
         }
-
-        presenter.getPosts(
-            token = getTokenFromSharedPref(),
-            authorId = userId,
-            page = currentPage
-        )
 
         fillProfileInfo(userModel = userModel)
         loadProfilePhoto(userModel = userModel)
@@ -257,55 +233,19 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         gridAdapter.updateMoreList(list = resultsModel.results)
-
-        if (resultsModel.totalPages != currentPage) {
-            currentPage++
-        } else {
-            isLastPage = true
-        }
+        setPagesCondition(resultsModel.totalPages)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.toolbar_right_corner_action_image_button -> {
-                findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
-            }
-            R.id.fragment_profile_edit_text_view -> EditProfileDialog.getNewInstance(
-                token = getTokenFromSharedPref(),
-                editorListener = this
-            ).show(childFragmentManager, "Cart")
-            R.id.linear_layout_fragment_profile_followers_item -> {
-                val bundle = Bundle()
-                bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
-                bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
-                bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWERS_POSITION)
-
-                findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
-            }
-            R.id.linear_layout_fragment_profile_following_item -> {
-                val bundle = Bundle()
-                bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
-                bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
-                bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
-
-                findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
-            }
-            R.id.linear_layout_fragment_profile_photos_item -> {
-                findNavController().navigate(R.id.userSubsFragment)
-            }
-            R.id.toolbar_left_corner_action_image_button -> {
-                if (!isOwnProfile) {
-                    findNavController().navigateUp()
-                }
-            }
-            R.id.fragment_profile_follow_text_view -> presenter.followUser(
-                token = getTokenFromSharedPref(),
-                userId = userId
-            )
-            R.id.fragment_profile_unfollow_text_view -> presenter.unfollowUser(
-                token = getTokenFromSharedPref(),
-                userId = userId
-            )
+            R.id.toolbar_right_corner_action_image_button -> navigateToSettings()
+            R.id.fragment_profile_edit_text_view -> openEditProfileDialog()
+            R.id.linear_layout_fragment_profile_followers_item -> navigateToFollowers()
+            R.id.linear_layout_fragment_profile_following_item -> navigateToFollowings()
+            R.id.linear_layout_fragment_profile_photos_item -> navigateToSubs()
+            R.id.toolbar_left_corner_action_image_button -> navigateBack()
+            R.id.fragment_profile_follow_text_view -> followUser()
+            R.id.fragment_profile_unfollow_text_view -> unFollowUser()
         }
     }
 
@@ -392,41 +332,66 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>) {
         wardrobeAdapter.updateMoreList(list = resultsModel.results)
-
-        if (resultsModel.totalPages != currentPage) {
-            currentPage++
-        } else {
-            isLastPage = true
-        }
+        setPagesCondition(resultsModel.totalPages)
     }
 
     override fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>) {
         outfitsAdapter.updateMoreList(list = resultsModel.results)
+        setPagesCondition(resultsModel.totalPages)
+    }
 
-        if (resultsModel.totalPages != currentPage) {
-            currentPage++
-        } else {
-            isLastPage = true
-        }
+    private fun getProfile() {
+        presenter.getProfile(
+            token = getTokenFromSharedPref(),
+            userId = userId.toString(),
+            isOwnProfile = isOwnProfile
+        )
+    }
+
+    private fun getFilterList() {
+        presenter.getFilerList(isOwnProfile)
+    }
+
+    private fun getFollowers() {
+        presenter.getFollowers(
+            token = getTokenFromSharedPref(),
+            userId = userId
+        )
     }
 
     private fun getCollections() {
-        when {
-            isOutfits -> presenter.getOutfits(
-                token = getTokenFromSharedPref(),
-                page = currentPage
-            )
-            isPosts -> presenter.getPosts(
-                token = getTokenFromSharedPref(),
-                authorId = userId,
-                page = currentPage
-            )
-            isWardrobes -> presenter.getWardrobe(
-                token = getTokenFromSharedPref(),
-                filterModel = currentFilter,
-                page = currentPage
-            )
-        }
+        presenter.getCollections(
+            token = getTokenFromSharedPref(),
+            mode = collectionMode,
+            filterModel = currentFilter
+        )
+    }
+
+    private fun followUser() {
+        presenter.followUser(
+            token = getTokenFromSharedPref(),
+            userId = userId
+        )
+    }
+
+    private fun unFollowUser() {
+        presenter.unfollowUser(
+            token = getTokenFromSharedPref(),
+            userId = userId
+        )
+    }
+
+    private fun handleRecyclerViewScrolling() {
+        collectionRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!collectionRecyclerView.canScrollVertically(1)
+                    && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!currentFilter.isLastPage) {
+                        getCollections()
+                    }
+                }
+            }
+        })
     }
 
     private fun fillProfileInfo(userModel: UserModel) {
@@ -471,40 +436,29 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onPublicationsFilterClick(position: Int) {
-        currentPage = 1
-        isLastPage = false
-        isPosts = true
-        isWardrobes = false
-        isOutfits = false
+        resetPages(mode = POSTS_MODE)
 
-        getCollections()
         collectionRecyclerView.adapter = gridAdapter
-
         adapterFilter.onChooseItem(position)
         gridAdapter.clearList()
+
+        getCollections()
     }
 
     private fun onOutfitsFilterClick(position: Int) {
         if (isOwnProfile) {
-            currentPage = 1
-            isLastPage = false
-            isPosts = false
-            isWardrobes = false
-            isOutfits = true
+            resetPages(mode = OUTFITS_MODE)
 
-            getCollections()
         }
         collectionRecyclerView.adapter = outfitsAdapter
         adapterFilter.onChooseItem(position)
         outfitsAdapter.clearList()
+
+        getCollections()
     }
 
     private fun onWardrobeFilterClick(position: Int) {
-        currentPage = 1
-        isLastPage = false
-        isPosts = false
-        isWardrobes = true
-        isOutfits = false
+        resetPages(mode = WARDROBE_MODE)
 
         if (isOwnProfile) {
             currentFilter.isMyWardrobe = true
@@ -512,9 +466,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         collectionRecyclerView.adapter = wardrobeAdapter
 
-        getCollections()
         adapterFilter.onChooseItem(position)
         wardrobeAdapter.clearList()
+
+        getCollections()
     }
 
     private fun onOutfitItemClick(item: Any?) {
@@ -556,22 +511,69 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         )
     }
 
+    private fun openEditProfileDialog() {
+        EditProfileDialog.getNewInstance(
+            token = getTokenFromSharedPref(),
+            editorListener = this
+        ).show(childFragmentManager, "Cart")
+    }
+
+    private fun navigateToFollowers() {
+        val bundle = Bundle()
+
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUser.username)
+        bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWERS_POSITION)
+
+        findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
+    }
+
+    private fun navigateToFollowings() {
+        val bundle = Bundle()
+
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUser.username)
+        bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
+
+        findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
+    }
+
+    private fun navigateToSettings() {
+        findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
+    }
+
+    private fun navigateToSubs() {
+        findNavController().navigate(R.id.userSubsFragment)
+    }
+
+    private fun navigateBack() {
+        if (!isOwnProfile) {
+            findNavController().navigateUp()
+        }
+    }
+
     private fun showFilterResults(item: Any?) {
         currentFilter = item as FilterModel
-        currentPage = 1
-        isLastPage = false
-        isPosts = false
-        isWardrobes = true
-        isOutfits = false
+        currentFilter.isMyWardrobe = isOwnProfile
         wardrobeAdapter.clearList()
-
-        if (isOwnProfile) {
-            currentFilter.isMyWardrobe = true
-        }
-
         collectionRecyclerView.adapter = wardrobeAdapter
 
+        resetPages(mode = WARDROBE_MODE)
         getCollections()
+    }
+
+    private fun setPagesCondition(totalPages: Int) {
+        if (totalPages != currentFilter.page) {
+            currentFilter.page++
+        } else {
+            currentFilter.isLastPage = true
+        }
+    }
+
+    private fun resetPages(mode: Int) {
+        currentFilter.page = 1
+        currentFilter.isLastPage = false
+        collectionMode = mode
     }
 
     private fun getTokenFromSharedPref(): String {

@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.collection
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitsUseCase
@@ -33,11 +34,11 @@ class CollectionsItemPresenter @Inject constructor(
 
 	override fun getOutfits(
 		token: String,
-		map: Map<String, Any>
+		filterModel: FilterModel
 	) {
 		view.displayProgress()
 
-		getOutfitsUseCase.initParams(token, map)
+		getOutfitsUseCase.initParams(token, filterModel)
 		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>(){
 			override fun onSuccess(t: ResultsModel<OutfitModel>) {
 				view.processViewAction {
@@ -57,11 +58,11 @@ class CollectionsItemPresenter @Inject constructor(
 
 	override fun getPosts(
 		token: String,
-		page: Int
+		filterModel: FilterModel
 	) {
 		view.displayProgress()
 
-		getPostsUseCase.initParams(token, page = page)
+		getPostsUseCase.initParams(token, filterModel)
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				view.processViewAction {

@@ -7,6 +7,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -31,13 +32,12 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     @Inject lateinit var presenter: CollectionsItemPresenter
     private lateinit var adapter: GridImageAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var currentFilter: FilterModel
 
     private val shopItemViewModel: ShopItemViewModel by inject()
 
     private var itemClickListener: UniversalViewClickListener? = null
     private var isOutfits: Boolean = true
-    private var currentPage: Int = 1
-    private var lastPage: Boolean = false
 
     fun setOnClickListener(itemClickListener: UniversalViewClickListener?) {
         this.itemClickListener = itemClickListener
@@ -60,6 +60,7 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
+        currentFilter = FilterModel()
         adapter = GridImageAdapter()
         adapter.setOnClickListener(this)
     }
@@ -78,39 +79,17 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
 
     override fun processPostInitialization() {
         getCollections()
-
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!lastPage) {
-                        when (isOutfits) {
-                            true -> getOutfits()
-                            false -> getPosts()
-                        }
-                    }
-                }
-            }
-        })
+        handleListRecyclerView()
     }
 
     override fun processOutfits(resultsModel: ResultsModel<OutfitModel>) {
         adapter.updateMoreList(list = resultsModel.results)
-
-        if (resultsModel.totalPages != currentPage) {
-            currentPage++
-        } else {
-            lastPage = true
-        }
+        resetPages(resultsModel.totalPages)
     }
 
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         adapter.updateMoreList(list = resultsModel.results)
-
-        if (resultsModel.totalPages != currentPage) {
-            currentPage++
-        } else {
-            lastPage = true
-        }
+        resetPages(resultsModel.totalPages)
     }
 
     override fun disposeRequests() {
@@ -129,11 +108,34 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
         fragment_collection_small_progress_bar.hide()
     }
 
+    private fun handleListRecyclerView() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!currentFilter.isLastPage) {
+                        when (isOutfits) {
+                            true -> getOutfits()
+                            false -> getPosts()
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    private fun resetPages(totalPages: Int) {
+        if (totalPages != currentFilter.page) {
+            currentFilter.page++
+        } else {
+            currentFilter.isLastPage = true
+        }
+    }
+
     private fun getCollections() {
         shopItemViewModel.isOutfits.observe(viewLifecycleOwner, {
             isOutfits = it
-            currentPage = 1
-            lastPage = false
+            currentFilter.page = 1
+            currentFilter.isLastPage = false
             adapter.clearList()
 
             when (it) {
@@ -144,24 +146,21 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     }
 
     private fun getOutfits() {
-        val map = HashMap<String, Any>()
-        map["page"] = currentPage.toString()
-
-        when (currentMode) {
-            0 -> map["gender"] = "M"
-            1 -> map["gender"] = "F"
+        currentFilter.gender = when (currentMode) {
+            0 -> "M"
+            else -> "F"
         }
 
         presenter.getOutfits(
             token = getTokenFromSharedPref(),
-            map = map
+            filterModel = currentFilter
         )
     }
 
     private fun getPosts() {
         presenter.getPosts(
             token = getTokenFromSharedPref(),
-            page = currentPage
+            filterModel = currentFilter
         )
     }
 

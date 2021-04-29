@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.collection
 
 import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
@@ -22,12 +23,12 @@ interface CollectionItemContract {
 
         fun getOutfits(
             token: String,
-            map: Map<String, Any>
+            filterModel: FilterModel
         )
 
         fun getPosts(
             token: String,
-            page: Int
+            filterModel: FilterModel
         )
     }
 }

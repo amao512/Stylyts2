@@ -116,12 +116,32 @@ class ProfilePresenter @Inject constructor(
 		view.processFilter(filterList)
 	}
 
+	override fun getCollections(
+		token: String,
+		mode: Int,
+		filterModel: FilterModel
+	) {
+		when (mode) {
+			1 -> getPosts(
+				token = token,
+				filterModel = filterModel
+			)
+			2 -> getOutfits(
+				token = token,
+				filterModel = filterModel
+			)
+			3 -> getWardrobe(
+				token = token,
+				filterModel = filterModel
+			)
+		}
+	}
+
     override fun getPosts(
 		token: String,
-		authorId: Int,
-		page: Int
+		filterModel: FilterModel
 	) {
-		getPostsUseCase.initParams(token, authorId, page)
+		getPostsUseCase.initParams(token, filterModel)
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				view.processPostResults(resultsModel = t)
@@ -186,13 +206,11 @@ class ProfilePresenter @Inject constructor(
 
 	override fun getWardrobe(
 		token: String,
-		filterModel: FilterModel,
-		page: Int
+		filterModel: FilterModel
 	) {
 		getClothesUseCase.initParams(
 			token = token,
-			filterModel = filterModel,
-			page
+			filterModel = filterModel
 		)
 		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
 			override fun onSuccess(t: ResultsModel<ClothesModel>) {
@@ -211,14 +229,9 @@ class ProfilePresenter @Inject constructor(
 
 	override fun getOutfits(
 		token: String,
-		page: Int
+		filterModel: FilterModel
 	) {
-		val map = HashMap<String, Any>()
-
-		map["my"] = true
-		map["page"] = page.toString()
-
-		getOutfitsUseCase.initParams(token, map)
+		getOutfitsUseCase.initParams(token, filterModel)
 		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
 			override fun onSuccess(t: ResultsModel<OutfitModel>) {
 				view.processViewAction {
@@ -241,11 +254,6 @@ class ProfilePresenter @Inject constructor(
 				view.processViewAction {
 					hideProgress()
 					processProfile(t)
-//					t.id?.let {
-//						val map = HashMap<String, Int>()
-//						map["autor"] = it
-//						getMyCollections(token, map)
-//					}
 				}
 			}
 
