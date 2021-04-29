@@ -165,7 +165,9 @@ class PhotoChooserDialog(
             itemClickListener = this,
             gender = "M",
             isShowWardrobe = true
-        )
+        ).apply {
+            setFilter(filterModel = currentFilter)
+        }
 
         filteredAdapter = GridImageItemFilteredAdapter()
         filterAdapter = CollectionsFilterAdapter()
@@ -359,7 +361,9 @@ class PhotoChooserDialog(
                     filterAdapter.onChooseItem(position)
                 }
             }
-            1 -> filterDialog.show(childFragmentManager, "FilterDialog")
+            1 -> filterDialog.apply {
+                setFilter(filterModel = currentFilter)
+            }.show(childFragmentManager, "FilterDialog")
         }
     }
 

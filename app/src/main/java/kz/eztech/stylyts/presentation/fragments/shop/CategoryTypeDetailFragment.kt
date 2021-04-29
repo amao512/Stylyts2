@@ -228,7 +228,9 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
                 token = getTokenFromSharedPref(),
                 itemClickListener = this,
                 gender = currentFilter.gender
-            ).show(childFragmentManager, EMPTY_STRING)
+            ).apply {
+                setFilter(filterModel = currentFilter)
+            }.show(childFragmentManager, EMPTY_STRING)
         } else {
             brandsFilterAdapter.onChooseItem(position)
             presenter.getClothesByBrand(

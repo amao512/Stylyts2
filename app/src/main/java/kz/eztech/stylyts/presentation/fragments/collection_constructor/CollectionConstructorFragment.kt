@@ -140,7 +140,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			itemClickListener = this,
 			gender = getGender(),
 			isShowWardrobe = true
-		)
+		).apply {
+			setFilter(filterModel = currentFilter)
+		}
 		typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentType)
 		itemAdapter = CollectionConstructorShopItemAdapter()
 
@@ -193,7 +195,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			R.id.text_view_fragment_collection_constructor_category_back -> onCategoryBackClick()
 			R.id.text_view_fragment_collection_constructor_category_next -> onCategoryNextClick()
 			R.id.text_view_fragment_collection_constructor_category_filter -> {
-				filterDialog.show(childFragmentManager, "FilterDialog")
+				filterDialog.apply {
+					setFilter(filterModel = currentFilter)
+				}.show(childFragmentManager, "FilterDialog")
 			}
 		}
 	}

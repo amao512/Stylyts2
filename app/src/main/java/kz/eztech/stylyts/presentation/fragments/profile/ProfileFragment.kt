@@ -120,13 +120,15 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun initializeViewsData() {
+        currentFilter = FilterModel()
         filterDialog = FilterDialog.getNewInstance(
             token = getTokenFromSharedPref(),
             itemClickListener = this,
             gender = currentGender,
             isShowDiscount = false
-        )
-        currentFilter = FilterModel()
+        ).apply {
+            setFilter(filterModel = currentFilter)
+        }
         adapterFilter = CollectionsFilterAdapter()
         gridAdapter = GridImageAdapter()
 
@@ -460,7 +462,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun onFilterClick(position: Int) {
         when (position) {
-            0 -> filterDialog.show(childFragmentManager, EMPTY_STRING)
+            0 -> filterDialog.apply {
+                setFilter(filterModel = currentFilter)
+            }.show(childFragmentManager, EMPTY_STRING)
             1 -> onPublicationsFilterClick(position)
             2 -> onOutfitsFilterClick(position)
             3 -> onWardrobeFilterClick(position)
@@ -559,9 +563,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun showFilterResults(item: Any?) {
         currentFilter = item as FilterModel
+        currentPage = 1
+        isLastPage = false
         isPosts = false
         isWardrobes = true
         isOutfits = false
+        wardrobeAdapter.clearList()
 
         if (isOwnProfile) {
             currentFilter.isMyWardrobe = true

@@ -36,7 +36,7 @@ class FilterDialog(
     private val itemClickListener: UniversalViewClickListener,
     private val currentGender: String,
     private val isShowWardrobe: Boolean,
-    private val isShowDiscount: Boolean
+    private val isShowDiscount: Boolean,
 ) : DialogFragment(), FilterContract.View, View.OnClickListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: FilterPresenter
@@ -56,7 +56,7 @@ class FilterDialog(
             itemClickListener: UniversalViewClickListener,
             gender: String,
             isShowWardrobe: Boolean = false,
-            isShowDiscount: Boolean = true
+            isShowDiscount: Boolean = true,
         ): FilterDialog {
             val filterDialog = FilterDialog(
                 itemClickListener = itemClickListener,
@@ -123,7 +123,6 @@ class FilterDialog(
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        currentFilter = FilterModel()
         currentFilter.gender = currentGender
     }
 
@@ -175,6 +174,9 @@ class FilterDialog(
             categoryFilterSingleGroupList = list,
             itemClickListener = this
         )
+
+        checkEmptyFilter()
+        setResetTextColor()
     }
 
     override fun processClothesBrands(list: List<FilterCheckModel>) {
@@ -228,6 +230,10 @@ class FilterDialog(
             R.id.item_filter_check_title_checked_text_view -> selectFilterItem(position, item)
             R.id.item_filter_root_view_frame_layout -> openFilterGroup(item as FilterItemModel)
         }
+    }
+
+    fun setFilter(filterModel: FilterModel) {
+        this.currentFilter = filterModel
     }
 
     private fun openFilterGroup(filterItemModel: FilterItemModel) {
