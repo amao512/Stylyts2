@@ -2,8 +2,11 @@ package kz.eztech.stylyts.presentation.fragments.profile
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -12,9 +15,9 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
-import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -60,10 +63,23 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: FilterModel
 
+    private lateinit var avatarShapeableImageView: ShapeableImageView
+    private lateinit var userShortNameTextView: TextView
+    private lateinit var userNameTextView: TextView
+    private lateinit var photosCountTextView: TextView
+    private lateinit var followersItemLinearLayout: LinearLayout
+    private lateinit var followersCountTextView: TextView
+    private lateinit var followingsItemLinearLayout: LinearLayout
+    private lateinit var followingsCountTextView: TextView
+    private lateinit var changeProfileTextView: TextView
+    private lateinit var followTextView: TextView
+    private lateinit var unFollowTextView: TextView
+    private lateinit var filterRecyclerVew: RecyclerView
+    private lateinit var collectionRecyclerView: RecyclerView
+
     private var isOwnProfile: Boolean = true
     private var userId: Int = 0
     private var isAlreadyFollow: Boolean = false
-    private var isMyData = false
     private var currentName = EMPTY_STRING
     private var currentUsername = EMPTY_STRING
     private var currentSurname = EMPTY_STRING
@@ -140,26 +156,39 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun initializeViews() {
-        recycler_view_fragment_profile_filter_list.adapter = adapterFilter
-        recycler_view_fragment_profile_items_list.adapter = gridAdapter
-        recycler_view_fragment_profile_items_list.addItemDecoration(GridSpacesItemDecoration(space = 16))
+        filterRecyclerVew = recycler_view_fragment_profile_filter_list
+        filterRecyclerVew.adapter = adapterFilter
+
+        collectionRecyclerView = recycler_view_fragment_profile_items_list
+        collectionRecyclerView.addItemDecoration(GridSpacesItemDecoration(space = 16))
+        collectionRecyclerView.adapter = gridAdapter
+
+        avatarShapeableImageView = shapeable_image_view_fragment_profile_avatar
+        userShortNameTextView = text_view_fragment_profile_user_short_name
+        userNameTextView = text_view_fragment_profile_user_name
+        photosCountTextView = fragment_profile_photos_count
+        followersItemLinearLayout = linear_layout_fragment_profile_followers_item
+        followersCountTextView = fragment_profile_followers_count
+        followingsItemLinearLayout = linear_layout_fragment_profile_following_item
+        followingsCountTextView = fragment_profile_followings_count
+        changeProfileTextView = fragment_profile_edit_text_view
+        followTextView = fragment_profile_follow_text_view
+        unFollowTextView = fragment_profile_unfollow_text_view
     }
 
     override fun initializeListeners() {
         adapterFilter.setOnClickListener(this)
         gridAdapter.setOnClickListener(this)
 
+        changeProfileTextView.setOnClickListener(this)
+        followersItemLinearLayout.setOnClickListener(this)
+        followingsItemLinearLayout.setOnClickListener(this)
+        followTextView.setOnClickListener(this)
+        unFollowTextView.setOnClickListener(this)
+
         include_toolbar_profile.toolbar_right_corner_action_image_button.setOnClickListener(this)
-        frame_layout_fragment_profile_my_incomes.setOnClickListener(this)
-        frame_layout_fragment_profile_my_addresses.setOnClickListener(this)
-        fragment_profile_edit_text_view.setOnClickListener(this)
-        frame_layout_fragment_profile_cards.setOnClickListener(this)
-        linear_layout_fragment_profile_followers_item.setOnClickListener(this)
-        linear_layout_fragment_profile_following_item.setOnClickListener(this)
         linear_layout_fragment_profile_photos_item.setOnClickListener(this)
         toolbar_left_corner_action_image_button.setOnClickListener(this)
-        fragment_profile_follow_text_view.setOnClickListener(this)
-        fragment_profile_unfollow_text_view.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -174,9 +203,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             userId = userId
         )
 
-        recycler_view_fragment_profile_items_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        collectionRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recycler_view_fragment_profile_items_list.canScrollVertically(1)
+                if (!collectionRecyclerView.canScrollVertically(1)
                     && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!isLastPage) {
                         getCollections()
@@ -196,34 +225,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun hideProgress() = progress_bar_fragment_profile.hide()
 
-    override fun showMyData() {
-        linear_layout_fragment_profile_followers_item.hide()
-        linear_layout_fragment_profile_change_buttons.hide()
-        linear_layout_fragment_profile_photos_item.hide()
-        linear_layout_fragment_profile_following_item.hide()
-        recycler_view_fragment_profile_filter_list.hide()
-        recycler_view_fragment_profile_items_list.hide()
-        frame_layout_fragment_profile_settings_container.show()
-    }
-
-    override fun hideMyData() {
-        frame_layout_fragment_profile_settings_container.hide()
-        linear_layout_fragment_profile_followers_item.show()
-        linear_layout_fragment_profile_change_buttons.show()
-        linear_layout_fragment_profile_photos_item.show()
-        linear_layout_fragment_profile_following_item.show()
-        recycler_view_fragment_profile_filter_list.show()
-        recycler_view_fragment_profile_items_list.show()
-    }
-
-    override fun processMyData() {
-        if (isMyData) {
-            isMyData = false
-            hideMyData()
-        } else {
-            isMyData = true
-            showMyData()
-        }
+    override fun navigateToMyData() {
+        findNavController().navigate(R.id.action_profileFragment_to_myDataFragment)
     }
 
     override fun processProfile(userModel: UserModel) {
@@ -267,19 +270,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.toolbar_right_corner_action_image_button -> {
                 findNavController().navigate(R.id.action_profileFragment_to_settingsFragment)
             }
-            R.id.frame_layout_fragment_profile_my_incomes -> {
-                findNavController().navigate(R.id.action_profileFragment_to_profileIncomeFragment)
-            }
-            R.id.frame_layout_fragment_profile_my_addresses -> {
-                findNavController().navigate(R.id.action_profileFragment_to_addressProfileFragment)
-            }
             R.id.fragment_profile_edit_text_view -> EditProfileDialog.getNewInstance(
                 token = getTokenFromSharedPref(),
                 editorListener = this
             ).show(childFragmentManager, "Cart")
-            R.id.frame_layout_fragment_profile_cards -> {
-                findNavController().navigate(R.id.action_profileFragment_to_cardFragment)
-            }
             R.id.linear_layout_fragment_profile_followers_item -> {
                 val bundle = Bundle()
                 bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
@@ -365,15 +359,15 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             }
 
             if (!isOwnProfile && !isAlreadyFollow) {
-                fragment_profile_edit_text_view.hide()
-                fragment_profile_follow_text_view.show()
-                fragment_profile_unfollow_text_view.hide()
+                changeProfileTextView.hide()
+                followTextView.show()
+                unFollowTextView.hide()
             }
 
             if (!isOwnProfile && isAlreadyFollow) {
-                fragment_profile_edit_text_view.hide()
-                fragment_profile_follow_text_view.hide()
-                fragment_profile_unfollow_text_view.show()
+                changeProfileTextView.hide()
+                followTextView.hide()
+                unFollowTextView.show()
             }
         }
     }
@@ -382,17 +376,17 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
 
         if (!isOwnProfile && followSuccessModel.follower == currentUserId) {
-            fragment_profile_edit_text_view.hide()
-            fragment_profile_follow_text_view.hide()
-            fragment_profile_unfollow_text_view.show()
+            changeProfileTextView.hide()
+            followTextView.hide()
+            unFollowTextView.show()
         }
     }
 
     override fun processSuccessUnfollowing() {
         if (!isOwnProfile) {
-            fragment_profile_edit_text_view.hide()
-            fragment_profile_follow_text_view.show()
-            fragment_profile_unfollow_text_view.hide()
+            changeProfileTextView.hide()
+            followTextView.show()
+            unFollowTextView.hide()
         }
     }
 
@@ -437,25 +431,26 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun fillProfileInfo(userModel: UserModel) {
         include_toolbar_profile.toolbar_title_text_view.text = userModel.username
-        text_view_fragment_profile_user_name.text = userModel.firstName
-        fragment_profile_photos_count.text = "${0}"
-        fragment_profile_followers_count.text = userModel.followersCount.toString()
-        fragment_profile_followings_count.text = userModel.followingsCount.toString()
+
+        userNameTextView.text = userModel.firstName
+        photosCountTextView.text = "${0}"
+        followersCountTextView.text = userModel.followersCount.toString()
+        followingsCountTextView.text = userModel.followingsCount.toString()
     }
 
     private fun loadProfilePhoto(userModel: UserModel) {
         if (userModel.avatar.isBlank()) {
-            shapeable_image_view_fragment_profile_avatar.hide()
-            text_view_fragment_profile_user_short_name.show()
-            text_view_fragment_profile_user_short_name.text = getShortName(
+            avatarShapeableImageView.hide()
+            userShortNameTextView.show()
+            userShortNameTextView.text = getShortName(
                 firstName = userModel.firstName,
                 lastName = userModel.lastName
             )
         } else {
-            text_view_fragment_profile_user_short_name.hide()
+            userShortNameTextView.hide()
             imageLoader.load(
                 url = userModel.avatar,
-                target = shapeable_image_view_fragment_profile_avatar
+                target = avatarShapeableImageView
             )
         }
     }
@@ -468,7 +463,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             1 -> onPublicationsFilterClick(position)
             2 -> onOutfitsFilterClick(position)
             3 -> onWardrobeFilterClick(position)
-            4 -> processMyData()
+            4 -> navigateToMyData()
             5 ->  CreatorChooserDialog().apply {
                 setChoiceListener(listener = this@ProfileFragment)
             }.show(childFragmentManager, EMPTY_STRING)
@@ -483,7 +478,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         isOutfits = false
 
         getCollections()
-        recycler_view_fragment_profile_items_list.adapter = gridAdapter
+        collectionRecyclerView.adapter = gridAdapter
 
         adapterFilter.onChooseItem(position)
         gridAdapter.clearList()
@@ -499,7 +494,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
             getCollections()
         }
-        recycler_view_fragment_profile_items_list.adapter = outfitsAdapter
+        collectionRecyclerView.adapter = outfitsAdapter
         adapterFilter.onChooseItem(position)
         outfitsAdapter.clearList()
     }
@@ -515,7 +510,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             currentFilter.isMyWardrobe = true
         }
 
-        recycler_view_fragment_profile_items_list.adapter = wardrobeAdapter
+        collectionRecyclerView.adapter = wardrobeAdapter
 
         getCollections()
         adapterFilter.onChooseItem(position)
@@ -574,7 +569,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             currentFilter.isMyWardrobe = true
         }
 
-        recycler_view_fragment_profile_items_list.adapter = wardrobeAdapter
+        collectionRecyclerView.adapter = wardrobeAdapter
 
         getCollections()
     }

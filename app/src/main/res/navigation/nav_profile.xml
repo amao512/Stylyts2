@@ -13,20 +13,8 @@
         tools:layout="@layout/fragment_profile"
         >
         <action
-            android:id="@+id/action_profileFragment_to_profileIncomeFragment"
-            app:destination="@id/profileIncomeFragment"
-            />
-        <action
             android:id="@+id/action_profileFragment_to_collectionDetailFragment"
             app:destination="@id/collectionDetailFragment"
-            />
-        <action
-            android:id="@+id/action_profileFragment_to_addressProfileFragment"
-            app:destination="@id/addressProfileFragment"
-            />
-        <action
-            android:id="@+id/action_profileFragment_to_cardFragment"
-            app:destination="@id/cardFragment"
             />
         <action
             android:id="@+id/action_profileFragment_to_settingsFragment"
@@ -47,6 +35,10 @@
         <action
             android:id="@+id/action_profileFragment_to_itemDetailFragment"
             app:destination="@id/clothesDetailFragment"
+            />
+        <action
+            android:id="@+id/action_profileFragment_to_myDataFragment"
+            app:destination="@id/myDataFragment"
             />
     </fragment>
 
@@ -220,4 +212,26 @@
         android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
         android:label="CreateCollectionAcceptFragment"
         />
+    <fragment
+        android:id="@+id/myDataFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment"
+        android:label="MyDataFragment"
+        >
+        <action
+            android:id="@+id/action_myDataFragment_to_addressProfileFragment"
+            app:destination="@id/addressProfileFragment"
+            />
+        <action
+            android:id="@+id/action_myDataFragment_to_profileIncomeFragment"
+            app:destination="@id/profileIncomeFragment"
+            />
+        <action
+            android:id="@+id/action_myDataFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment"
+            />
+        <action
+            android:id="@+id/action_myDataFragment_to_cardFragment"
+            app:destination="@id/cardFragment"
+            />
+    </fragment>
 </navigation>

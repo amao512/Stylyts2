@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frame_layout_fragment_profile_settings_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <include
+        android:id="@+id/fragment_my_data_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/fragment_my_data_options_holder_nested_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/padding_size_24x"
+            >
+
+            <FrameLayout
+                android:id="@+id/fragment_my_data_avatar_holder_frame_layout"
+                android:layout_width="@dimen/profile_user_photo_size"
+                android:layout_height="@dimen/profile_user_photo_size"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                >
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/fragment_my_data_avatar_shapeable_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    app:shapeAppearanceOverlay="@style/circleImageView"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_my_data_user_short_name_text_view"
+                    style="@style/TitleTextBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/circle_gray"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size_36x"
+                    tools:text="RE"
+                    />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/fragment_my_data_user_name_text_view"
+                style="@style/TitleTextBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_size_12x"
+                android:layout_marginBottom="@dimen/margin_size_16x"
+                app:layout_constraintEnd_toEndOf="@+id/frame_layout_fragment_profile_avatar_holder"
+                app:layout_constraintStart_toStartOf="@+id/frame_layout_fragment_profile_avatar_holder"
+                app:layout_constraintTop_toBottomOf="@+id/frame_layout_fragment_profile_avatar_holder"
+                tools:text="Ruslan"
+                />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:background="@drawable/rounded_rectangle_gray"
+                android:paddingHorizontal="@dimen/padding_size_24x"
+                android:paddingVertical="@dimen/padding_size_12x"
+                >
+
+                <TextView
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:text="@string/profile_my_orders"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/profile_settings_icon_size"
+                    android:layout_height="@dimen/profile_settings_icon_size"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/ic_shop"
+                    />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment_my_data_payment_way_frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:background="@drawable/rounded_rectangle_gray"
+                android:paddingHorizontal="@dimen/padding_size_24x"
+                android:paddingVertical="@dimen/padding_size_12x"
+                >
+
+                <TextView
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:text="@string/profile_payments"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/profile_settings_icon_size"
+                    android:layout_height="@dimen/profile_settings_icon_size"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/ic_credit_card"
+                    />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:background="@drawable/rounded_rectangle_gray"
+                android:paddingHorizontal="@dimen/padding_size_24x"
+                android:paddingVertical="@dimen/padding_size_12x"
+                >
+
+                <TextView
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:text="@string/profile_favorites"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/profile_settings_icon_size"
+                    android:layout_height="@dimen/profile_settings_icon_size"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/ic_baseline_favorite_border_24"
+                    />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment_my_data_addresses_frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:background="@drawable/rounded_rectangle_gray"
+                android:paddingHorizontal="@dimen/padding_size_24x"
+                android:paddingVertical="@dimen/padding_size_12x"
+                >
+
+                <TextView
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:text="@string/profile_my_address"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/profile_settings_icon_size"
+                    android:layout_height="@dimen/profile_settings_icon_size"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/ic_home"
+                    />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment_my_data_incomes_frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:background="@drawable/rounded_rectangle_gray"
+                android:paddingHorizontal="@dimen/padding_size_24x"
+                android:paddingVertical="@dimen/padding_size_12x"
+                >
+
+                <TextView
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:text="@string/profile_my_incomes"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/profile_settings_icon_size"
+                    android:layout_height="@dimen/profile_settings_icon_size"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/ic_shop"
+                    />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_size_16x"
+                android:background="@drawable/rounded_rectangle_gray"
+                android:paddingHorizontal="@dimen/padding_size_24x"
+                android:paddingVertical="@dimen/padding_size_12x"
+                >
+
+                <TextView
+                    style="@style/SubtitleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    android:text="@string/profile_help_need"
+                    />
+
+                <ImageView
+                    android:layout_width="@dimen/profile_settings_icon_size"
+                    android:layout_height="@dimen/profile_settings_icon_size"
+                    android:layout_gravity="end|center"
+                    android:src="@drawable/ic_save_icon"
+                    />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

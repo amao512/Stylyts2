@@ -19,11 +19,7 @@ interface ProfileContract {
 
     interface View : BaseView {
 
-        fun showMyData()
-
-        fun hideMyData()
-
-        fun processMyData()
+        fun navigateToMyData()
 
         fun processProfile(userModel: UserModel)
 
