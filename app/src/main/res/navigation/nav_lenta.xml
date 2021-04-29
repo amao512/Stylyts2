@@ -36,6 +36,10 @@
             android:id="@+id/action_mainFragment_to_nav_profile"
             app:destination="@id/nav_profile"
             />
+        <action
+            android:id="@+id/action_mainFragment_to_createCollectionAcceptFragment"
+            app:destination="@id/createCollectionAcceptFragment"
+            />
     </fragment>
 
     <fragment
@@ -63,6 +67,10 @@
             android:id="@+id/action_collectionDetailFragment_to_nav_create_collection2"
             app:destination="@id/nav_create_collection"
             />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_createCollectionAcceptFragment"
+            app:destination="@id/createCollectionAcceptFragment"
+            />
     </fragment>
 
     <fragment
@@ -80,5 +88,10 @@
 
     <include app:graph="@navigation/nav_create_collection" />
     <include app:graph="@navigation/nav_profile" />
+    <fragment
+        android:id="@+id/createCollectionAcceptFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
+        android:label="CreateCollectionAcceptFragment"
+        />
 
 </navigation>

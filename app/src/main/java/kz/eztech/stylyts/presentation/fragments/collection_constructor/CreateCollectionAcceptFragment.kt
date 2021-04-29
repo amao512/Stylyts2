@@ -59,6 +59,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         const val OUTFIT_MODEL_KEY = "outfitModel"
         const val PHOTO_BITMAP_KEY = "photoBitmap"
         const val PHOTO_URI_KEY = "photoUri"
+        const val PHOTO_STRING_KEY = "photoString"
         const val CHOSEN_PHOTOS_KEY = "chooser_photos"
         const val IS_CHOOSER_KEY = "isChooser"
         const val CLOTHES_KEY = "clothes"
@@ -156,12 +157,22 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             if (it.containsKey(PHOTO_URI_KEY)) {
                 currentPhotoUri = it.getParcelable(PHOTO_URI_KEY)
             }
+            if (it.containsKey(PHOTO_STRING_KEY)) {
+                it.getString(PHOTO_STRING_KEY)?.let { string ->
+                    currentPhotoUri = FileUtils.getUriFromString(string)
+                }
+            }
             if (it.containsKey(IS_CHOOSER_KEY)) {
                 isPhotoChooser = it.getBoolean(IS_CHOOSER_KEY)
             }
             if (it.containsKey(CLOTHES_KEY)) {
                 it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let { list ->
                     selectedList = list
+                }
+            }
+            if (it.containsKey(USERS_KEY)) {
+                it.getParcelableArrayList<UserModel>(USERS_KEY)?.let { list ->
+                    selectedUsers = list
                 }
             }
             if (it.containsKey(MODE_KEY)) {

@@ -23,6 +23,7 @@ import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
 import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
@@ -175,16 +176,30 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         item.clothes.let {
+            val bundle = Bundle()
             val itemsList = ArrayList<ClothesModel>()
+            val images = ArrayList<String>()
 
             itemsList.addAll(it)
+            images.addAll(item.images)
+            images.removeFirst()
 
-            val bundle = Bundle()
+            bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
+            bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
+            bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, itemsList)
+
+            if (item.images.isNotEmpty()) {
+                bundle.putString(
+                    CreateCollectionAcceptFragment.PHOTO_STRING_KEY,
+                    item.images[0]
+                )
+            }
+
             bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
             bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, item.id)
 
             findNavController().navigate(
-                R.id.action_mainFragment_to_nav_create_collection,
+                R.id.action_mainFragment_to_createCollectionAcceptFragment,
                 bundle
             )
         }

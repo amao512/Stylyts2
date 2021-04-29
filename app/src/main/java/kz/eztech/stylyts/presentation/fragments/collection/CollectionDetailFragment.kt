@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
 import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
@@ -412,16 +414,33 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
                 bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
                 bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentOutfitModel.id)
+
+                findNavController().navigate(R.id.action_collectionDetailFragment_to_nav_create_collection, bundle)
             }
             POST_MODE -> currentPostModel.clothes.let {
-                itemsList.addAll(it)
+                val images = ArrayList<String>()
 
-                bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
-                bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentPostModel.id)
+                itemsList.addAll(it)
+                images.addAll(currentPostModel.images)
+                images.removeFirst()
+
+                bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
+                bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
+                bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, itemsList)
+
+                if (currentPostModel.images.isNotEmpty()) {
+                    bundle.putString(
+                        CreateCollectionAcceptFragment.PHOTO_STRING_KEY,
+                        currentPostModel.images[0]
+                    )
+                }
+
+                findNavController().navigate(
+                    R.id.action_collectionDetailFragment_to_createCollectionAcceptFragment,
+                    bundle
+                )
             }
         }
-
-        findNavController().navigate(R.id.action_collectionDetailFragment_to_nav_create_collection, bundle)
     }
 
     private fun onContextMenuClick() {
