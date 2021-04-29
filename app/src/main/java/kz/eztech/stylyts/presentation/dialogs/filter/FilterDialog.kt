@@ -301,12 +301,12 @@ class FilterDialog(
 
     private fun selectWardrobeItem(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemList()
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemListByRemoveFirst()
     }
 
     private fun selectClothesBrand(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.brandIdList = filterCheckAdapter.getCheckedItemList()
+        currentFilter.brandIdList = filterCheckAdapter.getCheckedItemListByRemoveFirst()
     }
 
     private fun selectColor(position: Int) {
