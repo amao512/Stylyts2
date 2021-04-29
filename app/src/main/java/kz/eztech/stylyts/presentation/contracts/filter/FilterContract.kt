@@ -20,6 +20,8 @@ interface FilterContract {
         fun processClothesBrands(list: List<FilterCheckModel>)
 
         fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
+
+        fun processColors(list: List<FilterCheckModel>)
     }
 
     interface Presenter : BasePresenter<View> {
@@ -40,5 +42,7 @@ interface FilterContract {
             token: String,
             filterModel: FilterModel
         )
+
+        fun getColors(token: String)
     }
 }

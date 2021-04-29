@@ -73,6 +73,8 @@
     <string name="filter_list_publishes">Публикации</string>
     <string name="filter_list_wardrobe">Гардероб</string>
     <string name="filter_list_my_data">Мои данные</string>
+    <string name="filter_my_wardrobe">Мой гардероб</string>
+    <string name="filter_discounts">Скидки</string>
 
     <string name="toolbar_title_edit_profile">Редактировать профиль</string>
     <string name="toolbar_title_comments">Комментарии</string>

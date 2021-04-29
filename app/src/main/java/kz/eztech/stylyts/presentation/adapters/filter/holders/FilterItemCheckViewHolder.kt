@@ -1,7 +1,9 @@
 package kz.eztech.stylyts.presentation.adapters.filter.holders
 
+import android.graphics.Color
 import android.view.View
 import kotlinx.android.synthetic.main.item_filter_check.view.*
+import kz.eztech.stylyts.domain.models.ColorModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
@@ -9,6 +11,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
@@ -29,6 +32,7 @@ class FilterItemCheckViewHolder(
             is ClothesBrandModel -> processBrandModel(item, position)
             is ClothesTypeModel -> processTypeModel(item, position)
             is ClothesStyleModel -> processStyleModel(item, position)
+            is ColorModel -> processColorModel(item, position)
         }
     }
 
@@ -94,6 +98,27 @@ class FilterItemCheckViewHolder(
                 title = clothesStyle.title,
                 isChecked = filterCheckModel.isChecked
             )
+            item_filter_check_title_checked_text_view.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
+            }
+        }
+    }
+
+    private fun processColorModel(
+        filterCheckModel: FilterCheckModel,
+        position: Int
+    ) {
+        val colorModel = filterCheckModel.item as ColorModel
+
+        with(itemView) {
+            fillTitle(
+                title = colorModel.title,
+                isChecked = filterCheckModel.isChecked
+            )
+
+            item_filter_check_color_view.setBackgroundColor(Color.parseColor(colorModel.color))
+            item_filter_check_color_view.show()
+
             item_filter_check_title_checked_text_view.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }

@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.filter
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.ColorModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
@@ -62,6 +63,7 @@ class FilterPresenter @Inject constructor(
                 preparedList.add(
                     FilterCheckModel(
                         id = 0,
+                        isCustom = true,
                         item = ClothesCategoryModel(
                             id = 0,
                             title = "Мой гардероб",
@@ -131,6 +133,7 @@ class FilterPresenter @Inject constructor(
                     preparedResults.add(
                         FilterCheckModel(
                             id = 0,
+                            isCustom = true,
                             item = ClothesBrandModel(
                                 id = 0,
                                 title = title,
@@ -203,6 +206,7 @@ class FilterPresenter @Inject constructor(
                     preparedResults.add(
                         FilterCheckModel(
                             id = type.id,
+                            isCustom = true,
                             item = ClothesCategoryModel(
                                 id = type.id,
                                 title = type.title,
@@ -255,5 +259,31 @@ class FilterPresenter @Inject constructor(
                 }
             }
         )
+    }
+
+    override fun getColors(token: String) {
+        val list: MutableList<FilterCheckModel> = mutableListOf()
+        list.add(
+            FilterCheckModel(
+                id = 1,
+                item = ColorModel(
+                    id = 1,
+                    title = "Белый",
+                    color = "#ffffff"
+                )
+            )
+        )
+        list.add(
+            FilterCheckModel(
+                id = 2,
+                item = ColorModel(
+                    id = 2,
+                    title = "Черный",
+                    color = "#000000"
+                )
+            )
+        )
+
+        view.processColors(list)
     }
 }

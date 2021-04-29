@@ -123,7 +123,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         filterDialog = FilterDialog.getNewInstance(
             token = getTokenFromSharedPref(),
             itemClickListener = this,
-            gender = currentGender
+            gender = currentGender,
+            isShowDiscount = false
         )
         currentFilter = FilterModel()
         adapterFilter = CollectionsFilterAdapter()

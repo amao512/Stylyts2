@@ -154,6 +154,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         preparedResults.add(
             FilterCheckModel(
                 id = 0,
+                isCustom = true,
                 item = ClothesCategoryModel(
                     id = 0,
                     clothesType = clothesType,

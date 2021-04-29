@@ -36,14 +36,14 @@ class FilterCheckAdapter : BaseAdapter() {
         val firstFilterCheck = currentList[0] as FilterCheckModel
         val filterCheck = currentList[position] as FilterCheckModel
 
-        if (position == 0) {
+        if (position == 0 && firstFilterCheck.isCustom) {
             firstFilterCheck.isChecked = !firstFilterCheck.isChecked
 
             currentList.forEach {
                 (it as FilterCheckModel).isChecked = firstFilterCheck.isChecked
             }
         } else {
-            if (firstFilterCheck.isChecked) {
+            if (firstFilterCheck.isChecked && firstFilterCheck.isCustom) {
                 firstFilterCheck.isChecked = false
             }
 
