@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
+import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -200,6 +200,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             outfitModel.createdAt,
             DateFormatterHelper.FORMAT_DATE_DD_MMMM
         )
+
+        if (!isOwn) {
+            button_fragment_collection_detail_change_collection.hide()
+        }
     }
 
     override fun processPost(postModel: PostModel) {
@@ -210,6 +214,14 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         processAuthor(userShortModel = postModel.author)
         loadImages(images = postModel.images)
         loadTags(postModel = postModel)
+
+        if (!isOwn) {
+            button_fragment_collection_detail_change_collection.hide()
+        }
+
+        if (postModel.clothes.isEmpty()) {
+            recycler_view_fragment_collection_detail_additionals_list.hide()
+        }
     }
 
     private fun processAuthor(userShortModel: UserShortModel) {

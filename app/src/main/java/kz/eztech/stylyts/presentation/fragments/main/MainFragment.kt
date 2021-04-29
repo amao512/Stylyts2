@@ -71,7 +71,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        postsAdapter = MainImagesAdapter()
+        postsAdapter = MainImagesAdapter(
+            ownId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
+        )
         postsAdapter.setOnClickListener(listener = this)
     }
 

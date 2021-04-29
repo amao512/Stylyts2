@@ -144,18 +144,18 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="bottom|start"
-            android:paddingBottom="@dimen/padding_size_24x"
+            android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_8x"
+            android:paddingBottom="@dimen/padding_size_24x"
             >
 
             <FrameLayout
                 android:id="@+id/item_main_image_clothes_tags_icon"
                 android:layout_width="@dimen/tag_icon_size"
                 android:layout_height="@dimen/tag_icon_size"
-                android:background="@drawable/circle_black"
                 android:layout_marginEnd="@dimen/margin_size_10x"
+                android:background="@drawable/circle_black"
                 android:visibility="gone"
                 >
 

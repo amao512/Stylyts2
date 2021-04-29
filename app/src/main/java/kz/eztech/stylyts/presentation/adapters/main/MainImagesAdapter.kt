@@ -9,7 +9,9 @@ import kz.eztech.stylyts.presentation.adapters.holders.MainImageHolder
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-class MainImagesAdapter : BaseAdapter(){
+class MainImagesAdapter(
+    private val ownId: Int
+) : BaseAdapter(){
 
     override fun getLayoutId(): Int = R.layout.item_main_image
 
@@ -27,7 +29,8 @@ class MainImagesAdapter : BaseAdapter(){
     override fun getViewHolder(view: View): MainImageHolder {
         return MainImageHolder(
             itemView = view,
-            adapter = this
+            adapter = this,
+            ownId = ownId
         )
     }
 }

@@ -24,7 +24,8 @@ import java.text.NumberFormat
  */
 class MainImageHolder(
     itemView: View,
-    adapter: BaseAdapter
+    adapter: BaseAdapter,
+    private val ownId: Int
 ) : BaseViewHolder(itemView, adapter), UniversalViewClickListener, View.OnClickListener {
 
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
@@ -63,6 +64,10 @@ class MainImageHolder(
         additionalAdapter.itemClickListener = adapter.itemClickListener
 
         with (itemView) {
+            if (postModel.clothes.isEmpty()) {
+                recycler_view_item_main_image_additionals_list.hide()
+            }
+
             recycler_view_item_main_image_additionals_list.adapter = additionalAdapter
             additionalAdapter.updateList(list = postModel.clothes)
         }
@@ -73,6 +78,10 @@ class MainImageHolder(
         position: Int
     ) {
         with (itemView) {
+            if (ownId != postModel.author.id) {
+                button_item_main_image_change_collection.hide()
+            }
+
             item_main_image_image_card_view.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
             }
