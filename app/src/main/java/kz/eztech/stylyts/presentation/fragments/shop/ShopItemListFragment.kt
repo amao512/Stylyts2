@@ -198,7 +198,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         item as FilterCheckModel
 
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemListByRemoveFirst()
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemIdListByRemoveFirst()
 
         with(item.item as ClothesCategoryModel) {
             selectedCategoryTitle = when (currentFilter.categoryIdList.size) {

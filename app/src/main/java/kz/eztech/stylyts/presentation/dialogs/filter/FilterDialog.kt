@@ -180,8 +180,8 @@ class FilterDialog(
     }
 
     override fun processClothesBrands(list: List<FilterCheckModel>) {
-        currentFilter.brandIdList.forEach { brand ->
-            list.find { it.id == brand }?.isChecked = true
+        currentFilter.brandList.forEach { brand ->
+            list.find { it.id == brand.id }?.isChecked = true
         }
 
         filterCheckAdapter.updateList(list)
@@ -271,7 +271,7 @@ class FilterDialog(
 
         currentFilter.typeIdList = emptyList()
         currentFilter.categoryIdList = emptyList()
-        currentFilter.brandIdList = emptyList()
+        currentFilter.brandList = emptyList()
         currentFilter.colorList = emptyList()
 
         checkEmptyFilter()
@@ -307,17 +307,19 @@ class FilterDialog(
 
     private fun selectWardrobeItem(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemListByRemoveFirst()
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemIdListByRemoveFirst()
     }
 
     private fun selectClothesBrand(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.brandIdList = filterCheckAdapter.getCheckedItemListByRemoveFirst()
+        currentFilter.brandList = filterCheckAdapter.getCheckedItemListByRemoveFirst().map {
+            it.item as ClothesBrandModel
+        }
     }
 
     private fun selectColor(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.colorList = filterCheckAdapter.getCheckedItemList()
+        currentFilter.colorList = filterCheckAdapter.getCheckedItemIdList()
     }
 
     private fun onMyWardrobeClick() {
@@ -417,7 +419,7 @@ class FilterDialog(
     }
 
     private fun checkEmptyFilter() {
-        isCheckedItem = currentFilter.brandIdList.isNotEmpty() ||
+        isCheckedItem = currentFilter.brandList.isNotEmpty() ||
                 currentFilter.categoryIdList.isNotEmpty() ||
                 currentFilter.typeIdList.isNotEmpty() ||
                 currentFilter.colorList.isNotEmpty()

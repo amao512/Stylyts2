@@ -9,5 +9,6 @@ data class CollectionFilterModel(
     var icon: Int? = null,
     var gender: String? = "M",
     var mode: Int = 0,
-    var isChosen: Boolean = false
+    var isChosen: Boolean = false,
+    var item: Any? = null
 )

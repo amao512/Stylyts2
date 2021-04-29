@@ -86,7 +86,7 @@ class FilterCheckAdapter : BaseAdapter() {
     }
 
 
-    fun getCheckedItemListByRemoveFirst(): List<Int> {
+    fun getCheckedItemIdListByRemoveFirst(): List<Int> {
         val checkedList: MutableList<Int> = mutableListOf()
         val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
 
@@ -105,7 +105,26 @@ class FilterCheckAdapter : BaseAdapter() {
         return checkedList
     }
 
-    fun getCheckedItemList(): List<Int> {
+    fun getCheckedItemListByRemoveFirst(): List<FilterCheckModel> {
+        val checkedList: MutableList<FilterCheckModel> = mutableListOf()
+        val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
+
+        currentList.map {
+            copyCurrentList.add(it as FilterCheckModel)
+        }
+
+        copyCurrentList.removeAt(0)
+
+        copyCurrentList.map {
+            if (it.isChecked) {
+                checkedList.add(it)
+            }
+        }
+
+        return checkedList
+    }
+
+    fun getCheckedItemIdList(): List<Int> {
         val checkedList: MutableList<Int> = mutableListOf()
         val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
 

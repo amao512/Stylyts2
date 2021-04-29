@@ -51,8 +51,14 @@ class GetClothesUseCase @Inject constructor(
             stringQueryMap["clothes_category"] = filterModel.categoryIdList.joinToString(",")
         }
 
-        if (filterModel.brandIdList.isNotEmpty()) {
-            stringQueryMap["brand"] = filterModel.brandIdList.joinToString(",")
+        if (filterModel.brandList.isNotEmpty()) {
+            val brandTitleList = ArrayList<String>()
+
+            filterModel.brandList.map {
+                brandTitleList.add(it.title)
+            }
+
+            stringQueryMap["clothes_brand"] = brandTitleList.joinToString(",")
         }
 
         if (filterModel.isMyWardrobe) {

@@ -105,7 +105,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         when (item) {
             is FilterModel -> {
                 currentFilter.categoryIdList = item.categoryIdList
-                currentFilter.brandIdList = item.brandIdList
+                currentFilter.brandList = item.brandList
 
                 presenter.getClothesByType(
                     token = getTokenFromSharedPref(),
@@ -190,7 +190,8 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             filterList.add(
                 CollectionFilterModel(
                     id = it.id,
-                    name = it.title
+                    name = it.title,
+                    item = it
                 )
             )
         }
@@ -233,6 +234,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             }.show(childFragmentManager, EMPTY_STRING)
         } else {
             brandsFilterAdapter.onChooseItem(position)
+            currentFilter.brandList = listOf(item.item as ClothesBrandModel)
             presenter.getClothesByBrand(
                 token = getTokenFromSharedPref(),
                 filterModel = currentFilter
