@@ -7,6 +7,8 @@ import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 
 @Parcelize
 data class FilterModel(
+    var userId: Int = 0,
+    var username: String = EMPTY_STRING,
     var gender: String = EMPTY_STRING,
     var typeIdList: List<Int> = emptyList(),
     var categoryIdList: List<Int> = emptyList(),
@@ -15,5 +17,4 @@ data class FilterModel(
     var isMyWardrobe: Boolean = false,
     var page: Int = 0,
     var isLastPage: Boolean = false,
-    var authorId: Int = 0
 ) : Parcelable

@@ -223,7 +223,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ItemDetailContract.V
 
         presenter.getClothesOwner(
             token = getTokenFromSharedPref(),
-            userId = clothesModel.userShort.id.toString()
+            userId = clothesModel.userShort.id
         )
     }
 

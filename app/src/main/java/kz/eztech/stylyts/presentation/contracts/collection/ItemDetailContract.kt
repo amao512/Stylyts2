@@ -30,7 +30,7 @@ interface ItemDetailContract {
 
         fun getClothesOwner(
             token: String,
-            userId: String
+            userId: Int
         )
 
         fun getItemByBarcode(

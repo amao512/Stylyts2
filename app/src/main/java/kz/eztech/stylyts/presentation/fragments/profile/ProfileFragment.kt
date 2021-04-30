@@ -56,7 +56,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     @Inject lateinit var presenter: ProfilePresenter
     @Inject lateinit var imageLoader: DomainImageLoader
 
-    private lateinit var currentUser: UserModel
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
     private lateinit var wardrobeAdapter: ClothesDetailAdapter
@@ -78,9 +77,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var filterRecyclerVew: RecyclerView
     private lateinit var collectionRecyclerView: RecyclerView
 
-    private var isOwnProfile: Boolean = true
-    private var userId: Int = 0
-    private var isAlreadyFollow: Boolean = false
     private var collectionMode: Int = POSTS_MODE
 
     companion object {
@@ -105,14 +101,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_title_text_view.show()
             toolbar_left_corner_action_image_button.show()
 
-            if (isOwnProfile) {
-                toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
-                toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
-                toolbar_right_corner_action_image_button.show()
-            } else {
-                toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            }
-
             customizeActionToolBar(toolbar = this)
         }
     }
@@ -126,8 +114,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey(USER_ID_BUNDLE_KEY)) {
-                userId = it.getInt(USER_ID_BUNDLE_KEY)
-                isOwnProfile = userId == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+                currentFilter.userId = it.getInt(USER_ID_BUNDLE_KEY)
             }
         }
     }
@@ -190,10 +177,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processPostInitialization() {
-        getFilterList()
         getProfile()
-        getFollowers()
-        getCollections()
         handleRecyclerViewScrolling()
     }
 
@@ -209,31 +193,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun navigateToMyData() {
         findNavController().navigate(R.id.action_profileFragment_to_myDataFragment)
-    }
-
-    override fun processProfile(userModel: UserModel) {
-        userModel.run {
-            currentUser = this
-            userId = id
-
-            currentFilter.authorId = id
-            currentFilter.gender = when (gender) {
-                "male" -> "M"
-                else -> "F"
-            }
-        }
-
-        fillProfileInfo(userModel = userModel)
-        loadProfilePhoto(userModel = userModel)
-    }
-
-    override fun processFilter(filterList: List<CollectionFilterModel>) {
-        adapterFilter.updateList(filterList)
-    }
-
-    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
-        gridAdapter.updateMoreList(list = resultsModel.results)
-        setPagesCondition(resultsModel.totalPages)
     }
 
     override fun onClick(v: View?) {
@@ -268,11 +227,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun completeEditing(isSuccess: Boolean) {
         if (isSuccess) {
-            presenter.getProfile(
-                token = getTokenFromSharedPref(),
-                userId = userId.toString(),
-                isOwnProfile = isOwnProfile
-            )
+            getProfile()
         }
     }
 
@@ -290,32 +245,62 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
+    override fun processProfile(userModel: UserModel) {
+        currentFilter.userId = userModel.id
+        currentFilter.username = userModel.username
+        currentFilter.gender = when (userModel.gender) {
+            "male" -> "M"
+            else -> "F"
+        }
+
+        getFilterList()
+        getFollowers()
+        getCollections()
+        fillProfileInfo(userModel = userModel)
+        loadProfilePhoto(userModel = userModel)
+
+        if (isOwnProfile()) {
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
+            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
+            toolbar_right_corner_action_image_button.show()
+        } else {
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+        }
+    }
+
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
-        resultsModel.results.let {
-            val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+        var isAlreadyFollow = false
 
-            it.map { follower ->
-                isAlreadyFollow = follower.id == currentUserId
+        resultsModel.results.map {
+            if (it.id == getUserIdFromSharedPref()) {
+                isAlreadyFollow = true
             }
+        }
 
-            if (!isOwnProfile && !isAlreadyFollow) {
-                changeProfileTextView.hide()
-                followTextView.show()
-                unFollowTextView.hide()
-            }
+        if (!isOwnProfile()) {
+            changeProfileTextView.hide()
 
-            if (!isOwnProfile && isAlreadyFollow) {
-                changeProfileTextView.hide()
-                followTextView.hide()
+            if (isAlreadyFollow) {
                 unFollowTextView.show()
+                followTextView.hide()
+            } else {
+                unFollowTextView.hide()
+                followTextView.show()
             }
         }
     }
 
-    override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
-        val currentUserId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+    override fun processFilter(filterList: List<CollectionFilterModel>) {
+        adapterFilter.updateList(filterList)
+    }
 
-        if (!isOwnProfile && followSuccessModel.follower == currentUserId) {
+    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
+        gridAdapter.updateMoreList(list = resultsModel.results)
+        setPagesCondition(resultsModel.totalPages)
+    }
+
+    override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
+        if (!isOwnProfile() && followSuccessModel.follower == getUserIdFromSharedPref()) {
             changeProfileTextView.hide()
             followTextView.hide()
             unFollowTextView.show()
@@ -323,7 +308,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processSuccessUnfollowing() {
-        if (!isOwnProfile) {
+        if (!isOwnProfile()) {
             changeProfileTextView.hide()
             followTextView.show()
             unFollowTextView.hide()
@@ -343,19 +328,18 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun getProfile() {
         presenter.getProfile(
             token = getTokenFromSharedPref(),
-            userId = userId.toString(),
-            isOwnProfile = isOwnProfile
+            userId = currentFilter.userId,
         )
     }
 
     private fun getFilterList() {
-        presenter.getFilerList(isOwnProfile)
+        presenter.getFilerList(isOwnProfile = isOwnProfile())
     }
 
     private fun getFollowers() {
         presenter.getFollowers(
             token = getTokenFromSharedPref(),
-            userId = userId
+            userId = currentFilter.userId
         )
     }
 
@@ -370,14 +354,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun followUser() {
         presenter.followUser(
             token = getTokenFromSharedPref(),
-            userId = userId
+            userId = currentFilter.userId
         )
     }
 
     private fun unFollowUser() {
         presenter.unfollowUser(
             token = getTokenFromSharedPref(),
-            userId = userId
+            userId = currentFilter.userId
         )
     }
 
@@ -401,6 +385,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         photosCountTextView.text = "${0}"
         followersCountTextView.text = userModel.followersCount.toString()
         followingsCountTextView.text = userModel.followingsCount.toString()
+
+        if (isOwnProfile()) {
+            changeProfileTextView.show()
+            followTextView.hide()
+            unFollowTextView.hide()
+        }
     }
 
     private fun loadProfilePhoto(userModel: UserModel) {
@@ -446,7 +436,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onOutfitsFilterClick(position: Int) {
-        if (isOwnProfile) {
+        if (isOwnProfile()) {
             resetPages(mode = OUTFITS_MODE)
 
         }
@@ -460,7 +450,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun onWardrobeFilterClick(position: Int) {
         resetPages(mode = WARDROBE_MODE)
 
-        if (isOwnProfile) {
+        if (isOwnProfile()) {
             currentFilter.isMyWardrobe = true
         }
 
@@ -521,8 +511,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun navigateToFollowers() {
         val bundle = Bundle()
 
-        bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
-        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUser.username)
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentFilter.userId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentFilter.username)
         bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWERS_POSITION)
 
         findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
@@ -531,8 +521,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun navigateToFollowings() {
         val bundle = Bundle()
 
-        bundle.putInt(UserSubsFragment.USER_ID_ARGS, userId)
-        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUser.username)
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentFilter.userId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentFilter.username)
         bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
 
         findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
@@ -547,14 +537,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun navigateBack() {
-        if (!isOwnProfile) {
+        if (!isOwnProfile()) {
             findNavController().navigateUp()
         }
     }
 
     private fun showFilterResults(item: Any?) {
         currentFilter = item as FilterModel
-        currentFilter.isMyWardrobe = isOwnProfile
+        currentFilter.isMyWardrobe = isOwnProfile()
         wardrobeAdapter.clearList()
         collectionRecyclerView.adapter = wardrobeAdapter
 
@@ -576,7 +566,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         collectionMode = mode
     }
 
+    private fun isOwnProfile(): Boolean = currentFilter.userId == getUserIdFromSharedPref()
+
     private fun getTokenFromSharedPref(): String {
         return currentActivity.getSharedPrefByKey(ACCESS_TOKEN_KEY) ?: EMPTY_STRING
+    }
+
+    private fun getUserIdFromSharedPref(): Int {
+        return currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
     }
 }

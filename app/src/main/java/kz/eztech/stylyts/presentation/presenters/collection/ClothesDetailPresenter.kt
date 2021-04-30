@@ -71,7 +71,7 @@ class ClothesDetailPresenter @Inject constructor(
 
     override fun getClothesOwner(
         token: String,
-        userId: String
+        userId: Int
     ) {
         getUserByIdUseCase.initParams(token, userId)
         getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {

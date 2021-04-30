@@ -41,8 +41,7 @@ interface ProfileContract {
     interface Presenter : BasePresenter<View> {
         fun getProfile(
             token: String,
-            userId: String,
-            isOwnProfile: Boolean
+            userId: Int
         )
 
         fun getFilerList(isOwnProfile: Boolean)

@@ -32,8 +32,8 @@ class GetPostsUseCase @Inject constructor(
 
         val map = HashMap<String, String>()
 
-        if (filterModel.authorId != 0) {
-            map["author"] = filterModel.authorId.toString()
+        if (filterModel.userId != 0) {
+            map["author"] = filterModel.userId.toString()
         }
 
         if (filterModel.page != 0) {

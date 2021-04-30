@@ -59,12 +59,11 @@ class ProfilePresenter @Inject constructor(
 
     override fun getProfile(
 		token: String,
-		userId: String,
-		isOwnProfile: Boolean
+		userId: Int,
 	) {
         view.displayProgress()
 
-		if (isOwnProfile) {
+		if (userId == 0) {
 			getOwnProfile(token)
 		} else {
 			getProfileById(token, userId)
@@ -75,41 +74,20 @@ class ProfilePresenter @Inject constructor(
 		val filterList = mutableListOf<CollectionFilterModel>()
 
 		filterList.add(
-            CollectionFilterModel(
-				id = 1,
-				name = application.getString(R.string.filter_list_filter),
-				icon = R.drawable.ic_filter
-			)
+            CollectionFilterModel(id = 1, name = application.getString(R.string.filter_list_filter), icon = R.drawable.ic_filter)
         )
 		filterList.add(
-            CollectionFilterModel(
-				id = 2,
-				name = application.getString(R.string.filter_list_publishes),
-				isChosen = true
-			)
+            CollectionFilterModel(id = 2, name = application.getString(R.string.filter_list_publishes), isChosen = true)
         )
-		filterList.add(CollectionFilterModel(id = 3, name = application.getString(R.string.filter_list_photo_outfits)))
+		filterList.add(
+			CollectionFilterModel(id = 3, name = application.getString(R.string.filter_list_photo_outfits))
+		)
 
 		if (isOwnProfile) {
+			filterList.add(CollectionFilterModel(id = 4, name = application.getString(R.string.filter_list_wardrobe)))
+			filterList.add(CollectionFilterModel(id = 5, name = application.getString(R.string.filter_list_my_data)))
 			filterList.add(
-				CollectionFilterModel(
-					id = 4,
-					name = application.getString(R.string.filter_list_wardrobe)
-				)
-			)
-
-			filterList.add(
-				CollectionFilterModel(
-					id = 5,
-					name = application.getString(R.string.filter_list_my_data)
-				)
-			)
-			filterList.add(
-				CollectionFilterModel(
-					id = 6,
-					name = application.getString(R.string.profile_add_to_wardrobe),
-					icon = R.drawable.ic_baseline_add
-				)
+				CollectionFilterModel(id = 6, name = application.getString(R.string.profile_add_to_wardrobe), icon = R.drawable.ic_baseline_add)
 			)
 		}
 
@@ -122,18 +100,9 @@ class ProfilePresenter @Inject constructor(
 		filterModel: FilterModel
 	) {
 		when (mode) {
-			1 -> getPosts(
-				token = token,
-				filterModel = filterModel
-			)
-			2 -> getOutfits(
-				token = token,
-				filterModel = filterModel
-			)
-			3 -> getWardrobe(
-				token = token,
-				filterModel = filterModel
-			)
+			1 -> getPosts(token = token, filterModel = filterModel)
+			2 -> getOutfits(token = token, filterModel = filterModel)
+			3 -> getWardrobe(token = token, filterModel = filterModel)
 		}
 	}
 
@@ -208,10 +177,7 @@ class ProfilePresenter @Inject constructor(
 		token: String,
 		filterModel: FilterModel
 	) {
-		getClothesUseCase.initParams(
-			token = token,
-			filterModel = filterModel
-		)
+		getClothesUseCase.initParams(token = token, filterModel = filterModel)
 		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
 			override fun onSuccess(t: ResultsModel<ClothesModel>) {
 				view.processViewAction {
@@ -268,7 +234,7 @@ class ProfilePresenter @Inject constructor(
 
 	private fun getProfileById(
 		token: String,
-		userId: String
+		userId: Int
 	) {
 		getUserByIdUseCase.initParams(token, userId)
 		getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
