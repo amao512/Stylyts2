@@ -14,40 +14,40 @@ import java.io.File
 import javax.inject.Inject
 import javax.inject.Named
 
-class UpdateOutfitUseCase @Inject constructor(
+/**
+ * Created by Ruslan Erdenoff on 25.12.2020.
+ */
+class CreateOutfitUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private var outfitsDomainRepository: OutfitsDomainRepository
 ) : BaseUseCase<OutfitModel>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var outfitId: String
     private lateinit var data: ArrayList<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<OutfitModel> {
-        return outfitsDomainRepository.updateOutfit(token, outfitId, data)
+        return outfitsDomainRepository.saveOutfit(token, data)
     }
 
-    fun initParams(
+    fun initParam(
         token: String,
-        outfitId: Int,
-        oufitModel: OutfitCreateModel,
+        outfitCreateModel: OutfitCreateModel,
         file: File
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.outfitId = outfitId.toString()
 
         val data = ArrayList<MultipartBody.Part>()
 
         val requestFile = file.asRequestBody(("image/*").toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("cover_photo", file.name, requestFile)
 
-        oufitModel.clothes.forEach {
+        outfitCreateModel.clothes.forEach {
             data.add(MultipartBody.Part.createFormData("clothes", it.toString()))
         }
 
         data.add(body)
-        oufitModel.itemLocation.forEachIndexed { index, clothesCollection ->
+        outfitCreateModel.itemLocation.forEachIndexed { index, clothesCollection ->
             data.add(
                 MultipartBody.Part.createFormData(
                     "clothes_location[${index}]clothes_id",
@@ -85,14 +85,14 @@ class UpdateOutfitUseCase @Inject constructor(
                 )
             )
         }
-        data.add(MultipartBody.Part.createFormData("title", oufitModel.title.toString()))
-        data.add(MultipartBody.Part.createFormData("text", oufitModel.text.toString()))
-        data.add(MultipartBody.Part.createFormData("style", oufitModel.style.toString()))
-        data.add(MultipartBody.Part.createFormData("author", oufitModel.author.toString()))
+        data.add(MultipartBody.Part.createFormData("title", outfitCreateModel.title.toString()))
+        data.add(MultipartBody.Part.createFormData("text", outfitCreateModel.text.toString()))
+        data.add(MultipartBody.Part.createFormData("style", outfitCreateModel.style.toString()))
+        data.add(MultipartBody.Part.createFormData("author", outfitCreateModel.author.toString()))
         data.add(
             MultipartBody.Part.createFormData(
                 "total_price",
-                oufitModel.totalPrice.toString()
+                outfitCreateModel.totalPrice.toString()
             )
         )
 

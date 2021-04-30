@@ -28,4 +28,10 @@ interface OutfitsDomainRepository {
         token: String,
         outfitId: String
     ): Single<Any>
+
+    fun updateOutfit(
+        token: String,
+        outfitId: String,
+        data: ArrayList<MultipartBody.Part>
+    ): Single<OutfitModel>
 }

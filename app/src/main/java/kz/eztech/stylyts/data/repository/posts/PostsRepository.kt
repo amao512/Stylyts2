@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.data.repository.posts
 
+import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.data.api.network.PostsApi
@@ -79,6 +80,26 @@ class PostsRepository @Inject constructor(
             when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun updatePost(
+        token: String,
+        postId: String,
+        multipartList: List<MultipartBody.Part>,
+        tags: TagsApiModel
+    ): Single<PostModel> {
+        return api.updatePost(
+            token = token,
+            postId = postId,
+            multipartList = multipartList,
+            tagsBody = tags
+        ).map {
+            Log.d("TAG4", it.toString())
+            when (it.isSuccessful) {
+                true -> postApiModelMapper.map(data = it.body())
+                else -> throw NetworkException(it)
             }
         }
     }

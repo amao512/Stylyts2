@@ -9,5 +9,6 @@ data class PostCreateModel(
     val clothesList: List<ClothesModel>,
     val userList: List<UserModel>,
     val images: List<File>,
-    val imageFile: File
+    val imageFile: File,
+    var hidden: Boolean = false
 )

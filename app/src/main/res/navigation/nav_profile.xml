@@ -186,9 +186,9 @@
 
     <fragment
         android:id="@+id/photoChooserFragment"
-        android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog"
+        android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog"
         android:label="fragment_photo_chooser"
-        tools:layout="@layout/dialog_photo_chooser" />
+        tools:layout="@layout/dialog_tag_chooser" />
 
     <fragment
         android:id="@+id/userSubsFragment"

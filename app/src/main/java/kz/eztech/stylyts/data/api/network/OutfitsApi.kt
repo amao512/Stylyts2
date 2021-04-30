@@ -35,4 +35,12 @@ interface OutfitsApi {
         @Header("Authorization") token: String,
         @Path("outfit_id") outfitId: String
     ): Single<Response<Any>>
+
+    @Multipart
+    @PATCH(RestConstants.UPDATE_OUTFIT)
+    fun updateOutfit(
+        @Header("Authorization") token: String,
+        @Path("outfit_id") outfitId: String,
+        @Part files: ArrayList<MultipartBody.Part>
+    ): Single<Response<OutfitApiModel>>
 }

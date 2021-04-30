@@ -15,8 +15,8 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
-import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.view.*
-import kotlinx.android.synthetic.main.dialog_photo_chooser.*
+import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.*
+import kotlinx.android.synthetic.main.dialog_tag_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.ResultsModel
@@ -49,7 +49,7 @@ import kz.eztech.stylyts.presentation.utils.stick.Layer
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
 import javax.inject.Inject
 
-class PhotoChooserDialog(
+class TagChooserDialog(
     private val chooserListener: DialogChooserListener? = null,
     private val currentMode: Int
 ) : DialogFragment(), PhotoChooserContract.View,
@@ -88,8 +88,8 @@ class PhotoChooserDialog(
             clothesList: ArrayList<ClothesModel>,
             usersList: ArrayList<UserModel>,
             mode: Int
-        ): PhotoChooserDialog {
-            val dialog = PhotoChooserDialog(chooserListener, mode)
+        ): TagChooserDialog {
+            val dialog = TagChooserDialog(chooserListener, mode)
             val bundle = Bundle()
 
             bundle.putString(TOKEN_KEY, token)
@@ -105,7 +105,7 @@ class PhotoChooserDialog(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.dialog_photo_chooser, container, false)
+    ): View? = inflater.inflate(R.layout.dialog_tag_chooser, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -126,7 +126,7 @@ class PhotoChooserDialog(
         with(include_toolbar_photo_chooser) {
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = context.getString(R.string.done)
-            toolbar_right_text_text_view.setOnClickListener(this@PhotoChooserDialog)
+            toolbar_right_text_text_view.setOnClickListener(this@TagChooserDialog)
 
             toolbar_title_text_view.text = context.getString(R.string.photo_chooser_title)
             toolbar_title_text_view.show()
@@ -198,8 +198,8 @@ class PhotoChooserDialog(
         motion_view_fragment_photo_chooser_tags_container.apply {
             setCustomDeleteIcon(R.drawable.ic_baseline_close_20)
             setFlexible(isFlexible = false)
-            attachView(motionViewContract = this@PhotoChooserDialog)
-            setTapListener(listener = this@PhotoChooserDialog)
+            attachView(motionViewContract = this@TagChooserDialog)
+            setTapListener(listener = this@TagChooserDialog)
         }
 
         dialog_photo_chooser_tap_text_view.text = when (mode) {

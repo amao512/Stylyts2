@@ -95,4 +95,8 @@ object FileUtils {
             }
         }
     }
+
+    fun getUriFromUrl(url: String): Uri {
+        return Uri.parse(url)
+    }
 }

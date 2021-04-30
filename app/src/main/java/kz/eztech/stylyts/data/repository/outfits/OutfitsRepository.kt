@@ -69,4 +69,21 @@ class OutfitsRepository @Inject constructor(
             }
         }
     }
+
+    override fun updateOutfit(
+        token: String,
+        outfitId: String,
+        data: ArrayList<MultipartBody.Part>
+    ): Single<OutfitModel> {
+        return api.updateOutfit(
+            token = token,
+            outfitId = outfitId,
+            files = data
+        ).map {
+            when (it.isSuccessful) {
+                true -> outfitApiModelMapper.map(data = it.body())
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 }

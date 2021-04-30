@@ -24,7 +24,7 @@ import kz.eztech.stylyts.presentation.fragments.auth.RegistrationFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog
+import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
@@ -89,7 +89,7 @@ interface ApplicationComponent {
     fun inject(fragment: CollectionDetailFragment)
     fun inject(fragment: CreateCollectionAcceptFragment)
 
-    fun inject(dialog: PhotoChooserDialog)
+    fun inject(dialog: TagChooserDialog)
     fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)
     fun inject(dialog: EditProfileDialog)

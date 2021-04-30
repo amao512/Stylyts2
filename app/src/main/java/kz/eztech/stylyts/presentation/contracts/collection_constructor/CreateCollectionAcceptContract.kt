@@ -20,13 +20,19 @@ interface CreateCollectionAcceptContract {
             postCreateModel: PostCreateModel
         )
 
-        fun saveCollection(
+        fun updatePost(
+            token: String,
+            postId: Int,
+            postCreateModel: PostCreateModel
+        )
+
+        fun createOutfit(
             token: String,
             model: OutfitCreateModel,
             data: File
         )
 
-        fun updateCollection(
+        fun updateOutfit(
             token: String,
             id: Int,
             model: OutfitCreateModel,

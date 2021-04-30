@@ -34,4 +34,11 @@ interface PostsDomainRepository {
         token: String,
         postId: String
     ): Single<Any>
+
+    fun updatePost(
+        token: String,
+        postId: String,
+        multipartList: List<MultipartBody.Part>,
+        tags: TagsApiModel
+    ): Single<PostModel>
 }

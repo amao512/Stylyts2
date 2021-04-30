@@ -81,6 +81,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private var isItems = false
 	private var isStyle = false
+	private var isUpdating = false
 	private var currentType = 0
 	private var currentSaveMode = 1
 	private var currentId: Int = -1
@@ -92,6 +93,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		const val CLOTHES_ITEMS_KEY = "items"
 		const val MAIN_ID_KEY = "mainId"
 		const val CURRENT_TYPE_KEY = "currentType"
+		const val IS_UPDATING_KEY = "isUpdating"
 	}
 
     override fun getLayoutId(): Int = R.layout.fragment_collection_constructor
@@ -128,6 +130,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             if (it.containsKey(CURRENT_TYPE_KEY)) {
                 currentType = it.getInt(CURRENT_TYPE_KEY)
             }
+
+			if (it.containsKey(IS_UPDATING_KEY)) {
+				isUpdating = it.getBoolean(IS_UPDATING_KEY)
+			}
         }
     }
 
@@ -660,10 +666,19 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun showCreateCollectionDialog(outfitCreateModel: OutfitCreateModel) {
 		val bundle = Bundle()
 
-		bundle.putParcelable(CreateCollectionAcceptFragment.OUTFIT_MODEL_KEY, outfitCreateModel)
-		bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_BITMAP_KEY, currentCollectionBitmap)
-		bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.OUTFIT_MODE)
-
+		bundle.apply {
+			putParcelable(CreateCollectionAcceptFragment.OUTFIT_MODEL_KEY, outfitCreateModel)
+			putInt(CreateCollectionAcceptFragment.ID_KEY, currentMainId)
+			putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, isUpdating)
+			putParcelable(
+				CreateCollectionAcceptFragment.PHOTO_BITMAP_KEY,
+				currentCollectionBitmap
+			)
+			putInt(
+				CreateCollectionAcceptFragment.MODE_KEY,
+				CreateCollectionAcceptFragment.OUTFIT_MODE
+			)
+		}
 		findNavController().navigate(
 			R.id.createCollectionAcceptFragment,
 			bundle

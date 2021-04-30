@@ -28,6 +28,7 @@ import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -186,24 +187,27 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             images.addAll(item.images)
             images.removeFirst()
 
-            bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
-            bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
-            bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, itemsList)
+            bundle.apply {
+                putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
+                putInt(CreateCollectionAcceptFragment.ID_KEY, item.id)
+                putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, true)
+                putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
+                putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, itemsList)
+                putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
+                putInt(CollectionConstructorFragment.MAIN_ID_KEY, item.id)
 
-            if (item.images.isNotEmpty()) {
-                bundle.putString(
-                    CreateCollectionAcceptFragment.PHOTO_STRING_KEY,
-                    item.images[0]
+                if (item.images.isNotEmpty()) {
+                    putParcelable(
+                        CreateCollectionAcceptFragment.PHOTO_URI_KEY,
+                        FileUtils.getUriFromUrl(item.images[0])
+                    )
+                }
+
+                findNavController().navigate(
+                    R.id.action_mainFragment_to_createCollectionAcceptFragment,
+                    bundle
                 )
             }
-
-            bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
-            bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, item.id)
-
-            findNavController().navigate(
-                R.id.action_mainFragment_to_createCollectionAcceptFragment,
-                bundle
-            )
         }
     }
 

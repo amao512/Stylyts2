@@ -15,6 +15,6 @@ data class FilterModel(
     var brandList: List<ClothesBrandModel> = emptyList(),
     var colorList: List<Int> = emptyList(),
     var isMyWardrobe: Boolean = false,
-    var page: Int = 0,
+    var page: Int = 1,
     var isLastPage: Boolean = false,
 ) : Parcelable

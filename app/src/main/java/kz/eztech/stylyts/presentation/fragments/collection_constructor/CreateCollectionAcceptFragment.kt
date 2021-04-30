@@ -22,7 +22,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CreateCollectionAcceptContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionChooserDialog
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.PhotoChooserDialog
+import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CreateCollectionAcceptPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
@@ -45,23 +45,26 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     private var currentMode: Int = OUTFIT_MODE
     private var currentModel: OutfitCreateModel? = null
+    private var currentId: Int = 0
     private var currentBitmap: Bitmap? = null
     private var currentPhotoUri: Uri? = null
     private var isPhotoChooser = false
     private var selectedList = ArrayList<ClothesModel>()
     private var selectedUsers = ArrayList<UserModel>()
     private var listOfChosenImages = ArrayList<String>()
+    private var isUpdating = false
 
     companion object {
         const val OUTFIT_MODE = 0
         const val POST_MODE = 1
         const val MODE_KEY = "mode_key"
+        const val ID_KEY = "idKey"
         const val OUTFIT_MODEL_KEY = "outfitModel"
         const val PHOTO_BITMAP_KEY = "photoBitmap"
         const val PHOTO_URI_KEY = "photoUri"
-        const val PHOTO_STRING_KEY = "photoString"
         const val CHOSEN_PHOTOS_KEY = "chooser_photos"
         const val IS_CHOOSER_KEY = "isChooser"
+        const val IS_UPDATING_KEY = "isUpdating"
         const val CLOTHES_KEY = "clothes"
         const val USERS_KEY = "users"
     }
@@ -154,13 +157,16 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             if (it.containsKey(PHOTO_BITMAP_KEY)) {
                 currentBitmap = it.getParcelable(PHOTO_BITMAP_KEY)
             }
-            if (it.containsKey(PHOTO_URI_KEY)) {
-                currentPhotoUri = it.getParcelable(PHOTO_URI_KEY)
+            if (it.containsKey(ID_KEY)) {
+                currentId = it.getInt(ID_KEY)
             }
-            if (it.containsKey(PHOTO_STRING_KEY)) {
-                it.getString(PHOTO_STRING_KEY)?.let { string ->
-                    currentPhotoUri = FileUtils.getUriFromString(string)
+            if (it.containsKey(PHOTO_URI_KEY)) {
+                it.getParcelable<Uri>(PHOTO_URI_KEY)?.let { uri ->
+                    currentPhotoUri = uri
                 }
+            }
+            if (it.containsKey(IS_UPDATING_KEY)) {
+                isUpdating = it.getBoolean(IS_UPDATING_KEY)
             }
             if (it.containsKey(IS_CHOOSER_KEY)) {
                 isPhotoChooser = it.getBoolean(IS_CHOOSER_KEY)
@@ -218,7 +224,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.frame_layout_dialog_create_collection_accept_user_search -> {
-                showPhotoChooserDialog(mode = PhotoChooserDialog.USERS_MODE)
+                showPhotoChooserDialog(mode = TagChooserDialog.USERS_MODE)
             }
             R.id.toolbar_back_text_view -> findNavController().navigateUp()
             R.id.toolbar_right_text_text_view -> {
@@ -229,7 +235,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 chooserDialog.show(childFragmentManager, "ChooserDialog")
             }
             R.id.frame_layout_dialog_create_collection_accept_choose_clothes -> {
-                showPhotoChooserDialog(mode = PhotoChooserDialog.CLOTHES_MODE)
+                showPhotoChooserDialog(mode = TagChooserDialog.CLOTHES_MODE)
             }
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
         }
@@ -281,7 +287,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     private fun showPhotoChooserDialog(mode: Int) {
-        PhotoChooserDialog.getNewInstance(
+        TagChooserDialog.getNewInstance(
             token = getTokenFromSharedPref(),
             chooserListener = this,
             clothesList = selectedList,
@@ -332,10 +338,18 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 images = images
             )
 
-            presenter.createPost(
-                token = getTokenFromSharedPref(),
-                postCreateModel = model
-            )
+            if (isUpdating) {
+                presenter.updatePost(
+                    token = getTokenFromSharedPref(),
+                    postCreateModel = model,
+                    postId = currentId
+                )
+            } else {
+                presenter.createPost(
+                    token = getTokenFromSharedPref(),
+                    postCreateModel = model
+                )
+            }
         }
     }
 
@@ -346,9 +360,18 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                     val file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
 
                     file?.let { _ ->
-                        presenter.saveCollection(
-                            it, item, file
-                        )
+                        if (isUpdating) {
+                            presenter.updateOutfit(
+                                token = it,
+                                id = currentId,
+                                model = item,
+                                data = file
+                            )
+                        } else {
+                            presenter.createOutfit(
+                                it, item, file
+                            )
+                        }
                     } ?: run {
                         errorLoadData()
                     }

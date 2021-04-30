@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
-import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
@@ -35,6 +34,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
 import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -418,39 +418,49 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     private fun onChangeButtonClick() {
         val bundle = Bundle()
-        val itemsList = ArrayList<ClothesModel>()
+        val clothes = ArrayList<ClothesModel>()
 
         when (currentMode) {
             OUTFIT_MODE -> currentOutfitModel.clothes.let {
-                itemsList.addAll(it)
+                clothes.addAll(it)
 
-                bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
-                bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentOutfitModel.id)
+                bundle.apply {
+                    putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, clothes)
+                    putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentOutfitModel.id)
+                    putBoolean(CollectionConstructorFragment.IS_UPDATING_KEY, true)
 
-                findNavController().navigate(R.id.action_collectionDetailFragment_to_nav_create_collection, bundle)
+                    findNavController().navigate(
+                        R.id.action_collectionDetailFragment_to_nav_create_collection,
+                        bundle
+                    )
+                }
             }
             POST_MODE -> currentPostModel.clothes.let {
                 val images = ArrayList<String>()
 
-                itemsList.addAll(it)
+                clothes.addAll(it)
                 images.addAll(currentPostModel.images)
-                images.removeFirst()
 
-                bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
-                bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
-                bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, itemsList)
+                bundle.apply {
+                    putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
+                    putInt(CreateCollectionAcceptFragment.ID_KEY, currentPostModel.id)
+                    putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, true)
+                    putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
+                    putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
+                    putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, clothes)
 
-                if (currentPostModel.images.isNotEmpty()) {
-                    bundle.putString(
-                        CreateCollectionAcceptFragment.PHOTO_STRING_KEY,
-                        currentPostModel.images[0]
+                    if (currentPostModel.images.isNotEmpty()) {
+                        putParcelable(
+                            CreateCollectionAcceptFragment.PHOTO_URI_KEY,
+                            FileUtils.getUriFromUrl(currentPostModel.images[0])
+                        )
+                    }
+
+                    findNavController().navigate(
+                        R.id.action_collectionDetailFragment_to_createCollectionAcceptFragment,
+                        bundle
                     )
                 }
-
-                findNavController().navigate(
-                    R.id.action_collectionDetailFragment_to_createCollectionAcceptFragment,
-                    bundle
-                )
             }
         }
     }

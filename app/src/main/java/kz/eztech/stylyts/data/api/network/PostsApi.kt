@@ -42,4 +42,13 @@ interface PostsApi {
         @Header("Authorization") token: String,
         @Path("post_id") postId: String
     ): Single<Response<Any>>
+
+    @Multipart
+    @PATCH(RestConstants.UPDATE_POST)
+    fun updatePost(
+        @Header("Authorization") token: String,
+        @Path("post_id") postId: String,
+        @Part multipartList: List<MultipartBody.Part>,
+        @Part("tags") tagsBody: TagsApiModel
+    ) : Single<Response<PostApiModel>>
 }
