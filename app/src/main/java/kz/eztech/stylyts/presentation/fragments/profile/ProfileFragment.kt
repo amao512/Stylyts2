@@ -413,6 +413,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun onFilterClick(position: Int) {
         when (position) {
             0 -> filterDialog.apply {
+                resetPages(mode = WARDROBE_MODE)
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, EMPTY_STRING)
             1 -> onPublicationsFilterClick(position)

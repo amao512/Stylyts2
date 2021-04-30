@@ -230,6 +230,8 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
                 itemClickListener = this,
                 gender = currentFilter.gender
             ).apply {
+                currentFilter.page = 1
+                currentFilter.isLastPage = false
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, EMPTY_STRING)
         } else {

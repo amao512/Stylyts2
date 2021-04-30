@@ -362,6 +362,8 @@ class PhotoChooserDialog(
                 }
             }
             1 -> filterDialog.apply {
+                currentFilter.page = 1
+                currentFilter.isLastPage = false
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, "FilterDialog")
         }
