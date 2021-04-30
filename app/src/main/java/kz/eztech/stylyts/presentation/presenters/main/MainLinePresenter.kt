@@ -2,12 +2,15 @@ package kz.eztech.stylyts.presentation.presenters.main
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.ActionModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetHomePagePostsUseCase
+import kz.eztech.stylyts.domain.usecases.posts.LikePostUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
+import kz.eztech.stylyts.presentation.enums.LikeEnum
 import javax.inject.Inject
 
 /**
@@ -16,7 +19,8 @@ import javax.inject.Inject
 class MainLinePresenter @Inject constructor(
 	private val errorHelper: ErrorHelper,
 	private val getHomePagePostsUseCase: GetHomePagePostsUseCase,
-	private val deletePostUseCase: DeletePostUseCase
+	private val deletePostUseCase: DeletePostUseCase,
+	private val likePostUseCase: LikePostUseCase
 ) : MainContract.Presenter {
 
 	private lateinit var view: MainContract.View
@@ -24,6 +28,7 @@ class MainLinePresenter @Inject constructor(
 	override fun disposeRequests() {
 		getHomePagePostsUseCase.clear()
 		deletePostUseCase.clear()
+		likePostUseCase.clear()
 	}
 
 	override fun attach(view: MainContract.View) {
@@ -74,6 +79,25 @@ class MainLinePresenter @Inject constructor(
 					hideProgress()
 					processSuccessDeleting()
 				}
+			}
+		})
+	}
+
+	override fun likePost(
+		token: String,
+		postId: Int
+	) {
+		likePostUseCase.initParams(token, postId)
+		likePostUseCase.execute(object : DisposableSingleObserver<ActionModel>() {
+			override fun onSuccess(t: ActionModel) {
+				when (t.action) {
+					LikeEnum.LIKE.title -> view.processLike(isLiked = true, postId)
+					LikeEnum.UNLIKE.title -> view.processLike(isLiked = false, postId)
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.displayMessage(msg = errorHelper.processError(e))
 			}
 		})
 	}

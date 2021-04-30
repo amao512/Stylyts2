@@ -385,6 +385,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         photosCountTextView.text = "${0}"
         followersCountTextView.text = userModel.followersCount.toString()
         followingsCountTextView.text = userModel.followingsCount.toString()
+         adapterFilter.changeItemByPosition(
+             position = 2,
+             title = "${getString(R.string.filter_list_photo_outfits)} (${userModel.outfitsCount})"
+         )
 
         if (isOwnProfile()) {
             changeProfileTextView.show()

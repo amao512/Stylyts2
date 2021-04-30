@@ -17,6 +17,8 @@ interface CollectionDetailContract {
         fun processPost(postModel: PostModel)
 
         fun processSuccessDeleting()
+
+        fun processLike(isLiked: Boolean)
     }
 
     interface Presenter: BasePresenter<View> {
@@ -37,6 +39,11 @@ interface CollectionDetailContract {
         )
 
         fun deletePost(
+            token: String,
+            postId: Int
+        )
+
+        fun onLikeClick(
             token: String,
             postId: Int
         )

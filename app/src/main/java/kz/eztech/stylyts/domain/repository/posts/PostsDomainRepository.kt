@@ -2,10 +2,10 @@ package kz.eztech.stylyts.domain.repository.posts
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
+import kz.eztech.stylyts.domain.models.ActionModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import okhttp3.MultipartBody
-import retrofit2.http.QueryMap
 
 interface PostsDomainRepository {
 
@@ -41,4 +41,9 @@ interface PostsDomainRepository {
         multipartList: List<MultipartBody.Part>,
         tags: TagsApiModel
     ): Single<PostModel>
+
+    fun likePost(
+        token: String,
+        postId: String,
+    ): Single<ActionModel>
 }

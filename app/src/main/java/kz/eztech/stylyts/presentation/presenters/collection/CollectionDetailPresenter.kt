@@ -2,24 +2,26 @@ package kz.eztech.stylyts.presentation.presenters.collection
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.ActionModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.outfits.DeleteOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
-import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
+import kz.eztech.stylyts.domain.usecases.posts.LikePostUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
+import kz.eztech.stylyts.presentation.enums.LikeEnum
 import javax.inject.Inject
 
 class CollectionDetailPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getOutfitByIdUseCase: GetOutfitByIdUseCase,
-    private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getPostByIdUseCase: GetPostByIdUseCase,
     private val deleteOutfitUseCase: DeleteOutfitUseCase,
-    private val deletePostUseCase: DeletePostUseCase
+    private val deletePostUseCase: DeletePostUseCase,
+    private val likePostUseCase: LikePostUseCase
 ) : CollectionDetailContract.Presenter {
 
     private lateinit var view: CollectionDetailContract.View
@@ -30,6 +32,7 @@ class CollectionDetailPresenter @Inject constructor(
         getPostByIdUseCase.clear()
         deleteOutfitUseCase.clear()
         deletePostUseCase.clear()
+        likePostUseCase.clear()
     }
 
     override fun attach(view: CollectionDetailContract.View) {
@@ -122,6 +125,25 @@ class CollectionDetailPresenter @Inject constructor(
                     hideProgress()
                     processSuccessDeleting()
                 }
+            }
+        })
+    }
+
+    override fun onLikeClick(
+        token: String,
+        postId: Int
+    ) {
+        likePostUseCase.initParams(token, postId)
+        likePostUseCase.execute(object : DisposableSingleObserver<ActionModel>() {
+            override fun onSuccess(t: ActionModel) {
+                when (t.action) {
+                    LikeEnum.LIKE.title -> view.processLike(isLiked = true)
+                    LikeEnum.UNLIKE.title -> view.processLike(isLiked = false)
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
             }
         })
     }

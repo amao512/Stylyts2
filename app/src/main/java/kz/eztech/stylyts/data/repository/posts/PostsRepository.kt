@@ -5,8 +5,10 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.data.api.network.PostsApi
 import kz.eztech.stylyts.data.exception.NetworkException
+import kz.eztech.stylyts.data.mappers.ActionApiModelMapper
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
+import kz.eztech.stylyts.domain.models.ActionModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.posts.PostsDomainRepository
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class PostsRepository @Inject constructor(
     private val api: PostsApi,
     private val resultsApiModelMapper: ResultsApiModelMapper,
-    private val postApiModelMapper: PostApiModelMapper
+    private val postApiModelMapper: PostApiModelMapper,
+    private val actionApiModelMapper: ActionApiModelMapper
 ) : PostsDomainRepository {
 
     override fun createPost(
@@ -99,6 +102,21 @@ class PostsRepository @Inject constructor(
             Log.d("TAG4", it.toString())
             when (it.isSuccessful) {
                 true -> postApiModelMapper.map(data = it.body())
+                else -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun likePost(
+        token: String,
+        postId: String
+    ): Single<ActionModel> {
+        return api.likePost(
+            token = token,
+            postId = postId
+        ).map {
+            when (it.isSuccessful) {
+                true -> actionApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }

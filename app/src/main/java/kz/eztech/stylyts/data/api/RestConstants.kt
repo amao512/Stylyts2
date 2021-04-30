@@ -66,6 +66,7 @@ object RestConstants {
     const val GET_POST_BY_ID: String = "posts/{post_id}"
     const val DELETE_POST_BY_ID: String = "posts/{post_id}"
     const val UPDATE_POST: String = "posts/{post_id}"
+    const val LIKE_POST: String = "posts/{post_id}/like"
 
     //ShopCategories
     const val GET_CATEGORIES: String = "clothes/category/"

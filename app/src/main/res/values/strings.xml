@@ -318,4 +318,6 @@
     <string name="choose_clothes_type">Choose type of clothes</string>
     <string name="choose_clothes_category">Choose category of clothes</string>
     <string name="choose_clothes_style">Choose style of clothes</string>
+
+    <string name="comments_count_text_format">Show %s comments</string>
 </resources>

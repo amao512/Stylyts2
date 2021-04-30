@@ -10,5 +10,8 @@ data class PostModel(
     val images: List<String>,
     val tags: TagsModel,
     val hidden: Boolean,
-    val clothes: List<ClothesModel>
+    val clothes: List<ClothesModel>,
+    val commentsCount: Int,
+    val likesCount: Int,
+    var alreadyLiked: Boolean
 )

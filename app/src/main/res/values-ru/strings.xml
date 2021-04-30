@@ -319,4 +319,6 @@
     <string name="choose_clothes_type">Выберите тип вещей</string>
     <string name="choose_clothes_category">Выберите категорию вещей</string>
     <string name="choose_clothes_style">Выберите стиль вещей</string>
+
+    <string name="comments_count_text_format">Показать %s коммент</string>
 </resources>

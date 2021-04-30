@@ -24,7 +24,10 @@ class PostApiModelMapper @Inject constructor(
                 images = it.images ?: emptyList(),
                 tags = tagsApiModelMapper.map(data = it.tags),
                 hidden = it.hidden,
-                clothes = clothesApiModelMapper.map(data = it.clothes)
+                clothes = clothesApiModelMapper.map(data = it.clothes),
+                commentsCount = it.commentsCount ?: 0,
+                likesCount = it.likesCount ?: 0,
+                alreadyLiked = it.alreadyLiked
             )
         }
     }
@@ -37,7 +40,10 @@ class PostApiModelMapper @Inject constructor(
             images = data?.images ?: emptyList(),
             tags = tagsApiModelMapper.map(data = data?.tags),
             hidden = data?.hidden ?: false,
-            clothes = clothesApiModelMapper.map(data = data?.clothes)
+            clothes = clothesApiModelMapper.map(data = data?.clothes),
+            commentsCount = data?.commentsCount ?: 0,
+            likesCount = data?.likesCount ?: 0,
+            alreadyLiked = data?.alreadyLiked ?: false
         )
     }
 }

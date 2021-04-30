@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.data.db.SharedDataSource
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -44,7 +44,8 @@ import javax.inject.Inject
 class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailContract.View,
     UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
-    @Inject lateinit var presenter: CollectionDetailPresenter
+    @Inject
+    lateinit var presenter: CollectionDetailPresenter
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
     private lateinit var currentOutfitModel: OutfitModel
     private lateinit var currentPostModel: PostModel
@@ -72,7 +73,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun customizeActionBar() {
         with(include_toolbar_collection_detail) {
             toolbar_title_text_view.show()
-            toolbar_title_text_view.text = context.getString(R.string.collection_detail_fragment_publishes)
+            toolbar_title_text_view.text =
+                context.getString(R.string.collection_detail_fragment_publishes)
 
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.setOnClickListener(this@CollectionDetailFragment)
@@ -104,7 +106,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun initializeViewsData() {
         additionalAdapter = MainImagesAdditionalAdapter()
-        additionalAdapter.itemClickListener = this
+        additionalAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
@@ -116,34 +118,29 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         button_fragment_collection_detail_change_collection.setOnClickListener(this)
         constraint_layout_fragment_collection_detail_profile_container.setOnClickListener(this)
         imageButton.setOnClickListener(this)
+        fragment_collection_detail_like_image_button.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
         when (currentMode) {
             OUTFIT_MODE -> presenter.getOutfitById(
-                token = getTokenFromSharedPref(),
+                token = SharedDataSource.getToken(activity = currentActivity),
                 outfitId = currentId.toString()
             )
             POST_MODE -> presenter.getPostById(
-                token = getTokenFromSharedPref(),
+                token = SharedDataSource.getToken(activity = currentActivity),
                 postId = currentId
             )
         }
     }
 
-    override fun onViewClicked(view: View, position: Int, item: Any?) {
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
         when (view.id) {
-            R.id.frame_layout_item_main_image_holder_container -> {
-                item as ClothesModel
-
-                val bundle = Bundle()
-                bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
-
-                findNavController().navigate(
-                    R.id.action_collectionDetailFragment_to_itemDetailFragment,
-                    bundle
-                )
-            }
+            R.id.frame_layout_item_main_image_holder_container -> navigateToClothes(item)
             R.id.imageViewSlidePhoto -> onShowTags()
         }
     }
@@ -159,6 +156,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.id.imageButton -> onContextMenuClick()
             R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
             R.id.fragment_collection_detail_user_tags_icon -> onShowUsersTags()
+            R.id.fragment_collection_detail_like_image_button -> presenter.onLikeClick(
+                token = SharedDataSource.getToken(activity = currentActivity),
+                postId = currentId
+            )
         }
     }
 
@@ -186,7 +187,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processOutfit(outfitModel: OutfitModel) {
         additionalAdapter.updateList(list = outfitModel.clothes)
         currentOutfitModel = outfitModel
-        isOwn = outfitModel.author.id == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+        isOwn = outfitModel.author.id == SharedDataSource.getUserId(activity = currentActivity)
 
         processAuthor(userShortModel = outfitModel.author)
         loadImages(images = arrayListOf(outfitModel.coverPhoto))
@@ -195,7 +196,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.string.price_tenge_text_format,
             NumberFormat.getInstance().format(outfitModel.totalPrice)
         )
-        text_view_fragment_collection_detail_comments_count.text = "Показать ${0} коммент."
+        text_view_fragment_collection_detail_comments_count.text = getString(
+            R.string.comments_count_text_format,
+            0.toString()
+        )
         text_view_fragment_collection_detail_date.text = DateFormatterHelper.formatISO_8601(
             outfitModel.createdAt,
             DateFormatterHelper.FORMAT_DATE_DD_MMMM
@@ -209,11 +213,17 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processPost(postModel: PostModel) {
         additionalAdapter.updateList(list = postModel.clothes)
         currentPostModel = postModel
-        isOwn = postModel.author.id == currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
+        isOwn = postModel.author.id == SharedDataSource.getUserId(activity = currentActivity)
 
         processAuthor(userShortModel = postModel.author)
         loadImages(images = postModel.images)
         loadTags(postModel = postModel)
+        processLike(isLiked = postModel.alreadyLiked)
+
+        text_view_fragment_collection_detail_comments_count.text = getString(
+            R.string.comments_count_text_format,
+            postModel.commentsCount.toString()
+        )
 
         if (!isOwn) {
             button_fragment_collection_detail_change_collection.hide()
@@ -250,6 +260,18 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun processSuccessDeleting() {
         findNavController().navigateUp()
+    }
+
+    override fun processLike(isLiked: Boolean) {
+        fragment_collection_detail_like_image_button.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                when (isLiked) {
+                    true -> R.drawable.ic_favorite_red
+                    false -> R.drawable.ic_baseline_favorite_border_24
+                }
+            )
+        )
     }
 
     private fun loadImages(images: List<String>) {
@@ -345,7 +367,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     private fun getTagTextView(container: ViewGroup): TextView {
-        val textView =  LayoutInflater.from(container.context).inflate(
+        val textView = LayoutInflater.from(container.context).inflate(
             R.layout.text_view_tag_element,
             container,
             false
@@ -400,6 +422,18 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
     }
 
+    private fun navigateToClothes(item: Any?) {
+        item as ClothesModel
+
+        val bundle = Bundle()
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+
+        findNavController().navigate(
+            R.id.action_collectionDetailFragment_to_itemDetailFragment,
+            bundle
+        )
+    }
+
     private fun onShowTags() {
         onShowClothesTags()
         onShowUsersTags()
@@ -409,59 +443,74 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         val bundle = Bundle()
 
         when (currentMode) {
-            OUTFIT_MODE -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, currentOutfitModel.author.id)
-            POST_MODE -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, currentPostModel.author.id)
+            OUTFIT_MODE -> bundle.putInt(
+                ProfileFragment.USER_ID_BUNDLE_KEY,
+                currentOutfitModel.author.id
+            )
+            POST_MODE -> bundle.putInt(
+                ProfileFragment.USER_ID_BUNDLE_KEY,
+                currentPostModel.author.id
+            )
         }
 
         findNavController().navigate(R.id.nav_profile, bundle)
     }
 
     private fun onChangeButtonClick() {
+        when (currentMode) {
+            OUTFIT_MODE -> changeOutfit()
+            POST_MODE -> changePost()
+        }
+    }
+
+    private fun changeOutfit() {
         val bundle = Bundle()
         val clothes = ArrayList<ClothesModel>()
 
-        when (currentMode) {
-            OUTFIT_MODE -> currentOutfitModel.clothes.let {
-                clothes.addAll(it)
+        clothes.addAll(currentPostModel.clothes)
 
-                bundle.apply {
-                    putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, clothes)
-                    putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentOutfitModel.id)
-                    putBoolean(CollectionConstructorFragment.IS_UPDATING_KEY, true)
+        bundle.apply {
+            putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, clothes)
+            putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentOutfitModel.id)
+            putBoolean(CollectionConstructorFragment.IS_UPDATING_KEY, true)
 
-                    findNavController().navigate(
-                        R.id.action_collectionDetailFragment_to_nav_create_collection,
-                        bundle
-                    )
-                }
+            findNavController().navigate(
+                R.id.action_collectionDetailFragment_to_nav_create_collection,
+                bundle
+            )
+        }
+    }
+
+    private fun changePost() {
+        val bundle = Bundle()
+        val clothes = ArrayList<ClothesModel>()
+        val images = ArrayList<String>()
+
+        clothes.addAll(currentPostModel.clothes)
+        images.addAll(currentPostModel.images)
+
+        bundle.apply {
+            putInt(
+                CreateCollectionAcceptFragment.MODE_KEY,
+                CreateCollectionAcceptFragment.POST_MODE
+            )
+            putInt(CreateCollectionAcceptFragment.ID_KEY, currentPostModel.id)
+            putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, true)
+            putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
+            putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
+            putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, clothes)
+
+            if (currentPostModel.images.isNotEmpty()) {
+                putParcelable(
+                    CreateCollectionAcceptFragment.PHOTO_URI_KEY,
+                    FileUtils.getUriFromUrl(currentPostModel.images[0])
+                )
             }
-            POST_MODE -> currentPostModel.clothes.let {
-                val images = ArrayList<String>()
 
-                clothes.addAll(it)
-                images.addAll(currentPostModel.images)
-
-                bundle.apply {
-                    putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
-                    putInt(CreateCollectionAcceptFragment.ID_KEY, currentPostModel.id)
-                    putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, true)
-                    putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
-                    putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
-                    putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, clothes)
-
-                    if (currentPostModel.images.isNotEmpty()) {
-                        putParcelable(
-                            CreateCollectionAcceptFragment.PHOTO_URI_KEY,
-                            FileUtils.getUriFromUrl(currentPostModel.images[0])
-                        )
-                    }
-
-                    findNavController().navigate(
-                        R.id.action_collectionDetailFragment_to_createCollectionAcceptFragment,
-                        bundle
-                    )
-                }
-            }
+            findNavController().navigate(
+                R.id.action_collectionDetailFragment_to_createCollectionAcceptFragment,
+                bundle
+            )
         }
     }
 
@@ -474,17 +523,13 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun onDeleteContextClicked() {
         when (currentMode) {
             OUTFIT_MODE -> presenter.deleteOutfit(
-                token = getTokenFromSharedPref(),
+                token = SharedDataSource.getToken(activity = currentActivity),
                 outfitId = currentId
             )
             POST_MODE -> presenter.deletePost(
-                token = getTokenFromSharedPref(),
-                postId =  currentId
+                token = SharedDataSource.getToken(activity = currentActivity),
+                postId = currentId
             )
         }
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

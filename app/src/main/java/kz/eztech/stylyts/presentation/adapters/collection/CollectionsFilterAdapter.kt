@@ -61,16 +61,14 @@ class CollectionsFilterAdapter : BaseAdapter() {
 
         notifyDataSetChanged()
     }
-    /*
-    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return when(viewType){
-            TYPES.CUSTOM.type -> {
-                CollectionFilterHolder(parent,this)
-            }
-            TYPES.DEFAULT.type -> {
-                createItem(parent,R.layout.item_collection_filter_custom,::CollectionFilterCustomHolder)
-            }
-            else -> throw IllegalStateException("Wrong class")
-        }
-    }*/
+
+    fun changeItemByPosition(
+        position: Int,
+        title: String
+    ) {
+        val item = currentList[position] as CollectionFilterModel
+        item.name = title
+
+        notifyDataSetChanged()
+    }
 }

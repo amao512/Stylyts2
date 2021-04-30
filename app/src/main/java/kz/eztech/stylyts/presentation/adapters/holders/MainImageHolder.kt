@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.R
@@ -41,6 +42,7 @@ class MainImageHolder(
         )
         loadUserPhoto(postModel = item)
         loadTags(postModel = item)
+        processLike(item.alreadyLiked)
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
@@ -99,13 +101,18 @@ class MainImageHolder(
                 )
             }
 
-            text_view_item_main_image_comments_count.text = "Показать 99 коммент."
+            text_view_item_main_image_comments_count.text = text_view_item_main_image_comments_count.context
+                .getString(R.string.comments_count_text_format, postModel.commentsCount.toString())
 
             text_view_item_main_image_comments_count.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
             }
 
             imageButton.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, postModel)
+            }
+
+            item_main_image_like_image_button.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, postModel)
             }
 
@@ -300,6 +307,20 @@ class MainImageHolder(
             } else {
                 item_main_image_users_tags_container.hide()
             }
+        }
+    }
+
+    private fun processLike(isLiked: Boolean) {
+        with (itemView) {
+            item_main_image_like_image_button.setImageDrawable(
+                ContextCompat.getDrawable(
+                    item_main_image_like_image_button.context,
+                    when (isLiked) {
+                        true -> R.drawable.ic_favorite_red
+                        false -> R.drawable.ic_baseline_favorite_border_24
+                    }
+                )
+            )
         }
     }
 

@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.db.SharedDataSource
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
@@ -95,6 +96,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
             R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.action_mainFragment_to_userCommentsFragment)
             R.id.imageButton -> onContextMenuClicked(item)
+            R.id.item_main_image_like_image_button -> likePost(item)
         }
     }
 
@@ -150,6 +152,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun processSuccessDeleting() {
         processPostInitialization()
+    }
+
+    override fun processLike(
+        isLiked: Boolean,
+        postId: Int
+    ) {
+        postsAdapter.setLikePost(isLiked, postId)
     }
 
     override fun onChoice(v: View?, item: Any?) {
@@ -239,6 +248,15 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         ).apply {
             setChoiceListener(listener = this@MainFragment)
         }.show(childFragmentManager, EMPTY_STRING)
+    }
+
+    private fun likePost(item: Any?) {
+        item as PostModel
+
+        presenter.likePost(
+            token = SharedDataSource.getToken(activity = currentActivity),
+            postId = item.id
+        )
     }
 
     private fun onPostDeleteContextClicked(item: Any?) {

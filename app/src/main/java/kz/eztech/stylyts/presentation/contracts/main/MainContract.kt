@@ -15,6 +15,11 @@ interface MainContract {
         fun processPostResults(resultsModel: ResultsModel<PostModel>)
 
         fun processSuccessDeleting()
+
+        fun processLike(
+            isLiked: Boolean,
+            postId: Int
+        )
     }
 
     interface Presenter : BasePresenter<View> {
@@ -25,6 +30,11 @@ interface MainContract {
         )
 
         fun deletePost(
+            token: String,
+            postId: Int
+        )
+
+        fun likePost(
             token: String,
             postId: Int
         )

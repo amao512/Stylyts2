@@ -26,5 +26,14 @@ data class PostApiModel(
     val hidden: Boolean,
     @SerializedName("clothes")
     @Expose
-    val clothes: List<ClothesApiModel>?
+    val clothes: List<ClothesApiModel>?,
+    @SerializedName("comments_count")
+    @Expose
+    val commentsCount: Int?,
+    @SerializedName("likes_count")
+    @Expose
+    val likesCount: Int?,
+    @SerializedName("already_liked")
+    @Expose
+    val alreadyLiked: Boolean
 )

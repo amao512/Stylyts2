@@ -2,6 +2,7 @@ package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
+import kz.eztech.stylyts.data.api.models.ActionApiModel
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.posts.PostApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
@@ -51,4 +52,10 @@ interface PostsApi {
         @Part multipartList: List<MultipartBody.Part>,
         @Part("tags") tagsBody: TagsApiModel
     ) : Single<Response<PostApiModel>>
+
+    @POST(RestConstants.LIKE_POST)
+    fun likePost(
+        @Header("Authorization") token: String,
+        @Path("post_id") postId: String,
+    ) : Single<Response<ActionApiModel>>
 }
