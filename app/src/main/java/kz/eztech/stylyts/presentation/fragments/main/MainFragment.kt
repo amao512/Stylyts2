@@ -13,6 +13,7 @@ import kz.eztech.stylyts.data.db.SharedDataSource
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.main.MainImagesAdapter
@@ -39,9 +40,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     @Inject lateinit var presenter: MainLinePresenter
     private lateinit var postsAdapter: MainImagesAdapter
-
-    private var currentPage: Int = 1
-    private var lastPage: Boolean = false
+    private lateinit var currentFilter: FilterModel
 
     private lateinit var recyclerView: RecyclerView
 
@@ -73,6 +72,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
+        currentFilter = FilterModel()
         postsAdapter = MainImagesAdapter(
             ownId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
         )
@@ -95,7 +95,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
             R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
             R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.action_mainFragment_to_userCommentsFragment)
-            R.id.imageButton -> onContextMenuClicked(item)
+            R.id.item_main_image_dialog_menu_image_button -> onContextMenuClicked(item)
             R.id.item_main_image_like_image_button -> likePost(item)
         }
     }
@@ -106,7 +106,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!lastPage) {
+                    if (!currentFilter.isLastPage) {
                         getPosts()
                     }
                 }
@@ -143,10 +143,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         postsAdapter.updateMoreList(list = resultsModel.results)
 
-        if (resultsModel.totalPages != currentPage) {
-            currentPage++
+        if (resultsModel.totalPages != currentFilter.page) {
+            currentFilter.page++
         } else {
-            lastPage = true
+            currentFilter.isLastPage = true
         }
     }
 
@@ -170,8 +170,8 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     private fun getPosts() {
         presenter.getPosts(
-            token = getTokenFromSharedPref(),
-            page = currentPage
+            token = SharedDataSource.getToken(activity = currentActivity),
+            page = currentFilter.page
         )
     }
 
@@ -187,37 +187,42 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     private fun onChangeCollectionClicked(item: Any?) {
         item as PostModel
 
-        item.clothes.let {
-            val bundle = Bundle()
-            val itemsList = ArrayList<ClothesModel>()
-            val images = ArrayList<String>()
+        findNavController().navigate(
+            R.id.action_mainFragment_to_createCollectionAcceptFragment,
+            getChangeCollectionBundle(postModel = item)
+        )
+    }
 
-            itemsList.addAll(it)
-            images.addAll(item.images)
-            images.removeFirst()
+    private fun getChangeCollectionBundle(postModel: PostModel): Bundle {
+        val bundle = Bundle()
+        val itemsList = ArrayList<ClothesModel>()
+        val images = ArrayList<String>()
 
-            bundle.apply {
-                putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
-                putInt(CreateCollectionAcceptFragment.ID_KEY, item.id)
-                putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, true)
-                putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
-                putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, itemsList)
-                putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
-                putInt(CollectionConstructorFragment.MAIN_ID_KEY, item.id)
+        itemsList.addAll(postModel.clothes)
+        images.addAll(postModel.images)
+        images.removeFirst()
 
-                if (item.images.isNotEmpty()) {
-                    putParcelable(
-                        CreateCollectionAcceptFragment.PHOTO_URI_KEY,
-                        FileUtils.getUriFromUrl(item.images[0])
-                    )
-                }
+        bundle.apply {
+            putInt(
+                CreateCollectionAcceptFragment.MODE_KEY,
+                CreateCollectionAcceptFragment.POST_MODE
+            )
+            putInt(CreateCollectionAcceptFragment.ID_KEY, postModel.id)
+            putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, true)
+            putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, images)
+            putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, itemsList)
+            putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
+            putInt(CollectionConstructorFragment.MAIN_ID_KEY, postModel.id)
 
-                findNavController().navigate(
-                    R.id.action_mainFragment_to_createCollectionAcceptFragment,
-                    bundle
+            if (postModel.images.isNotEmpty()) {
+                putParcelable(
+                    CreateCollectionAcceptFragment.PHOTO_URI_KEY,
+                    FileUtils.getUriFromUrl(postModel.images[0])
                 )
             }
         }
+
+        return bundle
     }
 
     private fun onClothesItemClicked(item: Any?) {
@@ -243,7 +248,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         CollectionContextDialog(
-            isOwn = item.author.id == getUserIdFromSharedPref(),
+            isOwn = item.author.id == SharedDataSource.getUserId(currentActivity),
             item = item
         ).apply {
             setChoiceListener(listener = this@MainFragment)
@@ -263,16 +268,8 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         presenter.deletePost(
-            token = getTokenFromSharedPref(),
+            token = SharedDataSource.getToken(activity = currentActivity),
             postId = item.id
         )
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
-
-    private fun getUserIdFromSharedPref(): Int {
-        return currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
     }
 }

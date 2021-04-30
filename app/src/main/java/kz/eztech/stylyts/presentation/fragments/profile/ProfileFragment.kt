@@ -441,10 +441,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onOutfitsFilterClick(position: Int) {
-        if (isOwnProfile()) {
-            resetPages(mode = OUTFITS_MODE)
+        resetPages(mode = OUTFITS_MODE)
 
-        }
         collectionRecyclerView.adapter = outfitsAdapter
         adapterFilter.onChooseItem(position)
         outfitsAdapter.clearList()
@@ -558,7 +556,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun setPagesCondition(totalPages: Int) {
-        if (totalPages != currentFilter.page) {
+        if (totalPages > currentFilter.page) {
             currentFilter.page++
         } else {
             currentFilter.isLastPage = true

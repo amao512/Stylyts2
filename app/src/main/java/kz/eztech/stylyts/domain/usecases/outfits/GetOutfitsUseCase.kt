@@ -38,8 +38,8 @@ class GetOutfitsUseCase @Inject constructor(
         val booleanQueryMap = HashMap<String, Boolean>()
         val stringQueryMap = HashMap<String, String>()
 
-        if (filterModel.isMyWardrobe) {
-            booleanQueryMap["my"] = filterModel.isMyWardrobe
+        if (filterModel.userId != 0) {
+            stringQueryMap["author"] = filterModel.userId.toString()
         }
 
         if (filterModel.page != 0) {

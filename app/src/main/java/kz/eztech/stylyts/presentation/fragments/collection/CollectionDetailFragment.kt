@@ -117,7 +117,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         text_view_fragment_collection_detail_comments_count.setOnClickListener(this)
         button_fragment_collection_detail_change_collection.setOnClickListener(this)
         constraint_layout_fragment_collection_detail_profile_container.setOnClickListener(this)
-        imageButton.setOnClickListener(this)
+        item_main_image_dialog_menu_image_button.setOnClickListener(this)
         fragment_collection_detail_like_image_button.setOnClickListener(this)
     }
 
@@ -153,7 +153,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
             R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
-            R.id.imageButton -> onContextMenuClick()
+            R.id.item_main_image_dialog_menu_image_button -> onContextMenuClick()
             R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
             R.id.fragment_collection_detail_user_tags_icon -> onShowUsersTags()
             R.id.fragment_collection_detail_like_image_button -> presenter.onLikeClick(

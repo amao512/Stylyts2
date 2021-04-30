@@ -4,9 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.item_main_image.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -18,6 +23,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
 import java.text.NumberFormat
 
 /**
@@ -27,22 +33,36 @@ class MainImageHolder(
     itemView: View,
     adapter: BaseAdapter,
     private val ownId: Int
-) : BaseViewHolder(itemView, adapter), UniversalViewClickListener, View.OnClickListener {
+) : BaseViewHolder(itemView, adapter), UniversalViewClickListener {
 
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
 
-    override fun bindData(item: Any, position: Int) {
+    private lateinit var avatarShapeableImageView: ShapeableImageView
+    private lateinit var userShortNameTextView: TextView
+    private lateinit var fullNameTextView: TextView
+    private lateinit var dialogMenuImageButton: ImageButton
+    private lateinit var imagesViewPager: ViewPager
+    private lateinit var imagesScrollingPagerIndicator: ScrollingPagerIndicator
+    private lateinit var clothesTagsContainerFrameLayout: FrameLayout
+    private lateinit var usersTagContainerFrameLayout: FrameLayout
+    private lateinit var clothesRecyclerView: RecyclerView
+    private lateinit var likeImageButton: ImageButton
+    private lateinit var commentsCountTextView: TextView
+
+    override fun bindData(
+        item: Any,
+        position: Int
+    ) {
         item as PostModel
 
+        initializeViews()
         initializeAdapters(postModel = item)
-        loadImages(postModel = item)
-        processCollectionInfo(
-            postModel = item,
-            position = position
-        )
-        loadUserPhoto(postModel = item)
-        loadTags(postModel = item)
-        processLike(item.alreadyLiked)
+        processPost(postModel = item)
+        processImages(postModel = item)
+        processUserPhoto(postModel = item)
+        processTags(postModel = item)
+        processLike(isLiked = item.alreadyLiked)
+        initializeListeners(postModel = item, position = position)
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
@@ -54,32 +74,43 @@ class MainImageHolder(
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.item_main_image_clothes_tags_icon -> onShowClothesTags()
-            R.id.item_main_image_user_tags_icon -> onShowUsersTags()
-        }
-    }
-
     private fun initializeAdapters(postModel: PostModel) {
         additionalAdapter = MainImagesAdditionalAdapter()
         additionalAdapter.itemClickListener = adapter.itemClickListener
 
-        with (itemView) {
-            if (postModel.clothes.isEmpty()) {
-                recycler_view_item_main_image_additionals_list.hide()
-            }
+        if (postModel.clothes.isEmpty()) {
+            clothesRecyclerView.hide()
+        }
 
-            recycler_view_item_main_image_additionals_list.adapter = additionalAdapter
-            additionalAdapter.updateList(list = postModel.clothes)
+        clothesRecyclerView.adapter = additionalAdapter
+        additionalAdapter.updateList(list = postModel.clothes)
+    }
+
+    private fun initializeViews() {
+        with(itemView) {
+            avatarShapeableImageView = shapeable_image_view_item_main_image_profile_avatar
+            userShortNameTextView = text_view_item_main_image_short_name
+            fullNameTextView = text_view_item_main_image_partner_name
+            dialogMenuImageButton = item_main_image_dialog_menu_image_button
+            imagesViewPager = item_main_image_photos_holder_view_pager
+            imagesScrollingPagerIndicator = item_main_image_photos_pager_indicator
+            clothesTagsContainerFrameLayout = item_main_image_clothes_tags_container
+            usersTagContainerFrameLayout = item_main_image_users_tags_container
+            clothesRecyclerView = recycler_view_item_main_image_additionals_list
+            likeImageButton = item_main_image_like_image_button
+            commentsCountTextView = text_view_item_main_image_comments_count
         }
     }
 
-    private fun processCollectionInfo(
+    private fun processPost(postModel: PostModel) {
+        fullNameTextView.text = SPACE_TEXT_FORMAT.format(postModel.author.firstName, postModel.author.lastName)
+    }
+
+    private fun initializeListeners(
         postModel: PostModel,
         position: Int
     ) {
-        with (itemView) {
+        with(itemView) {
             if (ownId != postModel.author.id) {
                 button_item_main_image_change_collection.hide()
             }
@@ -101,19 +132,26 @@ class MainImageHolder(
                 )
             }
 
-            text_view_item_main_image_comments_count.text = text_view_item_main_image_comments_count.context
+            commentsCountTextView.text = commentsCountTextView.context
                 .getString(R.string.comments_count_text_format, postModel.commentsCount.toString())
 
-            text_view_item_main_image_comments_count.setOnClickListener { thisView ->
+            commentsCountTextView.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
             }
 
-            imageButton.setOnClickListener {
+            dialogMenuImageButton.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, postModel)
             }
 
-            item_main_image_like_image_button.setOnClickListener {
+            likeImageButton.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, postModel)
+            }
+
+            item_main_image_clothes_tags_icon.setOnClickListener {
+                onShowClothesTags()
+            }
+            item_main_image_user_tags_icon.setOnClickListener {
+                onShowUsersTags()
             }
 
 //            text_view_item_main_image_date.text =
@@ -121,7 +159,7 @@ class MainImageHolder(
         }
     }
 
-    private fun loadImages(postModel: PostModel) {
+    private fun processImages(postModel: PostModel) {
         val imageArray = ArrayList<String>()
 
         postModel.images.let {
@@ -131,123 +169,101 @@ class MainImageHolder(
         }
 
         val imageAdapter = ImagesViewPagerAdapter(
-           images = imageArray,
+            images = imageArray,
             withAnimation = false
         )
         imageAdapter.mItemImageClickListener = this
 
-        with (itemView) {
-            item_main_image_photos_holder_view_pager.adapter = imageAdapter
+        imagesViewPager.adapter = imageAdapter
+        imagesScrollingPagerIndicator.show()
+        imagesScrollingPagerIndicator.attachToPager(imagesViewPager)
+    }
 
-            item_main_image_photos_pager_indicator.show()
-            item_main_image_photos_pager_indicator.attachToPager(
-                item_main_image_photos_holder_view_pager
-            )
+    private fun processUserPhoto(postModel: PostModel) {
+        val author = postModel.author
+
+        if (author.avatar.isBlank()) {
+            avatarShapeableImageView.hide()
+            userShortNameTextView.show()
+            userShortNameTextView.text = getShortName(author.firstName, author.lastName)
+        } else {
+            userShortNameTextView.hide()
+
+            Glide.with(avatarShapeableImageView.context)
+                .load(author.avatar)
+                .centerCrop()
+                .into(avatarShapeableImageView)
         }
     }
 
-    private fun loadUserPhoto(postModel: PostModel) {
-        with (itemView) {
-            val author = postModel.author
-
-            text_view_item_main_image_partner_name.text = SPACE_TEXT_FORMAT.format(
-                author.firstName,
-                author.lastName
-            )
-
-            if (author.avatar.isBlank()) {
-                shapeable_image_view_item_main_image_profile_avatar.hide()
-                text_view_item_main_image_short_name.show()
-                text_view_item_main_image_short_name.text = getShortName(author.firstName, author.lastName)
-            } else {
-                text_view_item_main_image_short_name.hide()
-
-                Glide.with(shapeable_image_view_item_main_image_profile_avatar.context)
-                    .load(author.avatar)
-                    .centerCrop()
-                    .into(shapeable_image_view_item_main_image_profile_avatar)
-            }
-        }
-    }
-
-    private fun loadTags(postModel: PostModel) {
+    private fun processTags(postModel: PostModel) {
         checkEmptyTags(postModel)
         loadClothesTags(postModel)
         loadUsersTags(postModel)
-
-        with (itemView) {
-            item_main_image_clothes_tags_icon.setOnClickListener(this@MainImageHolder)
-            item_main_image_user_tags_icon.setOnClickListener(this@MainImageHolder)
-        }
     }
 
     private fun loadClothesTags(postModel: PostModel) {
-        with (itemView) {
-            val container = item_main_image_clothes_tags_container
-            container.removeAllViews()
+        clothesTagsContainerFrameLayout.removeAllViews()
 
-            postModel.tags.clothesTags.map {
-                val textView = getTagTextView(container)
+        postModel.tags.clothesTags.map {
+            val textView = getTagTextView(clothesTagsContainerFrameLayout)
 
-                itemView.viewTreeObserver
-                    .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                        override fun onGlobalLayout() {
-                            setTagPosition(
-                                tagModel = it,
-                                textView = textView,
-                                container = item_main_image_photos_holder_view_pager
-                            )
+            itemView.viewTreeObserver
+                .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        setTagPosition(
+                            tagModel = it,
+                            textView = textView,
+                            container = imagesViewPager
+                        )
 
-                            textView.text = it.title
+                        textView.text = it.title
 
-                            if (textView.parent != null) {
-                                container.removeView(textView)
-                            } else {
-                                container.addView(textView)
-                            }
-
-                            itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        if (textView.parent != null) {
+                            clothesTagsContainerFrameLayout.removeView(textView)
+                        } else {
+                            clothesTagsContainerFrameLayout.addView(textView)
                         }
-                    })
-            }
+
+                        itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
         }
     }
 
     private fun loadUsersTags(postModel: PostModel) {
-        with (itemView) {
-            val container = item_main_image_users_tags_container
-            container.removeAllViews()
+        usersTagContainerFrameLayout.removeAllViews()
 
-            postModel.tags.usersTags.map {
-                val textView = getTagTextView(container)
-                textView.backgroundTintList = resources.getColorStateList(R.color.app_dark_blue_gray)
+        postModel.tags.usersTags.map {
+            val textView = getTagTextView(usersTagContainerFrameLayout)
+            textView.backgroundTintList =
+                itemView.resources.getColorStateList(R.color.app_dark_blue_gray)
 
-                itemView.viewTreeObserver
-                    .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-                        override fun onGlobalLayout() {
-                            setTagPosition(
-                                tagModel = it,
-                                textView = textView,
-                                container = item_main_image_photos_holder_view_pager
-                            )
+            itemView.viewTreeObserver
+                .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        setTagPosition(
+                            tagModel = it,
+                            textView = textView,
+                            container = imagesViewPager
+                        )
 
-                            textView.text = it.title
+                        textView.text = it.title
 
-                            if (textView.parent != null) {
-                                container.removeView(textView)
-                            } else {
-                                container.addView(textView)
-                            }
-
-                            itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                        if (textView.parent != null) {
+                            usersTagContainerFrameLayout.removeView(textView)
+                        } else {
+                            usersTagContainerFrameLayout.addView(textView)
                         }
-                    })
-            }
+
+                        itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    }
+                })
         }
     }
 
     private fun getTagTextView(container: ViewGroup): TextView {
-        val textView =  LayoutInflater.from(container.context).inflate(
+        val textView = LayoutInflater.from(container.context).inflate(
             R.layout.text_view_tag_element,
             container,
             false
@@ -271,8 +287,8 @@ class MainImageHolder(
     }
 
     private fun checkEmptyTags(postModel: PostModel) {
-        with (itemView) {
-            item_main_image_clothes_tags_container.hide()
+        with(itemView) {
+            clothesTagsContainerFrameLayout.hide()
 
             postModel.tags.let {
                 if (it.clothesTags.isEmpty()) {
@@ -291,37 +307,31 @@ class MainImageHolder(
     }
 
     private fun onShowClothesTags() {
-        with (itemView) {
-            if (item_main_image_clothes_tags_container.visibility == View.GONE) {
-                item_main_image_clothes_tags_container.show()
-            } else {
-                item_main_image_clothes_tags_container.hide()
-            }
+        if (clothesTagsContainerFrameLayout.visibility == View.GONE) {
+            clothesTagsContainerFrameLayout.show()
+        } else {
+            clothesTagsContainerFrameLayout.hide()
         }
     }
 
     private fun onShowUsersTags() {
-        with (itemView) {
-            if (item_main_image_users_tags_container.visibility == View.GONE) {
-                item_main_image_users_tags_container.show()
-            } else {
-                item_main_image_users_tags_container.hide()
-            }
+        if (usersTagContainerFrameLayout.visibility == View.GONE) {
+            usersTagContainerFrameLayout.show()
+        } else {
+            usersTagContainerFrameLayout.hide()
         }
     }
 
     private fun processLike(isLiked: Boolean) {
-        with (itemView) {
-            item_main_image_like_image_button.setImageDrawable(
-                ContextCompat.getDrawable(
-                    item_main_image_like_image_button.context,
-                    when (isLiked) {
-                        true -> R.drawable.ic_favorite_red
-                        false -> R.drawable.ic_baseline_favorite_border_24
-                    }
-                )
+        likeImageButton.setImageDrawable(
+            ContextCompat.getDrawable(
+                likeImageButton.context,
+                when (isLiked) {
+                    true -> R.drawable.ic_favorite_red
+                    false -> R.drawable.ic_baseline_favorite_border_24
+                }
             )
-        }
+        )
     }
 
     companion object {
