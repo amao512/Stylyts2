@@ -38,7 +38,7 @@
     <string name="fragment_restore_password_success_refreshed_description">Ваш пароль успешно обновлён!</string>
     <string name="fragment_restore_password_success_refreshed_next_button">Вернуться в приложение</string>
 
-    <string name="item_user_comment"><![CDATA[<b>%1$s%2$s</b> %3$s]]></string>
+    <string name="comment_text_with_user_text_format"><![CDATA[<b>%1$s %2$s</b> %3$s]]></string>
 
     <string name="email">Email</string>
     <string name="username">Никнейм</string>

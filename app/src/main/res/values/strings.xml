@@ -37,7 +37,7 @@
     <string name="fragment_restore_password_success_refreshed_description">Your password has been successfully updated!</string>
     <string name="fragment_restore_password_success_refreshed_next_button">Return to app</string>
 
-    <string name="item_user_comment"><![CDATA[<b>%1$s%2$s</b> %3$s]]></string>
+    <string name="comment_text_with_user_text_format"><![CDATA[<b>%1$s %2$s</b> %3$s]]></string>
 
     <string name="email">Email</string>
     <string name="username">Username</string>

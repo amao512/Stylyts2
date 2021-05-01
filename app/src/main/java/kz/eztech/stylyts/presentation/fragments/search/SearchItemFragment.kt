@@ -20,7 +20,7 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearch
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
-import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchItemPresenter

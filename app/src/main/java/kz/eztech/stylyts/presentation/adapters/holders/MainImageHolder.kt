@@ -47,6 +47,7 @@ class MainImageHolder(
     private lateinit var usersTagContainerFrameLayout: FrameLayout
     private lateinit var clothesRecyclerView: RecyclerView
     private lateinit var likeImageButton: ImageButton
+    private lateinit var commentsImageButton: ImageButton
     private lateinit var commentsCountTextView: TextView
 
     override fun bindData(
@@ -98,6 +99,7 @@ class MainImageHolder(
             usersTagContainerFrameLayout = item_main_image_users_tags_container
             clothesRecyclerView = recycler_view_item_main_image_additionals_list
             likeImageButton = item_main_image_like_image_button
+            commentsImageButton = item_main_image_comments_image_button
             commentsCountTextView = text_view_item_main_image_comments_count
         }
     }
@@ -137,6 +139,10 @@ class MainImageHolder(
 
             commentsCountTextView.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
+            }
+
+            commentsImageButton.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, postModel)
             }
 
             dialogMenuImageButton.setOnClickListener {

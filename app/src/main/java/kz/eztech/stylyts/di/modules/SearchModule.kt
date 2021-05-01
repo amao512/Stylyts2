@@ -5,8 +5,8 @@ import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.data.api.network.SearchAPI
 import kz.eztech.stylyts.data.db.search.SearchDataSource
-import kz.eztech.stylyts.data.repository.search.SearchRepository
-import kz.eztech.stylyts.domain.repository.search.SearchDomainRepository
+import kz.eztech.stylyts.data.repository.SearchRepository
+import kz.eztech.stylyts.domain.repository.SearchDomainRepository
 import retrofit2.Retrofit
 import javax.inject.Singleton
 

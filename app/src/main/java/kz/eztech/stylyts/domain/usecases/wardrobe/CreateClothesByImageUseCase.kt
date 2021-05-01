@@ -5,7 +5,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
 import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
-import kz.eztech.stylyts.domain.repository.wardrobe.WardrobeDomainRepository
+import kz.eztech.stylyts.domain.repository.WardrobeDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

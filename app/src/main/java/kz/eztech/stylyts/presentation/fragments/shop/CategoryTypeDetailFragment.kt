@@ -21,7 +21,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
-import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.CategoryTypeDetailFragmentPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING

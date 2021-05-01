@@ -37,7 +37,7 @@ import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
-import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener

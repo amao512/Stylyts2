@@ -5,7 +5,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
-import kz.eztech.stylyts.domain.repository.address.AddressDomainRepository
+import kz.eztech.stylyts.domain.repository.AddressDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named

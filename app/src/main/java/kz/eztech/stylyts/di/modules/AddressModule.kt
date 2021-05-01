@@ -3,8 +3,8 @@ package kz.eztech.stylyts.di.modules
 import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.data.api.network.AddressApi
-import kz.eztech.stylyts.data.repository.address.AddressRepository
-import kz.eztech.stylyts.domain.repository.address.AddressDomainRepository
+import kz.eztech.stylyts.data.repository.AddressRepository
+import kz.eztech.stylyts.domain.repository.AddressDomainRepository
 import retrofit2.Retrofit
 import javax.inject.Singleton
 

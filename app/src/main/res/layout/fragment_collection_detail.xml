@@ -255,6 +255,7 @@
                         />
 
                     <ImageButton
+                        android:id="@+id/fragment_collection_detail_comments_image_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"

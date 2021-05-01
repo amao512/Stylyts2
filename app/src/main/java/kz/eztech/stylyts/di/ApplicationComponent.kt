@@ -4,7 +4,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionItemFragment
-import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
 import kz.eztech.stylyts.presentation.fragments.main.MainFragment
 import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
@@ -26,6 +26,7 @@ import kz.eztech.stylyts.presentation.fragments.collection.CollectionsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
+import kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
@@ -54,7 +55,8 @@ import javax.inject.Singleton
     CollectionModule::class,
     UserModule::class,
     OutfitsModule::class,
-    WardrobeModule::class
+    WardrobeModule::class,
+    CommentsModule::class
 ])
 interface ApplicationComponent {
 
@@ -88,6 +90,7 @@ interface ApplicationComponent {
     fun inject(fragment: CollectionsFragment)
     fun inject(fragment: CollectionDetailFragment)
     fun inject(fragment: CreateCollectionAcceptFragment)
+    fun inject(fragment: CommentsFragment)
 
     fun inject(dialog: TagChooserDialog)
     fun inject(dialog: CartDialog)

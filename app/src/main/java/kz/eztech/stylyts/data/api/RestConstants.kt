@@ -68,23 +68,11 @@ object RestConstants {
     const val UPDATE_POST: String = "posts/{post_id}"
     const val LIKE_POST: String = "posts/{post_id}/like"
 
-    //ShopCategories
-    const val GET_CATEGORIES: String = "clothes/category/"
-    const val GET_CATEGORIES_DETAIL: String = "clothes/type/{id}/"
-    const val GET_STYLES: String = "clothes/styles/"
-    const val UPDATE_COLLECTION: String = "outfit/{id}/"
-    const val GET_COLLECTIONS: String = "outfit/"
+    // Comments
+    const val GET_COMMENTS: String = "post-comments"
+    const val CREATE_COMMENT: String = "post-comments"
+
     const val GET_ITEM_DETAIL: String = "clothes/item/{id}/"
-    const val GET_FILTERED_ITEMS: String = "clothes/item/"
     const val GET_ITEM_BY_BARCODE: String = "clothes/item/get_by_barcode/"
-
-    const val SAVE_ITEM: String = "clothes/items/"
-
-    const val GET_BRANDS: String = "clothes/brands/"
-    
-    const val SAVE_COLLECTION_TO_ME = "outfits/{id}/save"
-    
-    const val SEARCH_USER_BY_NAME = "auth/search/"
-
     const val SAVE_ITEM_BY_PHOTO = "clothes/item/"
 }

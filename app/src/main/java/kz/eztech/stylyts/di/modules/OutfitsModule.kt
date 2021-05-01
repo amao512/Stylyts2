@@ -3,8 +3,8 @@ package kz.eztech.stylyts.di.modules
 import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.data.api.network.OutfitsApi
-import kz.eztech.stylyts.data.repository.outfits.OutfitsRepository
-import kz.eztech.stylyts.domain.repository.outfits.OutfitsDomainRepository
+import kz.eztech.stylyts.data.repository.OutfitsRepository
+import kz.eztech.stylyts.domain.repository.OutfitsDomainRepository
 import retrofit2.Retrofit
 import javax.inject.Singleton
 

@@ -26,6 +26,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
 import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
@@ -118,6 +119,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         constraint_layout_fragment_collection_detail_profile_container.setOnClickListener(this)
         item_main_image_dialog_menu_image_button.setOnClickListener(this)
         fragment_collection_detail_like_image_button.setOnClickListener(this)
+        fragment_collection_detail_comments_image_button.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -146,9 +148,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.text_view_fragment_collection_detail_comments_count -> {
-                findNavController().navigate(R.id.action_collectionDetailFragment_to_userCommentsFragment)
-            }
+            R.id.text_view_fragment_collection_detail_comments_count -> navigateToComments()
+            R.id.fragment_collection_detail_comments_image_button -> navigateToComments()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
             R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
@@ -453,6 +454,13 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
 
         findNavController().navigate(R.id.nav_profile, bundle)
+    }
+
+    private fun navigateToComments() {
+        val bundle = Bundle()
+        bundle.putInt(CommentsFragment.COLLECTION_ID_KEY, currentId)
+
+        findNavController().navigate(R.id.action_collectionDetailFragment_to_userCommentsFragment, bundle)
     }
 
     private fun onChangeButtonClick() {

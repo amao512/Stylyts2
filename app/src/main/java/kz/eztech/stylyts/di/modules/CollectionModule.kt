@@ -3,8 +3,8 @@ package kz.eztech.stylyts.di.modules
 import dagger.Module
 import dagger.Provides
 import kz.eztech.stylyts.data.api.network.CollectionApi
-import kz.eztech.stylyts.data.repository.collection.ItemDetailRepository
-import kz.eztech.stylyts.domain.repository.collection.ItemDetailDomainRepository
+import kz.eztech.stylyts.data.repository.CollectionsRepository
+import kz.eztech.stylyts.domain.repository.CollectionsDomainRepository
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -18,7 +18,7 @@ class CollectionModule {
     }
 
     @Provides
-    fun providesItemDetailRepository(itemDetailRepository: ItemDetailRepository): ItemDetailDomainRepository {
-        return itemDetailRepository
+    fun providesItemDetailRepository(collectionsRepository: CollectionsRepository): CollectionsDomainRepository {
+        return collectionsRepository
     }
 }

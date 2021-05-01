@@ -49,6 +49,7 @@ class StylytsApp : Application(){
             .userModule(UserModule())
             .outfitsModule(OutfitsModule())
             .wardrobeModule(WardrobeModule())
+            .commentsModule(CommentsModule())
             .build()
 
         applicationComponent.inject(application = this)

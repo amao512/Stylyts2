@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/clothesDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
         android:label="fragment_item_detail"
         tools:layout="@layout/fragment_clothes_detail"
         >

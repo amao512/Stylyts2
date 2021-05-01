@@ -21,8 +21,9 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.dialogs.collection.CollectionContextDialog
-import kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
@@ -87,15 +88,20 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         toolbar_right_corner_action_image_button.setOnClickListener(this)
     }
 
-    override fun onViewClicked(view: View, position: Int, item: Any?) {
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
         when (view.id) {
             R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked(item)
             R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
             R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
-            R.id.text_view_item_main_image_comments_count -> findNavController().navigate(R.id.action_mainFragment_to_userCommentsFragment)
+            R.id.text_view_item_main_image_comments_count -> navigateToComments(item)
             R.id.item_main_image_dialog_menu_image_button -> onContextMenuClicked(item)
             R.id.item_main_image_like_image_button -> likePost(item)
+            R.id.item_main_image_comments_image_button -> navigateToComments(item)
         }
     }
 
@@ -241,6 +247,15 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
 
         findNavController().navigate(R.id.action_mainFragment_to_collectionDetailFragment, bundle)
+    }
+
+    private fun navigateToComments(item: Any?) {
+        item as PostModel
+
+        val bundle = Bundle()
+        bundle.putInt(CommentsFragment.COLLECTION_ID_KEY, item.id)
+
+        findNavController().navigate(R.id.action_mainFragment_to_userCommentsFragment, bundle)
     }
 
     private fun onContextMenuClicked(item: Any?) {

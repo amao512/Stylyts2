@@ -2,7 +2,7 @@ package kz.eztech.stylyts.domain.usecases.address
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.repository.address.AddressDomainRepository
+import kz.eztech.stylyts.domain.repository.AddressDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named

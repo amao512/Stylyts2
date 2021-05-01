@@ -7,7 +7,7 @@ import kz.eztech.stylyts.data.api.models.posts.TagApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
-import kz.eztech.stylyts.domain.repository.posts.PostsDomainRepository
+import kz.eztech.stylyts.domain.repository.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody

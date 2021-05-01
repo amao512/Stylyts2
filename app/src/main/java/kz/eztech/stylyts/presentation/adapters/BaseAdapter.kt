@@ -69,6 +69,12 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun addItem(item: Any) {
+        currentList.add(item)
+
+        notifyDataSetChanged()
+    }
+
     fun updateListFull(list: List<Any>) {
         currentList.clear()
         currentList.addAll(list)

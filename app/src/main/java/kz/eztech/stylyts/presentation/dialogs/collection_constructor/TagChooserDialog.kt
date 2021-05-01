@@ -32,12 +32,12 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.GridImageI
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
-import kz.eztech.stylyts.presentation.contracts.collection.PhotoChooserContract
+import kz.eztech.stylyts.presentation.contracts.collection_constructor.TagChooserContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.presenters.collection_constructor.PhotoChooserPresenter
+import kz.eztech.stylyts.presentation.presenters.collection_constructor.TagChooserPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
@@ -52,11 +52,11 @@ import javax.inject.Inject
 class TagChooserDialog(
     private val chooserListener: DialogChooserListener? = null,
     private val currentMode: Int
-) : DialogFragment(), PhotoChooserContract.View,
+) : DialogFragment(), TagChooserContract.View,
     UniversalViewClickListener,
     DialogChooserListener, MotionViewTapListener, View.OnClickListener {
 
-    @Inject lateinit var presenter: PhotoChooserPresenter
+    @Inject lateinit var presenter: TagChooserPresenter
 
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var filteredAdapter: GridImageItemFilteredAdapter

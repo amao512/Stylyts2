@@ -3,7 +3,7 @@ package kz.eztech.stylyts.domain.usecases.main
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.auth.TokenModel
-import kz.eztech.stylyts.domain.repository.main.MainDomainRepository
+import kz.eztech.stylyts.domain.repository.MainDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named

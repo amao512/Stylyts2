@@ -3,7 +3,7 @@ package kz.eztech.stylyts.domain.usecases.posts
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.repository.posts.PostsDomainRepository
+import kz.eztech.stylyts.domain.repository.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named

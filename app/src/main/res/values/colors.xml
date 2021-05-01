@@ -23,6 +23,7 @@
     <color name="app_dark_red">#C12323</color>
     <color name="app_dark">#3D3D3D</color>
     <color name="app_blue">#22A2EE</color>
+    <color name="app_blue_half">#8022A2EE</color>
 
     <color name="text_black">#4F4B4B</color>
 

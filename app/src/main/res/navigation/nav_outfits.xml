@@ -45,7 +45,7 @@
 
     <fragment
         android:id="@+id/clothesDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection.ClothesDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
         android:label="fragment_item_detail"
         tools:layout="@layout/fragment_clothes_detail"
         >
@@ -63,10 +63,15 @@
 
     <fragment
         android:id="@+id/userCommentsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.users.UserCommentsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment"
         android:label="fragment_user_comments"
-        tools:layout="@layout/fragment_user_comments"
-        />
+        tools:layout="@layout/fragment_comments"
+        >
+        <action
+            android:id="@+id/action_userCommentsFragment_to_nav_profile2"
+            app:destination="@id/nav_profile"
+            />
+    </fragment>
 
     <include app:graph="@navigation/nav_profile" />
     <fragment
