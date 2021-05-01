@@ -12,8 +12,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.data.models.SharedConstants.ACCESS_TOKEN_KEY
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
@@ -122,7 +120,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun initializeViewsData() {
         currentFilter = FilterModel()
         filterDialog = FilterDialog.getNewInstance(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
             gender = currentFilter.gender,
             isShowDiscount = false
@@ -272,7 +270,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         var isAlreadyFollow = false
 
         resultsModel.results.map {
-            if (it.id == getUserIdFromSharedPref()) {
+            if (it.id == currentActivity.getUserIdFromSharedPref()) {
                 isAlreadyFollow = true
             }
         }
@@ -300,7 +298,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
-        if (!isOwnProfile() && followSuccessModel.follower == getUserIdFromSharedPref()) {
+        if (!isOwnProfile() && followSuccessModel.follower == currentActivity.getUserIdFromSharedPref()) {
             changeProfileTextView.hide()
             followTextView.hide()
             unFollowTextView.show()
@@ -327,7 +325,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun getProfile() {
         presenter.getProfile(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             userId = currentFilter.userId,
         )
     }
@@ -338,14 +336,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun getFollowers() {
         presenter.getFollowers(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             userId = currentFilter.userId
         )
     }
 
     private fun getCollections() {
         presenter.getCollections(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             mode = collectionMode,
             filterModel = currentFilter
         )
@@ -353,14 +351,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun followUser() {
         presenter.followUser(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             userId = currentFilter.userId
         )
     }
 
     private fun unFollowUser() {
         presenter.unfollowUser(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             userId = currentFilter.userId
         )
     }
@@ -506,7 +504,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun openEditProfileDialog() {
         EditProfileDialog.getNewInstance(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             editorListener = this
         ).show(childFragmentManager, "Cart")
     }
@@ -569,13 +567,5 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         collectionMode = mode
     }
 
-    private fun isOwnProfile(): Boolean = currentFilter.userId == getUserIdFromSharedPref()
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
-
-    private fun getUserIdFromSharedPref(): Int {
-        return currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
-    }
+    private fun isOwnProfile(): Boolean = currentFilter.userId == currentActivity.getUserIdFromSharedPref()
 }

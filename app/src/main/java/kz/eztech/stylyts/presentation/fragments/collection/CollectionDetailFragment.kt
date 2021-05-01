@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.db.SharedDataSource
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -124,11 +123,11 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processPostInitialization() {
         when (currentMode) {
             OUTFIT_MODE -> presenter.getOutfitById(
-                token = SharedDataSource.getToken(activity = currentActivity),
+                token = currentActivity.getTokenFromSharedPref(),
                 outfitId = currentId.toString()
             )
             POST_MODE -> presenter.getPostById(
-                token = SharedDataSource.getToken(activity = currentActivity),
+                token = currentActivity.getTokenFromSharedPref(),
                 postId = currentId
             )
         }
@@ -157,7 +156,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
             R.id.fragment_collection_detail_user_tags_icon -> onShowUsersTags()
             R.id.fragment_collection_detail_like_image_button -> presenter.onLikeClick(
-                token = SharedDataSource.getToken(activity = currentActivity),
+                token = currentActivity.getTokenFromSharedPref(),
                 postId = currentId
             )
         }
@@ -187,7 +186,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processOutfit(outfitModel: OutfitModel) {
         additionalAdapter.updateList(list = outfitModel.clothes)
         currentOutfitModel = outfitModel
-        isOwn = outfitModel.author.id == SharedDataSource.getUserId(activity = currentActivity)
+        isOwn = outfitModel.author.id == currentActivity.getUserIdFromSharedPref()
 
         processAuthor(userShortModel = outfitModel.author)
         loadImages(images = arrayListOf(outfitModel.coverPhoto))
@@ -213,7 +212,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processPost(postModel: PostModel) {
         additionalAdapter.updateList(list = postModel.clothes)
         currentPostModel = postModel
-        isOwn = postModel.author.id == SharedDataSource.getUserId(activity = currentActivity)
+        isOwn = postModel.author.id == currentActivity.getUserIdFromSharedPref()
 
         processAuthor(userShortModel = postModel.author)
         loadImages(images = postModel.images)
@@ -523,11 +522,11 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun onDeleteContextClicked() {
         when (currentMode) {
             OUTFIT_MODE -> presenter.deleteOutfit(
-                token = SharedDataSource.getToken(activity = currentActivity),
+                token = currentActivity.getTokenFromSharedPref(),
                 outfitId = currentId
             )
             POST_MODE -> presenter.deletePost(
-                token = SharedDataSource.getToken(activity = currentActivity),
+                token = currentActivity.getTokenFromSharedPref(),
                 postId = currentId
             )
         }

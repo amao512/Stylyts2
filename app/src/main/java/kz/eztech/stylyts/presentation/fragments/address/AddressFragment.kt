@@ -5,19 +5,19 @@ import android.os.Looper
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_address_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.address.AddressModel
-import kz.eztech.stylyts.presentation.contracts.address.AddressContract
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.address.AddressAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.SwipeToDeleteAddressCallback
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.contracts.address.AddressContract
 import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.address.AddressPresenter
@@ -31,6 +31,8 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     @Inject lateinit var presenter: AddressPresenter
     private lateinit var addressAdapter: AddressAdapter
+
+    private lateinit var recyclerView: RecyclerView
 
     private var isForm = false
 
@@ -57,8 +59,6 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
                 }
             }
             toolbar_right_corner_action_image_button.hide()
-
-            elevation = 0f
         }
     }
 
@@ -74,20 +74,20 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     override fun initializeViewsData() {
         addressAdapter = AddressAdapter(addressViewClickListener = this)
+        addressAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
-        recycler_view_fragment_address_profile.layoutManager = LinearLayoutManager(currentActivity)
-        recycler_view_fragment_address_profile.adapter = addressAdapter
+        recyclerView = recycler_view_fragment_address_profile
+        recyclerView.adapter = addressAdapter
 
         val itemTouchHelper = ItemTouchHelper(SwipeToDeleteAddressCallback(addressAdapter))
-        itemTouchHelper.attachToRecyclerView(recycler_view_fragment_address_profile)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     override fun initializeListeners() {
         linear_layout_fragment_address_profile_add_address.setOnClickListener(this)
         linear_layout_fragment_address_profile_create_address.setOnClickListener(this)
-        addressAdapter.itemClickListener = this
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {

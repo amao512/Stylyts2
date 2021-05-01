@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.db.SharedDataSource
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
@@ -170,7 +169,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     private fun getPosts() {
         presenter.getPosts(
-            token = SharedDataSource.getToken(activity = currentActivity),
+            token = currentActivity.getTokenFromSharedPref(),
             page = currentFilter.page
         )
     }
@@ -248,7 +247,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         CollectionContextDialog(
-            isOwn = item.author.id == SharedDataSource.getUserId(currentActivity),
+            isOwn = item.author.id == currentActivity.getUserIdFromSharedPref(),
             item = item
         ).apply {
             setChoiceListener(listener = this@MainFragment)
@@ -259,7 +258,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         presenter.likePost(
-            token = SharedDataSource.getToken(activity = currentActivity),
+            token = currentActivity.getTokenFromSharedPref(),
             postId = item.id
         )
     }
@@ -268,7 +267,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         presenter.deletePost(
-            token = SharedDataSource.getToken(activity = currentActivity),
+            token = currentActivity.getTokenFromSharedPref(),
             postId = item.id
         )
     }

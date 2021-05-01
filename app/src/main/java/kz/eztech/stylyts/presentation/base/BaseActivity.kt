@@ -6,6 +6,7 @@ import android.view.ContextThemeWrapper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import java.util.*
 
@@ -27,6 +28,14 @@ abstract class BaseActivity : AppCompatActivity() {
     fun displayToast(msg: String) {
         //Snackbar.make()
         //Toast.makeText(this,msg, Toast.LENGTH_SHORT).show()
+    }
+
+    fun getTokenFromSharedPref(): String {
+        return getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
+    }
+
+    fun getUserIdFromSharedPref(): Int {
+        return getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
     }
 
     inline fun <reified T> getSharedPrefByKey(key: String): T? {
