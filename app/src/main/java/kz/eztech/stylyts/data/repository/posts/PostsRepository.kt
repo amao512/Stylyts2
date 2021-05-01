@@ -45,7 +45,7 @@ class PostsRepository @Inject constructor(
     ): Single<ResultsModel<PostModel>> {
         return api.getPosts(token, queryMap).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapPostResults(data = it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }
@@ -69,7 +69,7 @@ class PostsRepository @Inject constructor(
     ): Single<ResultsModel<PostModel>> {
         return api.getHomePagePosts(token, queryMap).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapPostResults(data = it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }

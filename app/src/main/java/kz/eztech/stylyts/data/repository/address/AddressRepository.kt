@@ -40,7 +40,7 @@ class AddressRepository @Inject constructor(
     override fun getAllAddress(token: String): Single<ResultsModel<AddressModel>> {
         return api.getAllAddress(token).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapAddressResults(data = it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }

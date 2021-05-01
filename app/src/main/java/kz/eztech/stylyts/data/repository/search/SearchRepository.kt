@@ -24,7 +24,7 @@ class SearchRepository @Inject constructor(
     ): Single<ResultsModel<UserModel>> {
         return api.searchUserByUsername(token, username).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapUserResults(it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }
@@ -36,7 +36,7 @@ class SearchRepository @Inject constructor(
     ): Single<ResultsModel<ClothesModel>> {
         return api.searchClothesByTitle(token, title).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapClothesResults(it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }

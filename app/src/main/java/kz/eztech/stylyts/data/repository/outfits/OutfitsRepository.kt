@@ -40,7 +40,7 @@ class OutfitsRepository @Inject constructor(
             stringQueryMap = stringQueryMap
         ).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapOutfitResults(data = it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }

@@ -16,139 +16,72 @@ import kz.eztech.stylyts.data.mappers.user.FollowerApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
 import kz.eztech.stylyts.data.mappers.wardrobe.WardrobeApiModelMapper
 import kz.eztech.stylyts.domain.models.ResultsModel
-import kz.eztech.stylyts.domain.models.address.AddressModel
-import kz.eztech.stylyts.domain.models.clothes.*
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
-import kz.eztech.stylyts.domain.models.user.FollowerModel
-import kz.eztech.stylyts.domain.models.user.UserModel
-import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
 import javax.inject.Inject
 
 /**
  * Created by Asylzhan Seytbek on 11.04.2021.
  */
 class ResultsApiModelMapper @Inject constructor(
-    private val clothesApiModelMapper: ClothesApiModelMapper,
-    private val clothesCategoryApiModelMapper: ClothesCategoryApiModelMapper,
-    private val clothesTypeApiModelMapper: ClothesTypeApiModelMapper,
-    private val clothesStyleApiModelMapper: ClothesStyleApiModelMapper,
-    private val clothesBrandApiModelMapper: ClothesBrandApiModelMapper,
-    private val addressApiModelMapper: AddressApiModelMapper,
-    private val userApiModelMapper: UserApiModelMapper,
-    private val followerApiModelMapper: FollowerApiModelMapper,
-    private val outfitApiModelMapper: OutfitApiModelMapper,
-    private val postApiModelMapper: PostApiModelMapper,
-    private val wardrobeApiModelMapper: WardrobeApiModelMapper
+    val clothesApiModelMapper: ClothesApiModelMapper,
+    val clothesCategoryApiModelMapper: ClothesCategoryApiModelMapper,
+    val clothesTypeApiModelMapper: ClothesTypeApiModelMapper,
+    val clothesStyleApiModelMapper: ClothesStyleApiModelMapper,
+    val clothesBrandApiModelMapper: ClothesBrandApiModelMapper,
+    val addressApiModelMapper: AddressApiModelMapper,
+    val userApiModelMapper: UserApiModelMapper,
+    val followerApiModelMapper: FollowerApiModelMapper,
+    val outfitApiModelMapper: OutfitApiModelMapper,
+    val postApiModelMapper: PostApiModelMapper,
+    val wardrobeApiModelMapper: WardrobeApiModelMapper
 ) {
 
-    fun mapClothesResults(data: ResultsApiModel<ClothesApiModel>?): ResultsModel<ClothesModel> {
+    inline fun <reified T, C> map(data: ResultsApiModel<T>?): ResultsModel<C> {
         return ResultsModel(
             page = data?.page ?: 0,
             totalPages = data?.totalPages ?: 0,
             pageSize = data?.pageSize ?: 0,
             totalCount = data?.totalCount ?: 0,
-            results = clothesApiModelMapper.map(data?.results)
+            results = mapResults(data?.results)
         )
     }
 
-    fun mapCategoryResults(data: ResultsApiModel<ClothesCategoryApiModel>?): ResultsModel<ClothesCategoryModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = clothesCategoryApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapTypeResults(data: ResultsApiModel<ClothesTypeApiModel>?): ResultsModel<ClothesTypeModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = clothesTypeApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapStyleResults(data: ResultsApiModel<ClothesStyleApiModel>?): ResultsModel<ClothesStyleModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = clothesStyleApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapBrandResults(data: ResultsApiModel<ClothesBrandApiModel>?): ResultsModel<ClothesBrandModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = clothesBrandApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapAddressResults(data: ResultsApiModel<AddressApiModel>?): ResultsModel<AddressModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = addressApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapUserResults(data: ResultsApiModel<UserApiModel>?): ResultsModel<UserModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = userApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapFollowerResults(data: ResultsApiModel<FollowerApiModel>?): ResultsModel<FollowerModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = followerApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapOutfitResults(data: ResultsApiModel<OutfitApiModel>?): ResultsModel<OutfitModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = outfitApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapPostResults(data: ResultsApiModel<PostApiModel>?): ResultsModel<PostModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = postApiModelMapper.map(data?.results)
-        )
-    }
-
-    fun mapWardrobeResults(data: ResultsApiModel<WardrobeApiModel>?): ResultsModel<WardrobeModel> {
-        return ResultsModel(
-            page = data?.page ?: 0,
-            totalPages = data?.totalPages ?: 0,
-            pageSize = data?.pageSize ?: 0,
-            totalCount = data?.totalCount ?: 0,
-            results = wardrobeApiModelMapper.map(data?.results)
-        )
+    @Suppress("UNCHECKED_CAST")
+    inline fun <reified T, C> mapResults(results: List<T>?): List<C> {
+        return when (T::class) {
+            ClothesApiModel::class -> {
+                clothesApiModelMapper.map(results as List<ClothesApiModel>) as List<C>
+            }
+            ClothesCategoryApiModel::class -> {
+                clothesCategoryApiModelMapper.map(results as List<ClothesCategoryApiModel>) as List<C>
+            }
+            ClothesTypeApiModel::class -> {
+                clothesTypeApiModelMapper.map(results as List<ClothesTypeApiModel>) as List<C>
+            }
+            ClothesStyleApiModel::class -> {
+                clothesStyleApiModelMapper.map(results as List<ClothesStyleApiModel>) as List<C>
+            }
+            ClothesBrandApiModel::class -> {
+                clothesBrandApiModelMapper.map(results as List<ClothesBrandApiModel>) as List<C>
+            }
+            AddressApiModel::class -> {
+                addressApiModelMapper.map(results as List<AddressApiModel>) as List<C>
+            }
+            UserApiModel::class -> {
+                userApiModelMapper.map(results as List<UserApiModel>) as List<C>
+            }
+            FollowerApiModel::class -> {
+                followerApiModelMapper.map(results as List<FollowerApiModel>) as List<C>
+            }
+            OutfitApiModel::class -> {
+                outfitApiModelMapper.map(results as List<OutfitApiModel>) as List<C>
+            }
+            PostApiModel::class -> {
+                postApiModelMapper.map(results as List<PostApiModel>) as List<C>
+            }
+            WardrobeApiModel::class -> {
+                wardrobeApiModelMapper.map(results as List<WardrobeApiModel>) as List<C>
+            }
+            else -> emptyList()
+        }
     }
 }

@@ -23,7 +23,7 @@ class UserRepository @Inject constructor(
     ): Single<ResultsModel<FollowerModel>> {
         return api.getUserFollowers(token, userId).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapFollowerResults(data = it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }
@@ -35,7 +35,7 @@ class UserRepository @Inject constructor(
     ): Single<ResultsModel<FollowerModel>> {
         return api.getUserFollowings(token, userId).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.mapFollowerResults(data = it.body())
+                true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }
