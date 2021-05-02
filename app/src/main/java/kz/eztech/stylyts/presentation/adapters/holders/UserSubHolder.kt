@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.presentation.adapters.holders
 
 import android.view.View
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_user_subs.view.*
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
@@ -14,7 +14,8 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
  */
 class UserSubHolder(
     itemView: View,
-    adapter: BaseAdapter
+    adapter: BaseAdapter,
+    private val imageLoader: DomainImageLoader
 ) : BaseViewHolder(itemView, adapter) {
 
     override fun bindData(
@@ -36,10 +37,10 @@ class UserSubHolder(
                     lastName = item.lastName
                 )
             } else {
-                Glide.with(shapeable_image_view_item_user_subs_avatar.context)
-                    .load(item.avatar)
-                    .centerCrop()
-                    .into(shapeable_image_view_item_user_subs_avatar)
+                imageLoader.load(
+                    url = item.avatar,
+                    target = shapeable_image_view_item_user_subs_avatar
+                )
             }
 
             if (item.isAlreadyFollow) {

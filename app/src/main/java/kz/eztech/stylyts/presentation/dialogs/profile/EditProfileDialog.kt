@@ -340,8 +340,7 @@ class EditProfileDialog(
         }
     }
 
-    private fun getTokenFromArguments(): String =
-        arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
+    private fun getTokenFromArguments(): String = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
 
     private fun allPermissionsGranted() = permissions.all {
         ContextCompat.checkSelfPermission(

@@ -7,11 +7,10 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_category_type_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
@@ -42,8 +41,6 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     companion object {
         const val CLOTHES_CATEGORY_TITLE = "clothes_category_title"
         const val FILTER_KEY = "filter_model"
-        const val GENDER_MALE = "M"
-        const val GENDER_FEMALE = "F"
     }
 
     override fun onResume() {
@@ -108,7 +105,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
                 currentFilter.brandList = item.brandList
 
                 presenter.getClothesByType(
-                    token = getTokenFromSharedPref(),
+                    token = currentActivity.getTokenFromSharedPref(),
                     filterModel = currentFilter
                 )
             }
@@ -131,16 +128,16 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getClothesBrands(token = getTokenFromSharedPref())
+        presenter.getClothesBrands(token = currentActivity.getTokenFromSharedPref())
 
         if (currentFilter.categoryIdList.isEmpty() && currentFilter.typeIdList.isNotEmpty()) {
             presenter.getClothesByType(
-                token = getTokenFromSharedPref(),
+                token = currentActivity.getTokenFromSharedPref(),
                 filterModel = currentFilter
             )
         } else {
             presenter.getCategoryTypeDetail(
-                token = getTokenFromSharedPref(),
+                token = currentActivity.getTokenFromSharedPref(),
                 filterModel = currentFilter
             )
         }
@@ -226,7 +223,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     ) {
         if (position == 0) {
             FilterDialog.getNewInstance(
-                token = getTokenFromSharedPref(),
+                token = currentActivity.getTokenFromSharedPref(),
                 itemClickListener = this,
                 gender = currentFilter.gender
             ).apply {
@@ -238,13 +235,9 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
             brandsFilterAdapter.onChooseItem(position)
             currentFilter.brandList = listOf(item.item as ClothesBrandModel)
             presenter.getClothesByBrand(
-                token = getTokenFromSharedPref(),
+                token = currentActivity.getTokenFromSharedPref(),
                 filterModel = currentFilter
             )
         }
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_create_collection_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
@@ -288,7 +287,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     private fun showPhotoChooserDialog(mode: Int) {
         TagChooserDialog.getNewInstance(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             chooserListener = this,
             clothesList = selectedList,
             usersList = selectedUsers,
@@ -340,13 +339,13 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
             if (isUpdating) {
                 presenter.updatePost(
-                    token = getTokenFromSharedPref(),
+                    token = currentActivity.getTokenFromSharedPref(),
                     postCreateModel = model,
                     postId = currentId
                 )
             } else {
                 presenter.createPost(
-                    token = getTokenFromSharedPref(),
+                    token = currentActivity.getTokenFromSharedPref(),
                     postCreateModel = model
                 )
             }
@@ -354,7 +353,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     private fun saveOutfit(item: OutfitCreateModel) {
-        getTokenFromSharedPref().let {
+        currentActivity.getTokenFromSharedPref().let {
             try {
                 currentBitmap?.let { bitmap ->
                     val file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
@@ -375,7 +374,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                     } ?: run {
                         errorLoadData()
                     }
-
                 } ?: run {
                     errorLoadData()
                 }
@@ -388,9 +386,5 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private fun errorLoadData() {
         hideProgress()
         displayMessage(msg = getString(R.string.collection_constructor_error_load_data))
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

@@ -2,6 +2,7 @@ package kz.eztech.stylyts.data.mappers.user
 
 import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
@@ -20,7 +21,7 @@ class UserApiModelMapper @Inject constructor() {
             lastName = data?.lastName ?: EMPTY_STRING,
             isBrand = data?.isBrand ?: false,
             dateOfBirth = data?.dateOfBirth ?: EMPTY_STRING,
-            gender = data?.gender ?: "M",
+            gender = setGender(gender = data?.gender),
             webSite = data?.webSite ?: EMPTY_STRING,
             instagram = data?.instagram ?: EMPTY_STRING,
             followersCount = data?.followersCount ?: 0,
@@ -42,13 +43,20 @@ class UserApiModelMapper @Inject constructor() {
                 lastName = it.lastName ?: EMPTY_STRING,
                 isBrand = it.isBrand,
                 dateOfBirth = it.dateOfBirth ?: EMPTY_STRING,
-                gender = it.gender ?: "M",
+                gender = setGender(gender = it.gender),
                 webSite = it.webSite ?: EMPTY_STRING,
                 instagram = it.instagram ?: EMPTY_STRING,
                 followersCount = it.followersCount ?: 0,
                 followingsCount = it.followingsCount ?: 0,
                 outfitsCount = it.outfitsCount ?: 0
             )
+        }
+    }
+
+    private fun setGender(gender: String?): String {
+        return when (gender) {
+            "male" -> GenderEnum.MALE.gender
+            else -> GenderEnum.FEMALE.gender
         }
     }
 }

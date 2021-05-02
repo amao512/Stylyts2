@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,10 +37,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/app_dark"
+                android:padding="@dimen/padding_size_16x"
                 android:text="@string/address_profile_deleted"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_14x"
-                android:padding="@dimen/padding_size_16x"
                 android:visibility="gone"
                 />
 
@@ -80,6 +81,8 @@
             android:id="@+id/recycler_view_fragment_address_profile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_address_profile"
             />
     </LinearLayout>

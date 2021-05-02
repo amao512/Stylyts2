@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collections.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
@@ -23,7 +22,6 @@ import kz.eztech.stylyts.presentation.contracts.collection.CollectionsContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsPresenter
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import org.koin.android.ext.android.inject
@@ -153,7 +151,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getClothesStyles(token = getTokenFromSharedPref())
+        presenter.getClothesStyles(token = currentActivity.getTokenFromSharedPref())
         shopItemViewModel.setCollectionMode(isOutfits)
     }
 
@@ -204,9 +202,5 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         } else {
             recycler_view_fragment_collections_filter_list.hide()
         }
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

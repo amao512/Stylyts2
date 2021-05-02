@@ -5,7 +5,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -15,7 +14,6 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopCategoryPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -29,6 +27,13 @@ class ShopItemFragment(
 
     private lateinit var adapter: ShopCategoryAdapter
     private var itemClickListener: UniversalViewClickListener? = null
+
+    override fun onResume() {
+        super.onResume()
+
+        presenter.getClothesTypes(token = currentActivity.getTokenFromSharedPref())
+        currentActivity.displayBottomNavigationView()
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_shop_item
 
@@ -66,7 +71,7 @@ class ShopItemFragment(
     override fun processPostInitialization() {}
 
     override fun onRefresh() {
-        presenter.getClothesTypes(token = getTokenFromSharedPref())
+        presenter.getClothesTypes(token = currentActivity.getTokenFromSharedPref())
     }
 
     override fun disposeRequests() {
@@ -105,15 +110,5 @@ class ShopItemFragment(
         data[ShopItemListFragment.CLOTHES_TYPE] = item
 
         itemClickListener?.onViewClicked(view, position, data)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.getClothesTypes(token = getTokenFromSharedPref())
-        currentActivity.displayBottomNavigationView()
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

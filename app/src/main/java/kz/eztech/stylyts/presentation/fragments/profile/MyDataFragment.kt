@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_my_data.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -17,7 +16,6 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.MyDataContract
 import kz.eztech.stylyts.presentation.presenters.profile.MyDataPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -88,7 +86,7 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
     }
 
     override fun processPostInitialization() {
-        presenter.getProfile(token = getTokenFromSharedPref())
+        presenter.getProfile(token = currentActivity.getTokenFromSharedPref())
     }
 
     override fun disposeRequests() {}
@@ -136,9 +134,5 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
                 findNavController().navigate(R.id.action_myDataFragment_to_settingsFragment)
             }
         }
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

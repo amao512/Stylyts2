@@ -246,10 +246,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processProfile(userModel: UserModel) {
         currentFilter.userId = userModel.id
         currentFilter.username = userModel.username
-        currentFilter.gender = when (userModel.gender) {
-            "male" -> "M"
-            else -> "F"
-        }
+        currentFilter.gender = userModel.gender
 
         getFilterList()
         getFollowers()
@@ -456,7 +453,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
 
         collectionRecyclerView.adapter = wardrobeAdapter
-
         adapterFilter.onChooseItem(position)
         wardrobeAdapter.clearList()
 

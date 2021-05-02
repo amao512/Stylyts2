@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_user_subs.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -27,11 +26,8 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
     @Inject lateinit var presenter: UserSubsPresenter
     private lateinit var adapter: UserSubViewPagerAdapter
 
-    private var userId: Int = 0
-    private var username: String = EMPTY_STRING
     private var followersCount: Int = 0
     private var followingsCount: Int = 0
-    private var position = FOLLOWERS_POSITION
 
     companion object {
         const val USER_ID_ARGS = "user_id_args_key"
@@ -60,7 +56,7 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
             toolbar_left_corner_action_image_button.show()
             toolbar_left_corner_action_image_button.setOnClickListener(this@UserSubsFragment)
 
-            toolbar_title_text_view.text = username
+            toolbar_title_text_view.text = getUsernameFromArgs()
             toolbar_title_text_view.show()
         }
     }
@@ -73,26 +69,12 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
         presenter.attach(view = this)
     }
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(USER_ID_ARGS)) {
-                userId = it.getInt(USER_ID_ARGS)
-            }
-
-            if (it.containsKey(USERNAME_ARGS)) {
-                username = it.getString(USERNAME_ARGS) ?: EMPTY_STRING
-            }
-
-            if (it.containsKey(POSITION_ARGS)) {
-                position = it.getInt(POSITION_ARGS)
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {}
 
     override fun initializeViews() {
-        adapter = UserSubViewPagerAdapter(fa = this, userId = userId)
+        adapter = UserSubViewPagerAdapter(fa = this, userId = getUserIdFromArgs())
         view_pager_fragment_user_subs.isSaveEnabled = false
     }
 
@@ -100,12 +82,12 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
 
     override fun processPostInitialization() {
         presenter.getFollowers(
-            token = getTokenFromSharedPref(),
-            userId = userId
+            token = currentActivity.getTokenFromSharedPref(),
+            userId = getUserIdFromArgs()
         )
         presenter.getFollowings(
-            token = getTokenFromSharedPref(),
-            userId = userId
+            token = currentActivity.getTokenFromSharedPref(),
+            userId = getUserIdFromArgs()
         )
     }
 
@@ -141,7 +123,7 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
 
     private fun initializeTabLayout() {
         view_pager_fragment_user_subs.adapter = adapter
-        view_pager_fragment_user_subs.currentItem = position
+        view_pager_fragment_user_subs.currentItem = getPositionFromArgs()
 
         TabLayoutMediator(
             tab_bar_fragment_user_subs,
@@ -155,7 +137,9 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
         }.attach()
     }
 
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
+    private fun getUserIdFromArgs(): Int = arguments?.getInt(USER_ID_ARGS) ?: 0
+
+    private fun getUsernameFromArgs(): String = arguments?.getString(USERNAME_ARGS) ?: EMPTY_STRING
+
+    private fun getPositionFromArgs(): Int = arguments?.getInt(POSITION_ARGS) ?: FOLLOWERS_POSITION
 }

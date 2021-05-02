@@ -16,6 +16,7 @@ import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContract
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsItemPresenter
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
@@ -147,8 +148,8 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
 
     private fun getOutfits() {
         currentFilter.gender = when (currentMode) {
-            0 -> "M"
-            else -> "F"
+            0 -> GenderEnum.MALE.gender
+            else -> GenderEnum.FEMALE.gender
         }
 
         presenter.getOutfits(

@@ -26,7 +26,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
@@ -43,6 +42,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
@@ -142,7 +142,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 		currentFilter = FilterModel()
 		filterDialog = FilterDialog.getNewInstance(
-			token = getTokenFromSharedPref(),
+			token = currentActivity.getTokenFromSharedPref(),
 			itemClickListener = this,
 			gender = getGender(),
 			isShowWardrobe = true
@@ -180,7 +180,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
     }
 
-    override fun processPostInitialization() = presenter.getTypes(token = getTokenFromSharedPref())
+    override fun processPostInitialization() = presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
 
     override fun disposeRequests() = presenter.disposeRequests()
 
@@ -394,7 +394,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			isStyle -> showStyles()
 			isItems -> showItems()
 			else -> {
-				presenter.getTypes(token = getTokenFromSharedPref())
+				presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
 			}
 		}
 	}
@@ -411,7 +411,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		isItems = false
 
 		checkIsListEmpty()
-		presenter.getTypes(token = getTokenFromSharedPref())
+		presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
 	}
 
 	private fun showItems() {
@@ -425,7 +425,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		isItems = false
 		isStyle = false
 
-		presenter.getTypes(token = getTokenFromSharedPref())
+		presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
 	}
 
 	private fun onCategoryNextClick() {
@@ -440,7 +440,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 			recycler_view_fragment_collection_constructor_list.hide()
 
-			presenter.getStyles(token = getTokenFromSharedPref())
+			presenter.getStyles(token = currentActivity.getTokenFromSharedPref())
 		}
 	}
 
@@ -453,7 +453,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					onChoice(view, externalType)
 				} else {
 					presenter.getClothesByType(
-						token = getTokenFromSharedPref(),
+						token = currentActivity.getTokenFromSharedPref(),
 						filterModel = currentFilter
 					)
 				}
@@ -474,7 +474,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			isItems = false
 			isStyle = false
 
-			presenter.getTypes(token = getTokenFromSharedPref())
+			presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
 		}
 	}
 
@@ -492,14 +492,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		currentFilter = item as FilterModel
 
 		presenter.getClothesByType(
-			token = getTokenFromSharedPref(),
+			token = currentActivity.getTokenFromSharedPref(),
 			filterModel = currentFilter
 		)
 	}
 
 	private fun navigateToCameraFragment(mode: Int) {
 		val bundle = Bundle()
-		bundle.putInt("mode", mode)
+		bundle.putInt(CameraFragment.MODE_KEY, mode)
 
 		findNavController().navigate(
 			R.id.action_createCollectionFragment_to_cameraFragment,
@@ -568,7 +568,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				style = currentStyle!!.id,
 				clothes = clothesList,
 				itemLocation = clothesCollectionList,
-				author = currentActivity.getSharedPrefByKey(SharedConstants.USER_ID_KEY) ?: 0,
+				author = currentActivity.getUserIdFromSharedPref(),
 				totalPrice = listOfItems.sumBy { it.cost }.toFloat(),
 				text = EMPTY_STRING,
 				title = EMPTY_STRING
@@ -748,12 +748,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		canvasHeight = frame_layout_fragment_collection_constructor_images_container.height
 	)
 
-	private fun getTokenFromSharedPref(): String {
-		return currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-	}
-
 	private fun getGender(): String = when (currentType) {
-		0 -> "M"
-		else -> "F"
+		0 -> GenderEnum.MALE.gender
+		else -> GenderEnum.FEMALE.gender
 	}
 }

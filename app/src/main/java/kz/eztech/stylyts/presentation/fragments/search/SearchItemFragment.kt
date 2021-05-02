@@ -184,13 +184,13 @@ class SearchItemFragment(
         when (position) {
             0 -> {
                 presenter.searchUserByUsername(
-                    token = getTokenFromSharedPref(),
+                    token = currentActivity.getTokenFromSharedPref(),
                     username = query
                 )
                 isHistory = false
             }
             2 -> presenter.searchClothesByTitle(
-                token = getTokenFromSharedPref(),
+                token = currentActivity.getTokenFromSharedPref(),
                 title = query
             )
         }
@@ -224,9 +224,5 @@ class SearchItemFragment(
                 fragment_search_item_recycler_view.adapter = clothesAdapter
             }
         }
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

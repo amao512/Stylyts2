@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_item_list.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
@@ -20,9 +19,9 @@ import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemListPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -120,11 +119,11 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         currentFilter.typeIdList = arrayListOf(clothesType.id)
 
         presenter.getCategoriesByType(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             clothesTypeId = clothesType.id
         )
         presenter.getClothesResultsByType(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             filterModel = currentFilter
         )
     }
@@ -215,7 +214,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
             setCurrentGender()
 
             presenter.getClothesResultsByCategory(
-                token = getTokenFromSharedPref(),
+                token = currentActivity.getTokenFromSharedPref(),
                 filterModel = currentFilter
             )
         }
@@ -250,23 +249,21 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
     private fun setCurrentGender() {
         currentFilter.gender = when (clothesTypeGender) {
-            0 -> CategoryTypeDetailFragment.GENDER_MALE
-            1 -> CategoryTypeDetailFragment.GENDER_FEMALE
-            else -> CategoryTypeDetailFragment.GENDER_MALE
+            0 -> GenderEnum.MALE.gender
+            1 -> GenderEnum.FEMALE.gender
+            else -> GenderEnum.MALE.gender
         }
     }
 
     private fun setResetTextColor() {
         include_toolbar_profile.toolbar_right_text_text_view.setTextColor(
-            if (isCheckedItem) {
-                ContextCompat.getColor(requireContext(), R.color.app_light_orange)
-            } else {
-                ContextCompat.getColor(requireContext(), R.color.app_gray_hint)
-            }
+            ContextCompat.getColor(
+                requireContext(),
+                when (isCheckedItem) {
+                    true -> R.color.app_light_orange
+                    false -> R.color.app_gray_hint
+                }
+            )
         )
-    }
-
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
     }
 }

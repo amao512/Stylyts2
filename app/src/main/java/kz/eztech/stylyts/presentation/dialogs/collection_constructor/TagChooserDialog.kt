@@ -34,6 +34,7 @@ import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.TagChooserContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -163,7 +164,7 @@ class TagChooserDialog(
         filterDialog = FilterDialog.getNewInstance(
             token = getTokenFromArgs(),
             itemClickListener = this,
-            gender = "M",
+            gender = GenderEnum.MALE.gender,
             isShowWardrobe = true
         ).apply {
             setFilter(filterModel = currentFilter)

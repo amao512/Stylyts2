@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_user_subs_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -19,16 +19,13 @@ import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
 class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: UserSubsPresenter
+    @Inject lateinit var imageLoader: DomainImageLoader
     private lateinit var adapter: UserSubAdapter
-
-    private var position: Int = 0
-    private var userId: Int = 0
 
     companion object {
         private const val POSITION_ARGS = "position_args_key"
@@ -63,21 +60,11 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
         presenter.attach(view = this)
     }
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(POSITION_ARGS)) {
-                position = it.getInt(POSITION_ARGS)
-            }
-
-            if (it.containsKey(USER_ID_ARGS)) {
-                userId = it.getInt(USER_ID_ARGS)
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        adapter = UserSubAdapter()
-        adapter.itemClickListener = this
+        adapter = UserSubAdapter(imageLoader = imageLoader)
+        adapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
@@ -88,14 +75,14 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        when (position) {
+        when (getPositionFromArgs()) {
             0 -> presenter.getFollowers(
-                token = getTokenFromSharedPref(),
-                userId = userId
+                token = currentActivity.getTokenFromSharedPref(),
+                userId = getUserIdFromArgs()
             )
             1 -> presenter.getFollowings(
-                token = getTokenFromSharedPref(),
-                userId = userId
+                token = currentActivity.getTokenFromSharedPref(),
+                userId = getUserIdFromArgs()
             )
         }
     }
@@ -149,7 +136,7 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
         item as FollowerModel
 
         presenter.followUser(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             userId = item.id
         )
     }
@@ -158,14 +145,14 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
         item as FollowerModel
 
         presenter.unFollowUser(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             userId = item.id
         )
 
         adapter.setUnFollowingUser(item)
     }
 
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
+    private fun getPositionFromArgs(): Int = arguments?.getInt(POSITION_ARGS) ?: 0
+
+    private fun getUserIdFromArgs(): Int = arguments?.getInt(USER_ID_ARGS) ?: 0
 }

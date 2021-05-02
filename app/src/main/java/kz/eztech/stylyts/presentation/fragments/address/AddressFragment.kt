@@ -36,6 +36,10 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     private var isForm = false
 
+    companion object {
+        private const val SLASH_TEXT_FORMAT = "%s/%s"
+    }
+
     override fun onResume() {
         super.onResume()
         currentActivity.hideBottomNavigationView()
@@ -106,7 +110,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     }
 
     override fun processPostInitialization() {
-        presenter.getAllAddress(token = getTokenFromSharedPref())
+        presenter.getAllAddress(token = currentActivity.getTokenFromSharedPref())
     }
 
     override fun disposeRequests() {}
@@ -176,7 +180,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     override fun onSwipeDelete(addressModel: AddressModel) {
         presenter.deleteAddress(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             addressId = addressModel.id.toString()
         )
     }
@@ -189,24 +193,20 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
             }, 1000)
     }
 
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
-
     private fun displayExistForm(addressModel: AddressModel) {
         isForm = true
         scroll_view_fragment_address_profile.show()
         linear_layout_fragment_address_profile_addresses.hide()
 
         edit_text_fragment_address_profile_country.setText(addressModel.country)
-        edit_text_fragment_address_profile_address.setText("${addressModel.city}/${addressModel.street}")
+        edit_text_fragment_address_profile_address.setText(SLASH_TEXT_FORMAT.format(addressModel.city, addressModel.street))
         edit_text_fragment_address_profile_post.setText(addressModel.postalCode)
     }
 
     private fun createAddress() {
         if (checkValidation()) {
             presenter.createAddress(
-                token = getTokenFromSharedPref(),
+                token = currentActivity.getTokenFromSharedPref(),
                 data = getAddressData()
             )
         } else {

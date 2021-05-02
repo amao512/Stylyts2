@@ -4,6 +4,7 @@ import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
 import kz.eztech.stylyts.data.mappers.user.UserShortApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
@@ -23,7 +24,7 @@ class OutfitApiModelMapper @Inject constructor(
                 author = userShortApiModelMapper.map(it.author),
                 title = it.title ?: EMPTY_STRING,
                 text = it.text ?: EMPTY_STRING,
-                gender = it.gender ?: "M",
+                gender = it.gender ?: GenderEnum.MALE.gender,
                 totalPrice = it.totalPrice ?: 0,
                 currency = it.currency ?: EMPTY_STRING,
                 coverPhoto = it.coverPhoto ?: EMPTY_STRING,
@@ -45,7 +46,7 @@ class OutfitApiModelMapper @Inject constructor(
             author = userShortApiModelMapper.map(data?.author),
             title = data?.title ?: EMPTY_STRING,
             text = data?.text ?: EMPTY_STRING,
-            gender = data?.gender ?: "M",
+            gender = data?.gender ?: GenderEnum.MALE.gender,
             totalPrice = data?.totalPrice ?: 0,
             currency = data?.currency ?: EMPTY_STRING,
             coverPhoto = data?.coverPhoto ?: EMPTY_STRING,

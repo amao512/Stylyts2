@@ -3,6 +3,7 @@ package kz.eztech.stylyts.data.mappers.clothes
 import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
 import kz.eztech.stylyts.data.mappers.user.UserShortApiModelMapper
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
@@ -28,7 +29,7 @@ class ClothesApiModelMapper @Inject constructor(
                 clothesColor = it.clothesColor ?: EMPTY_STRING,
                 title = it.title ?: EMPTY_STRING,
                 description = it.description ?: EMPTY_STRING,
-                gender = it.description ?: "M",
+                gender = it.description ?: GenderEnum.MALE.gender,
                 cost = it.cost ?: 0,
                 salePrice = it.salePrice ?: 0,
                 currency = it.currency ?: EMPTY_STRING,
@@ -52,7 +53,7 @@ class ClothesApiModelMapper @Inject constructor(
             clothesColor = data?.clothesColor ?: EMPTY_STRING,
             title = data?.title ?: EMPTY_STRING,
             description = data?.description ?: EMPTY_STRING,
-            gender = data?.description ?: "M",
+            gender = data?.description ?: GenderEnum.MALE.gender,
             cost = data?.cost ?: 0,
             salePrice = data?.salePrice ?: 0,
             currency = data?.currency ?: EMPTY_STRING,
