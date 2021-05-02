@@ -5,10 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
@@ -32,27 +35,41 @@ import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCol
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
-import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
+import kz.eztech.stylyts.presentation.utils.extensions.getFormattedDate
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
 import java.text.NumberFormat
 import javax.inject.Inject
 
 class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailContract.View,
     UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
-    @Inject
-    lateinit var presenter: CollectionDetailPresenter
+    @Inject lateinit var presenter: CollectionDetailPresenter
+
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
     private lateinit var currentOutfitModel: OutfitModel
     private lateinit var currentPostModel: PostModel
 
-    private var currentId: Int = 0
-    private var currentMode: Int = OUTFIT_MODE
-    private var isOwn: Boolean = false
+    private lateinit var avatarShapeableImageView: ShapeableImageView
+    private lateinit var userShortNameTextView: TextView
+    private lateinit var userFullNameTextView: TextView
+    private lateinit var dialogMenuImageButton: ImageButton
+    private lateinit var imagesViewPager: ViewPager
+    private lateinit var imageScrollingPagerIndicator: ScrollingPagerIndicator
+    private lateinit var clothesTagsContainerFrameLayout: FrameLayout
+    private lateinit var userTagsContainerFrameLayout: FrameLayout
+    private lateinit var clothesTagIconFrameLayout: FrameLayout
+    private lateinit var userTagIconFrameLayout: FrameLayout
+    private lateinit var clothesRecyclerView: RecyclerView
+    private lateinit var likeImageView: ImageView
+    private lateinit var commentsImageView: ImageView
+    private lateinit var changeCollectionButton: Button
+    private lateinit var totalPriceTextView: TextView
+    private lateinit var commentsCountTextView: TextView
 
     companion object {
         const val ID_KEY = "outfit_id"
@@ -92,45 +109,51 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         presenter.attach(view = this)
     }
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(ID_KEY)) {
-                currentId = it.getInt(ID_KEY)
-            }
-
-            if (it.containsKey(MODE_KEY)) {
-                currentMode = it.getInt(MODE_KEY)
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {
+        avatarShapeableImageView = shapeable_image_view_fragment_collection_detail_profile_avatar
+        userShortNameTextView = text_view_text_view_fragment_collection_detail_short_name
+        userFullNameTextView = text_view_fragment_collection_detail_partner_name
+        dialogMenuImageButton = item_main_image_dialog_menu_image_button
+        imagesViewPager = fragment_collection_detail_photos_holder_view_pager
+        imageScrollingPagerIndicator = fragment_collection_detail_photos_pager_indicator
+        clothesTagsContainerFrameLayout = fragment_collection_detail_clothes_tags_container
+        userTagsContainerFrameLayout = fragment_collection_detail_users_tags_container
+        clothesTagIconFrameLayout = fragment_collection_detail_clothes_tags_icon
+        userTagIconFrameLayout = fragment_collection_detail_user_tags_icon
+        likeImageView = fragment_collection_detail_like_image_view
+        commentsImageView = fragment_collection_detail_comments_image_view
+        changeCollectionButton = button_fragment_collection_detail_change_collection
+        totalPriceTextView = text_view_fragment_collection_detail_comments_cost
+        commentsCountTextView = text_view_fragment_collection_detail_comments_count
+
         additionalAdapter = MainImagesAdditionalAdapter()
         additionalAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
-        recycler_view_fragment_collection_detail_additionals_list.adapter = additionalAdapter
+        clothesRecyclerView = recycler_view_fragment_collection_detail_additionals_list
+        clothesRecyclerView.adapter = additionalAdapter
     }
 
     override fun initializeListeners() {
-        text_view_fragment_collection_detail_comments_count.setOnClickListener(this)
-        button_fragment_collection_detail_change_collection.setOnClickListener(this)
+        commentsCountTextView.setOnClickListener(this)
+        changeCollectionButton.setOnClickListener(this)
+        likeImageView.setOnClickListener(this)
+        commentsImageView.setOnClickListener(this)
         constraint_layout_fragment_collection_detail_profile_container.setOnClickListener(this)
-        item_main_image_dialog_menu_image_button.setOnClickListener(this)
-        fragment_collection_detail_like_image_button.setOnClickListener(this)
-        fragment_collection_detail_comments_image_button.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
-        when (currentMode) {
+        when (getModeFromArgs()) {
             OUTFIT_MODE -> presenter.getOutfitById(
                 token = currentActivity.getTokenFromSharedPref(),
-                outfitId = currentId.toString()
+                outfitId = getCollectionIdFromArgs().toString()
             )
             POST_MODE -> presenter.getPostById(
                 token = currentActivity.getTokenFromSharedPref(),
-                postId = currentId
+                postId = getCollectionIdFromArgs()
             )
         }
     }
@@ -149,16 +172,15 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.text_view_fragment_collection_detail_comments_count -> navigateToComments()
-            R.id.fragment_collection_detail_comments_image_button -> navigateToComments()
+            R.id.fragment_collection_detail_comments_image_view -> navigateToComments()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
             R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
-            R.id.item_main_image_dialog_menu_image_button -> onContextMenuClick()
             R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
             R.id.fragment_collection_detail_user_tags_icon -> onShowUsersTags()
-            R.id.fragment_collection_detail_like_image_button -> presenter.onLikeClick(
+            R.id.fragment_collection_detail_like_image_view -> presenter.onLikeClick(
                 token = currentActivity.getTokenFromSharedPref(),
-                postId = currentId
+                postId = getCollectionIdFromArgs()
             )
         }
     }
@@ -187,74 +209,82 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processOutfit(outfitModel: OutfitModel) {
         additionalAdapter.updateList(list = outfitModel.clothes)
         currentOutfitModel = outfitModel
-        isOwn = outfitModel.author.id == currentActivity.getUserIdFromSharedPref()
-
-        processAuthor(userShortModel = outfitModel.author)
-        loadImages(images = arrayListOf(outfitModel.coverPhoto))
-
-        text_view_fragment_collection_detail_comments_cost.text = getString(
+        totalPriceTextView.text = getString(
             R.string.price_tenge_text_format,
             NumberFormat.getInstance().format(outfitModel.totalPrice)
         )
-        text_view_fragment_collection_detail_comments_count.text = getString(
+        commentsCountTextView.text = getString(
             R.string.comments_count_text_format,
             0.toString()
         )
-        text_view_fragment_collection_detail_date.text = DateFormatterHelper.formatISO_8601(
-            outfitModel.createdAt,
-            DateFormatterHelper.FORMAT_DATE_DD_MMMM
-        )
+        text_view_fragment_collection_detail_date.text = getFormattedDate(outfitModel.createdAt)
 
-        if (!isOwn) {
-            button_fragment_collection_detail_change_collection.hide()
-        }
+        processAuthor(userShortModel = outfitModel.author)
+        loadImages(images = arrayListOf(outfitModel.coverPhoto))
+        processClothes(list = outfitModel.clothes)
+        processOwnViews(authorId = outfitModel.author.id)
     }
 
     override fun processPost(postModel: PostModel) {
         additionalAdapter.updateList(list = postModel.clothes)
         currentPostModel = postModel
-        isOwn = postModel.author.id == currentActivity.getUserIdFromSharedPref()
+        totalPriceTextView.text = getString(
+            R.string.price_tenge_text_format,
+            NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost })
+        )
+        commentsCountTextView.text = getString(
+            R.string.comments_count_text_format,
+            postModel.commentsCount.toString()
+        )
 
         processAuthor(userShortModel = postModel.author)
         loadImages(images = postModel.images)
         loadTags(postModel = postModel)
         processLike(isLiked = postModel.alreadyLiked)
+        processClothes(list = postModel.clothes)
+        processOwnViews(authorId = postModel.author.id)
+    }
 
-        text_view_fragment_collection_detail_comments_count.text = getString(
-            R.string.comments_count_text_format,
-            postModel.commentsCount.toString()
-        )
+    private fun processOwnViews(authorId: Int) {
+        val isOwn = authorId == currentActivity.getUserIdFromSharedPref()
 
         if (!isOwn) {
-            button_fragment_collection_detail_change_collection.hide()
+            changeCollectionButton.hide()
         }
 
-        if (postModel.clothes.isEmpty()) {
+        dialogMenuImageButton.setOnClickListener {
+            onContextMenuClick(isOwn)
+        }
+    }
+
+
+    private fun processClothes(list: List<ClothesModel>) {
+        if (list.isEmpty()) {
             recycler_view_fragment_collection_detail_additionals_list.hide()
         }
     }
 
     private fun processAuthor(userShortModel: UserShortModel) {
-        text_view_fragment_collection_detail_partner_name.text = getString(
+        userFullNameTextView.text = getString(
             R.string.full_name_text_format,
             userShortModel.firstName,
             userShortModel.lastName
         )
 
         if (userShortModel.avatar.isBlank()) {
-            shapeable_image_view_fragment_collection_detail_profile_avatar.hide()
-            text_view_text_view_fragment_collection_detail_short_name.show()
-            text_view_text_view_fragment_collection_detail_short_name.text = getShortName(
+            avatarShapeableImageView.hide()
+            userShortNameTextView.show()
+            userShortNameTextView.text = getShortName(
                 firstName = userShortModel.firstName,
                 lastName = userShortModel.lastName
             )
         } else {
-            text_view_text_view_fragment_collection_detail_short_name.hide()
+            userShortNameTextView.hide()
 
-            Glide.with(shapeable_image_view_fragment_collection_detail_profile_avatar.context)
+            Glide.with(avatarShapeableImageView.context)
                 .load(userShortModel.avatar)
                 .centerCrop()
-                .into(shapeable_image_view_fragment_collection_detail_profile_avatar)
+                .into(avatarShapeableImageView)
         }
     }
 
@@ -263,14 +293,11 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     override fun processLike(isLiked: Boolean) {
-        fragment_collection_detail_like_image_button.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                when (isLiked) {
-                    true -> R.drawable.ic_favorite_red
-                    false -> R.drawable.ic_baseline_favorite_border_24
-                }
-            )
+        likeImageView.setImageResource(
+            when (isLiked) {
+                true -> R.drawable.ic_favorite_red
+                false -> R.drawable.ic_baseline_favorite_border_24
+            }
         )
     }
 
@@ -289,10 +316,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         )
         imageAdapter.mItemImageClickListener = this
 
-        fragment_collection_detail_photos_holder_view_pager.adapter = imageAdapter
-        fragment_collection_detail_photos_pager_indicator.show()
-        fragment_collection_detail_photos_pager_indicator.attachToPager(
-            fragment_collection_detail_photos_holder_view_pager
+        imagesViewPager.adapter = imageAdapter
+        imageScrollingPagerIndicator.show()
+        imageScrollingPagerIndicator.attachToPager(
+            imagesViewPager
         )
     }
 
@@ -301,16 +328,15 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         loadClothesTags(postModel)
         loadUsersTags(postModel)
 
-        fragment_collection_detail_clothes_tags_icon.setOnClickListener(this)
-        fragment_collection_detail_user_tags_icon.setOnClickListener(this)
+        clothesTagIconFrameLayout.setOnClickListener(this)
+        userTagIconFrameLayout.setOnClickListener(this)
     }
 
     private fun loadClothesTags(postModel: PostModel) {
-        val container = fragment_collection_detail_clothes_tags_container
-        container.removeAllViews()
+        clothesTagsContainerFrameLayout.removeAllViews()
 
         postModel.tags.clothesTags.map {
-            val textView = getTagTextView(container)
+            val textView = getTagTextView(clothesTagsContainerFrameLayout)
 
             view?.viewTreeObserver
                 ?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
@@ -318,15 +344,15 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                         setTagPosition(
                             tagModel = it,
                             textView = textView,
-                            container = fragment_collection_detail_photos_holder_view_pager
+                            container = imagesViewPager
                         )
 
                         textView.text = it.title
 
                         if (textView.parent != null) {
-                            container.removeView(textView)
+                            clothesTagsContainerFrameLayout.removeView(textView)
                         } else {
-                            container.addView(textView)
+                            clothesTagsContainerFrameLayout.addView(textView)
                         }
 
                         view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -336,11 +362,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     private fun loadUsersTags(postModel: PostModel) {
-        val container = fragment_collection_detail_users_tags_container
-        container.removeAllViews()
+        userTagsContainerFrameLayout.removeAllViews()
 
         postModel.tags.usersTags.map {
-            val textView = getTagTextView(container)
+            val textView = getTagTextView(userTagsContainerFrameLayout)
             textView.backgroundTintList = resources.getColorStateList(R.color.app_dark_blue_gray)
 
             view?.viewTreeObserver
@@ -349,15 +374,15 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                         setTagPosition(
                             tagModel = it,
                             textView = textView,
-                            container = fragment_collection_detail_photos_holder_view_pager
+                            container = imagesViewPager
                         )
 
                         textView.text = it.title
 
                         if (textView.parent != null) {
-                            container.removeView(textView)
+                            userTagsContainerFrameLayout.removeView(textView)
                         } else {
-                            container.addView(textView)
+                            userTagsContainerFrameLayout.addView(textView)
                         }
 
                         view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -393,32 +418,32 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun checkEmptyTags(postModel: PostModel) {
         postModel.tags.let {
             if (it.clothesTags.isEmpty()) {
-                fragment_collection_detail_clothes_tags_icon.hide()
+                clothesTagIconFrameLayout.hide()
             } else {
-                fragment_collection_detail_clothes_tags_icon.show()
+                clothesTagIconFrameLayout.show()
             }
 
             if (it.usersTags.isEmpty()) {
-                fragment_collection_detail_user_tags_icon.hide()
+                userTagIconFrameLayout.hide()
             } else {
-                fragment_collection_detail_user_tags_icon.show()
+                userTagIconFrameLayout.show()
             }
         }
     }
 
     private fun onShowClothesTags() {
-        if (fragment_collection_detail_clothes_tags_container.visibility == View.GONE) {
-            fragment_collection_detail_clothes_tags_container.show()
+        if (clothesTagsContainerFrameLayout.visibility == View.GONE) {
+            clothesTagsContainerFrameLayout.show()
         } else {
-            fragment_collection_detail_clothes_tags_container.hide()
+            clothesTagsContainerFrameLayout.hide()
         }
     }
 
     private fun onShowUsersTags() {
-        if (fragment_collection_detail_users_tags_container.visibility == View.GONE) {
-            fragment_collection_detail_users_tags_container.show()
+        if (userTagsContainerFrameLayout.visibility == View.GONE) {
+            userTagsContainerFrameLayout.show()
         } else {
-            fragment_collection_detail_users_tags_container.hide()
+            userTagsContainerFrameLayout.hide()
         }
     }
 
@@ -442,7 +467,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun onProfileClick() {
         val bundle = Bundle()
 
-        when (currentMode) {
+        when (getModeFromArgs()) {
             OUTFIT_MODE -> bundle.putInt(
                 ProfileFragment.USER_ID_BUNDLE_KEY,
                 currentOutfitModel.author.id
@@ -458,13 +483,13 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     private fun navigateToComments() {
         val bundle = Bundle()
-        bundle.putInt(CommentsFragment.COLLECTION_ID_KEY, currentId)
+        bundle.putInt(CommentsFragment.COLLECTION_ID_KEY, getCollectionIdFromArgs())
 
         findNavController().navigate(R.id.action_collectionDetailFragment_to_userCommentsFragment, bundle)
     }
 
     private fun onChangeButtonClick() {
-        when (currentMode) {
+        when (getModeFromArgs()) {
             OUTFIT_MODE -> changeOutfit()
             POST_MODE -> changePost()
         }
@@ -521,22 +546,28 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
     }
 
-    private fun onContextMenuClick() {
-        CollectionContextDialog(isOwn = isOwn).apply {
+    private fun onContextMenuClick(isOwn: Boolean) {
+        CollectionContextDialog(
+            isOwn = isOwn
+        ).apply {
             setChoiceListener(listener = this@CollectionDetailFragment)
         }.show(childFragmentManager, EMPTY_STRING)
     }
 
     private fun onDeleteContextClicked() {
-        when (currentMode) {
+        when (getModeFromArgs()) {
             OUTFIT_MODE -> presenter.deleteOutfit(
                 token = currentActivity.getTokenFromSharedPref(),
-                outfitId = currentId
+                outfitId = getCollectionIdFromArgs()
             )
             POST_MODE -> presenter.deletePost(
                 token = currentActivity.getTokenFromSharedPref(),
-                postId = currentId
+                postId = getCollectionIdFromArgs()
             )
         }
     }
+
+    private fun getCollectionIdFromArgs(): Int = arguments?.getInt(ID_KEY) ?: 0
+
+    private fun getModeFromArgs(): Int = arguments?.getInt(MODE_KEY) ?: OUTFIT_MODE
 }

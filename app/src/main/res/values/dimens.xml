@@ -152,4 +152,6 @@
     <dimen name="clothes_detail_item_height">194dp</dimen>
 
     <dimen name="tag_icon_size">30dp</dimen>
+
+    <dimen name="collection_change_button_height">42dp</dimen>
 </resources>

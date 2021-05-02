@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
 import java.util.Locale
 
 fun View.show() {
@@ -37,4 +38,11 @@ fun displayToast(
     msg: String
 ) {
     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+}
+
+fun getFormattedDate(date: String): String {
+    return DateFormatterHelper.formatISO_8601(
+        date,
+        DateFormatterHelper.FORMAT_DATE_DD_MMMM
+    )
 }

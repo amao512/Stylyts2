@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
@@ -46,8 +46,8 @@ class MainImageHolder(
     private lateinit var clothesTagsContainerFrameLayout: FrameLayout
     private lateinit var usersTagContainerFrameLayout: FrameLayout
     private lateinit var clothesRecyclerView: RecyclerView
-    private lateinit var likeImageButton: ImageButton
-    private lateinit var commentsImageButton: ImageButton
+    private lateinit var likeImageButton: ImageView
+    private lateinit var commentsImageButton: ImageView
     private lateinit var commentsCountTextView: TextView
 
     override fun bindData(
@@ -329,14 +329,11 @@ class MainImageHolder(
     }
 
     private fun processLike(isLiked: Boolean) {
-        likeImageButton.setImageDrawable(
-            ContextCompat.getDrawable(
-                likeImageButton.context,
-                when (isLiked) {
-                    true -> R.drawable.ic_favorite_red
-                    false -> R.drawable.ic_baseline_favorite_border_24
-                }
-            )
+        likeImageButton.setImageResource(
+            when (isLiked) {
+                true -> R.drawable.ic_favorite_red
+                false -> R.drawable.ic_baseline_favorite_border_24
+            }
         )
     }
 

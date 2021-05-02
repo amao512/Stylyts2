@@ -212,35 +212,35 @@
         android:paddingHorizontal="@dimen/padding_size_24x"
         >
 
-        <ImageButton
+        <ImageView
             android:id="@+id/item_main_image_like_image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/icon_size_24x"
+            android:layout_height="@dimen/icon_size_24x"
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/margin_size_6x"
             android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_favorite_border_24"
             />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/item_main_image_comments_image_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/icon_size_24x"
+            android:layout_height="@dimen/icon_size_24x"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/margin_size_4x"
             android:layout_marginEnd="@dimen/margin_size_6x"
             android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_baseline_chat_bubble_outline_24"
+            android:src="@drawable/ic_comment"
             />
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:layout_width="@dimen/icon_size_24x"
+            android:layout_height="@dimen/icon_size_24x"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/margin_size_4x"
             android:layout_marginEnd="@dimen/margin_size_6x"
             android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_baseline_save_alt_24"
+            android:src="@drawable/ic_share"
             />
 
         <com.google.android.material.button.MaterialButton

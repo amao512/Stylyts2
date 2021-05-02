@@ -244,41 +244,41 @@
                     android:paddingHorizontal="@dimen/padding_size_24x"
                     >
 
-                    <ImageButton
-                        android:id="@+id/fragment_collection_detail_like_image_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/fragment_collection_detail_like_image_view"
+                        android:layout_width="@dimen/icon_size_24x"
+                        android:layout_height="@dimen/icon_size_24x"
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/margin_size_6x"
                         android:background="?attr/selectableItemBackground"
                         android:src="@drawable/ic_baseline_favorite_border_24"
                         />
 
-                    <ImageButton
-                        android:id="@+id/fragment_collection_detail_comments_image_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/fragment_collection_detail_comments_image_view"
+                        android:layout_width="@dimen/icon_size_24x"
+                        android:layout_height="@dimen/icon_size_24x"
                         android:layout_gravity="center"
                         android:layout_marginEnd="@dimen/margin_size_6x"
                         android:layout_marginStart="@dimen/margin_size_4x"
                         android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/ic_baseline_chat_bubble_outline_24"
+                        android:src="@drawable/ic_comment"
                         />
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_24x"
+                        android:layout_height="@dimen/icon_size_24x"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/margin_size_4x"
                         android:layout_marginEnd="@dimen/margin_size_6x"
                         android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/ic_baseline_save_alt_24"
+                        android:src="@drawable/ic_share"
                         />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/button_fragment_collection_detail_change_collection"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="@dimen/collection_change_button_height"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/margin_size_4x"
                         android:text="@string/collection_detail_change_outfit"
