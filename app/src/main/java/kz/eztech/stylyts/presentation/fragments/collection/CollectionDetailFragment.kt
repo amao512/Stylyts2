@@ -10,12 +10,12 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -49,6 +49,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: CollectionDetailPresenter
+    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
     private lateinit var currentOutfitModel: OutfitModel
@@ -280,11 +281,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             )
         } else {
             userShortNameTextView.hide()
-
-            Glide.with(avatarShapeableImageView.context)
-                .load(userShortModel.avatar)
-                .centerCrop()
-                .into(avatarShapeableImageView)
+            imageLoader.load(
+                url = userShortModel.avatar,
+                target = avatarShapeableImageView
+            )
         }
     }
 

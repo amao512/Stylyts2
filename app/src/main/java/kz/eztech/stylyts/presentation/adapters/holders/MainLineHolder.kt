@@ -10,10 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-import kotlinx.android.synthetic.main.item_main_image.view.*
+import kotlinx.android.synthetic.main.item_main_line.view.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
@@ -29,10 +29,11 @@ import java.text.NumberFormat
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-class MainImageHolder(
+class MainLineHolder(
     itemView: View,
     adapter: BaseAdapter,
-    private val ownId: Int
+    private val ownId: Int,
+    private val imageLoader: DomainImageLoader
 ) : BaseViewHolder(itemView, adapter), UniversalViewClickListener {
 
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
@@ -194,11 +195,10 @@ class MainImageHolder(
             userShortNameTextView.text = getShortName(author.firstName, author.lastName)
         } else {
             userShortNameTextView.hide()
-
-            Glide.with(avatarShapeableImageView.context)
-                .load(author.avatar)
-                .centerCrop()
-                .into(avatarShapeableImageView)
+            imageLoader.load(
+                url = author.avatar,
+                target = avatarShapeableImageView
+            )
         }
     }
 

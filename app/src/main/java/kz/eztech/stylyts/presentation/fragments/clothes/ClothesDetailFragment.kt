@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_clothes_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.ClothesColor
 import kz.eztech.stylyts.domain.models.ClothesSize
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
@@ -40,24 +39,19 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     View.OnClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: ClothesDetailPresenter
-
     private lateinit var chooserDialog: ItemDetailChooserDialog
-
-    private var currentClothesModel: ClothesModel? = null
-    private var currentClothesId: Int = -1
 
     private enum class CART_STATE { NONE, EDIT, DONE }
 
     private var currentState = CART_STATE.NONE
-
     private var currentColor: ClothesColor? = null
     private var currentSize: ClothesSize? = null
-    private var barCode: String? = null
 
     private var disposables = CompositeDisposable()
 
     companion object {
         const val CLOTHES_ID = "clothes_id"
+        const val BARCODE_KEY = "barcode_code"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_clothes_detail
@@ -82,27 +76,11 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         presenter.attach(this)
     }
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(CLOTHES_ID)) {
-                currentClothesId = it.getInt(CLOTHES_ID)
-            }
-
-            if (it.containsKey("barcode_code")) {
-                barCode = it.getString("barcode_code")
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {}
 
-    override fun initializeViews() {
-        currentClothesModel?.let {
-            fillClothesModel(clothesModel = it)
-        } ?: run {
-            getClothes()
-        }
-    }
+    override fun initializeViews() {}
 
     override fun onResume() {
         super.onResume()
@@ -116,30 +94,16 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         fragment_clothes_detail_text_size_frame_layout.setOnClickListener(this)
         fragment_clothes_detail_text_color_frame_layout.setOnClickListener(this)
         fragment_clothes_detail_description_holder_linear_layout.setOnClickListener(this)
-        fragment_clothes_detail_add_to_wardrobe_text_view.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
-        presenter.getClothesById(
-            token = getTokenFromSharedPref(),
-            clothesId = currentClothesId.toString()
-        )
+        getClothes()
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.fragment_clothes_detail_create_collection_text_view -> createOutfit()
-            R.id.fragment_clothes_detail_add_to_cart_text_view -> processState()
-            R.id.fragment_clothes_detail_text_size_frame_layout -> showClothesSizes()
-            R.id.fragment_clothes_detail_text_color_frame_layout -> {
-//                showClothesColors()
-            }
             R.id.fragment_clothes_detail_description_holder_linear_layout -> showClothesDescription()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.fragment_clothes_detail_add_to_wardrobe_text_view -> presenter.saveClothesToWardrobe(
-                token = getTokenFromSharedPref(),
-                clothesId = currentClothesModel?.id ?: 0
-            )
         }
     }
 
@@ -159,9 +123,30 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     }
 
     override fun processClothes(clothesModel: ClothesModel) {
-        currentClothesId = -2
-        currentClothesModel = clothesModel
-        initializeViews()
+        fillClothesModel(clothesModel)
+
+        fragment_clothes_detail_add_to_wardrobe_text_view.setOnClickListener {
+            presenter.saveClothesToWardrobe(
+                token = currentActivity.getTokenFromSharedPref(),
+                clothesId = clothesModel.id
+            )
+        }
+
+        fragment_clothes_detail_text_size_frame_layout.setOnClickListener {
+            showClothesSizes(clothesModel)
+        }
+
+        fragment_clothes_detail_text_color_frame_layout.setOnClickListener {
+            showClothesColors(clothesModel)
+        }
+
+        fragment_clothes_detail_add_to_cart_text_view.setOnClickListener {
+            processState(clothesModel)
+        }
+
+        fragment_clothes_detail_create_collection_text_view.setOnClickListener {
+            createOutfit(clothesModel)
+        }
     }
 
     override fun disposeRequests() {
@@ -222,7 +207,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         fillDescription(clothesModel)
 
         presenter.getClothesOwner(
-            token = getTokenFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             userId = clothesModel.userShort.id
         )
     }
@@ -276,28 +261,20 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     }
 
     private fun getClothes() {
-        barCode?.let {
+        if (getBarcodeFromArgs().isNotEmpty()) {
             presenter.getItemByBarcode(
-                token = getTokenFromSharedPref(),
-                value = it
+                token = currentActivity.getTokenFromSharedPref(),
+                value = getBarcodeFromArgs()
             )
-        } ?: run {
-            if (currentClothesId != -1) {
-                presenter.getClothesById(
-                    token = getTokenFromSharedPref(),
-                    clothesId = currentClothesId.toString()
-                )
-            } else {
-                displayMessage(msg = getString(R.string.can_not_load_page_error))
-                presenter.getClothesById(
-                    getTokenFromSharedPref(),
-                    clothesId = currentClothesId.toString()
-                )
-            }
+        } else {
+            presenter.getClothesById(
+                currentActivity.getTokenFromSharedPref(),
+                clothesId = getClothesIdFromArgs().toString()
+            )
         }
     }
 
-    private fun processState() {
+    private fun processState(clothesModel: ClothesModel) {
         when (currentState) {
             CART_STATE.NONE -> {
                 currentState = CART_STATE.EDIT
@@ -310,49 +287,47 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 fragment_clothes_detail_chooser_holder_linear_layout.show()
                 fragment_clothes_detail_text_share_frame_layout.show()
             }
-            CART_STATE.EDIT -> {
-//                if (currentColor == null || currentSize == null) {
-//                    displayMessage(msg = getString(R.string.add_to_cart_error))
-//                } else {
-                    processCart()
-//                }
-            }
+            CART_STATE.EDIT -> processCart(clothesModel)
             else -> {}
         }
     }
 
-    private fun showClothesSizes() {
+    private fun showClothesSizes(clothesModel: ClothesModel) {
         val bundle = Bundle()
-        currentClothesModel?.sizeInStock?.let {
+
+        if (clothesModel.sizeInStock.isNotEmpty()) {
             var counter = 0
             val clothesSizes: MutableList<ClothesSize> = mutableListOf()
-            it.map { size ->
+
+            clothesModel.sizeInStock.map { size ->
                 clothesSizes.add(ClothesSize(id = counter, size = size.size))
                 counter++
             }
 
             bundle.putParcelableArrayList("sizeItems", ArrayList(clothesSizes))
-        } ?: run {
+        } else {
             displayMessage(msg = getString(R.string.there_are_not_sizes))
         }
         chooserDialog.arguments = bundle
         chooserDialog.show(parentFragmentManager, "Chooser")
     }
 
-    private fun showClothesColors() {
+    private fun showClothesColors(clothesModel: ClothesModel) {
         val bundle = Bundle()
-        currentClothesModel?.clothesColor?.let {
+
+        if (clothesModel.clothesColor.isNotEmpty()) {
             var counter = 0
             val clothesColors: MutableList<ClothesColor> = mutableListOf()
-            it.map { color ->
+            clothesModel.clothesColor.map { color ->
 //                clothesColors.add(ClothesColor(id = counter, color = color))
                 counter++
             }
 
             bundle.putParcelableArrayList("colorItems", ArrayList(clothesColors))
-        } ?: run {
+        } else {
             displayMessage(msg = getString(R.string.there_are_not_colors))
         }
+
         chooserDialog.arguments = bundle
         chooserDialog.show(parentFragmentManager, "Chooser")
     }
@@ -381,23 +356,27 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         objectAnimator.start()
     }
 
-    private fun processCart() {
-        presenter.insertToCart(clothesModel = currentClothesModel as ClothesModel)
+    private fun processCart(clothesModel: ClothesModel) {
+        presenter.insertToCart(clothesModel = clothesModel)
     }
 
-    private fun createOutfit() {
-        currentClothesModel?.let {
-            val itemsList = ArrayList<ClothesModel>()
-            val bundle = Bundle()
+    private fun createOutfit(clothesModel: ClothesModel) {
+        val itemsList = ArrayList<ClothesModel>()
+        val bundle = Bundle()
 
-            itemsList.add(it)
-            bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, itemsList)
+        itemsList.add(clothesModel)
+        bundle.putParcelableArrayList(
+            CollectionConstructorFragment.CLOTHES_ITEMS_KEY,
+            itemsList
+        )
 
-            findNavController().navigate(R.id.action_clothesDetailFragment_to_nav_create_collection, bundle)
-        }
+        findNavController().navigate(
+            R.id.action_clothesDetailFragment_to_nav_create_collection,
+            bundle
+        )
     }
 
-    private fun getTokenFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
+    private fun getClothesIdFromArgs(): Int = arguments?.getInt(CLOTHES_ID) ?: 0
+
+    private fun getBarcodeFromArgs(): String = arguments?.getString(BARCODE_KEY) ?: EMPTY_STRING
 }

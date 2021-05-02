@@ -2,19 +2,21 @@ package kz.eztech.stylyts.presentation.adapters.main
 
 import android.view.View
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.holders.MainImageHolder
+import kz.eztech.stylyts.presentation.adapters.holders.MainLineHolder
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-class MainImagesAdapter(
-    private val ownId: Int
+class MainLineAdapter(
+    private val ownId: Int,
+    private val imageLoader: DomainImageLoader
 ) : BaseAdapter(){
 
-    override fun getLayoutId(): Int = R.layout.item_main_image
+    override fun getLayoutId(): Int = R.layout.item_main_line
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
@@ -27,11 +29,12 @@ class MainImagesAdapter(
         }
     }
 
-    override fun getViewHolder(view: View): MainImageHolder {
-        return MainImageHolder(
+    override fun getViewHolder(view: View): MainLineHolder {
+        return MainLineHolder(
             itemView = view,
             adapter = this,
-            ownId = ownId
+            ownId = ownId,
+            imageLoader = imageLoader
         )
     }
 

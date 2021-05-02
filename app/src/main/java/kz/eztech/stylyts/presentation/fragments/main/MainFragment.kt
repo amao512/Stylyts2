@@ -9,13 +9,13 @@ import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.main.MainImagesAdapter
+import kz.eztech.stylyts.presentation.adapters.main.MainLineAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
@@ -39,7 +39,8 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     UniversalViewClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: MainLinePresenter
-    private lateinit var postsAdapter: MainImagesAdapter
+    @Inject lateinit var imageLoader: DomainImageLoader
+    private lateinit var postsAdapter: MainLineAdapter
     private lateinit var currentFilter: FilterModel
 
     private lateinit var recyclerView: RecyclerView
@@ -73,8 +74,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun initializeViewsData() {
         currentFilter = FilterModel()
-        postsAdapter = MainImagesAdapter(
-            ownId = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
+        postsAdapter = MainLineAdapter(
+            ownId = currentActivity.getUserIdFromSharedPref(),
+            imageLoader = imageLoader
         )
         postsAdapter.setOnClickListener(listener = this)
     }
@@ -119,9 +121,13 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         })
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
-    override fun displayMessage(msg: String) {}
+    override fun displayMessage(msg: String) {
+        displayToast(msg)
+    }
 
     override fun isFragmentVisible(): Boolean = isVisible
 
