@@ -19,6 +19,8 @@ interface FilterContract {
 
         fun processClothesBrands(list: List<FilterCheckModel>)
 
+        fun processBrandCharacters(characters: List<String>)
+
         fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
 
         fun processColors(list: List<FilterCheckModel>)

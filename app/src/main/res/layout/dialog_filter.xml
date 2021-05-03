@@ -39,22 +39,44 @@
             android:layout_marginTop="@dimen/margin_size_16x"
             android:inputType="text"
             android:theme="@style/SearchView"
+            android:visibility="gone"
             app:queryBackground="@android:color/transparent"
             app:queryHint="Поиск"
             app:searchIcon="@drawable/ic_search"
-            android:visibility="gone"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/dialog_filter_recycler_view"
+        <LinearLayout
+            android:id="@+id/dialog_filter_list_holder_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/margin_size_16x"
-            android:clipToPadding="false"
-            android:paddingBottom="@dimen/padding_size_48x"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_filter"
-            />
+            android:orientation="horizontal"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dialog_filter_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:layout_weight="0.93"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingBottom="@dimen/padding_size_56x"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_filter"
+                />
+
+
+            <LinearLayout
+                android:id="@+id/dialog_filter_right_character_list_linear_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.07"
+                android:orientation="vertical"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/dialog_filter_range_price_holder"

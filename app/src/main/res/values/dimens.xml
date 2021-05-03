@@ -36,6 +36,7 @@
     <dimen name="padding_size_36x">36dp</dimen>
     <dimen name="padding_size_40x">40dp</dimen>
     <dimen name="padding_size_48x">48dp</dimen>
+    <dimen name="padding_size_56x">56dp</dimen>
 
     <dimen name="icon_size_14x">14dp</dimen>
     <dimen name="icon_size_20x">20dp</dimen>

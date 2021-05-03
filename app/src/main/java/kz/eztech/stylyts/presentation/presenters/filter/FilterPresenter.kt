@@ -127,34 +127,20 @@ class FilterPresenter @Inject constructor(
         getClothesBrandsUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
-                view.processViewAction {
-                    val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
+                val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
+                val characterList: MutableList<String> = mutableListOf()
 
-                    preparedResults.add(
-                        FilterCheckModel(
-                            id = 0,
-                            isCustom = true,
-                            item = ClothesBrandModel(
-                                id = 0,
-                                title = title,
-                                website = EMPTY_STRING,
-                                logo = EMPTY_STRING,
-                                createdAt = EMPTY_STRING,
-                                modifiedAt = EMPTY_STRING
-                            )
-                        )
-                    )
-
-                    t.results.map {
-                        preparedResults.add(
-                            FilterCheckModel(
-                                id = it.id,
-                                item = it
-                            )
-                        )
+                sortedBrandList(t.results).map { list ->
+                    list.map {
+                        preparedResults.add(it)
                     }
 
+                    characterList.add(list[0].item as String)
+                }
+
+                view.processViewAction {
                     processClothesBrands(list = preparedResults)
+                    processBrandCharacters(characters = characterList)
                 }
             }
 
@@ -260,6 +246,54 @@ class FilterPresenter @Inject constructor(
                 }
             }
         )
+    }
+
+    private fun sortedBrandList(results: List<ClothesBrandModel>): List<List<FilterCheckModel>> {
+        val list: MutableList<MutableList<FilterCheckModel>> = mutableListOf()
+
+        results.map { brand ->
+            var item: FilterCheckModel?
+            var position: Int = -1
+            var counter = 0
+
+            list.map { filterList ->
+                item = filterList.find {
+                    it.item == brand.title.substring(0, 1)
+                        .toUpperCase(Locale.getDefault())
+                }
+
+                if (item != null) {
+                    position = counter
+                }
+
+                counter++
+            }
+
+            if (position != -1) {
+                list[position].add(
+                    FilterCheckModel(
+                        id = brand.id,
+                        item = brand
+                    )
+                )
+            } else {
+                val character = FilterCheckModel(
+                    id = 0,
+                    item = brand.title.substring(0, 1).toUpperCase(Locale.getDefault())
+                )
+
+                val newBrand = FilterCheckModel(
+                    id = brand.id,
+                    item = brand
+                )
+
+                list.add(mutableListOf(character, newBrand))
+            }
+        }
+
+        list.sortBy { (it[0].item as String) }
+
+        return list
     }
 
     override fun getColors(token: String) {

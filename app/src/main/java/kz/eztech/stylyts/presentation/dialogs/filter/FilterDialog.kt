@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.dialogs.filter
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,9 +52,11 @@ class FilterDialog(
     private lateinit var currentFilter: FilterModel
 
     private lateinit var filterTitleTextView: TextView
+    private lateinit var listHolderLinearLayout: LinearLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var priceRangeHolderLinearLayout: LinearLayout
     private lateinit var searchView: SearchView
+    private lateinit var rightCharacterListLinearLayout: LinearLayout
     private lateinit var showResultsButton: Button
 
     private var isOpenedFilter = false
@@ -145,6 +148,7 @@ class FilterDialog(
         filterCheckAdapter.itemClickListener = this
 
         filterTitleTextView = dialog_filter_title
+        listHolderLinearLayout = dialog_filter_list_holder_linear_layout
         recyclerView = dialog_filter_recycler_view
         recyclerView.adapter = filterAdapter
 
@@ -155,6 +159,7 @@ class FilterDialog(
             0.toString()
         )
         searchView = dialog_filter_search_view
+        rightCharacterListLinearLayout = dialog_filter_right_character_list_linear_layout
     }
 
     override fun initializeListeners() {
@@ -200,6 +205,18 @@ class FilterDialog(
         }
 
         filterCheckAdapter.updateList(list)
+    }
+
+    override fun processBrandCharacters(characters: List<String>) {
+        rightCharacterListLinearLayout.removeAllViews()
+
+        characters.map {
+            val textView = TextView(requireContext())
+            textView.text = it
+            textView.gravity = Gravity.CENTER
+
+            rightCharacterListLinearLayout.addView(textView)
+        }
     }
 
     override fun processWardrobe(list: List<FilterCheckModel>) {
@@ -270,9 +287,11 @@ class FilterDialog(
                 toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_close_24)
 
                 filterTitleTextView.show()
+                listHolderLinearLayout.show()
                 recyclerView.show()
                 priceRangeHolderLinearLayout.hide()
                 searchView.hide()
+                rightCharacterListLinearLayout.hide()
 
                 isOpenedFilter = false
             } else {
@@ -328,7 +347,7 @@ class FilterDialog(
 
     private fun selectClothesBrand(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.brandList = filterCheckAdapter.getCheckedItemListByRemoveFirst().map {
+        currentFilter.brandList = filterCheckAdapter.getCheckedItemList().map {
             it.item as ClothesBrandModel
         }
     }
@@ -358,7 +377,8 @@ class FilterDialog(
     private fun onBrandsClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_brands))
         recyclerView.adapter = filterCheckAdapter
-        dialog_filter_search_view.show()
+        searchView.show()
+        rightCharacterListLinearLayout.show()
 
         presenter.getClothesBrands(
             title = getString(R.string.filter_brands),
@@ -377,7 +397,7 @@ class FilterDialog(
         processOpenedFilterGroup(title = getString(R.string.filter_costs))
 
         filterTitleTextView.hide()
-        recyclerView.hide()
+        listHolderLinearLayout.hide()
         priceRangeHolderLinearLayout.show()
     }
 
