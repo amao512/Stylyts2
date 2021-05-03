@@ -11,7 +11,7 @@ import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
  */
 class UserSearchHistoryAdapter: BaseAdapter() {
 
-    override fun getLayoutId(): Int = R.layout.item_user_info
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_user_info
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){

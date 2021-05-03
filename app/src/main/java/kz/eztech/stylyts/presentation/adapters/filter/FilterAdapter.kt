@@ -10,7 +10,7 @@ import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterViewHolder
 
 class FilterAdapter : BaseAdapter() {
 
-    override fun getLayoutId(): Int = R.layout.item_filter
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_filter
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {

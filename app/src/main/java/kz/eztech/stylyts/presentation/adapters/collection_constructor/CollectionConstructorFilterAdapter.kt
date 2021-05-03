@@ -14,7 +14,7 @@ import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
  */
 class CollectionConstructorFilterAdapter : BaseAdapter() {
 
-    override fun getLayoutId(): Int = R.layout.item_constructor_filter_clothe_items
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_constructor_filter_clothe_items
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return when (list[0]) {

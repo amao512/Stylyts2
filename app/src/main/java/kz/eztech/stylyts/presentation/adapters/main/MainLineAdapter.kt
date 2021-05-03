@@ -16,7 +16,7 @@ class MainLineAdapter(
     private val imageLoader: DomainImageLoader
 ) : BaseAdapter(){
 
-    override fun getLayoutId(): Int = R.layout.item_main_line
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_main_line
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){

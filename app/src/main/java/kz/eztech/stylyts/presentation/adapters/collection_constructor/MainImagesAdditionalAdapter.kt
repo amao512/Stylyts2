@@ -12,7 +12,7 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.Ma
  */
 class MainImagesAdditionalAdapter : BaseAdapter(){
 
-    override fun getLayoutId(): Int = R.layout.item_main_image_detail
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_main_image_detail
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){

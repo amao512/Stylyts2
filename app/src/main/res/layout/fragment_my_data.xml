@@ -90,7 +90,7 @@
                     android:layout_width="@dimen/profile_settings_icon_size"
                     android:layout_height="@dimen/profile_settings_icon_size"
                     android:layout_gravity="end|center"
-                    android:src="@drawable/ic_shop"
+                    android:src="@drawable/ic_box"
                     />
             </FrameLayout>
 
@@ -116,7 +116,7 @@
                     android:layout_width="@dimen/profile_settings_icon_size"
                     android:layout_height="@dimen/profile_settings_icon_size"
                     android:layout_gravity="end|center"
-                    android:src="@drawable/ic_credit_card"
+                    android:src="@drawable/ic_cart"
                     />
             </FrameLayout>
 

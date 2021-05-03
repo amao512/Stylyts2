@@ -14,7 +14,24 @@ import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
  */
 class FilterCheckAdapter : BaseAdapter() {
 
-    override fun getLayoutId(): Int = R.layout.item_filter_check
+    companion object {
+        private const val CHARACTER_TYPE = 0
+        private const val OTHER_TYPE = 1
+    }
+
+    override fun getLayoutId(viewType: Int): Int {
+        return when (viewType) {
+            CHARACTER_TYPE -> R.layout.item_filter_character
+            else -> R.layout.item_filter_check
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when ((currentList[position] as FilterCheckModel).item) {
+            is String -> CHARACTER_TYPE
+            else -> OTHER_TYPE
+        }
+    }
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){

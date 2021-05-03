@@ -12,7 +12,7 @@ import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
  */
 class ClothesDetailAdapter: BaseAdapter() {
 
-	override fun getLayoutId(): Int = R.layout.item_clothes_detail
+	override fun getLayoutId(viewType: Int): Int = R.layout.item_clothes_detail
 	
 	override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
 		return object : BaseDiffUtilCallBack(currentList, list){

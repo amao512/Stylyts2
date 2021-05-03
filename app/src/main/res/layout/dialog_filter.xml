@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,97 +9,107 @@
     android:orientation="vertical"
     >
 
-    <include
-        android:id="@+id/dialog_filter_toolbar"
-        layout="@layout/base_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <TextView
-        android:id="@+id/dialog_filter_title"
-        style="@style/TitleTextBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_size_16x"
-        android:layout_marginTop="@dimen/margin_size_16x"
-        android:text="@string/filter_constructor_filter"
-        android:textSize="@dimen/text_size_16x"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_filter_toolbar"
-        />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dialog_filter_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="@dimen/margin_size_16x"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/padding_size_48x"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_filter_title"
-        tools:listitem="@layout/item_filter"
-        />
-
     <LinearLayout
-        android:id="@+id/dialog_filter_range_price_holder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_size_16x"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/dialog_filter_title"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         >
 
-        <TextView
-            style="@style/TextRegularBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_size_8x"
-            android:text="@string/currency_kzt"
-            />
-
-        <EditText
-            android:id="@+id/dialog_filter_min_price_edit_text"
-            style="@style/TextRegular"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_rectangle_white_gray_corners"
-            android:hint="@string/min"
-            android:inputType="number"
-            android:paddingHorizontal="@dimen/padding_size_12x"
-            android:paddingVertical="@dimen/padding_size_10x"
+        <include
+            android:id="@+id/dialog_filter_toolbar"
+            layout="@layout/base_toolbar"
             />
 
         <TextView
-            style="@style/TextRegularBold"
+            android:id="@+id/dialog_filter_title"
+            style="@style/TitleTextBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_size_10x"
-            android:layout_marginEnd="@dimen/margin_size_8x"
-            android:text="@string/currency_kzt"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/filter_constructor_filter"
+            android:textSize="@dimen/text_size_16x"
             />
 
-        <EditText
-            android:id="@+id/dialog_filter_max_price_edit_text"
-            style="@style/TextRegular"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_rectangle_white_gray_corners"
-            android:hint="@string/max"
-            android:inputType="number"
-            android:paddingHorizontal="@dimen/padding_size_12x"
-            android:paddingVertical="@dimen/padding_size_10x"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/dialog_filter_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/search_view_height"
+            android:layout_marginHorizontal="@dimen/margin_size_16x"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:inputType="text"
+            android:theme="@style/SearchView"
+            app:queryBackground="@android:color/transparent"
+            app:queryHint="Поиск"
+            app:searchIcon="@drawable/ic_search"
+            android:visibility="gone"
             />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/dialog_filter_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/padding_size_48x"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_filter"
+            />
+
+        <LinearLayout
+            android:id="@+id/dialog_filter_range_price_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_size_16x"
+            android:visibility="gone"
+            >
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_size_8x"
+                android:text="@string/currency_kzt"
+                />
+
+            <EditText
+                android:id="@+id/dialog_filter_min_price_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                android:hint="@string/min"
+                android:inputType="number"
+                android:paddingHorizontal="@dimen/padding_size_12x"
+                android:paddingVertical="@dimen/padding_size_10x"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_10x"
+                android:layout_marginEnd="@dimen/margin_size_8x"
+                android:text="@string/currency_kzt"
+                />
+
+            <EditText
+                android:id="@+id/dialog_filter_max_price_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                android:hint="@string/max"
+                android:inputType="number"
+                android:paddingHorizontal="@dimen/padding_size_12x"
+                android:paddingVertical="@dimen/padding_size_10x"
+                />
+        </LinearLayout>
+
     </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
@@ -116,8 +126,5 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_14x"
         app:cornerRadius="@dimen/button_corners_radius"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

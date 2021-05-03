@@ -13,7 +13,7 @@ class ShopCategoryAdapter(
     private val gender: Int
 ): BaseAdapter(){
 
-    override fun getLayoutId(): Int = R.layout.item_shop_category
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_shop_category
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){

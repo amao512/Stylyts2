@@ -13,7 +13,7 @@ import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
  */
 class GridImageItemFilteredAdapter : BaseAdapter(){
 
-    override fun getLayoutId(): Int = R.layout.item_collection_image
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_collection_image
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){

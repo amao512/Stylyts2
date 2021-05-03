@@ -15,7 +15,7 @@ class UserSubAdapter(
     private val imageLoader: DomainImageLoader
 ): BaseAdapter() {
 
-    override fun getLayoutId(): Int = R.layout.item_user_subs
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_user_subs
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){

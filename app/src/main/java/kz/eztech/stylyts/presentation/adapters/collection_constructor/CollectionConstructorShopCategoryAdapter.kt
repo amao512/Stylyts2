@@ -16,7 +16,7 @@ class CollectionConstructorShopCategoryAdapter(
 	private val gender: Int
 ): BaseAdapter() {
 
-	override fun getLayoutId(): Int = R.layout.item_collection_constructor_category_item
+	override fun getLayoutId(viewType: Int): Int = R.layout.item_collection_constructor_category_item
 	
 	override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
 		return object : BaseDiffUtilCallBack(currentList, list){

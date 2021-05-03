@@ -13,7 +13,7 @@ import kz.eztech.stylyts.presentation.adapters.holders.UserSearchHolder
  */
 class UserSearchAdapter: BaseAdapter() {
 
-	override fun getLayoutId(): Int = R.layout.item_user_info
+	override fun getLayoutId(viewType: Int): Int = R.layout.item_user_info
 	
 	override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
 		return object : BaseDiffUtilCallBack(currentList, list){

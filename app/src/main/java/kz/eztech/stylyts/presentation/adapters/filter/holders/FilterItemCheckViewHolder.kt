@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.filter.holders
 
 import android.graphics.Color
 import android.view.View
+import kotlinx.android.synthetic.main.item_filter_character.view.*
 import kotlinx.android.synthetic.main.item_filter_check.view.*
 import kz.eztech.stylyts.domain.models.ColorModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
@@ -33,6 +34,7 @@ class FilterItemCheckViewHolder(
             is ClothesTypeModel -> processTypeModel(item, position)
             is ClothesStyleModel -> processStyleModel(item, position)
             is ColorModel -> processColorModel(item, position)
+            is String -> processCharacter(item, position)
         }
     }
 
@@ -122,6 +124,15 @@ class FilterItemCheckViewHolder(
             item_filter_check_title_checked_text_view.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
+        }
+    }
+
+    private fun processCharacter(
+        item: FilterCheckModel,
+        position: Int
+    ) {
+        with (itemView) {
+            item_filter_character_text_view.text = item.item as String
         }
     }
 

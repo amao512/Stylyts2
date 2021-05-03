@@ -15,7 +15,7 @@ class AddressAdapter(
     private val addressViewClickListener: AddressViewClickListener
 ) : BaseAdapter() {
 
-    override fun getLayoutId(): Int = R.layout.item_address_profile
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_address_profile
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {

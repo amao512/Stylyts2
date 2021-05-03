@@ -12,7 +12,7 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.Ph
  */
 class PhotoLibraryAdapter : BaseAdapter() {
 
-    override fun getLayoutId(): Int = R.layout.item_photo_library
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_photo_library
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {

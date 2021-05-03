@@ -4,8 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_filter.*
@@ -45,8 +50,13 @@ class FilterDialog(
     private lateinit var filterCheckAdapter: FilterCheckAdapter
     private lateinit var currentFilter: FilterModel
 
+    private lateinit var filterTitleTextView: TextView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var priceRangeHolderLinearLayout: LinearLayout
+    private lateinit var searchView: SearchView
+    private lateinit var showResultsButton: Button
+
     private var isOpenedFilter = false
-    private var isCheckedItem: Boolean = false
 
     companion object {
         private const val TOKEN_ARGS = "token_args"
@@ -103,7 +113,7 @@ class FilterDialog(
 
             toolbar_title_text_view.show()
             toolbar_right_text_text_view.text = getString(R.string.constructor_filter_reset)
-            toolbar_right_text_text_view.isClickable = isCheckedItem
+            toolbar_right_text_text_view.isClickable = false
             toolbar_right_text_text_view.show()
             setResetTextColor()
             toolbar_right_text_text_view.setOnClickListener(this@FilterDialog)
@@ -134,17 +144,22 @@ class FilterDialog(
         filterCheckAdapter = FilterCheckAdapter()
         filterCheckAdapter.itemClickListener = this
 
-        dialog_filter_recycler_view.adapter = filterAdapter
+        filterTitleTextView = dialog_filter_title
+        recyclerView = dialog_filter_recycler_view
+        recyclerView.adapter = filterAdapter
 
-        fragment_category_shop_results_button.text = getString(
+        priceRangeHolderLinearLayout = dialog_filter_range_price_holder
+        showResultsButton = fragment_category_shop_results_button
+        showResultsButton.text = getString(
             R.string.button_show_results,
             0.toString()
         )
+        searchView = dialog_filter_search_view
     }
 
     override fun initializeListeners() {
         toolbar_left_corner_action_image_button.setOnClickListener(this)
-        fragment_category_shop_results_button.setOnClickListener(this)
+        showResultsButton.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -204,7 +219,7 @@ class FilterDialog(
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        fragment_category_shop_results_button.text = getString(
+        showResultsButton.text = getString(
             R.string.button_show_results,
             resultsModel.totalCount.toString()
         )
@@ -248,15 +263,16 @@ class FilterDialog(
     }
 
     private fun closeFilterGroup() {
-        dialog_filter_recycler_view.adapter = filterAdapter
+        recyclerView.adapter = filterAdapter
         with (dialog_filter_toolbar) {
             if (isOpenedFilter) {
                 toolbar_title_text_view.text = getString(R.string.filter_list_filter)
                 toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_close_24)
 
-                dialog_filter_title.show()
-                dialog_filter_recycler_view.show()
-                dialog_filter_range_price_holder.hide()
+                filterTitleTextView.show()
+                recyclerView.show()
+                priceRangeHolderLinearLayout.hide()
+                searchView.hide()
 
                 isOpenedFilter = false
             } else {
@@ -331,17 +347,18 @@ class FilterDialog(
         )
 
         processOpenedFilterGroup(title = getString(R.string.filter_my_wardrobe))
-        dialog_filter_recycler_view.adapter = filterCheckAdapter
+        recyclerView.adapter = filterCheckAdapter
     }
 
     private fun onCategoriesClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_categories))
-        dialog_filter_recycler_view.adapter = filterExpandableAdapter
+        recyclerView.adapter = filterExpandableAdapter
     }
 
     private fun onBrandsClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_brands))
-        dialog_filter_recycler_view.adapter = filterCheckAdapter
+        recyclerView.adapter = filterCheckAdapter
+        dialog_filter_search_view.show()
 
         presenter.getClothesBrands(
             title = getString(R.string.filter_brands),
@@ -351,7 +368,7 @@ class FilterDialog(
 
     private fun onColorsClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_colors))
-        dialog_filter_recycler_view.adapter = filterCheckAdapter
+        recyclerView.adapter = filterCheckAdapter
 
         presenter.getColors(token = getTokenFromArguments())
     }
@@ -359,13 +376,13 @@ class FilterDialog(
     private fun onPriceRangeClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_costs))
 
-        dialog_filter_title.hide()
-        dialog_filter_recycler_view.hide()
-        dialog_filter_range_price_holder.show()
+        filterTitleTextView.hide()
+        recyclerView.hide()
+        priceRangeHolderLinearLayout.show()
     }
 
     private fun processOpenedFilterGroup(title: String) {
-        dialog_filter_title.hide()
+        filterTitleTextView.hide()
         toolbar_title_text_view.text = title
         toolbar_left_corner_action_image_button.setBackgroundResource(
             R.drawable.ic_baseline_keyboard_arrow_left_24
@@ -410,7 +427,7 @@ class FilterDialog(
 
     private fun setResetTextColor() {
         dialog_filter_toolbar.toolbar_right_text_text_view.setTextColor(
-            if (isCheckedItem) {
+            if (toolbar_right_text_text_view.isClickable) {
                 ContextCompat.getColor(requireContext(), R.color.app_light_orange)
             } else {
                 ContextCompat.getColor(requireContext(), R.color.app_gray_hint)
@@ -419,7 +436,7 @@ class FilterDialog(
     }
 
     private fun checkEmptyFilter() {
-        isCheckedItem = currentFilter.brandList.isNotEmpty() ||
+        toolbar_right_text_text_view.isClickable = currentFilter.brandList.isNotEmpty() ||
                 currentFilter.categoryIdList.isNotEmpty() ||
                 currentFilter.typeIdList.isNotEmpty() ||
                 currentFilter.colorList.isNotEmpty()

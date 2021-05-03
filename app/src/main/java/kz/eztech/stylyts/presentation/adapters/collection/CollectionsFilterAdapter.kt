@@ -43,7 +43,7 @@ class CollectionsFilterAdapter : BaseAdapter() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.item_collection_filter
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_collection_filter
 
     override fun getViewHolder(view: View): BaseViewHolder {
         return CollectionFilterHolder(
