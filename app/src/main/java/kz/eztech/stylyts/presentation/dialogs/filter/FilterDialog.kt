@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
@@ -57,6 +58,8 @@ class FilterDialog(
     private lateinit var priceRangeHolderLinearLayout: LinearLayout
     private lateinit var searchView: SearchView
     private lateinit var rightCharacterListLinearLayout: LinearLayout
+    private lateinit var minPriceEditText: EditText
+    private lateinit var maxPriceEditText: EditText
     private lateinit var showResultsButton: Button
 
     private var isOpenedFilter = false
@@ -160,6 +163,8 @@ class FilterDialog(
         )
         searchView = dialog_filter_search_view
         rightCharacterListLinearLayout = dialog_filter_right_character_list_linear_layout
+        minPriceEditText = dialog_filter_min_price_edit_text
+        maxPriceEditText = dialog_filter_max_price_edit_text
     }
 
     override fun initializeListeners() {
@@ -194,6 +199,10 @@ class FilterDialog(
             categoryFilterSingleGroupList = list,
             itemClickListener = this
         )
+
+        currentFilter.categoryIdList.map {
+            filterExpandableAdapter.onCheckChildById(id = it)
+        }
 
         checkEmptyFilter()
         setResetTextColor()
@@ -308,6 +317,11 @@ class FilterDialog(
         currentFilter.categoryIdList = emptyList()
         currentFilter.brandList = emptyList()
         currentFilter.colorList = emptyList()
+        currentFilter.minPrice = 0
+        currentFilter.maxPrice = 0
+
+        minPriceEditText.text.clear()
+        maxPriceEditText.text.clear()
 
         checkEmptyFilter()
         setResetTextColor()
@@ -346,7 +360,7 @@ class FilterDialog(
     }
 
     private fun selectClothesBrand(position: Int) {
-        filterCheckAdapter.onMultipleCheckItem(position)
+        filterCheckAdapter.onSingleCheckItem(position)
         currentFilter.brandList = filterCheckAdapter.getCheckedItemList().map {
             it.item as ClothesBrandModel
         }
@@ -358,7 +372,7 @@ class FilterDialog(
     }
 
     private fun onMyWardrobeClick() {
-        currentFilter.isMyWardrobe = true
+        currentFilter.isMy = true
 
         presenter.getMyWardrobe(
             token = getTokenFromArguments(),
@@ -390,15 +404,29 @@ class FilterDialog(
         processOpenedFilterGroup(title = getString(R.string.filter_colors))
         recyclerView.adapter = filterCheckAdapter
 
-        presenter.getColors(token = getTokenFromArguments())
+        presenter.getColors(
+            token = getTokenFromArguments(),
+            filterModel = currentFilter
+        )
     }
 
     private fun onPriceRangeClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_costs))
+        handlePriceEditText()
 
         filterTitleTextView.hide()
         listHolderLinearLayout.hide()
         priceRangeHolderLinearLayout.show()
+    }
+
+    private fun handlePriceEditText() {
+        if (minPriceEditText.text.isNotBlank()) {
+            currentFilter.minPrice = minPriceEditText.text.toString().toInt()
+        }
+
+        if (maxPriceEditText.text.isNotBlank()) {
+            currentFilter.maxPrice = maxPriceEditText.text.toString().toInt()
+        }
     }
 
     private fun processOpenedFilterGroup(title: String) {
@@ -459,7 +487,9 @@ class FilterDialog(
         toolbar_right_text_text_view.isClickable = currentFilter.brandList.isNotEmpty() ||
                 currentFilter.categoryIdList.isNotEmpty() ||
                 currentFilter.typeIdList.isNotEmpty() ||
-                currentFilter.colorList.isNotEmpty()
+                currentFilter.colorList.isNotEmpty() ||
+                currentFilter.minPrice != 0 ||
+                currentFilter.maxPrice != 0
     }
 
     private fun getTokenFromArguments(): String {

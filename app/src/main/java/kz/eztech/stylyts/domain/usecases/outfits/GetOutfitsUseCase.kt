@@ -46,6 +46,18 @@ class GetOutfitsUseCase @Inject constructor(
             stringQueryMap["page"] = filterModel.page.toString()
         }
 
+        if (filterModel.isMy) {
+            booleanQueryMap["my"] = filterModel.isMy
+        }
+
+        if (filterModel.minPrice != 0) {
+            stringQueryMap["total_price_gt"] = filterModel.minPrice.toString()
+        }
+
+        if (filterModel.maxPrice != 0) {
+            stringQueryMap["total_price_lt"] = filterModel.minPrice.toString()
+        }
+
         stringQueryMap["gender"] = filterModel.gender
 
 

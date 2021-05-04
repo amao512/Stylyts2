@@ -60,8 +60,8 @@ class GetClothesUseCase @Inject constructor(
             stringQueryMap["clothes_brand"] = brandTitleList.joinToString(",")
         }
 
-        if (filterModel.isMyWardrobe) {
-            booleanQueryMap["in_my_wardrobe"] = filterModel.isMyWardrobe
+        if (filterModel.isMy) {
+            booleanQueryMap["in_my_wardrobe"] = filterModel.isMy
         }
 
         if (filterModel.page != 0) {

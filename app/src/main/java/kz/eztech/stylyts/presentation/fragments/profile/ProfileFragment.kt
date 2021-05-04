@@ -449,7 +449,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         resetPages(mode = WARDROBE_MODE)
 
         if (isOwnProfile()) {
-            currentFilter.isMyWardrobe = true
+            currentFilter.isMy = true
         }
 
         collectionRecyclerView.adapter = wardrobeAdapter
@@ -541,10 +541,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun showFilterResults(item: Any?) {
         currentFilter = item as FilterModel
-        currentFilter.isMyWardrobe = isOwnProfile()
+        currentFilter.isMy = isOwnProfile()
         wardrobeAdapter.clearList()
         collectionRecyclerView.adapter = wardrobeAdapter
 
+        adapterFilter.onChooseItem(position = 3)
         resetPages(mode = WARDROBE_MODE)
         getCollections()
     }

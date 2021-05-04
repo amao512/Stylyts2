@@ -140,4 +140,18 @@ class FilterExpandableAdapter(
 
         notifyDataSetChanged()
     }
+
+    fun onCheckChildById(id: Int) {
+        categoryFilterSingleGroupList.map {
+            it.items.map { item ->
+                item as FilterCheckModel
+
+                if (item.id == id) {
+                    item.isChecked = true
+                }
+            }
+        }
+
+        notifyDataSetChanged()
+    }
 }

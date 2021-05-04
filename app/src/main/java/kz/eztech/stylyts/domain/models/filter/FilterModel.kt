@@ -14,7 +14,9 @@ data class FilterModel(
     var categoryIdList: List<Int> = emptyList(),
     var brandList: List<ClothesBrandModel> = emptyList(),
     var colorList: List<Int> = emptyList(),
-    var isMyWardrobe: Boolean = false,
+    var minPrice: Int = 0,
+    var maxPrice: Int = 0,
+    var isMy: Boolean = false,
     var page: Int = 1,
-    var isLastPage: Boolean = false,
+    var isLastPage: Boolean = false
 ) : Parcelable

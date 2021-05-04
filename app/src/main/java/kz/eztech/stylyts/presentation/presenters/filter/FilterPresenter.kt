@@ -175,6 +175,34 @@ class FilterPresenter @Inject constructor(
         })
     }
 
+    override fun getColors(
+        token: String,
+        filterModel: FilterModel
+    ) {
+        val list: MutableList<FilterCheckModel> = mutableListOf()
+        list.add(
+            FilterCheckModel(id = 1,
+                item = ColorModel(
+                    id = 1,
+                    title = "Белый",
+                    color = "#ffffff"
+                )
+            )
+        )
+        list.add(
+            FilterCheckModel(
+                id = 2,
+                item = ColorModel(
+                    id = 2,
+                    title = "Черный",
+                    color = "#000000"
+                )
+            )
+        )
+
+        view.processColors(list)
+    }
+
     private fun getPreparedCategories(
         token: String,
         resultsModel: ResultsModel<ClothesTypeModel>,
@@ -294,31 +322,5 @@ class FilterPresenter @Inject constructor(
         list.sortBy { (it[0].item as String) }
 
         return list
-    }
-
-    override fun getColors(token: String) {
-        val list: MutableList<FilterCheckModel> = mutableListOf()
-        list.add(
-            FilterCheckModel(
-                id = 1,
-                item = ColorModel(
-                    id = 1,
-                    title = "Белый",
-                    color = "#ffffff"
-                )
-            )
-        )
-        list.add(
-            FilterCheckModel(
-                id = 2,
-                item = ColorModel(
-                    id = 2,
-                    title = "Черный",
-                    color = "#000000"
-                )
-            )
-        )
-
-        view.processColors(list)
     }
 }
