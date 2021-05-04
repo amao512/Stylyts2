@@ -17,6 +17,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.CommentsAdapter
@@ -39,6 +40,11 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     @Inject lateinit var imageLoader: DomainImageLoader
     private lateinit var adapter: CommentsAdapter
 
+    private lateinit var postAuthorAvatarShapeableImageView: ShapeableImageView
+    private lateinit var postAuthorShortNameTextView: TextView
+    private lateinit var postAuthorFullNameTextView: TextView
+    private lateinit var postDescTextView: TextView
+    private lateinit var postDateTextView: TextView
     private lateinit var commentsRecyclerView: RecyclerView
     private lateinit var userAvatarShapeableImageView: ShapeableImageView
     private lateinit var userShortNameTextView: TextView
@@ -87,6 +93,12 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     }
 
     override fun initializeViews() {
+        postAuthorAvatarShapeableImageView = fragment_comments_post_avatar_shapeable_image_view
+        postAuthorShortNameTextView = fragment_comments_post_user_short_name_text_view
+        postAuthorFullNameTextView = fragment_comments_post_author_name_text_view
+        postDescTextView = fragment_comments_post_desc_text_view
+        postDateTextView = fragment_comments_post_date_text_view
+
         commentsRecyclerView = fragment_comments_recycler_view
         commentsRecyclerView.adapter = adapter
         commentsRecyclerView.addItemDecoration(CommentSpaceItemDecoration(space = 8))
@@ -106,6 +118,10 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     }
 
     override fun processPostInitialization() {
+        presenter.getPost(
+            token = currentActivity.getTokenFromSharedPref(),
+            postId = getPostIdFromArgs()
+        )
         presenter.getComments(
             token = currentActivity.getTokenFromSharedPref(),
             postId = getPostIdFromArgs()
@@ -137,8 +153,8 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         item: Any?
     ) {
         when (view.id) {
-            R.id.item_comment_avatar_shapeable_image_view -> navigateToProfile(item)
-            R.id.item_comment_user_short_name_text_view -> navigateToProfile(item)
+            R.id.item_comment_avatar_shapeable_image_view -> navigateToProfile((item as CommentModel).author.id)
+            R.id.item_comment_user_short_name_text_view -> navigateToProfile((item as CommentModel).author.id)
         }
     }
 
@@ -146,6 +162,37 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_comments_send_text_view -> createComment()
+        }
+    }
+
+    override fun processPost(postModel: PostModel) {
+        if (postModel.author.avatar.isBlank()) {
+            postAuthorAvatarShapeableImageView.hide()
+            postAuthorShortNameTextView.text = getShortName(
+                firstName = postModel.author.firstName,
+                lastName = postModel.author.lastName
+            )
+        } else {
+            imageLoader.load(
+                url = postModel.author.avatar,
+                target = postAuthorAvatarShapeableImageView
+            )
+            postAuthorShortNameTextView.hide()
+        }
+
+        postAuthorFullNameTextView.text = getString(
+            R.string.full_name_text_format,
+            postModel.author.firstName,
+            postModel.author.lastName
+        )
+        postDescTextView.text = postModel.description
+
+        postAuthorAvatarShapeableImageView.setOnClickListener {
+            navigateToProfile(userId = postModel.author.id)
+        }
+
+        postAuthorShortNameTextView.setOnClickListener {
+            navigateToProfile(userId = postModel.author.id)
         }
     }
 
@@ -174,11 +221,9 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         commentEditText.text.clear()
     }
 
-    private fun navigateToProfile(item: Any?) {
-        item as CommentModel
-
+    private fun navigateToProfile(userId: Int) {
         val bundle = Bundle()
-        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author.id)
+        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, userId)
 
         findNavController().navigate(R.id.nav_profile, bundle)
     }

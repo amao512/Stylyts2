@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.contracts.collection
 
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -9,6 +10,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface CommentsContract {
 
     interface View : BaseView {
+
+        fun processPost(postModel: PostModel)
 
         fun processProfile(userModel: UserModel)
 
@@ -18,6 +21,11 @@ interface CommentsContract {
     }
 
     interface Presenter: BasePresenter<View> {
+
+        fun getPost(
+            token: String,
+            postId: Int
+        )
 
         fun getProfile(token: String)
 

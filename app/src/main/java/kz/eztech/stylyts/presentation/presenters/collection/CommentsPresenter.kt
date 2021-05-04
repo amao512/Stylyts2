@@ -5,9 +5,11 @@ import kz.eztech.stylyts.data.api.models.comments.CommentCreateModel
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.comments.CreateCommentUseCase
 import kz.eztech.stylyts.domain.usecases.comments.GetCommentsUseCase
+import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.CommentsContract
@@ -16,6 +18,7 @@ import javax.inject.Inject
 class CommentsPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getProfileUseCase: GetProfileUseCase,
+    private val getPostByIdUseCase: GetPostByIdUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val createCommentUseCase: CreateCommentUseCase
 ) : CommentsContract.Presenter {
@@ -26,10 +29,27 @@ class CommentsPresenter @Inject constructor(
         getProfileUseCase.clear()
         getCommentsUseCase.clear()
         createCommentUseCase.clear()
+        getPostByIdUseCase.clear()
     }
 
     override fun attach(view: CommentsContract.View) {
         this.view = view
+    }
+
+    override fun getPost(
+        token: String,
+        postId: Int
+    ) {
+        getPostByIdUseCase.initParams(token, postId)
+        getPostByIdUseCase.execute(object : DisposableSingleObserver<PostModel>() {
+            override fun onSuccess(t: PostModel) {
+                view.processPost(postModel = t)
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
+            }
+        })
     }
 
     override fun getProfile(token: String) {
