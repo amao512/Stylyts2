@@ -2,61 +2,46 @@ package kz.eztech.stylyts.presentation.presenters
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ClothesMainModel
-import kz.eztech.stylyts.domain.usecases.collection.GetItemDetailUseCase
-import kz.eztech.stylyts.domain.usecases.SaveItemByPhotoUseCase
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
+import kz.eztech.stylyts.domain.usecases.wardrobe.CreateClothesByImageUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CleanBackgroundContract
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import java.io.File
 import javax.inject.Inject
 
 /**
  * Created by Ruslan Erdenoff on 24.02.2021.
  */
-class CleanBackgroundPresenter: CleanBackgroundContract.Presenter {
-    private var errorHelper: ErrorHelper
-    private var getItemDetailUseCase: GetItemDetailUseCase
-    private var saveItemByPhotoUseCase: SaveItemByPhotoUseCase
+class CleanBackgroundPresenter @Inject constructor(
+    private val errorHelper: ErrorHelper,
+    private val getClothesByIdUseCase: GetClothesByIdUseCase,
+    private val createClothesByImageUseCase: CreateClothesByImageUseCase
+) : CleanBackgroundContract.Presenter {
+
     private lateinit var view: CleanBackgroundContract.View
-    @Inject
-    constructor(errorHelper: ErrorHelper,
-                getItemDetailUseCase: GetItemDetailUseCase,
-                saveItemByPhotoUseCase: SaveItemByPhotoUseCase
-    ){
-        this.getItemDetailUseCase = getItemDetailUseCase
-        this.saveItemByPhotoUseCase = saveItemByPhotoUseCase
-        this.errorHelper = errorHelper
-    }
 
     override fun disposeRequests() {
-        getItemDetailUseCase.clear()
-        saveItemByPhotoUseCase.clear()
+        getClothesByIdUseCase.clear()
+        createClothesByImageUseCase.clear()
     }
 
     override fun attach(view: CleanBackgroundContract.View) {
         this.view = view
     }
 
-    override fun saveItem(token: String, hashMap: HashMap<String, String>, data: File) {
+    override fun saveClothes(
+        token: String,
+        clothesCreateModel: ClothesCreateModel
+    ) {
         view.displayProgress()
-        val requestFile = data.asRequestBody(("image/*").toMediaTypeOrNull())
-        val body = MultipartBody.Part.createFormData("image", data.name, requestFile)
-        val clothesList = ArrayList<MultipartBody.Part>()
 
-        clothesList.add(body)
-        clothesList.add(MultipartBody.Part.createFormData("description",hashMap["description"].toString()))
-        clothesList.add(MultipartBody.Part.createFormData("clothes_type",hashMap["clothes_type"].toString()))
-
-        saveItemByPhotoUseCase.initParams(token, clothesList)
-        saveItemByPhotoUseCase.execute(object : DisposableSingleObserver<ClothesMainModel>() {
-            override fun onSuccess(t: ClothesMainModel) {
-                view.processViewAction {
-                    hideProgress()
-                }
-                getItemDetail(token,t.id?:0)
+        createClothesByImageUseCase.initParams(token, clothesCreateModel)
+        createClothesByImageUseCase.execute(object : DisposableSingleObserver<WardrobeModel>() {
+            override fun onSuccess(t: WardrobeModel) {
+                view.hideProgress()
+                getClothesById(token, t.clothes)
             }
 
             override fun onError(e: Throwable) {
@@ -68,14 +53,14 @@ class CleanBackgroundPresenter: CleanBackgroundContract.Presenter {
         })
     }
 
-    override fun getItemDetail(token: String, id: Int) {
+    override fun getClothesById(token: String, clothesId: Int) {
         view.displayProgress()
-        getItemDetailUseCase.initParams(token,id)
-        getItemDetailUseCase.execute(object : DisposableSingleObserver<ClothesMainModel>(){
-            override fun onSuccess(t: ClothesMainModel) {
+        getClothesByIdUseCase.initParams(token, clothesId)
+        getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>(){
+            override fun onSuccess(t: ClothesModel) {
                 view.processViewAction {
                     hideProgress()
-                    processItemDetail(t)
+                    processClothes(clothesModel = t)
                 }
             }
 

@@ -9,20 +9,6 @@ import kz.eztech.stylyts.domain.models.shop.ClothesTypes
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
-data class CategoryTypeDetailModel(
-    @SerializedName("id")
-	@Expose
-	var id: Int? = null,
-    @SerializedName("title")
-	@Expose
-	var title: String? = null,
-    @SerializedName("clothes_category")
-	@Expose
-	var clothes_category: Int? = null,
-    @SerializedName("clothes")
-	@Expose
-	var clothes: ClothesTypeModel? = null,
-)
 
 data class ClothesTypeModel(
     @SerializedName("current_page")

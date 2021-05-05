@@ -262,14 +262,14 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
     private fun getClothes() {
         if (getBarcodeFromArgs().isNotEmpty()) {
-            presenter.getItemByBarcode(
+            presenter.getClothesByBarcode(
                 token = currentActivity.getTokenFromSharedPref(),
-                value = getBarcodeFromArgs()
+                barcode = getBarcodeFromArgs()
             )
         } else {
             presenter.getClothesById(
                 currentActivity.getTokenFromSharedPref(),
-                clothesId = getClothesIdFromArgs().toString()
+                clothesId = getClothesIdFromArgs()
             )
         }
     }

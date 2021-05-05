@@ -27,6 +27,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -381,7 +382,7 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
 
             if (rawValue.isNotEmpty()) {
                 val bundle = Bundle()
-                bundle.putString("barcode_code", rawValue)
+                bundle.putString(ClothesDetailFragment.BARCODE_KEY, rawValue)
                 findNavController().navigate(R.id.clothesDetailFragment, bundle)
             }
         }

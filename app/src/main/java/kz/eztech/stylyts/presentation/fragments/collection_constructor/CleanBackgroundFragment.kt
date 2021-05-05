@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.fragment_clean_background.*
 import kz.eztech.stylyts.BuildConfig
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -35,9 +35,6 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 
     @Inject lateinit var presenter: CleanBackgroundPresenter
 
-    private val hashMap = HashMap<String, String>()
-
-    private var photoUri: Uri? = null
     private var outputBitmap: Bitmap? = null
 
     companion object {
@@ -70,12 +67,7 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     }
 
     override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(URI_KEY)) {
-                photoUri = it.getParcelable(URI_KEY)
-            }
-        }
-        photoUri?.let {
+        getPhotoUriFromArgs()?.let {
             Glide.with(image_view_fragment_clean_background_image.context)
                 .load(it)
                 .into(image_view_fragment_clean_background_image)
@@ -112,13 +104,13 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 
     override fun processPostInitialization() {}
 
-    override fun processItemDetail(model: ClothesMainModel) {
-        val itemsList = ArrayList<ClothesMainModel>()
+    override fun processClothes(clothesModel: ClothesModel) {
+        val itemsList = ArrayList<ClothesModel>()
         val bundle = Bundle()
 
-        itemsList.add(model)
+        itemsList.add(clothesModel)
 
-        bundle.putParcelableArrayList("items", itemsList)
+        bundle.putParcelableArrayList(CollectionConstructorHolderFragment.CLOTHES_ITEMS_KEY, itemsList)
         findNavController().navigate(R.id.createCollectionFragment, bundle)
     }
 
@@ -141,7 +133,7 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     }
 
     private fun cleanImageBackground() {
-        photoUri?.let {
+        getPhotoUriFromArgs()?.let {
             val imageFile = File(it.path)
 
             displayProgress()
@@ -175,9 +167,9 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
 
     private fun addToWardrobe() {
         SaveClothesAcceptDialog.getNewInstance(
-            token = getTokeFromSharedPref(),
+            token = currentActivity.getTokenFromSharedPref(),
             photoBitmap = outputBitmap,
-            photoUri = photoUri,
+            photoUri = getPhotoUriFromArgs(),
             listener = this
         ).show(childFragmentManager, EMPTY_STRING)
     }
@@ -186,33 +178,27 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
         item?.let { description ->
             description as String
 
-            hashMap["description"] = description
-            outputBitmap?.let {
-                val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
+            val clothesCreateModel = ClothesCreateModel()
 
-                file?.let { inpFile ->
-                    processImage(inpFile)
-                } ?: run {
-                    displayMessage(msg = getString(R.string.clean_background_convert_error))
-                }
+            clothesCreateModel.description = description
+            outputBitmap?.let {
+                clothesCreateModel.coverPhoto = FileUtils.createPngFileFromBitmap(requireContext(), it)
+                saveClothes(clothesCreateModel)
             } ?: run {
-                photoUri?.let {
-                    val imageFile = File(it.path)
-                    processImage(imageFile)
+                getPhotoUriFromArgs()?.let {
+                    clothesCreateModel.coverPhoto = File(it.path)
+                    saveClothes(clothesCreateModel)
                 }
             }
         }
     }
 
-    private fun processImage(file: File) {
-        presenter.saveItem(
-            token =getTokeFromSharedPref(),
-            hashMap = hashMap,
-            data = file
+    private fun saveClothes(clothesCreateModel: ClothesCreateModel) {
+        presenter.saveClothes(
+            token = currentActivity.getTokenFromSharedPref(),
+            clothesCreateModel = clothesCreateModel
         )
     }
 
-    private fun getTokeFromSharedPref(): String {
-        return currentActivity.getSharedPrefByKey<String>(SharedConstants.ACCESS_TOKEN_KEY) ?: EMPTY_STRING
-    }
+    private fun getPhotoUriFromArgs(): Uri? = arguments?.getParcelable(URI_KEY)
 }

@@ -25,17 +25,17 @@ interface ClothesDetailContract {
 
         fun getClothesById(
             token: String,
-            clothesId: String
+            clothesId: Int
+        )
+
+        fun getClothesByBarcode(
+            token: String,
+            barcode: String
         )
 
         fun getClothesOwner(
             token: String,
             userId: Int
-        )
-
-        fun getItemByBarcode(
-            token: String,
-            value: String
         )
 
         fun saveClothesToWardrobe(

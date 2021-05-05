@@ -127,4 +127,16 @@ class ClothesRepository @Inject constructor(
             }
         }
     }
+
+    override fun getClothesByBarcode(
+        token: String,
+        barcode: String
+    ): Single<ClothesModel> {
+        return api.getClothesByBarcode(token, barcode).map {
+            when (it.isSuccessful) {
+                true -> clothesApiModelMapper.map(data = it.body())
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 }

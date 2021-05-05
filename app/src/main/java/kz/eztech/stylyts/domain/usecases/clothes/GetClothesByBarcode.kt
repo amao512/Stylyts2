@@ -9,24 +9,24 @@ import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
 import javax.inject.Named
 
-class GetClothesByIdUseCase @Inject constructor(
+class GetClothesByBarcode @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val clothesDomainRepository: ClothesDomainRepository
 ) : BaseUseCase<ClothesModel>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private lateinit var clothesId: String
+    private lateinit var barcode: String
 
     override fun createSingleObservable(): Single<ClothesModel> {
-        return clothesDomainRepository.getClothesById(token, clothesId)
+        return clothesDomainRepository.getClothesByBarcode(token, barcode)
     }
 
     fun initParams(
         token: String,
-        clothesId: Int
+        barcode: String
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.clothesId = clothesId.toString()
+        this.barcode = barcode
     }
 }

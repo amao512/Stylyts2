@@ -4,7 +4,6 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.clothes.*
-import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -63,4 +62,10 @@ interface ClothesApi {
         @Header("Authorization") token: String,
         @Path("clothes_id") clothesId: String
     ): Single<Response<Any>>
+
+    @GET(RestConstants.GET_CLOTHES_BY_BARCODE)
+    fun getClothesByBarcode(
+        @Header("Authorization") token: String,
+        @Path("barcode") barcode: String
+    ): Single<Response<ClothesApiModel>>
 }

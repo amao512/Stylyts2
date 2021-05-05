@@ -1,36 +1,36 @@
 package kz.eztech.stylyts.di
 
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
-import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
-import kz.eztech.stylyts.presentation.fragments.collection.CollectionItemFragment
-import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
-import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
-import kz.eztech.stylyts.presentation.fragments.main.MainFragment
-import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
-import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
-import kz.eztech.stylyts.presentation.fragments.shop.ShopItemFragment
 import kz.eztech.stylyts.di.modules.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
+import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
+import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.UserSearchDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
+import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.dialogs.settings.ExitDialog
 import kz.eztech.stylyts.presentation.fragments.address.AddressFragment
 import kz.eztech.stylyts.presentation.fragments.auth.LoginFragment
 import kz.eztech.stylyts.presentation.fragments.auth.RefreshPasswordFragment
 import kz.eztech.stylyts.presentation.fragments.auth.RegistrationFragment
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.CollectionItemFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionsFragment
-import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
-import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
+import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
+import kz.eztech.stylyts.presentation.fragments.main.MainFragment
+import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopItemListFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsItemFragment
@@ -52,7 +52,6 @@ import javax.inject.Singleton
     SearchModule::class,
     ClothesModule::class,
     PostsModule::class,
-    CollectionModule::class,
     UserModule::class,
     OutfitsModule::class,
     WardrobeModule::class,

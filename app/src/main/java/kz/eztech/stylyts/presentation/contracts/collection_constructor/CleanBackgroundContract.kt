@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.ClothesMainModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 import java.io.File
@@ -12,20 +13,19 @@ interface CleanBackgroundContract {
 
     interface View : BaseView {
 
-        fun processItemDetail(model: ClothesMainModel)
+        fun processClothes(clothesModel: ClothesModel)
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun saveItem(
+        fun saveClothes(
             token: String,
-            hashMap: HashMap<String, String>,
-            data: File
+            clothesCreateModel: ClothesCreateModel
         )
 
-        fun getItemDetail(
+        fun getClothesById(
             token: String,
-            id: Int
+            clothesId: Int
         )
     }
 }

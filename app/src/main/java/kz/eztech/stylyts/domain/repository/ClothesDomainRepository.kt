@@ -39,4 +39,9 @@ interface ClothesDomainRepository {
         token: String,
         clothesId: String
     ): Single<Any>
+
+    fun getClothesByBarcode(
+        token: String,
+        barcode: String
+    ): Single<ClothesModel>
 }

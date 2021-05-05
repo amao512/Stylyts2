@@ -42,6 +42,7 @@ object RestConstants {
     // Clothes
     const val GET_CLOTHES: String = "clothes"
     const val GET_CLOTHES_BY_ID = "clothes/{id}"
+    const val GET_CLOTHES_BY_BARCODE = "clothes/by-barcode/{barcode}"
     const val GET_CLOTHES_CATEGORIES: String = "clothes/categories"
     const val GET_CLOTHES_TYPES: String = "clothes/types"
     const val GET_CLOTHES_STYLES: String = "clothes/styles"
