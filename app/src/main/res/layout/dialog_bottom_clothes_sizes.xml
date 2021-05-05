@@ -22,6 +22,7 @@
         >
 
         <TextView
+            android:id="@+id/dialog_bottom_clothes_sizes_title_text_view"
             style="@style/TextRegularBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +31,7 @@
             />
 
         <TextView
-            android:id="@+id/text_view_dialog_bottom_item_detail_chooser_done"
+            android:id="@+id/dialog_bottom_clothes_sizes_done_text_view"
             style="@style/TextRegularBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +48,7 @@
         />
 
     <ListView
-        android:id="@+id/list_view_dialog_bottom_item_detail_chooser_list"
+        android:id="@+id/dialog_bottom_clothes_sizes_chooser_list_view"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         />

@@ -72,8 +72,4 @@ object RestConstants {
     // Comments
     const val GET_COMMENTS: String = "post-comments"
     const val CREATE_COMMENT: String = "post-comments"
-
-    const val GET_ITEM_DETAIL: String = "clothes/item/{id}/"
-    const val GET_ITEM_BY_BARCODE: String = "clothes/item/get_by_barcode/"
-    const val SAVE_ITEM_BY_PHOTO = "clothes/item/"
 }

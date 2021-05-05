@@ -114,6 +114,7 @@
     <string name="collection_chooser_buy">Купить данный образ</string>
 
     <string name="detail_chooser_size_table">ТАБЛИЦА РАЗМЕРОВ</string>
+    <string name="detail_chooser_color_table">ТАБЛИЦА ЦВЕТОВ</string>
     <string name="detail_chooser_ready">ГОТОВО</string>
 
     <string name="photo_chooser_add_item_by_barcode">Добавить вещь по штрихкоду</string>

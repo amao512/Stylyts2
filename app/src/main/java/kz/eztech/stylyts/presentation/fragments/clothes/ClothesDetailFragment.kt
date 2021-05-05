@@ -14,8 +14,8 @@ import kotlinx.android.synthetic.main.fragment_clothes_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.ClothesColor
-import kz.eztech.stylyts.domain.models.ClothesSize
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
@@ -24,7 +24,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.clothes.ClothesDetailContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
-import kz.eztech.stylyts.presentation.dialogs.ItemDetailChooserDialog
+import kz.eztech.stylyts.presentation.dialogs.ClothesSizesBottomDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.presenters.clothes.ClothesDetailPresenter
 import kz.eztech.stylyts.presentation.utils.ColorUtils
@@ -39,13 +39,13 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     View.OnClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: ClothesDetailPresenter
-    private lateinit var chooserDialog: ItemDetailChooserDialog
+    private lateinit var chooserDialog: ClothesSizesBottomDialog
 
     private enum class CART_STATE { NONE, EDIT, DONE }
 
     private var currentState = CART_STATE.NONE
     private var currentColor: ClothesColor? = null
-    private var currentSize: ClothesSize? = null
+    private var currentSize: ClothesSizeModel? = null
 
     private var disposables = CompositeDisposable()
 
@@ -110,7 +110,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     override fun onChoice(v: View?, item: Any?) {
         item?.let { currentItem ->
             when (currentItem) {
-                is ClothesSize -> {
+                is ClothesSizeModel -> {
                     currentSize = currentItem
                     fragment_clothes_detail_text_size_text_view.text = currentSize?.size
                 }
@@ -196,7 +196,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     }
 
     private fun fillClothesModel(clothesModel: ClothesModel) {
-        chooserDialog = ItemDetailChooserDialog()
+        chooserDialog = ClothesSizesBottomDialog()
         chooserDialog.setChoiceListener(this)
 
         fragment_clothes_detail_brand_title_text_view.text = clothesModel.clothesBrand.title
@@ -297,14 +297,14 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
         if (clothesModel.sizeInStock.isNotEmpty()) {
             var counter = 0
-            val clothesSizes: MutableList<ClothesSize> = mutableListOf()
+            val clothesSizes: MutableList<ClothesSizeModel> = mutableListOf()
 
             clothesModel.sizeInStock.map { size ->
-                clothesSizes.add(ClothesSize(id = counter, size = size.size))
+                clothesSizes.add(size)
                 counter++
             }
 
-            bundle.putParcelableArrayList("sizeItems", ArrayList(clothesSizes))
+            bundle.putParcelableArrayList(ClothesSizesBottomDialog.SIZES_KEY, ArrayList(clothesSizes))
         } else {
             displayMessage(msg = getString(R.string.there_are_not_sizes))
         }
@@ -323,7 +323,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 counter++
             }
 
-            bundle.putParcelableArrayList("colorItems", ArrayList(clothesColors))
+            bundle.putParcelableArrayList(ClothesSizesBottomDialog.COLORS_KEY, ArrayList(clothesColors))
         } else {
             displayMessage(msg = getString(R.string.there_are_not_colors))
         }

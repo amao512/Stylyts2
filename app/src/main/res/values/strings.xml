@@ -113,6 +113,7 @@
     <string name="collection_chooser_buy">Buy this look</string>
 
     <string name="detail_chooser_size_table">SIZE TABLE</string>
+    <string name="detail_chooser_color_table">COLOR TABLE</string>
     <string name="detail_chooser_ready">DONE</string>
 
     <string name="photo_chooser_add_item_by_barcode">Add item by barcode</string>
