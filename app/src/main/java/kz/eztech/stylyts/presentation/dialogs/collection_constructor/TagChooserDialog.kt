@@ -12,6 +12,8 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
@@ -37,6 +39,7 @@ import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
+import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.TagChooserPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -45,6 +48,7 @@ import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.extensions.displayToast
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.presentation.utils.helpers.SimpleItemTouchHelperCallback
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 import kz.eztech.stylyts.presentation.utils.stick.Layer
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
@@ -55,21 +59,22 @@ class TagChooserDialog(
     private val currentMode: Int
 ) : DialogFragment(), TagChooserContract.View,
     UniversalViewClickListener,
-    DialogChooserListener, MotionViewTapListener, View.OnClickListener {
+    DialogChooserListener, MotionViewTapListener, View.OnClickListener, OnStartDragListener {
 
     @Inject lateinit var presenter: TagChooserPresenter
 
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var filteredAdapter: GridImageItemFilteredAdapter
-    private lateinit var selectedAdapter: MainImagesAdditionalAdapter
+    private lateinit var clothesAdapter: MainImagesAdditionalAdapter
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: FilterModel
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     private val filterMap = HashMap<String, Any>()
-    private val selectedClothesEntities: MutableList<ImageEntity> = mutableListOf()
-    private val selectedUserEntities: MutableList<ImageEntity> = mutableListOf()
-    private val selectedList: MutableList<ClothesModel> = mutableListOf()
-    private val selectedUsers: MutableList<UserModel> = mutableListOf()
+    private val clothesEntities: MutableList<ImageEntity> = mutableListOf()
+    private val userEntities: MutableList<ImageEntity> = mutableListOf()
+    private val clothesList: MutableList<ClothesModel> = mutableListOf()
+    private val usersList: MutableList<UserModel> = mutableListOf()
 
     private var photoUri: Uri? = null
     private var photoBitmap: Bitmap? = null
@@ -172,7 +177,11 @@ class TagChooserDialog(
 
         filteredAdapter = GridImageItemFilteredAdapter()
         filterAdapter = CollectionsFilterAdapter()
-        selectedAdapter = MainImagesAdditionalAdapter()
+        clothesAdapter = MainImagesAdditionalAdapter(onStartDragListener = this)
+
+        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(clothesAdapter)
+        itemTouchHelper = ItemTouchHelper(callback)
+        itemTouchHelper.attachToRecyclerView(recycler_view_fragment_photo_chooser_selected_list)
     }
 
     override fun initializeViews() {
@@ -186,15 +195,13 @@ class TagChooserDialog(
                 .into(image_view_fragment_photo_chooser)
         }
 
-        with (bottom_sheet_clothes) {
-            recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
-            recycler_view_fragment_photo_chooser.adapter = filteredAdapter
-            recycler_view_fragment_photo_chooser.addItemDecoration(
-                GridSpacesItemDecoration(space = 16)
-            )
-        }
+        recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
+        recycler_view_fragment_photo_chooser.adapter = filteredAdapter
+        recycler_view_fragment_photo_chooser.addItemDecoration(
+            GridSpacesItemDecoration(space = 16)
+        )
 
-        recycler_view_fragment_photo_chooser_selected_list.adapter = selectedAdapter
+        recycler_view_fragment_photo_chooser_selected_list.adapter = clothesAdapter
 
         motion_view_fragment_photo_chooser_tags_container.apply {
             setCustomDeleteIcon(R.drawable.ic_baseline_close_20)
@@ -214,13 +221,13 @@ class TagChooserDialog(
     override fun deleteSelectedView(motionEntity: MotionEntity) {
         when (motionEntity.item.item) {
             is ClothesModel -> {
-                selectedClothesEntities.remove(motionEntity)
-                selectedList.remove(motionEntity.item.item)
-                selectedAdapter.updateList(selectedList)
+                clothesEntities.remove(motionEntity)
+                clothesList.remove(motionEntity.item.item)
+                clothesAdapter.updateList(clothesList)
             }
             is UserModel -> {
-                selectedUserEntities.remove(motionEntity)
-                selectedUsers.remove(motionEntity.item.item)
+                userEntities.remove(motionEntity)
+                usersList.remove(motionEntity.item.item)
             }
         }
         checkEmptyList()
@@ -239,7 +246,7 @@ class TagChooserDialog(
     override fun initializeListeners() {
         filterAdapter.setOnClickListener(this)
         filteredAdapter.setOnClickListener(this)
-        selectedAdapter.setOnClickListener(this)
+        clothesAdapter.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {}
@@ -310,14 +317,6 @@ class TagChooserDialog(
             R.id.toolbar_back_text_view -> {
                 findNavController().navigateUp()
             }
-            R.id.button_dialog_filter_constructor_submit -> {
-//                val map = item as HashMap<String, Any>
-//                val clothesType = filterMap["clothes_type"]
-//
-//                filterMap.clear()
-//                filterMap["clothes_type"] = clothesType as String
-//                filterMap.putAll(map)
-            }
         }
 
         when (item) {
@@ -328,6 +327,35 @@ class TagChooserDialog(
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_right_text_text_view -> showCompleteDialog()
+        }
+    }
+
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
+
+    override fun displayMessage(msg: String) {
+        view?.let {
+            displayToast(it.context, msg)
+        }
+    }
+
+    override fun isFragmentVisible(): Boolean = isVisible
+
+    override fun displayProgress() {}
+
+    override fun hideProgress() {}
+
+    override fun onStartDrag(viewHolder: RecyclerView.ViewHolder) {
+        itemTouchHelper.startDrag(viewHolder)
+    }
+
+    override fun onStopDrag() {
+        clothesEntities.clear()
+        clothesList.clear()
+
+        clothesAdapter.getClothesList().map {
+            setClothesTag(clothesModel = it)
         }
     }
 
@@ -379,7 +407,8 @@ class TagChooserDialog(
                 setClothesTag(clothesModel)
                 hideBottomSheet()
             }
-            R.id.frame_layout_item_main_image_holder_container -> {}
+            R.id.frame_layout_item_main_image_holder_container -> {
+            }
         }
     }
 
@@ -419,9 +448,9 @@ class TagChooserDialog(
                     textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
 
-                    selectedClothesEntities.add(entity)
-                    selectedList.add(clothesModel)
-                    selectedAdapter.updateList(selectedList)
+                    clothesEntities.add(entity)
+                    clothesList.add(clothesModel)
+                    clothesAdapter.updateList(clothesList)
                     checkEmptyList()
                 }
             })
@@ -466,8 +495,8 @@ class TagChooserDialog(
                     textView.viewTreeObserver.removeOnGlobalLayoutListener(this)
                     motion_view_fragment_photo_chooser_tags_container.removeView(textView)
 
-                    selectedUserEntities.add(entity)
-                    selectedUsers.add(userModel)
+                    userEntities.add(entity)
+                    usersList.add(userModel)
                     checkEmptyList()
                 }
             })
@@ -511,7 +540,7 @@ class TagChooserDialog(
     }
 
     private fun checkEmptyList() {
-        if (selectedList.isEmpty()) {
+        if (clothesList.isEmpty()) {
             recycler_view_fragment_photo_chooser_selected_list.hide()
             linear_layout_fragment_photo_chooser_desc_container.hide()
             dialog_photo_chooser_clothes_tags_icon.hide()
@@ -521,34 +550,18 @@ class TagChooserDialog(
             dialog_photo_chooser_clothes_tags_icon.show()
         }
 
-        if (selectedUsers.isEmpty()) {
+        if (usersList.isEmpty()) {
             dialog_photo_chooser_user_tags_icon.hide()
         } else {
             dialog_photo_chooser_user_tags_icon.show()
         }
 
-        if (selectedList.isEmpty() && selectedUsers.isEmpty()) {
+        if (clothesList.isEmpty() && usersList.isEmpty()) {
             text_view_fragment_photo_chooser_empty_text.show()
         } else {
             text_view_fragment_photo_chooser_empty_text.hide()
         }
     }
-
-    override fun disposeRequests() {
-        presenter.disposeRequests()
-    }
-
-    override fun displayMessage(msg: String) {
-        view?.let {
-            displayToast(it.context, msg)
-        }
-    }
-
-    override fun isFragmentVisible(): Boolean = isVisible
-
-    override fun displayProgress() {}
-
-    override fun hideProgress() {}
 
     private fun showCompleteDialog() {
         val bundle = Bundle()
@@ -556,8 +569,14 @@ class TagChooserDialog(
         bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
         bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
 
-        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.CLOTHES_KEY, setLocationToClothes())
-        bundle.putParcelableArrayList(CreateCollectionAcceptFragment.USERS_KEY, setLocationToUsers())
+        bundle.putParcelableArrayList(
+            CreateCollectionAcceptFragment.CLOTHES_KEY,
+            setLocationToClothes()
+        )
+        bundle.putParcelableArrayList(
+            CreateCollectionAcceptFragment.USERS_KEY,
+            setLocationToUsers()
+        )
 
         bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, currentMode)
 
@@ -569,14 +588,14 @@ class TagChooserDialog(
     private fun setLocationToClothes(): ArrayList<ClothesModel> {
         val clothes = ArrayList<ClothesModel>()
 
-        selectedClothesEntities.forEachIndexed { index, imageView ->
+        clothesEntities.forEachIndexed { index, imageView ->
             val result = RelativeMeasureUtil.measureEntity(
                 imageView,
                 motion_view_fragment_photo_chooser_tags_container
             )
 
-            selectedList[index].clothesLocation = ItemLocationModel(
-                id = (selectedClothesEntities[index].item.item as ClothesModel).id,
+            clothesList[index].clothesLocation = ItemLocationModel(
+                id = (clothesEntities[index].item.item as ClothesModel).id,
                 pointX = result.point_x.toDouble(),
                 pointY = result.point_y.toDouble(),
                 width = 0.0,
@@ -584,7 +603,7 @@ class TagChooserDialog(
                 degree = 0.0
             )
 
-            clothes.add(selectedList[index])
+            clothes.add(clothesList[index])
         }
 
         return clothes
@@ -593,14 +612,14 @@ class TagChooserDialog(
     private fun setLocationToUsers(): ArrayList<UserModel> {
         val users = ArrayList<UserModel>()
 
-        selectedUserEntities.forEachIndexed { index, imageView ->
+        userEntities.forEachIndexed { index, imageView ->
             val result = RelativeMeasureUtil.measureEntity(
                 imageView,
                 motion_view_fragment_photo_chooser_tags_container
             )
 
-            selectedUsers[index].userLocation = ItemLocationModel(
-                id = (selectedUserEntities[index].item.item as UserModel).id,
+            usersList[index].userLocation = ItemLocationModel(
+                id = (userEntities[index].item.item as UserModel).id,
                 pointX = result.point_x.toDouble(),
                 pointY = result.point_y.toDouble(),
                 width = 0.0,
@@ -608,7 +627,7 @@ class TagChooserDialog(
                 degree = 0.0
             )
 
-            users.add(selectedUsers[index])
+            users.add(usersList[index])
         }
 
         return users

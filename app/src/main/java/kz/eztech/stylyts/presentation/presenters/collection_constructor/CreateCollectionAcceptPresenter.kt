@@ -123,7 +123,7 @@ class CreateCollectionAcceptPresenter @Inject constructor(
             token = token,
             outfitId = id,
             file = data,
-            oufitModel = model
+            outfitModel = model
         )
         updateOutfitUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {

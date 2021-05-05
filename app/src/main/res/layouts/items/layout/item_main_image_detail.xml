@@ -9,7 +9,7 @@
     >
 
     <ImageView
-        android:id="@+id/image_view_image_detail_imageholder"
+        android:id="@+id/image_view_image_detail_image_view"
         android:layout_width="@dimen/main_image_detail_image_width"
         android:layout_height="@dimen/main_image_detail_image_height"
         android:layout_margin="@dimen/margin_size_10x"

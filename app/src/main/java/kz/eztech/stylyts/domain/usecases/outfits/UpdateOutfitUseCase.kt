@@ -31,7 +31,7 @@ class UpdateOutfitUseCase @Inject constructor(
     fun initParams(
         token: String,
         outfitId: Int,
-        oufitModel: OutfitCreateModel,
+        outfitModel: OutfitCreateModel,
         file: File
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
@@ -42,12 +42,12 @@ class UpdateOutfitUseCase @Inject constructor(
         val requestFile = file.asRequestBody(("image/*").toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("cover_photo", file.name, requestFile)
 
-        oufitModel.clothes.forEach {
+        outfitModel.clothes.forEach {
             data.add(MultipartBody.Part.createFormData("clothes", it.toString()))
         }
 
         data.add(body)
-        oufitModel.itemLocation.forEachIndexed { index, clothesCollection ->
+        outfitModel.itemLocation.forEachIndexed { index, clothesCollection ->
             data.add(
                 MultipartBody.Part.createFormData(
                     "clothes_location[${index}]clothes_id",
@@ -85,14 +85,14 @@ class UpdateOutfitUseCase @Inject constructor(
                 )
             )
         }
-        data.add(MultipartBody.Part.createFormData("title", oufitModel.title.toString()))
-        data.add(MultipartBody.Part.createFormData("text", oufitModel.text.toString()))
-        data.add(MultipartBody.Part.createFormData("style", oufitModel.style.toString()))
-        data.add(MultipartBody.Part.createFormData("author", oufitModel.author.toString()))
+        data.add(MultipartBody.Part.createFormData("title", outfitModel.title.toString()))
+        data.add(MultipartBody.Part.createFormData("text", outfitModel.text.toString()))
+        data.add(MultipartBody.Part.createFormData("style", outfitModel.style.toString()))
+        data.add(MultipartBody.Part.createFormData("author", outfitModel.author.toString()))
         data.add(
             MultipartBody.Part.createFormData(
                 "total_price",
-                oufitModel.totalPrice.toString()
+                outfitModel.totalPrice.toString()
             )
         )
 

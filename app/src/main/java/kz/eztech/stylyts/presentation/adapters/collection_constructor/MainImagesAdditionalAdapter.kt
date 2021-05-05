@@ -6,11 +6,15 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.MainImageAdditionalHolder
+import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperAdapter
+import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-class MainImagesAdditionalAdapter : BaseAdapter(){
+class MainImagesAdditionalAdapter(
+    private val onStartDragListener: OnStartDragListener? = null
+) : BaseAdapter(), ItemTouchHelperAdapter {
 
     override fun getLayoutId(viewType: Int): Int = R.layout.item_main_image_detail
 
@@ -30,7 +34,30 @@ class MainImagesAdditionalAdapter : BaseAdapter(){
     override fun getViewHolder(view: View): MainImageAdditionalHolder {
         return MainImageAdditionalHolder(
             itemView = view,
-            adapter = this
+            adapter = this,
+            onStartDragListener = onStartDragListener
         )
+    }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        val moveItem = currentList[fromPosition]
+        val item = currentList[toPosition]
+
+        currentList[toPosition] = moveItem
+        currentList[fromPosition] = item
+
+        notifyDataSetChanged()
+    }
+
+    override fun onItemDismiss(position: Int) {}
+
+    fun getClothesList(): List<ClothesModel> {
+        val clothesList: MutableList<ClothesModel> = mutableListOf()
+
+        currentList.map {
+            clothesList.add(it as ClothesModel)
+        }
+
+        return clothesList
     }
 }
