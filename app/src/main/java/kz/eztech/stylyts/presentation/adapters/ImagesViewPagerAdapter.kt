@@ -23,7 +23,8 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
  */
 class ImagesViewPagerAdapter(
     private val images: ArrayList<String>,
-    private val withAnimation: Boolean = true
+    private val withAnimation: Boolean = true,
+    private val withCenterCrop: Boolean = true
 ) : PagerAdapter() {
 
     override fun getCount(): Int = images.size
@@ -45,7 +46,11 @@ class ImagesViewPagerAdapter(
 
         Glide.with(container.context)
             .load(images[position])
-            .centerCrop()
+            .apply {
+                if (withCenterCrop) {
+                    centerCrop()
+                }
+            }
             .listener(object : RequestListener<Drawable> {
 
                 override fun onLoadFailed(

@@ -17,6 +17,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -52,7 +53,10 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     private lateinit var sendTextView: TextView
 
     companion object {
-        const val COLLECTION_ID_KEY = "postId"
+        const val COLLECTION_ID_KEY = "collection_id"
+        const val MODE_KEY = "mode_key"
+        const val OUTFIT_MODE = 0
+        const val POST_MODE = 1
     }
 
     override fun onResume() {
@@ -118,15 +122,19 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     }
 
     override fun processPostInitialization() {
-        presenter.getPost(
+        presenter.getCollection(
             token = currentActivity.getTokenFromSharedPref(),
-            postId = getPostIdFromArgs()
-        )
-        presenter.getComments(
-            token = currentActivity.getTokenFromSharedPref(),
-            postId = getPostIdFromArgs()
+            mode = getModeFromArgs(),
+            id = getPostIdFromArgs()
         )
         presenter.getProfile(token = currentActivity.getTokenFromSharedPref())
+
+        if (getModeFromArgs() == POST_MODE) {
+            presenter.getComments(
+                token = currentActivity.getTokenFromSharedPref(),
+                postId = getPostIdFromArgs()
+            )
+        }
     }
 
     override fun disposeRequests() {
@@ -196,6 +204,37 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         }
     }
 
+    override fun processOutfit(outfitModel: OutfitModel) {
+        if (outfitModel.author.avatar.isBlank()) {
+            postAuthorAvatarShapeableImageView.hide()
+            postAuthorShortNameTextView.text = getShortName(
+                firstName = outfitModel.author.firstName,
+                lastName = outfitModel.author.lastName
+            )
+        } else {
+            imageLoader.load(
+                url = outfitModel.author.avatar,
+                target = postAuthorAvatarShapeableImageView
+            )
+            postAuthorShortNameTextView.hide()
+        }
+
+        postAuthorFullNameTextView.text = getString(
+            R.string.full_name_text_format,
+            outfitModel.author.firstName,
+            outfitModel.author.lastName
+        )
+        postDescTextView.text = outfitModel.text
+
+        postAuthorAvatarShapeableImageView.setOnClickListener {
+            navigateToProfile(userId = outfitModel.author.id)
+        }
+
+        postAuthorShortNameTextView.setOnClickListener {
+            navigateToProfile(userId = outfitModel.author.id)
+        }
+    }
+
     override fun processProfile(userModel: UserModel) {
         if (userModel.avatar.isBlank()) {
             userAvatarShapeableImageView.hide()
@@ -255,4 +294,6 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     }
 
     private fun getPostIdFromArgs(): Int = arguments?.getInt(COLLECTION_ID_KEY) ?: 0
+
+    private fun getModeFromArgs(): Int = arguments?.getInt(MODE_KEY) ?: OUTFIT_MODE
 }

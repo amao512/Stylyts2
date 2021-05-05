@@ -37,21 +37,13 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     DialogChooserListener,
     CreateCollectionAcceptContract.View {
 
-    @Inject
-    lateinit var presenter: CreateCollectionAcceptPresenter
-
+    @Inject lateinit var presenter: CreateCollectionAcceptPresenter
     private lateinit var chooserDialog: CreateCollectionChooserDialog
 
-    private var currentMode: Int = OUTFIT_MODE
     private var currentModel: OutfitCreateModel? = null
-    private var currentId: Int = 0
-    private var currentBitmap: Bitmap? = null
-    private var currentPhotoUri: Uri? = null
-    private var isPhotoChooser = false
     private var selectedList = ArrayList<ClothesModel>()
     private var selectedUsers = ArrayList<UserModel>()
     private var listOfChosenImages = ArrayList<String>()
-    private var isUpdating = false
 
     companion object {
         const val OUTFIT_MODE = 0
@@ -104,7 +96,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     override fun initializeViews() {
-        when (currentMode) {
+        when (getModeFromArgs()) {
             OUTFIT_MODE -> {
                 frame_layout_dialog_create_collection_accept_choose_clothes.hide()
                 fragment_create_collection_accept_divier_one.hide()
@@ -153,23 +145,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             if (it.containsKey(OUTFIT_MODEL_KEY)) {
                 currentModel = it.getParcelable(OUTFIT_MODEL_KEY)
             }
-            if (it.containsKey(PHOTO_BITMAP_KEY)) {
-                currentBitmap = it.getParcelable(PHOTO_BITMAP_KEY)
-            }
-            if (it.containsKey(ID_KEY)) {
-                currentId = it.getInt(ID_KEY)
-            }
-            if (it.containsKey(PHOTO_URI_KEY)) {
-                it.getParcelable<Uri>(PHOTO_URI_KEY)?.let { uri ->
-                    currentPhotoUri = uri
-                }
-            }
-            if (it.containsKey(IS_UPDATING_KEY)) {
-                isUpdating = it.getBoolean(IS_UPDATING_KEY)
-            }
-            if (it.containsKey(IS_CHOOSER_KEY)) {
-                isPhotoChooser = it.getBoolean(IS_CHOOSER_KEY)
-            }
             if (it.containsKey(CLOTHES_KEY)) {
                 it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let { list ->
                     selectedList = list
@@ -179,9 +154,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 it.getParcelableArrayList<UserModel>(USERS_KEY)?.let { list ->
                     selectedUsers = list
                 }
-            }
-            if (it.containsKey(MODE_KEY)) {
-                currentMode = it.getInt(MODE_KEY)
             }
             if (it.containsKey(CHOSEN_PHOTOS_KEY)) {
                 it.getStringArrayList(CHOSEN_PHOTOS_KEY)?.let { list ->
@@ -194,7 +166,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     override fun onChoice(v: View?, item: Any?) {
         when (item) {
             is Int -> {
-                when (currentMode) {
+                when (getModeFromArgs()) {
                     OUTFIT_MODE -> currentModel?.let {
                         saveOutfit(it)
                     }
@@ -211,9 +183,6 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 item.getParcelableArrayList<UserModel>(USERS_KEY)?.map {
                     selectedUsers.add(it)
                 }
-                currentPhotoUri = item.getParcelable(PHOTO_URI_KEY)
-                isPhotoChooser = item.getBoolean(IS_CHOOSER_KEY)
-                currentMode = item.getInt(MODE_KEY)
 
                 initializeViews()
             }
@@ -246,13 +215,13 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     private fun processPhotos() {
-        currentPhotoUri?.let {
+        getPhotoUriFromArgs()?.let {
             Glide.with(image_view_dialog_create_collection_accept.context)
                 .load(it)
                 .into(image_view_dialog_create_collection_accept)
         }
 
-        currentBitmap?.let {
+        getBitmapFromArgs()?.let {
             Glide.with(image_view_dialog_create_collection_accept.context)
                 .load(it)
                 .into(image_view_dialog_create_collection_accept)
@@ -260,7 +229,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     private fun processPhotoChooser() {
-        if (isPhotoChooser) {
+        if (isPhotoChooser()) {
             if (selectedList.isNotEmpty()) {
                 text_view_dialog_create_collection_items_count.text = getString(
                     R.string.clothes_count_text_format,
@@ -291,26 +260,26 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             chooserListener = this,
             clothesList = selectedList,
             usersList = selectedUsers,
-            mode = currentMode
+            mode = getModeFromArgs()
         ).apply {
             setMode(mode = mode)
-            setPhotoUri(uri = currentPhotoUri)
-            setPhotoBitmap(bitmap = currentBitmap)
+            setPhotoUri(uri = getPhotoUriFromArgs())
+            setPhotoBitmap(bitmap = getBitmapFromArgs())
         }.show(childFragmentManager, EMPTY_STRING)
     }
 
     private fun savePost() {
         try {
-            if (currentBitmap != null && currentPhotoUri == null) {
-                currentBitmap?.let {
+            if (getBitmapFromArgs() != null && getPhotoUriFromArgs() == null) {
+                getBitmapFromArgs()?.let {
                     createPost(
                         FileUtils.createPngFileFromBitmap(requireContext(), it)
                     )
                 }
             }
 
-            if (currentPhotoUri != null && currentBitmap == null) {
-                currentPhotoUri?.path?.let {
+            if (getPhotoUriFromArgs() != null && getBitmapFromArgs() == null) {
+                getPhotoUriFromArgs()?.path?.let {
                     createPost(File(it))
                 }
             }
@@ -337,11 +306,11 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 images = images
             )
 
-            if (isUpdating) {
+            if (isUpdating()) {
                 presenter.updatePost(
                     token = currentActivity.getTokenFromSharedPref(),
                     postCreateModel = model,
-                    postId = currentId
+                    postId = getIdFromArgs()
                 )
             } else {
                 presenter.createPost(
@@ -355,14 +324,14 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private fun saveOutfit(item: OutfitCreateModel) {
         currentActivity.getTokenFromSharedPref().let {
             try {
-                currentBitmap?.let { bitmap ->
+                getBitmapFromArgs()?.let { bitmap ->
                     val file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
 
                     file?.let { _ ->
-                        if (isUpdating) {
+                        if (isUpdating()) {
                             presenter.updateOutfit(
                                 token = it,
-                                id = currentId,
+                                id = getIdFromArgs(),
                                 model = item,
                                 data = file
                             )
@@ -387,4 +356,16 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         hideProgress()
         displayMessage(msg = getString(R.string.collection_constructor_error_load_data))
     }
+
+    private fun getModeFromArgs(): Int = arguments?.getInt(MODE_KEY) ?: OUTFIT_MODE
+
+    private fun getIdFromArgs(): Int = arguments?.getInt(ID_KEY) ?: 0
+
+    private fun getBitmapFromArgs(): Bitmap? = arguments?.getParcelable(PHOTO_BITMAP_KEY)
+
+    private fun getPhotoUriFromArgs(): Uri? = arguments?.getParcelable(PHOTO_URI_KEY)
+
+    private fun isPhotoChooser(): Boolean = arguments?.getBoolean(IS_CHOOSER_KEY) ?: false
+
+    private fun isUpdating(): Boolean = arguments?.getBoolean(IS_UPDATING_KEY) ?: false
 }

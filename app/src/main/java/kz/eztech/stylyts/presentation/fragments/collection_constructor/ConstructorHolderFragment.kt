@@ -18,7 +18,12 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
     private lateinit var pagerAdapter: ConstructorPagerAdapter
 
     private val inputClotheList = ArrayList<ClothesTypeDataModel>()
-    private var currentMainId = -1
+
+    companion object {
+        const val CLOTHES_ITEMS_KEY = "items"
+        const val MAIN_ID_KEY = "mainId"
+        const val IS_UPDATING_KEY = "isUpdating"
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_constructor_holder
 
@@ -32,14 +37,10 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("items")) {
-                it.getParcelableArrayList<ClothesTypeDataModel>("items")?.let { it1 ->
+            if (it.containsKey(CLOTHES_ITEMS_KEY)) {
+                it.getParcelableArrayList<ClothesTypeDataModel>(CLOTHES_ITEMS_KEY)?.let { it1 ->
                     inputClotheList.addAll(it1)
                 }
-            }
-
-            if (it.containsKey("mainId")) {
-                currentMainId = it.getInt("mainId")
             }
         }
     }
@@ -48,8 +49,11 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
 
     override fun initializeViews() {
         val bundle = Bundle()
-        bundle.putParcelableArrayList("items", inputClotheList)
-        bundle.putInt("mainId", currentMainId)
+
+        bundle.putParcelableArrayList(CLOTHES_ITEMS_KEY, inputClotheList)
+        bundle.putInt(MAIN_ID_KEY, getIdFromArgs())
+        bundle.putBoolean(IS_UPDATING_KEY, isUpdating())
+
         pagerAdapter = ConstructorPagerAdapter(this, bundle)
         view_pager_fragment_constructor_holder.isUserInputEnabled = false
         view_pager_fragment_constructor_holder.isSaveEnabled = false
@@ -117,4 +121,8 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
     }
 
     override fun onTransitionTrigger(p0: MotionLayout?, p1: Int, p2: Boolean, p3: Float) {}
+
+    private fun getIdFromArgs(): Int = arguments?.getInt(MAIN_ID_KEY) ?: 0
+
+    private fun isUpdating(): Boolean = arguments?.getBoolean(IS_UPDATING_KEY) ?: false
 }

@@ -39,7 +39,10 @@ class CollectionDetailPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getOutfitById(token: String, outfitId: String) {
+    override fun getOutfitById(
+        token: String,
+        outfitId: Int
+    ) {
         view.displayProgress()
 
         getOutfitByIdUseCase.initParams(token, outfitId)

@@ -73,7 +73,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private lateinit var commentsCountTextView: TextView
 
     companion object {
-        const val ID_KEY = "outfit_id"
+        const val ID_KEY = "collection_id"
         const val MODE_KEY = "mode_key"
         const val OUTFIT_MODE = 0
         const val POST_MODE = 1
@@ -150,7 +150,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         when (getModeFromArgs()) {
             OUTFIT_MODE -> presenter.getOutfitById(
                 token = currentActivity.getTokenFromSharedPref(),
-                outfitId = getCollectionIdFromArgs().toString()
+                outfitId = getCollectionIdFromArgs()
             )
             POST_MODE -> presenter.getPostById(
                 token = currentActivity.getTokenFromSharedPref(),
@@ -312,7 +312,11 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
         val imageAdapter = ImagesViewPagerAdapter(
             images = imageArray,
-            withAnimation = false
+            withAnimation = false,
+            withCenterCrop = when (getModeFromArgs()) {
+                POST_MODE -> true
+                else -> false
+            }
         )
         imageAdapter.mItemImageClickListener = this
 
@@ -484,6 +488,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun navigateToComments() {
         val bundle = Bundle()
         bundle.putInt(CommentsFragment.COLLECTION_ID_KEY, getCollectionIdFromArgs())
+        bundle.putInt(CommentsFragment.MODE_KEY, getModeFromArgs())
 
         findNavController().navigate(R.id.action_collectionDetailFragment_to_userCommentsFragment, bundle)
     }
@@ -499,7 +504,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         val bundle = Bundle()
         val clothes = ArrayList<ClothesModel>()
 
-        clothes.addAll(currentPostModel.clothes)
+        clothes.addAll(currentOutfitModel.clothes)
 
         bundle.apply {
             putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, clothes)

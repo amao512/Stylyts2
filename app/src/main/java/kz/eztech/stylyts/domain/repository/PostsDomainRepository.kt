@@ -38,8 +38,9 @@ interface PostsDomainRepository {
     fun updatePost(
         token: String,
         postId: String,
-        multipartList: List<MultipartBody.Part>,
-        tags: TagsApiModel
+        description: MultipartBody.Part,
+        tags: TagsApiModel,
+        hidden: MultipartBody.Part
     ): Single<PostModel>
 
     fun likePost(

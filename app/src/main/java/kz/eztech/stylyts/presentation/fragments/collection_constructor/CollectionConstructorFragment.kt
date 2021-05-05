@@ -81,13 +81,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private var isItems = false
 	private var isStyle = false
-	private var isUpdating = false
-	private var currentType = 0
-	private var currentSaveMode = 1
 	private var currentId: Int = -1
 	private var currentStyle: ClothesStyleModel? = null
 	private var currentCollectionBitmap: Bitmap? = null
-	private var currentMainId: Int = -1
 
 	companion object {
 		const val CLOTHES_ITEMS_KEY = "items"
@@ -122,18 +118,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					}
 				}, 500)
             }
-
-            if (it.containsKey(MAIN_ID_KEY)) {
-                currentMainId = it.getInt(MAIN_ID_KEY)
-            }
-
-            if (it.containsKey(CURRENT_TYPE_KEY)) {
-                currentType = it.getInt(CURRENT_TYPE_KEY)
-            }
-
-			if (it.containsKey(IS_UPDATING_KEY)) {
-				isUpdating = it.getBoolean(IS_UPDATING_KEY)
-			}
         }
     }
 
@@ -149,7 +133,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		).apply {
 			setFilter(filterModel = currentFilter)
 		}
-		typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentType)
+		typesAdapter = CollectionConstructorShopCategoryAdapter(gender = getTypeFromArgs())
 		itemAdapter = CollectionConstructorShopItemAdapter()
 
 		typesAdapter.itemClickListener = this
@@ -668,8 +652,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 		bundle.apply {
 			putParcelable(CreateCollectionAcceptFragment.OUTFIT_MODEL_KEY, outfitCreateModel)
-			putInt(CreateCollectionAcceptFragment.ID_KEY, currentMainId)
-			putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, isUpdating)
+			putInt(CreateCollectionAcceptFragment.ID_KEY, getMainIdFromArgs())
+			putBoolean(CreateCollectionAcceptFragment.IS_UPDATING_KEY, isUpdating())
 			putParcelable(
 				CreateCollectionAcceptFragment.PHOTO_BITMAP_KEY,
 				currentCollectionBitmap
@@ -748,8 +732,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		canvasHeight = frame_layout_fragment_collection_constructor_images_container.height
 	)
 
-	private fun getGender(): String = when (currentType) {
+	private fun getGender(): String = when (getTypeFromArgs()) {
 		0 -> GenderEnum.MALE.gender
 		else -> GenderEnum.FEMALE.gender
 	}
+
+	private fun isUpdating(): Boolean = arguments?.getBoolean(IS_UPDATING_KEY) ?: false
+
+	private fun getTypeFromArgs(): Int = arguments?.getInt(CURRENT_TYPE_KEY) ?: 0
+
+	private fun getMainIdFromArgs(): Int = arguments?.getInt(MAIN_ID_KEY) ?: -1
 }

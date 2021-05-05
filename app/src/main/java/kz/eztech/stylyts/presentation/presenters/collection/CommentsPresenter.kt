@@ -5,10 +5,12 @@ import kz.eztech.stylyts.data.api.models.comments.CommentCreateModel
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.comments.CreateCommentUseCase
 import kz.eztech.stylyts.domain.usecases.comments.GetCommentsUseCase
+import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -19,6 +21,7 @@ class CommentsPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getProfileUseCase: GetProfileUseCase,
     private val getPostByIdUseCase: GetPostByIdUseCase,
+    private val getOutfitByIdUseCase: GetOutfitByIdUseCase,
     private val getCommentsUseCase: GetCommentsUseCase,
     private val createCommentUseCase: CreateCommentUseCase
 ) : CommentsContract.Presenter {
@@ -30,10 +33,22 @@ class CommentsPresenter @Inject constructor(
         getCommentsUseCase.clear()
         createCommentUseCase.clear()
         getPostByIdUseCase.clear()
+        getOutfitByIdUseCase.clear()
     }
 
     override fun attach(view: CommentsContract.View) {
         this.view = view
+    }
+
+    override fun getCollection(
+        token: String,
+        id: Int,
+        mode: Int
+    ) {
+        when (mode) {
+            0 -> getOutfit(token, id)
+            1 -> getPost(token, id)
+        }
     }
 
     override fun getPost(
@@ -44,6 +59,22 @@ class CommentsPresenter @Inject constructor(
         getPostByIdUseCase.execute(object : DisposableSingleObserver<PostModel>() {
             override fun onSuccess(t: PostModel) {
                 view.processPost(postModel = t)
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
+            }
+        })
+    }
+
+    override fun getOutfit(
+        token: String,
+        outfitId: Int
+    ) {
+        getOutfitByIdUseCase.initParams(token, outfitId)
+        getOutfitByIdUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
+            override fun onSuccess(t: OutfitModel) {
+                view.processOutfit(outfitModel = t)
             }
 
             override fun onError(e: Throwable) {

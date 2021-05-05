@@ -123,6 +123,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
+                            android:background="@drawable/rounded_rectangle_gray"
                             android:duplicateParentState="true"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -176,18 +177,18 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_gravity="bottom|start"
-                        android:paddingBottom="@dimen/padding_size_24x"
+                        android:orientation="horizontal"
                         android:paddingHorizontal="@dimen/padding_size_8x"
+                        android:paddingBottom="@dimen/padding_size_24x"
                         >
 
                         <FrameLayout
                             android:id="@+id/fragment_collection_detail_clothes_tags_icon"
                             android:layout_width="@dimen/tag_icon_size"
                             android:layout_height="@dimen/tag_icon_size"
-                            android:background="@drawable/circle_black"
                             android:layout_marginEnd="@dimen/margin_size_10x"
+                            android:background="@drawable/circle_black"
                             android:visibility="gone"
                             >
 
@@ -259,8 +260,8 @@
                         android:layout_width="@dimen/icon_size_24x"
                         android:layout_height="@dimen/icon_size_24x"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="@dimen/margin_size_6x"
                         android:layout_marginStart="@dimen/margin_size_4x"
+                        android:layout_marginEnd="@dimen/margin_size_6x"
                         android:background="?attr/selectableItemBackground"
                         android:src="@drawable/ic_comment"
                         />

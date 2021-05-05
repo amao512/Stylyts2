@@ -260,6 +260,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
         val bundle = Bundle()
         bundle.putInt(CommentsFragment.COLLECTION_ID_KEY, item.id)
+        bundle.putInt(CommentsFragment.MODE_KEY, CommentsFragment.POST_MODE)
 
         findNavController().navigate(R.id.action_mainFragment_to_userCommentsFragment, bundle)
     }

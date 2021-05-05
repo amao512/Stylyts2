@@ -21,7 +21,12 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
     private lateinit var pagerAdapter: CollectionConstructorPagerAdapter
 
     private val inputClotheList = ArrayList<ClothesTypeDataModel>()
-    private var currentMainId = -1
+
+    companion object {
+        const val CLOTHES_ITEMS_KEY = "items"
+        const val MAIN_ID_KEY = "mainId"
+        const val IS_UPDATING_KEY = "isUpdating"
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_collection_constructor_holder
 
@@ -50,14 +55,10 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
 
     override fun initializeArguments() {
         arguments?.let {
-            if (it.containsKey("items")) {
-                it.getParcelableArrayList<ClothesTypeDataModel>("items")?.let { it1 ->
+            if (it.containsKey(CLOTHES_ITEMS_KEY)) {
+                it.getParcelableArrayList<ClothesTypeDataModel>(CLOTHES_ITEMS_KEY)?.let { it1 ->
                     inputClotheList.addAll(it1)
                 }
-            }
-
-            if (it.containsKey("mainId")) {
-                currentMainId = it.getInt("mainId")
             }
         }
     }
@@ -66,8 +67,10 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
 
     override fun initializeViews() {
         val bundle = Bundle()
+
         bundle.putParcelableArrayList(CollectionConstructorFragment.CLOTHES_ITEMS_KEY, inputClotheList)
-        bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, currentMainId)
+        bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, getIdFromArgs())
+        bundle.putBoolean(CollectionConstructorFragment.IS_UPDATING_KEY, isUpdating())
         pagerAdapter = CollectionConstructorPagerAdapter(this, bundle)
 
 
@@ -104,4 +107,8 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    private fun getIdFromArgs(): Int = arguments?.getInt(MAIN_ID_KEY) ?: 0
+
+    private fun isUpdating(): Boolean = arguments?.getBoolean(IS_UPDATING_KEY) ?: false
 }

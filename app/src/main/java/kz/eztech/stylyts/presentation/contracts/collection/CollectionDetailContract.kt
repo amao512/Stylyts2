@@ -25,7 +25,7 @@ interface CollectionDetailContract {
 
         fun getOutfitById(
             token: String,
-            outfitId: String
+            outfitId: Int
         )
 
         fun getPostById(

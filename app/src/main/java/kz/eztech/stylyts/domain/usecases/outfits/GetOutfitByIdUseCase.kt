@@ -24,9 +24,9 @@ class GetOutfitByIdUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        outfitId: String
+        outfitId: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.outfitId = outfitId
+        this.outfitId = outfitId.toString()
     }
 }
