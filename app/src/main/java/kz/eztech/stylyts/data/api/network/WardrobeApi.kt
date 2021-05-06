@@ -2,7 +2,7 @@ package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.data.api.models.wardrobe.WardrobeApiModel
+import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Header
@@ -17,5 +17,5 @@ interface WardrobeApi {
     fun createClothesByPhoto(
         @Header("Authorization") token: String,
         @Part multipartList: ArrayList<MultipartBody.Part>
-    ): Single<Response<WardrobeApiModel>>
+    ): Single<Response<ClothesApiModel>>
 }

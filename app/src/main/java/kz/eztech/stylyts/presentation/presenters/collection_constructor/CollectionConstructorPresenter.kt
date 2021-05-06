@@ -61,8 +61,6 @@ class CollectionConstructorPresenter @Inject constructor(
         token: String,
         filterModel: FilterModel
     ) {
-        view.displayProgress()
-
         getClothesUseCase.initParams(token, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

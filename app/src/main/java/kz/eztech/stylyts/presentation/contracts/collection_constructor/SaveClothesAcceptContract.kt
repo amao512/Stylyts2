@@ -2,10 +2,10 @@ package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
-import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -19,7 +19,7 @@ interface SaveClothesAcceptContract {
 
         fun processStyles(resultsModel: ResultsModel<ClothesStyleModel>)
 
-        fun processSuccessCreating(wardrobeModel: WardrobeModel)
+        fun processSuccessCreating(wardrobeModel: ClothesModel)
     }
 
     interface Presenter: BasePresenter<View> {

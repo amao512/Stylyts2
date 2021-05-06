@@ -38,9 +38,11 @@ class MainImageAdditionalHolder(
                 )
             }
 
-            Glide.with(image_view_image_detail_image_view.context)
-                .load(item.constructorImage)
-                .into(image_view_image_detail_image_view)
+            if (item.coverImages.isNotEmpty()) {
+                Glide.with(image_view_image_detail_image_view.context)
+                    .load(item.coverImages[0])
+                    .into(image_view_image_detail_image_view)
+            }
 
             image_view_image_detail_image_view.setOnTouchListener { _, event ->
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {

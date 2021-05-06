@@ -16,11 +16,11 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
-import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract
@@ -47,8 +47,6 @@ class SaveClothesAcceptDialog(
     private lateinit var adapter: FilterCheckAdapter
     private lateinit var clothesCreateModel: ClothesCreateModel
 
-    private var currentBitmap: Bitmap? = null
-    private var currentPhotoUri: Uri? = null
     private var listMode: Int = TYPE_LIST_MODE
 
     companion object {
@@ -113,6 +111,7 @@ class SaveClothesAcceptDialog(
                 dismiss()
             }
             R.id.toolbar_right_text_text_view -> {
+                clothesCreateModel.title = edit_text_view_dialog_save_clothes_accept_sign.text.toString()
                 presenter.createClothes(
                     token = getTokenFromArgs(),
                     clothesCreateModel = clothesCreateModel
@@ -158,17 +157,7 @@ class SaveClothesAcceptDialog(
         presenter.attach(view = this)
     }
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(PHOTO_BITMAP_KEY)) {
-                currentBitmap = it.getParcelable(PHOTO_BITMAP_KEY)
-            }
-
-            if (it.containsKey(PHOTO_URI_KEY)) {
-                currentPhotoUri = it.getParcelable(PHOTO_URI_KEY)
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {
         adapter = FilterCheckAdapter()
@@ -180,11 +169,11 @@ class SaveClothesAcceptDialog(
     override fun initializeViews() {
         dialog_save_clothes_recycler_view.adapter = adapter
 
-        currentBitmap?.let {
+        getPhotoBitmapFromArgs()?.let {
             clothesCreateModel.coverPhoto = FileUtils.createPngFileFromBitmap(requireContext(), it)
 
         }
-        currentPhotoUri?.path?.let {
+        getPhotoUriFromArgs()?.path?.let {
             clothesCreateModel.coverPhoto = File(it)
         }
 
@@ -197,12 +186,12 @@ class SaveClothesAcceptDialog(
     }
 
     override fun processPostInitialization() {
-        currentPhotoUri?.let {
+        getPhotoUriFromArgs()?.let {
             Glide.with(image_view_dialog_save_clothes_accept.context)
                 .load(it)
                 .into(image_view_dialog_save_clothes_accept)
         }
-        currentBitmap?.let {
+        getPhotoBitmapFromArgs()?.let {
             Glide.with(image_view_dialog_save_clothes_accept.context)
                 .load(it)
                 .into(image_view_dialog_save_clothes_accept)
@@ -295,8 +284,9 @@ class SaveClothesAcceptDialog(
         setListButtonsCondition()
     }
 
-    override fun processSuccessCreating(wardrobeModel: WardrobeModel) {
+    override fun processSuccessCreating(wardrobeModel: ClothesModel) {
         Log.d("TAG4", "$wardrobeModel")
+        listener.onChoice(null, wardrobeModel)
         dismiss()
     }
 
@@ -415,4 +405,8 @@ class SaveClothesAcceptDialog(
     }
 
     private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
+
+    private fun getPhotoBitmapFromArgs(): Bitmap? = arguments?.getParcelable(PHOTO_BITMAP_KEY)
+
+    private fun getPhotoUriFromArgs(): Uri? = arguments?.getParcelable(PHOTO_URI_KEY)
 }

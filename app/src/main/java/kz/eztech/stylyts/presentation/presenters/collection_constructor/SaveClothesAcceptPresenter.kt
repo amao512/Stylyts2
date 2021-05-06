@@ -4,6 +4,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
@@ -105,8 +106,8 @@ class SaveClothesAcceptPresenter @Inject constructor(
         clothesCreateModel: ClothesCreateModel
     ) {
         createClothesByImageUseCase.initParams(token, clothesCreateModel)
-        createClothesByImageUseCase.execute(object : DisposableSingleObserver<WardrobeModel>() {
-            override fun onSuccess(t: WardrobeModel) {
+        createClothesByImageUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
+            override fun onSuccess(t: ClothesModel) {
                 view.processSuccessCreating(wardrobeModel = t)
             }
 

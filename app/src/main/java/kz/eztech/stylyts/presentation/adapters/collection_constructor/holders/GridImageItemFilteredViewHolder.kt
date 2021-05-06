@@ -22,9 +22,11 @@ class GridImageItemFilteredViewHolder(
         item as ClothesModel
 
         with(itemView) {
-            Glide.with(shapeable_image_view_item_collection_image.context)
-                .load(item.constructorImage)
-                .into(shapeable_image_view_item_collection_image)
+            if (item.coverImages.isNotEmpty()) {
+                Glide.with(shapeable_image_view_item_collection_image.context)
+                    .load(item.coverImages[0])
+                    .into(shapeable_image_view_item_collection_image)
+            }
 
             shapeable_image_view_item_collection_image.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, item)

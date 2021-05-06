@@ -166,7 +166,12 @@
         android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment"
         android:label="fragment_clean_background"
         tools:layout="@layout/fragment_clean_background"
-        />
+        >
+        <action
+            android:id="@+id/action_cleanBackgroundFragment_to_clothesDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/photoPostCreatorFragment"

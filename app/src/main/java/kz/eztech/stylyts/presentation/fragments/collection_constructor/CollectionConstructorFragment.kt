@@ -164,9 +164,13 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
     }
 
-    override fun processPostInitialization() = presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
+    override fun processPostInitialization() {
+		presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
 
-    override fun disposeRequests() = presenter.disposeRequests()
+		handleRecyclerView()
+	}
+
+	override fun disposeRequests() = presenter.disposeRequests()
 
     override fun displayMessage(msg: String) = displayToast(msg)
 
@@ -185,6 +189,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			R.id.text_view_fragment_collection_constructor_category_back -> onCategoryBackClick()
 			R.id.text_view_fragment_collection_constructor_category_next -> onCategoryNextClick()
 			R.id.text_view_fragment_collection_constructor_category_filter -> {
+				currentFilter.page = 1
+				currentFilter.isLastPage = false
 				filterDialog.apply {
 					setFilter(filterModel = currentFilter)
 				}.show(childFragmentManager, "FilterDialog")
@@ -249,6 +255,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			}
 		}
 
+		if (resultsModel.totalPages != currentFilter.page) {
+			currentFilter.page++
+		} else {
+			currentFilter.isLastPage = true
+		}
+
 		text_view_fragment_collection_constructor_category_next.hide()
 		text_view_fragment_collection_constructor_category_filter.show()
 
@@ -256,7 +268,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		text_view_fragment_collection_constructor_category_back.isClickable = true
 		recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
 
-		itemAdapter.updateList(list = resultsModel.results)
+		itemAdapter.updateMoreList(list = resultsModel.results)
 		isItems = true
 	}
 
@@ -291,13 +303,13 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 		itemAdapter.choosePosition(clothesId = item.id)
 
-		var photoUrl: String
+		var photoUrl: String = EMPTY_STRING
 		var currentSameObject: ImageEntity? = null
 
-		item.constructorImage.let { coverPhoto ->
-			photoUrl = when (coverPhoto.contains("http", true)) {
-				true -> coverPhoto
-				else -> "http://178.170.221.31${coverPhoto}"
+		if (item.coverImages.isNotEmpty()) {
+			photoUrl = when (item.coverImages[0].contains("http", true)) {
+				true -> item.coverImages[0]
+				else -> "http://178.170.221.31${item.coverImages[0]}"
 			}
 		}
 
@@ -436,13 +448,37 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				if (isExternal) {
 					onChoice(view, externalType)
 				} else {
-					presenter.getClothesByType(
-						token = currentActivity.getTokenFromSharedPref(),
-						filterModel = currentFilter
-					)
+					itemAdapter.clearList()
+					currentFilter.page = 1
+					currentFilter.isLastPage = false
+					currentFilter.typeIdList = listOf(item.id)
+
+					displayProgress()
+					getClothes()
 				}
 			}
 		}
+	}
+
+	private fun handleRecyclerView() {
+		val recyclerView = recycler_view_fragment_collection_constructor_list
+
+		recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+			override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+				if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+					if (!currentFilter.isLastPage) {
+						getClothes()
+					}
+				}
+			}
+		})
+	}
+
+	private fun getClothes() {
+		presenter.getClothesByType(
+			token = currentActivity.getTokenFromSharedPref(),
+			filterModel = currentFilter
+		)
 	}
 
 	private fun onCategoryItemImageDoubleClick() {
@@ -474,11 +510,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
 	private fun showFilterResults(item: Any?) {
 		currentFilter = item as FilterModel
+		itemAdapter.clearList()
 
-		presenter.getClothesByType(
-			token = currentActivity.getTokenFromSharedPref(),
-			filterModel = currentFilter
-		)
+		displayProgress()
+		getClothes()
 	}
 
 	private fun navigateToCameraFragment(mode: Int) {

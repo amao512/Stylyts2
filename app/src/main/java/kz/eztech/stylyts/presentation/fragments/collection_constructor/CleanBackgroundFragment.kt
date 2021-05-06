@@ -19,6 +19,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CleanBackgroundContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.presenters.CleanBackgroundPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
@@ -99,6 +100,15 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     ) {
         when (v?.id) {
 			R.id.toolbar_right_text_text_view -> choiceImage(item)
+        }
+
+        when (item) {
+            is ClothesModel -> {
+                val bundle = Bundle()
+                bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+
+                findNavController().navigate(R.id.action_cleanBackgroundFragment_to_clothesDetailFragment)
+            }
         }
     }
 

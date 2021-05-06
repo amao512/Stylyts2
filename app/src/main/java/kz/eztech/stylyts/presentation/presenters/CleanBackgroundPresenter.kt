@@ -4,7 +4,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
-import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
 import kz.eztech.stylyts.domain.usecases.wardrobe.CreateClothesByImageUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -38,10 +37,10 @@ class CleanBackgroundPresenter @Inject constructor(
         view.displayProgress()
 
         createClothesByImageUseCase.initParams(token, clothesCreateModel)
-        createClothesByImageUseCase.execute(object : DisposableSingleObserver<WardrobeModel>() {
-            override fun onSuccess(t: WardrobeModel) {
+        createClothesByImageUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
+            override fun onSuccess(t: ClothesModel) {
                 view.hideProgress()
-                getClothesById(token, t.clothes)
+                getClothesById(token, t.id)
             }
 
             override fun onError(e: Throwable) {
