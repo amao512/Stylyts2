@@ -16,7 +16,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.ClothesColor
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
-import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.domain.models.user.UserShortModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -38,7 +38,8 @@ import javax.inject.Inject
 class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContract.View,
     View.OnClickListener, DialogChooserListener {
 
-    @Inject lateinit var presenter: ClothesDetailPresenter
+    @Inject
+    lateinit var presenter: ClothesDetailPresenter
     private lateinit var chooserDialog: ClothesSizesBottomDialog
 
     private enum class CART_STATE { NONE, EDIT, DONE }
@@ -168,29 +169,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         displayMessage(msg = getString(R.string.saved))
     }
 
-    override fun processClothesOwner(userModel: UserModel) {
-        fragment_clothes_detail_desc_author_text_view.text = getString(
-            R.string.full_name_text_format,
-            userModel.firstName,
-            userModel.lastName
-        )
-
-        if (userModel.avatar.isBlank()) {
-            fragment_clothes_detail_avatar_shapeable_image_view.hide()
-            fragment_clothes_detail_user_short_name_text_view.text = getShortName(
-                firstName = userModel.firstName,
-                lastName = userModel.lastName
-            )
-        } else {
-            fragment_clothes_detail_user_short_name_text_view.hide()
-
-            Glide.with(fragment_clothes_detail_avatar_shapeable_image_view.context)
-                .load(userModel.avatar)
-                .centerCrop()
-                .into(fragment_clothes_detail_avatar_shapeable_image_view)
-        }
-    }
-
     override fun processInsertingCart() {
         CartDialog().show(childFragmentManager, "Cart")
     }
@@ -199,27 +177,56 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         chooserDialog = ClothesSizesBottomDialog()
         chooserDialog.setChoiceListener(this)
 
-        fragment_clothes_detail_brand_title_text_view.text = clothesModel.clothesBrand.title
+        if (clothesModel.clothesBrand.title.isNotEmpty()) {
+            fragment_clothes_detail_brand_title_text_view.text = clothesModel.clothesBrand.title
+        } else {
+            fragment_clothes_detail_brand_title_text_view.hide()
+        }
         fragment_clothes_detail_clothes_title_text_view.text = clothesModel.title
 
-        fillImages(clothesModel)
-        fillPrice(clothesModel)
-        fillDescription(clothesModel)
+        processImages(clothesModel)
+        processPrice(clothesModel)
+        processDescription(clothesModel)
 
-        presenter.getClothesOwner(
-            token = currentActivity.getTokenFromSharedPref(),
-            userId = clothesModel.userShort.id
-        )
+        if (clothesModel.owner.id != 0) {
+            processClothesOwner(owner = clothesModel.owner)
+        }
     }
 
-    private fun fillImages(clothesModel: ClothesModel) {
+    private fun processClothesOwner(owner: UserShortModel) {
+        fragment_clothes_detail_desc_author_text_view.text = getString(
+            R.string.full_name_text_format,
+            owner.firstName,
+            owner.lastName
+        )
+
+        if (owner.avatar.isBlank()) {
+            fragment_clothes_detail_avatar_shapeable_image_view.hide()
+            fragment_clothes_detail_user_short_name_text_view.text = getShortName(
+                firstName = owner.firstName,
+                lastName = owner.lastName
+            )
+        } else {
+            fragment_clothes_detail_user_short_name_text_view.hide()
+
+            Glide.with(fragment_clothes_detail_avatar_shapeable_image_view.context)
+                .load(owner.avatar)
+                .centerCrop()
+                .into(fragment_clothes_detail_avatar_shapeable_image_view)
+        }
+    }
+
+    private fun processImages(clothesModel: ClothesModel) {
         val imageArray = ArrayList<String>()
 
         clothesModel.coverImages.map { image ->
             imageArray.add(image)
         }
 
-        val imageAdapter = ImagesViewPagerAdapter(imageArray)
+        val imageAdapter = ImagesViewPagerAdapter(
+            imageArray,
+            withCenterCrop = false
+        )
         fragment_clothes_detail_photos_holder_view_pager.adapter = imageAdapter
 
         fragment_clothes_detail_photos_pager_indicator.show()
@@ -228,7 +235,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         )
     }
 
-    private fun fillPrice(clothesModel: ClothesModel) {
+    private fun processPrice(clothesModel: ClothesModel) {
         if (clothesModel.salePrice != 0) {
             fragment_clothes_detail_price_text_view.hide()
             fragment_clothes_detail_default_price_text_view.apply {
@@ -245,14 +252,19 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
             fragment_clothes_detail_sale_prices_linear_layout.show()
         } else {
             fragment_clothes_detail_sale_prices_linear_layout.hide()
-            fragment_clothes_detail_price_text_view.text = getString(
-                R.string.price_tenge_text_format,
-                NumberFormat.getInstance().format(clothesModel.cost)
-            )
+
+            if (clothesModel.cost != 0) {
+                fragment_clothes_detail_price_text_view.text = getString(
+                    R.string.price_tenge_text_format,
+                    NumberFormat.getInstance().format(clothesModel.cost)
+                )
+            } else {
+                fragment_clothes_detail_price_text_view.hide()
+            }
         }
     }
 
-    private fun fillDescription(clothesModel: ClothesModel) {
+    private fun processDescription(clothesModel: ClothesModel) {
         fragment_clothes_detail_desc_text_view.text = clothesModel.description
         fragment_clothes_detail_desc_id_text_view.text = clothesModel.id.toString()
         fragment_clothes_detail_desc_color_text_view.text = ColorUtils.getColorTitleFromHex(
@@ -288,7 +300,8 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 fragment_clothes_detail_text_share_frame_layout.show()
             }
             CART_STATE.EDIT -> processCart(clothesModel)
-            else -> {}
+            else -> {
+            }
         }
     }
 
@@ -304,7 +317,10 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 counter++
             }
 
-            bundle.putParcelableArrayList(ClothesSizesBottomDialog.SIZES_KEY, ArrayList(clothesSizes))
+            bundle.putParcelableArrayList(
+                ClothesSizesBottomDialog.SIZES_KEY,
+                ArrayList(clothesSizes)
+            )
         } else {
             displayMessage(msg = getString(R.string.there_are_not_sizes))
         }
@@ -323,7 +339,10 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 counter++
             }
 
-            bundle.putParcelableArrayList(ClothesSizesBottomDialog.COLORS_KEY, ArrayList(clothesColors))
+            bundle.putParcelableArrayList(
+                ClothesSizesBottomDialog.COLORS_KEY,
+                ArrayList(clothesColors)
+            )
         } else {
             displayMessage(msg = getString(R.string.there_are_not_colors))
         }

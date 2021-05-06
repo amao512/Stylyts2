@@ -22,7 +22,7 @@ data class ClothesModel(
     val productCode: String,
     val createdAt: String,
     val modifiedAt: String,
-    val userShort: UserShortModel,
+    val owner: UserShortModel,
     val clothesBrand: ClothesBrandModel,
     val sizeInStock: List<ClothesSizeModel>,
 

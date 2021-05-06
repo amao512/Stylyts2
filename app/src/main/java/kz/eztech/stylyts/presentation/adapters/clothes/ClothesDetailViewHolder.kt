@@ -26,7 +26,12 @@ class ClothesDetailViewHolder(
     ) {
         with(item as ClothesModel) {
             with(itemView) {
-                item_clothes_detail_title_text_view.text = clothesBrand.title
+                if (clothesBrand.title.isNotEmpty()) {
+                    item_clothes_detail_title_text_view.text = clothesBrand.title
+                } else {
+                    item_clothes_detail_title_text_view.hide()
+                }
+
                 item_clothes_detail_sub_title_text_view.text = title
 
                 processPrice(clothesModel = item)
@@ -51,11 +56,15 @@ class ClothesDetailViewHolder(
 
     private fun processPrice(clothesModel: ClothesModel) {
         with (itemView) {
-            item_clothes_detail_price_text_view.apply {
-                text = context.getString(
-                    R.string.price_tenge_text_format,
-                    NumberFormat.getInstance().format(clothesModel.cost),
-                )
+            if (clothesModel.cost != 0) {
+                item_clothes_detail_price_text_view.apply {
+                    text = context.getString(
+                        R.string.price_tenge_text_format,
+                        NumberFormat.getInstance().format(clothesModel.cost),
+                    )
+                }
+            } else {
+                item_clothes_detail_price_text_view.hide()
             }
 
             if (clothesModel.salePrice != 0) {

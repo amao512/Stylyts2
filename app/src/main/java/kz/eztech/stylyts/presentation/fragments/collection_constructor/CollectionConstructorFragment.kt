@@ -321,6 +321,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			}
 		}
 
+		currentId = item.clothesCategory.clothesType.id
+
 		loadWithGlide(
 			photoUrl = photoUrl,
 			currentSameObject = currentSameObject,
@@ -733,6 +735,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		listOfItems.add(clothesModel)
 		listOfEntities.add(entity)
 		listOfIdsChosen.add(currentId)
+
+		checkIsChosen()
+		typesAdapter.notifyDataSetChanged()
 	}
 
 	private fun getRelativeImageMeasurements(

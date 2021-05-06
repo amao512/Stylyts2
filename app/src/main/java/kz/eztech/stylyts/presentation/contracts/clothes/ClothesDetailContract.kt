@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.clothes
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -13,8 +12,6 @@ interface ClothesDetailContract {
     interface View : BaseView {
 
         fun processClothes(clothesModel: ClothesModel)
-
-        fun processClothesOwner(userModel: UserModel)
 
         fun processSuccessSavedWardrobe()
 
@@ -31,11 +28,6 @@ interface ClothesDetailContract {
         fun getClothesByBarcode(
             token: String,
             barcode: String
-        )
-
-        fun getClothesOwner(
-            token: String,
-            userId: Int
         )
 
         fun saveClothesToWardrobe(

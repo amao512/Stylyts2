@@ -52,7 +52,7 @@ data class ClothesApiModel(
     val modifiedAt: String?,
     @SerializedName("owner")
     @Expose
-    val userShort: UserShortApiModel?,
+    val owner: UserShortApiModel?,
     @SerializedName("clothes_brand")
     @Expose
     val clothesBrand: ClothesBrandApiModel?,

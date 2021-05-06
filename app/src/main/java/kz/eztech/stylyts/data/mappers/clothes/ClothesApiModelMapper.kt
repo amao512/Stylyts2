@@ -36,7 +36,7 @@ class ClothesApiModelMapper @Inject constructor(
                 productCode = it.productCode ?: EMPTY_STRING,
                 createdAt = it.createdAt ?: EMPTY_STRING,
                 modifiedAt = it.modifiedAt ?: EMPTY_STRING,
-                userShort = userShortApiModelMapper.map(it.userShort),
+                owner = userShortApiModelMapper.map(it.owner),
                 clothesBrand = clothesBrandApiModelMapper.map(it.clothesBrand),
             )
         }
@@ -60,7 +60,7 @@ class ClothesApiModelMapper @Inject constructor(
             productCode = data?.productCode ?: EMPTY_STRING,
             createdAt = data?.createdAt ?: EMPTY_STRING,
             modifiedAt = data?.modifiedAt ?: EMPTY_STRING,
-            userShort = userShortApiModelMapper.map(data?.userShort),
+            owner = userShortApiModelMapper.map(data?.owner),
             clothesBrand = clothesBrandApiModelMapper.map(data?.clothesBrand),
         )
     }

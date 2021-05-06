@@ -8,11 +8,9 @@ import kz.eztech.stylyts.data.db.cart.CartDataSource
 import kz.eztech.stylyts.data.db.cart.CartMapper
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByBarcode
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.SaveClothesToWardrobeUseCase
-import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.clothes.ClothesDetailContract
 import javax.inject.Inject
@@ -25,7 +23,6 @@ class ClothesDetailPresenter @Inject constructor(
     private val getClothesByIdUseCase: GetClothesByIdUseCase,
     private val getClothesByBarcode: GetClothesByBarcode,
     private val saveClothesToWardrobeUseCase: SaveClothesToWardrobeUseCase,
-    private val getUserByIdUseCase: GetUserByIdUseCase,
     private val cartDataSource: CartDataSource
 ) : ClothesDetailContract.Presenter {
 
@@ -37,7 +34,6 @@ class ClothesDetailPresenter @Inject constructor(
         getClothesByIdUseCase.clear()
         getClothesByBarcode.clear()
         saveClothesToWardrobeUseCase.clear()
-        getUserByIdUseCase.clear()
     }
 
     override fun attach(view: ClothesDetailContract.View) {
@@ -64,22 +60,6 @@ class ClothesDetailPresenter @Inject constructor(
                     hideProgress()
                     displayMessage(errorHelper.processError(e))
                 }
-            }
-        })
-    }
-
-    override fun getClothesOwner(
-        token: String,
-        userId: Int
-    ) {
-        getUserByIdUseCase.initParams(token, userId)
-        getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
-            override fun onSuccess(t: UserModel) {
-                view.processClothesOwner(userModel = t)
-            }
-
-            override fun onError(e: Throwable) {
-               view.displayMessage(msg = errorHelper.processError(e))
             }
         })
     }
