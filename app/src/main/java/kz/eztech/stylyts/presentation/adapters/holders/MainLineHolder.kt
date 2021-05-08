@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.text.HtmlCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.imageview.ShapeableImageView
@@ -20,6 +21,7 @@ import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -48,6 +50,9 @@ class MainLineHolder(
     private lateinit var usersTagContainerFrameLayout: FrameLayout
     private lateinit var clothesRecyclerView: RecyclerView
     private lateinit var likeImageButton: ImageView
+    private lateinit var likesCountTextView: TextView
+    private lateinit var totalCostTextView: TextView
+    private lateinit var descriptionTextView: TextView
     private lateinit var commentsImageButton: ImageView
     private lateinit var commentsCountTextView: TextView
 
@@ -64,6 +69,7 @@ class MainLineHolder(
         processUserPhoto(postModel = item)
         processTags(postModel = item)
         processLike(isLiked = item.alreadyLiked)
+        processLikesCount(likesCount = item.likesCount)
         initializeListeners(postModel = item, position = position)
     }
 
@@ -100,6 +106,9 @@ class MainLineHolder(
             usersTagContainerFrameLayout = item_main_image_users_tags_container
             clothesRecyclerView = recycler_view_item_main_image_additionals_list
             likeImageButton = item_main_image_like_image_button
+            likesCountTextView = item_main_line_likes_count_text_view
+            totalCostTextView = text_view_item_main_image_comments_cost
+            descriptionTextView = item_main_line_desc_text_view
             commentsImageButton = item_main_image_comments_image_button
             commentsCountTextView = text_view_item_main_image_comments_count
         }
@@ -114,9 +123,9 @@ class MainLineHolder(
         position: Int
     ) {
         with(itemView) {
-            if (ownId != postModel.author.id) {
-                button_item_main_image_change_collection.hide()
-            }
+//            if (ownId != postModel.author.id) {
+//                button_item_main_image_change_collection.hide()
+//            }
 
             item_main_image_image_card_view.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
@@ -125,14 +134,33 @@ class MainLineHolder(
             constraint_layout_fragment_item_main_image_profile_container.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
             }
-            button_item_main_image_change_collection.setOnClickListener { thisView ->
-                adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
+//            button_item_main_image_change_collection.setOnClickListener { thisView ->
+//                adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
+//            }
+
+            if (postModel.clothes.isNotEmpty()) {
+                totalCostTextView.text = HtmlCompat.fromHtml(
+                    totalCostTextView.context.getString(
+                        R.string.total_cost_text_format,
+                        NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost }).toString(),
+                        postModel.clothes[0].currency,
+                    ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                )
+            } else {
+                totalCostTextView.hide()
             }
 
-            postModel.clothes.let { clothes ->
-                text_view_item_main_image_comments_cost.text = SPACE_TEXT_FORMAT.format(
-                    NumberFormat.getInstance().format(clothes.sumBy { it.cost }), "KZT"
+            if (postModel.description.isNotBlank()) {
+                descriptionTextView.text = HtmlCompat.fromHtml(
+                    descriptionTextView.context.getString(
+                        R.string.comment_text_with_user_text_format,
+                        postModel.author.username,
+                        EMPTY_STRING,
+                        postModel.description
+                    ), HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
+            } else {
+                descriptionTextView.hide()
             }
 
             commentsCountTextView.text = commentsCountTextView.context
@@ -163,6 +191,18 @@ class MainLineHolder(
 
 //            text_view_item_main_image_date.text =
 //                "${DateFormatterHelper.formatISO_8601(postModel.created, FORMAT_DATE_DD_MMMM)}"
+        }
+    }
+
+    private fun processLikesCount(likesCount: Int) {
+        if (likesCount > 0) {
+            likesCountTextView.text = likesCountTextView.context.getString(
+                R.string.likes_count_text_format,
+                likesCount.toString()
+            )
+            likesCountTextView.show()
+        } else {
+            likesCountTextView.hide()
         }
     }
 
@@ -331,7 +371,7 @@ class MainLineHolder(
     private fun processLike(isLiked: Boolean) {
         likeImageButton.setImageResource(
             when (isLiked) {
-                true -> R.drawable.ic_favorite_red
+                true -> R.drawable.ic_heart
                 false -> R.drawable.ic_baseline_favorite_border_24
             }
         )

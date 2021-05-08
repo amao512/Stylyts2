@@ -44,7 +44,15 @@ class MainLineAdapter(
     ) {
         val post = currentList.find { (it as PostModel).id == id }
 
-        (post as PostModel).alreadyLiked = isLiked
+        post as PostModel
+
+        if (isLiked) {
+            post.likesCount++
+        } else {
+            post.likesCount--
+        }
+
+        post.alreadyLiked = isLiked
 
         notifyDataSetChanged()
     }

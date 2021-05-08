@@ -39,8 +39,6 @@ class MainLinePresenter @Inject constructor(
 		token: String,
 		page: Int
 	) {
-		view.displayProgress()
-
 		getHomePagePostsUseCase.initParams(token, page)
 		getHomePagePostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {

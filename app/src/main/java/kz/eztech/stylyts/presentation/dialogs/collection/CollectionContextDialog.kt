@@ -23,6 +23,8 @@ class CollectionContextDialog(
         if (!isOwn) {
             dialog_bottom_collection_context_delete_text_view.hide()
             dialog_bottom_collection_context_change_text_view.hide()
+            dialog_bottom_collection_context_divider_one.hide()
+            dialog_bottom_collection_context_divider_two.hide()
         }
     }
 

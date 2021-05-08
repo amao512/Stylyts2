@@ -28,24 +28,26 @@
             />
 
         <View
+            android:id="@+id/dialog_bottom_collection_context_divider_one"
             android:layout_width="match_parent"
             android:layout_height="@dimen/little_divider_height"
             android:background="@color/divider_bg_color"
             />
 
         <TextView
-            android:id="@+id/dialog_bottom_collection_context_archive_text_view"
+            android:id="@+id/dialog_bottom_collection_context_share_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingVertical="@dimen/padding_size_16x"
-            android:text="@string/collection_context_archive"
+            android:text="@string/collection_context_share"
             android:textColor="@color/app_dark_blue_gray"
             android:textSize="@dimen/text_size_14x"
             android:textStyle="bold"
             />
 
         <View
+            android:id="@+id/dialog_bottom_collection_context_divider_two"
             android:layout_width="match_parent"
             android:layout_height="@dimen/little_divider_height"
             android:background="@color/divider_bg_color"
@@ -70,12 +72,12 @@
             />
 
         <TextView
-            android:id="@+id/dialog_bottom_collection_context_share_text_view"
+            android:id="@+id/dialog_bottom_collection_context_support_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingVertical="@dimen/padding_size_16x"
-            android:text="@string/collection_context_share"
+            android:text="@string/collection_context_complain"
             android:textColor="@color/app_dark_blue_gray"
             android:textSize="@dimen/text_size_14x"
             android:textStyle="bold"
@@ -97,7 +99,7 @@
             android:gravity="center"
             android:paddingVertical="@dimen/padding_size_16x"
             android:text="@string/collection_context_cancel"
-            android:textColor="@color/app_dark_blue_gray"
+            android:textColor="@color/app_red"
             android:textSize="@dimen/text_size_14x"
             android:textStyle="bold"
             />

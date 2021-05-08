@@ -256,7 +256,7 @@
     <string name="photo_chooser_success_added">Успешно добавлено</string>
 
     <string name="collection_context_delete">Удалить</string>
-    <string name="collection_context_archive">Архивировать</string>
+    <string name="collection_context_complain">Пожаловаться</string>
     <string name="collection_context_change">Изменить</string>
     <string name="collection_context_share">Поделиться</string>
     <string name="collection_context_cancel">Отмена</string>
@@ -321,5 +321,8 @@
     <string name="choose_clothes_category">Выберите категорию вещей</string>
     <string name="choose_clothes_style">Выберите стиль вещей</string>
 
-    <string name="comments_count_text_format">Показать %s коммент</string>
+    <string name="comments_count_text_format">Показать %s комментарий...</string>
+
+    <string name="likes_count_text_format">Нравится: %s</string>
+    <string name="total_cost_text_format"><![CDATA[%1$s <b>%2$s</b>]]></string>
 </resources>

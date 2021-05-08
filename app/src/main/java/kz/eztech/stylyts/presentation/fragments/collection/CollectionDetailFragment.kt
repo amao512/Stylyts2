@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
@@ -69,7 +70,9 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private lateinit var likeImageView: ImageView
     private lateinit var commentsImageView: ImageView
     private lateinit var changeCollectionButton: Button
+    private lateinit var likesCountTextView: TextView
     private lateinit var totalPriceTextView: TextView
+    private lateinit var descriptionTextView: TextView
     private lateinit var commentsCountTextView: TextView
 
     companion object {
@@ -125,8 +128,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         userTagIconFrameLayout = fragment_collection_detail_user_tags_icon
         likeImageView = fragment_collection_detail_like_image_view
         commentsImageView = fragment_collection_detail_comments_image_view
-        changeCollectionButton = button_fragment_collection_detail_change_collection
+//        changeCollectionButton = button_fragment_collection_detail_change_collection
+        likesCountTextView = fragment_collection_detail_likes_count_text_view
         totalPriceTextView = text_view_fragment_collection_detail_comments_cost
+        descriptionTextView = fragment_collection_detail_desc_text_view
         commentsCountTextView = text_view_fragment_collection_detail_comments_count
 
         additionalAdapter = MainImagesAdditionalAdapter()
@@ -140,13 +145,15 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     override fun initializeListeners() {
         commentsCountTextView.setOnClickListener(this)
-        changeCollectionButton.setOnClickListener(this)
+//        changeCollectionButton.setOnClickListener(this)
         likeImageView.setOnClickListener(this)
         commentsImageView.setOnClickListener(this)
         constraint_layout_fragment_collection_detail_profile_container.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
+        displayProgress()
+
         when (getModeFromArgs()) {
             OUTFIT_MODE -> presenter.getOutfitById(
                 token = currentActivity.getTokenFromSharedPref(),
@@ -175,14 +182,11 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.id.text_view_fragment_collection_detail_comments_count -> navigateToComments()
             R.id.fragment_collection_detail_comments_image_view -> navigateToComments()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
+//            R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
             R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
             R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
             R.id.fragment_collection_detail_user_tags_icon -> onShowUsersTags()
-            R.id.fragment_collection_detail_like_image_view -> presenter.onLikeClick(
-                token = currentActivity.getTokenFromSharedPref(),
-                postId = getCollectionIdFromArgs()
-            )
+            R.id.fragment_collection_detail_like_image_view -> onLikeClicked()
         }
     }
 
@@ -229,10 +233,42 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processPost(postModel: PostModel) {
         additionalAdapter.updateList(list = postModel.clothes)
         currentPostModel = postModel
-        totalPriceTextView.text = getString(
-            R.string.price_tenge_text_format,
-            NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost })
-        )
+
+        if (postModel.clothes.isNotEmpty()) {
+            totalPriceTextView.text = HtmlCompat.fromHtml(
+                totalPriceTextView.context.getString(
+                    R.string.total_cost_text_format,
+                    NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost }).toString(),
+                    postModel.clothes[0].currency,
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        } else {
+            totalPriceTextView.hide()
+        }
+
+        if (postModel.likesCount > 0) {
+            likesCountTextView.show()
+            likesCountTextView.text = getString(
+                R.string.likes_count_text_format,
+                postModel.likesCount.toString()
+            )
+        } else {
+            likesCountTextView.hide()
+        }
+
+        if (postModel.description.isNotBlank()) {
+            descriptionTextView.text = HtmlCompat.fromHtml(
+                descriptionTextView.context.getString(
+                    R.string.comment_text_with_user_text_format,
+                    postModel.author.username,
+                    EMPTY_STRING,
+                    postModel.description
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        } else {
+            descriptionTextView.hide()
+        }
+
         commentsCountTextView.text = getString(
             R.string.comments_count_text_format,
             postModel.commentsCount.toString()
@@ -249,9 +285,9 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun processOwnViews(authorId: Int) {
         val isOwn = authorId == currentActivity.getUserIdFromSharedPref()
 
-        if (!isOwn) {
-            changeCollectionButton.hide()
-        }
+//        if (!isOwn) {
+//            changeCollectionButton.hide()
+//        }
 
         dialogMenuImageButton.setOnClickListener {
             onContextMenuClick(isOwn)
@@ -295,7 +331,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processLike(isLiked: Boolean) {
         likeImageView.setImageResource(
             when (isLiked) {
-                true -> R.drawable.ic_favorite_red
+                true -> R.drawable.ic_heart
                 false -> R.drawable.ic_baseline_favorite_border_24
             }
         )
@@ -448,6 +484,19 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             userTagsContainerFrameLayout.show()
         } else {
             userTagsContainerFrameLayout.hide()
+        }
+    }
+
+    private fun onLikeClicked() {
+        presenter.onLikeClick(
+            token = currentActivity.getTokenFromSharedPref(),
+            postId = getCollectionIdFromArgs()
+        )
+        when (getModeFromArgs()) {
+            POST_MODE -> presenter.getPostById(
+                token = currentActivity.getTokenFromSharedPref(),
+                postId = getCollectionIdFromArgs()
+            )
         }
     }
 

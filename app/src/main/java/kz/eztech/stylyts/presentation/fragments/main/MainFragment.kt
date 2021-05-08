@@ -97,7 +97,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     ) {
         when (view.id) {
             R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked(item)
-            R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
+//            R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
             R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
             R.id.text_view_item_main_image_comments_count -> navigateToComments(item)

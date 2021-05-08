@@ -255,7 +255,7 @@
     <string name="photo_chooser_success_added">Success added</string>
 
     <string name="collection_context_delete">Delete</string>
-    <string name="collection_context_archive">Archive</string>
+    <string name="collection_context_complain">Complain</string>
     <string name="collection_context_change">Change</string>
     <string name="collection_context_share">Share</string>
     <string name="collection_context_cancel">Cancel</string>
@@ -320,5 +320,8 @@
     <string name="choose_clothes_category">Choose category of clothes</string>
     <string name="choose_clothes_style">Choose style of clothes</string>
 
-    <string name="comments_count_text_format">Show %s comments</string>
+    <string name="comments_count_text_format">Show %s comments...</string>
+
+    <string name="likes_count_text_format">%s likes</string>
+    <string name="total_cost_text_format"><![CDATA[%1$s <b>%2$s</b>]]></string>
 </resources>

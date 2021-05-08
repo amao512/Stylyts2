@@ -116,16 +116,6 @@
                 />
         </LinearLayout>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|end"
-            android:layout_marginTop="@dimen/margin_size_32x"
-            android:layout_marginEnd="@dimen/margin_size_24x"
-            android:background="?android:attr/selectableItemBackground"
-            android:src="@drawable/ic_safe_flag_empty"
-            />
-
         <FrameLayout
             android:id="@+id/item_main_image_clothes_tags_container"
             android:layout_width="match_parent"
@@ -204,11 +194,11 @@
         tools:listitem="@layout/item_main_image_detail"
         />
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_16x"
-        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/margin_size_8x"
         android:paddingHorizontal="@dimen/padding_size_24x"
         >
 
@@ -217,9 +207,11 @@
             android:layout_width="@dimen/icon_size_24x"
             android:layout_height="@dimen/icon_size_24x"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/margin_size_6x"
-            android:background="?attr/selectableItemBackground"
             android:src="@drawable/ic_baseline_favorite_border_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/item_main_image_comments_image_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <ImageView
@@ -227,45 +219,67 @@
             android:layout_width="@dimen/icon_size_24x"
             android:layout_height="@dimen/icon_size_24x"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_size_4x"
-            android:layout_marginEnd="@dimen/margin_size_6x"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_comment"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:src="@drawable/ic_comment_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_main_image_like_image_button"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
         <ImageView
+            android:id="@+id/item_main_line_save_image_view"
             android:layout_width="@dimen/icon_size_24x"
             android:layout_height="@dimen/icon_size_24x"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_size_4x"
-            android:layout_marginEnd="@dimen/margin_size_6x"
-            android:background="?attr/selectableItemBackground"
-            android:src="@drawable/ic_share"
+            android:src="@drawable/ic_save"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button_item_main_image_change_collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/margin_size_4x"
-            android:text="@string/collection_detail_change_outfit"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_12x"
-            app:backgroundTint="@color/app_light_orange"
-            />
-    </LinearLayout>
+        <!--        <com.google.android.material.button.MaterialButton-->
+        <!--            android:id="@+id/button_item_main_image_change_collection"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_marginStart="@dimen/margin_size_4x"-->
+        <!--            android:text="@string/collection_detail_change_outfit"-->
+        <!--            android:textAllCaps="false"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:textSize="@dimen/text_size_12x"-->
+        <!--            app:backgroundTint="@color/app_light_orange"-->
+        <!--            />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/item_main_line_likes_count_text_view"
+        style="@style/TextRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_size_24x"
+        android:textStyle="bold"
+        tools:text="Нравится: 1"
+        />
 
     <TextView
         android:id="@+id/text_view_item_main_image_comments_cost"
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_size_8x"
+        android:layout_marginTop="@dimen/margin_size_4x"
         android:paddingHorizontal="@dimen/padding_size_24x"
         android:textStyle="bold"
         tools:text="65 550 KZT"
+        />
+
+    <TextView
+        android:id="@+id/item_main_line_desc_text_view"
+        style="@style/TextRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_4x"
+        android:paddingHorizontal="@dimen/padding_size_24x"
+        tools:text="Description: fsdgfsg"
         />
 
     <TextView

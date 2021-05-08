@@ -12,6 +12,6 @@ data class PostModel(
     val hidden: Boolean,
     val clothes: List<ClothesModel>,
     val commentsCount: Int,
-    val likesCount: Int,
+    var likesCount: Int,
     var alreadyLiked: Boolean
 )

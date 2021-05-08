@@ -43,8 +43,6 @@ class CollectionDetailPresenter @Inject constructor(
         token: String,
         outfitId: Int
     ) {
-        view.displayProgress()
-
         getOutfitByIdUseCase.initParams(token, outfitId)
         getOutfitByIdUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {
@@ -64,8 +62,6 @@ class CollectionDetailPresenter @Inject constructor(
     }
 
     override fun getPostById(token: String, postId: Int) {
-        view.displayProgress()
-
         getPostByIdUseCase.initParams(token, postId)
         getPostByIdUseCase.execute(object : DisposableSingleObserver<PostModel>() {
             override fun onSuccess(t: PostModel) {
