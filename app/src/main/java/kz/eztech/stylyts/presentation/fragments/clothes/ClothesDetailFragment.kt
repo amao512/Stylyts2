@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_clothes_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ClothesColor
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
@@ -45,7 +44,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     private enum class CART_STATE { NONE, EDIT, DONE }
 
     private var currentState = CART_STATE.NONE
-    private var currentColor: ClothesColor? = null
     private var currentSize: ClothesSizeModel? = null
 
     private var disposables = CompositeDisposable()
@@ -93,7 +91,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
         fragment_clothes_detail_add_to_cart_text_view.setOnClickListener(this)
         fragment_clothes_detail_text_size_frame_layout.setOnClickListener(this)
-        fragment_clothes_detail_text_color_frame_layout.setOnClickListener(this)
         fragment_clothes_detail_description_holder_linear_layout.setOnClickListener(this)
     }
 
@@ -115,10 +112,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                     currentSize = currentItem
                     fragment_clothes_detail_text_size_text_view.text = currentSize?.size
                 }
-                is ClothesColor -> {
-                    currentColor = currentItem
-                    fragment_clothes_detail_text_color_text_view.text = currentColor?.color
-                }
             }
         }
     }
@@ -135,10 +128,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
         fragment_clothes_detail_text_size_frame_layout.setOnClickListener {
             showClothesSizes(clothesModel)
-        }
-
-        fragment_clothes_detail_text_color_frame_layout.setOnClickListener {
-            showClothesColors(clothesModel)
         }
 
         fragment_clothes_detail_add_to_cart_text_view.setOnClickListener {
@@ -296,12 +285,11 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 fragment_clothes_detail_cart_holder_linear_layout.setBackgroundColor(
                     getColor(currentActivity, R.color.app_very_light_gray)
                 )
-                fragment_clothes_detail_chooser_holder_linear_layout.show()
-                fragment_clothes_detail_text_share_frame_layout.show()
+                fragment_clothes_detail_text_size_frame_layout.show()
+                fragment_clothes_detail_text_share_linear_layout.show()
             }
             CART_STATE.EDIT -> processCart(clothesModel)
-            else -> {
-            }
+            else -> {}
         }
     }
 
@@ -324,29 +312,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         } else {
             displayMessage(msg = getString(R.string.there_are_not_sizes))
         }
-        chooserDialog.arguments = bundle
-        chooserDialog.show(parentFragmentManager, "Chooser")
-    }
-
-    private fun showClothesColors(clothesModel: ClothesModel) {
-        val bundle = Bundle()
-
-        if (clothesModel.clothesColor.isNotEmpty()) {
-            var counter = 0
-            val clothesColors: MutableList<ClothesColor> = mutableListOf()
-            clothesModel.clothesColor.map { color ->
-//                clothesColors.add(ClothesColor(id = counter, color = color))
-                counter++
-            }
-
-            bundle.putParcelableArrayList(
-                ClothesSizesBottomDialog.COLORS_KEY,
-                ArrayList(clothesColors)
-            )
-        } else {
-            displayMessage(msg = getString(R.string.there_are_not_colors))
-        }
-
         chooserDialog.arguments = bundle
         chooserDialog.show(parentFragmentManager, "Chooser")
     }
