@@ -234,9 +234,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		when (item) {
 			is Int -> {
 				when (item) {
-					1 -> {/* add category */}
-					2 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
-					3 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
+					1 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
+					2 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
 				}
 			}
 		}
@@ -535,19 +534,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		preparedResults.add(
 			ClothesTypeModel(
 				id = list.size + 1,
-				title = getString(R.string.collection_constructor_add_category),
-				isExternal = true,
-				externalType = 1,
-				isChoosen = false,
-				externalImageId = R.drawable.ic_add
-			)
-		)
-		preparedResults.add(
-			ClothesTypeModel(
-				id = list.size + 1,
 				title = getString(R.string.collection_constructor_add_by_barcode),
 				isExternal = true,
-				externalType = 2,
+				externalType = 1,
 				isChoosen = false,
 				externalImageId = R.drawable.ic_baseline_qr_code_2_24
 			)
@@ -557,7 +546,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				id = list.size + 1,
 				title = getString(R.string.collection_constructor_add_by_photo),
 				isExternal = true,
-				externalType = 3,
+				externalType = 2,
 				isChoosen = false,
 				externalImageId = R.drawable.ic_camera
 			)
