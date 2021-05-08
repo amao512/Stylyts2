@@ -89,7 +89,12 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     override fun initializeViewsData() {
-        chooserDialog = CreateCollectionChooserDialog().apply {
+        chooserDialog = CreateCollectionChooserDialog(
+            isPublication = when (getModeFromArgs()) {
+                OUTFIT_MODE -> false
+                else -> true
+            }
+        ).apply {
             setChoiceListener(listener = this@CreateCollectionAcceptFragment)
         }
         selectedUsers = ArrayList()
@@ -164,15 +169,17 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     override fun onChoice(v: View?, item: Any?) {
-        when (item) {
-            is Int -> {
-                when (getModeFromArgs()) {
-                    OUTFIT_MODE -> currentModel?.let {
-                        saveOutfit(it)
-                    }
-                    POST_MODE -> savePost()
+        when (v?.id) {
+            R.id.dialog_bottom_create_collection_chooser_common_line -> savePost(isHidden = false)
+            R.id.dialog_bottom_create_collection_chooser_wardrobe -> savePost(isHidden = true)
+            R.id.dialog_bottom_create_collection_chooser_create -> {
+                currentModel?.let {
+                    saveOutfit(it)
                 }
             }
+        }
+
+        when (item) {
             is Bundle -> {
                 selectedList.clear()
                 selectedUsers.clear()
@@ -268,19 +275,23 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }.show(childFragmentManager, EMPTY_STRING)
     }
 
-    private fun savePost() {
+    private fun savePost(isHidden: Boolean) {
         try {
             if (getBitmapFromArgs() != null && getPhotoUriFromArgs() == null) {
                 getBitmapFromArgs()?.let {
                     createPost(
-                        FileUtils.createPngFileFromBitmap(requireContext(), it)
+                        FileUtils.createPngFileFromBitmap(requireContext(), it),
+                        isHidden = isHidden
                     )
                 }
             }
 
             if (getPhotoUriFromArgs() != null && getBitmapFromArgs() == null) {
                 getPhotoUriFromArgs()?.path?.let {
-                    createPost(File(it))
+                    createPost(
+                        File(it),
+                        isHidden = isHidden
+                    )
                 }
             }
         } catch (e: Exception) {
@@ -288,7 +299,10 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    private fun createPost(file: File?) {
+    private fun createPost(
+        file: File?,
+        isHidden: Boolean
+    ) {
         file?.let {
             val images = ArrayList<File>()
 
@@ -305,6 +319,8 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 imageFile = file,
                 images = images
             )
+
+            model.hidden = isHidden
 
             if (isUpdating()) {
                 presenter.updatePost(

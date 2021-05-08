@@ -111,6 +111,7 @@
 
     <string name="collection_chooser_publish">Опубликовать в общей ленте</string>
     <string name="collection_chooser_save">Сохранить без публикации</string>
+    <string name="collection_chooser_just_save">Сохранить</string>
     <string name="collection_chooser_buy">Купить данный образ</string>
 
     <string name="detail_chooser_size_table">ТАБЛИЦА РАЗМЕРОВ</string>

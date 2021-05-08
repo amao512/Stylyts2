@@ -43,6 +43,7 @@ class CreatePostUseCase @Inject constructor(
         val requestFile = postCreateModel.imageFile.asRequestBody(("image/*").toMediaTypeOrNull())
 
         multipartList.add(MultipartBody.Part.createFormData("description", postCreateModel.description))
+        multipartList.add(MultipartBody.Part.createFormData("hidden", postCreateModel.hidden.toString()))
         multipartList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, requestFile))
 
         var count = 2

@@ -40,6 +40,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/dialog_bottom_create_collection_chooser_divider_one"
         android:layout_width="match_parent"
         android:layout_height="@dimen/small_divider_height"
         android:layout_marginVertical="@dimen/margin_size_8x"
@@ -66,6 +67,30 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_size_16x"
             android:text="@string/collection_chooser_save"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dialog_bottom_create_collection_chooser_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_save_icon"
+            />
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:text="@string/collection_chooser_just_save"
             />
     </LinearLayout>
 

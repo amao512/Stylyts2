@@ -110,6 +110,7 @@
 
     <string name="collection_chooser_publish">Post to shared feed</string>
     <string name="collection_chooser_save">Save without publishing</string>
+    <string name="collection_chooser_just_save">Save</string>
     <string name="collection_chooser_buy">Buy this look</string>
 
     <string name="detail_chooser_size_table">SIZE TABLE</string>
