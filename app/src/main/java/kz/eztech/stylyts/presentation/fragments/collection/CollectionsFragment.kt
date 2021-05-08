@@ -36,7 +36,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
     private val shopItemViewModel: ShopItemViewModel by inject()
 
-    private var isOutfits: Boolean = true
+    private var isOutfits: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.fragment_collections
 
@@ -109,6 +109,51 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         }
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.base_toolbar_right_double_buttons_left_button -> {
+                if (isOutfits) {
+                    onRightButtonsClick()
+                }
+            }
+            R.id.base_toolbar_right_double_buttons_right_button -> {
+                if (!isOutfits) {
+                    onRightButtonsClick()
+                }
+            }
+        }
+    }
+
+    override fun initializeListeners() {}
+
+    override fun processPostInitialization() {
+        presenter.getClothesStyles(token = currentActivity.getTokenFromSharedPref())
+        shopItemViewModel.setCollectionMode(isOutfits)
+        setStylesCondition()
+    }
+
+    override fun disposeRequests() {}
+
+    override fun displayMessage(msg: String) {}
+
+    override fun isFragmentVisible(): Boolean = isVisible
+
+    override fun displayProgress() {}
+
+    override fun hideProgress() {}
+
+    override fun processClothesStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
+        val filterList = mutableListOf<CollectionFilterModel>()
+
+        resultsModel.results.map {
+            filterList.add(
+                CollectionFilterModel(id = it.id, name = it.title)
+            )
+        }
+
+        filterAdapter.updateList(list = filterList)
+    }
+
     private fun onOutfitClicked(outfitModel: OutfitModel) {
         val bundle = Bundle()
 
@@ -133,49 +178,6 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         )
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.base_toolbar_right_double_buttons_left_button -> {
-                if (isOutfits) {
-                    onRightButtonsClick()
-                }
-            }
-            R.id.base_toolbar_right_double_buttons_right_button -> {
-                if (!isOutfits) {
-                    onRightButtonsClick()
-                }
-            }
-        }
-    }
-
-    override fun initializeListeners() {}
-
-    override fun processPostInitialization() {
-        presenter.getClothesStyles(token = currentActivity.getTokenFromSharedPref())
-        shopItemViewModel.setCollectionMode(isOutfits)
-    }
-
-    override fun disposeRequests() {}
-
-    override fun displayMessage(msg: String) {}
-
-    override fun isFragmentVisible(): Boolean = isVisible
-
-    override fun displayProgress() {}
-
-    override fun hideProgress() {}
-
-    override fun processClothesStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
-        val filterList = mutableListOf<CollectionFilterModel>()
-
-        resultsModel.results.map {
-            filterList.add(
-                CollectionFilterModel(id = it.id, name = it.title)
-            )
-        }
-
-        filterAdapter.updateList(list = filterList)
-    }
 
     private fun onRightButtonsClick() {
         isOutfits = !isOutfits

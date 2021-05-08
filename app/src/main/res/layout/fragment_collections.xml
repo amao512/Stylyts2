@@ -51,15 +51,27 @@
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_bar_fragment_collections"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                app:tabIndicatorColor="@color/app_black"
-                app:tabSelectedTextColor="@color/app_black"
-                app:tabTextAppearance="@style/TextRegularBold"
-                />
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_bar_fragment_collections"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    app:tabIndicatorColor="@color/app_black"
+                    app:tabSelectedTextColor="@color/app_black"
+                    app:tabTextAppearance="@style/TextRegularBold"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/little_divider_height"
+                    android:layout_gravity="bottom"
+                    android:background="@color/toolbar_border"
+                    />
+            </FrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view_fragment_collections_filter_list"
