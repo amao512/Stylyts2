@@ -14,9 +14,10 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.UserSearchHistoryAdapter
+import kz.eztech.stylyts.presentation.adapters.search.UserSearchHistoryAdapter
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
+import kz.eztech.stylyts.presentation.adapters.search.ShopsSearchAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
@@ -44,6 +45,7 @@ class SearchItemFragment(
     private lateinit var userSearchAdapter: UserSearchAdapter
     private lateinit var userSearchHistoryAdapter: UserSearchHistoryAdapter
     private lateinit var clothesAdapter: ClothesDetailAdapter
+    private lateinit var shopsAdapter: ShopsSearchAdapter
 
     private var query: String = EMPTY_STRING
     private var isHistory: Boolean = true
@@ -70,13 +72,16 @@ class SearchItemFragment(
 
     override fun initializeViewsData() {
         userSearchAdapter = UserSearchAdapter()
-        userSearchAdapter.itemClickListener = this
+        userSearchAdapter.setOnClickListener(listener = this)
 
         userSearchHistoryAdapter = UserSearchHistoryAdapter()
-        userSearchHistoryAdapter.itemClickListener = this
+        userSearchHistoryAdapter.setOnClickListener(listener = this)
 
         clothesAdapter = ClothesDetailAdapter()
-        clothesAdapter.itemClickListener = this
+        clothesAdapter.setOnClickListener(listener = this)
+
+        shopsAdapter = ShopsSearchAdapter()
+        shopsAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
@@ -176,20 +181,28 @@ class SearchItemFragment(
         currentActivity.saveSharedPrefByKey(SharedConstants.QUERY_KEY, query)
     }
 
+    override fun processShopResults(resultsModel: ResultsModel<UserModel>) {
+        shopsAdapter.updateList(list = resultsModel.results)
+    }
+
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
         clothesAdapter.updateList(list = resultsModel.results)
     }
 
     private fun onSearch(query: String) {
         when (position) {
-            0 -> {
+            USERS_POSITION -> {
                 presenter.searchUserByUsername(
                     token = currentActivity.getTokenFromSharedPref(),
                     username = query
                 )
                 isHistory = false
             }
-            2 -> presenter.searchClothesByTitle(
+            SHOPS_POSITION -> presenter.searchShop(
+                token = currentActivity.getTokenFromSharedPref(),
+                username = query
+            )
+            CLOTHES_POSITION -> presenter.searchClothesByTitle(
                 token = currentActivity.getTokenFromSharedPref(),
                 title = query
             )
@@ -218,6 +231,10 @@ class SearchItemFragment(
                     true -> userSearchHistoryAdapter
                     false -> userSearchAdapter
                 }
+            }
+            SHOPS_POSITION -> {
+                fragment_search_item_recycler_view.layoutManager = LinearLayoutManager(requireContext())
+                fragment_search_item_recycler_view.adapter = shopsAdapter
             }
             else -> {
                 fragment_search_item_recycler_view.layoutManager = GridLayoutManager(requireContext(), 2)

@@ -9,6 +9,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 /**
  * Created by Asylzhan Seytbek on 22.03.2021.
@@ -18,7 +19,8 @@ interface SearchAPI {
     @GET(RestConstants.SEARCH_USER_BY_USERNAME)
     fun searchUserByUsername(
         @Header("Authorization") token: String,
-        @Query("username") username: String
+        @Query("username") username: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<UserApiModel>>>
 
     @GET(RestConstants.SEARCH_CLOTHES_BY_TITLE)

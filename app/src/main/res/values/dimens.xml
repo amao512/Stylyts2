@@ -20,6 +20,7 @@
     <dimen name="margin_size_20x">20dp</dimen>
     <dimen name="margin_size_24x">24dp</dimen>
     <dimen name="margin_size_32x">32dp</dimen>
+    <dimen name="margin_size_36x">36dp</dimen>
     <dimen name="margin_size_40x">40dp</dimen>
     <dimen name="margin_size_48x">48dp</dimen>
     <dimen name="margin_size_64x">64dp</dimen>

@@ -13,7 +13,7 @@ import javax.inject.Named
 /**
  * Created by Ruslan Erdenoff on 22.02.2021.
  */
-class SearchUserUseCase @Inject constructor(
+class SearchProfileUseCase @Inject constructor(
 	@Named("executor_thread") executorThread: Scheduler,
 	@Named("ui_thread") uiThread: Scheduler,
 	private var searchDomainRepository: SearchDomainRepository
@@ -21,13 +21,28 @@ class SearchUserUseCase @Inject constructor(
 
     private lateinit var token: String
     private lateinit var username: String
+    private lateinit var map: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<UserModel>> {
-        return searchDomainRepository.getUserByUsername(token, username)
+        return searchDomainRepository.searchProfileByUsername(
+            token = token,
+            username = username,
+            map = map
+        )
     }
 
-    fun initParams(token: String, username: String) {
+    fun initParams(
+        token: String,
+        username: String,
+        isBrand: Boolean
+    ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.username = username
+
+        val map = HashMap<String, String>()
+
+        map["is_brand"] = isBrand.toString()
+
+        this.map = map
     }
 }

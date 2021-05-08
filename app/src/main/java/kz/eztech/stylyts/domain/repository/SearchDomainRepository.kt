@@ -10,9 +10,10 @@ import kz.eztech.stylyts.domain.models.user.UserModel
  */
 interface SearchDomainRepository {
 
-    fun getUserByUsername(
+    fun searchProfileByUsername(
         token: String,
-        username: String
+        username: String,
+        map: Map<String, String>
     ): Single<ResultsModel<UserModel>>
 
     fun searchClothesByTitle(

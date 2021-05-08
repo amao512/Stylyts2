@@ -14,6 +14,8 @@ interface SearchItemContract {
 
         fun processUserFromLocalDb(userList: List<UserSearchEntity>)
 
+        fun processShopResults(resultsModel: ResultsModel<UserModel>)
+
         fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
     }
 
@@ -25,6 +27,8 @@ interface SearchItemContract {
         fun saveUserToLocaleDb(user: UserModel)
 
         fun deleteUserFromLocalDb(userId: Int)
+
+        fun searchShop(token: String, username: String)
 
         fun searchClothesByTitle(token: String, title: String)
     }

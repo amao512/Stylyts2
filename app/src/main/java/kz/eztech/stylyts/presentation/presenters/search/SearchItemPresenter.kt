@@ -11,7 +11,7 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase
-import kz.eztech.stylyts.domain.usecases.search.SearchUserUseCase
+import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
 import javax.inject.Inject
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 class SearchItemPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
-    private val searchUserUseCase: SearchUserUseCase,
+    private val searchProfileUseCase: SearchProfileUseCase,
     private val dataSource: SearchDataSource,
     private val searchClothesUseCase: SearchClothesUseCase
 ) : SearchItemContract.Presenter {
@@ -35,7 +35,7 @@ class SearchItemPresenter @Inject constructor(
     }
 
     override fun disposeRequests() {
-        searchUserUseCase.clear()
+        searchProfileUseCase.clear()
         searchClothesUseCase.clear()
     }
 
@@ -43,20 +43,18 @@ class SearchItemPresenter @Inject constructor(
         token: String,
         username: String
     ) {
-        searchUserUseCase.initParams(token, username)
-        searchUserUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
+        searchProfileUseCase.initParams(
+            token = token,
+            username = username,
+            isBrand = false
+        )
+        searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
-                view.processViewAction {
-                    hideProgress()
-                    processUserResults(t)
-                }
+                view.processUserResults(t)
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(errorHelper.processError(e))
-                }
+                view.displayMessage(errorHelper.processError(e))
             }
         })
     }
@@ -110,19 +108,32 @@ class SearchItemPresenter @Inject constructor(
         )
     }
 
+    override fun searchShop(token: String, username: String) {
+        searchProfileUseCase.initParams(
+            token = token,
+            username = username,
+            isBrand = true
+        )
+        searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
+            override fun onSuccess(t: ResultsModel<UserModel>) {
+                view.processShopResults(resultsModel = t)
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
+            }
+        })
+    }
+
     override fun searchClothesByTitle(token: String, title: String) {
         searchClothesUseCase.initParams(token, title)
         searchClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
-                view.processViewAction {
-                    processClothesResults(resultsModel = t)
-                }
+                view.processClothesResults(resultsModel = t)
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    displayMessage(msg = errorHelper.processError(e))
-                }
+                view.displayMessage(msg = errorHelper.processError(e))
             }
         })
     }

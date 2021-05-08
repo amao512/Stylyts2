@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_shop_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin_size_20x"
+        android:paddingStart="@dimen/padding_size_36x"
+        android:paddingEnd="@dimen/padding_size_16x"
+        >
+
+        <TextView
+            android:id="@+id/item_shop_search_shop_name_text_view"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_size_16x"
+            tools:text="Shop Name"
+            />
+
+        <ImageView
+            android:id="@+id/item_shop_search_favorite_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginStart="@dimen/margin_size_36x"
+        android:background="@color/app_gray_hint"
+        />
+</LinearLayout>

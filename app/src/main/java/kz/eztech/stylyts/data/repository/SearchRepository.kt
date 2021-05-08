@@ -18,11 +18,16 @@ class SearchRepository @Inject constructor(
     private val resultsApiModelMapper: ResultsApiModelMapper
 ) : SearchDomainRepository {
 
-    override fun getUserByUsername(
+    override fun searchProfileByUsername(
         token: String,
-        username: String
+        username: String,
+        map: Map<String, String>
     ): Single<ResultsModel<UserModel>> {
-        return api.searchUserByUsername(token, username).map {
+        return api.searchUserByUsername(
+            token = token,
+            username = username,
+            queryMap = map
+        ).map {
             when (it.isSuccessful) {
                 true -> resultsApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
