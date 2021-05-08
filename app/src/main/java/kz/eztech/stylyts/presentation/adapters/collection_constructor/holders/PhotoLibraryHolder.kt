@@ -43,9 +43,10 @@ class PhotoLibraryHolder(
         item as String
 
         if (payLoad != -1) {
-            itemView.frame_layout_item_photo_library.show()
+            itemView.item_photo_library_count_text_view.show()
+            itemView.item_photo_library_count_text_view.text = payLoad.toString()
         } else {
-            itemView.frame_layout_item_photo_library.hide()
+            itemView.item_photo_library_count_text_view.hide()
         }
 
         Glide.with(itemView.context)

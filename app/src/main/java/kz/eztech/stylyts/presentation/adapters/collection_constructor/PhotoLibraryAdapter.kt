@@ -33,4 +33,11 @@ class PhotoLibraryAdapter : BaseAdapter() {
             adapter = this
         )
     }
+
+    fun setNumber(
+        position: Int,
+        payload: Int
+    ) {
+        notifyItemChanged(position, payload)
+    }
 }

@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/margin_size_16x"
                     android:layout_marginEnd="@dimen/margin_size_12x"
-                    android:background="@drawable/circle_light_green"
+                    android:background="@drawable/circle_light_orange"
                     android:padding="@dimen/padding_size_8x"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/frame_layout_fragment_photo_post_creator_camera"
@@ -124,9 +124,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             app:layout_scrollFlags="scroll|snap"
-            tools:listitem="@layout/item_collection_filter"
+            tools:listitem="@layout/item_photo_library"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

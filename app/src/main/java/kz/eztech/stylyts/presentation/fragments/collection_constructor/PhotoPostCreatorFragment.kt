@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_photo_post_creator.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.PhotoLibraryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
@@ -27,7 +28,6 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.ViewUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.PhotoLibraryAdapter
 import java.io.File
 
 class PhotoPostCreatorFragment(
@@ -107,8 +107,10 @@ class PhotoPostCreatorFragment(
 
         val numbers = ViewUtils.calculateNoOfColumns(currentActivity, 100f)
 
-        recycler_view_fragment_photo_post_creator_list.layoutManager = GridLayoutManager(currentActivity, numbers)
+        recycler_view_fragment_photo_post_creator_list.layoutManager =
+            GridLayoutManager(currentActivity, numbers)
         recycler_view_fragment_photo_post_creator_list.adapter = photoAdapter
+
         photoAdapter.updateList(listOfAllImages)
     }
 
@@ -132,7 +134,7 @@ class PhotoPostCreatorFragment(
             }
 
             listOfChosenImages.add(item)
-            photoAdapter.notifyItemChanged(position, listOfChosenImages.count())
+            photoAdapter.setNumber(position, listOfChosenImages.count())
 
             Uri.fromFile(File(item))
         }
@@ -218,13 +220,15 @@ class PhotoPostCreatorFragment(
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
         val listOfImages = ArrayList<String>()
+
         data?.let {
 
-            val columnIndexData = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
+            val columnIndexData = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
             while (it.moveToNext()) {
-                listOfImages.add(it.getString(columnIndexData));
+                listOfImages.add(it.getString(columnIndexData))
             }
         }
+
         if (listOfImages.isNotEmpty()) {
             listOfAllImages.clear()
             listOfAllImages.addAll(listOfImages)
@@ -232,8 +236,11 @@ class PhotoPostCreatorFragment(
 
         if (listOfAllImages.isNotEmpty()) {
             photoUri = Uri.fromFile(File(listOfAllImages[0]))
-            Glide.with(currentActivity).load(listOfAllImages[0])
+
+            Glide.with(currentActivity)
+                .load(listOfAllImages[0])
                 .into(image_view_fragment_photo_post_creator)
+
             photoAdapter.updateList(listOfAllImages)
         }
     }
@@ -280,7 +287,10 @@ class PhotoPostCreatorFragment(
                 listOfChosenImages.removeLast()
             }
 
-            bundle.putInt(CreateCollectionAcceptFragment.MODE_KEY, CreateCollectionAcceptFragment.POST_MODE)
+            bundle.putInt(
+                CreateCollectionAcceptFragment.MODE_KEY,
+                CreateCollectionAcceptFragment.POST_MODE
+            )
             bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
             bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, listOfChosenImages)
 
