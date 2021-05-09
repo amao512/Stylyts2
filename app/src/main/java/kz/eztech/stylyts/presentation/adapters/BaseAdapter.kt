@@ -88,7 +88,6 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         notifyDataSetChanged()
     }
 
-
     fun setOnClickListener(listener: UniversalViewClickListener) {
         itemClickListener = listener
     }

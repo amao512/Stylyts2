@@ -249,6 +249,8 @@
     <string name="post_creator_title">Create publication</string>
 
     <string name="profile_add_to_wardrobe">Добавить вещь в гардероб</string>
+    <string name="profile_add_to_wardrobe_by_barcode">Добавить вещь по штрихкоду</string>
+    <string name="profile_add_to_wardrobe_by_photo">Добавить вещь по фото</string>
 
     <string name="done">Done</string>
 

@@ -30,11 +30,9 @@ import kz.eztech.stylyts.presentation.adapters.collection.GridImageCollectionIte
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
-import kz.eztech.stylyts.presentation.dialogs.profile.CreatorChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
@@ -49,7 +47,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
-    UniversalViewClickListener, EditorListener, DialogChooserListener {
+    UniversalViewClickListener, EditorListener {
 
     @Inject lateinit var presenter: ProfilePresenter
     @Inject lateinit var imageLoader: DomainImageLoader
@@ -229,20 +227,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    override fun onChoice(v: View?, item: Any?) {
-        when (v?.id) {
-            R.id.dialog_bottom_creator_chooser_barcode -> {
-                navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
-            }
-            R.id.dialog_bottom_creator_chooser_photo -> {
-                navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
-            }
-            R.id.dialog_bottom_creator_chooser_create_publish -> {
-                findNavController().navigate(R.id.action_profileFragment_to_photoPostCreatorFragment)
-            }
-        }
-    }
-
     override fun processProfile(userModel: UserModel) {
         currentFilter.userId = userModel.id
         currentFilter.username = userModel.username
@@ -419,9 +403,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             2 -> onOutfitsFilterClick(position)
             3 -> onWardrobeFilterClick(position)
             4 -> navigateToMyData()
-            5 ->  CreatorChooserDialog().apply {
-                setChoiceListener(listener = this@ProfileFragment)
-            }.show(childFragmentManager, EMPTY_STRING)
+            5 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
+            6 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
         }
     }
 

@@ -92,7 +92,18 @@ class ProfilePresenter @Inject constructor(
 			filterList.add(CollectionFilterModel(id = 4, name = application.getString(R.string.filter_list_wardrobe)))
 			filterList.add(CollectionFilterModel(id = 5, name = application.getString(R.string.filter_list_my_data)))
 			filterList.add(
-				CollectionFilterModel(id = 6, name = application.getString(R.string.profile_add_to_wardrobe), icon = R.drawable.ic_baseline_add)
+				CollectionFilterModel(
+					id = 6,
+					name = application.getString(R.string.profile_add_to_wardrobe_by_barcode),
+					icon = R.drawable.ic_baseline_qr_code_2_24
+				)
+			)
+			filterList.add(
+				CollectionFilterModel(
+					id = 7,
+					name = application.getString(R.string.profile_add_to_wardrobe_by_photo),
+					icon = R.drawable.ic_camera
+				)
 			)
 		}
 

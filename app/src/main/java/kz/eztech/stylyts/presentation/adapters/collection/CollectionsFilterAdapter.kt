@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.adapters.collection
 
 import android.view.View
+import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
@@ -43,7 +44,10 @@ class CollectionsFilterAdapter : BaseAdapter() {
 
         (currentList[0] as CollectionFilterModel).isDisabled = position != 3
 
-        notifyItemChanged(0)
+        val diffCallback = getDiffUtilCallBack(currentList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+        diffResult.dispatchUpdatesTo(this)
+
         notifyDataSetChanged()
     }
 
