@@ -36,8 +36,8 @@ class UserSubHolder(
         item as FollowerModel
 
         initializeViews()
-        initializeListeners(followerModel = item, position = position)
         processFollower(followerModel = item)
+        initializeListeners(followerModel = item, position = position)
 
     }
 
@@ -79,11 +79,15 @@ class UserSubHolder(
                 firstName = followerModel.firstName,
                 lastName = followerModel.lastName
             )
+            avatarShapeableImageView.hide()
+            userShortNameTextView.show()
         } else {
             imageLoader.load(
                 url = followerModel.avatar,
                 target = avatarShapeableImageView
             )
+            avatarShapeableImageView.show()
+            userShortNameTextView.hide()
         }
 
         if (followerModel.isAlreadyFollow) {

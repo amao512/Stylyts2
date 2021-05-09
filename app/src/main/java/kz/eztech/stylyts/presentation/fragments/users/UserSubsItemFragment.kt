@@ -75,16 +75,7 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        when (getPositionFromArgs()) {
-            0 -> presenter.getFollowers(
-                token = currentActivity.getTokenFromSharedPref(),
-                userId = getUserIdFromArgs()
-            )
-            1 -> presenter.getFollowings(
-                token = currentActivity.getTokenFromSharedPref(),
-                userId = getUserIdFromArgs()
-            )
-        }
+        getUsers()
     }
 
     override fun disposeRequests() {}
@@ -118,11 +109,24 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     }
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
-        adapter.setFollowingUser(followerId = followSuccessModel.id)
+        adapter.setFollowingUser(followerId = followSuccessModel.followee)
     }
 
     override fun processSuccessUnFollowing(followerId: Int) {
         adapter.setUnFollowingUser(followerId = followerId)
+    }
+
+    private fun getUsers() {
+        when (getPositionFromArgs()) {
+            0 -> presenter.getFollowers(
+                token = currentActivity.getTokenFromSharedPref(),
+                userId = getUserIdFromArgs()
+            )
+            1 -> presenter.getFollowings(
+                token = currentActivity.getTokenFromSharedPref(),
+                userId = getUserIdFromArgs()
+            )
+        }
     }
 
     private fun onNavigateToProfile(item: Any?) {

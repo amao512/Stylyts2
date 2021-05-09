@@ -18,7 +18,7 @@ class UserSubsPresenter @Inject constructor(
     private val getFollowersUseCase: GetFollowersUseCase,
     private val getFollowingsUseCase: GetFollowingsUseCase,
     private val followUserUseCase: FollowUserUseCase,
-    private val unfollowUserUseCase: UnfollowUserUseCase
+    private val unfollowUserUseCase: UnfollowUserUseCase,
 ) : UserSubsContract.Presenter {
 
     private lateinit var view: UserSubsContract.View
@@ -95,7 +95,7 @@ class UserSubsPresenter @Inject constructor(
             }
 
             override fun onError(e: Throwable) {
-                view.displayMessage(msg = errorHelper.processError(e))
+                view.processSuccessUnFollowing(followerId = followerId)
             }
         })
     }

@@ -38,15 +38,9 @@ class UserSubAdapter(
     }
 
     fun setFollowingUser(followerId: Int) {
-        currentList.forEach {
-            it as FollowerModel
+        val item = currentList.find { (it as FollowerModel).id == followerId } as FollowerModel
 
-            if (it.id == followerId) {
-                it.isAlreadyFollow = true
-
-                return
-            }
-        }
+        item.isAlreadyFollow = true
 
         val diffCallback = getDiffUtilCallBack(currentList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -56,13 +50,9 @@ class UserSubAdapter(
     }
 
     fun setUnFollowingUser(followerId: Int) {
-        currentList.forEach {
-            it as FollowerModel
+        val item = currentList.find { (it as FollowerModel).id == followerId } as FollowerModel
 
-            if (it.id == followerId) {
-                it.isAlreadyFollow = false
-            }
-        }
+        item.isAlreadyFollow = false
 
         val diffCallback = getDiffUtilCallBack(currentList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
