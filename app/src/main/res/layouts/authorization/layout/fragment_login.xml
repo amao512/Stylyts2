@@ -40,7 +40,6 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._-"
             android:textSize="@dimen/text_size_18x"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
