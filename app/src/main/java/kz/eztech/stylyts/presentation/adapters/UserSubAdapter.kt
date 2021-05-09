@@ -43,6 +43,8 @@ class UserSubAdapter(
 
             if (it.id == followerId) {
                 it.isAlreadyFollow = true
+
+                return
             }
         }
 
