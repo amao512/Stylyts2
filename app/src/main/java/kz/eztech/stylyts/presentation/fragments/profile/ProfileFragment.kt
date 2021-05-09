@@ -130,10 +130,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         gridAdapter = GridImageAdapter()
 
         wardrobeAdapter = ClothesDetailAdapter()
-        wardrobeAdapter.itemClickListener = this
+        wardrobeAdapter.setOnClickListener(listener = this)
 
         outfitsAdapter = GridImageCollectionItemAdapter()
-        outfitsAdapter.itemClickListener = this
+        outfitsAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
