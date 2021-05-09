@@ -453,6 +453,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
 
         collectionRecyclerView.adapter = wardrobeAdapter
+
         adapterFilter.onChooseItem(position)
         wardrobeAdapter.clearList()
 

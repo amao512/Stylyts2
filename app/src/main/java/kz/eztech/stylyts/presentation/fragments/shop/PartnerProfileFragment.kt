@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_partner_profile.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
@@ -16,7 +17,6 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.PartnerProfileContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
@@ -70,11 +70,11 @@ class PartnerProfileFragment : BaseFragment<MainActivity>(), PartnerProfileContr
         adapter.itemClickListener = this
 
         val filterList = ArrayList<CollectionFilterModel>()
-        filterList.add(CollectionFilterModel(name = "Фильтр"))
-        filterList.add(CollectionFilterModel(name = "Образы"))
-        filterList.add(CollectionFilterModel(name = "Все позиции"))
-        filterList.add(CollectionFilterModel(name = "Верх"))
-        filterList.add(CollectionFilterModel(name = "Низ"))
+        filterList.add(CollectionFilterModel(id = 1, name = "Фильтр"))
+        filterList.add(CollectionFilterModel(id = 2, name = "Образы"))
+        filterList.add(CollectionFilterModel(id = 3, name = "Все позиции"))
+        filterList.add(CollectionFilterModel(id = 4, name = "Верх"))
+        filterList.add(CollectionFilterModel(id = 5, name = "Низ"))
         adapterFilter = CollectionsFilterAdapter()
         recycler_view_fragment_partner_profile_filter_list.layoutManager = LinearLayoutManager(
             context,

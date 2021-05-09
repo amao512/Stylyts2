@@ -74,7 +74,12 @@ class ProfilePresenter @Inject constructor(
 		val filterList = mutableListOf<CollectionFilterModel>()
 
 		filterList.add(
-            CollectionFilterModel(id = 1, name = application.getString(R.string.filter_list_filter), icon = R.drawable.ic_filter)
+            CollectionFilterModel(
+				id = 1,
+				name = application.getString(R.string.filter_list_filter),
+				icon = R.drawable.ic_filter,
+				isDisabled = true
+			)
         )
 		filterList.add(
             CollectionFilterModel(id = 2, name = application.getString(R.string.filter_list_publishes), isChosen = true)
