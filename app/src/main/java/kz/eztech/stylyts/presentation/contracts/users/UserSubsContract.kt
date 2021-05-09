@@ -16,7 +16,7 @@ interface UserSubsContract {
 
         fun processSuccessFollowing(followSuccessModel: FollowSuccessModel)
 
-        fun processSuccessUnFollowing()
+        fun processSuccessUnFollowing(followerId: Int)
     }
 
     interface Presenter: BasePresenter<View> {
@@ -33,12 +33,12 @@ interface UserSubsContract {
 
         fun followUser(
             token: String,
-            userId: Int
+            followerId: Int
         )
 
         fun unFollowUser(
             token: String,
-            userId: Int
+            followerId: Int
         )
     }
 }

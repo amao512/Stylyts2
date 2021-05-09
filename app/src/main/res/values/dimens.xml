@@ -131,7 +131,7 @@
 
     <dimen name="shop_category_image_height">122dp</dimen>
 
-    <dimen name="user_subs_button_height">45dp</dimen>
+    <dimen name="user_subs_button_height">35dp</dimen>
 
     <dimen name="camera_bottom_container_height">100dp</dimen>
     <dimen name="camera_take_photo_button_size">50dp</dimen>

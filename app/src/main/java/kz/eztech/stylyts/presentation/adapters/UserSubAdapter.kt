@@ -53,11 +53,11 @@ class UserSubAdapter(
         notifyDataSetChanged()
     }
 
-    fun setUnFollowingUser(followerModel: FollowerModel) {
+    fun setUnFollowingUser(followerId: Int) {
         currentList.forEach {
             it as FollowerModel
 
-            if (it.id == followerModel.id) {
+            if (it.id == followerId) {
                 it.isAlreadyFollow = false
             }
         }

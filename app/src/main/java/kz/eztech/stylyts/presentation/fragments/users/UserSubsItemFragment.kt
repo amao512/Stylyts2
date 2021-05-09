@@ -118,10 +118,12 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     }
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
-        adapter.setFollowingUser(followSuccessModel.id)
+        adapter.setFollowingUser(followerId = followSuccessModel.id)
     }
 
-    override fun processSuccessUnFollowing() {}
+    override fun processSuccessUnFollowing(followerId: Int) {
+        adapter.setUnFollowingUser(followerId = followerId)
+    }
 
     private fun onNavigateToProfile(item: Any?) {
         item as FollowerModel
@@ -137,7 +139,7 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
 
         presenter.followUser(
             token = currentActivity.getTokenFromSharedPref(),
-            userId = item.id
+            followerId = item.id
         )
     }
 
@@ -146,10 +148,8 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
 
         presenter.unFollowUser(
             token = currentActivity.getTokenFromSharedPref(),
-            userId = item.id
+            followerId = item.id
         )
-
-        adapter.setUnFollowingUser(item)
     }
 
     private fun getPositionFromArgs(): Int = arguments?.getInt(POSITION_ARGS) ?: 0

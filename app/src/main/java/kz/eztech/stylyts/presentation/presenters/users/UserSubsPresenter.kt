@@ -70,9 +70,9 @@ class UserSubsPresenter @Inject constructor(
 
     override fun followUser(
         token: String,
-        userId: Int
+        followerId: Int
     ) {
-        followUserUseCase.initParams(token, userId.toString())
+        followUserUseCase.initParams(token, followerId.toString())
         followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
             override fun onSuccess(t: FollowSuccessModel) {
                 view.processSuccessFollowing(followSuccessModel = t)
@@ -86,12 +86,12 @@ class UserSubsPresenter @Inject constructor(
 
     override fun unFollowUser(
         token: String,
-        userId: Int
+        followerId: Int
     ) {
-        unfollowUserUseCase.initParams(token, userId.toString())
+        unfollowUserUseCase.initParams(token, followerId.toString())
         unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
-                view.processSuccessUnFollowing()
+                view.processSuccessUnFollowing(followerId = followerId)
             }
 
             override fun onError(e: Throwable) {

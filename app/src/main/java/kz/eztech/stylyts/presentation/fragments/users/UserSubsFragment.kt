@@ -113,7 +113,7 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {}
 
-    override fun processSuccessUnFollowing() {}
+    override fun processSuccessUnFollowing(followerId: Int) {}
 
     override fun onClick(v: View?) {
         when (v?.id) {
