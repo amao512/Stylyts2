@@ -32,6 +32,7 @@ import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopItemListFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsItemFragment
 import okhttp3.OkHttpClient
@@ -90,6 +91,7 @@ interface ApplicationComponent {
     fun inject(fragment: CollectionDetailFragment)
     fun inject(fragment: CreateCollectionAcceptFragment)
     fun inject(fragment: CommentsFragment)
+    fun inject(fragment: ShopProfileFragment)
 
     fun inject(dialog: TagChooserDialog)
     fun inject(dialog: CartDialog)

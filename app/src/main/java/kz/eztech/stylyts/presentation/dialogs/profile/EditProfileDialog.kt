@@ -192,7 +192,7 @@ class EditProfileDialog(
             text_view_fragment_profile_edit_user_short_name.hide()
             imageLoader.load(
                 url = userModel.avatar,
-                target = shapeable_image_view_fragment_profile_avatar
+                target = fragment_shop_profile_avatar_shapeable_image_view
             )
 
         }

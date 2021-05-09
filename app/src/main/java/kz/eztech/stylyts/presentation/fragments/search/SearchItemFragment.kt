@@ -14,15 +14,16 @@ import kz.eztech.stylyts.domain.models.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.search.UserSearchHistoryAdapter
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
 import kz.eztech.stylyts.presentation.adapters.search.ShopsSearchAdapter
+import kz.eztech.stylyts.presentation.adapters.search.UserSearchHistoryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchItemPresenter
 import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
@@ -157,21 +158,9 @@ class SearchItemFragment(
     ) {
         when (view.id) {
             R.id.linear_layout_item_user_info_container -> navigateToUserProfile(item)
-            R.id.item_user_info_remove_image_view -> {
-                presenter.deleteUserFromLocalDb(userId = (item as UserSearchEntity).id ?: 0)
-                presenter.getUserFromLocaleDb()
-            }
-            R.id.item_clothes_detail_linear_layout -> {
-                item as ClothesModel
-
-                val bundle = Bundle()
-                bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
-
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_itemDetailFragment,
-                    bundle
-                )
-            }
+            R.id.item_user_info_remove_image_view -> onRemoveUserFromHistory(item)
+            R.id.item_clothes_detail_linear_layout -> navigateToClothes(item)
+            R.id.item_shop_root_view_linear_layout -> navigateToShop(item)
         }
     }
 
@@ -221,6 +210,32 @@ class SearchItemFragment(
         }
 
         findNavController().navigate(R.id.action_searchFragment_to_nav_profile, bundle)
+    }
+
+    private fun navigateToClothes(item: Any?) {
+        item as ClothesModel
+
+        val bundle = Bundle()
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+
+        findNavController().navigate(
+            R.id.action_searchFragment_to_itemDetailFragment,
+            bundle
+        )
+    }
+
+    private fun navigateToShop(item: Any?) {
+        item as UserModel
+
+        val bundle = Bundle()
+        bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, item.id)
+
+        findNavController().navigate(R.id.action_searchFragment_to_shopProfileFragment, bundle)
+    }
+
+    private fun onRemoveUserFromHistory(item: Any?) {
+        presenter.deleteUserFromLocalDb(userId = (item as UserSearchEntity).id ?: 0)
+        presenter.getUserFromLocaleDb()
     }
 
     private fun initializeAdapter() {

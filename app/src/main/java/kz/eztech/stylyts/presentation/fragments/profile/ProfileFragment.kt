@@ -144,11 +144,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         collectionRecyclerView.addItemDecoration(GridSpacesItemDecoration(space = 16))
         collectionRecyclerView.adapter = gridAdapter
 
-        avatarShapeableImageView = shapeable_image_view_fragment_profile_avatar
+        avatarShapeableImageView = fragment_shop_profile_avatar_shapeable_image_view
         userShortNameTextView = text_view_fragment_profile_user_short_name
-        userNameTextView = text_view_fragment_profile_user_name
+        userNameTextView = fragment_shop_profile_title_text_view
         photosCountTextView = fragment_profile_photos_count
-        followersItemLinearLayout = linear_layout_fragment_profile_followers_item
+        followersItemLinearLayout = fragment_shop_profile_followers_linear_layout
         followersCountTextView = fragment_profile_followers_count
         followingsItemLinearLayout = linear_layout_fragment_profile_following_item
         followingsCountTextView = fragment_profile_followings_count
@@ -195,7 +195,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         when (v?.id) {
             R.id.toolbar_right_corner_action_image_button -> navigateToSettings()
             R.id.fragment_profile_edit_text_view -> openEditProfileDialog()
-            R.id.linear_layout_fragment_profile_followers_item -> navigateToFollowers()
+            R.id.fragment_shop_profile_followers_linear_layout -> navigateToFollowers()
             R.id.linear_layout_fragment_profile_following_item -> navigateToFollowings()
             R.id.linear_layout_fragment_profile_photos_item -> navigateToSubs()
             R.id.toolbar_left_corner_action_image_button -> navigateBack()

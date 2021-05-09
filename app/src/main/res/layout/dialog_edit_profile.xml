@@ -34,7 +34,7 @@
                 >
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/shapeable_image_view_fragment_profile_avatar"
+                    android:id="@+id/fragment_shop_profile_avatar_shapeable_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:adjustViewBounds="true"

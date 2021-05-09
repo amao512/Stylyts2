@@ -10,7 +10,7 @@
     >
 
     <include
-        android:id="@+id/include_toolbar_partner_profile"
+        android:id="@+id/fragment_shop_profile_toolbar"
         layout="@layout/base_toolbar"
         />
 
@@ -46,46 +46,65 @@
                         android:orientation="vertical"
                         >
 
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/shapeable_image_view_fragment_profile_avatar"
+                        <FrameLayout
+                            android:id="@+id/fragment_shop_profile_avatar_holder_frame_layout"
                             android:layout_width="@dimen/profile_user_photo_size"
                             android:layout_height="@dimen/profile_user_photo_size"
-                            android:layout_gravity="center"
                             android:layout_marginTop="@dimen/margin_size_16x"
-                            android:adjustViewBounds="true"
-                            android:background="@drawable/rounded_rectangle_gray"
-                            android:src="@drawable/jacket"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             app:shapeAppearanceOverlay="@style/circleImageView"
-                            />
+                            >
+
+                            <com.google.android.material.imageview.ShapeableImageView
+                                android:id="@+id/fragment_shop_profile_avatar_shapeable_image_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:adjustViewBounds="true"
+                                android:background="@drawable/rounded_rectangle_gray"
+                                android:src="@drawable/jacket"
+                                app:shapeAppearanceOverlay="@style/circleImageView"
+                                />
+
+                            <TextView
+                                android:id="@+id/fragment_shop_profile_shop_short_name_text_view"
+                                style="@style/TitleTextBold"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/circle_gray"
+                                android:gravity="center"
+                                android:textSize="@dimen/text_size_36x"
+                                tools:text="RE"
+                                />
+                        </FrameLayout>
 
                         <TextView
-                            android:id="@+id/text_view_fragment_profile_user_name"
+                            android:id="@+id/fragment_shop_profile_title_text_view"
                             style="@style/TitleTextBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/margin_size_12x"
-                            app:layout_constraintEnd_toEndOf="@+id/shapeable_image_view_fragment_profile_avatar"
-                            app:layout_constraintStart_toStartOf="@+id/shapeable_image_view_fragment_profile_avatar"
-                            app:layout_constraintTop_toBottomOf="@+id/shapeable_image_view_fragment_profile_avatar"
+                            app:layout_constraintEnd_toEndOf="@+id/fragment_shop_profile_avatar_holder_frame_layout"
+                            app:layout_constraintStart_toStartOf="@+id/fragment_shop_profile_avatar_holder_frame_layout"
+                            app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_avatar_holder_frame_layout"
                             tools:text="Zara"
                             />
 
                         <LinearLayout
-                            android:id="@+id/linear_layout_fragment_profile_followers_item"
+                            android:id="@+id/fragment_shop_profile_followers_linear_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_size_16x"
                             android:orientation="vertical"
-                            app:layout_constraintEnd_toEndOf="@+id/text_view_fragment_profile_user_name"
-                            app:layout_constraintStart_toStartOf="@+id/text_view_fragment_profile_user_name"
-                            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_profile_user_name"
+                            app:layout_constraintEnd_toStartOf="@id/fragment_shop_profile_followings_linear_layout"
+                            app:layout_constraintStart_toStartOf="@+id/fragment_shop_profile_title_text_view"
+                            app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_title_text_view"
                             >
 
                             <TextView
+                                android:id="@+id/fragment_shop_profile_followers_count_text_view"
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -104,48 +123,20 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/margin_size_24x"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
-                            app:layout_constraintEnd_toStartOf="@+id/linear_layout_fragment_profile_followers_item"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
-                            >
-
-                            <TextView
-                                style="@style/TextRegular"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                tools:text="10"
-                                />
-
-                            <TextView
-                                style="@style/TextRegular"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="@string/photo"
-                                android:textColor="@color/app_gray"
-                                />
-                        </LinearLayout>
-
-                        <LinearLayout
+                            android:id="@+id/fragment_shop_profile_followings_linear_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_size_24x"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintBottom_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
+                            app:layout_constraintEnd_toEndOf="@id/fragment_shop_profile_title_text_view"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/linear_layout_fragment_profile_followers_item"
-                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintStart_toEndOf="@+id/fragment_shop_profile_followers_linear_layout"
+                            app:layout_constraintTop_toTopOf="@+id/fragment_shop_profile_followers_linear_layout"
                             >
 
                             <TextView
+                                android:id="@+id/fragment_shop_profile_followings_count_text_view"
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -169,20 +160,69 @@
                             android:layout_marginVertical="@dimen/margin_size_16x"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintEnd_toEndOf="@id/fragment_shop_profile_followings_linear_layout"
+                            app:layout_constraintStart_toStartOf="@id/fragment_shop_profile_followers_linear_layout"
+                            app:layout_constraintTop_toBottomOf="@id/fragment_shop_profile_followers_linear_layout"
                             >
 
                             <TextView
+                                android:id="@+id/fragment_shop_profile_follow_text_view"
                                 style="@style/TextRegularBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:background="@drawable/rounded_rectangle_orange"
                                 android:gravity="center"
-                                android:padding="@dimen/padding_size_6x"
+                                android:paddingHorizontal="@dimen/padding_size_10x"
                                 android:text="@string/follow"
                                 android:textColor="@color/white"
+                                android:visibility="gone"
+                                />
+
+                            <TextView
+                                android:id="@+id/fragment_shop_profile_unfollow_text_view"
+                                style="@style/TextRegularBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:gravity="center"
+                                android:paddingHorizontal="@dimen/padding_size_10x"
+                                android:text="@string/unfollow"
+                                android:visibility="gone"
+                                />
+
+                            <TextView
+                                android:id="@+id/fragment_shop_profile_already_followed_text_view"
+                                style="@style/TextRegularBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:gravity="center"
+                                android:paddingHorizontal="@dimen/padding_size_10x"
+                                android:text="@string/already_followed"
+                                />
+
+                            <TextView
+                                android:id="@+id/fragment_shop_profile_send_message_text_view"
+                                style="@style/TextRegularBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/margin_size_6x"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:gravity="center"
+                                android:paddingHorizontal="@dimen/padding_size_10x"
+                                android:text="@string/write_message"
+                                />
+
+                            <TextView
+                                style="@style/TextRegularBold"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="@dimen/margin_size_6x"
+                                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                                android:gravity="center"
+                                android:padding="@dimen/padding_size_6x"
+                                android:text="@string/for_her"
                                 />
 
                             <ImageView
@@ -194,18 +234,6 @@
                                 android:padding="@dimen/padding_size_6x"
                                 android:src="@drawable/ic_camera"
                                 />
-
-                            <TextView
-                                style="@style/TextRegularBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="6dp"
-                                android:background="@drawable/rounded_rectangle_white_gray_corners"
-                                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                                android:gravity="center"
-                                android:padding="@dimen/padding_size_6x"
-                                android:text="@string/for_her"
-                                />
                         </LinearLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -215,22 +243,30 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_fragment_partner_profile_filter_list"
+                android:id="@+id/fragment_shop_profile_filter_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/white"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:paddingStart="0dp"
+                android:paddingEnd="@dimen/padding_size_6x"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_scrollFlags="scroll|enterAlways"
                 tools:listitem="@layout/item_collection_filter"
                 />
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_fragment_partner_profile_items_list"
+            android:id="@+id/fragment_shop_profile_clothes_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:spanCount="2"
+            tools:listitem="@layout/item_clothes_detail"
             />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

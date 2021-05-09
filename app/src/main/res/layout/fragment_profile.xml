@@ -65,7 +65,7 @@
                             >
 
                             <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/shapeable_image_view_fragment_profile_avatar"
+                                android:id="@+id/fragment_shop_profile_avatar_shapeable_image_view"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:adjustViewBounds="true"
@@ -86,7 +86,7 @@
 
 
                         <TextView
-                            android:id="@+id/text_view_fragment_profile_user_name"
+                            android:id="@+id/fragment_shop_profile_title_text_view"
                             style="@style/TitleTextBold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -100,14 +100,14 @@
                             />
 
                         <LinearLayout
-                            android:id="@+id/linear_layout_fragment_profile_followers_item"
+                            android:id="@+id/fragment_shop_profile_followers_linear_layout"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/margin_size_16x"
                             android:orientation="vertical"
-                            app:layout_constraintEnd_toEndOf="@+id/text_view_fragment_profile_user_name"
-                            app:layout_constraintStart_toStartOf="@+id/text_view_fragment_profile_user_name"
-                            app:layout_constraintTop_toBottomOf="@+id/text_view_fragment_profile_user_name"
+                            app:layout_constraintEnd_toEndOf="@+id/fragment_shop_profile_title_text_view"
+                            app:layout_constraintStart_toStartOf="@+id/fragment_shop_profile_title_text_view"
+                            app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_title_text_view"
                             >
 
                             <TextView
@@ -136,11 +136,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/margin_size_24x"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
-                            app:layout_constraintEnd_toStartOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintBottom_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
+                            app:layout_constraintEnd_toStartOf="@+id/fragment_shop_profile_followers_linear_layout"
                             app:layout_constraintHorizontal_bias="1.0"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintTop_toTopOf="@+id/fragment_shop_profile_followers_linear_layout"
                             >
 
                             <TextView
@@ -169,11 +169,11 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/margin_size_24x"
                             android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintBottom_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/linear_layout_fragment_profile_followers_item"
-                            app:layout_constraintTop_toTopOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintStart_toEndOf="@+id/fragment_shop_profile_followers_linear_layout"
+                            app:layout_constraintTop_toTopOf="@+id/fragment_shop_profile_followers_linear_layout"
                             >
 
                             <TextView
@@ -205,7 +205,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="@+id/linear_layout_fragment_profile_following_item"
                             app:layout_constraintStart_toStartOf="@+id/linear_layout_fragment_profile_photos_item"
-                            app:layout_constraintTop_toBottomOf="@+id/linear_layout_fragment_profile_followers_item"
+                            app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
                             >
 
                             <TextView

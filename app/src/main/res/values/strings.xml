@@ -93,6 +93,9 @@
     <string name="photo">Photo</string>
     <string name="following">following</string>
     <string name="follow">follow</string>
+    <string name="unfollow">unfollow</string>
+    <string name="already_followed">Followed</string>
+    <string name="write_message">Write</string>
     <string name="search">Search</string>
     <string name="for_his">For his</string>
     <string name="for_her">For her</string>
@@ -296,7 +299,6 @@
     <string name="filter_colors">Colors</string>
     <string name="filter_costs">Price range</string>
 
-    <string name="unfollow">unfollow</string>
     <string name="followers_text_format">%s Followers</string>
     <string name="followings_text_format">%s Followings</string>
 
