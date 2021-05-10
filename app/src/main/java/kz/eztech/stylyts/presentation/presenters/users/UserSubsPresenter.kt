@@ -34,8 +34,12 @@ class UserSubsPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getFollowers(token: String, userId: Int) {
-        getFollowersUseCase.initParams(token, userId)
+    override fun getFollowers(
+        token: String,
+        userId: Int,
+        username: String
+    ) {
+        getFollowersUseCase.initParams(token, userId, username)
         getFollowersUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
             override fun onSuccess(t: ResultsModel<FollowerModel>) {
                 view.processViewAction {
@@ -51,8 +55,12 @@ class UserSubsPresenter @Inject constructor(
         })
     }
 
-    override fun getFollowings(token: String, userId: Int) {
-        getFollowingsUseCase.initParams(token, userId)
+    override fun getFollowings(
+        token: String,
+        userId: Int,
+        username: String
+    ) {
+        getFollowingsUseCase.initParams(token, userId, username)
         getFollowingsUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
             override fun onSuccess(t: ResultsModel<FollowerModel>) {
                 view.processViewAction {

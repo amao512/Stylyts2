@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.users
 
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -16,15 +17,21 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsPresenter
+import kz.eztech.stylyts.presentation.presenters.users.UserSubsViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, View.OnClickListener {
 
+    private val userSubsViewModel: UserSubsViewModel by inject()
+
     @Inject lateinit var presenter: UserSubsPresenter
     private lateinit var adapter: UserSubViewPagerAdapter
+
+    private lateinit var searchView: SearchView
 
     private var followersCount: Int = 0
     private var followingsCount: Int = 0
@@ -76,9 +83,13 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
     override fun initializeViews() {
         adapter = UserSubViewPagerAdapter(fa = this, userId = getUserIdFromArgs())
         view_pager_fragment_user_subs.isSaveEnabled = false
+
+        searchView = fragment_user_subs_search_view
     }
 
-    override fun initializeListeners() {}
+    override fun initializeListeners() {
+        onSearchListener()
+    }
 
     override fun processPostInitialization() {
         presenter.getFollowers(
@@ -135,6 +146,22 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
                 else -> EMPTY_STRING
             }
         }.attach()
+    }
+
+    private fun onSearchListener() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                userSubsViewModel.onSearch(query = query ?: EMPTY_STRING)
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                userSubsViewModel.onSearch(query = newText ?: EMPTY_STRING)
+
+                return false
+            }
+        })
     }
 
     private fun getUserIdFromArgs(): Int = arguments?.getInt(USER_ID_ARGS) ?: 0

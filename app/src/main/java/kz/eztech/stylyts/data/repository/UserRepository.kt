@@ -19,9 +19,14 @@ class UserRepository @Inject constructor(
 
     override fun getFollowersById(
         token: String,
-        userId: String
+        userId: String,
+        queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>> {
-        return api.getUserFollowers(token, userId).map {
+        return api.getUserFollowers(
+            token = token,
+            userId = userId,
+            queryMap = queryMap
+        ).map {
             when (it.isSuccessful) {
                 true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
@@ -31,9 +36,14 @@ class UserRepository @Inject constructor(
 
     override fun getFollowingsById(
         token: String,
-        userId: String
+        userId: String,
+        queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>> {
-        return api.getUserFollowings(token, userId).map {
+        return api.getUserFollowings(
+            token = token,
+            userId = userId,
+            queryMap = queryMap
+        ).map {
             when (it.isSuccessful) {
                 true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)

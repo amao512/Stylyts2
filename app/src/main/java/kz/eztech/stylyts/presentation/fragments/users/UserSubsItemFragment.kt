@@ -19,9 +19,14 @@ import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsPresenter
+import kz.eztech.stylyts.presentation.presenters.users.UserSubsViewModel
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View, UniversalViewClickListener {
+
+    private val userSubsViewModel: UserSubsViewModel by inject()
 
     @Inject lateinit var presenter: UserSubsPresenter
     @Inject lateinit var imageLoader: DomainImageLoader
@@ -76,6 +81,10 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
 
     override fun processPostInitialization() {
         getUsers()
+
+        userSubsViewModel.queryLiveData.observe(viewLifecycleOwner, {
+            getUsers(username = it)
+        })
     }
 
     override fun disposeRequests() {}
@@ -116,15 +125,17 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
         adapter.setUnFollowingUser(followerId = followerId)
     }
 
-    private fun getUsers() {
+    private fun getUsers(username: String = EMPTY_STRING) {
         when (getPositionFromArgs()) {
             0 -> presenter.getFollowers(
                 token = currentActivity.getTokenFromSharedPref(),
-                userId = getUserIdFromArgs()
+                userId = getUserIdFromArgs(),
+                username = username
             )
             1 -> presenter.getFollowings(
                 token = currentActivity.getTokenFromSharedPref(),
-                userId = getUserIdFromArgs()
+                userId = getUserIdFromArgs(),
+                username = username
             )
         }
     }

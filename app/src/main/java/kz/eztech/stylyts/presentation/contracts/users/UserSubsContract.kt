@@ -5,6 +5,7 @@ import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 
 interface UserSubsContract {
 
@@ -23,12 +24,14 @@ interface UserSubsContract {
 
         fun getFollowers(
             token: String,
-            userId: Int
+            userId: Int,
+            username: String = EMPTY_STRING
         )
 
         fun getFollowings(
             token: String,
-            userId: Int
+            userId: Int,
+            username: String = EMPTY_STRING
         )
 
         fun followUser(

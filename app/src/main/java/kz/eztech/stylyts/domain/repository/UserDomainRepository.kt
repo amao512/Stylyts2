@@ -9,12 +9,14 @@ interface UserDomainRepository {
 
     fun getFollowersById(
         token: String,
-        userId: String
+        userId: String,
+        queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>>
 
     fun getFollowingsById(
         token: String,
-        userId: String
+        userId: String,
+        queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>>
 
     fun followUser(

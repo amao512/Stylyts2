@@ -6,23 +6,22 @@ import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.user.FollowSuccessApiModel
 import kz.eztech.stylyts.data.api.models.user.FollowerApiModel
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface UserApi {
 
     @GET(RestConstants.GET_FOLLOWERS_BY_ID)
     fun getUserFollowers(
         @Header("Authorization") token: String,
-        @Path("user_id") userId: String
+        @Path("user_id") userId: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<FollowerApiModel>>>
 
     @GET(RestConstants.GET_FOLLOWINGS_BY_ID)
     fun getUserFollowings(
         @Header("Authorization") token: String,
-        @Path("user_id") userId: String
+        @Path("user_id") userId: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<FollowerApiModel>>>
 
     @POST(RestConstants.FOLLOW_USER_BY_ID)
