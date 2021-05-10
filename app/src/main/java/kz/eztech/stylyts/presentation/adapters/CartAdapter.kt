@@ -26,6 +26,9 @@ class CartAdapter : BaseAdapter() {
     }
 
     override fun getViewHolder(view: View): BaseViewHolder {
-        return CartHolder(view, this)
+        return CartHolder(
+            itemView = view,
+            adapter = this
+        )
     }
 }

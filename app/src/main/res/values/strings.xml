@@ -330,4 +330,6 @@
 
     <string name="likes_count_text_format">%s likes</string>
     <string name="total_cost_text_format"><![CDATA[%1$s <b>%2$s</b>]]></string>
+
+    <string name="select_size">Выберите размер</string>
 </resources>

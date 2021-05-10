@@ -111,7 +111,7 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
         item: Any?
     ) {
         when (view.id) {
-            R.id.image_view_item_cart_close -> {
+            R.id.item_cart_clothes_remove_image_view -> {
                 include_base_progress_dialog_cart.show()
                 disposables.clear()
                 disposables.add(

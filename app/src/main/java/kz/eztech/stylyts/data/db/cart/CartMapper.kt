@@ -27,7 +27,8 @@ object CartMapper {
             totalCount = 0,
             price = model.cost,
             salePrice = model.salePrice,
-            currency = model.currency
+            currency = model.currency,
+            size = model.selectedSize?.size
         )
     }
 }

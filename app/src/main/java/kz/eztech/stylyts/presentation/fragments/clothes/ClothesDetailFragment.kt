@@ -164,7 +164,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
     private fun fillClothesModel(clothesModel: ClothesModel) {
         chooserDialog = ClothesSizesBottomDialog()
-        chooserDialog.setChoiceListener(this)
+        chooserDialog.setChoiceListener(listener = this)
 
         if (clothesModel.clothesBrand.title.isNotEmpty()) {
             fragment_clothes_detail_brand_title_text_view.text = clothesModel.clothesBrand.title
@@ -288,15 +288,20 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 fragment_clothes_detail_text_size_frame_layout.show()
                 fragment_clothes_detail_text_share_linear_layout.show()
             }
-            CART_STATE.EDIT -> processCart(clothesModel)
+            CART_STATE.EDIT -> {
+                if (currentSize != null) {
+                    processCart(clothesModel)
+                } else {
+                    displayMessage(msg = getString(R.string.select_size))
+                }
+            }
             else -> {}
         }
     }
 
     private fun showClothesSizes(clothesModel: ClothesModel) {
-        val bundle = Bundle()
-
         if (clothesModel.sizeInStock.isNotEmpty()) {
+            val bundle = Bundle()
             var counter = 0
             val clothesSizes: MutableList<ClothesSizeModel> = mutableListOf()
 
@@ -309,11 +314,12 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                 ClothesSizesBottomDialog.SIZES_KEY,
                 ArrayList(clothesSizes)
             )
+
+            chooserDialog.arguments = bundle
+            chooserDialog.show(parentFragmentManager, "Chooser")
         } else {
             displayMessage(msg = getString(R.string.there_are_not_sizes))
         }
-        chooserDialog.arguments = bundle
-        chooserDialog.show(parentFragmentManager, "Chooser")
     }
 
     private fun showClothesDescription() {
@@ -341,6 +347,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     }
 
     private fun processCart(clothesModel: ClothesModel) {
+        clothesModel.selectedSize = currentSize
         presenter.insertToCart(clothesModel = clothesModel)
     }
 

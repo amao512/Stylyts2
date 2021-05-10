@@ -244,7 +244,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         additionalAdapter.updateList(list = postModel.clothes)
         currentPostModel = postModel
 
-        if (postModel.clothes.isNotEmpty()) {
+        if (postModel.clothes.isNotEmpty() && postModel.clothes.sumBy { it.cost } != 0) {
             totalPriceTextView.text = HtmlCompat.fromHtml(
                 totalPriceTextView.context.getString(
                     R.string.total_cost_text_format,

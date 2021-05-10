@@ -8,7 +8,7 @@
     >
 
     <ImageView
-        android:id="@+id/image_view_item_cart_item"
+        android:id="@+id/item_cart_clothes_image_view"
         android:layout_width="@dimen/cart_item_image_size"
         android:layout_height="@dimen/cart_item_image_size"
         android:layout_marginBottom="@dimen/margin_size_16x"
@@ -23,14 +23,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_size_16x"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/image_view_item_cart_item"
+        app:layout_constraintBottom_toBottomOf="@+id/item_cart_clothes_image_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/image_view_item_cart_item"
-        app:layout_constraintTop_toTopOf="@+id/image_view_item_cart_item"
+        app:layout_constraintStart_toEndOf="@+id/item_cart_clothes_image_view"
+        app:layout_constraintTop_toTopOf="@+id/item_cart_clothes_image_view"
         >
 
         <TextView
-            android:id="@+id/text_view_item_cart_item_name"
+            android:id="@+id/item_cart_clothes_title_text_view"
             style="@style/SubtitleTextBold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             />
 
         <TextView
-            android:id="@+id/text_view_item_cart_item_brand_name"
+            android:id="@+id/item_cart_brand_title_text_view"
             style="@style/TextRegular"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             />
 
         <TextView
-            android:id="@+id/text_view_item_cart_item_description"
+            android:id="@+id/item_cart_clothes_id_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_size_8x"
@@ -102,7 +102,7 @@
                 >
 
                 <TextView
-                    android:id="@+id/text_view_item_cart_item_size"
+                    android:id="@+id/item_cart_clothes_size_text_view"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/image_view_item_cart_close"
+        android:id="@+id/item_cart_clothes_remove_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_4x"
@@ -144,14 +144,14 @@
         android:drawableStart="@drawable/ic_baseline_favorite_border_24"
         android:drawablePadding="@dimen/padding_size_24x"
         android:text="Добавить в избранное"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_item_cart_item_price"
+        app:layout_constraintBottom_toTopOf="@+id/item_cart_price_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         />
 
     <TextView
-        android:id="@+id/text_view_item_cart_item_price"
+        android:id="@+id/item_cart_price_text_view"
         style="@style/SubtitleTextBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
