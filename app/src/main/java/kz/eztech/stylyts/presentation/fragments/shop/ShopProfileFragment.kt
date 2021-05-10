@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.shop
 
+import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
@@ -29,6 +30,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopProfileContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
+import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -136,6 +139,8 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     ) {
         when (view.id) {
             R.id.frame_layout_item_collection_filter -> onFilterItemClicked(item, position)
+            R.id.shapeable_image_view_item_collection_image -> onNavigateToOutfit(item)
+            R.id.item_clothes_detail_linear_layout -> onNavigateToClothes(item)
         }
 
         when (item) {
@@ -332,6 +337,25 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
         resetPages(mode = CLOTHES_MODE)
         getClothes()
+    }
+
+    private fun onNavigateToOutfit(item: Any?) {
+        item as OutfitModel
+
+        val bundle = Bundle()
+        bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
+
+        findNavController().navigate(R.id.action_shopProfileFragment_to_collectionDetailFragment, bundle)
+    }
+
+    private fun onNavigateToClothes(item: Any?) {
+        item as ClothesModel
+
+        val bundle = Bundle()
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+
+        findNavController().navigate(R.id.action_shopProfileFragment_to_clothesDetailFragment, bundle)
     }
 
     private fun handleCollectionRecyclerView() {

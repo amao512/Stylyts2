@@ -75,17 +75,12 @@
             app:destination="@id/nav_profile"
             />
         <action
-            android:id="@+id/action_searchFragment_to_shopProfileFragment"
-            app:destination="@id/shopProfileFragment"
+            android:id="@+id/action_searchFragment_to_nav_shop_profile"
+            app:destination="@id/nav_shop_profile"
             />
     </fragment>
 
     <include app:graph="@navigation/nav_profile" />
+    <include app:graph="@navigation/nav_shop_profile" />
 
-    <fragment
-        android:id="@+id/shopProfileFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment"
-        android:label="ShopProfileFragment"
-        tools:layout="@layout/fragment_shop_profile"
-        />
 </navigation>

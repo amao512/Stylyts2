@@ -230,7 +230,7 @@ class SearchItemFragment(
         val bundle = Bundle()
         bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, item.id)
 
-        findNavController().navigate(R.id.action_searchFragment_to_shopProfileFragment, bundle)
+        findNavController().navigate(R.id.action_searchFragment_to_nav_shop_profile, bundle)
     }
 
     private fun onRemoveUserFromHistory(item: Any?) {
