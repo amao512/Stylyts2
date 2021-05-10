@@ -67,49 +67,30 @@
                     </FrameLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:weightSum="1"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/margin_size_16x"
+                        android:layout_weight="0.9"
+                        android:orientation="vertical"
                         >
 
-                        <LinearLayout
-                            android:layout_width="0dp"
+                        <TextView
+                            android:id="@+id/fragment_comments_post_author_name_desc_text_view"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/margin_size_16x"
-                            android:layout_weight="0.9"
-                            android:orientation="vertical"
-                            >
+                            tools:text="Ruslan Rus"
+                            />
 
-                            <TextView
-                                android:id="@+id/fragment_comments_post_author_name_text_view"
-                                style="@style/TextRegularBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="Ruslan Rus"
-                                />
-
-                            <TextView
-                                android:id="@+id/fragment_comments_post_desc_text_view"
-                                style="@style/TextRegular"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                tools:text="asdas dasd asasd asd asd asd "
-                                />
-
-                            <TextView
-                                android:id="@+id/fragment_comments_post_date_text_view"
-                                style="@style/TextRegular"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/app_gray_hint"
-                                android:visibility="gone"
-                                tools:text="6 янв. 2021"
-                                />
-                        </LinearLayout>
-
+                        <TextView
+                            android:id="@+id/fragment_comments_post_date_text_view"
+                            style="@style/TextRegular"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/app_gray_hint"
+                            android:visibility="gone"
+                            tools:text="6 янв. 2021"
+                            />
                     </LinearLayout>
 
                 </LinearLayout>

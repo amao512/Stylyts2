@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
@@ -43,8 +44,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
 
     private lateinit var postAuthorAvatarShapeableImageView: ShapeableImageView
     private lateinit var postAuthorShortNameTextView: TextView
-    private lateinit var postAuthorFullNameTextView: TextView
-    private lateinit var postDescTextView: TextView
+    private lateinit var postAuthorNameDescTextView: TextView
     private lateinit var postDateTextView: TextView
     private lateinit var commentsRecyclerView: RecyclerView
     private lateinit var userAvatarShapeableImageView: ShapeableImageView
@@ -99,8 +99,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     override fun initializeViews() {
         postAuthorAvatarShapeableImageView = fragment_comments_post_avatar_shapeable_image_view
         postAuthorShortNameTextView = fragment_comments_post_user_short_name_text_view
-        postAuthorFullNameTextView = fragment_comments_post_author_name_text_view
-        postDescTextView = fragment_comments_post_desc_text_view
+        postAuthorNameDescTextView = fragment_comments_post_author_name_desc_text_view
         postDateTextView = fragment_comments_post_date_text_view
 
         commentsRecyclerView = fragment_comments_recycler_view
@@ -188,12 +187,14 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
             postAuthorShortNameTextView.hide()
         }
 
-        postAuthorFullNameTextView.text = getString(
-            R.string.full_name_text_format,
-            postModel.author.firstName,
-            postModel.author.lastName
+        postAuthorNameDescTextView.text =  HtmlCompat.fromHtml(
+            postAuthorNameDescTextView.context.getString(
+                R.string.comment_text_with_user_text_format,
+                postModel.author.firstName,
+                postModel.author.lastName,
+                postModel.description
+            ), HtmlCompat.FROM_HTML_MODE_LEGACY
         )
-        postDescTextView.text = postModel.description
 
         postAuthorAvatarShapeableImageView.setOnClickListener {
             navigateToProfile(userId = postModel.author.id)
@@ -219,12 +220,14 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
             postAuthorShortNameTextView.hide()
         }
 
-        postAuthorFullNameTextView.text = getString(
-            R.string.full_name_text_format,
-            outfitModel.author.firstName,
-            outfitModel.author.lastName
+        postAuthorNameDescTextView.text =  HtmlCompat.fromHtml(
+            postAuthorNameDescTextView.context.getString(
+                R.string.comment_text_with_user_text_format,
+                outfitModel.author.firstName,
+                outfitModel.author.lastName,
+                outfitModel.text
+            ), HtmlCompat.FROM_HTML_MODE_LEGACY
         )
-        postDescTextView.text = outfitModel.text
 
         postAuthorAvatarShapeableImageView.setOnClickListener {
             navigateToProfile(userId = outfitModel.author.id)
