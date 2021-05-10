@@ -72,6 +72,14 @@ class GetClothesUseCase @Inject constructor(
             stringQueryMap["owner"] = filterModel.owner
         }
 
+        if (filterModel.minPrice != 0) {
+            stringQueryMap["cost_gt"] = filterModel.minPrice.toString()
+        }
+
+        if (filterModel.maxPrice != 0) {
+            stringQueryMap["cost_lt"] = filterModel.maxPrice.toString()
+        }
+
         this.stringQueryMap = stringQueryMap
         this.booleanQueryMap = booleanQueryMap
     }

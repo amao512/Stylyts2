@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.dialogs.filter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -420,12 +421,22 @@ class FilterDialog(
     }
 
     private fun handlePriceEditText() {
-        if (minPriceEditText.text.isNotBlank()) {
-            currentFilter.minPrice = minPriceEditText.text.toString().toInt()
+        minPriceEditText.setOnKeyListener { _, _, _ ->
+            if (minPriceEditText.text.isNotBlank()) {
+                currentFilter.minPrice = minPriceEditText.text.toString().toInt()
+                getFilterResults()
+            }
+
+            false
         }
 
-        if (maxPriceEditText.text.isNotBlank()) {
-            currentFilter.maxPrice = maxPriceEditText.text.toString().toInt()
+        maxPriceEditText.setOnKeyListener { _, _, _ ->
+            if (maxPriceEditText.text.isNotBlank()) {
+                currentFilter.maxPrice = maxPriceEditText.text.toString().toInt()
+                getFilterResults()
+            }
+
+            false
         }
     }
 

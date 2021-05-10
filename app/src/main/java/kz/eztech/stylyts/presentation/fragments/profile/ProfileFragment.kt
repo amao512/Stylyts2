@@ -529,7 +529,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         wardrobeAdapter.clearList()
         collectionRecyclerView.adapter = wardrobeAdapter
 
-        adapterFilter.onChooseItem(position = 3)
+        adapterFilter.onChooseItem(position = 3, isDisabledFirstPosition = false)
         resetPages(mode = WARDROBE_MODE)
         getCollections()
     }
