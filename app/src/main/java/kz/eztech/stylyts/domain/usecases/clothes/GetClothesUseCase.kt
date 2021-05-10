@@ -68,6 +68,10 @@ class GetClothesUseCase @Inject constructor(
             stringQueryMap["page"] = filterModel.page.toString()
         }
 
+        if (filterModel.owner.isNotBlank()) {
+            stringQueryMap["owner"] = filterModel.owner
+        }
+
         this.stringQueryMap = stringQueryMap
         this.booleanQueryMap = booleanQueryMap
     }

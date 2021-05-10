@@ -155,8 +155,11 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun followUser(token: String, userId: Int) {
-		followUserUseCase.initParams(token, userId.toString())
+	override fun followUser(
+		token: String,
+		userId: Int
+	) {
+		followUserUseCase.initParams(token, userId)
 		followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
 			override fun onSuccess(t: FollowSuccessModel) {
 				view.processViewAction {
@@ -172,8 +175,11 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun unfollowUser(token: String, userId: Int) {
-		unfollowUserUseCase.initParams(token, userId.toString())
+	override fun unfollowUser(
+		token: String,
+		userId: Int
+	) {
+		unfollowUserUseCase.initParams(token, userId)
 		unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
 			override fun onSuccess(t: Any) {
 				view.processViewAction {

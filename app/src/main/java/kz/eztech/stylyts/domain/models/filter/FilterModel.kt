@@ -8,6 +8,7 @@ import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 @Parcelize
 data class FilterModel(
     var userId: Int = 0,
+    var owner: String = EMPTY_STRING,
     var username: String = EMPTY_STRING,
     var gender: String = EMPTY_STRING,
     var typeIdList: List<Int> = emptyList(),

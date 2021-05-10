@@ -214,15 +214,25 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processOutfit(outfitModel: OutfitModel) {
         additionalAdapter.updateList(list = outfitModel.clothes)
         currentOutfitModel = outfitModel
-        totalPriceTextView.text = getString(
-            R.string.price_tenge_text_format,
-            NumberFormat.getInstance().format(outfitModel.totalPrice)
-        )
         commentsCountTextView.text = getString(
             R.string.comments_count_text_format,
             0.toString()
         )
+        descriptionTextView.text = outfitModel.text
+        likesCountTextView.hide()
         text_view_fragment_collection_detail_date.text = getFormattedDate(outfitModel.createdAt)
+
+        if (outfitModel.clothes.isNotEmpty() && outfitModel.clothes.sumBy { it.cost } != 0) {
+            totalPriceTextView.text = HtmlCompat.fromHtml(
+                totalPriceTextView.context.getString(
+                    R.string.total_cost_text_format,
+                    NumberFormat.getInstance().format(outfitModel.clothes.sumBy { it.cost }).toString(),
+                    outfitModel.clothes[0].currency,
+                ), HtmlCompat.FROM_HTML_MODE_LEGACY
+            )
+        } else {
+            totalPriceTextView.hide()
+        }
 
         processAuthor(userShortModel = outfitModel.author)
         loadImages(images = arrayListOf(outfitModel.coverPhoto))

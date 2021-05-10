@@ -26,7 +26,7 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
-import kz.eztech.stylyts.presentation.adapters.collection.GridImageCollectionItemAdapter
+import kz.eztech.stylyts.presentation.adapters.collection.OutfitsAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -55,7 +55,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
     private lateinit var wardrobeAdapter: ClothesDetailAdapter
-    private lateinit var outfitsAdapter: GridImageCollectionItemAdapter
+    private lateinit var outfitsAdapter: OutfitsAdapter
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: FilterModel
 
@@ -132,7 +132,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         wardrobeAdapter = ClothesDetailAdapter()
         wardrobeAdapter.setOnClickListener(listener = this)
 
-        outfitsAdapter = GridImageCollectionItemAdapter()
+        outfitsAdapter = OutfitsAdapter()
         outfitsAdapter.setOnClickListener(listener = this)
     }
 
@@ -437,7 +437,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         collectionRecyclerView.adapter = wardrobeAdapter
 
-        adapterFilter.onChooseItem(position)
+        adapterFilter.onChooseItem(position, isDisabledFirstPosition = false)
         wardrobeAdapter.clearList()
 
         getCollections()

@@ -24,9 +24,9 @@ class FollowUserUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        userId: String
+        userId: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.userId = userId
+        this.userId = userId.toString()
     }
 }

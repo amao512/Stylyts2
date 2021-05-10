@@ -35,14 +35,17 @@ class CollectionsFilterAdapter : BaseAdapter() {
         )
     }
 
-    fun onChooseItem(position: Int) {
+    fun onChooseItem(
+        position: Int,
+        isDisabledFirstPosition: Boolean = true
+    ) {
         currentList.forEach {
             it as CollectionFilterModel
 
             it.isChosen = it.id == (currentList[position] as CollectionFilterModel).id
         }
 
-        (currentList[0] as CollectionFilterModel).isDisabled = position != 3
+        (currentList[0] as CollectionFilterModel).isDisabled = isDisabledFirstPosition
 
         val diffCallback = getDiffUtilCallBack(currentList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)

@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 
 import android.view.View
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.item_collection_image.view.*
+import kotlinx.android.synthetic.main.item_collection.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
