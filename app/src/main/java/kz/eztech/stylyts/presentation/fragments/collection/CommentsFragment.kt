@@ -28,6 +28,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CommentsContract
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CommentsPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
@@ -159,9 +160,8 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         position: Int,
         item: Any?
     ) {
-        when (view.id) {
-            R.id.item_comment_avatar_shapeable_image_view -> navigateToProfile((item as CommentModel).author.id)
-            R.id.item_comment_user_short_name_text_view -> navigateToProfile((item as CommentModel).author.id)
+        when (item) {
+            is CommentModel -> navigateToProfile(item.author.id, item.author.isBrand)
         }
     }
 
@@ -197,11 +197,17 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         )
 
         postAuthorAvatarShapeableImageView.setOnClickListener {
-            navigateToProfile(userId = postModel.author.id)
+            navigateToProfile(
+                userId = postModel.author.id,
+                isBrand = postModel.author.isBrand
+            )
         }
 
         postAuthorShortNameTextView.setOnClickListener {
-            navigateToProfile(userId = postModel.author.id)
+            navigateToProfile(
+                userId = postModel.author.id,
+                isBrand = postModel.author.isBrand
+            )
         }
     }
 
@@ -230,11 +236,17 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         )
 
         postAuthorAvatarShapeableImageView.setOnClickListener {
-            navigateToProfile(userId = outfitModel.author.id)
+            navigateToProfile(
+                userId = outfitModel.author.id,
+                isBrand = outfitModel.author.isBrand
+            )
         }
 
         postAuthorShortNameTextView.setOnClickListener {
-            navigateToProfile(userId = outfitModel.author.id)
+            navigateToProfile(
+                userId = outfitModel.author.id,
+                isBrand = outfitModel.author.isBrand
+            )
         }
     }
 
@@ -263,11 +275,19 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         commentEditText.text.clear()
     }
 
-    private fun navigateToProfile(userId: Int) {
+    private fun navigateToProfile(
+        userId: Int,
+        isBrand: Boolean
+    ) {
         val bundle = Bundle()
-        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, userId)
 
-        findNavController().navigate(R.id.nav_profile, bundle)
+        if (isBrand) {
+            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, userId)
+            findNavController().navigate(R.id.nav_shop_profile, bundle)
+        } else {
+            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, userId)
+            findNavController().navigate(R.id.nav_profile, bundle)
+        }
     }
 
     private fun handleCommentEditText() {

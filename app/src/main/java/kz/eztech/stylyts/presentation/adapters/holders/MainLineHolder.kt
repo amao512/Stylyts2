@@ -185,6 +185,10 @@ class MainLineHolder(
                 adapter.itemClickListener?.onViewClicked(it, position, postModel)
             }
 
+            firstCommentTextView.setOnClickListener {
+                adapter.itemClickListener?.onViewClicked(it, position, postModel)
+            }
+
             item_main_image_clothes_tags_icon.setOnClickListener {
                 onShowClothesTags()
             }

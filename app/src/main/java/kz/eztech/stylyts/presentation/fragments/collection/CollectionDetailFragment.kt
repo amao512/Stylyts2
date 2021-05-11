@@ -34,6 +34,7 @@ import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -49,8 +50,10 @@ import javax.inject.Inject
 class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailContract.View,
     UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
-    @Inject lateinit var presenter: CollectionDetailPresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
+    @Inject
+    lateinit var presenter: CollectionDetailPresenter
+    @Inject
+    lateinit var imageLoader: DomainImageLoader
 
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
     private lateinit var currentOutfitModel: OutfitModel
@@ -148,6 +151,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 //        changeCollectionButton.setOnClickListener(this)
         likeImageView.setOnClickListener(this)
         commentsImageView.setOnClickListener(this)
+        firstCommentTextView.setOnClickListener(this)
         constraint_layout_fragment_collection_detail_profile_container.setOnClickListener(this)
     }
 
@@ -187,6 +191,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
             R.id.fragment_collection_detail_user_tags_icon -> onShowUsersTags()
             R.id.fragment_collection_detail_like_image_view -> onLikeClicked()
+            R.id.fragment_collection_detail_first_comment_text_view -> onProfileClick()
         }
     }
 
@@ -226,7 +231,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             totalPriceTextView.text = HtmlCompat.fromHtml(
                 totalPriceTextView.context.getString(
                     R.string.total_cost_text_format,
-                    NumberFormat.getInstance().format(outfitModel.clothes.sumBy { it.cost }).toString(),
+                    NumberFormat.getInstance().format(outfitModel.clothes.sumBy { it.cost })
+                        .toString(),
                     outfitModel.clothes[0].currency,
                 ), HtmlCompat.FROM_HTML_MODE_LEGACY
             )
@@ -248,7 +254,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             totalPriceTextView.text = HtmlCompat.fromHtml(
                 totalPriceTextView.context.getString(
                     R.string.total_cost_text_format,
-                    NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost }).toString(),
+                    NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost })
+                        .toString(),
                     postModel.clothes[0].currency,
                 ), HtmlCompat.FROM_HTML_MODE_LEGACY
             )
@@ -529,20 +536,24 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     private fun onProfileClick() {
+        when (getModeFromArgs()) {
+            OUTFIT_MODE -> navigateToProfile(currentOutfitModel.author)
+            POST_MODE -> navigateToProfile(currentPostModel.author)
+        }
+    }
+
+    private fun navigateToProfile(author: UserShortModel) {
         val bundle = Bundle()
 
-        when (getModeFromArgs()) {
-            OUTFIT_MODE -> bundle.putInt(
-                ProfileFragment.USER_ID_BUNDLE_KEY,
-                currentOutfitModel.author.id
-            )
-            POST_MODE -> bundle.putInt(
-                ProfileFragment.USER_ID_BUNDLE_KEY,
-                currentPostModel.author.id
-            )
-        }
+        if (author.isBrand) {
+            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, author.id)
 
-        findNavController().navigate(R.id.nav_profile, bundle)
+            findNavController().navigate(R.id.nav_shop_profile, bundle)
+        } else {
+            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, author.id)
+
+            findNavController().navigate(R.id.nav_profile, bundle)
+        }
     }
 
     private fun navigateToComments() {
@@ -550,7 +561,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         bundle.putInt(CommentsFragment.COLLECTION_ID_KEY, getCollectionIdFromArgs())
         bundle.putInt(CommentsFragment.MODE_KEY, getModeFromArgs())
 
-        findNavController().navigate(R.id.action_collectionDetailFragment_to_userCommentsFragment, bundle)
+        findNavController().navigate(
+            R.id.action_collectionDetailFragment_to_userCommentsFragment,
+            bundle
+        )
     }
 
     private fun onChangeButtonClick() {

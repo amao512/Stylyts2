@@ -40,6 +40,10 @@
             android:id="@+id/action_mainFragment_to_createCollectionAcceptFragment"
             app:destination="@id/createCollectionAcceptFragment"
             />
+        <action
+            android:id="@+id/action_mainFragment_to_nav_shop_profile"
+            app:destination="@id/nav_shop_profile"
+            />
     </fragment>
 
     <fragment
@@ -51,6 +55,14 @@
         <action
             android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
             app:destination="@id/nav_create_collection"
+            />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_profile2"
+            app:destination="@id/nav_profile"
+            />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_shop_profile"
+            app:destination="@id/nav_shop_profile"
             />
     </fragment>
 
@@ -75,6 +87,14 @@
             android:id="@+id/action_collectionDetailFragment_to_userCommentsFragment"
             app:destination="@id/userCommentsFragment"
             />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_nav_profile"
+            app:destination="@id/nav_profile"
+            />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_nav_shop_profile"
+            app:destination="@id/nav_shop_profile"
+            />
     </fragment>
 
     <fragment
@@ -93,6 +113,10 @@
             android:id="@+id/action_userCommentsFragment_to_nav_profile"
             app:destination="@id/nav_profile"
             />
+        <action
+            android:id="@+id/action_userCommentsFragment_to_nav_shop_profile"
+            app:destination="@id/nav_shop_profile"
+            />
     </fragment>
 
     <include app:graph="@navigation/nav_create_collection" />
@@ -102,5 +126,6 @@
         android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
         android:label="CreateCollectionAcceptFragment"
         />
+    <include app:graph="@navigation/nav_shop_profile" />
 
 </navigation>

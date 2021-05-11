@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.item_main_line.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
@@ -27,6 +28,7 @@ import kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -104,6 +106,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.item_main_image_dialog_menu_image_button -> onContextMenuClicked(item)
             R.id.item_main_image_like_image_button -> likePost(item)
             R.id.item_main_image_comments_image_button -> navigateToComments(item)
+            R.id.item_main_line_first_comment_text_view -> onProfileClicked(item)
         }
     }
 
@@ -190,9 +193,16 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item as PostModel
 
         val bundle = Bundle()
-        bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author.id)
 
-        findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
+        if (item.author.isBrand) {
+            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, item.author.id)
+
+            findNavController().navigate(R.id.action_mainFragment_to_nav_shop_profile, bundle)
+        } else {
+            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author.id)
+
+            findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
+        }
     }
 
     private fun onChangeCollectionClicked(item: Any?) {
