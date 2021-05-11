@@ -273,7 +273,7 @@
         />
 
     <TextView
-        android:id="@+id/item_main_line_desc_text_view"
+        android:id="@+id/item_main_line_first_comment_text_view"
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

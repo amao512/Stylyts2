@@ -10,5 +10,6 @@ data class UserShortModel(
     val firstName: String,
     val lastName: String,
     val avatar: String,
-    val isAlreadyFollow: Boolean
+    val isAlreadyFollow: Boolean,
+    val isBrand: Boolean
 ): Parcelable

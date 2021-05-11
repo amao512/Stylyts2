@@ -2,6 +2,7 @@ package kz.eztech.stylyts.data.mappers.posts
 
 import kz.eztech.stylyts.data.api.models.posts.PostApiModel
 import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
+import kz.eztech.stylyts.data.mappers.comments.CommentApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserShortApiModelMapper
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -10,7 +11,8 @@ import javax.inject.Inject
 class PostApiModelMapper @Inject constructor(
     private val tagsApiModelMapper: TagsApiModelMapper,
     private val clothesApiModelMapper: ClothesApiModelMapper,
-    private val userShortApiModelMapper: UserShortApiModelMapper
+    private val userShortApiModelMapper: UserShortApiModelMapper,
+    private val commentApiModelMapper: CommentApiModelMapper
 ) {
 
     fun map(data: List<PostApiModel>?): List<PostModel> {
@@ -27,7 +29,8 @@ class PostApiModelMapper @Inject constructor(
                 clothes = clothesApiModelMapper.map(data = it.clothes),
                 commentsCount = it.commentsCount ?: 0,
                 likesCount = it.likesCount ?: 0,
-                alreadyLiked = it.alreadyLiked
+                alreadyLiked = it.alreadyLiked,
+                firstComment = commentApiModelMapper.map(it.firstComment)
             )
         }
     }
@@ -43,7 +46,8 @@ class PostApiModelMapper @Inject constructor(
             clothes = clothesApiModelMapper.map(data = data?.clothes),
             commentsCount = data?.commentsCount ?: 0,
             likesCount = data?.likesCount ?: 0,
-            alreadyLiked = data?.alreadyLiked ?: false
+            alreadyLiked = data?.alreadyLiked ?: false,
+            firstComment = commentApiModelMapper.map(data?.firstComment)
         )
     }
 }

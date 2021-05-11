@@ -52,7 +52,7 @@ class MainLineHolder(
     private lateinit var likeImageButton: ImageView
     private lateinit var likesCountTextView: TextView
     private lateinit var totalCostTextView: TextView
-    private lateinit var descriptionTextView: TextView
+    private lateinit var firstCommentTextView: TextView
     private lateinit var commentsImageButton: ImageView
     private lateinit var commentsCountTextView: TextView
 
@@ -108,14 +108,15 @@ class MainLineHolder(
             likeImageButton = item_main_image_like_image_button
             likesCountTextView = item_main_line_likes_count_text_view
             totalCostTextView = text_view_item_main_image_comments_cost
-            descriptionTextView = item_main_line_desc_text_view
+            firstCommentTextView = item_main_line_first_comment_text_view
             commentsImageButton = item_main_image_comments_image_button
             commentsCountTextView = text_view_item_main_image_comments_count
         }
     }
 
     private fun processPost(postModel: PostModel) {
-        fullNameTextView.text = SPACE_TEXT_FORMAT.format(postModel.author.firstName, postModel.author.lastName)
+        fullNameTextView.text =
+            SPACE_TEXT_FORMAT.format(postModel.author.firstName, postModel.author.lastName)
     }
 
     private fun initializeListeners(
@@ -142,7 +143,8 @@ class MainLineHolder(
                 totalCostTextView.text = HtmlCompat.fromHtml(
                     totalCostTextView.context.getString(
                         R.string.total_cost_text_format,
-                        NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost }).toString(),
+                        NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost })
+                            .toString(),
                         postModel.clothes[0].currency,
                     ), HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
@@ -150,17 +152,18 @@ class MainLineHolder(
                 totalCostTextView.hide()
             }
 
-            if (postModel.description.isNotBlank()) {
-                descriptionTextView.text = HtmlCompat.fromHtml(
-                    descriptionTextView.context.getString(
+            if (postModel.firstComment.text.isNotBlank()) {
+                firstCommentTextView.text = HtmlCompat.fromHtml(
+                    firstCommentTextView.context.getString(
                         R.string.comment_text_with_user_text_format,
-                        postModel.author.username,
+                        postModel.firstComment.author.username,
                         EMPTY_STRING,
-                        postModel.description
+                        postModel.firstComment.text
                     ), HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
+                firstCommentTextView.show()
             } else {
-                descriptionTextView.hide()
+                firstCommentTextView.hide()
             }
 
             commentsCountTextView.text = commentsCountTextView.context

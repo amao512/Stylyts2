@@ -17,7 +17,8 @@ class UserShortApiModelMapper @Inject constructor() {
             firstName = data?.firstName ?: EMPTY_STRING,
             lastName = data?.lastName ?: EMPTY_STRING,
             avatar = data?.avatar ?: EMPTY_STRING,
-            isAlreadyFollow = data?.isAlreadyFollow ?: false
+            isAlreadyFollow = data?.isAlreadyFollow ?: false,
+            isBrand = data?.isBrand ?: false
         )
     }
 }

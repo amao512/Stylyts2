@@ -3,6 +3,7 @@ package kz.eztech.stylyts.data.api.models.posts
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
+import kz.eztech.stylyts.data.api.models.comments.CommentApiModel
 import kz.eztech.stylyts.data.api.models.user.UserShortApiModel
 
 data class PostApiModel(
@@ -35,5 +36,8 @@ data class PostApiModel(
     val likesCount: Int?,
     @SerializedName("already_liked")
     @Expose
-    val alreadyLiked: Boolean
+    val alreadyLiked: Boolean,
+    @SerializedName("first_comment")
+    @Expose
+    val firstComment: CommentApiModel?
 )

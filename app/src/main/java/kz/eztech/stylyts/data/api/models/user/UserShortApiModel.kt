@@ -21,5 +21,8 @@ data class UserShortApiModel(
     val avatar: String?,
     @SerializedName("i_already_follow")
     @Expose
-    val isAlreadyFollow: Boolean
+    val isAlreadyFollow: Boolean,
+    @SerializedName("is_brand")
+    @Expose
+    val isBrand: Boolean
 )

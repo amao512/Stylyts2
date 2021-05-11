@@ -72,7 +72,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private lateinit var changeCollectionButton: Button
     private lateinit var likesCountTextView: TextView
     private lateinit var totalPriceTextView: TextView
-    private lateinit var descriptionTextView: TextView
+    private lateinit var firstCommentTextView: TextView
     private lateinit var commentsCountTextView: TextView
 
     companion object {
@@ -131,7 +131,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 //        changeCollectionButton = button_fragment_collection_detail_change_collection
         likesCountTextView = fragment_collection_detail_likes_count_text_view
         totalPriceTextView = text_view_fragment_collection_detail_comments_cost
-        descriptionTextView = fragment_collection_detail_desc_text_view
+        firstCommentTextView = fragment_collection_detail_first_comment_text_view
         commentsCountTextView = text_view_fragment_collection_detail_comments_count
 
         additionalAdapter = MainImagesAdditionalAdapter()
@@ -218,7 +218,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             R.string.comments_count_text_format,
             0.toString()
         )
-        descriptionTextView.text = outfitModel.text
+        firstCommentTextView.text = outfitModel.text
         likesCountTextView.hide()
         text_view_fragment_collection_detail_date.text = getFormattedDate(outfitModel.createdAt)
 
@@ -266,17 +266,18 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             likesCountTextView.hide()
         }
 
-        if (postModel.description.isNotBlank()) {
-            descriptionTextView.text = HtmlCompat.fromHtml(
-                descriptionTextView.context.getString(
+        if (postModel.firstComment.text.isNotBlank()) {
+            firstCommentTextView.text = HtmlCompat.fromHtml(
+                firstCommentTextView.context.getString(
                     R.string.comment_text_with_user_text_format,
-                    postModel.author.username,
+                    postModel.firstComment.author.username,
                     EMPTY_STRING,
-                    postModel.description
+                    postModel.firstComment.text
                 ), HtmlCompat.FROM_HTML_MODE_LEGACY
             )
+            firstCommentTextView.show()
         } else {
-            descriptionTextView.hide()
+            firstCommentTextView.hide()
         }
 
         commentsCountTextView.text = getString(

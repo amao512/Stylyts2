@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.domain.models.posts
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
 
 data class PostModel(
@@ -12,6 +13,7 @@ data class PostModel(
     val hidden: Boolean,
     val clothes: List<ClothesModel>,
     val commentsCount: Int,
+    val firstComment: CommentModel,
     var likesCount: Int,
     var alreadyLiked: Boolean
 )

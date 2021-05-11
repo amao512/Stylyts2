@@ -316,7 +316,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/fragment_collection_detail_desc_text_view"
+                    android:id="@+id/fragment_collection_detail_first_comment_text_view"
                     style="@style/TextRegular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
