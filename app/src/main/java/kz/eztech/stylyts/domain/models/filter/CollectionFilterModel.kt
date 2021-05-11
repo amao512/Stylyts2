@@ -8,7 +8,7 @@ import kz.eztech.stylyts.presentation.enums.GenderEnum
 data class CollectionFilterModel(
     val id: Int,
     var name: String,
-    var icon: Int? = null,
+    val icon: Int? = null,
     var gender: String? = GenderEnum.MALE.gender,
     var mode: Int = 0,
     var isChosen: Boolean = false,

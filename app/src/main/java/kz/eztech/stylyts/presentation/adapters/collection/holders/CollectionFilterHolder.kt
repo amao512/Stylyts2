@@ -12,6 +12,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.presentation.adapters.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
@@ -35,6 +36,14 @@ class CollectionFilterHolder(
         initializeViews()
         processFilterItem(collectionFilterModel = item, position = position)
         processDisabledItem(collectionFilterModel = item)
+    }
+
+    private fun initializeViews() {
+        with (itemView) {
+            filterItemLinearLayout = frame_layout_item_collection_filter
+            iconImageView = item_collection_filter_icon_image_view
+            titleTextView = item_collection_filter_title_text_view
+        }
     }
 
     private fun processFilterItem(
@@ -61,17 +70,11 @@ class CollectionFilterHolder(
             }
         }
 
-        collectionFilterModel.icon?.let {
-            iconImageView.setImageResource(it)
+        if (collectionFilterModel.icon != null) {
+            iconImageView.setImageResource(collectionFilterModel.icon)
             iconImageView.show()
-        }
-    }
-
-    private fun initializeViews() {
-        with (itemView) {
-            filterItemLinearLayout = frame_layout_item_collection_filter
-            iconImageView = item_collection_filter_icon_image_view
-            titleTextView = item_collection_filter_title_text_view
+        } else {
+            iconImageView.hide()
         }
     }
 

@@ -50,9 +50,7 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
     }
 
-    override fun getItemCount(): Int {
-        return currentList.count()
-    }
+    override fun getItemCount(): Int = currentList.size
 
     fun updateList(list: List<Any>) {
         val diffCallback = getDiffUtilCallBack(list)
