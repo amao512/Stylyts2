@@ -458,7 +458,7 @@ class FilterDialog(
 
     private fun onShowButtonClick() {
         itemClickListener.onViewClicked(
-            view = toolbar_left_corner_action_image_button,
+            view = fragment_category_shop_results_button,
             item = currentFilter,
             position = 0
         )

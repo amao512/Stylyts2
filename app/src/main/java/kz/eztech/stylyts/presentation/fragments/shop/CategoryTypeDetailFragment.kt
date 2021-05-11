@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.view.*
+import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.fragment_category_type_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -34,6 +35,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     @Inject lateinit var presenter: CategoryTypeDetailFragmentPresenter
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
+    private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: FilterModel
 
     private var title: String = EMPTY_STRING
@@ -78,8 +80,6 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     }
 
     override fun initializeArguments() {
-        currentFilter = FilterModel()
-
         arguments?.let {
             if (it.containsKey(FILTER_KEY)) {
                 it.getParcelable<FilterModel>(FILTER_KEY)?.let { filter ->
@@ -101,8 +101,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
         when (item) {
             is FilterModel -> {
-                currentFilter.categoryIdList = item.categoryIdList
-                currentFilter.brandList = item.brandList
+                currentFilter = item
 
                 presenter.getClothesByType(
                     token = currentActivity.getTokenFromSharedPref(),
@@ -113,11 +112,21 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
     }
 
     override fun initializeViewsData() {
+        currentFilter = FilterModel()
+
         brandsFilterAdapter = CollectionsFilterAdapter()
         brandsFilterAdapter.setOnClickListener(listener = this)
 
         clothesAdapter = ClothesDetailAdapter()
         clothesAdapter.setOnClickListener(listener = this)
+
+        filterDialog = FilterDialog.getNewInstance(
+            token = currentActivity.getTokenFromSharedPref(),
+            itemClickListener = this,
+            gender = currentFilter.gender
+        ).apply {
+            setFilter(filterModel = currentFilter)
+        }
     }
 
     override fun initializeViews() {
@@ -222,17 +231,13 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         item: CollectionFilterModel
     ) {
         if (position == 0) {
-            FilterDialog.getNewInstance(
-                token = currentActivity.getTokenFromSharedPref(),
-                itemClickListener = this,
-                gender = currentFilter.gender
-            ).apply {
+            filterDialog.apply {
                 currentFilter.page = 1
                 currentFilter.isLastPage = false
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, EMPTY_STRING)
         } else {
-            brandsFilterAdapter.onChooseItem(position)
+            brandsFilterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
             currentFilter.brandList = listOf(item.item as ClothesBrandModel)
             presenter.getClothesByBrand(
                 token = currentActivity.getTokenFromSharedPref(),

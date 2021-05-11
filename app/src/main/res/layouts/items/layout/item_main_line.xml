@@ -108,7 +108,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:spi_dotColor="@color/app_dark_blue_gray_half"
-                app:spi_dotSelectedColor="@color/app_dark"
+                app:spi_dotSelectedColor="@color/app_light_orange"
                 app:spi_dotSelectedSize="7dp"
                 app:spi_dotSize="6dp"
                 app:spi_visibleDotCount="5"
