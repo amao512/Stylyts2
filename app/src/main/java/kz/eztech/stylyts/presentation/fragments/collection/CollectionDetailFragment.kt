@@ -224,6 +224,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             0.toString()
         )
         firstCommentTextView.text = outfitModel.text
+        firstCommentTextView.hide()
         likesCountTextView.hide()
         text_view_fragment_collection_detail_date.text = getFormattedDate(outfitModel.createdAt)
 
