@@ -51,6 +51,7 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
         const val BARCODE_MODE = 1
         const val PHOTO_MODE = 2
         const val GET_PHOTO_MODE = 3
+        const val URI_FROM_CAMERA = "uri_from_camera"
 
         /** Helper function used to create a timestamped file */
         private fun createFile(baseFolder: File, format: String, extension: String) =
@@ -61,7 +62,6 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
     }
 
     private lateinit var imageCapture: ImageCapture
-    private var mode = 0
 
     inner class ImageAnalyzer : ImageAnalysis.Analyzer {
 
@@ -118,13 +118,7 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
 
     override fun initializePresenter() {}
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(MODE_KEY)) {
-                mode = it.getInt(MODE_KEY)
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {}
 
@@ -195,26 +189,13 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
     private fun onImageSaved(photoFile: File) {
         val savedUri = photoFile.toUri()
 
-        when (mode) {
-            0 -> navigateToPhotoChooser(savedUri)
-            1 -> {}
-            2 -> navigateToCleanBackground(savedUri)
-            3 -> {
-                findNavController().previousBackStackEntry?.savedStateHandle?.set("uri_from_camera", savedUri)
+        when (getModeFromArgs()) {
+            PHOTO_MODE -> navigateToCleanBackground(savedUri)
+            GET_PHOTO_MODE -> {
+                findNavController().previousBackStackEntry?.savedStateHandle?.set(URI_FROM_CAMERA, savedUri)
                 findNavController().popBackStack()
             }
         }
-    }
-
-    private fun navigateToPhotoChooser(savedUri: Uri) {
-        val bundle = Bundle()
-        bundle.putInt("mode", 0)
-        bundle.putParcelable("uri", savedUri)
-
-        findNavController().navigate(
-            R.id.action_cameraFragment_to_photoChooserFragment,
-            bundle
-        )
     }
 
     private fun navigateToCleanBackground(savedUri: Uri) {
@@ -246,18 +227,13 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
         // Select back camera as a default
         val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
-        when (mode) {
-            0 -> showCamera(
+        when (getModeFromArgs()) {
+            BARCODE_MODE -> showBarcodeScanner(
                 cameraProvider = cameraProvider,
                 cameraSelector = cameraSelector,
                 preview = preview
             )
-            1 -> showBarcodeScanner(
-                cameraProvider = cameraProvider,
-                cameraSelector = cameraSelector,
-                preview = preview
-            )
-            2 -> try {
+            PHOTO_MODE -> try {
                 // Unbind use cases before rebinding
                 cameraProvider.unbindAll()
 
@@ -267,7 +243,7 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
             } catch (exc: Exception) {
                 Log.e(TAG, "Use case binding failed", exc)
             }
-            3 -> showCamera(
+            GET_PHOTO_MODE -> showCamera(
                 cameraProvider = cameraProvider,
                 cameraSelector = cameraSelector,
                 preview = preview
@@ -393,4 +369,6 @@ class CameraFragment: BaseFragment<MainActivity>(), BaseView, View.OnClickListen
             currentActivity, it
         ) == PackageManager.PERMISSION_GRANTED
     }
+
+    private fun getModeFromArgs(): Int = arguments?.getInt(MODE_KEY) ?: PHOTO_MODE
 }

@@ -1,6 +1,8 @@
 package kz.eztech.stylyts.presentation.fragments.collection_constructor
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -8,6 +10,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.loader.app.LoaderManager
@@ -24,6 +28,7 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.PhotoLibra
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.ViewUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -36,12 +41,17 @@ class PhotoPostCreatorFragment(
     LoaderManager.LoaderCallbacks<Cursor>, View.OnClickListener, UniversalViewClickListener {
 
     private lateinit var photoAdapter: PhotoLibraryAdapter
+    private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
 
     private val listOfAllImages = ArrayList<String>()
     private val listOfChosenImages = ArrayList<String>()
 
     private var photoUri: Uri? = null
     private var mode = -1
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_photo_post_creator
 
@@ -75,6 +85,13 @@ class PhotoPostCreatorFragment(
                 mode = it.getInt("mode")
             }
         }
+
+        findNavController().currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<Uri>(CameraFragment.URI_FROM_CAMERA)
+            ?.observe(viewLifecycleOwner, {
+                photoUri = it
+                onNextClick()
+            })
     }
 
     override fun initializeViewsData() {}
@@ -144,58 +161,6 @@ class PhotoPostCreatorFragment(
             .into(image_view_fragment_photo_post_creator)
     }
 
-    private fun checkWritePermission() {
-        val writeExternalStoragePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
-        val readExternalStoragePermission = Manifest.permission.READ_EXTERNAL_STORAGE
-        val permissionGranted = PackageManager.PERMISSION_GRANTED
-
-        if (ContextCompat.checkSelfPermission(
-                currentActivity,
-                writeExternalStoragePermission
-            )
-            != permissionGranted || ContextCompat.checkSelfPermission(
-                currentActivity,
-                readExternalStoragePermission
-            )
-            != permissionGranted
-        ) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    currentActivity,
-                    writeExternalStoragePermission
-                ) || ActivityCompat.shouldShowRequestPermissionRationale(
-                    currentActivity,
-                    writeExternalStoragePermission
-                )
-            ) {
-
-            } else {
-                ActivityCompat.requestPermissions(
-                    currentActivity,
-                    arrayOf(writeExternalStoragePermission, readExternalStoragePermission),
-                    2
-                )
-            }
-        } else {
-            LoaderManager.getInstance(this).initLoader(21, null, this)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            1 -> {
-                if (grantResults[0] === PackageManager.PERMISSION_GRANTED) {
-                    //resume tasks needing this permission
-                    LoaderManager.getInstance(this).initLoader(21, null, this)
-                }
-            }
-        }
-    }
-
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         val uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
         val projection = arrayOf(
@@ -249,9 +214,17 @@ class PhotoPostCreatorFragment(
 
     override fun initializeListeners() {
         frame_layout_fragment_photo_post_creator_camera.setOnClickListener(this)
+        frame_layout_fragment_photo_post_creator_chooser.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        galleryResultLaunch =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    setImage(uri = result.data?.data)
+                }
+            }
+    }
 
     override fun disposeRequests() {}
 
@@ -268,14 +241,60 @@ class PhotoPostCreatorFragment(
             R.id.frame_layout_fragment_photo_post_creator_camera -> onCameraClick()
             R.id.toolbar_right_text_text_view -> onNextClick()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
+            R.id.frame_layout_fragment_photo_post_creator_chooser -> openGallery()
+        }
+    }
+
+    private fun checkWritePermission() {
+        val writeExternalStoragePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val readExternalStoragePermission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val permissionGranted = PackageManager.PERMISSION_GRANTED
+
+        if (ContextCompat.checkSelfPermission(
+                currentActivity,
+                writeExternalStoragePermission
+            )
+            != permissionGranted || ContextCompat.checkSelfPermission(
+                currentActivity,
+                readExternalStoragePermission
+            )
+            != permissionGranted
+        ) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    currentActivity,
+                    writeExternalStoragePermission
+                ) || ActivityCompat.shouldShowRequestPermissionRationale(
+                    currentActivity,
+                    writeExternalStoragePermission
+                )
+            ) {
+
+            } else {
+                ActivityCompat.requestPermissions(
+                    currentActivity,
+                    arrayOf(writeExternalStoragePermission, readExternalStoragePermission),
+                    2
+                )
+            }
+        } else {
+            LoaderManager.getInstance(this).initLoader(21, null, this)
         }
     }
 
     private fun onCameraClick() {
+        val bundle = Bundle()
+        bundle.putInt(CameraFragment.MODE_KEY, CameraFragment.GET_PHOTO_MODE)
+
         if (inPager) {
-            findNavController().navigate(R.id.action_createCollectionFragment_to_cameraFragment)
+            findNavController().navigate(
+                R.id.action_createCollectionFragment_to_cameraFragment,
+                bundle
+            )
         } else {
-            findNavController().navigate(R.id.action_photoPostCreatorFragment_to_cameraFragment)
+            findNavController().navigate(
+                R.id.action_photoPostCreatorFragment_to_cameraFragment,
+                bundle
+            )
         }
     }
 
@@ -310,5 +329,17 @@ class PhotoPostCreatorFragment(
         } else {
             displayMessage(msg = getString(R.string.error_choose_photo))
         }
+    }
+
+    private fun openGallery() {
+        galleryResultLaunch.launch(
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        )
+    }
+
+    private fun setImage(uri: Uri?) {
+        photoUri = uri
+
+        onNextClick()
     }
 }

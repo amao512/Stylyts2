@@ -14,9 +14,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
@@ -26,6 +26,7 @@ import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.EditProfileContract
+import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.EditProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -47,7 +48,6 @@ class EditProfileDialog(
     lateinit var imageLoader: DomainImageLoader
 
     private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
-    private lateinit var cameraResultLaunch: ActivityResultLauncher<Intent>
 
     private val permissions = arrayOf(
         Manifest.permission.CAMERA,
@@ -129,20 +129,19 @@ class EditProfileDialog(
 
     override fun initializePresenter() = presenter.attach(view = this)
 
-    override fun initializeArguments() {}
+    override fun initializeArguments() {
+        findNavController().currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<Uri>(CameraFragment.URI_FROM_CAMERA)
+            ?.observe(viewLifecycleOwner, {
+                setProfileImage(uri = it)
+            })
+    }
 
     override fun initializeViewsData() {
         galleryResultLaunch =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     setProfileImage(uri = result.data?.data)
-                }
-            }
-
-        cameraResultLaunch =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == RESULT_OK) {
-                    setProfileImageByBitmap(bitmap = result.data?.extras?.get("data") as? Bitmap)
                 }
             }
     }
@@ -234,9 +233,7 @@ class EditProfileDialog(
         grantResults: IntArray
     ) {
         if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (allPermissionsGranted()) {
-                startCamera()
-            } else {
+            if (!allPermissionsGranted()) {
                 displayToast(context, msg = "Permissions not granted by the user.")
                 dismiss()
             }
@@ -291,25 +288,10 @@ class EditProfileDialog(
     }
 
     private fun openCameraForImage() {
-        if (allPermissionsGranted()) {
-            startCamera()
-        } else {
-            ActivityCompat.requestPermissions(
-                activity as MainActivity,
-                permissions,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
-    }
+        val bundle = Bundle()
+        bundle.putInt(CameraFragment.MODE_KEY, CameraFragment.GET_PHOTO_MODE)
 
-    private fun startCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-        try {
-            cameraResultLaunch.launch(intent)
-        } catch (e: Exception) {
-            Log.wtf(TAG, e)
-        }
+        findNavController().navigate(R.id.action_profileFragment_to_cameraFragment, bundle)
     }
 
     private fun setProfileImage(uri: Uri?) {
@@ -340,12 +322,12 @@ class EditProfileDialog(
         }
     }
 
-    private fun getTokenFromArguments(): String = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
-
     private fun allPermissionsGranted() = permissions.all {
         ContextCompat.checkSelfPermission(
             activity as MainActivity,
             it
         ) == PackageManager.PERMISSION_GRANTED
     }
+
+    private fun getTokenFromArguments(): String = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
 }
