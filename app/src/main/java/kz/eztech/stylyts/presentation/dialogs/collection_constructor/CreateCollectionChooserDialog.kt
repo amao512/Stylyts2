@@ -44,6 +44,7 @@ class CreateCollectionChooserDialog(
         dialog_bottom_create_collection_chooser_common_line.setOnClickListener(this)
         dialog_bottom_create_collection_chooser_wardrobe.setOnClickListener(this)
         dialog_bottom_photo_chooser_photo_as_collection_buy.setOnClickListener(this)
+        dialog_bottom_create_collection_chooser_create.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
@@ -58,7 +59,7 @@ class CreateCollectionChooserDialog(
 				listener?.onChoice(v, item = 3)
 			}
             R.id.dialog_bottom_create_collection_chooser_create -> {
-                listener?.onChoice(v, null)
+                listener?.onChoice(v, item = 4)
             }
         }
 

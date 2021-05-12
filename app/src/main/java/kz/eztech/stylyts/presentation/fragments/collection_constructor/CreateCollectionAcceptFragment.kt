@@ -117,7 +117,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     override fun initializeListeners() {
-        chooserDialog.setChoiceListener(this)
+        chooserDialog.setChoiceListener(listener = this)
 
         frame_layout_dialog_create_collection_accept_user_search.setOnClickListener(this)
         frame_layout_dialog_create_collection_accept_choose_clothes.setOnClickListener(this)
@@ -168,7 +168,10 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    override fun onChoice(v: View?, item: Any?) {
+    override fun onChoice(
+        v: View?,
+        item: Any?
+    ) {
         when (v?.id) {
             R.id.dialog_bottom_create_collection_chooser_common_line -> savePost(isHidden = false)
             R.id.dialog_bottom_create_collection_chooser_wardrobe -> savePost(isHidden = true)
@@ -338,33 +341,33 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     private fun saveOutfit(item: OutfitCreateModel) {
-        currentActivity.getTokenFromSharedPref().let {
-            try {
-                getBitmapFromArgs()?.let { bitmap ->
-                    val file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
+        try {
+            getBitmapFromArgs()?.let { bitmap ->
+                val file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
 
-                    file?.let { _ ->
-                        if (isUpdating()) {
-                            presenter.updateOutfit(
-                                token = it,
-                                id = getIdFromArgs(),
-                                model = item,
-                                data = file
-                            )
-                        } else {
-                            presenter.createOutfit(
-                                it, item, file
-                            )
-                        }
-                    } ?: run {
-                        errorLoadData()
+                file?.let {
+                    if (isUpdating()) {
+                        presenter.updateOutfit(
+                            token = currentActivity.getTokenFromSharedPref(),
+                            id = getIdFromArgs(),
+                            model = item,
+                            data = it
+                        )
+                    } else {
+                        presenter.createOutfit(
+                            token = currentActivity.getTokenFromSharedPref(),
+                            model = item,
+                            data = it
+                        )
                     }
                 } ?: run {
                     errorLoadData()
                 }
-            } catch (e: Exception) {
+            } ?: run {
                 errorLoadData()
             }
+        } catch (e: Exception) {
+            errorLoadData()
         }
     }
 
