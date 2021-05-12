@@ -49,6 +49,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var outfitsAdapter: OutfitsAdapter
+    private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: FilterModel
 
     private lateinit var shopAvatarShapeableImageView: ShapeableImageView
@@ -107,6 +108,13 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
     override fun initializeViewsData() {
         currentFilter = FilterModel()
+        filterDialog = FilterDialog.getNewInstance(
+            token = currentActivity.getTokenFromSharedPref(),
+            itemClickListener = this,
+            gender = currentFilter.gender
+        ).apply {
+            setFilter(filterModel = currentFilter)
+        }
 
         filterAdapter = CollectionsFilterAdapter()
         filterAdapter.setOnClickListener(listener = this)
@@ -310,11 +318,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     }
 
     private fun onFilterClick() {
-        FilterDialog.getNewInstance(
-            token = currentActivity.getTokenFromSharedPref(),
-            itemClickListener = this,
-            gender = currentFilter.gender,
-        ).apply {
+        filterDialog.apply {
             setFilter(filterModel = currentFilter)
         }.show(childFragmentManager, EMPTY_STRING)
     }

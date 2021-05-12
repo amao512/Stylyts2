@@ -40,6 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/little_divider_height"
         android:layout_marginStart="@dimen/margin_size_36x"
-        android:background="@color/app_gray_hint"
+        android:background="@color/divider_bg_color"
         />
 </LinearLayout>
