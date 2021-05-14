@@ -4,12 +4,14 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Display
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
@@ -347,7 +349,25 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun initializeBottomSheetBehaviorItems() {
 		val bottomSheetBehavior = BottomSheetBehavior.from(fragment_collection_constructor_frame_layout_bottom_holder)
 
+//		val display: Display? = activity?.windowManager?.defaultDisplay
+//		val size = Point()
+//
+//		display?.getSize(size)
+//
+//		val height: Int = size.y
+//
+//		if (height < 2000) {
+//			bottomSheetBehavior.peekHeight = 370
+//		} else if (height > 2300) {
+//			bottomSheetBehavior.peekHeight = 650
+//		} else {
+//			bottomSheetBehavior.peekHeight = 510
+//		}
+//
+//		Log.d("TAG4", "height - $height")
+
 		bottomSheetBehavior.peekHeight = 370
+
 		bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
 		bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {

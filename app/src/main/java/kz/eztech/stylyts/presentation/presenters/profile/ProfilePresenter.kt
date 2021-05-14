@@ -88,8 +88,9 @@ class ProfilePresenter @Inject constructor(
 			CollectionFilterModel(id = 3, name = application.getString(R.string.filter_list_photo_outfits))
 		)
 
+		filterList.add(CollectionFilterModel(id = 4, name = application.getString(R.string.filter_list_wardrobe)))
+
 		if (isOwnProfile) {
-			filterList.add(CollectionFilterModel(id = 4, name = application.getString(R.string.filter_list_wardrobe)))
 			filterList.add(CollectionFilterModel(id = 5, name = application.getString(R.string.filter_list_my_data)))
 			filterList.add(
 				CollectionFilterModel(

@@ -32,6 +32,7 @@ import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
+import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -137,6 +138,8 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
                 token = currentActivity.getTokenFromSharedPref(),
                 userId = currentFilter.userId
             )
+            R.id.fragment_shop_profile_followers_linear_layout -> navigateToFollowers()
+            R.id.fragment_shop_profile_followings_linear_layout -> navigateToFollowings()
         }
     }
 
@@ -177,6 +180,9 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     override fun initializeListeners() {
         followTextView.setOnClickListener(this)
         alreadyFollowedTextView.setOnClickListener(this)
+
+        fragment_shop_profile_followers_linear_layout.setOnClickListener(this)
+        fragment_shop_profile_followings_linear_layout.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -206,7 +212,6 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     override fun processProfile(userModel: UserModel) {
         currentFilter.userId = userModel.id
         currentFilter.username = userModel.username
-        currentFilter.gender = userModel.gender
         currentFilter.owner = userModel.username
 
         shopNameTextView.text = userModel.username
@@ -360,6 +365,26 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(R.id.action_shopProfileFragment_to_clothesDetailFragment, bundle)
+    }
+
+    private fun navigateToFollowers() {
+        val bundle = Bundle()
+
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentFilter.userId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentFilter.username)
+        bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWERS_POSITION)
+
+        findNavController().navigate(R.id.action_shopProfileFragment_to_userSubsFragment, bundle)
+    }
+
+    private fun navigateToFollowings() {
+        val bundle = Bundle()
+
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentFilter.userId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentFilter.username)
+        bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
+
+        findNavController().navigate(R.id.action_shopProfileFragment_to_userSubsFragment, bundle)
     }
 
     private fun handleCollectionRecyclerView() {

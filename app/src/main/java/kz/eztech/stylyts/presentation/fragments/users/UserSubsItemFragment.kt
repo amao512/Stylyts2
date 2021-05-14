@@ -146,7 +146,7 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
         val bundle = Bundle()
         bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id)
 
-        findNavController().navigate(R.id.action_userSubsFragment_to_profileFragment, bundle)
+        findNavController().navigate(R.id.nav_profile, bundle)
     }
 
     private fun onFollowUser(item: Any?) {

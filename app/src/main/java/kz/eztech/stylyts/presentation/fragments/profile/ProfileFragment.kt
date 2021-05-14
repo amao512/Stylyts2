@@ -230,6 +230,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processProfile(userModel: UserModel) {
         currentFilter.userId = userModel.id
         currentFilter.username = userModel.username
+        currentFilter.owner = userModel.username
         currentFilter.gender = userModel.gender
 
         getFilterList()
