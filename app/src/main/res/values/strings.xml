@@ -57,7 +57,7 @@
 
     <string name="bottom_nav_bar_main">Main</string>
     <string name="bottom_nav_bar_collection">Outfits</string>
-    <string name="bottom_nav_bar_create_collection">Create outfit</string>
+    <string name="bottom_nav_bar_create_collection">Create</string>
     <string name="bottom_nav_bar_shop">Search</string>
     <string name="bottom_nav_bar_profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->

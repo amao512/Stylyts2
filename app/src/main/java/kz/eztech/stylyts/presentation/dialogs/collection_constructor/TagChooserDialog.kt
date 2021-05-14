@@ -37,6 +37,7 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.TagChooserContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.enums.GenderEnum
+import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
 import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
@@ -259,16 +260,33 @@ class TagChooserDialog(
                 CollectionFilterModel(
                     name = getString(R.string.filter_list_filter),
                     id = 0,
-                    mode = 1,
+                    mode = 0,
                     icon = R.drawable.ic_filter
                 )
             )
 
             it.forEach { category ->
                 preparedResults.add(
-                    CollectionFilterModel(name = category.title, id = category.id, mode = 0)
+                    CollectionFilterModel(name = category.title, id = category.id, mode = 1)
                 )
             }
+
+            preparedResults.add(
+                CollectionFilterModel(
+                    id = 6,
+                    name = getString(R.string.profile_add_to_wardrobe_by_barcode),
+                    icon = R.drawable.ic_baseline_qr_code_2_24,
+                    mode = 2
+                )
+            )
+            preparedResults.add(
+                CollectionFilterModel(
+                    id = 7,
+                    name = getString(R.string.profile_add_to_wardrobe_by_photo),
+                    icon = R.drawable.ic_camera,
+                    mode = 3
+                )
+            )
 
             filterAdapter.updateList(preparedResults)
         }
@@ -376,8 +394,13 @@ class TagChooserDialog(
         collectionFilterModel: CollectionFilterModel
     ) {
         when (collectionFilterModel.mode) {
-            0 -> {
-                collectionFilterModel.id?.let {
+            0 -> filterDialog.apply {
+                currentFilter.page = 1
+                currentFilter.isLastPage = false
+                setFilter(filterModel = currentFilter)
+            }.show(childFragmentManager, "FilterDialog")
+            1 -> {
+                collectionFilterModel.id.let {
                     currentFilter.typeIdList = listOf(it)
 
                     presenter.getClothes(
@@ -390,12 +413,20 @@ class TagChooserDialog(
                     filterAdapter.onChooseItem(position)
                 }
             }
-            1 -> filterDialog.apply {
-                currentFilter.page = 1
-                currentFilter.isLastPage = false
-                setFilter(filterModel = currentFilter)
-            }.show(childFragmentManager, "FilterDialog")
+            2 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
+            3 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
         }
+    }
+
+    private fun navigateToCameraFragment(mode: Int) {
+        val bundle = Bundle()
+        bundle.putInt(CameraFragment.MODE_KEY, mode)
+
+
+        findNavController().navigate(
+            R.id.action_createCollectionAcceptFragment_to_cameraFragment,
+            bundle
+        )
     }
 
     private fun onClothesClicked(

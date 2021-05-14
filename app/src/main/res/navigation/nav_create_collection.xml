@@ -46,7 +46,12 @@
         android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
         android:label="CreateCollectionAcceptDialog"
         tools:layout="@layout/fragment_create_collection_accept"
-        />
+        >
+        <action
+            android:id="@+id/action_createCollectionAcceptFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/cleanBackgroundFragment"

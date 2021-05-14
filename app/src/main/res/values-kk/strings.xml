@@ -58,7 +58,7 @@
 
     <string name="bottom_nav_bar_main">Основная</string>
     <string name="bottom_nav_bar_collection">Образы</string>
-    <string name="bottom_nav_bar_create_collection">Создать образ</string>
+    <string name="bottom_nav_bar_create_collection">Создать</string>
     <string name="bottom_nav_bar_shop">Іздеу</string>
     <string name="bottom_nav_bar_profile">Профиль</string>
     <!-- TODO: Remove or change this placeholder text -->
