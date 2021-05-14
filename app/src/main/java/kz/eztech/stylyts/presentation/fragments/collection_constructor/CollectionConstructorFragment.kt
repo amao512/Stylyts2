@@ -13,6 +13,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.Display
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -349,24 +350,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun initializeBottomSheetBehaviorItems() {
 		val bottomSheetBehavior = BottomSheetBehavior.from(fragment_collection_constructor_frame_layout_bottom_holder)
 
-//		val display: Display? = activity?.windowManager?.defaultDisplay
-//		val size = Point()
-//
-//		display?.getSize(size)
-//
-//		val height: Int = size.y
-//
-//		if (height < 2000) {
-//			bottomSheetBehavior.peekHeight = 370
-//		} else if (height > 2300) {
-//			bottomSheetBehavior.peekHeight = 650
-//		} else {
-//			bottomSheetBehavior.peekHeight = 510
-//		}
-//
-//		Log.d("TAG4", "height - $height")
+		view?.viewTreeObserver
+			?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+				override fun onGlobalLayout() {
+					bottomSheetBehavior.peekHeight = fragment_collection_constructor_bottom_view.height
 
-		bottomSheetBehavior.peekHeight = 370
+					view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+				}
+			})
 
 		bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
@@ -473,6 +464,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 					currentFilter.page = 1
 					currentFilter.isLastPage = false
 					currentFilter.typeIdList = listOf(item.id)
+					currentFilter.gender = when (getTypeFromArgs()) {
+						0 -> GenderEnum.MALE.gender
+						else -> GenderEnum.FEMALE.gender
+					}
 
 					displayProgress()
 					getClothes()
