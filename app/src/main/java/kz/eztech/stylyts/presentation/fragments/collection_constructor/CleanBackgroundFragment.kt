@@ -107,7 +107,10 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
                 val bundle = Bundle()
                 bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
-                findNavController().navigate(R.id.action_cleanBackgroundFragment_to_clothesDetailFragment)
+                findNavController().navigate(
+                    R.id.action_cleanBackgroundFragment_to_clothesDetailFragment,
+                    bundle
+                )
             }
         }
     }
