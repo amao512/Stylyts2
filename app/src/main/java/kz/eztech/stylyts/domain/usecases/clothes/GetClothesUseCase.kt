@@ -22,6 +22,8 @@ class GetClothesUseCase @Inject constructor(
     private lateinit var booleanQueryMap: Map<String, Boolean>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
+
+
         return clothesDomainRepository.getClothes(
             token = token,
             stringQueryMap = stringQueryMap,

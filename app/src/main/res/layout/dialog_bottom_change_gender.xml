@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/padding_size_16x"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rounded_dialog"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            style="@style/TitleTextBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/category"
+            android:textColor="@color/app_dark_blue_gray"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/little_divider_height"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            android:id="@+id/dialog_bottom_change_gender_for_his_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/for_his"
+            android:textColor="@color/app_dark_blue_gray"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/little_divider_height"
+            android:background="@color/divider_bg_color"
+            />
+
+        <TextView
+            android:id="@+id/dialog_bottom_change_gender_for_her_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/for_her"
+            android:textColor="@color/app_dark_blue_gray"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:layout_marginBottom="@dimen/margin_size_24x"
+        android:background="@drawable/bg_rounded_dialog"
+        >
+
+        <TextView
+            android:id="@+id/dialog_bottom_change_gender_cancel_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingVertical="@dimen/padding_size_16x"
+            android:text="@string/collection_context_cancel"
+            android:textColor="@color/app_red"
+            android:textSize="@dimen/text_size_14x"
+            android:textStyle="bold"
+            />
+    </FrameLayout>
+
+</LinearLayout>

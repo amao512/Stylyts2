@@ -30,6 +30,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopProfileContract
 import kz.eztech.stylyts.presentation.dialogs.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
+import kz.eztech.stylyts.presentation.dialogs.shop.ChangeGenderDialog
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
@@ -62,6 +64,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     private lateinit var unFollowTextView: TextView
     private lateinit var alreadyFollowedTextView: TextView
     private lateinit var writeMessageTextView: TextView
+    private lateinit var selectGenderTextView: TextView
     private lateinit var filterListRecyclerView: RecyclerView
     private lateinit var collectionsRecyclerView: RecyclerView
 
@@ -140,6 +143,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
             )
             R.id.fragment_shop_profile_followers_linear_layout -> navigateToFollowers()
             R.id.fragment_shop_profile_followings_linear_layout -> navigateToFollowings()
+            R.id.fragment_shop_profile_select_gender_text_view -> selectGender()
         }
     }
 
@@ -152,6 +156,8 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
             R.id.frame_layout_item_collection_filter -> onFilterItemClicked(item, position)
             R.id.shapeable_image_view_item_collection_image -> onNavigateToOutfit(item)
             R.id.item_clothes_detail_linear_layout -> onNavigateToClothes(item)
+            R.id.dialog_bottom_change_gender_for_his_text_view -> onChangeGender(position)
+            R.id.dialog_bottom_change_gender_for_her_text_view -> onChangeGender(position)
         }
 
         when (item) {
@@ -169,6 +175,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         unFollowTextView = fragment_shop_profile_unfollow_text_view
         alreadyFollowedTextView = fragment_shop_profile_already_followed_text_view
         writeMessageTextView = fragment_shop_profile_send_message_text_view
+        selectGenderTextView = fragment_shop_profile_select_gender_text_view
         filterListRecyclerView = fragment_shop_profile_filter_recycler_view
         collectionsRecyclerView = fragment_shop_profile_clothes_recycler_view
 
@@ -180,6 +187,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     override fun initializeListeners() {
         followTextView.setOnClickListener(this)
         alreadyFollowedTextView.setOnClickListener(this)
+        selectGenderTextView.setOnClickListener(this)
 
         fragment_shop_profile_followers_linear_layout.setOnClickListener(this)
         fragment_shop_profile_followings_linear_layout.setOnClickListener(this)
@@ -213,6 +221,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         currentFilter.userId = userModel.id
         currentFilter.username = userModel.username
         currentFilter.owner = userModel.username
+        currentFilter.gender = GenderEnum.MALE.gender
 
         shopNameTextView.text = userModel.username
         followersCountTextView.text = userModel.followersCount.toString()
@@ -367,6 +376,24 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         findNavController().navigate(R.id.action_shopProfileFragment_to_clothesDetailFragment, bundle)
     }
 
+    private fun onChangeGender(gender: Int) {
+        when (gender) {
+            ChangeGenderDialog.MALE_GENDER -> {
+                selectGenderTextView.text = getString(R.string.for_his)
+                currentFilter.gender = GenderEnum.MALE.gender
+            }
+            ChangeGenderDialog.FEMALE_GENDER -> {
+                selectGenderTextView.text = getString(R.string.for_her)
+                currentFilter.gender = GenderEnum.FEMALE.gender
+            }
+        }
+
+        outfitsAdapter.clearList()
+        clothesAdapter.clearList()
+        resetPages(mode = collectionMode)
+        getCollections()
+    }
+
     private fun navigateToFollowers() {
         val bundle = Bundle()
 
@@ -385,6 +412,16 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
 
         findNavController().navigate(R.id.action_shopProfileFragment_to_userSubsFragment, bundle)
+    }
+
+    private fun selectGender() {
+        ChangeGenderDialog.getNewInstance(
+            universalViewClickListener = this,
+            selectedGender = when (currentFilter.gender) {
+                GenderEnum.MALE.gender -> ChangeGenderDialog.MALE_GENDER
+                else -> ChangeGenderDialog.FEMALE_GENDER
+            }
+        ).show(childFragmentManager, EMPTY_STRING)
     }
 
     private fun handleCollectionRecyclerView() {
