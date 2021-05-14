@@ -24,6 +24,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
 import java.text.NumberFormat
@@ -242,10 +243,7 @@ class MainLineHolder(
             userShortNameTextView.text = getShortName(author.firstName, author.lastName)
         } else {
             userShortNameTextView.hide()
-            imageLoader.load(
-                url = author.avatar,
-                target = avatarShapeableImageView
-            )
+            author.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
         }
     }
 
