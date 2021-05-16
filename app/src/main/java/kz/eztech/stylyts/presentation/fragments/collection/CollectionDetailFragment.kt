@@ -350,7 +350,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun processLike(isLiked: Boolean) {
         likeImageView.setImageResource(
             when (isLiked) {
-                true -> R.drawable.ic_heart_test
+                true -> R.drawable.ic_heart_red
                 false -> R.drawable.ic_baseline_favorite_border_24
             }
         )

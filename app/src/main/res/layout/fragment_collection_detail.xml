@@ -250,7 +250,7 @@
                         android:layout_height="@dimen/icon_size_24x"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/margin_size_16x"
-                        android:src="@drawable/ic_comments_test"
+                        android:src="@drawable/ic_comments"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/fragment_collection_detail_like_image_view"
                         app:layout_constraintTop_toTopOf="parent"

@@ -376,7 +376,7 @@ class MainLineHolder(
     private fun processLike(isLiked: Boolean) {
         likeImageButton.setImageResource(
             when (isLiked) {
-                true -> R.drawable.ic_heart_test
+                true -> R.drawable.ic_heart_red
                 false -> R.drawable.ic_baseline_favorite_border_24
             }
         )
