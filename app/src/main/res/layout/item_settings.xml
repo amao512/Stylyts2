@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,21 +10,27 @@
     android:paddingVertical="@dimen/padding_size_8x"
     >
 
-    <ImageView
-        android:id="@+id/item_settings_icon_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:src="@drawable/ic_saved"
-        />
+    <FrameLayout
+        android:layout_width="@dimen/icon_size_24x"
+        android:layout_height="26dp"
+        >
+
+        <ImageView
+            android:id="@+id/item_settings_icon_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            tools:src="@drawable/ic_doc"
+            />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/item_settings_title_text_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/margin_size_40x"
+        android:layout_marginStart="@dimen/margin_size_16x"
         android:gravity="center_vertical"
         android:textColor="@color/app_dark_blue_gray"
         tools:text="Сохраненное"
         />
-
-</FrameLayout>
+</LinearLayout>

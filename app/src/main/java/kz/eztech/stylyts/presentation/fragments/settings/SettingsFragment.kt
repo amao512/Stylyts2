@@ -7,19 +7,19 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.data.models.SharedConstants
+import kz.eztech.stylyts.presentation.activity.AuthorizationActivity
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.dialogs.settings.ExitDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.dialogs.settings.ExitDialog
 
 class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener,
-    UniversalViewClickListener{
+    UniversalViewClickListener {
 
     override fun getLayoutId(): Int = R.layout.fragment_settings
 
@@ -47,32 +47,6 @@ class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.
 
     override fun initializeViews() {
         currentActivity.hideBottomNavigationView()
-
-        fragment_settings_saved_items.setItem(
-            title = getString(R.string.settings_saved),
-            icon = R.drawable.ic_saved
-        )
-        fragment_settings_personal_settings_item.setItem(
-            title = getString(R.string.settings_personal_settings),
-            icon = R.drawable.ic_settings
-        )
-        fragment_settings_confidentiality_item.setItem(
-            title = getString(R.string.settings_confidentiality),
-            icon = R.drawable.ic_lock
-        )
-        fragment_settings_rule_using_item.setItem(
-            title = getString(R.string.settings_rule_using),
-            icon = R.drawable.ic_article
-        )
-        fragment_settings_estimate_app_item.setItem(
-            title = getString(R.string.settings_estimate_app),
-            icon = R.drawable.ic_star
-        )
-        fragment_settings_exit_item.setItem(
-            title = getString(R.string.settings_exit),
-            icon = R.drawable.ic_exit
-        )
-        fragment_settings_exit_item.setTitleColor(R.color.app_red)
     }
 
     override fun initializeListeners() {
@@ -106,7 +80,8 @@ class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.
             R.id.fragment_settings_exit_item -> {
                 ExitDialog.getNewInstance(
                     universalViewClickListener = this,
-                    username = currentActivity.getSharedPrefByKey(SharedConstants.USERNAME_KEY) ?: EMPTY_STRING
+                    username = currentActivity.getSharedPrefByKey(SharedConstants.USERNAME_KEY)
+                        ?: EMPTY_STRING
                 ).show(childFragmentManager, EMPTY_STRING)
             }
         }

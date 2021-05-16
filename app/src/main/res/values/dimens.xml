@@ -138,7 +138,7 @@
     <dimen name="camera_icon_size">30dp</dimen>
 
     <dimen name="search_tab_min_width">110dp</dimen>
-    <dimen name="settings_item_height">40dp</dimen>
+    <dimen name="settings_item_height">45dp</dimen>
 
     <dimen name="switch_radius">50dp</dimen>
     <dimen name="switch_height">24dp</dimen>

@@ -13,41 +13,169 @@
         layout="@layout/base_toolbar"
         />
 
-    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
+    <LinearLayout
         android:id="@+id/fragment_settings_saved_items"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/settings_item_height"
         android:layout_marginTop="@dimen/margin_size_24x"
-        />
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingVertical="@dimen/padding_size_8x"
+        >
 
-    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
+        <ImageView
+            android:layout_width="17dp"
+            android:layout_height="23dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="3dp"
+            android:src="@drawable/ic_saved"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:gravity="center_vertical"
+            android:text="@string/settings_saved"
+            android:textColor="@color/app_dark_blue_gray"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/fragment_settings_personal_settings_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="@dimen/settings_item_height"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingVertical="@dimen/padding_size_8x"
+        >
 
-    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
+        <ImageView
+            android:layout_width="@dimen/icon_size_24x"
+            android:layout_height="@dimen/icon_size_24x"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_settings_settings"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_size_12x"
+            android:gravity="center_vertical"
+            android:text="@string/settings_personal_settings"
+            android:textColor="@color/app_dark_blue_gray"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/fragment_settings_confidentiality_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="@dimen/settings_item_height"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingVertical="@dimen/padding_size_8x"
+        >
 
-    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_lock_settings"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_size_8x"
+            android:gravity="center_vertical"
+            android:text="@string/settings_confidentiality"
+            android:textColor="@color/app_dark_blue_gray"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/fragment_settings_rule_using_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="@dimen/settings_item_height"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingVertical="@dimen/padding_size_8x"
+        >
 
-    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="2dp"
+            android:src="@drawable/ic_doc"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_size_12x"
+            android:gravity="center_vertical"
+            android:text="@string/settings_rule_using"
+            android:textColor="@color/app_dark_blue_gray"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/fragment_settings_estimate_app_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="@dimen/settings_item_height"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingVertical="@dimen/padding_size_8x"
+        >
 
-    <kz.eztech.stylyts.presentation.views.settings.SettingsItemView
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_star_settings"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_size_12x"
+            android:gravity="center_vertical"
+            android:text="@string/settings_estimate_app"
+            android:textColor="@color/app_dark_blue_gray"
+            />
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/fragment_settings_exit_item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="@dimen/settings_item_height"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingVertical="@dimen/padding_size_8x"
+        >
+
+        <ImageView
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_exit"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_size_12x"
+            android:gravity="center_vertical"
+            android:text="@string/settings_exit"
+            android:textColor="@color/app_red"
+            />
+    </LinearLayout>
 
 </LinearLayout>
