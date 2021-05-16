@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context=".presentation.fragments.ordering.OrderingFragment"
+    >
+
+    <include
+        android:id="@+id/fragment_ordering_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/padding_size_16x"
+        android:paddingStart="@dimen/padding_size_16x"
+        android:paddingEnd="0dp"
+        >
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <EditText
+            android:id="@+id/fragment_ordering_name_edit_text"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@null"
+            android:imeOptions="actionNext"
+            android:inputType="text|textPersonName"
+            tools:text="Руслан"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@color/app_gray_hint"
+            />
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/surname"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <EditText
+            android:id="@+id/fragment_ordering_surname_edit_text"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@null"
+            android:imeOptions="actionNext"
+            android:inputType="text|textPersonName"
+            tools:text="Руслан"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@color/app_gray_hint"
+            />
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/address_profile_mobile_phone"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <EditText
+            android:id="@+id/fragment_ordering_mobile_phone_edit_text"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@null"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            tools:text="+70000000"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@color/app_gray_hint"
+            />
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/email"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <EditText
+            android:id="@+id/fragment_ordering_email_edit_text"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@null"
+            android:imeOptions="actionNext"
+            tools:text="@string/email"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@color/app_gray_hint"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/padding_size_16x"
+            android:paddingStart="0dp"
+            >
+
+            <TextView
+                style="@style/TextRegular"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_to_mailing"
+                android:textSize="@dimen/text_size_14x"
+                />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/fragment_ordering_subs_mailing_switch_compat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:thumbTint="@color/white"
+                app:track="@drawable/bg_switch_track_selector"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginBottom="@dimen/margin_size_16x"
+            android:background="@color/app_gray_hint"
+            />
+    </LinearLayout>
+
+</LinearLayout>

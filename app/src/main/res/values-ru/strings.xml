@@ -287,6 +287,7 @@
     <string name="edit_profile_fill_names_through_space">Заполните имя и фамилию через пробел!</string>
 
     <string name="button_show_results">Показать результаты : %s</string>
+    <string name="button_ordering">Оформить заказ</string>
 
     <string name="toolbar_positions_text_format">%s Позиции</string>
     <string name="toolbar_position_text_format">%s Позиция</string>
@@ -335,4 +336,6 @@
     <string name="select_size">Выберите размер</string>
 
     <string name="category">Категория</string>
+
+    <string name="subscribe_to_mailing">Подписаться на рассылку</string>
 </resources>

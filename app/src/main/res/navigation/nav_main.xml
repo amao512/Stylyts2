@@ -15,5 +15,6 @@
     <include app:graph="@navigation/nav_lenta" />
 
     <include app:graph="@navigation/nav_search" />
+    <include app:graph="@navigation/nav_ordering" />
 
 </navigation>

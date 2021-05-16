@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -63,6 +64,7 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
 
     private fun initializeListeners() {
         image_view_dialog_cart_close.setOnClickListener(this)
+        dialog_cart_ordering_button.setOnClickListener(this)
     }
 
     private fun getList() {
@@ -129,6 +131,9 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.image_view_dialog_cart_close -> dismiss()
+            R.id.dialog_cart_ordering_button -> {
+                findNavController().navigate(R.id.nav_ordering)
+            }
         }
     }
 

@@ -96,12 +96,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="@dimen/padding_size_16x"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view"
         tools:listitem="@layout/item_cart_item"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         />
 
     <LinearLayout
@@ -140,5 +140,24 @@
         android:id="@+id/include_base_progress_dialog_cart"
         layout="@layout/base_progress"
         android:visibility="gone"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/dialog_cart_ordering_button"
+        style="@style/TitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginHorizontal="@dimen/margin_size_24x"
+        android:layout_marginBottom="@dimen/margin_size_16x"
+        android:backgroundTint="@color/app_dark_blue_gray"
+        android:text="@string/button_ordering"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_14x"
+        app:cornerRadius="@dimen/button_corners_radius"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
