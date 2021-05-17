@@ -7,9 +7,9 @@ import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_constructor_clothes.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 

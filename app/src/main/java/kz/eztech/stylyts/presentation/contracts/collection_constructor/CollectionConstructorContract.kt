@@ -1,8 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 
@@ -12,7 +13,7 @@ import kz.eztech.stylyts.presentation.base.BasePresenter
 interface CollectionConstructorContract {
     interface View : MotionViewContract {
 
-        fun processTypesResults(resultsModel: ResultsModel<kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel>)
+        fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>)
 
         fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>)
 

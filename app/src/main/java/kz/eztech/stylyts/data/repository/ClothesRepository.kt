@@ -6,7 +6,7 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesBrandApiModelMapper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import javax.inject.Inject

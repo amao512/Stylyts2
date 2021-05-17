@@ -3,7 +3,7 @@ package kz.eztech.stylyts.domain.usecases.search
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.repository.SearchDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase

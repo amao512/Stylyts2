@@ -11,7 +11,7 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_user_search.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener

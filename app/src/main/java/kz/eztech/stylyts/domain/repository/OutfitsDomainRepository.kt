@@ -1,10 +1,9 @@
 package kz.eztech.stylyts.domain.repository
 
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import okhttp3.MultipartBody
-import retrofit2.http.QueryMap
 
 interface OutfitsDomainRepository {
 

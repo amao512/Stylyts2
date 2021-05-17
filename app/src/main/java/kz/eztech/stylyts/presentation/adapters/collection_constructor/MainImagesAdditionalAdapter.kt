@@ -3,8 +3,8 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor
 import android.view.View
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.MainImageAdditionalHolder
 import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperAdapter
 import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener

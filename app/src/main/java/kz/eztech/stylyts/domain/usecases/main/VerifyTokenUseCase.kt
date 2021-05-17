@@ -2,7 +2,7 @@ package kz.eztech.stylyts.domain.usecases.main
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.ErrorModel
+import kz.eztech.stylyts.domain.models.common.ErrorModel
 import kz.eztech.stylyts.domain.repository.MainDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject

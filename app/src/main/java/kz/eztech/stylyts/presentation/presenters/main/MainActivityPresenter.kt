@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.main
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ErrorModel
+import kz.eztech.stylyts.domain.models.common.ErrorModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.domain.usecases.main.RefreshTokenUseCase
 import kz.eztech.stylyts.domain.usecases.main.VerifyTokenUseCase

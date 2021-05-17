@@ -2,9 +2,10 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesStylesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
@@ -40,8 +41,8 @@ class CollectionConstructorPresenter @Inject constructor(
 
         getClothesTypesUseCase.initParams(token)
         getClothesTypesUseCase.execute(object :
-            DisposableSingleObserver<ResultsModel<kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel>>() {
-            override fun onSuccess(t: ResultsModel<kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel>) {
+            DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 view.processViewAction {
                     processTypesResults(resultsModel = t)
                     hideProgress()

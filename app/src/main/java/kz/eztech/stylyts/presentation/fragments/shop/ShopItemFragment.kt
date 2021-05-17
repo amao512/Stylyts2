@@ -5,10 +5,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ShopCategoryAdapter
+import kz.eztech.stylyts.presentation.adapters.shop.ShopCategoryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemContract

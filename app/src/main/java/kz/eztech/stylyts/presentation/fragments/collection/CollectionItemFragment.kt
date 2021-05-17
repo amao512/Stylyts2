@@ -5,12 +5,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_collection_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.GridImageAdapter
+import kz.eztech.stylyts.presentation.adapters.common.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView

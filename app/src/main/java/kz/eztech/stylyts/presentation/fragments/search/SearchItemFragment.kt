@@ -10,7 +10,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity

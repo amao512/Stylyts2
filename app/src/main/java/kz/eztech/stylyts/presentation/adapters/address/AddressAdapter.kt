@@ -3,9 +3,9 @@ package kz.eztech.stylyts.presentation.adapters.address
 import android.view.View
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.address.AddressModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
 
 /**

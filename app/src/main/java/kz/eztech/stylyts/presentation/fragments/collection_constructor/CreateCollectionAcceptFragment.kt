@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_create_collection_accept.*
+import kotlinx.coroutines.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
@@ -37,7 +38,8 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     DialogChooserListener,
     CreateCollectionAcceptContract.View {
 
-    @Inject lateinit var presenter: CreateCollectionAcceptPresenter
+    @Inject
+    lateinit var presenter: CreateCollectionAcceptPresenter
     private lateinit var chooserDialog: CreateCollectionChooserDialog
 
     private var currentModel: OutfitCreateModel? = null
@@ -283,7 +285,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             if (getBitmapFromArgs() != null && getPhotoUriFromArgs() == null) {
                 getBitmapFromArgs()?.let {
                     createPost(
-                        FileUtils.createPngFileFromBitmap(requireContext(), it),
+                        file = FileUtils.createPngFileFromBitmap(requireContext(), it),
                         isHidden = isHidden
                     )
                 }
@@ -292,7 +294,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             if (getPhotoUriFromArgs() != null && getBitmapFromArgs() == null) {
                 getPhotoUriFromArgs()?.path?.let {
                     createPost(
-                        File(it),
+                        file = File(it),
                         isHidden = isHidden
                     )
                 }
@@ -309,8 +311,8 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         file?.let {
             val images = ArrayList<File>()
 
-            listOfChosenImages.map {
-                FileUtils.getUriFromString(it)?.path?.let { file ->
+            listOfChosenImages.map { imageString ->
+                FileUtils.getUriFromString(imageString)?.path?.let { file ->
                     images.add(File(file))
                 }
             }

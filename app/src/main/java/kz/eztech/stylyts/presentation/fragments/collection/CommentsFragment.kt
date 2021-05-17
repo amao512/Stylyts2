@@ -16,13 +16,13 @@ import kotlinx.android.synthetic.main.fragment_comments.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.CommentsAdapter
+import kz.eztech.stylyts.presentation.adapters.collection.CommentsAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.CommentSpaceItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView

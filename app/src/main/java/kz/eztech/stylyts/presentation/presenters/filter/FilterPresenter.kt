@@ -2,8 +2,8 @@ package kz.eztech.stylyts.presentation.presenters.filter
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ColorModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ColorModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel

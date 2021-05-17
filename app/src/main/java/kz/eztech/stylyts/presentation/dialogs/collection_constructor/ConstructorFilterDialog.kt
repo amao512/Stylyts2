@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.dialog_filter_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.BrandModel
-import kz.eztech.stylyts.domain.models.BrandsModel
+import kz.eztech.stylyts.domain.models.common.BrandModel
+import kz.eztech.stylyts.domain.models.common.BrandsModel
 import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.presentation.activity.MainActivity

@@ -5,7 +5,7 @@ import kz.eztech.stylyts.data.api.network.OutfitsApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.outfits.OutfitApiModelMapper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.repository.OutfitsDomainRepository
 import okhttp3.MultipartBody

@@ -4,7 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.MainApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.auth.TokenApiModelMapper
-import kz.eztech.stylyts.domain.models.ErrorModel
+import kz.eztech.stylyts.domain.models.common.ErrorModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.domain.repository.MainDomainRepository
 import javax.inject.Inject

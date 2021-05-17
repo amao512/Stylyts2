@@ -5,7 +5,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel

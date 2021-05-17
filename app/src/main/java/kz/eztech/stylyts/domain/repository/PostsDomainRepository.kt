@@ -2,8 +2,8 @@ package kz.eztech.stylyts.domain.repository
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
-import kz.eztech.stylyts.domain.models.ActionModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ActionModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import okhttp3.MultipartBody
 

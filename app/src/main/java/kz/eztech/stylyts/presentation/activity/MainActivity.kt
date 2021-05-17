@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.ErrorModel
+import kz.eztech.stylyts.domain.models.common.ErrorModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.presentation.base.BaseActivity
 import kz.eztech.stylyts.presentation.contracts.main.MainActivityContract

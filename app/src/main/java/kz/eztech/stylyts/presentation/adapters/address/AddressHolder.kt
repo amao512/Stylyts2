@@ -3,8 +3,8 @@ package kz.eztech.stylyts.presentation.adapters.address
 import android.view.View
 import kotlinx.android.synthetic.main.item_address_profile.view.*
 import kz.eztech.stylyts.domain.models.address.AddressModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show

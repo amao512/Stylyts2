@@ -14,7 +14,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.cart.CartDataSource
 import kz.eztech.stylyts.data.db.cart.CartEntity
-import kz.eztech.stylyts.presentation.adapters.CartAdapter
+import kz.eztech.stylyts.presentation.adapters.ordering.CartAdapter
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show

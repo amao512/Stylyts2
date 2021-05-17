@@ -3,9 +3,9 @@ package kz.eztech.stylyts.presentation.adapters.search
 import android.view.View
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.user.UserModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.adapters.search.holders.ShopSearchHolder
 
 class ShopsSearchAdapter : BaseAdapter() {

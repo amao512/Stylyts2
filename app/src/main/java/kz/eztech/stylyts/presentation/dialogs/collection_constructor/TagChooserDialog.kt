@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.*
 import kotlinx.android.synthetic.main.dialog_tag_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel

@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.collection
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ActionModel
+import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.outfits.DeleteOutfitUseCase

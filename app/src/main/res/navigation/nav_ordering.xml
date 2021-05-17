@@ -12,5 +12,16 @@
         android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingFragment"
         android:label="fragment_ordering"
         tools:layout="@layout/fragment_ordering"
+        >
+        <action
+            android:id="@+id/action_orderingFragment_to_orderingDataFragment"
+            app:destination="@id/orderingDataFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/orderingDataFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingDataFragment"
+        android:label="fragment_ordering_data"
+        tools:layout="@layout/fragment_ordering_data"
         />
 </navigation>

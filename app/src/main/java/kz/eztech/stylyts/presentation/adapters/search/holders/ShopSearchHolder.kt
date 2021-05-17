@@ -6,8 +6,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_shop_search.view.*
 import kz.eztech.stylyts.domain.models.user.UserModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 
 class ShopSearchHolder(
     itemView: View,

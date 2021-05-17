@@ -4,10 +4,10 @@ import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.CollectionConstructorShopItemHolder
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 
 /**

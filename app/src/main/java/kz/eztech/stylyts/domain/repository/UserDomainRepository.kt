@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.domain.repository
 
 import io.reactivex.Single
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 

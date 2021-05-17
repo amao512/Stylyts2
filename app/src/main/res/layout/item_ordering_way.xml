@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_ordering_way_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingTop="@dimen/padding_size_16x"
+        android:paddingBottom="0dp"
+        >
+
+        <FrameLayout
+            android:layout_width="@dimen/icon_size_36x"
+            android:layout_height="@dimen/icon_size_36x"
+            android:background="@drawable/circle_white_black_corners"
+            >
+
+            <ImageView
+                android:id="@+id/item_ordering_way_icon_image_view"
+                android:layout_width="@dimen/icon_size_20x"
+                android:layout_height="@dimen/icon_size_20x"
+                android:layout_gravity="center"
+                tools:src="@drawable/ic_delivery_car"
+                />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/item_ordering_way_title_text_view"
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:textSize="@dimen/text_size_14x"
+            tools:text="Курьерская доставка"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:background="@color/app_gray_hint"
+        />
+</LinearLayout>

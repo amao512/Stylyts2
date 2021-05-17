@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_shop.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ShopViewPagerAdapter
+import kz.eztech.stylyts.presentation.adapters.shop.ShopViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopContract

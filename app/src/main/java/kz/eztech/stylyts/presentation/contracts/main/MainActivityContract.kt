@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.main
 
-import kz.eztech.stylyts.domain.models.ErrorModel
+import kz.eztech.stylyts.domain.models.common.ErrorModel
 import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 

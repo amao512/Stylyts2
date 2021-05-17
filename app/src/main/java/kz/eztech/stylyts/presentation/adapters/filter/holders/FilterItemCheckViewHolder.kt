@@ -4,14 +4,14 @@ import android.graphics.Color
 import android.view.View
 import kotlinx.android.synthetic.main.item_filter_character.view.*
 import kotlinx.android.synthetic.main.item_filter_check.view.*
-import kz.eztech.stylyts.domain.models.ColorModel
+import kz.eztech.stylyts.domain.models.common.ColorModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**

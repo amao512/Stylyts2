@@ -3,7 +3,7 @@ package kz.eztech.stylyts.domain.usecases.user
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.repository.UserDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase

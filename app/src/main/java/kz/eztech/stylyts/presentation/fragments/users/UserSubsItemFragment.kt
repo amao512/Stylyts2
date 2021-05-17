@@ -8,11 +8,11 @@ import kotlinx.android.synthetic.main.fragment_user_subs_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.UserSubAdapter
+import kz.eztech.stylyts.presentation.adapters.users.UserSubAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract

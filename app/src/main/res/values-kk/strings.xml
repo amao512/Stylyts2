@@ -338,4 +338,15 @@
     <string name="category">Категория</string>
 
     <string name="subscribe_to_mailing">Подписаться на рассылку</string>
+
+    <string name="delivery_data">Данные Доставки</string>
+    <string name="delivery_pickup">Самовывоз</string>
+    <string name="delivery_title">Выберите способ доставки</string>
+    <string name="delivery_way_courier">Курьерская доставка</string>
+    <string name="delivery_way_pickup">Самовывоз</string>
+    <string name="delivery_way_post">Доставка почтой</string>
+
+    <string name="dressing_title">Вам нужна примерочная?</string>
+    <string name="dressing_way_need">Да, добавить примерочную</string>
+    <string name="dressing_way_not_need">Нет, я куплю заказ без примерки</string>
 </resources>

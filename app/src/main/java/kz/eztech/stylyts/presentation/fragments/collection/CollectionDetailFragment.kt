@@ -23,7 +23,7 @@ import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
+import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView

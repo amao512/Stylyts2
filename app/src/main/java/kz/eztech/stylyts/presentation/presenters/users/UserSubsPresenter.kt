@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.users
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.usecases.user.FollowUserUseCase

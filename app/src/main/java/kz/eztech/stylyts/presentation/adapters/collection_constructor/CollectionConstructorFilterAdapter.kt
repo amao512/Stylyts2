@@ -2,12 +2,12 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.BrandModel
+import kz.eztech.stylyts.domain.models.common.BrandModel
 import kz.eztech.stylyts.domain.models.shop.GenderCategory
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.CollectionConstructorFilterHolder
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 05.02.2021.

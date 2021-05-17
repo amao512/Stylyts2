@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.address
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.usecases.address.DeleteAddressUseCase
 import kz.eztech.stylyts.domain.usecases.address.GetAddressUseCase

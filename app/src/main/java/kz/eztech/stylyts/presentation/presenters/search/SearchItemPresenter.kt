@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase

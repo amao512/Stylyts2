@@ -8,8 +8,8 @@ import androidx.core.view.MotionEventCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image_detail.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperViewHolder
 import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
 

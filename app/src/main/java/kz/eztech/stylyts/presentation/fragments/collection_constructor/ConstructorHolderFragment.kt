@@ -5,7 +5,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.ContextCompat.getColor
 import kotlinx.android.synthetic.main.fragment_constructor_holder.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
+import kz.eztech.stylyts.domain.models.common.ClothesTypeDataModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.ConstructorPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment

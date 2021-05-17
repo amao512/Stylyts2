@@ -3,10 +3,10 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.item_constructor_filter_clothe_items.view.*
-import kz.eztech.stylyts.domain.models.BrandModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.CollectionConstructorSubFilterAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.domain.models.common.BrandModel
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.CollectionConstructorSubFilterAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show

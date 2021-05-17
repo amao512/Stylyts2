@@ -2,8 +2,8 @@ package kz.eztech.stylyts.presentation.presenters.main
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.ActionModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ActionModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetHomePagePostsUseCase

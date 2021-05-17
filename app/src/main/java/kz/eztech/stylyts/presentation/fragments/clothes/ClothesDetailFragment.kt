@@ -17,7 +17,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ImagesViewPagerAdapter
+import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener

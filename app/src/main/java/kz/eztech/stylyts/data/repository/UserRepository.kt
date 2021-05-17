@@ -5,7 +5,7 @@ import kz.eztech.stylyts.data.api.network.UserApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.FollowSuccessApiModelMapper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.repository.UserDomainRepository

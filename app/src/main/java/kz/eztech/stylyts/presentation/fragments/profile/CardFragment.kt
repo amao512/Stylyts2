@@ -15,7 +15,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.LocalDataSource
 import kz.eztech.stylyts.data.db.entities.CardEntity
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.CardAdapter
+import kz.eztech.stylyts.presentation.adapters.common.CardAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.CardContract

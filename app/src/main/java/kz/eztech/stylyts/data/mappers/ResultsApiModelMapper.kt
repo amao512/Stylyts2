@@ -17,7 +17,7 @@ import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.FollowerApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserApiModelMapper
 import kz.eztech.stylyts.data.mappers.wardrobe.WardrobeApiModelMapper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import javax.inject.Inject
 
 /**

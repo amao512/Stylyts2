@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.search
 
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter

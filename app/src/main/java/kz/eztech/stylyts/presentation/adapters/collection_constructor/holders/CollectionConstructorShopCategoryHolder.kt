@@ -5,8 +5,8 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.shop.ClothesTypes
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
@@ -14,9 +14,9 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
  * Created by Ruslan Erdenoff on 25.12.2020.
  */
 class CollectionConstructorShopCategoryHolder(
-	itemView: View,
-	adapter: BaseAdapter,
-	private val gender: Int
+    itemView: View,
+    adapter: BaseAdapter,
+    private val gender: Int
 ) : BaseViewHolder(itemView, adapter) {
 
     override fun bindData(item: Any, position: Int) {

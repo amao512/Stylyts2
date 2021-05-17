@@ -3,8 +3,8 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 import android.view.View
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_photo_library.view.*
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 

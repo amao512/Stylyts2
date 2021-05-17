@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.BrandsModel
+import kz.eztech.stylyts.domain.models.common.BrandsModel
 import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView

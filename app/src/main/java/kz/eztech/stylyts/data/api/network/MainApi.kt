@@ -2,7 +2,7 @@ package kz.eztech.stylyts.data.api.network
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.ErrorModel
+import kz.eztech.stylyts.domain.models.common.ErrorModel
 import kz.eztech.stylyts.data.api.models.auth.TokenApiModel
 import retrofit2.Response
 import retrofit2.http.Field

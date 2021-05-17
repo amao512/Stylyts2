@@ -18,8 +18,8 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ColorModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ColorModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel

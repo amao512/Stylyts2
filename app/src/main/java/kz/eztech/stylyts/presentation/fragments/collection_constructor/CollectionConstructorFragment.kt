@@ -4,14 +4,12 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.Display
 import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.ArrayAdapter
@@ -29,7 +27,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel

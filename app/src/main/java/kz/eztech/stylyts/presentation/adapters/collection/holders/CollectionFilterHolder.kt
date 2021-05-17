@@ -10,8 +10,8 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.item_collection_filter.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.presentation.adapters.BaseAdapter
-import kz.eztech.stylyts.presentation.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 

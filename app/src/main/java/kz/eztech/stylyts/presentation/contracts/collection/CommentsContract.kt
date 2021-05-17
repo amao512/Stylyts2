@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.collection
 
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel

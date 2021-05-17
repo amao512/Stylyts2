@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor_holder.*
 import kotlinx.android.synthetic.main.fragment_profile.include_toolbar_profile
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.ClothesTypeDataModel
+import kz.eztech.stylyts.domain.models.common.ClothesTypeDataModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment

@@ -5,7 +5,7 @@ import kz.eztech.stylyts.data.api.network.AddressApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.address.AddressApiModelMapper
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.repository.AddressDomainRepository
 import javax.inject.Inject

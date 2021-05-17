@@ -7,8 +7,8 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ActionApiModelMapper
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
-import kz.eztech.stylyts.domain.models.ActionModel
-import kz.eztech.stylyts.domain.models.ResultsModel
+import kz.eztech.stylyts.domain.models.common.ActionModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
 import okhttp3.MultipartBody

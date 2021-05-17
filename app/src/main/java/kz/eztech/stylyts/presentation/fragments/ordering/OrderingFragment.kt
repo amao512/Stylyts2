@@ -82,7 +82,9 @@ class OrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.toolbar_right_text_text_view -> {}
+            R.id.toolbar_right_text_text_view -> {
+                findNavController().navigate(R.id.action_orderingFragment_to_orderingDataFragment)
+            }
         }
     }
 }
