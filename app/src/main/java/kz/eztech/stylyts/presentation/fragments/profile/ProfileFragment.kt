@@ -117,6 +117,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun initializeViewsData() {
         currentFilter = FilterModel()
+        currentFilter.onlyBrands = false
+
         filterDialog = FilterDialog.getNewInstance(
             token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
@@ -230,7 +232,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processProfile(userModel: UserModel) {
         currentFilter.userId = userModel.id
         currentFilter.username = userModel.username
-        currentFilter.owner = userModel.username
         currentFilter.gender = userModel.gender
 
         getFilterList()
@@ -244,6 +245,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
             toolbar_right_corner_action_image_button.show()
         } else {
+            currentFilter.owner = userModel.username
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
         }
     }

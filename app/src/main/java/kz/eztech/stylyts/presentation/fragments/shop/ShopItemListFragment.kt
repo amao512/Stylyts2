@@ -98,6 +98,7 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         filterCheckAdapter.setOnClickListener(listener = this)
 
         currentFilter = FilterModel()
+        currentFilter.onlyBrands = true
     }
 
     override fun initializeViews() {

@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.domain.usecases.clothes
 
+import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
@@ -22,7 +23,7 @@ class GetClothesUseCase @Inject constructor(
     private lateinit var booleanQueryMap: Map<String, Boolean>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
-
+        Log.d("TAG4", "usecase - $stringQueryMap")
 
         return clothesDomainRepository.getClothes(
             token = token,
@@ -81,6 +82,8 @@ class GetClothesUseCase @Inject constructor(
         if (filterModel.maxPrice != 0) {
             stringQueryMap["cost_lt"] = filterModel.maxPrice.toString()
         }
+
+        stringQueryMap["only_brands"] = filterModel.onlyBrands.toString()
 
         this.stringQueryMap = stringQueryMap
         this.booleanQueryMap = booleanQueryMap

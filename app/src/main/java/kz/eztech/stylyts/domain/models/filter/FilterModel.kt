@@ -19,5 +19,6 @@ data class FilterModel(
     var maxPrice: Int = 0,
     var isMy: Boolean = false,
     var page: Int = 1,
-    var isLastPage: Boolean = false
+    var isLastPage: Boolean = false,
+    var onlyBrands: Boolean = false
 ) : Parcelable
