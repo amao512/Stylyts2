@@ -56,7 +56,7 @@
     <string name="month">Месяц</string>
     <string name="year">Год</string>
 
-    <string name="bottom_nav_bar_main">Основная</string>
+    <string name="bottom_nav_bar_main">Главная</string>
     <string name="bottom_nav_bar_collection">Образы</string>
     <string name="bottom_nav_bar_create_collection">Создать</string>
     <string name="bottom_nav_bar_shop">Поиск</string>

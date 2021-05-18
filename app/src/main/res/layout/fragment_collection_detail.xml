@@ -84,12 +84,13 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/margin_size_16x"
-                        android:text="zara"
+                        android:textSize="@dimen/text_size_16x"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@+id/item_main_image_dialog_menu_image_button"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toEndOf="@+id/frameLayout"
                         app:layout_constraintTop_toTopOf="parent"
+                        tools:text="zara"
                         />
 
                     <ImageButton
