@@ -95,6 +95,7 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/dialog_bottom_create_collection_chooser_divider_two"
         android:layout_width="match_parent"
         android:layout_height="@dimen/small_divider_height"
         android:layout_marginVertical="@dimen/margin_size_8x"

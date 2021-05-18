@@ -32,11 +32,15 @@ class CreateCollectionChooserDialog(
             dialog_bottom_create_collection_chooser_wardrobe.show()
             dialog_bottom_create_collection_chooser_divider_one.show()
             dialog_bottom_create_collection_chooser_create.hide()
+            dialog_bottom_photo_chooser_photo_as_collection_buy.hide()
+            dialog_bottom_create_collection_chooser_divider_two.hide()
         } else {
             dialog_bottom_create_collection_chooser_common_line.hide()
             dialog_bottom_create_collection_chooser_wardrobe.hide()
             dialog_bottom_create_collection_chooser_divider_one.hide()
             dialog_bottom_create_collection_chooser_create.show()
+            dialog_bottom_photo_chooser_photo_as_collection_buy.show()
+            dialog_bottom_create_collection_chooser_divider_two.show()
         }
     }
 

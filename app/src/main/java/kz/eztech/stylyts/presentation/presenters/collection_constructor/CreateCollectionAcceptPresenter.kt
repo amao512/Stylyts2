@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
+import android.util.Log
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
@@ -48,14 +49,14 @@ class CreateCollectionAcceptPresenter @Inject constructor(
             override fun onSuccess(t: PostModel) {
                 view.processViewAction {
                     hideProgress()
-                    processSuccessSaving()
+                    processSuccessSavingPost(postModel = t)
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
                     hideProgress()
-                    processSuccessSaving()
+                    displayMessage(msg = errorHelper.processError(e))
                 }
             }
         })
@@ -73,14 +74,14 @@ class CreateCollectionAcceptPresenter @Inject constructor(
             override fun onSuccess(t: PostModel) {
                 view.processViewAction {
                     hideProgress()
-                    processSuccessSaving()
+                    processSuccessSavingPost(postModel = t)
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
                     hideProgress()
-                    processSuccessSaving()
+                    displayMessage(msg = errorHelper.processError(e))
                 }
             }
         })
@@ -96,16 +97,18 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         )
         createOutfitUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {
+                Log.d("TAG4", "result - $t")
+
                 view.processViewAction {
-                    processSuccessSaving()
+                    processSuccessSavingOutfit(outfitModel = t)
                     hideProgress()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
-                    processSuccessSaving()
                     hideProgress()
+                    displayMessage(msg = errorHelper.processError(e))
                 }
             }
         })
@@ -128,7 +131,7 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         updateOutfitUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {
                 view.processViewAction {
-                    processSuccessSaving()
+                    processSuccessSavingOutfit(outfitModel = t)
                     hideProgress()
                 }
             }

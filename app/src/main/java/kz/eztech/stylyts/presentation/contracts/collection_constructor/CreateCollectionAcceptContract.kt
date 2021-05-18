@@ -1,7 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 import java.io.File
@@ -10,7 +12,9 @@ interface CreateCollectionAcceptContract {
 
     interface View : BaseView {
 
-        fun processSuccessSaving()
+        fun processSuccessSavingOutfit(outfitModel: OutfitModel)
+
+        fun processSuccessSavingPost(postModel: PostModel)
     }
 
     interface Presenter : BasePresenter<View> {

@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
 import android.view.View
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.common.PhotoLibraryModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
@@ -21,8 +22,8 @@ class PhotoLibraryAdapter : BaseAdapter() {
                 oldItemPosition: Int,
                 newItemPosition: Int
             ): Boolean {
-                return (currentList[oldItemPosition] as String) ==
-                        (list[newItemPosition] as String)
+                return (currentList[oldItemPosition] as PhotoLibraryModel).id ==
+                        (list[newItemPosition] as PhotoLibraryModel).id
             }
         }
     }
@@ -32,6 +33,22 @@ class PhotoLibraryAdapter : BaseAdapter() {
             itemView = view,
             adapter = this
         )
+    }
+
+    fun enableMultipleChoice() {
+        currentList.map {
+            (it as PhotoLibraryModel).isMultipleChoice = true
+        }
+
+        notifyDataSetChanged()
+    }
+
+    fun disableMultipleChoice() {
+        currentList.map {
+            (it as PhotoLibraryModel).isMultipleChoice = false
+        }
+
+        notifyDataSetChanged()
     }
 
     fun setNumber(

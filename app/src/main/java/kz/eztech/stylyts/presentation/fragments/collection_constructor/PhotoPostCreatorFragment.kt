@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_photo_post_creator.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.common.PhotoLibraryModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.PhotoLibraryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -32,6 +33,7 @@ import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.ViewUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.io.File
 
@@ -43,11 +45,12 @@ class PhotoPostCreatorFragment(
     private lateinit var photoAdapter: PhotoLibraryAdapter
     private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
 
-    private val listOfAllImages = ArrayList<String>()
-    private val listOfChosenImages = ArrayList<String>()
+    private val listOfAllImages = ArrayList<PhotoLibraryModel>()
+    private val listOfChosenImages = ArrayList<PhotoLibraryModel>()
 
     private var photoUri: Uri? = null
     private var mode = -1
+    private var isMultipleChoice: Boolean = false
 
     companion object {
         private const val REQUEST_CODE_PERMISSIONS = 10
@@ -136,29 +139,9 @@ class PhotoPostCreatorFragment(
         position: Int,
         item: Any?
     ) {
-        item as String
-
-        photoUri = if (listOfChosenImages.contains(item)) {
-            listOfChosenImages.remove(item)
-            photoAdapter.notifyItemChanged(position, -1)
-
-            null
-        } else {
-            if (listOfChosenImages.size == 5) {
-                displayMessage(msg = "Только 5 фото!")
-
-                return
-            }
-
-            listOfChosenImages.add(item)
-            photoAdapter.setNumber(position, listOfChosenImages.count())
-
-            Uri.fromFile(File(item))
+        when (item) {
+            is PhotoLibraryModel -> onPhotoClicked(photoLibraryModel = item, position)
         }
-
-        Glide.with(currentActivity)
-            .load(photoUri)
-            .into(image_view_fragment_photo_post_creator)
     }
 
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
@@ -184,15 +167,24 @@ class PhotoPostCreatorFragment(
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        val listOfImages = ArrayList<String>()
+        val listOfImages = ArrayList<PhotoLibraryModel>()
+        var counter = 1
 
         data?.let {
 
             val columnIndexData = it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
             while (it.moveToNext()) {
-                listOfImages.add(it.getString(columnIndexData))
+                listOfImages.add(
+                    PhotoLibraryModel(
+                        id = counter,
+                        photo = it.getString(columnIndexData)
+                    ))
+
+                counter++
             }
         }
+
+        listOfImages.reverse()
 
         if (listOfImages.isNotEmpty()) {
             listOfAllImages.clear()
@@ -200,11 +192,10 @@ class PhotoPostCreatorFragment(
         }
 
         if (listOfAllImages.isNotEmpty()) {
-            photoUri = Uri.fromFile(File(listOfAllImages[0]))
+            photoUri = Uri.fromFile(File(listOfAllImages[0].photo))
 
-            Glide.with(currentActivity)
-                .load(listOfAllImages[0])
-                .into(image_view_fragment_photo_post_creator)
+            listOfAllImages[0].photo
+                .loadImage(target = image_view_fragment_photo_post_creator)
 
             photoAdapter.updateList(listOfAllImages)
         }
@@ -215,6 +206,7 @@ class PhotoPostCreatorFragment(
     override fun initializeListeners() {
         frame_layout_fragment_photo_post_creator_camera.setOnClickListener(this)
         frame_layout_fragment_photo_post_creator_chooser.setOnClickListener(this)
+        text_view_fragment_photo_post_creator_album_chooser.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -241,7 +233,8 @@ class PhotoPostCreatorFragment(
             R.id.frame_layout_fragment_photo_post_creator_camera -> onCameraClick()
             R.id.toolbar_right_text_text_view -> onNextClick()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.frame_layout_fragment_photo_post_creator_chooser -> openGallery()
+            R.id.frame_layout_fragment_photo_post_creator_chooser -> onMultipleButtonClick()
+            R.id.text_view_fragment_photo_post_creator_album_chooser -> openGallery()
         }
     }
 
@@ -281,6 +274,40 @@ class PhotoPostCreatorFragment(
         }
     }
 
+    private fun onPhotoClicked(
+        photoLibraryModel: PhotoLibraryModel,
+        position: Int
+    ) {
+        if (!isMultipleChoice) {
+            listOfChosenImages.clear()
+            photoUri = Uri.fromFile(
+                File(photoLibraryModel.photo)
+            )
+        } else {
+            photoUri = if (listOfChosenImages.contains(photoLibraryModel)) {
+                listOfChosenImages.remove(photoLibraryModel)
+                photoAdapter.notifyItemChanged(position,  -1)
+
+                null
+            } else {
+                if (listOfChosenImages.size == 5) {
+                    displayMessage(msg = "Только 5 фото!")
+
+                    return
+                }
+
+                listOfChosenImages.add(photoLibraryModel)
+                photoAdapter.setNumber(position, listOfChosenImages.count())
+
+                Uri.fromFile(
+                    File(photoLibraryModel.photo)
+                )
+            }
+        }
+
+        photoUri?.loadImage(target = image_view_fragment_photo_post_creator)
+    }
+
     private fun onCameraClick() {
         val bundle = Bundle()
         bundle.putInt(CameraFragment.MODE_KEY, CameraFragment.GET_PHOTO_MODE)
@@ -306,12 +333,18 @@ class PhotoPostCreatorFragment(
                 listOfChosenImages.removeLast()
             }
 
+            val preparedImagesList = ArrayList<String>()
+
+            listOfChosenImages.map {
+                preparedImagesList.add(it.photo)
+            }
+
             bundle.putInt(
                 CreateCollectionAcceptFragment.MODE_KEY,
                 CreateCollectionAcceptFragment.POST_MODE
             )
             bundle.putParcelable(CreateCollectionAcceptFragment.PHOTO_URI_KEY, photoUri)
-            bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, listOfChosenImages)
+            bundle.putStringArrayList(CreateCollectionAcceptFragment.CHOSEN_PHOTOS_KEY, preparedImagesList)
 
             if (inPager) {
                 bundle.putBoolean(CreateCollectionAcceptFragment.IS_CHOOSER_KEY, true)
@@ -329,6 +362,15 @@ class PhotoPostCreatorFragment(
         } else {
             displayMessage(msg = getString(R.string.error_choose_photo))
         }
+    }
+
+    private fun onMultipleButtonClick() {
+        when (isMultipleChoice) {
+            true -> photoAdapter.disableMultipleChoice()
+            false -> photoAdapter.enableMultipleChoice()
+        }
+
+        isMultipleChoice = !isMultipleChoice
     }
 
     private fun openGallery() {

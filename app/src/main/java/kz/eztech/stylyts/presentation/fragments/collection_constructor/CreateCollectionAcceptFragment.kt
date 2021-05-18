@@ -14,7 +14,9 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -23,6 +25,7 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CreateCollectionAcceptContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
+import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CreateCollectionAcceptPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
@@ -221,9 +224,28 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    override fun processSuccessSaving() {
-        displayMessage(msg = getString(R.string.collection_constructor_success_added))
-        findNavController().navigate(R.id.nav_lenta)
+    override fun processSuccessSavingOutfit(outfitModel: OutfitModel) {
+        val bundle = Bundle()
+
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, outfitModel.id)
+
+        findNavController().navigate(
+            R.id.action_createCollectionAcceptFragment_to_collectionDetailFragment,
+            bundle
+        )
+    }
+
+    override fun processSuccessSavingPost(postModel: PostModel) {
+        val bundle = Bundle()
+
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, postModel.id)
+
+        findNavController().navigate(
+            R.id.action_createCollectionAcceptFragment_to_collectionDetailFragment,
+            bundle
+        )
     }
 
     private fun processPhotos() {
