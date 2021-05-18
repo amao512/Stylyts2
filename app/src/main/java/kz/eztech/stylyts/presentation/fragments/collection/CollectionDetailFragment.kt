@@ -21,10 +21,11 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
@@ -50,10 +51,8 @@ import javax.inject.Inject
 class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailContract.View,
     UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
-    @Inject
-    lateinit var presenter: CollectionDetailPresenter
-    @Inject
-    lateinit var imageLoader: DomainImageLoader
+    @Inject lateinit var presenter: CollectionDetailPresenter
+    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var additionalAdapter: MainImagesAdditionalAdapter
     private lateinit var currentOutfitModel: OutfitModel
@@ -356,6 +355,20 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         )
     }
 
+    override fun navigateToUserProfile(userModel: UserModel) {
+        val bundle = Bundle()
+
+        if (userModel.isBrand) {
+            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, userModel.id)
+
+            findNavController().navigate(R.id.nav_shop_profile, bundle)
+        } else {
+            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, userModel.id)
+
+            findNavController().navigate(R.id.nav_profile, bundle)
+        }
+    }
+
     private fun loadImages(images: List<String>) {
         val imageArray = ArrayList<String>()
 
@@ -394,24 +407,34 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun loadClothesTags(postModel: PostModel) {
         clothesTagsContainerFrameLayout.removeAllViews()
 
-        postModel.tags.clothesTags.map {
+        postModel.tags.clothesTags.map { tag ->
             val textView = getTagTextView(clothesTagsContainerFrameLayout)
 
             view?.viewTreeObserver
                 ?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
                         setTagPosition(
-                            tagModel = it,
+                            tagModel = tag,
                             textView = textView,
                             container = imagesViewPager
                         )
 
-                        textView.text = it.title
+                        textView.text = tag.title
 
                         if (textView.parent != null) {
                             clothesTagsContainerFrameLayout.removeView(textView)
                         } else {
                             clothesTagsContainerFrameLayout.addView(textView)
+                        }
+
+                        textView.setOnClickListener {
+                            val bundle = Bundle()
+                            bundle.putInt(ClothesDetailFragment.CLOTHES_ID, tag.id)
+
+                            findNavController().navigate(
+                                R.id.action_collectionDetailFragment_to_itemDetailFragment,
+                                bundle
+                            )
                         }
 
                         view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -423,7 +446,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun loadUsersTags(postModel: PostModel) {
         userTagsContainerFrameLayout.removeAllViews()
 
-        postModel.tags.usersTags.map {
+        postModel.tags.usersTags.map { tag ->
             val textView = getTagTextView(userTagsContainerFrameLayout)
             textView.backgroundTintList = resources.getColorStateList(R.color.app_dark_blue_gray)
 
@@ -431,17 +454,24 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                 ?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
                         setTagPosition(
-                            tagModel = it,
+                            tagModel = tag,
                             textView = textView,
                             container = imagesViewPager
                         )
 
-                        textView.text = it.title
+                        textView.text = tag.title
 
                         if (textView.parent != null) {
                             userTagsContainerFrameLayout.removeView(textView)
                         } else {
                             userTagsContainerFrameLayout.addView(textView)
+                        }
+
+                        textView.setOnClickListener {
+                            presenter.getUserForNavigate(
+                                token = currentActivity.getTokenFromSharedPref(),
+                                userId = tag.id
+                            )
                         }
 
                         view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)

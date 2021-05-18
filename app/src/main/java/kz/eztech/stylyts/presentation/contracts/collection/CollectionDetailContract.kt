@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.contracts.collection
 
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -19,6 +20,8 @@ interface CollectionDetailContract {
         fun processSuccessDeleting()
 
         fun processLike(isLiked: Boolean)
+
+        fun navigateToUserProfile(userModel: UserModel)
     }
 
     interface Presenter: BasePresenter<View> {
@@ -46,6 +49,11 @@ interface CollectionDetailContract {
         fun onLikeClick(
             token: String,
             postId: Int
+        )
+
+        fun getUserForNavigate(
+            token: String,
+            userId: Int
         )
     }
 }

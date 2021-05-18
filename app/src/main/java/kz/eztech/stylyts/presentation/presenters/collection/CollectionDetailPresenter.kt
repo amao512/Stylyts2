@@ -5,11 +5,13 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.outfits.DeleteOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
 import kz.eztech.stylyts.domain.usecases.posts.LikePostUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionDetailContract
 import kz.eztech.stylyts.presentation.enums.LikeEnum
@@ -21,7 +23,8 @@ class CollectionDetailPresenter @Inject constructor(
     private val getPostByIdUseCase: GetPostByIdUseCase,
     private val deleteOutfitUseCase: DeleteOutfitUseCase,
     private val deletePostUseCase: DeletePostUseCase,
-    private val likePostUseCase: LikePostUseCase
+    private val likePostUseCase: LikePostUseCase,
+    private val getUserByIdUseCase: GetUserByIdUseCase
 ) : CollectionDetailContract.Presenter {
 
     private lateinit var view: CollectionDetailContract.View
@@ -33,6 +36,7 @@ class CollectionDetailPresenter @Inject constructor(
         deleteOutfitUseCase.clear()
         deletePostUseCase.clear()
         likePostUseCase.clear()
+        getUserByIdUseCase.clear()
     }
 
     override fun attach(view: CollectionDetailContract.View) {
@@ -139,6 +143,22 @@ class CollectionDetailPresenter @Inject constructor(
                     LikeEnum.LIKE.title -> view.processLike(isLiked = true)
                     LikeEnum.UNLIKE.title -> view.processLike(isLiked = false)
                 }
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
+            }
+        })
+    }
+
+    override fun getUserForNavigate(
+        token: String,
+        userId: Int
+    ) {
+        getUserByIdUseCase.initParams(token, userId)
+        getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+            override fun onSuccess(t: UserModel) {
+                view.navigateToUserProfile(userModel = t)
             }
 
             override fun onError(e: Throwable) {

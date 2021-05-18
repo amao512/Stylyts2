@@ -5,16 +5,17 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.*
-import kotlinx.android.synthetic.main.fragment_collections.include_toolbar
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.item_main_line.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.domain.models.posts.TagModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.main.MainLineAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -53,12 +54,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun customizeActionBar() {
-        with(include_toolbar) {
-            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_send_message)
+        toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_send_message)
 
-            toolbar_title_text_view.text = getString(R.string.app_name)
-            toolbar_title_text_view.show()
-        }
+        toolbar_title_text_view.text = getString(R.string.app_name)
+        toolbar_title_text_view.show()
     }
 
     override fun initializeDependency() {
@@ -95,7 +94,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item: Any?
     ) {
         when (view.id) {
-            R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked(item)
+            R.id.constraint_layout_fragment_item_main_image_profile_container -> onProfileClicked(
+                item
+            )
 //            R.id.button_item_main_image_change_collection -> onChangeCollectionClicked(item)
             R.id.frame_layout_item_main_image_holder_container -> onClothesItemClicked(item)
             R.id.item_main_image_image_card_view -> onCollectionImageClicked(item)
@@ -105,20 +106,15 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             R.id.item_main_image_comments_image_button -> navigateToComments(item)
             R.id.item_main_line_first_comment_text_view -> onProfileClicked(item)
         }
+
+        when (item) {
+            is TagModel -> onTagClicked(item, position)
+        }
     }
 
     override fun processPostInitialization() {
         getPosts()
-
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!currentFilter.isLastPage) {
-                        getPosts()
-                    }
-                }
-            }
-        })
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -172,10 +168,27 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         postsAdapter.setLikePost(isLiked, postId)
     }
 
-    override fun onChoice(v: View?, item: Any?) {
+    override fun onChoice(
+        v: View?,
+        item: Any?
+    ) {
         when (v?.id) {
             R.id.dialog_bottom_collection_context_delete_text_view -> onPostDeleteContextClicked(item)
             R.id.dialog_bottom_collection_context_change_text_view -> onChangeCollectionClicked(item)
+        }
+    }
+
+    override fun navigateToUserProfile(userModel: UserModel) {
+        val bundle = Bundle()
+
+        if (userModel.isBrand) {
+            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, userModel.id)
+
+            findNavController().navigate(R.id.action_mainFragment_to_nav_shop_profile, bundle)
+        } else {
+            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, userModel.id)
+
+            findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
         }
     }
 
@@ -184,6 +197,18 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             token = currentActivity.getTokenFromSharedPref(),
             page = currentFilter.page
         )
+    }
+
+    private fun handleRecyclerView() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!currentFilter.isLastPage) {
+                        getPosts()
+                    }
+                }
+            }
+        })
     }
 
     private fun onProfileClicked(item: Any?) {
@@ -199,6 +224,24 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
             bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author.id)
 
             findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
+        }
+    }
+
+    private fun onTagClicked(
+        tagModel: TagModel,
+        position: Int
+    ) {
+        when (position) {
+            1 -> {
+                val bundle = Bundle()
+                bundle.putInt(ClothesDetailFragment.CLOTHES_ID, tagModel.id)
+
+                findNavController().navigate(R.id.action_mainFragment_to_clothesDetailFragment, bundle)
+            }
+            2 -> presenter.getUserForNavigate(
+                token = currentActivity.getTokenFromSharedPref(),
+                userId = tagModel.id
+            )
         }
     }
 

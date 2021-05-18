@@ -263,11 +263,7 @@ class MainLineHolder(
             itemView.viewTreeObserver
                 .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
-                        setTagPosition(
-                            tagModel = it,
-                            textView = textView,
-                            container = imagesViewPager
-                        )
+                        setTagPosition(tagModel = it, textView, container = imagesViewPager)
 
                         textView.text = it.title
 
@@ -275,6 +271,10 @@ class MainLineHolder(
                             clothesTagsContainerFrameLayout.removeView(textView)
                         } else {
                             clothesTagsContainerFrameLayout.addView(textView)
+                        }
+
+                        textView.setOnClickListener { view ->
+                            adapter.itemClickListener?.onViewClicked(view, position = 1, item = it)
                         }
 
                         itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -294,11 +294,7 @@ class MainLineHolder(
             itemView.viewTreeObserver
                 .addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
-                        setTagPosition(
-                            tagModel = it,
-                            textView = textView,
-                            container = imagesViewPager
-                        )
+                        setTagPosition(tagModel = it, textView, container = imagesViewPager)
 
                         textView.text = it.title
 
@@ -306,6 +302,10 @@ class MainLineHolder(
                             usersTagContainerFrameLayout.removeView(textView)
                         } else {
                             usersTagContainerFrameLayout.addView(textView)
+                        }
+
+                        textView.setOnClickListener { view ->
+                            adapter.itemClickListener?.onViewClicked(view, position = 2, item = it)
                         }
 
                         itemView.viewTreeObserver.removeOnGlobalLayoutListener(this)

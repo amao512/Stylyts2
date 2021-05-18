@@ -5,9 +5,11 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetHomePagePostsUseCase
 import kz.eztech.stylyts.domain.usecases.posts.LikePostUseCase
+import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.enums.LikeEnum
@@ -20,7 +22,8 @@ class MainLinePresenter @Inject constructor(
 	private val errorHelper: ErrorHelper,
 	private val getHomePagePostsUseCase: GetHomePagePostsUseCase,
 	private val deletePostUseCase: DeletePostUseCase,
-	private val likePostUseCase: LikePostUseCase
+	private val likePostUseCase: LikePostUseCase,
+	private val getUserByIdUseCase: GetUserByIdUseCase
 ) : MainContract.Presenter {
 
 	private lateinit var view: MainContract.View
@@ -29,6 +32,7 @@ class MainLinePresenter @Inject constructor(
 		getHomePagePostsUseCase.clear()
 		deletePostUseCase.clear()
 		likePostUseCase.clear()
+		getUserByIdUseCase.clear()
 	}
 
 	override fun attach(view: MainContract.View) {
@@ -92,6 +96,19 @@ class MainLinePresenter @Inject constructor(
 					LikeEnum.LIKE.title -> view.processLike(isLiked = true, postId)
 					LikeEnum.UNLIKE.title -> view.processLike(isLiked = false, postId)
 				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.displayMessage(msg = errorHelper.processError(e))
+			}
+		})
+	}
+
+	override fun getUserForNavigate(token: String, userId: Int) {
+		getUserByIdUseCase.initParams(token, userId)
+		getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
+			override fun onSuccess(t: UserModel) {
+				view.navigateToUserProfile(userModel = t)
 			}
 
 			override fun onError(e: Throwable) {

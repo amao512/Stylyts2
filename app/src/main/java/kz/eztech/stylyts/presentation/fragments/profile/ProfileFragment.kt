@@ -13,8 +13,8 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
@@ -23,10 +23,10 @@ import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.common.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.OutfitsAdapter
+import kz.eztech.stylyts.presentation.adapters.common.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
