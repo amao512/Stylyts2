@@ -54,13 +54,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun customizeActionBar() {
         with(include_toolbar) {
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.hide()
-            toolbar_title_text_view.hide()
-            toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_send_message)
 
-            customizeActionToolBar(toolbar = this)
+            toolbar_title_text_view.text = getString(R.string.app_name)
+            toolbar_title_text_view.show()
         }
     }
 
