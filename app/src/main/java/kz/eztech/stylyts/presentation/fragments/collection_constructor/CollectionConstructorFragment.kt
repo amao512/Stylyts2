@@ -209,7 +209,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				onCategoryItemImageClick(item)
 			}
 			R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
-				removeSelectedEntityFromMotionView(item)
+				onCategoryItemImageClick(item)
 			}
 			R.id.toolbar_left_corner_action_image_button -> showFilterResults(item)
         }
@@ -226,7 +226,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				onCategoryItemImageDoubleClick()
 			}
 			R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
-				onCategoryItemImageClick(item)
+				onCategoryBackClick()
 			}
         }
     }

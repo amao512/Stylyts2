@@ -77,13 +77,11 @@ class CollectionConstructorShopItemHolder(
 					}
 
 					override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-						adapter.itemClickListener?.let {
-							it.onViewClicked(
-								image_view_item_collection_constructor_clothes_item_image_holder,
-								position,
-								clothesModel
-							)
-						}
+						adapter.itemClickListener?.onViewClicked(
+							image_view_item_collection_constructor_clothes_item_image_holder,
+							position,
+							clothesModel
+						)
 
 						return true
 					}

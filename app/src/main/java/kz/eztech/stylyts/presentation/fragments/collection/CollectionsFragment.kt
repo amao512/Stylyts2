@@ -8,8 +8,8 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collections.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -22,7 +22,6 @@ import kz.eztech.stylyts.presentation.contracts.collection.CollectionsContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsPresenter
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
-import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import org.koin.android.ext.android.inject
 import javax.inject.Inject
@@ -44,15 +43,14 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
     override fun customizeActionBar() {
         with(include_toolbar) {
-            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
-            toolbar_left_corner_action_image_button.show()
-
             setRightToolbarButtons()
+
             base_toolbar_right_double_buttons_left_button.setOnClickListener(this@CollectionsFragment)
             base_toolbar_right_double_buttons_right_button.setOnClickListener(this@CollectionsFragment)
             base_toolbar_double_right_buttons_linear_layout.show()
 
-            customizeActionToolBar(this, getString(R.string.fragment_registration_appbar_title))
+            toolbar_title_text_view.text = getString(R.string.bottom_nav_bar_collection)
+            toolbar_title_text_view.show()
         }
     }
 
@@ -129,7 +127,6 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
     override fun processPostInitialization() {
         presenter.getClothesStyles(token = currentActivity.getTokenFromSharedPref())
         shopItemViewModel.setCollectionMode(isOutfits)
-        setStylesCondition()
     }
 
     override fun disposeRequests() {}
@@ -183,7 +180,6 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         isOutfits = !isOutfits
         shopItemViewModel.setCollectionMode(isOutfits)
         setRightToolbarButtons()
-        setStylesCondition()
     }
 
     private fun setRightToolbarButtons() {
@@ -195,14 +191,6 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
                 base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera)
                 base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfit_disabled)
             }
-        }
-    }
-
-    private fun setStylesCondition() {
-        if (isOutfits) {
-            recycler_view_fragment_collections_filter_list.show()
-        } else {
-            recycler_view_fragment_collections_filter_list.hide()
         }
     }
 }

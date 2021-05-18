@@ -233,6 +233,10 @@ class MainLineHolder(
         imagesViewPager.adapter = imageAdapter
         imagesScrollingPagerIndicator.show()
         imagesScrollingPagerIndicator.attachToPager(imagesViewPager)
+
+        if (imageArray.size == 1) {
+            imagesScrollingPagerIndicator.hide()
+        }
     }
 
     private fun processUserPhoto(postModel: PostModel) {

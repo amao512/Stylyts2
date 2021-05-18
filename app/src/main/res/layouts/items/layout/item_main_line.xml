@@ -82,40 +82,11 @@
         android:paddingHorizontal="@dimen/padding_size_24x"
         >
 
-        <LinearLayout
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/item_main_image_photos_holder_view_pager"
             android:layout_width="match_parent"
             android:layout_height="@dimen/collection_detail_image_size"
-            android:orientation="vertical"
-            >
-
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/item_main_image_photos_holder_view_pager"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
-                />
-
-            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
-                android:id="@+id/item_main_image_photos_pager_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/margin_size_12x"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:spi_dotColor="@color/app_dark_blue_gray_half"
-                app:spi_dotSelectedColor="@color/app_light_orange"
-                app:spi_dotSelectedSize="7dp"
-                app:spi_dotSize="6dp"
-                app:spi_visibleDotCount="5"
-                app:spi_visibleDotThreshold="2"
-                />
-        </LinearLayout>
+            />
 
         <FrameLayout
             android:id="@+id/item_main_image_clothes_tags_container"
@@ -137,7 +108,7 @@
             android:layout_gravity="bottom|start"
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_8x"
-            android:paddingBottom="@dimen/padding_size_24x"
+            android:paddingBottom="@dimen/padding_size_8x"
             >
 
             <FrameLayout
@@ -178,11 +149,25 @@
 
     </FrameLayout>
 
+    <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+        android:id="@+id/item_main_image_photos_pager_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_size_12x"
+        app:spi_dotColor="@color/app_dark_blue_gray_half"
+        app:spi_dotSelectedColor="@color/app_light_orange"
+        app:spi_dotSelectedSize="7dp"
+        app:spi_dotSize="6dp"
+        app:spi_visibleDotCount="5"
+        app:spi_visibleDotThreshold="2"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_item_main_image_additionals_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_size_24x"
+        android:layout_marginTop="@dimen/margin_size_20x"
         android:clipToPadding="false"
         android:orientation="horizontal"
         android:overScrollMode="never"

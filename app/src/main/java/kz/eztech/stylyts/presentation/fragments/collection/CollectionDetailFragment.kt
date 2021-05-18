@@ -393,6 +393,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         imageScrollingPagerIndicator.attachToPager(
             imagesViewPager
         )
+
+        if (imageArray.size == 1) {
+            imageScrollingPagerIndicator.hide()
+        }
     }
 
     private fun loadTags(postModel: PostModel) {
