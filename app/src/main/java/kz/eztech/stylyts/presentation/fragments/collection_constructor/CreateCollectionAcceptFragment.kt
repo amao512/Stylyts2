@@ -5,8 +5,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.quality
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_create_collection_accept.*
 import kotlinx.coroutines.*
@@ -30,6 +32,7 @@ import kz.eztech.stylyts.presentation.presenters.collection_constructor.CreateCo
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.io.File
 import javax.inject.Inject
@@ -46,7 +49,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private lateinit var chooserDialog: CreateCollectionChooserDialog
 
     private var currentModel: OutfitCreateModel? = null
-    private var selectedList = ArrayList<ClothesModel>()
+    private var selectedClothes = ArrayList<ClothesModel>()
     private var selectedUsers = ArrayList<UserModel>()
     private var listOfChosenImages = ArrayList<String>()
 
@@ -157,7 +160,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             }
             if (it.containsKey(CLOTHES_KEY)) {
                 it.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.let { list ->
-                    selectedList = list
+                    selectedClothes = list
                 }
             }
             if (it.containsKey(USERS_KEY)) {
@@ -189,11 +192,11 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
         when (item) {
             is Bundle -> {
-                selectedList.clear()
+                selectedClothes.clear()
                 selectedUsers.clear()
 
                 item.getParcelableArrayList<ClothesModel>(CLOTHES_KEY)?.map {
-                    selectedList.add(it)
+                    selectedClothes.add(it)
                 }
                 item.getParcelableArrayList<UserModel>(USERS_KEY)?.map {
                     selectedUsers.add(it)
@@ -249,25 +252,16 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     private fun processPhotos() {
-        getPhotoUriFromArgs()?.let {
-            Glide.with(image_view_dialog_create_collection_accept.context)
-                .load(it)
-                .into(image_view_dialog_create_collection_accept)
-        }
-
-        getBitmapFromArgs()?.let {
-            Glide.with(image_view_dialog_create_collection_accept.context)
-                .load(it)
-                .into(image_view_dialog_create_collection_accept)
-        }
+        getPhotoUriFromArgs()?.loadImage(target = image_view_dialog_create_collection_accept)
+        getBitmapFromArgs()?.loadImage(target = image_view_dialog_create_collection_accept)
     }
 
     private fun processPhotoChooser() {
         if (isPhotoChooser()) {
-            if (selectedList.isNotEmpty()) {
+            if (selectedClothes.isNotEmpty()) {
                 text_view_dialog_create_collection_items_count.text = getString(
                     R.string.clothes_count_text_format,
-                    selectedList.count().toString()
+                    selectedClothes.count().toString()
                 )
                 text_view_dialog_create_collection_items_count.show()
             } else {
@@ -292,7 +286,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         TagChooserDialog.getNewInstance(
             token = currentActivity.getTokenFromSharedPref(),
             chooserListener = this,
-            clothesList = selectedList,
+            clothesList = selectedClothes,
             usersList = selectedUsers,
             mode = getModeFromArgs()
         ).apply {
@@ -303,19 +297,20 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     private fun savePost(isHidden: Boolean) {
+        val bitmap = getBitmapFromArgs()
+        val uri = getPhotoUriFromArgs()
+
         try {
-            if (getBitmapFromArgs() != null && getPhotoUriFromArgs() == null) {
-                getBitmapFromArgs()?.let {
-                    createPost(
-                        file = FileUtils.createPngFileFromBitmap(requireContext(), it),
-                        isHidden = isHidden
-                    )
-                }
+            if (bitmap != null && uri == null) {
+                preparePostForCreating(
+                    file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap),
+                    isHidden = isHidden
+                )
             }
 
-            if (getPhotoUriFromArgs() != null && getBitmapFromArgs() == null) {
-                getPhotoUriFromArgs()?.path?.let {
-                    createPost(
+            if (uri != null && bitmap == null) {
+                uri.path?.let {
+                    preparePostForCreating(
                         file = File(it),
                         isHidden = isHidden
                     )
@@ -326,41 +321,52 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    private fun createPost(
+    private fun preparePostForCreating(
         file: File?,
         isHidden: Boolean
-    ) {
-        file?.let {
-            val images = ArrayList<File>()
+    ) = lifecycleScope.launch {
+        val images = ArrayList<File>()
 
-            listOfChosenImages.map { imageString ->
-                FileUtils.getUriFromString(imageString)?.path?.let { file ->
-                    images.add(File(file))
-                }
+        listOfChosenImages.map { imageString ->
+            FileUtils.getUriFromString(imageString)?.path?.let {
+                images.add(
+                    getCompressedImageFile(file = File(it))
+                )
             }
+        }
 
+        file?.let {
             val model = PostCreateModel(
                 description = edit_text_view_dialog_create_collection_accept_sign.text.toString(),
-                clothesList = selectedList,
+                clothesList = selectedClothes,
                 userList = selectedUsers,
-                imageFile = file,
-                images = images
+                imageFile = getCompressedImageFile(file),
+                images = images,
+                hidden = isHidden
             )
 
-            model.hidden = isHidden
+            createPost(postCreateModel = model)
+        }
+    }
 
-            if (isUpdating()) {
-                presenter.updatePost(
-                    token = currentActivity.getTokenFromSharedPref(),
-                    postCreateModel = model,
-                    postId = getIdFromArgs()
-                )
-            } else {
-                presenter.createPost(
-                    token = currentActivity.getTokenFromSharedPref(),
-                    postCreateModel = model
-                )
-            }
+    private suspend fun getCompressedImageFile(file: File): File {
+        return Compressor.compress(requireContext(), file) {
+            quality(quality = 80)
+        }
+    }
+
+    private fun createPost(postCreateModel: PostCreateModel) {
+        if (isUpdating()) {
+            presenter.updatePost(
+                token = currentActivity.getTokenFromSharedPref(),
+                postCreateModel = postCreateModel,
+                postId = getIdFromArgs()
+            )
+        } else {
+            presenter.createPost(
+                token = currentActivity.getTokenFromSharedPref(),
+                postCreateModel = postCreateModel
+            )
         }
     }
 
@@ -370,20 +376,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 val file = FileUtils.createPngFileFromBitmap(requireContext(), bitmap)
 
                 file?.let {
-                    if (isUpdating()) {
-                        presenter.updateOutfit(
-                            token = currentActivity.getTokenFromSharedPref(),
-                            id = getIdFromArgs(),
-                            model = item,
-                            data = it
-                        )
-                    } else {
-                        presenter.createOutfit(
-                            token = currentActivity.getTokenFromSharedPref(),
-                            model = item,
-                            data = it
-                        )
-                    }
+                    createOutfit(outfitCreateModel = item, file = it)
                 } ?: run {
                     errorLoadData()
                 }
@@ -392,6 +385,26 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             }
         } catch (e: Exception) {
             errorLoadData()
+        }
+    }
+
+    private fun createOutfit(
+        outfitCreateModel: OutfitCreateModel,
+        file: File
+    ) {
+        if (isUpdating()) {
+            presenter.updateOutfit(
+                token = currentActivity.getTokenFromSharedPref(),
+                id = getIdFromArgs(),
+                model = outfitCreateModel,
+                data = file
+            )
+        } else {
+            presenter.createOutfit(
+                token = currentActivity.getTokenFromSharedPref(),
+                model = outfitCreateModel,
+                data = file
+            )
         }
     }
 

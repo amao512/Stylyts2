@@ -31,13 +31,10 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
 
     override fun customizeActionBar() {
         with(include_toolbar) {
-            toolbar_left_corner_action_image_button.hide()
             toolbar_back_text_view.hide()
             toolbar_title_text_view.hide()
             toolbar_right_corner_action_image_button.show()
-            toolbar_left_corner_action_image_button.show()
 
-            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.setOnClickListener {
                 val cartDialog = CartDialog()
