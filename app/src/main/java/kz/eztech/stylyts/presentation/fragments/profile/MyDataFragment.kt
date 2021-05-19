@@ -45,9 +45,7 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
     override fun customizeActionBar() {
         with (fragment_my_data_toolbar) {
             toolbar_title_text_view.show()
-
-            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
-            toolbar_left_corner_action_image_button.show()
+            toolbar_title_text_view.textSize = 14f
 
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
             toolbar_right_corner_action_image_button.show()

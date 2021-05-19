@@ -144,7 +144,7 @@
                             >
 
                             <TextView
-                                android:id="@+id/fragment_profile_photos_count"
+                                android:id="@+id/fragment_profile_publications_count"
                                 style="@style/TextRegular"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -158,7 +158,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="@string/photo"
+                                android:text="@string/publications"
                                 android:textColor="@color/app_gray"
                                 />
                         </LinearLayout>

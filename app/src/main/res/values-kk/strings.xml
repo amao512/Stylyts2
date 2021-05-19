@@ -93,6 +93,7 @@
     <string name="albums">Альбомы</string>
     <string name="followers">подписчики</string>
     <string name="photo">фото</string>
+    <string name="publications">публикации</string>
     <string name="following">подписки</string>
     <string name="follow">Подписаться</string>
     <string name="already_followed">Already Followed</string>

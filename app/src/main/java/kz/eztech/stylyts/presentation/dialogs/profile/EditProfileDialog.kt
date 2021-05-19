@@ -243,8 +243,8 @@ class EditProfileDialog(
     private fun completeEditing() {
         val data = HashMap<String, Any>()
         val names: List<String> = edit_text_dialog_edit_profile_name.text.split(" ")
-        val webSite: String = edit_text_dialog_edit_profile_site.text.toString()
-        val instagram: String = edit_text_dialog_edit_profile_insta.text.toString()
+//        val webSite: String = edit_text_dialog_edit_profile_site.text.toString()
+//        val instagram: String = edit_text_dialog_edit_profile_insta.text.toString()
 
         if (names.size == 2) {
             if (names[0].isNotBlank()) {
@@ -267,8 +267,8 @@ class EditProfileDialog(
             return
         }
 
-        data["web_site"] = checkStringValidation(text = webSite)
-        data["instagram"] = checkStringValidation(text = instagram)
+//        data["web_site"] = checkStringValidation(text = webSite)
+//        data["instagram"] = checkStringValidation(text = instagram)
 
         presenter.editProfile(
             token = getTokenFromArguments(),

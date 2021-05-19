@@ -62,7 +62,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var avatarShapeableImageView: ShapeableImageView
     private lateinit var userShortNameTextView: TextView
     private lateinit var userNameTextView: TextView
-    private lateinit var photosCountTextView: TextView
+    private lateinit var publicationsCountTextView: TextView
     private lateinit var followersItemLinearLayout: LinearLayout
     private lateinit var followersCountTextView: TextView
     private lateinit var followingsItemLinearLayout: LinearLayout
@@ -95,7 +95,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun customizeActionBar() {
         with(include_toolbar_profile) {
             toolbar_title_text_view.show()
-            toolbar_left_corner_action_image_button.show()
+            toolbar_title_text_view.textSize = 14f
 
             customizeActionToolBar(toolbar = this)
         }
@@ -149,7 +149,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         avatarShapeableImageView = fragment_shop_profile_avatar_shapeable_image_view
         userShortNameTextView = text_view_fragment_profile_user_short_name
         userNameTextView = fragment_shop_profile_title_text_view
-        photosCountTextView = fragment_profile_photos_count
+        publicationsCountTextView = fragment_profile_publications_count
         followersItemLinearLayout = fragment_shop_profile_followers_linear_layout
         followersCountTextView = fragment_profile_followers_count
         followingsItemLinearLayout = linear_layout_fragment_profile_following_item
@@ -170,7 +170,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         unFollowTextView.setOnClickListener(this)
 
         include_toolbar_profile.toolbar_right_corner_action_image_button.setOnClickListener(this)
-        linear_layout_fragment_profile_photos_item.setOnClickListener(this)
         toolbar_left_corner_action_image_button.setOnClickListener(this)
     }
 
@@ -241,12 +240,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         loadProfilePhoto(userModel = userModel)
 
         if (isOwnProfile()) {
-            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_person_add)
+            toolbar_left_corner_action_image_button.hide()
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
             toolbar_right_corner_action_image_button.show()
         } else {
             currentFilter.owner = userModel.username
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.show()
         }
     }
 
@@ -279,6 +279,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         gridAdapter.updateMoreList(list = resultsModel.results)
         setPagesCondition(resultsModel.totalPages)
+
+        publicationsCountTextView.text = "${resultsModel.totalCount}"
     }
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
@@ -364,7 +366,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         include_toolbar_profile.toolbar_title_text_view.text = userModel.username
 
         userNameTextView.text = userModel.firstName
-        photosCountTextView.text = "${0}"
         followersCountTextView.text = userModel.followersCount.toString()
         followingsCountTextView.text = userModel.followingsCount.toString()
          adapterFilter.changeItemByPosition(

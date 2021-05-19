@@ -87,7 +87,7 @@
                     >
 
                     <TextView
-                        style="@style/TextRegular"
+                        style="@style/TextRegularBold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
@@ -136,7 +136,7 @@
                     >
 
                     <TextView
-                        style="@style/TextRegular"
+                        style="@style/TextRegularBold"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.4"
@@ -182,6 +182,7 @@
                     android:layout_marginTop="@dimen/margin_size_16x"
                     android:orientation="horizontal"
                     android:weightSum="1"
+                    android:visibility="gone"
                     >
 
                     <TextView
@@ -231,6 +232,7 @@
                     android:layout_marginTop="@dimen/margin_size_16x"
                     android:orientation="horizontal"
                     android:weightSum="1"
+                    android:visibility="gone"
                     >
 
                     <TextView
@@ -286,6 +288,7 @@
                     android:layout_marginTop="@dimen/margin_size_16x"
                     android:orientation="horizontal"
                     android:weightSum="1"
+                    android:visibility="gone"
                     >
 
                     <TextView
