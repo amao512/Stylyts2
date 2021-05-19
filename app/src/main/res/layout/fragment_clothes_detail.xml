@@ -62,7 +62,22 @@
                         />
                 </FrameLayout>
 
+                <TextView
+                    android:id="@+id/fragment_clothes_detail_shop_name_text_view"
+                    style="@style/TextRegular"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_size_16x"
+                    android:textSize="@dimen/text_size_14x"
+                    app:layout_constraintEnd_toStartOf="@id/fragment_clothes_detail_favorite_image_view"
+                    app:layout_constraintStart_toEndOf="@id/fragment_clothes_detail_avatar_holder"
+                    app:layout_constraintTop_toTopOf="@id/fragment_clothes_detail_avatar_holder"
+                    app:layout_constraintBottom_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
+                    tools:text="zara"
+                    />
+
                 <ImageView
+                    android:id="@+id/fragment_clothes_detail_favorite_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_size_24x"
@@ -358,7 +373,6 @@
                             android:layout_gravity="start|center"
                             android:layout_marginTop="@dimen/margin_size_16x"
                             android:orientation="vertical"
-                            android:visibility="gone"
                             >
 
                             <TextView

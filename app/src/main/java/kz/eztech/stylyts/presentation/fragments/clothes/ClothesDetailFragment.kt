@@ -172,6 +172,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
             fragment_clothes_detail_brand_title_text_view.hide()
         }
         fragment_clothes_detail_clothes_title_text_view.text = clothesModel.title
+        fragment_clothes_detail_shop_name_text_view.text = clothesModel.owner.username
 
         processImages(clothesModel)
         processPrice(clothesModel)
