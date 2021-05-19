@@ -436,7 +436,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                             bundle.putInt(ClothesDetailFragment.CLOTHES_ID, tag.id)
 
                             findNavController().navigate(
-                                R.id.action_collectionDetailFragment_to_itemDetailFragment,
+                                R.id.action_collectionDetailFragment_to_clothesDetailFragment,
                                 bundle
                             )
                         }
@@ -560,7 +560,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(
-            R.id.action_collectionDetailFragment_to_itemDetailFragment,
+            R.id.action_collectionDetailFragment_to_clothesDetailFragment,
             bundle
         )
     }

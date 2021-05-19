@@ -14,16 +14,15 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.*
 import kotlinx.android.synthetic.main.dialog_tag_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.motion.MotionItemModel
@@ -48,6 +47,7 @@ import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.extensions.displayToast
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import kz.eztech.stylyts.presentation.utils.helpers.SimpleItemTouchHelperCallback
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
@@ -190,11 +190,7 @@ class TagChooserDialog(
             updatePhoto(it)
         }
 
-        photoBitmap?.let {
-            Glide.with(image_view_fragment_photo_chooser.context)
-                .load(it)
-                .into(image_view_fragment_photo_chooser)
-        }
+        photoBitmap?.loadImage(target = image_view_fragment_photo_chooser)
 
         recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
         recycler_view_fragment_photo_chooser.adapter = filteredAdapter
@@ -235,13 +231,7 @@ class TagChooserDialog(
     }
 
     override fun updatePhoto(path: Uri?) {
-        path?.let {
-            Glide.with(image_view_fragment_photo_chooser.context)
-                .load(path)
-                .into(image_view_fragment_photo_chooser)
-        } ?: run {
-            displayMessage(msg = getString(R.string.send_problem_something_went_wrong))
-        }
+        path?.loadImage(target = image_view_fragment_photo_chooser)
     }
 
     override fun initializeListeners() {
@@ -250,7 +240,9 @@ class TagChooserDialog(
         clothesAdapter.setOnClickListener(this)
     }
 
-    override fun processPostInitialization() {}
+    override fun processPostInitialization() {
+        handleRecyclerViewScrolling()
+    }
 
     override fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>) {
         resultsModel.results.let {
@@ -265,9 +257,9 @@ class TagChooserDialog(
                 )
             )
 
-            it.forEach { category ->
+            it.forEach { type ->
                 preparedResults.add(
-                    CollectionFilterModel(name = category.title, id = category.id, mode = 1)
+                    CollectionFilterModel(name = type.title, id = type.id, mode = 1, item = type)
                 )
             }
 
@@ -293,7 +285,9 @@ class TagChooserDialog(
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        filteredAdapter.updateList(list = resultsModel.results)
+        filteredAdapter.updateMoreList(list = resultsModel.results)
+
+        setPagesCondition(resultsModel.totalPages)
     }
 
     override fun getFilterMap(): HashMap<String, Any> = filterMap
@@ -316,13 +310,7 @@ class TagChooserDialog(
         when (item) {
             is CollectionFilterModel -> onFilterModelClicked(position, item)
             is ClothesModel -> onClothesClicked(view, item)
-            is FilterModel -> {
-                currentFilter = item
-                presenter.getClothes(
-                    token = getTokenFromArgs(),
-                    filterModel = currentFilter
-                )
-            }
+            is FilterModel -> showFilterResults(filterModel = item)
         }
     }
 
@@ -389,33 +377,53 @@ class TagChooserDialog(
         this.photoBitmap = bitmap
     }
 
+    private fun handleRecyclerViewScrolling() {
+        recycler_view_fragment_photo_chooser.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recycler_view_fragment_photo_chooser.canScrollVertically(1)
+                    && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!currentFilter.isLastPage) {
+                        getClothes()
+                    }
+                }
+            }
+        })
+    }
+
     private fun onFilterModelClicked(
         position: Int,
         collectionFilterModel: CollectionFilterModel
     ) {
         when (collectionFilterModel.mode) {
             0 -> filterDialog.apply {
-                currentFilter.page = 1
-                currentFilter.isLastPage = false
+                resetPages()
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, "FilterDialog")
             1 -> {
-                collectionFilterModel.id.let {
-                    currentFilter.typeIdList = listOf(it)
-
-                    presenter.getClothes(
-                        token = getTokenFromArgs(),
-                        filterModel = currentFilter
-                    )
-                }
+                currentFilter.typeIdList = listOf((collectionFilterModel.item as ClothesTypeModel).id)
+                filteredAdapter.clearList()
+                resetPages()
+                getClothes()
 
                 if (position != 0) {
-                    filterAdapter.onChooseItem(position)
+                    filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
                 }
             }
             2 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
             3 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
         }
+    }
+
+    private fun resetPages() {
+        currentFilter.page = 1
+        currentFilter.isLastPage = false
+    }
+
+    private fun getClothes() {
+        presenter.getClothes(
+            token = getTokenFromArgs(),
+            filterModel = currentFilter
+        )
     }
 
     private fun navigateToCameraFragment(mode: Int) {
@@ -438,8 +446,7 @@ class TagChooserDialog(
                 setClothesTag(clothesModel)
                 hideBottomSheet()
             }
-            R.id.frame_layout_item_main_image_holder_container -> {
-            }
+            R.id.frame_layout_item_main_image_holder_container -> {}
         }
     }
 
@@ -594,6 +601,11 @@ class TagChooserDialog(
         }
     }
 
+    private fun showFilterResults(filterModel: FilterModel) {
+        currentFilter = filterModel
+        getClothes()
+    }
+
     private fun showCompleteDialog() {
         val bundle = Bundle()
 
@@ -662,6 +674,14 @@ class TagChooserDialog(
         }
 
         return users
+    }
+
+    private fun setPagesCondition(totalPages: Int) {
+        if (totalPages > currentFilter.page) {
+            currentFilter.page++
+        } else {
+            currentFilter.isLastPage = true
+        }
     }
 
     private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING

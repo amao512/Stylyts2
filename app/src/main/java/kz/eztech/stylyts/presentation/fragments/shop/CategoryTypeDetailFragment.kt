@@ -221,7 +221,7 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(
-            R.id.action_categoryTypeDetailFragment_to_itemDetailFragment,
+            R.id.action_categoryTypeDetailFragment_to_clothesDetailFragment,
             bundle
         )
     }

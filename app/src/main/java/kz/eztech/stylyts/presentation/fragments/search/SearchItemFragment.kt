@@ -219,7 +219,7 @@ class SearchItemFragment(
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(
-            R.id.action_searchFragment_to_itemDetailFragment,
+            R.id.action_searchFragment_to_clothesDetailFragment,
             bundle
         )
     }

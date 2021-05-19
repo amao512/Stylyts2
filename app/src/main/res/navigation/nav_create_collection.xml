@@ -79,5 +79,10 @@
         android:id="@+id/collectionDetailFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment"
         android:label="CollectionDetailFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_clothesDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+    </fragment>
 </navigation>

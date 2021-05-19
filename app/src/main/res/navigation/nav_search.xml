@@ -41,7 +41,7 @@
         tools:layout="@layout/fragment_category_type_detail"
         >
         <action
-            android:id="@+id/action_categoryTypeDetailFragment_to_itemDetailFragment"
+            android:id="@+id/action_categoryTypeDetailFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
             />
     </fragment>
@@ -67,7 +67,7 @@
         tools:layout="@layout/fragment_search"
         >
         <action
-            android:id="@+id/action_searchFragment_to_itemDetailFragment"
+            android:id="@+id/action_searchFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
             />
         <action

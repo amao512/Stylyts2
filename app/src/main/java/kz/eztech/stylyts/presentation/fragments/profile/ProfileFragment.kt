@@ -473,7 +473,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         val bundle = Bundle()
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
-        findNavController().navigate(R.id.action_profileFragment_to_itemDetailFragment, bundle)
+        findNavController().navigate(R.id.action_profileFragment_to_clothesDetailFragment, bundle)
     }
 
     private fun navigateToCameraFragment(mode: Int) {

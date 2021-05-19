@@ -26,7 +26,7 @@
         tools:layout="@layout/fragment_collection_detail"
         >
         <action
-            android:id="@+id/action_collectionDetailFragment_to_itemDetailFragment"
+            android:id="@+id/action_collectionDetailFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
             />
         <action

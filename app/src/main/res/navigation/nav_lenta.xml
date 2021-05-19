@@ -72,7 +72,7 @@
         android:label="CollectionDetailFragment"
         >
         <action
-            android:id="@+id/action_collectionDetailFragment_to_itemDetailFragment"
+            android:id="@+id/action_collectionDetailFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
             />
         <action
