@@ -211,8 +211,11 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 			R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
 				onCategoryItemImageClick(item)
 			}
-			R.id.toolbar_left_corner_action_image_button -> showFilterResults(item)
         }
+
+		when (item) {
+			is FilterModel -> showFilterResults(item)
+		}
     }
 
     override fun onViewDoubleClicked(
@@ -522,9 +525,11 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		}
 	}
 
-	private fun showFilterResults(item: Any?) {
-		currentFilter = item as FilterModel
+	private fun showFilterResults(filterModel: FilterModel) {
+		currentFilter = filterModel
 		itemAdapter.clearList()
+
+		Log.d("TAG4", "filter - $currentFilter")
 
 		displayProgress()
 		getClothes()
