@@ -4,7 +4,6 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.repository.OutfitsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -21,12 +20,12 @@ class CreateOutfitUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private var outfitsDomainRepository: OutfitsDomainRepository
-) : BaseUseCase<OutfitModel>(executorThread, uiThread) {
+) : BaseUseCase<OutfitCreateModel>(executorThread, uiThread) {
 
     private lateinit var token: String
     private lateinit var data: ArrayList<MultipartBody.Part>
 
-    override fun createSingleObservable(): Single<OutfitModel> {
+    override fun createSingleObservable(): Single<OutfitCreateModel> {
         return outfitsDomainRepository.saveOutfit(token, data)
     }
 
@@ -88,7 +87,7 @@ class CreateOutfitUseCase @Inject constructor(
         data.add(MultipartBody.Part.createFormData("title", outfitCreateModel.title.toString()))
         data.add(MultipartBody.Part.createFormData("text", outfitCreateModel.text.toString()))
         data.add(MultipartBody.Part.createFormData("style", outfitCreateModel.style.toString()))
-        data.add(MultipartBody.Part.createFormData("author", outfitCreateModel.author.toString()))
+        data.add(MultipartBody.Part.createFormData("author", outfitCreateModel.authorId.toString()))
         data.add(
             MultipartBody.Part.createFormData(
                 "total_price",

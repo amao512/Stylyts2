@@ -5,6 +5,7 @@ import kz.eztech.stylyts.domain.models.user.UserModel
 import java.io.File
 
 data class PostCreateModel(
+    val id: Int = 0,
     val description: String,
     val clothesList: List<ClothesModel>,
     val userList: List<UserModel>,

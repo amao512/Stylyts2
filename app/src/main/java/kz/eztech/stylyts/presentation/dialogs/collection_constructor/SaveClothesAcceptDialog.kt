@@ -20,7 +20,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
-import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract

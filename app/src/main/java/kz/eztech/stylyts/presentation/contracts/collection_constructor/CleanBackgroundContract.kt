@@ -1,10 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import java.io.File
 
 /**
  * Created by Ruslan Erdenoff on 10.02.2021.

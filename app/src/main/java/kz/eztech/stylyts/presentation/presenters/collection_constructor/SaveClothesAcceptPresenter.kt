@@ -7,7 +7,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesStylesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase

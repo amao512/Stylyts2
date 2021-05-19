@@ -4,9 +4,7 @@ import android.util.Log
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.outfits.CreateOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.UpdateOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.posts.CreatePostUseCase
@@ -45,8 +43,8 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         view.displayProgress()
 
         createPostUseCase.initParams(token, postCreateModel)
-        createPostUseCase.execute(object : DisposableSingleObserver<PostModel>() {
-            override fun onSuccess(t: PostModel) {
+        createPostUseCase.execute(object : DisposableSingleObserver<PostCreateModel>() {
+            override fun onSuccess(t: PostCreateModel) {
                 view.processViewAction {
                     hideProgress()
                     processSuccessSavingPost(postModel = t)
@@ -70,8 +68,8 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         view.displayProgress()
 
         updatePostUseCase.initParams(token, postId, postCreateModel)
-        updatePostUseCase.execute(object : DisposableSingleObserver<PostModel>() {
-            override fun onSuccess(t: PostModel) {
+        updatePostUseCase.execute(object : DisposableSingleObserver<PostCreateModel>() {
+            override fun onSuccess(t: PostCreateModel) {
                 view.processViewAction {
                     hideProgress()
                     processSuccessSavingPost(postModel = t)
@@ -95,8 +93,8 @@ class CreateCollectionAcceptPresenter @Inject constructor(
             file = data,
             outfitCreateModel = model
         )
-        createOutfitUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
-            override fun onSuccess(t: OutfitModel) {
+        createOutfitUseCase.execute(object : DisposableSingleObserver<OutfitCreateModel>() {
+            override fun onSuccess(t: OutfitCreateModel) {
                 Log.d("TAG4", "result - $t")
 
                 view.processViewAction {
@@ -128,8 +126,8 @@ class CreateCollectionAcceptPresenter @Inject constructor(
             file = data,
             outfitModel = model
         )
-        updateOutfitUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
-            override fun onSuccess(t: OutfitModel) {
+        updateOutfitUseCase.execute(object : DisposableSingleObserver<OutfitCreateModel>() {
+            override fun onSuccess(t: OutfitCreateModel) {
                 view.processViewAction {
                     processSuccessSavingOutfit(outfitModel = t)
                     hideProgress()

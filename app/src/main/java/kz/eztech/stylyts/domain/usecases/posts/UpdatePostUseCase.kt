@@ -6,7 +6,6 @@ import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.posts.TagApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MultipartBody
@@ -17,7 +16,7 @@ class UpdatePostUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val postsDomainRepository: PostsDomainRepository
-) : BaseUseCase<PostModel>(executorThread, uiThread) {
+) : BaseUseCase<PostCreateModel>(executorThread, uiThread) {
 
     private lateinit var token: String
     private lateinit var postId: String
@@ -25,7 +24,7 @@ class UpdatePostUseCase @Inject constructor(
     private lateinit var tags: TagsApiModel
     private lateinit var hidden: MultipartBody.Part
 
-    override fun createSingleObservable(): Single<PostModel> {
+    override fun createSingleObservable(): Single<PostCreateModel> {
         return postsDomainRepository.updatePost(
             token = token,
             postId = postId,

@@ -596,7 +596,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				style = currentStyle!!.id,
 				clothes = clothesList,
 				itemLocation = clothesCollectionList,
-				author = currentActivity.getUserIdFromSharedPref(),
+				authorId = currentActivity.getUserIdFromSharedPref(),
 				totalPrice = listOfItems.sumBy { it.cost }.toFloat(),
 				text = EMPTY_STRING,
 				title = EMPTY_STRING

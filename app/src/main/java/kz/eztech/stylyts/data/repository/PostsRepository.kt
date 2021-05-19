@@ -7,8 +7,10 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ActionApiModelMapper
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
+import kz.eztech.stylyts.data.mappers.posts.PostCreateApiModelMapper
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
 import okhttp3.MultipartBody
@@ -18,21 +20,22 @@ class PostsRepository @Inject constructor(
     private val api: PostsApi,
     private val resultsApiModelMapper: ResultsApiModelMapper,
     private val postApiModelMapper: PostApiModelMapper,
-    private val actionApiModelMapper: ActionApiModelMapper
+    private val actionApiModelMapper: ActionApiModelMapper,
+    private val postCreateApiModelMapper: PostCreateApiModelMapper
 ) : PostsDomainRepository {
 
     override fun createPost(
         token: String,
         multipartList: List<MultipartBody.Part>,
         tags: TagsApiModel
-    ): Single<PostModel> {
+    ): Single<PostCreateModel> {
         return api.createPost(
             token = token,
             multipartList = multipartList,
             tagsBody = tags
         ).map {
             when (it.isSuccessful) {
-                true -> postApiModelMapper.map(data = it.body())
+                true -> postCreateApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }
@@ -92,7 +95,7 @@ class PostsRepository @Inject constructor(
         description: MultipartBody.Part,
         tags: TagsApiModel,
         hidden: MultipartBody.Part
-    ): Single<PostModel> {
+    ): Single<PostCreateModel> {
         return api.updatePost(
             token = token,
             postId = postId,
@@ -101,7 +104,7 @@ class PostsRepository @Inject constructor(
             hidden = hidden
         ).map {
             when (it.isSuccessful) {
-                true -> postApiModelMapper.map(data = it.body())
+                true -> postCreateApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }

@@ -5,6 +5,7 @@ import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.ActionApiModel
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.posts.PostApiModel
+import kz.eztech.stylyts.data.api.models.posts.PostCreateApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -18,7 +19,7 @@ interface PostsApi {
         @Header("Authorization") token: String,
         @Part multipartList: List<MultipartBody.Part>,
         @Part("tags") tagsBody: TagsApiModel
-    ) : Single<Response<PostApiModel>>
+    ) : Single<Response<PostCreateApiModel>>
 
     @GET(RestConstants.GET_POSTS)
     fun getPosts(
@@ -52,7 +53,7 @@ interface PostsApi {
         @Part description: MultipartBody.Part,
         @Part("tags") tagsBody: TagsApiModel,
         @Part hidden: MultipartBody.Part
-    ) : Single<Response<PostApiModel>>
+    ) : Single<Response<PostCreateApiModel>>
 
     @POST(RestConstants.LIKE_POST)
     fun likePost(

@@ -4,6 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import okhttp3.MultipartBody
 
@@ -13,7 +14,7 @@ interface PostsDomainRepository {
         token: String,
         multipartList: List<MultipartBody.Part>,
         tags: TagsApiModel
-    ): Single<PostModel>
+    ): Single<PostCreateModel>
 
     fun getPosts(
         token: String,
@@ -41,7 +42,7 @@ interface PostsDomainRepository {
         description: MultipartBody.Part,
         tags: TagsApiModel,
         hidden: MultipartBody.Part
-    ): Single<PostModel>
+    ): Single<PostCreateModel>
 
     fun likePost(
         token: String,

@@ -5,7 +5,9 @@ import kz.eztech.stylyts.data.api.network.OutfitsApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.outfits.OutfitApiModelMapper
+import kz.eztech.stylyts.data.mappers.outfits.OutfitCreateApiModelMapper
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.repository.OutfitsDomainRepository
 import okhttp3.MultipartBody
@@ -14,16 +16,17 @@ import javax.inject.Inject
 class OutfitsRepository @Inject constructor(
     private val api: OutfitsApi,
     private val resultsApiModelMapper: ResultsApiModelMapper,
-    private val outfitApiModelMapper: OutfitApiModelMapper
+    private val outfitApiModelMapper: OutfitApiModelMapper,
+    private val outfitCreateApiModelMapper: OutfitCreateApiModelMapper
 ) : OutfitsDomainRepository {
 
     override fun saveOutfit(
         token: String,
         data: ArrayList<MultipartBody.Part>
-    ): Single<OutfitModel> {
+    ): Single<OutfitCreateModel> {
         return api.saveOutfit(token, data).map {
             when (it.isSuccessful) {
-                true -> outfitApiModelMapper.map(data = it.body())
+                true -> outfitCreateApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }
@@ -74,14 +77,14 @@ class OutfitsRepository @Inject constructor(
         token: String,
         outfitId: String,
         data: ArrayList<MultipartBody.Part>
-    ): Single<OutfitModel> {
+    ): Single<OutfitCreateModel> {
         return api.updateOutfit(
             token = token,
             outfitId = outfitId,
             files = data
         ).map {
             when (it.isSuccessful) {
-                true -> outfitApiModelMapper.map(data = it.body())
+                true -> outfitCreateApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }

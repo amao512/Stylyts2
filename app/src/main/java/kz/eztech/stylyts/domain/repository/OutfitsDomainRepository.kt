@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.repository
 
 import io.reactivex.Single
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import okhttp3.MultipartBody
 
@@ -10,7 +11,7 @@ interface OutfitsDomainRepository {
     fun saveOutfit(
         token: String,
         data: ArrayList<MultipartBody.Part>
-    ): Single<OutfitModel>
+    ): Single<OutfitCreateModel>
 
     fun getOutfits(
         token: String,
@@ -32,5 +33,5 @@ interface OutfitsDomainRepository {
         token: String,
         outfitId: String,
         data: ArrayList<MultipartBody.Part>
-    ): Single<OutfitModel>
+    ): Single<OutfitCreateModel>
 }

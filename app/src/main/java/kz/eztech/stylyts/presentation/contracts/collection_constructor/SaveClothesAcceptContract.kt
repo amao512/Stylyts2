@@ -5,7 +5,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.wardrobe.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 

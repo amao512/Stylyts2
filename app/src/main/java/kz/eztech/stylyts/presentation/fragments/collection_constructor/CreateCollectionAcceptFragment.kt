@@ -16,9 +16,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -227,7 +225,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         }
     }
 
-    override fun processSuccessSavingOutfit(outfitModel: OutfitModel) {
+    override fun processSuccessSavingOutfit(outfitModel: OutfitCreateModel) {
         val bundle = Bundle()
 
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
@@ -239,7 +237,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         )
     }
 
-    override fun processSuccessSavingPost(postModel: PostModel) {
+    override fun processSuccessSavingPost(postModel: PostCreateModel) {
         val bundle = Bundle()
 
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)

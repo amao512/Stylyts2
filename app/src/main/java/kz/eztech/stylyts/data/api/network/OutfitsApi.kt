@@ -4,6 +4,7 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
+import kz.eztech.stylyts.data.api.models.outfits.OutfitCreateApiModel
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -15,7 +16,7 @@ interface OutfitsApi {
     fun saveOutfit(
         @Header("Authorization") token: String,
         @Part files: ArrayList<MultipartBody.Part>
-    ): Single<Response<OutfitApiModel>>
+    ): Single<Response<OutfitCreateApiModel>>
 
     @GET(RestConstants.GET_OUTFITS)
     fun getOutfits(
@@ -42,5 +43,5 @@ interface OutfitsApi {
         @Header("Authorization") token: String,
         @Path("outfit_id") outfitId: String,
         @Part files: ArrayList<MultipartBody.Part>
-    ): Single<Response<OutfitApiModel>>
+    ): Single<Response<OutfitCreateApiModel>>
 }
