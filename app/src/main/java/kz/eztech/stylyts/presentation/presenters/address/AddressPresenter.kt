@@ -82,7 +82,6 @@ class AddressPresenter @Inject constructor(
     ) {
         deleteAddressUseCase.initParams(token, addressId)
         deleteAddressUseCase.execute(object : DisposableSingleObserver<Any>() {
-
             override fun onSuccess(t: Any) {
                 view.processViewAction {
                     displayDeletedAddress()

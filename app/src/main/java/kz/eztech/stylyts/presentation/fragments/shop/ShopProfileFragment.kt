@@ -28,7 +28,7 @@ import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopProfileContract
-import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.shop.ChangeGenderDialog
 import kz.eztech.stylyts.presentation.enums.GenderEnum

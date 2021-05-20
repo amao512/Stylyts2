@@ -28,7 +28,18 @@ object CartMapper {
             price = model.cost,
             salePrice = model.salePrice,
             currency = model.currency,
-            size = model.selectedSize?.size
+            size = model.selectedSize?.size,
+            sizeList = getSizeList(model)
         )
+    }
+
+    private fun getSizeList(clothesModel: ClothesModel): ArrayList<String> {
+        val list = ArrayList<String>()
+
+        clothesModel.sizeInStock.map {
+            list.add(it.size)
+        }
+
+        return list
     }
 }

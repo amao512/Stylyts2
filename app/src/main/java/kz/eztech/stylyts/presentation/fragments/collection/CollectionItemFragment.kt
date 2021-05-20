@@ -8,7 +8,6 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.common.GridImageAdapter
@@ -16,14 +15,15 @@ import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContract
-import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsItemPresenter
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
 import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
-class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(),
+class CollectionItemFragment(
+    private val currentMode: Int
+) : BaseFragment<MainActivity>(),
     CollectionItemContract.View,
     UniversalViewClickListener, SwipeRefreshLayout.OnRefreshListener {
 
@@ -36,7 +36,6 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     private val shopItemViewModel: ShopItemViewModel by inject()
 
     private var itemClickListener: UniversalViewClickListener? = null
-    private var isOutfits: Boolean = true
 
     fun setOnClickListener(itemClickListener: UniversalViewClickListener?) {
         this.itemClickListener = itemClickListener
@@ -83,11 +82,6 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
         handleListRecyclerView()
     }
 
-    override fun processOutfits(resultsModel: ResultsModel<OutfitModel>) {
-        adapter.updateMoreList(list = resultsModel.results)
-        resetPages(resultsModel.totalPages)
-    }
-
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         adapter.updateMoreList(list = resultsModel.results)
         resetPages(resultsModel.totalPages)
@@ -118,10 +112,7 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     if (!currentFilter.isLastPage) {
-                        when (isOutfits) {
-                            true -> getOutfits()
-                            false -> getPosts()
-                        }
+                        getPosts()
                     }
                 }
             }
@@ -137,29 +128,11 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     }
 
     private fun getCollections() {
-        shopItemViewModel.isOutfits.observe(viewLifecycleOwner, {
-            isOutfits = it
-            currentFilter.page = 1
-            currentFilter.isLastPage = false
-            adapter.clearList()
+        currentFilter.page = 1
+        currentFilter.isLastPage = false
+        adapter.clearList()
 
-            when (it) {
-                true -> getOutfits()
-                false -> getPosts()
-            }
-        })
-    }
-
-    private fun getOutfits() {
-        currentFilter.gender = when (currentMode) {
-            0 -> GenderEnum.MALE.gender
-            else -> GenderEnum.FEMALE.gender
-        }
-
-        presenter.getOutfits(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = currentFilter
-        )
+        getPosts()
     }
 
     private fun getPosts() {

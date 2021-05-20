@@ -21,21 +21,15 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionsContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsPresenter
-import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.View,
-    UniversalViewClickListener, View.OnClickListener {
+    UniversalViewClickListener {
 
     @Inject lateinit var presenter: CollectionsPresenter
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var pagerAdapter: CollectionsViewPagerAdapter
-
-    private val shopItemViewModel: ShopItemViewModel by inject()
-
-    private var isOutfits: Boolean = false
 
     override fun getLayoutId(): Int = R.layout.fragment_collections
 
@@ -43,12 +37,6 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
 
     override fun customizeActionBar() {
         with(include_toolbar) {
-            setRightToolbarButtons()
-
-            base_toolbar_right_double_buttons_left_button.setOnClickListener(this@CollectionsFragment)
-            base_toolbar_right_double_buttons_right_button.setOnClickListener(this@CollectionsFragment)
-            base_toolbar_double_right_buttons_linear_layout.show()
-
             toolbar_title_text_view.text = getString(R.string.bottom_nav_bar_collection)
             toolbar_title_text_view.show()
         }
@@ -107,26 +95,10 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.base_toolbar_right_double_buttons_left_button -> {
-                if (isOutfits) {
-                    onRightButtonsClick()
-                }
-            }
-            R.id.base_toolbar_right_double_buttons_right_button -> {
-                if (!isOutfits) {
-                    onRightButtonsClick()
-                }
-            }
-        }
-    }
-
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
         presenter.getClothesStyles(token = currentActivity.getTokenFromSharedPref())
-        shopItemViewModel.setCollectionMode(isOutfits)
     }
 
     override fun disposeRequests() {}
@@ -173,24 +145,5 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
             R.id.action_collectionsFragment_to_collectionDetailFragment,
             bundle
         )
-    }
-
-
-    private fun onRightButtonsClick() {
-        isOutfits = !isOutfits
-        shopItemViewModel.setCollectionMode(isOutfits)
-        setRightToolbarButtons()
-    }
-
-    private fun setRightToolbarButtons() {
-        with (include_toolbar) {
-            if (isOutfits) {
-                base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera_disabled)
-                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfit_enabled)
-            } else {
-                base_toolbar_right_double_buttons_left_image_button.setImageResource(R.drawable.ic_camera)
-                base_toolbar_right_double_buttons_right_image_button.setImageResource(R.drawable.ic_outfit_disabled)
-            }
-        }
     }
 }

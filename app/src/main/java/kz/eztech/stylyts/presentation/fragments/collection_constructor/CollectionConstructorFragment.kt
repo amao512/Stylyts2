@@ -126,6 +126,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         linearLayout2.layoutTransition.setAnimateParentHierarchy(false)
 
 		currentFilter = FilterModel()
+		currentFilter.onlyBrands = true
+
 		filterDialog = FilterDialog.getNewInstance(
 			token = currentActivity.getTokenFromSharedPref(),
 			itemClickListener = this,

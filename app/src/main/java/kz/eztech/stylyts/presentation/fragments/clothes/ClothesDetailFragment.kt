@@ -22,8 +22,8 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.clothes.ClothesDetailContract
-import kz.eztech.stylyts.presentation.dialogs.CartDialog
-import kz.eztech.stylyts.presentation.dialogs.ClothesSizesBottomDialog
+import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.cart.ClothesSizesBottomDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.presenters.clothes.ClothesDetailPresenter
 import kz.eztech.stylyts.presentation.utils.ColorUtils

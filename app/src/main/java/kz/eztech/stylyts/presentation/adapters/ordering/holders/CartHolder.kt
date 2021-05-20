@@ -1,14 +1,15 @@
 package kz.eztech.stylyts.presentation.adapters.ordering.holders
 
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_cart_item.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import java.text.NumberFormat
 
 /**
@@ -23,6 +24,8 @@ class CartHolder(
     private lateinit var clothesTitleTextView: TextView
     private lateinit var brandTitleTextView: TextView
     private lateinit var clothesIdTextView: TextView
+    private lateinit var sizeHolderFrameLayout: FrameLayout
+    private lateinit var countsHolderFrameLayout: FrameLayout
     private lateinit var sizeTextView: TextView
     private lateinit var priceTextView: TextView
     private lateinit var clothesRemoveImageView: ImageView
@@ -34,7 +37,7 @@ class CartHolder(
         item as CartEntity
 
         initializeViews()
-        processCart(cart = item)
+        processCart(cart = item, position)
     }
 
     private fun initializeViews() {
@@ -43,16 +46,19 @@ class CartHolder(
             clothesTitleTextView = item_cart_clothes_title_text_view
             brandTitleTextView = item_cart_brand_title_text_view
             clothesIdTextView = item_cart_clothes_id_text_view
+            sizeHolderFrameLayout = frame_layout_item_cart_item_size
+            countsHolderFrameLayout = frame_layout_item_cart_item_count
             sizeTextView = item_cart_clothes_size_text_view
             priceTextView = item_cart_price_text_view
             clothesRemoveImageView = item_cart_clothes_remove_image_view
         }
     }
 
-    private fun processCart(cart: CartEntity) {
-        Glide.with(clothesImageView.context)
-            .load(cart.coverImage)
-            .into(clothesImageView)
+    private fun processCart(
+        cart: CartEntity,
+        position: Int
+    ) {
+        cart.coverImage?.loadImage(target = clothesImageView)
 
         clothesTitleTextView.text = cart.title
         brandTitleTextView.text = cart.brandTitle
@@ -65,6 +71,14 @@ class CartHolder(
         )
 
         clothesRemoveImageView.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, cart)
+        }
+
+        sizeHolderFrameLayout.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, cart)
+        }
+
+        countsHolderFrameLayout.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, cart)
         }
     }

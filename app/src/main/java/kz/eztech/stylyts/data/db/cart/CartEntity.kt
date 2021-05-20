@@ -45,5 +45,8 @@ data class CartEntity(
     val currency: String? = null,
 
     @ColumnInfo(name = "size")
-    val size: String? = null
+    var size: String? = null,
+
+    @ColumnInfo(name = "size_list")
+    val sizeList: ArrayList<String>? = null
 )

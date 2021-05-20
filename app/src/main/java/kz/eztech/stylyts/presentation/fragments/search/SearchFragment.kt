@@ -16,7 +16,7 @@ import kz.eztech.stylyts.presentation.adapters.search.SearchViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchContract
-import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING

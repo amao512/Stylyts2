@@ -5,6 +5,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class ClothesSizeModel(
+    var clothesId: Int = 0,
     val size: String,
     val count: Int
 ) : Parcelable

@@ -13,19 +13,10 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface CollectionItemContract {
 
     interface View : BaseView {
-
-        fun processOutfits(resultsModel: ResultsModel<OutfitModel>)
-
         fun processPostResults(resultsModel: ResultsModel<PostModel>)
     }
 
     interface Presenter : BasePresenter<View> {
-
-        fun getOutfits(
-            token: String,
-            filterModel: FilterModel
-        )
-
         fun getPosts(
             token: String,
             filterModel: FilterModel

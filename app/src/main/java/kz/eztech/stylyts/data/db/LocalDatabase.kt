@@ -4,19 +4,21 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import kz.eztech.stylyts.data.db.address.AddressDao
-import kz.eztech.stylyts.data.db.dao.CardDao
-import kz.eztech.stylyts.data.db.cart.CartDao
-import kz.eztech.stylyts.data.db.search.UserSearchDao
 import kz.eztech.stylyts.data.db.address.AddressEntity
-import kz.eztech.stylyts.data.db.entities.CardEntity
+import kz.eztech.stylyts.data.db.cart.CartDao
 import kz.eztech.stylyts.data.db.cart.CartEntity
+import kz.eztech.stylyts.data.db.dao.CardDao
+import kz.eztech.stylyts.data.db.entities.CardEntity
+import kz.eztech.stylyts.data.db.search.UserSearchDao
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 
 /**
  * Created by Ruslan Erdenoff on 29.01.2021.
  */
 @Database(entities = [CartEntity::class, AddressEntity::class, CardEntity::class, UserSearchEntity::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class LocalDatabase : RoomDatabase() {
 
     //dao

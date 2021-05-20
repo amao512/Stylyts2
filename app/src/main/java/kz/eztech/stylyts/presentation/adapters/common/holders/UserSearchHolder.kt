@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.common.holders
 
 import android.view.View
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_user_info.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
@@ -9,6 +8,7 @@ import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
@@ -96,10 +96,7 @@ class UserSearchHolder(
                     item_user_info_user_avatar_shapeable_image_view.show()
                     item_user_info_user_short_name_text_view.hide()
 
-                    Glide.with(context)
-                        .load(it)
-                        .centerCrop()
-                        .into(item_user_info_user_avatar_shapeable_image_view)
+                    it.loadImageWithCenterCrop(target = item_user_info_user_avatar_shapeable_image_view)
                 }
             } ?: run {
                 item_user_info_user_avatar_shapeable_image_view.hide()

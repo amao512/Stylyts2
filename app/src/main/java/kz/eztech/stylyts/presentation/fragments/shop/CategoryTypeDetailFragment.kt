@@ -19,7 +19,7 @@ import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapt
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
-import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener

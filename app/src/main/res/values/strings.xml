@@ -119,6 +119,7 @@
     <string name="collection_chooser_buy">Buy this look</string>
 
     <string name="detail_chooser_size_table">SIZE TABLE</string>
+    <string name="detail_chooser_counts_table">COUNTS TABLE</string>
     <string name="detail_chooser_color_table">COLOR TABLE</string>
     <string name="detail_chooser_ready">DONE</string>
 

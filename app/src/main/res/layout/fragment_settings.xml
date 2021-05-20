@@ -22,6 +22,7 @@
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/padding_size_16x"
         android:paddingVertical="@dimen/padding_size_8x"
+        android:visibility="gone"
         >
 
         <ImageView
@@ -46,6 +47,7 @@
         android:id="@+id/fragment_settings_personal_settings_item"
         android:layout_width="match_parent"
         android:layout_height="@dimen/settings_item_height"
+        android:layout_marginTop="@dimen/margin_size_24x"
         android:background="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/padding_size_16x"

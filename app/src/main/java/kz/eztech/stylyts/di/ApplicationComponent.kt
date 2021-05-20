@@ -3,7 +3,7 @@ package kz.eztech.stylyts.di
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.di.modules.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.dialogs.CartDialog
+import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog

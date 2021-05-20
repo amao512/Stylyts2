@@ -1,9 +1,6 @@
 package kz.eztech.stylyts.data.db.cart
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import io.reactivex.Observable
 
 /**
@@ -22,4 +19,7 @@ interface CartDao {
 
     @Query("DELETE FROM cart_table")
     fun deleteAll()
+
+    @Update
+    fun update(cartEntity: CartEntity)
 }
