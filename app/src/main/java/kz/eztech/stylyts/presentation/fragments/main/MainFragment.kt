@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.item_main_line.view.*
@@ -39,7 +40,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,
-    UniversalViewClickListener, DialogChooserListener {
+    UniversalViewClickListener, DialogChooserListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject lateinit var presenter: MainLinePresenter
     @Inject lateinit var imageLoader: DomainImageLoader
@@ -86,6 +87,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun initializeListeners() {
         toolbar_right_corner_action_image_button.setOnClickListener(this)
+        fragment_main_swipe_refresh_layout.setOnRefreshListener(this)
     }
 
     override fun onViewClicked(
@@ -141,10 +143,12 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun displayProgress() {
         fragment_main_more_small_progress_bar.show()
+        fragment_main_swipe_refresh_layout.isRefreshing = true
     }
 
     override fun hideProgress() {
         fragment_main_more_small_progress_bar.hide()
+        fragment_main_swipe_refresh_layout.isRefreshing = false
     }
 
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
@@ -190,6 +194,11 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
             findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
         }
+    }
+
+    override fun onRefresh() {
+        displayProgress()
+        getPosts()
     }
 
     private fun getPosts() {

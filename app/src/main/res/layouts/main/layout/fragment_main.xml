@@ -36,32 +36,40 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/fragment_main_swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             >
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_fragment_main_images_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                tools:listitem="@layout/item_main_line"
-                />
-
-            <include
-                android:id="@+id/fragment_main_more_small_progress_bar"
-                layout="@layout/base_progress_small"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="@dimen/margin_size_16x"
-                android:visibility="gone"
-                />
-        </LinearLayout>
+                android:orientation="vertical"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_fragment_main_images_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                    tools:listitem="@layout/item_main_line"
+                    />
+
+                <include
+                    android:id="@+id/fragment_main_more_small_progress_bar"
+                    layout="@layout/base_progress_small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_size_16x"
+                    android:visibility="gone"
+                    />
+            </LinearLayout>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

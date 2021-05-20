@@ -77,10 +77,10 @@
 
     <ImageView
         android:id="@+id/item_user_info_remove_image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/icon_size_20x"
+        android:layout_height="@dimen/icon_size_20x"
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/margin_size_24x"
-        android:src="@drawable/ic_close"
+        android:src="@drawable/ic_close_gray"
         />
 </LinearLayout>

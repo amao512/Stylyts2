@@ -28,6 +28,7 @@
             android:layout_marginTop="@dimen/margin_size_16x"
             android:text="@string/personal_settings_invite"
             android:textSize="@dimen/text_size_16x"
+            android:visibility="gone"
             />
 
         <LinearLayout
@@ -39,6 +40,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"
             android:paddingVertical="@dimen/padding_size_6x"
+            android:visibility="gone"
             >
 
             <ImageView
@@ -61,6 +63,7 @@
             android:layout_height="@dimen/little_divider_height"
             android:layout_marginTop="@dimen/margin_size_24x"
             android:background="@color/divider_bg_color"
+            android:visibility="gone"
             />
 
         <TextView
@@ -94,9 +97,9 @@
                 />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right_gray"
+                android:layout_width="@dimen/icon_size_14x"
+                android:layout_height="@dimen/icon_size_14x"
+                android:src="@drawable/ic_arrow_right"
                 />
         </LinearLayout>
 
@@ -109,6 +112,7 @@
             android:orientation="horizontal"
             android:paddingHorizontal="@dimen/padding_size_16x"
             android:paddingVertical="@dimen/padding_size_6x"
+            android:visibility="gone"
             >
 
             <TextView
@@ -129,7 +133,7 @@
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/little_divider_height"
-            android:layout_marginTop="@dimen/margin_size_24x"
+            android:layout_marginTop="@dimen/margin_size_16x"
             android:background="@color/divider_bg_color"
             />
 
@@ -164,16 +168,16 @@
                 />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right_gray"
+                android:layout_width="@dimen/icon_size_14x"
+                android:layout_height="@dimen/icon_size_14x"
+                android:src="@drawable/ic_arrow_right"
                 />
         </LinearLayout>
 
         <View
             android:layout_width="wrap_content"
             android:layout_height="@dimen/little_divider_height"
-            android:layout_marginTop="@dimen/margin_size_24x"
+            android:layout_marginTop="@dimen/margin_size_16x"
             android:background="@color/divider_bg_color"
             />
 
@@ -208,9 +212,9 @@
                 />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_right_gray"
+                android:layout_width="@dimen/icon_size_14x"
+                android:layout_height="@dimen/icon_size_14x"
+                android:src="@drawable/ic_arrow_right"
                 />
         </LinearLayout>
 

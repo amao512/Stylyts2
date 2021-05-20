@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_collection_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -19,16 +20,15 @@ import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsItemPresenter
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
 import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(),
     CollectionItemContract.View,
-    UniversalViewClickListener {
+    UniversalViewClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject lateinit var presenter: CollectionsItemPresenter
+    @Inject
+    lateinit var presenter: CollectionsItemPresenter
     private lateinit var adapter: GridImageAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var currentFilter: FilterModel
@@ -74,7 +74,9 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
         itemClickListener?.onViewClicked(view, position, item)
     }
 
-    override fun initializeListeners() {}
+    override fun initializeListeners() {
+        fragment_collection_item_swipe_refresh_layout.setOnRefreshListener(this)
+    }
 
     override fun processPostInitialization() {
         getCollections()
@@ -100,11 +102,15 @@ class CollectionItemFragment(var currentMode: Int) : BaseFragment<MainActivity>(
     override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {
-        fragment_collection_small_progress_bar.show()
+        fragment_collection_item_swipe_refresh_layout.isRefreshing = true
     }
 
     override fun hideProgress() {
-        fragment_collection_small_progress_bar.hide()
+        fragment_collection_item_swipe_refresh_layout.isRefreshing = false
+    }
+
+    override fun onRefresh() {
+        getCollections()
     }
 
     private fun handleListRecyclerView() {
