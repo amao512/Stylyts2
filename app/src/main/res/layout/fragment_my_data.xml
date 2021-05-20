@@ -127,6 +127,7 @@
                 android:background="@drawable/rounded_rectangle_gray"
                 android:paddingHorizontal="@dimen/padding_size_24x"
                 android:paddingVertical="@dimen/padding_size_12x"
+                android:visibility="gone"
                 >
 
                 <TextView
@@ -179,6 +180,7 @@
                 android:background="@drawable/rounded_rectangle_gray"
                 android:paddingHorizontal="@dimen/padding_size_24x"
                 android:paddingVertical="@dimen/padding_size_12x"
+                android:visibility="gone"
                 >
 
                 <TextView

@@ -25,6 +25,9 @@ class CollectionContextDialog(
             dialog_bottom_collection_context_change_text_view.hide()
             dialog_bottom_collection_context_divider_one.hide()
             dialog_bottom_collection_context_divider_two.hide()
+        } else {
+            dialog_bottom_collection_context_support_text_view.hide()
+            dialog_bottom_collection_context_divider_three.hide()
         }
     }
 

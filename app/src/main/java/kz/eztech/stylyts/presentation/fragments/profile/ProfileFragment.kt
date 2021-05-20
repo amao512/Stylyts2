@@ -248,6 +248,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
         }
+
+        presenter.getWardrobe(
+            token = currentActivity.getTokenFromSharedPref(),
+            filterModel = currentFilter
+        )
     }
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
@@ -280,7 +285,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         gridAdapter.updateMoreList(list = resultsModel.results)
         setPagesCondition(resultsModel.totalPages)
 
-        publicationsCountTextView.text = "${resultsModel.totalCount}"
+        publicationsCountTextView.text = resultsModel.totalCount.toString()
     }
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
@@ -302,6 +307,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>) {
         wardrobeAdapter.updateMoreList(list = resultsModel.results)
         setPagesCondition(resultsModel.totalPages)
+
+        adapterFilter.changeItemByPosition(
+            position = 3,
+            title = "${getString(R.string.filter_list_wardrobe)} (${resultsModel.totalCount})"
+        )
     }
 
     override fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>) {

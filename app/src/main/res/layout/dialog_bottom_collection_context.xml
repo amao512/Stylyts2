@@ -66,6 +66,7 @@
             />
 
         <View
+            android:id="@+id/dialog_bottom_collection_context_divider_three"
             android:layout_width="match_parent"
             android:layout_height="@dimen/little_divider_height"
             android:background="@color/divider_bg_color"

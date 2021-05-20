@@ -112,11 +112,10 @@
 
                             <TextView
                                 android:id="@+id/fragment_profile_followers_count"
-                                style="@style/TextRegular"
+                                style="@style/TextRegularBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="0"
                                 tools:text="10"
                                 />
 
@@ -145,11 +144,10 @@
 
                             <TextView
                                 android:id="@+id/fragment_profile_publications_count"
-                                style="@style/TextRegular"
+                                style="@style/TextRegularBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="0"
                                 tools:text="10"
                                 />
 
@@ -178,11 +176,10 @@
 
                             <TextView
                                 android:id="@+id/fragment_profile_followings_count"
-                                style="@style/TextRegular"
+                                style="@style/TextRegularBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="0"
                                 tools:text="10"
                                 />
 

@@ -36,6 +36,7 @@
                     android:layout_marginStart="@dimen/margin_size_16x"
                     android:layout_marginTop="@dimen/margin_size_16x"
                     android:orientation="horizontal"
+                    android:visibility="gone"
                     >
 
                     <FrameLayout
@@ -100,6 +101,7 @@
                     android:layout_height="@dimen/little_divider_height"
                     android:layout_marginTop="@dimen/margin_size_16x"
                     android:background="@color/divider_bg_color"
+                    android:visibility="gone"
                     />
 
                 <androidx.recyclerview.widget.RecyclerView
