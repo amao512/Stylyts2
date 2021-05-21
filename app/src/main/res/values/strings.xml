@@ -75,6 +75,7 @@
     <string name="filter_list_my_data">My data</string>
     <string name="filter_my_wardrobe">My wardrobe</string>
     <string name="filter_discounts">Discounts</string>
+    <string name="filter_favorite_brands">любимые бренды</string>
 
     <string name="toolbar_title_edit_profile">Edit profile</string>
     <string name="toolbar_title_comments">Comments</string>

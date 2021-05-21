@@ -1,6 +1,8 @@
 package kz.eztech.stylyts.presentation.fragments.shop
 
+import android.net.Uri
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
@@ -95,7 +97,20 @@ class ShopItemFragment(
     }
 
     override fun processClothesTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
-        adapter.updateList(list = resultsModel.results)
+        val preparedTypes: MutableList<ClothesTypeModel> = mutableListOf()
+        val shopsIcon = Uri.parse("android.resource://${R::class.java.`package`.name}/${R.drawable.ic_shops}")
+
+        preparedTypes.addAll(resultsModel.results)
+        preparedTypes.add(
+            ClothesTypeModel(
+                id = 0,
+                title = getString(R.string.search_item_shops),
+                menCoverPhoto = shopsIcon.toString(),
+                womenCoverPhoto = shopsIcon.toString(),
+            )
+        )
+
+        adapter.updateList(list = preparedTypes)
     }
 
     override fun onViewClicked(

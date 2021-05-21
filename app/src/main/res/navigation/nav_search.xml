@@ -20,6 +20,10 @@
             android:id="@+id/action_shopFragment_to_searchFragment"
             app:destination="@id/searchFragment"
             />
+        <action
+            android:id="@+id/action_shopFragment_to_shopListFragment"
+            app:destination="@id/shopListFragment"
+            />
     </fragment>
 
     <fragment
@@ -81,6 +85,21 @@
     </fragment>
 
     <include app:graph="@navigation/nav_profile" />
+
     <include app:graph="@navigation/nav_shop_profile" />
+
+    <fragment
+        android:id="@+id/shopListFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopListFragment"
+        android:label="fragment_shop_list"
+        tools:layout="@layout/fragment_shop_list"
+        >
+        <action
+            android:id="@+id/action_shopListFragment_to_nav_shop_profile"
+            app:destination="@id/nav_shop_profile"
+            />
+    </fragment>
+
+
 
 </navigation>

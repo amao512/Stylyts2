@@ -42,6 +42,7 @@
     <dimen name="icon_size_14x">14dp</dimen>
     <dimen name="icon_size_20x">20dp</dimen>
     <dimen name="icon_size_24x">24dp</dimen>
+    <dimen name="icon_size_26x">26dp</dimen>
     <dimen name="icon_size_36x">36dp</dimen>
 
     <dimen name="splash_logo_size">50sp</dimen>

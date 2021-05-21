@@ -21,7 +21,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalViewClickListener,
-    View.OnClickListener{
+    View.OnClickListener {
 
     private lateinit var shopViewPagerAdapter: ShopViewPagerAdapter
 
@@ -95,14 +95,21 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
         item: Any?
     ) {
         with(item as HashMap<*, *>) {
-            val clothesCategoryId = this[ShopItemListFragment.CLOTHES_TYPE] as ClothesTypeModel
+            val clothesType = this[ShopItemListFragment.CLOTHES_TYPE] as ClothesTypeModel
             val clothesTypeGender = this[ShopItemListFragment.CLOTHES_TYPE_GENDER] as Int
 
-            val bundle = Bundle()
-            bundle.putInt(ShopItemListFragment.CLOTHES_TYPE_GENDER, clothesTypeGender)
-            bundle.putParcelable(ShopItemListFragment.CLOTHES_TYPE, clothesCategoryId)
+            if (clothesType.id == 0) {
+                findNavController().navigate(R.id.action_shopFragment_to_shopListFragment)
+            } else {
+                val bundle = Bundle()
+                bundle.putInt(ShopItemListFragment.CLOTHES_TYPE_GENDER, clothesTypeGender)
+                bundle.putParcelable(ShopItemListFragment.CLOTHES_TYPE, clothesType)
 
-            findNavController().navigate(R.id.action_shopFragment_to_shopItemListFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_shopFragment_to_shopItemListFragment,
+                    bundle
+                )
+            }
         }
     }
 

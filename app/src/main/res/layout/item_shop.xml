@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_shop_root_view_linear_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/margin_size_16x"
+        android:paddingStart="@dimen/padding_size_24x"
+        android:paddingEnd="@dimen/padding_size_16x"
+        >
+
+        <TextView
+            android:id="@+id/item_shop_name_text_view"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/text_size_16x"
+            tools:text="Shop Name"
+            />
+
+        <ImageView
+            android:id="@+id/item_shop_favorite_image_view"
+            android:layout_width="@dimen/icon_size_26x"
+            android:layout_height="@dimen/icon_size_26x"
+            android:layout_marginStart="@dimen/margin_size_16x"
+            android:src="@drawable/ic_favorite_dark"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginStart="@dimen/padding_size_24x"
+        android:background="@color/divider_bg_color"
+        />
+</LinearLayout>

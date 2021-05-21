@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.fragments.shop.ShopListFragment"
+    >
+
+    <include
+        android:id="@+id/fragment_shop_list_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_shop_list_filter_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_10x"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:overScrollMode="never"
+        android:paddingStart="@dimen/padding_size_8x"
+        android:paddingEnd="@dimen/padding_size_6x"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_collection_filter"
+        />
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/fragment_chats_search_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/search_view_height"
+        android:layout_marginHorizontal="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:inputType="text"
+        android:theme="@style/SearchView"
+        app:queryBackground="@android:color/transparent"
+        app:queryHint="Поиск"
+        app:searchIcon="@drawable/ic_search"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_shop_list_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_4x"
+            android:layout_weight="0.93"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:paddingTop="@dimen/padding_size_12x"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_shop"
+            />
+
+        <LinearLayout
+            android:id="@+id/fragment_shop_list_right_character_list_linear_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.07"
+            android:orientation="vertical"
+            />
+    </LinearLayout>
+
+</LinearLayout>

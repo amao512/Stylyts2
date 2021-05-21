@@ -47,6 +47,10 @@
             android:id="@+id/action_collectionDetailFragment_to_shopProfileFragment"
             app:destination="@id/shopProfileFragment"
             />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_clothesDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/clothesDetailFragment"
@@ -59,4 +63,5 @@
             app:destination="@id/shopProfileFragment"
             />
     </fragment>
+    <include app:graph="@navigation/nav_profile" />
 </navigation>

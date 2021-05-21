@@ -211,6 +211,7 @@
                                 android:gravity="center"
                                 android:paddingHorizontal="@dimen/padding_size_10x"
                                 android:text="@string/write_message"
+                                android:visibility="gone"
                                 />
 
                             <TextView
@@ -234,6 +235,7 @@
                                 android:gravity="center"
                                 android:padding="@dimen/padding_size_6x"
                                 android:src="@drawable/ic_camera"
+                                android:visibility="gone"
                                 />
                         </LinearLayout>
 

@@ -197,7 +197,7 @@
                         <LinearLayout
                             android:id="@+id/linear_layout_fragment_profile_change_buttons"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="@dimen/icon_size_36x"
                             android:layout_marginVertical="@dimen/margin_size_16x"
                             android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"

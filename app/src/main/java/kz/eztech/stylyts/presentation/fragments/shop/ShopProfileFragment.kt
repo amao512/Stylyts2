@@ -245,11 +245,11 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
         if (isAlreadyFollow) {
             alreadyFollowedTextView.show()
-            writeMessageTextView.show()
+//            writeMessageTextView.show()
             followTextView.hide()
         } else {
             alreadyFollowedTextView.hide()
-            writeMessageTextView.hide()
+//            writeMessageTextView.hide()
             followTextView.show()
         }
     }
@@ -302,13 +302,13 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
         followTextView.hide()
         alreadyFollowedTextView.show()
-        writeMessageTextView.show()
+//        writeMessageTextView.show()
     }
 
     override fun processSuccessUnfollowing() {
         followTextView.show()
         alreadyFollowedTextView.hide()
-        writeMessageTextView.hide()
+//        writeMessageTextView.hide()
     }
 
     private fun onFilterItemClicked(
