@@ -27,10 +27,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
@@ -591,11 +591,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	private fun processPostImages() {
 		if (listOfItems.isNotEmpty() && listOfEntities.isNotEmpty() && currentStyle != null) {
 			val constructorImagesContainer = frame_layout_fragment_collection_constructor_images_container
-			val clothesList = ArrayList<Int>()
+			val clothesList = ArrayList<ClothesModel>()
 			val clothesCollectionList = getClothesCollectionList(clothesList = clothesList)
 
 			val outfitCreateModel = OutfitCreateModel(
 				style = currentStyle!!.id,
+				clothesIdList = clothesList.map { it.id },
 				clothes = clothesList,
 				itemLocation = clothesCollectionList,
 				authorId = currentActivity.getUserIdFromSharedPref(),
@@ -667,7 +668,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 		}
 	}
 
-	private fun getClothesCollectionList(clothesList: ArrayList<Int>): ArrayList<ItemLocationModel> {
+	private fun getClothesCollectionList(clothesList: ArrayList<ClothesModel>): ArrayList<ItemLocationModel> {
 		val clothesCollectionList = ArrayList<ItemLocationModel>()
 
 		listOfEntities.forEachIndexed { index, imageView ->
@@ -687,7 +688,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 				)
 			)
 
-			clothesList.add(listOfItems[index].id)
+			clothesList.add(listOfItems[index])
 		}
 
 		return clothesCollectionList

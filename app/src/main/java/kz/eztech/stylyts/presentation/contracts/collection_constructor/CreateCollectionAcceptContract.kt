@@ -13,6 +13,8 @@ interface CreateCollectionAcceptContract {
         fun processSuccessSavingOutfit(outfitModel: OutfitCreateModel)
 
         fun processSuccessSavingPost(postModel: PostCreateModel)
+
+        fun processSuccessSavingToCart()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -39,6 +41,11 @@ interface CreateCollectionAcceptContract {
             id: Int,
             model: OutfitCreateModel,
             data: File
+        )
+
+        fun saveToCart(
+            token: String,
+            outfitCreateModel: OutfitCreateModel
         )
     }
 }

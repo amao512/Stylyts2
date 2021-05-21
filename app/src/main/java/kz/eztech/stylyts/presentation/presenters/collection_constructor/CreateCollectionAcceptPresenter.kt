@@ -1,7 +1,12 @@
 package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import android.util.Log
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
+import kz.eztech.stylyts.data.db.cart.CartDataSource
+import kz.eztech.stylyts.data.db.cart.CartMapper
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
@@ -20,9 +25,12 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     private val updatePostUseCase: UpdatePostUseCase,
     private val createOutfitUseCase: CreateOutfitUseCase,
     private val updateOutfitUseCase: UpdateOutfitUseCase,
+    private val cartDataSource: CartDataSource
 ) : CreateCollectionAcceptContract.Presenter {
 
     private lateinit var view: CreateCollectionAcceptContract.View
+
+    private val disposables = CompositeDisposable()
 
     override fun disposeRequests() {
         view.disposeRequests()
@@ -141,5 +149,22 @@ class CreateCollectionAcceptPresenter @Inject constructor(
                 }
             }
         })
+    }
+
+    override fun saveToCart(
+        token: String,
+        outfitCreateModel: OutfitCreateModel
+    ) {
+        disposables.clear()
+        disposables.add(
+            cartDataSource.insertAll(list = CartMapper.map(list = outfitCreateModel.clothes))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    view.processSuccessSavingToCart()
+                }, {
+                    view.displayMessage(msg = errorHelper.processError(it))
+                })
+        )
     }
 }

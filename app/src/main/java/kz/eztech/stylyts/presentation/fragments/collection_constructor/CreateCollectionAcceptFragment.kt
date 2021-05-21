@@ -23,6 +23,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CreateCollectionAcceptContract
+import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
@@ -42,8 +43,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     DialogChooserListener,
     CreateCollectionAcceptContract.View {
 
-    @Inject
-    lateinit var presenter: CreateCollectionAcceptPresenter
+    @Inject lateinit var presenter: CreateCollectionAcceptPresenter
     private lateinit var chooserDialog: CreateCollectionChooserDialog
 
     private var currentModel: OutfitCreateModel? = null
@@ -181,11 +181,8 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         when (v?.id) {
             R.id.dialog_bottom_create_collection_chooser_common_line -> savePost(isHidden = false)
             R.id.dialog_bottom_create_collection_chooser_wardrobe -> savePost(isHidden = true)
-            R.id.dialog_bottom_create_collection_chooser_create -> {
-                currentModel?.let {
-                    saveOutfit(it)
-                }
-            }
+            R.id.dialog_bottom_create_collection_chooser_create -> currentModel?.let { saveOutfit(it) }
+            R.id.dialog_bottom_photo_chooser_photo_as_collection_buy -> onBuyOutfitClicked()
         }
 
         when (item) {
@@ -247,6 +244,10 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
             R.id.action_createCollectionAcceptFragment_to_collectionDetailFragment,
             bundle
         )
+    }
+
+    override fun processSuccessSavingToCart() {
+        CartDialog().show(childFragmentManager, EMPTY_STRING)
     }
 
     private fun processPhotos() {
@@ -402,6 +403,15 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
                 token = currentActivity.getTokenFromSharedPref(),
                 model = outfitCreateModel,
                 data = file
+            )
+        }
+    }
+
+    private fun onBuyOutfitClicked() {
+        currentModel?.let {
+            presenter.saveToCart(
+                token = currentActivity.getTokenFromSharedPref(),
+                outfitCreateModel = it
             )
         }
     }

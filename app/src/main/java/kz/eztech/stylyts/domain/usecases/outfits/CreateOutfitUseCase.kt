@@ -41,7 +41,7 @@ class CreateOutfitUseCase @Inject constructor(
         val requestFile = file.asRequestBody(("image/*").toMediaTypeOrNull())
         val body = MultipartBody.Part.createFormData("cover_photo", file.name, requestFile)
 
-        outfitCreateModel.clothes.forEach {
+        outfitCreateModel.clothesIdList.forEach {
             data.add(MultipartBody.Part.createFormData("clothes", it.toString()))
         }
 

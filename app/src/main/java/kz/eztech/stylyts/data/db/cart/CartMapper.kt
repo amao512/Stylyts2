@@ -8,6 +8,12 @@ import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
  */
 object CartMapper {
 
+    fun map(list: List<ClothesModel>): List<CartEntity> {
+        return list.map {
+            mapToEntity(model = it)
+        }
+    }
+
     fun mapToEntity(model: ClothesModel): CartEntity {
         var coverImage: String = EMPTY_STRING
 

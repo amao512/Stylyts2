@@ -11,7 +11,8 @@ class OutfitCreateApiModelMapper @Inject constructor() {
         return OutfitCreateModel(
             id = data?.id ?: 0,
             title = data?.title ?: EMPTY_STRING,
-            clothes = data?.clothes ?: emptyList(),
+            clothesIdList = data?.clothes ?: emptyList(),
+            clothes = emptyList(),
             itemLocation = emptyList(),
             style = data?.style ?: 0,
             authorId = data?.author?.id ?: 0,
