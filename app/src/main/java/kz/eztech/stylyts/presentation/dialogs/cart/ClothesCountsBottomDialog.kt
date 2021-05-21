@@ -7,6 +7,7 @@ import android.widget.ListView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.dialog_bottom_clothes_sizes.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.clothes.ClothesCountModel
 import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
 
 class ClothesCountsBottomDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_bottom_clothes_sizes), View.OnClickListener {
@@ -49,7 +50,7 @@ class ClothesCountsBottomDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_b
 
             if (count.isNotEmpty()) {
                 val adapter: ArrayAdapter<Int> = ArrayAdapter<Int>(
-                    requireContext(), R.layout.item_style, count
+                    requireContext(), R.layout.item_style, count.map { it.count }
                 )
                 chooserListView.adapter = adapter
                 currentItem = count[0]
@@ -69,5 +70,7 @@ class ClothesCountsBottomDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_b
         dialog_bottom_clothes_sizes_done_text_view.setOnClickListener(this)
     }
 
-    private fun getCountsFromArgs(): ArrayList<Int>? = arguments?.getIntegerArrayList(COUNTS_KEY)
+    private fun getCountsFromArgs(): ArrayList<ClothesCountModel>? {
+        return arguments?.getParcelableArrayList(COUNTS_KEY)
+    }
 }

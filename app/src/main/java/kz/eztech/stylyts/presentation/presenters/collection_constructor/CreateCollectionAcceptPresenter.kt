@@ -157,6 +157,8 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     ) {
         disposables.clear()
         disposables.add(
+
+
             cartDataSource.insertAll(list = CartMapper.map(list = outfitCreateModel.clothes))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

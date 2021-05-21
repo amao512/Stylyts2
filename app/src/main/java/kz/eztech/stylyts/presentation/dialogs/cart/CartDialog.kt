@@ -10,7 +10,9 @@ import kotlinx.android.synthetic.main.dialog_cart.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.cart.CartEntity
+import kz.eztech.stylyts.domain.models.clothes.ClothesCountModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
+import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.CartAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.cart.CartContract
@@ -29,7 +31,8 @@ import javax.inject.Inject
 class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickListener,
     DialogChooserListener, CartContract.View {
 
-    @Inject lateinit var presenter: CartPresenter
+    @Inject
+    lateinit var presenter: CartPresenter
     private lateinit var cartAdapter: CartAdapter
     private lateinit var sizeChooserDialog: ClothesSizesBottomDialog
     private lateinit var countsChooserDialog: ClothesCountsBottomDialog
@@ -109,7 +112,7 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
         when (view.id) {
             R.id.item_cart_clothes_remove_image_view -> presenter.removeCart(item as CartEntity)
             R.id.frame_layout_item_cart_item_size -> onSizeStockClicked(item)
-            R.id.frame_layout_item_cart_item_count -> onCountsStockClicked(item)
+            R.id.frame_layout_item_cart_item_count -> onSizeStockClicked(item, isSize = false)
         }
     }
 
@@ -132,6 +135,7 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
     override fun onChoice(v: View?, item: Any?) {
         when (item) {
             is ClothesSizeModel -> presenter.selectSize(clothesSizeModel = item)
+            is ClothesCountModel -> presenter.selectCount(clothesCountModel = item)
         }
     }
 
@@ -161,57 +165,87 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
             NumberFormat.getInstance().format(list.sumBy { it.price!! })
         )
 
-        text_view_dialog_cart_pre_total_price.text = "Подытог ${getString(
-            R.string.price_tenge_text_format,
-            NumberFormat.getInstance().format(list.sumBy { it.price!! })
-        )}"
+        text_view_dialog_cart_pre_total_price.text = "Подытог ${
+            getString(
+                R.string.price_tenge_text_format,
+                NumberFormat.getInstance().format(list.sumBy { it.price!! })
+            )
+        }"
     }
 
-    private fun onSizeStockClicked(item: Any?) {
-        item as CartEntity
+    override fun processSizes(
+        sizesList: List<ClothesSizeModel>,
+        cartEntity: CartEntity,
+        isSize: Boolean
+    ) {
+        val currentSize = sizesList.find { it.size == cartEntity.size }
 
-        item.sizeList?.let {
-            if (it.isNotEmpty()) {
-                val bundle = Bundle()
-                var counter = 0
-                val clothesSizes: MutableList<ClothesSizeModel> = mutableListOf()
-
-                it.map { size ->
-                    clothesSizes.add(
-                        ClothesSizeModel(
-                            clothesId = item.id ?: 0,
-                            size = size,
-                            count = 1
-                        )
-                    )
-                    counter++
-                }
-
-                bundle.putParcelableArrayList(
-                    ClothesSizesBottomDialog.SIZES_KEY,
-                    ArrayList(clothesSizes)
-                )
-                sizeChooserDialog.arguments = bundle
-                sizeChooserDialog.show(parentFragmentManager, EMPTY_STRING)
+        if (isSize) {
+            openSizeDialog(sizesList, cartEntity)
+        } else {
+            currentSize?.count?.let {
+                openCountsDialog(currentSize, cartEntity)
             }
         }
     }
 
-    private fun onCountsStockClicked(item: Any?) {
-        item as CartEntity
-
+    private fun openSizeDialog(
+        sizesList: List<ClothesSizeModel>,
+        cartEntity: CartEntity
+    ) {
         val bundle = Bundle()
-        val counts = ArrayList<Int>()
+        val clothesSizes: MutableList<ClothesSizeModel> = mutableListOf()
 
-        counts.add(1)
-        counts.add(2)
-        counts.add(3)
-        counts.add(4)
-        counts.add(5)
+        sizesList.map { size ->
+            clothesSizes.add(
+                ClothesSizeModel(
+                    clothesId = cartEntity.id ?: 0,
+                    size = size.size,
+                    count = size.count
+                )
+            )
+        }
 
-        bundle.putIntegerArrayList(ClothesCountsBottomDialog.COUNTS_KEY, counts)
+        bundle.putParcelableArrayList(
+            ClothesSizesBottomDialog.SIZES_KEY,
+            ArrayList(clothesSizes)
+        )
+        sizeChooserDialog.arguments = bundle
+        sizeChooserDialog.show(parentFragmentManager, EMPTY_STRING)
+    }
+
+    private fun openCountsDialog(
+        clothesSizeModel: ClothesSizeModel,
+        cartEntity: CartEntity
+    ) {
+        val bundle = Bundle()
+        val counts = ArrayList<ClothesCountModel>()
+
+        for (i in 1..clothesSizeModel.count) {
+            counts.add(
+                ClothesCountModel(clothesId = cartEntity.id ?: 0, count = i)
+            )
+        }
+
+        bundle.putParcelableArrayList(ClothesCountsBottomDialog.COUNTS_KEY, counts)
 
         countsChooserDialog.arguments = bundle
         countsChooserDialog.show(parentFragmentManager, EMPTY_STRING)
+    }
+
+    private fun onSizeStockClicked(
+        item: Any?,
+        isSize: Boolean = true
+    ) {
+        item as CartEntity
+
+        item.let {
+            presenter.getSizes(
+                token = (activity as MainActivity).getTokenFromSharedPref(),
+                clothesId = it.id ?: 0,
+                cartEntity = item,
+                isSize = isSize
+            )
+        }
     }
 }

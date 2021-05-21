@@ -27,6 +27,7 @@ class CartHolder(
     private lateinit var sizeHolderFrameLayout: FrameLayout
     private lateinit var countsHolderFrameLayout: FrameLayout
     private lateinit var sizeTextView: TextView
+    private lateinit var countTextView: TextView
     private lateinit var priceTextView: TextView
     private lateinit var clothesRemoveImageView: ImageView
 
@@ -49,6 +50,7 @@ class CartHolder(
             sizeHolderFrameLayout = frame_layout_item_cart_item_size
             countsHolderFrameLayout = frame_layout_item_cart_item_count
             sizeTextView = item_cart_clothes_size_text_view
+            countTextView = text_view_item_cart_item_count
             priceTextView = item_cart_price_text_view
             clothesRemoveImageView = item_cart_clothes_remove_image_view
         }
@@ -64,7 +66,8 @@ class CartHolder(
         brandTitleTextView.text = cart.brandTitle
 
         clothesIdTextView.text = "ID изделия ${cart.id}"
-        sizeTextView.text = "Размер ${cart.size}"
+        sizeTextView.text = "Размер ${cart.size ?: ""}"
+        countTextView.text = "Кол-во ${cart.count}"
         priceTextView.text = priceTextView.context.getString(
             R.string.price_tenge_text_format,
             NumberFormat.getInstance().format(cart.price)

@@ -31,6 +31,7 @@ object CartMapper {
             title = model.title,
             productCode = model.productCode,
             totalCount = 0,
+            count = 1,
             price = model.cost,
             salePrice = model.salePrice,
             currency = model.currency,

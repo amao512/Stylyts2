@@ -35,6 +35,9 @@ data class CartEntity(
     @ColumnInfo(name = "total_count")
     val totalCount: Int? = null,
 
+    @ColumnInfo(name = "count")
+    var count: Int? = null,
+
     @ColumnInfo(name = "clothes_price")
     val price: Int? = null,
 
