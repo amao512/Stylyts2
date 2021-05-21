@@ -7,7 +7,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_clothes_detail.*
@@ -25,11 +24,14 @@ import kz.eztech.stylyts.presentation.contracts.clothes.ClothesDetailContract
 import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.cart.ClothesSizesBottomDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.presenters.clothes.ClothesDetailPresenter
 import kz.eztech.stylyts.presentation.utils.ColorUtils
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -137,6 +139,13 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         fragment_clothes_detail_create_collection_text_view.setOnClickListener {
             createOutfit(clothesModel)
         }
+
+        fragment_clothes_detail_avatar_holder.setOnClickListener {
+            navigateToProfile(user = clothesModel.owner)
+        }
+        fragment_clothes_detail_shop_name_text_view.setOnClickListener {
+            navigateToProfile(user = clothesModel.owner)
+        }
     }
 
     override fun disposeRequests() {
@@ -199,10 +208,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         } else {
             fragment_clothes_detail_user_short_name_text_view.hide()
 
-            Glide.with(fragment_clothes_detail_avatar_shapeable_image_view.context)
-                .load(owner.avatar)
-                .centerCrop()
-                .into(fragment_clothes_detail_avatar_shapeable_image_view)
+            owner.avatar.loadImageWithCenterCrop(target = fragment_clothes_detail_avatar_shapeable_image_view)
         }
     }
 
@@ -366,6 +372,18 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
             R.id.action_clothesDetailFragment_to_nav_create_collection,
             bundle
         )
+    }
+
+    private fun navigateToProfile(user: UserShortModel) {
+        val bundle = Bundle()
+
+        if (user.isBrand) {
+            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, user.id)
+            findNavController().navigate(R.id.nav_shop_profile, bundle)
+        } else {
+            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, user.id)
+            findNavController().navigate(R.id.nav_profile, bundle)
+        }
     }
 
     private fun getClothesIdFromArgs(): Int = arguments?.getInt(CLOTHES_ID) ?: 0
