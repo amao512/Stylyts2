@@ -23,8 +23,8 @@ interface ProfileApi {
         @Header("Authorization") token: String,
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String,
-        @Field("instagram") instagram: String,
-        @Field("web_site") webSite: String
+//        @Field("instagram") instagram: String,
+//        @Field("web_site") webSite: String
     ): Single<Response<UserApiModel>>
 
     @Multipart

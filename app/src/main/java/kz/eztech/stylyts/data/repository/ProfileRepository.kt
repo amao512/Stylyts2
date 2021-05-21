@@ -34,8 +34,8 @@ class ProfileRepository @Inject constructor(
             token = token,
             firstName = data["first_name"] as String,
             lastName = data["last_name"] as String,
-            instagram = data["instagram"] as String,
-            webSite = data["web_site"] as String
+//            instagram = data["instagram"] as String,
+//            webSite = data["web_site"] as String
         ).map {
             when (it.isSuccessful) {
                 true -> userApiModelMapper.map(data = it.body())
