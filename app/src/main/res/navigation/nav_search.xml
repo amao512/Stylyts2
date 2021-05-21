@@ -74,14 +74,6 @@
             android:id="@+id/action_searchFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
             />
-        <action
-            android:id="@+id/action_searchFragment_to_nav_profile"
-            app:destination="@id/nav_profile"
-            />
-        <action
-            android:id="@+id/action_searchFragment_to_nav_shop_profile"
-            app:destination="@id/nav_shop_profile"
-            />
     </fragment>
 
     <include app:graph="@navigation/nav_profile" />
@@ -93,13 +85,5 @@
         android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopListFragment"
         android:label="fragment_shop_list"
         tools:layout="@layout/fragment_shop_list"
-        >
-        <action
-            android:id="@+id/action_shopListFragment_to_nav_shop_profile"
-            app:destination="@id/nav_shop_profile"
-            />
-    </fragment>
-
-
-
+        />
 </navigation>

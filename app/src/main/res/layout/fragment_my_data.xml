@@ -33,6 +33,7 @@
                 android:layout_height="@dimen/profile_user_photo_size"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/margin_size_16x"
+                android:background="@drawable/circle_white_gray_corners"
                 >
 
                 <com.google.android.material.imageview.ShapeableImageView

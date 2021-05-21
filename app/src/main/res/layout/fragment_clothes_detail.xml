@@ -38,6 +38,7 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/margin_size_24x"
                     android:layout_marginTop="@dimen/margin_size_16x"
+                    android:background="@drawable/circle_white_gray_corners"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     >
@@ -69,10 +70,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_size_16x"
                     android:textSize="@dimen/text_size_14x"
+                    app:layout_constraintBottom_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
                     app:layout_constraintEnd_toStartOf="@id/fragment_clothes_detail_favorite_image_view"
                     app:layout_constraintStart_toEndOf="@id/fragment_clothes_detail_avatar_holder"
                     app:layout_constraintTop_toTopOf="@id/fragment_clothes_detail_avatar_holder"
-                    app:layout_constraintBottom_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
                     tools:text="zara"
                     />
 

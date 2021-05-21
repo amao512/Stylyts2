@@ -209,7 +209,7 @@ class SearchItemFragment(
             is UserSearchEntity -> bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.id ?: 0)
         }
 
-        findNavController().navigate(R.id.action_searchFragment_to_nav_profile, bundle)
+        findNavController().navigate(R.id.nav_profile, bundle)
     }
 
     private fun navigateToClothes(item: Any?) {
@@ -230,7 +230,7 @@ class SearchItemFragment(
         val bundle = Bundle()
         bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, item.id)
 
-        findNavController().navigate(R.id.action_searchFragment_to_nav_shop_profile, bundle)
+        findNavController().navigate(R.id.nav_shop_profile, bundle)
     }
 
     private fun onRemoveUserFromHistory(item: Any?) {
