@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
@@ -43,6 +42,7 @@ import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
@@ -50,7 +50,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     UniversalViewClickListener, EditorListener {
 
     @Inject lateinit var presenter: ProfilePresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
@@ -400,10 +399,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             )
         } else {
             userShortNameTextView.hide()
-            imageLoader.load(
-                url = userModel.avatar,
-                target = avatarShapeableImageView
-            )
+            userModel.avatar
+                .loadImageWithCenterCrop(target = avatarShapeableImageView)
         }
     }
 
