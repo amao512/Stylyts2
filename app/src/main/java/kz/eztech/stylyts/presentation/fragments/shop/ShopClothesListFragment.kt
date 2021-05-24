@@ -29,7 +29,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDetailContract.View,
+class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetailContract.View,
     UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: CategoryTypeDetailFragmentPresenter
@@ -60,11 +60,11 @@ class CategoryTypeDetailFragment : BaseFragment<MainActivity>(), CategoryTypeDet
 
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
-            toolbar_left_corner_action_image_button.setOnClickListener(this@CategoryTypeDetailFragment)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@ShopClothesListFragment)
 
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.show()
-            toolbar_right_corner_action_image_button.setOnClickListener(this@CategoryTypeDetailFragment)
+            toolbar_right_corner_action_image_button.setOnClickListener(this@ShopClothesListFragment)
 
             base_toolbar_small_title_text_view.text = title
             base_toolbar_title_with_subtitle.show()

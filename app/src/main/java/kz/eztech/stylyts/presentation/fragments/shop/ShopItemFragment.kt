@@ -2,7 +2,6 @@ package kz.eztech.stylyts.presentation.fragments.shop
 
 import android.net.Uri
 import android.view.View
-import androidx.core.content.ContextCompat
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
@@ -121,8 +120,8 @@ class ShopItemFragment(
         item as ClothesTypeModel
 
         val data = HashMap<String, Any>()
-        data[ShopItemListFragment.CLOTHES_TYPE_GENDER] = this.position
-        data[ShopItemListFragment.CLOTHES_TYPE] = item
+        data[ShopCategoryListFragment.CLOTHES_TYPE_GENDER] = this.position
+        data[ShopCategoryListFragment.CLOTHES_TYPE] = item
 
         itemClickListener?.onViewClicked(view, position, data)
     }

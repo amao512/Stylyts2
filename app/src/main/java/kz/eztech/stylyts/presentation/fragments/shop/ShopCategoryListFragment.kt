@@ -26,10 +26,11 @@ import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,
+class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,
     UniversalViewClickListener, View.OnClickListener {
 
-    @Inject lateinit var presenter: ShopItemListPresenter
+    @Inject
+    lateinit var presenter: ShopItemListPresenter
 
     private lateinit var filterCheckAdapter: FilterCheckAdapter
     private lateinit var clothesType: ClothesTypeModel
@@ -54,14 +55,14 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
 
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
-            toolbar_left_corner_action_image_button.setOnClickListener(this@ShopItemListFragment)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@ShopCategoryListFragment)
 
             toolbar_title_text_view.show()
             toolbar_right_text_text_view.text = getString(R.string.constructor_filter_reset)
             toolbar_right_text_text_view.isClickable = isCheckedItem
             toolbar_right_text_text_view.show()
             setResetTextColor()
-            toolbar_right_text_text_view.setOnClickListener(this@ShopItemListFragment)
+            toolbar_right_text_text_view.setOnClickListener(this@ShopCategoryListFragment)
 
             customizeActionToolBar(
                 toolbar = this,
@@ -203,9 +204,9 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
         with(item.item as ClothesCategoryModel) {
             selectedCategoryTitle = when (currentFilter.categoryIdList.size) {
                 1 -> {
-                   if (item.isChecked) {
-                       title
-                   } else item.item.clothesType.title
+                    if (item.isChecked) {
+                        title
+                    } else item.item.clothesType.title
                 }
                 else -> item.item.clothesType.title
             }
@@ -228,8 +229,8 @@ class ShopItemListFragment : BaseFragment<MainActivity>(), ShopItemListContract.
     private fun showClothesResults() {
         val bundle = Bundle()
 
-        bundle.putParcelable(CategoryTypeDetailFragment.FILTER_KEY, currentFilter)
-        bundle.putString(CategoryTypeDetailFragment.CLOTHES_CATEGORY_TITLE, selectedCategoryTitle)
+        bundle.putParcelable(ShopClothesListFragment.FILTER_KEY, currentFilter)
+        bundle.putString(ShopClothesListFragment.CLOTHES_CATEGORY_TITLE, selectedCategoryTitle)
 
         findNavController().navigate(
             R.id.action_shopItemListFragment_to_categoryTypeDetailFragment,

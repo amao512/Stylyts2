@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/shopItemListFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopItemListFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopCategoryListFragment"
         android:label="fragment_shop_item_list"
         tools:layout="@layout/fragment_shop_item_list"
         >
@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/categoryTypeDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.shop.CategoryTypeDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopClothesListFragment"
         android:label="fragment_category_type_detail"
         tools:layout="@layout/fragment_category_type_detail"
         >

@@ -95,15 +95,15 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
         item: Any?
     ) {
         with(item as HashMap<*, *>) {
-            val clothesType = this[ShopItemListFragment.CLOTHES_TYPE] as ClothesTypeModel
-            val clothesTypeGender = this[ShopItemListFragment.CLOTHES_TYPE_GENDER] as Int
+            val clothesType = this[ShopCategoryListFragment.CLOTHES_TYPE] as ClothesTypeModel
+            val clothesTypeGender = this[ShopCategoryListFragment.CLOTHES_TYPE_GENDER] as Int
 
             if (clothesType.id == 0) {
                 findNavController().navigate(R.id.action_shopFragment_to_shopListFragment)
             } else {
                 val bundle = Bundle()
-                bundle.putInt(ShopItemListFragment.CLOTHES_TYPE_GENDER, clothesTypeGender)
-                bundle.putParcelable(ShopItemListFragment.CLOTHES_TYPE, clothesType)
+                bundle.putInt(ShopCategoryListFragment.CLOTHES_TYPE_GENDER, clothesTypeGender)
+                bundle.putParcelable(ShopCategoryListFragment.CLOTHES_TYPE, clothesType)
 
                 findNavController().navigate(
                     R.id.action_shopFragment_to_shopItemListFragment,
