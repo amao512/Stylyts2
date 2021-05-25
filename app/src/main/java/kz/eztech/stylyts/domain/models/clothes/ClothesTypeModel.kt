@@ -18,5 +18,6 @@ data class ClothesTypeModel(
     var externalImageId: Int = 0,
     var externalType: Int = 0,
     var isChoosen: Boolean = false,
-    var chosenClothesTypes: Int? = null
+    var chosenClothesTypes: Int? = null,
+    var isWiden: Boolean = false
 ) : Parcelable

@@ -3,7 +3,8 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
+import kotlinx.android.synthetic.main.item_collection_constructor_category.view.*
+import kotlinx.android.synthetic.main.item_collection_constructor_category_wide.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
@@ -27,18 +28,24 @@ class CollectionConstructorShopCategoryHolder(
     override fun bindData(item: Any, position: Int) {
 		item as ClothesTypeModel
 
-		initializeViews()
+		initializeViews(item)
 		processClothesType(
 			clothesType = item,
 			position = position
 		)
     }
 
-	private fun initializeViews() {
+	private fun initializeViews(clothesTypeModel: ClothesTypeModel) {
 		with (itemView) {
-			titleTextView = text_view_item_collection_constructor_category_item_title
-			iconImageView = image_view_item_collection_constructor_category_item_image_holder
-			selectedIconImageView = image_view_item_collection_constructor_category_item_image_chooser
+			if (clothesTypeModel.isWiden) {
+				titleTextView = text_view_item_collection_constructor_category_widen_item_title
+				iconImageView = image_view_item_collection_constructor_category_widen_item_image_holder
+				selectedIconImageView = image_view_item_collection_constructor_category_widen_item_image_chooser
+			} else {
+				titleTextView = text_view_item_collection_constructor_category_item_title
+				iconImageView = image_view_item_collection_constructor_category_item_image_holder
+				selectedIconImageView = image_view_item_collection_constructor_category_item_image_chooser
+			}
 		}
 	}
 
@@ -49,7 +56,7 @@ class CollectionConstructorShopCategoryHolder(
 		with(clothesType) {
 			if (isExternal) {
 				iconImageView.setImageResource(externalImageId)
-				titleTextView.text = title
+				(title.substring(0, 13) + "...").also { titleTextView.text = it }
 
 			} else {
 				fillCoverPhoto(clothesType)

@@ -194,7 +194,7 @@
                         android:overScrollMode="never"
                         android:paddingEnd="@dimen/margin_size_8x"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_collection_constructor_category_item"
+                        tools:listitem="@layout/item_collection_constructor_category"
                         />
 
                     <ListView
