@@ -66,8 +66,8 @@ class TagChooserDialog(
     @Inject lateinit var presenter: TagChooserPresenter
 
     private lateinit var filterAdapter: CollectionsFilterAdapter
-    private lateinit var filteredAdapter: GridImageItemFilteredAdapter
-    private lateinit var clothesAdapter: MainImagesAdditionalAdapter
+    private lateinit var clothesAdapter: GridImageItemFilteredAdapter
+    private lateinit var selectedClothesAdapter: MainImagesAdditionalAdapter
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: FilterModel
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -177,11 +177,11 @@ class TagChooserDialog(
             setFilter(filterModel = currentFilter)
         }
 
-        filteredAdapter = GridImageItemFilteredAdapter()
+        clothesAdapter = GridImageItemFilteredAdapter()
         filterAdapter = CollectionsFilterAdapter()
-        clothesAdapter = MainImagesAdditionalAdapter(onStartDragListener = this)
+        selectedClothesAdapter = MainImagesAdditionalAdapter(onStartDragListener = this)
 
-        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(clothesAdapter)
+        val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(selectedClothesAdapter)
         itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(recycler_view_fragment_photo_chooser_selected_list)
     }
@@ -194,12 +194,12 @@ class TagChooserDialog(
         photoBitmap?.loadImage(target = image_view_fragment_photo_chooser)
 
         recycler_view_fragment_photo_chooser_filter_list.adapter = filterAdapter
-        recycler_view_fragment_photo_chooser.adapter = filteredAdapter
+        recycler_view_fragment_photo_chooser.adapter = clothesAdapter
         recycler_view_fragment_photo_chooser.addItemDecoration(
             GridSpacesItemDecoration(space = 16)
         )
 
-        recycler_view_fragment_photo_chooser_selected_list.adapter = clothesAdapter
+        recycler_view_fragment_photo_chooser_selected_list.adapter = selectedClothesAdapter
 
         motion_view_fragment_photo_chooser_tags_container.apply {
             setCustomDeleteIcon(R.drawable.ic_baseline_close_20)
@@ -221,7 +221,7 @@ class TagChooserDialog(
             is ClothesModel -> {
                 clothesEntities.remove(motionEntity)
                 clothesList.remove(motionEntity.item.item)
-                clothesAdapter.updateList(clothesList)
+                selectedClothesAdapter.updateList(clothesList)
             }
             is UserModel -> {
                 userEntities.remove(motionEntity)
@@ -237,8 +237,8 @@ class TagChooserDialog(
 
     override fun initializeListeners() {
         filterAdapter.setOnClickListener(this)
-        filteredAdapter.setOnClickListener(this)
         clothesAdapter.setOnClickListener(this)
+        selectedClothesAdapter.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
@@ -287,7 +287,7 @@ class TagChooserDialog(
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        filteredAdapter.updateMoreList(list = resultsModel.results)
+        clothesAdapter.updateMoreList(list = resultsModel.results)
 
         setPagesCondition(resultsModel.totalPages)
     }
@@ -362,7 +362,7 @@ class TagChooserDialog(
         clothesEntities.clear()
         clothesList.clear()
 
-        clothesAdapter.getClothesList().map {
+        selectedClothesAdapter.getClothesList().map {
             setClothesTag(clothesModel = it)
         }
     }
@@ -429,7 +429,7 @@ class TagChooserDialog(
             }.show(childFragmentManager, "FilterDialog")
             1 -> {
                 currentFilter.typeIdList = listOf((collectionFilterModel.item as ClothesTypeModel).id)
-                filteredAdapter.clearList()
+                clothesAdapter.clearList()
                 resetPages()
                 getClothes()
 
@@ -516,7 +516,7 @@ class TagChooserDialog(
 
                     clothesEntities.add(entity)
                     clothesList.add(clothesModel)
-                    clothesAdapter.updateList(clothesList)
+                    selectedClothesAdapter.updateList(clothesList)
                     checkEmptyList()
                 }
             })
