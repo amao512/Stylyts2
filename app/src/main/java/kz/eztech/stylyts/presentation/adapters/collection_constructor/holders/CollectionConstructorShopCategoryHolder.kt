@@ -1,13 +1,14 @@
 package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 
 import android.view.View
-import com.bumptech.glide.Glide
+import android.widget.ImageView
+import android.widget.TextView
 import kotlinx.android.synthetic.main.item_collection_constructor_category_item.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.shop.ClothesTypes
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
@@ -19,78 +20,60 @@ class CollectionConstructorShopCategoryHolder(
     private val gender: Int
 ) : BaseViewHolder(itemView, adapter) {
 
+	private lateinit var titleTextView: TextView
+	private lateinit var iconImageView: ImageView
+	private lateinit var selectedIconImageView: ImageView
+
     override fun bindData(item: Any, position: Int) {
-        when (item) {
-			is ClothesTypeModel -> processClothesType(
-				clothesType = item,
-				position = position
-			)
-			is ClothesTypes -> processClothesTypes(
-				clothesTypes = item,
-				position = position
-			)
-        }
+		item as ClothesTypeModel
+
+		initializeViews()
+		processClothesType(
+			clothesType = item,
+			position = position
+		)
     }
+
+	private fun initializeViews() {
+		with (itemView) {
+			titleTextView = text_view_item_collection_constructor_category_item_title
+			iconImageView = image_view_item_collection_constructor_category_item_image_holder
+			selectedIconImageView = image_view_item_collection_constructor_category_item_image_chooser
+		}
+	}
 
 	private fun processClothesType(
 		clothesType: ClothesTypeModel,
 		position: Int
 	) {
 		with(clothesType) {
-			with(itemView) {
-				if (isExternal) {
-					image_view_item_collection_constructor_category_item_image_holder.setImageResource(
-						externalImageId
-					)
-					text_view_item_collection_constructor_category_item_title.text = "${title.substring(0, 7)}..."
-					image_view_item_collection_constructor_category_item_image_holder.setOnClickListener {
-						adapter.itemClickListener?.onViewClicked(it, position, clothesType)
-					}
+			if (isExternal) {
+				iconImageView.setImageResource(externalImageId)
+				titleTextView.text = title
+
+			} else {
+				fillCoverPhoto(clothesType)
+				titleTextView.text = title
+
+				if (isChoosen) {
+					selectedIconImageView.show()
 				} else {
-					fillCoverPhoto(clothesType)
-
-					text_view_item_collection_constructor_category_item_title.text = clothesType.title
-					image_view_item_collection_constructor_category_item_image_holder.setOnClickListener {
-						adapter.itemClickListener?.onViewClicked(it, position, clothesType)
-					}
-
-					if (isChoosen) {
-						image_view_item_collection_constructor_category_item_image_chooser.show()
-					} else {
-						image_view_item_collection_constructor_category_item_image_chooser.hide()
-					}
+					selectedIconImageView.hide()
 				}
+			}
+
+			iconImageView.setOnClickListener {
+				adapter.itemClickListener?.onViewClicked(it, position, clothesType)
 			}
 		}
 	}
 
 	private fun fillCoverPhoto(clothesType: ClothesTypeModel) {
-		with (itemView) {
-			Glide.with(image_view_item_collection_constructor_category_item_image_holder.context)
-				.load(when (gender) {
-					0 -> clothesType.menConstructorPhoto
-					else -> clothesType.womenConstructorPhoto
-				})
-				.into(image_view_item_collection_constructor_category_item_image_holder)
+		val image = when (gender) {
+			0 -> clothesType.menConstructorPhoto
+			else -> clothesType.womenConstructorPhoto
 		}
-	}
 
-	private fun processClothesTypes(
-        clothesTypes: ClothesTypes,
-        position: Int
-	) {
-		with(clothesTypes) {
-			with(itemView) {
-				Glide.with(this)
-					.load(constructor_icon)
-					.into(this.image_view_item_collection_constructor_category_item_image_holder)
-
-				text_view_item_collection_constructor_category_item_title.text = title
-
-				image_view_item_collection_constructor_category_item_image_holder.setOnClickListener {
-					adapter.itemClickListener?.onViewClicked(it, position, clothesTypes)
-				}
-			}
-		}
+		image.loadImage(target = iconImageView)
 	}
 }

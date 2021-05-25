@@ -12,7 +12,6 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -38,6 +37,7 @@ import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopCategoryAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.StylesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
@@ -278,9 +278,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 	}
 
 	override fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
-		val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-			currentActivity, R.layout.item_style, resultsModel.results.map { it.title }
-		)
+		val adapter = StylesAdapter(requireContext(), resultsModel.results)
 		recycler_view_fragment_collection_constructor_list.hide()
 
 		list_view_fragment_collection_constructor_list_style.adapter = adapter
