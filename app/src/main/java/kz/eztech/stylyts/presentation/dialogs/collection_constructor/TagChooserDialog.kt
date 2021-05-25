@@ -631,6 +631,7 @@ class TagChooserDialog(
 
     private fun showFilterResults(filterModel: FilterModel) {
         currentFilter = filterModel
+        clothesAdapter.clearList()
         getClothes()
     }
 
