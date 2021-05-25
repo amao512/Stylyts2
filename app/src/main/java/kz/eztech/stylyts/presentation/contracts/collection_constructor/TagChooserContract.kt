@@ -30,5 +30,10 @@ interface TagChooserContract {
             token: String,
             filterModel: FilterModel
         )
+
+        fun searchClothes(
+            token: String,
+            title: String
+        )
     }
 }

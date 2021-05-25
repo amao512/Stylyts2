@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -242,6 +243,7 @@ class TagChooserDialog(
 
     override fun processPostInitialization() {
         handleRecyclerViewScrolling()
+        handleSearchView()
     }
 
     override fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>) {
@@ -388,6 +390,32 @@ class TagChooserDialog(
                 }
             }
         })
+    }
+
+    private fun handleSearchView() {
+        bottom_sheet_dialog_clothes_grid_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchClothes(title = query ?: EMPTY_STRING)
+
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                searchClothes(title = newText ?: EMPTY_STRING)
+
+                return false
+            }
+        })
+    }
+
+    private fun searchClothes(title: String) {
+        clothesAdapter.clearList()
+        resetPages()
+
+        presenter.searchClothes(
+            token = getTokenFromArgs(),
+            title = title
+        )
     }
 
     private fun onFilterModelClicked(
