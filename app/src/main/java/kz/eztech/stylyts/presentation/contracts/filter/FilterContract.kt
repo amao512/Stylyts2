@@ -44,9 +44,6 @@ interface FilterContract {
             filterModel: FilterModel
         )
 
-        fun getColors(
-            token: String,
-            filterModel: FilterModel
-        )
+        fun getColors(token: String)
     }
 }

@@ -29,6 +29,8 @@ interface ClothesDomainRepository {
         brandId: String
     ): Single<ClothesBrandModel>
 
+    fun getClothesColors(token: String): Single<ResultsModel<ClothesColorModel>>
+
     fun getClothes(
         token: String,
         stringQueryMap: Map<String, String>,

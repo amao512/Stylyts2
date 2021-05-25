@@ -14,7 +14,7 @@ data class FilterModel(
     var typeIdList: List<Int> = emptyList(),
     var categoryIdList: List<Int> = emptyList(),
     var brandList: List<ClothesBrandModel> = emptyList(),
-    var colorList: List<Int> = emptyList(),
+    var colorList: List<String> = emptyList(),
     var minPrice: Int = 0,
     var maxPrice: Int = 0,
     var isMy: Boolean = false,

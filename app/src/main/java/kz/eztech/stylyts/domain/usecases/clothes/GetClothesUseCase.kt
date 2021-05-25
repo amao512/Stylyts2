@@ -4,8 +4,8 @@ import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -81,6 +81,10 @@ class GetClothesUseCase @Inject constructor(
 
         if (filterModel.maxPrice != 0) {
             stringQueryMap["cost_lt"] = filterModel.maxPrice.toString()
+        }
+
+        if (filterModel.colorList.isNotEmpty()) {
+            stringQueryMap["clothes_color"] = filterModel.colorList.joinToString(",")
         }
 
         stringQueryMap["only_brands"] = filterModel.onlyBrands.toString()

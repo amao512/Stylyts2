@@ -50,6 +50,11 @@ interface ClothesApi {
         @Path("brand_id") brandId: String
     ): Single<Response<ClothesBrandApiModel>>
 
+    @GET(RestConstants.GET_CLOTHES_COLORS)
+    fun getClothesColors(
+        @Header("Authorization") token: String
+    ): Single<Response<ResultsApiModel<ClothesColorApiModel>>>
+
     @GET(RestConstants.GET_CLOTHES)
     fun getClothes(
         @Header("Authorization") token: String,

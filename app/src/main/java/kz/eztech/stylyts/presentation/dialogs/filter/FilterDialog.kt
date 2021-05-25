@@ -18,11 +18,11 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ColorModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesColorModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterItemModel
@@ -237,8 +237,8 @@ class FilterDialog(
     }
 
     override fun processColors(list: List<FilterCheckModel>) {
-        currentFilter.colorList.forEach { category ->
-            list.find { it.id == category }?.isChecked = true
+        currentFilter.colorList.forEach { color ->
+            list.find { (it.item as ClothesColorModel).color == color }?.isChecked = true
         }
 
         filterCheckAdapter.updateList(list)
@@ -336,7 +336,7 @@ class FilterDialog(
         when (item.item) {
             is ClothesCategoryModel -> selectWardrobeItem(position)
             is ClothesBrandModel -> selectClothesBrand(position)
-            is ColorModel -> selectColor(position)
+            is ClothesColorModel -> selectColor(position)
         }
 
         checkEmptyFilter()
@@ -367,8 +367,10 @@ class FilterDialog(
     }
 
     private fun selectColor(position: Int) {
-        filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.colorList = filterCheckAdapter.getCheckedItemIdList()
+        filterCheckAdapter.onSingleCheckItem(position)
+        currentFilter.colorList = filterCheckAdapter.getCheckedItemList().map {
+            (it.item as ClothesColorModel).color
+        }
     }
 
     private fun onMyWardrobeClick() {
@@ -404,10 +406,7 @@ class FilterDialog(
         processOpenedFilterGroup(title = getString(R.string.filter_colors))
         recyclerView.adapter = filterCheckAdapter
 
-        presenter.getColors(
-            token = getTokenFromArguments(),
-            filterModel = currentFilter
-        )
+        presenter.getColors(token = getTokenFromArguments())
     }
 
     private fun onPriceRangeClick() {

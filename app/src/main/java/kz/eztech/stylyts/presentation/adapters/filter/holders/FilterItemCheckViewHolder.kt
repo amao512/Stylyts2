@@ -4,11 +4,7 @@ import android.graphics.Color
 import android.view.View
 import kotlinx.android.synthetic.main.item_filter_character.view.*
 import kotlinx.android.synthetic.main.item_filter_check.view.*
-import kz.eztech.stylyts.domain.models.common.ColorModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
@@ -33,7 +29,7 @@ class FilterItemCheckViewHolder(
             is ClothesBrandModel -> processBrandModel(item, position)
             is ClothesTypeModel -> processTypeModel(item, position)
             is ClothesStyleModel -> processStyleModel(item, position)
-            is ColorModel -> processColorModel(item, position)
+            is ClothesColorModel -> processColorModel(item, position)
             is String -> processCharacter(item, position)
         }
     }
@@ -110,7 +106,7 @@ class FilterItemCheckViewHolder(
         filterCheckModel: FilterCheckModel,
         position: Int
     ) {
-        val colorModel = filterCheckModel.item as ColorModel
+        val colorModel = filterCheckModel.item as ClothesColorModel
 
         with(itemView) {
             fillTitle(

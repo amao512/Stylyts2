@@ -6,8 +6,8 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.ClothesBrandApiModelMapper
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.*
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import javax.inject.Inject
 
@@ -94,6 +94,15 @@ class ClothesRepository @Inject constructor(
         ).map {
             when (it.isSuccessful) {
                 true -> clothesBrandApiModelMapper.map(data = it.body())
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothesColors(token: String): Single<ResultsModel<ClothesColorModel>> {
+        return api.getClothesColors(token).map {
+            when (it.isSuccessful) {
+                true -> resultsApiModelMapper.map(data = it.body())
                 false -> throw NetworkException(it)
             }
         }

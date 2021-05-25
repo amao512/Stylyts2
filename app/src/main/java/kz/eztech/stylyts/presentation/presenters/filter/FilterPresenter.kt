@@ -2,23 +2,18 @@ package kz.eztech.stylyts.presentation.presenters.filter
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ColorModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterModel
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.*
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import java.util.*
+import java.util.logging.Filter
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
@@ -26,7 +21,8 @@ class FilterPresenter @Inject constructor(
     private val getClothesTypesUseCase: GetClothesTypesUseCase,
     private val getClothesCategoriesByTypeUseCase: GetClothesCategoriesByTypeUseCase,
     private val getClothesBrandsUseCase: GetClothesBrandsUseCase,
-    private val getClothesUseCase: GetClothesUseCase
+    private val getClothesUseCase: GetClothesUseCase,
+    private val getClothesColorsUseCase: GetClothesColorsUseCase
 ) : FilterContract.Presenter {
 
     private lateinit var view: FilterContract.View
@@ -36,6 +32,7 @@ class FilterPresenter @Inject constructor(
         getClothesCategoriesByTypeUseCase.clear()
         getClothesBrandsUseCase.clear()
         getClothesUseCase.clear()
+        getClothesColorsUseCase.clear()
     }
 
     override fun attach(view: FilterContract.View) {
@@ -175,32 +172,28 @@ class FilterPresenter @Inject constructor(
         })
     }
 
-    override fun getColors(
-        token: String,
-        filterModel: FilterModel
-    ) {
-        val list: MutableList<FilterCheckModel> = mutableListOf()
-        list.add(
-            FilterCheckModel(id = 1,
-                item = ColorModel(
-                    id = 1,
-                    title = "Белый",
-                    color = "#ffffff"
-                )
-            )
-        )
-        list.add(
-            FilterCheckModel(
-                id = 2,
-                item = ColorModel(
-                    id = 2,
-                    title = "Черный",
-                    color = "#000000"
-                )
-            )
-        )
+    override fun getColors(token: String) {
+        getClothesColorsUseCase.initParams(token)
+        getClothesColorsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesColorModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesColorModel>) {
+                val preparedList: MutableList<FilterCheckModel> = mutableListOf()
 
-        view.processColors(list)
+                t.results.map {
+                    preparedList.add(
+                        FilterCheckModel(
+                            id = it.id,
+                            item = it
+                        )
+                    )
+                }
+
+                view.processColors(list = preparedList)
+            }
+
+            override fun onError(e: Throwable) {
+                view.displayMessage(msg = errorHelper.processError(e))
+            }
+        })
     }
 
     private fun getPreparedCategories(

@@ -29,6 +29,7 @@ class ResultsApiModelMapper @Inject constructor(
     val clothesTypeApiModelMapper: ClothesTypeApiModelMapper,
     val clothesStyleApiModelMapper: ClothesStyleApiModelMapper,
     val clothesBrandApiModelMapper: ClothesBrandApiModelMapper,
+    val clothesColorApiModelMapper: ClothesColorApiModelMapper,
     val addressApiModelMapper: AddressApiModelMapper,
     val userApiModelMapper: UserApiModelMapper,
     val followerApiModelMapper: FollowerApiModelMapper,
@@ -65,6 +66,9 @@ class ResultsApiModelMapper @Inject constructor(
             }
             ClothesBrandApiModel::class -> {
                 clothesBrandApiModelMapper.map(results as List<ClothesBrandApiModel>) as List<C>
+            }
+            ClothesColorApiModel::class -> {
+                clothesColorApiModelMapper.map(results as List<ClothesColorApiModel>) as List<C>
             }
             AddressApiModel::class -> {
                 addressApiModelMapper.map(results as List<AddressApiModel>) as List<C>
