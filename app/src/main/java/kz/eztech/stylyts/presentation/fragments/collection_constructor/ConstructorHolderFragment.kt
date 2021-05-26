@@ -5,7 +5,7 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.content.ContextCompat.getColor
 import kotlinx.android.synthetic.main.fragment_constructor_holder.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.common.ClothesTypeDataModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.ConstructorPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -17,7 +17,7 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
 
     private lateinit var pagerAdapter: ConstructorPagerAdapter
 
-    private val inputClotheList = ArrayList<ClothesTypeDataModel>()
+    private val inputClotheList = ArrayList<ClothesModel>()
 
     companion object {
         const val CLOTHES_ITEMS_KEY = "items"
@@ -38,7 +38,7 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey(CLOTHES_ITEMS_KEY)) {
-                it.getParcelableArrayList<ClothesTypeDataModel>(CLOTHES_ITEMS_KEY)?.let { it1 ->
+                it.getParcelableArrayList<ClothesModel>(CLOTHES_ITEMS_KEY)?.let { it1 ->
                     inputClotheList.addAll(it1)
                 }
             }
@@ -90,31 +90,19 @@ class ConstructorHolderFragment : BaseFragment<MainActivity>(), ConstructorHolde
             motion_layout_fragment_constructor_holder_chooser.startState -> {
                 view_pager_fragment_constructor_holder.setCurrentItem(0, true)
                 text_view_fragment_constructor_holder_create_collection.setTextColor(
-                    getColor(
-                        currentActivity,
-                        R.color.white
-                    )
+                    getColor(currentActivity, R.color.white)
                 )
                 text_view_fragment_constructor_holder_create_post.setTextColor(
-                    getColor(
-                        currentActivity,
-                        R.color.app_gray
-                    )
+                    getColor(currentActivity, R.color.app_gray)
                 )
             }
             motion_layout_fragment_constructor_holder_chooser.endState -> {
                 view_pager_fragment_constructor_holder.setCurrentItem(1, true)
                 text_view_fragment_constructor_holder_create_collection.setTextColor(
-                    getColor(
-                        currentActivity,
-                        R.color.app_gray
-                    )
+                    getColor(currentActivity, R.color.app_gray)
                 )
                 text_view_fragment_constructor_holder_create_post.setTextColor(
-                    getColor(
-                        currentActivity,
-                        R.color.white
-                    )
+                    getColor(currentActivity, R.color.white)
                 )
             }
         }

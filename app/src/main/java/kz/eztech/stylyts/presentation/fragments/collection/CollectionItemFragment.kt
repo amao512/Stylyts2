@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_collection_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.common.GridImageAdapter
@@ -31,7 +31,7 @@ class CollectionItemFragment(
     lateinit var presenter: CollectionsItemPresenter
     private lateinit var adapter: GridImageAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var currentFilter: FilterModel
+    private lateinit var currentFilter: PostFilterModel
 
     private val shopItemViewModel: ShopItemViewModel by inject()
 
@@ -58,7 +58,7 @@ class CollectionItemFragment(
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        currentFilter = FilterModel()
+        currentFilter = PostFilterModel()
         adapter = GridImageAdapter()
         adapter.setOnClickListener(this)
     }

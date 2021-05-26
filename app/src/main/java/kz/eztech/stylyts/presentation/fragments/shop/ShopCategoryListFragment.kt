@@ -8,12 +8,12 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_item_list.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -29,13 +29,12 @@ import javax.inject.Inject
 class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,
     UniversalViewClickListener, View.OnClickListener {
 
-    @Inject
-    lateinit var presenter: ShopItemListPresenter
+    @Inject lateinit var presenter: ShopItemListPresenter
 
     private lateinit var filterCheckAdapter: FilterCheckAdapter
     private lateinit var clothesType: ClothesTypeModel
     private lateinit var selectedCategoryTitle: String
-    private lateinit var currentFilter: FilterModel
+    private lateinit var currentFilter: ClothesFilterModel
 
     private var clothesTypeGender: Int = 0
     private var isCheckedItem: Boolean = false
@@ -98,8 +97,7 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
         filterCheckAdapter = FilterCheckAdapter()
         filterCheckAdapter.setOnClickListener(listener = this)
 
-        currentFilter = FilterModel()
-        currentFilter.onlyBrands = true
+        currentFilter = ClothesFilterModel()
     }
 
     override fun initializeViews() {
@@ -118,7 +116,7 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
     override fun processPostInitialization() {
         setCurrentGender()
 
-        currentFilter.typeIdList = arrayListOf(clothesType.id)
+        currentFilter.typeIdList = arrayListOf(clothesType)
 
         presenter.getCategoriesByType(
             token = currentActivity.getTokenFromSharedPref(),
@@ -199,7 +197,7 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
         item as FilterCheckModel
 
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemIdListByRemoveFirst()
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemListByRemoveFirst().map { it.item as ClothesCategoryModel }
 
         with(item.item as ClothesCategoryModel) {
             selectedCategoryTitle = when (currentFilter.categoryIdList.size) {

@@ -2,12 +2,12 @@ package kz.eztech.stylyts.presentation.dialogs.cart
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.dialog_bottom_clothes_sizes.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesCountModel
+import kz.eztech.stylyts.presentation.adapters.clothes.CountsAdapter
 import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
 
 class ClothesCountsBottomDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_bottom_clothes_sizes), View.OnClickListener {
@@ -49,9 +49,8 @@ class ClothesCountsBottomDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_b
             titleTextView.text = getString(R.string.detail_chooser_size_table)
 
             if (count.isNotEmpty()) {
-                val adapter: ArrayAdapter<Int> = ArrayAdapter<Int>(
-                    requireContext(), R.layout.item_style, count.map { it.count }
-                )
+                val adapter = CountsAdapter(requireContext(), count)
+
                 chooserListView.adapter = adapter
                 currentItem = count[0]
                 chooserListView.setOnItemClickListener { _, _, position, _ ->

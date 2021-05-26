@@ -1,10 +1,12 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
-import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -46,15 +48,9 @@ interface ProfileContract {
 
         fun getFilerList(isOwnProfile: Boolean)
 
-        fun getCollections(
-            token: String,
-            mode: Int,
-            filterModel: FilterModel
-        )
-
         fun getPosts(
             token: String,
-            filterModel: FilterModel
+            filterModel: PostFilterModel
         )
 
         fun getFollowers(
@@ -74,12 +70,12 @@ interface ProfileContract {
 
         fun getWardrobe(
             token: String,
-            filterModel: FilterModel
+            filterModel: ClothesFilterModel
         )
 
         fun getOutfits(
             token: String,
-            filterModel: FilterModel
+            filterModel: OutfitFilterModel
         )
     }
 }

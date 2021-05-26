@@ -8,11 +8,11 @@ import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.fragment_category_type_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
@@ -36,7 +36,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
     private lateinit var filterDialog: FilterDialog
-    private lateinit var currentFilter: FilterModel
+    private lateinit var currentFilter: ClothesFilterModel
 
     private var title: String = EMPTY_STRING
 
@@ -82,7 +82,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey(FILTER_KEY)) {
-                it.getParcelable<FilterModel>(FILTER_KEY)?.let { filter ->
+                it.getParcelable<ClothesFilterModel>(FILTER_KEY)?.let { filter ->
                     currentFilter = filter
                 }
             }
@@ -100,7 +100,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
         }
 
         when (item) {
-            is FilterModel -> {
+            is ClothesFilterModel -> {
                 currentFilter = item
 
                 presenter.getClothesByType(
@@ -112,7 +112,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
     }
 
     override fun initializeViewsData() {
-        currentFilter = FilterModel()
+        currentFilter = ClothesFilterModel()
 
         brandsFilterAdapter = CollectionsFilterAdapter()
         brandsFilterAdapter.setOnClickListener(listener = this)

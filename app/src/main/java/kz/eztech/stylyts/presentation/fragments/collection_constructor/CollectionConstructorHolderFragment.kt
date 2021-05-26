@@ -6,7 +6,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor_holder.*
 import kotlinx.android.synthetic.main.fragment_profile.include_toolbar_profile
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.common.ClothesTypeDataModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -20,7 +20,7 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
 
     private lateinit var pagerAdapter: CollectionConstructorPagerAdapter
 
-    private val inputClotheList = ArrayList<ClothesTypeDataModel>()
+    private val inputClotheList = ArrayList<ClothesModel>()
 
     companion object {
         const val CLOTHES_ITEMS_KEY = "items"
@@ -56,7 +56,7 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey(CLOTHES_ITEMS_KEY)) {
-                it.getParcelableArrayList<ClothesTypeDataModel>(CLOTHES_ITEMS_KEY)?.let { it1 ->
+                it.getParcelableArrayList<ClothesModel>(CLOTHES_ITEMS_KEY)?.let { it1 ->
                     inputClotheList.addAll(it1)
                 }
             }
@@ -72,7 +72,6 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
         bundle.putInt(CollectionConstructorFragment.MAIN_ID_KEY, getIdFromArgs())
         bundle.putBoolean(CollectionConstructorFragment.IS_UPDATING_KEY, isUpdating())
         pagerAdapter = CollectionConstructorPagerAdapter(this, bundle)
-
 
         view_pager_fragment_collection_constructor_holder.isUserInputEnabled = false
         view_pager_fragment_collection_constructor_holder.isSaveEnabled = false

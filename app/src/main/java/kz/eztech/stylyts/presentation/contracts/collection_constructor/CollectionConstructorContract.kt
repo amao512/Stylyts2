@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 
 /**
@@ -26,7 +26,7 @@ interface CollectionConstructorContract {
 
         fun getClothesByType(
             token: String,
-            filterModel: FilterModel
+            filterModel: ClothesFilterModel
         )
 
         fun getStyles(token: String)

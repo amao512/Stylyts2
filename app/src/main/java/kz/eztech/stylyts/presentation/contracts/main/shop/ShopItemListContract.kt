@@ -1,9 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.main.shop
 
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -22,12 +22,12 @@ interface ShopItemListContract {
 
         fun getClothesResultsByType(
             token: String,
-            filterModel: FilterModel
+            filterModel: ClothesFilterModel
         )
 
         fun getClothesResultsByCategory(
             token: String,
-            filterModel: FilterModel
+            filterModel: ClothesFilterModel
         )
 
         fun getCategoriesByType(

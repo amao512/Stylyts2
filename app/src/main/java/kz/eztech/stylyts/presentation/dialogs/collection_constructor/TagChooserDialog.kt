@@ -21,11 +21,11 @@ import kotlinx.android.synthetic.main.bottom_sheet_dialog_clothes_grid.*
 import kotlinx.android.synthetic.main.dialog_tag_chooser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -69,7 +69,7 @@ class TagChooserDialog(
     private lateinit var clothesAdapter: GridImageItemFilteredAdapter
     private lateinit var selectedClothesAdapter: MainImagesAdditionalAdapter
     private lateinit var filterDialog: FilterDialog
-    private lateinit var currentFilter: FilterModel
+    private lateinit var currentFilter: ClothesFilterModel
     private lateinit var itemTouchHelper: ItemTouchHelper
 
     private val filterMap = HashMap<String, Any>()
@@ -167,7 +167,7 @@ class TagChooserDialog(
 
     override fun initializeViewsData() {
         // Request camera permissions
-        currentFilter = FilterModel()
+        currentFilter = ClothesFilterModel()
         filterDialog = FilterDialog.getNewInstance(
             token = getTokenFromArgs(),
             itemClickListener = this,
@@ -312,7 +312,7 @@ class TagChooserDialog(
         when (item) {
             is CollectionFilterModel -> onFilterModelClicked(position, item)
             is ClothesModel -> onClothesClicked(view, item)
-            is FilterModel -> showFilterResults(filterModel = item)
+            is ClothesFilterModel -> showFilterResults(filterModel = item)
         }
     }
 
@@ -428,7 +428,7 @@ class TagChooserDialog(
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, "FilterDialog")
             1 -> {
-                currentFilter.typeIdList = listOf((collectionFilterModel.item as ClothesTypeModel).id)
+                currentFilter.typeIdList = listOf(collectionFilterModel.item as ClothesTypeModel)
                 clothesAdapter.clearList()
                 resetPages()
                 getClothes()
@@ -629,7 +629,7 @@ class TagChooserDialog(
         }
     }
 
-    private fun showFilterResults(filterModel: FilterModel) {
+    private fun showFilterResults(filterModel: ClothesFilterModel) {
         currentFilter = filterModel
         clothesAdapter.clearList()
         getClothes()

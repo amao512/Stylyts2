@@ -2,10 +2,10 @@ package kz.eztech.stylyts.presentation.presenters.shop
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -55,12 +55,9 @@ class ShopItemListPresenter @Inject constructor(
 
     override fun getClothesResultsByType(
         token: String,
-        filterModel: FilterModel
+        filterModel: ClothesFilterModel
     ) {
-        getClothesUseCase.initParams(
-            token = token,
-            filterModel = filterModel
-        )
+        getClothesUseCase.initParams(token, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
@@ -78,12 +75,9 @@ class ShopItemListPresenter @Inject constructor(
 
     override fun getClothesResultsByCategory(
         token: String,
-        filterModel: FilterModel
+        filterModel: ClothesFilterModel
     ) {
-        getClothesUseCase.initParams(
-            token = token,
-            filterModel = filterModel
-        )
+        getClothesUseCase.initParams(token, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processClothesResults(resultsModel = t)

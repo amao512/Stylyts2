@@ -3,15 +3,14 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.item_constructor_filter_clothe_items.view.*
-import kz.eztech.stylyts.domain.models.common.BrandModel
+import kz.eztech.stylyts.domain.models.shop.ClothesTypes
+import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.CollectionConstructorSubFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.domain.models.shop.ClothesTypes
-import kz.eztech.stylyts.domain.models.shop.GenderCategory
 
 /**
  * Created by Ruslan Erdenoff on 05.02.2021.
@@ -23,33 +22,8 @@ class CollectionConstructorFilterHolder(
 
     override fun bindData(item: Any, position: Int) {
         when (item) {
-            is BrandModel -> processBrandModel(
-                brandModel = item,
-                position = position
-            )
             is GenderCategory -> processGenderCategory(genderCategory = item)
             else -> {}
-        }
-    }
-
-    private fun processBrandModel(
-        brandModel: BrandModel,
-        position: Int
-    ) {
-        with (itemView) {
-            frame_layout_tem_constructor_filter_clothe_container.setOnClickListener {
-                adapter.itemClickListener?.onViewClicked(it, position, brandModel)
-            }
-
-            text_view_item_constructor_filter_clothe_item_name.text = brandModel.first_name
-
-            if (brandModel.isChosen) {
-                image_view_item_constructor_filter_clothe_items.show()
-            } else {
-                image_view_item_constructor_filter_clothe_items.hide()
-            }
-
-            recycler_view_item_constructor_filter_clothe_items.show()
         }
     }
 
@@ -57,7 +31,6 @@ class CollectionConstructorFilterHolder(
         with (itemView) {
             recycler_view_item_constructor_filter_clothe_items.hide()
 
-            val filterMap = HashMap<String, Any>()
             val currentIds = ArrayList<Int>()
             val clothesTypes = ArrayList<ClothesTypes>()
             val additionalAdapter = CollectionConstructorSubFilterAdapter()

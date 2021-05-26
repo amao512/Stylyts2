@@ -2,11 +2,10 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.common.BrandModel
 import kz.eztech.stylyts.domain.models.shop.GenderCategory
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.CollectionConstructorFilterHolder
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.CollectionConstructorFilterHolder
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 
 /**
@@ -18,7 +17,6 @@ class CollectionConstructorFilterAdapter : BaseAdapter() {
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return when (list[0]) {
-            is BrandModel -> getBrandModelDiffUtil(list)
             is GenderCategory -> getGenderCategoryDiffUtil(list)
             else -> getDefaultDiffUtil(list)
         }
@@ -29,19 +27,6 @@ class CollectionConstructorFilterAdapter : BaseAdapter() {
             itemView = view,
             adapter = this
         )
-    }
-
-    private fun getBrandModelDiffUtil(list: List<Any>): BaseDiffUtilCallBack {
-        return object : BaseDiffUtilCallBack(currentList, list) {
-
-            override fun getAreContentsTheSame(
-                oldItemPosition: Int,
-                newItemPosition: Int
-            ): Boolean {
-                return (currentList[oldItemPosition] as BrandModel).isChosen ==
-                        (list[newItemPosition] as BrandModel).isChosen
-            }
-        }
     }
 
     private fun getGenderCategoryDiffUtil(list: List<Any>): BaseDiffUtilCallBack {

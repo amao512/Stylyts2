@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.main
 
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
@@ -29,7 +30,7 @@ interface MainContract {
 
         fun getPosts(
             token: String,
-            page: Int
+            filterModel: PostFilterModel
         )
 
         fun deletePost(

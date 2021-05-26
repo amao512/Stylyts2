@@ -2,10 +2,10 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase
@@ -59,14 +59,11 @@ class TagChooserPresenter @Inject constructor(
 
     override fun getClothes(
         token: String,
-        filterModel: FilterModel
+        filterModel: ClothesFilterModel
     ) {
         view.displayProgress()
 
-        getClothesUseCase.initParams(
-            token = token,
-            filterModel = filterModel
-        )
+        getClothesUseCase.initParams(token, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {

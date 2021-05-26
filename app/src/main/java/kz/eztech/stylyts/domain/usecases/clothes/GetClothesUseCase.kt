@@ -1,12 +1,11 @@
 package kz.eztech.stylyts.domain.usecases.clothes
 
-import android.util.Log
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
@@ -23,8 +22,6 @@ class GetClothesUseCase @Inject constructor(
     private lateinit var booleanQueryMap: Map<String, Boolean>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesModel>> {
-        Log.d("TAG4", "usecase - $stringQueryMap")
-
         return clothesDomainRepository.getClothes(
             token = token,
             stringQueryMap = stringQueryMap,
@@ -34,7 +31,7 @@ class GetClothesUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        filterModel: FilterModel
+        filterModel: ClothesFilterModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
@@ -46,25 +43,19 @@ class GetClothesUseCase @Inject constructor(
         }
 
         if (filterModel.typeIdList.isNotEmpty()) {
-            stringQueryMap["clothes_type"] = filterModel.typeIdList.joinToString(",")
+            stringQueryMap["clothes_type"] = filterModel.typeIdList.map { it.id }.joinToString(",")
         }
 
         if (filterModel.categoryIdList.isNotEmpty()) {
-            stringQueryMap["clothes_category"] = filterModel.categoryIdList.joinToString(",")
+            stringQueryMap["clothes_category"] = filterModel.categoryIdList.map { it.id }.joinToString(",")
         }
 
         if (filterModel.brandList.isNotEmpty()) {
-            val brandTitleList = ArrayList<String>()
-
-            filterModel.brandList.map {
-                brandTitleList.add(it.title)
-            }
-
-            stringQueryMap["clothes_brand"] = brandTitleList.joinToString(",")
+            stringQueryMap["clothes_brand"] = filterModel.brandList.joinToString(",") { it.title }
         }
 
-        if (filterModel.isMy) {
-            booleanQueryMap["in_my_wardrobe"] = filterModel.isMy
+        if (filterModel.inMyWardrobe) {
+            booleanQueryMap["in_my_wardrobe"] = filterModel.inMyWardrobe
         }
 
         if (filterModel.page != 0) {
@@ -84,7 +75,7 @@ class GetClothesUseCase @Inject constructor(
         }
 
         if (filterModel.colorList.isNotEmpty()) {
-            stringQueryMap["clothes_color"] = filterModel.colorList.joinToString(",")
+            stringQueryMap["clothes_color"] = filterModel.colorList.joinToString(",") { it.color }
         }
 
         stringQueryMap["only_brands"] = filterModel.onlyBrands.toString()

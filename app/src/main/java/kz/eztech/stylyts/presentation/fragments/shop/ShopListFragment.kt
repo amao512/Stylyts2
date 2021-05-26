@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_shop_list.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
@@ -23,6 +22,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.shop.ShopListContract
 import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopListPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -38,7 +38,6 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var shopAdapter: ShopAdapter
     private lateinit var filterDialog: FilterDialog
-    private lateinit var currentFilter: FilterModel
 
     private lateinit var filterRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
@@ -76,8 +75,6 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        currentFilter = FilterModel()
-
         filterAdapter = CollectionsFilterAdapter()
         filterAdapter.setOnClickListener(listener = this)
 
@@ -87,7 +84,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         filterDialog = FilterDialog.getNewInstance(
             token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
-            gender = currentFilter.gender,
+            gender = getCurrentGenderFromArgs(),
             isShowWardrobe = false,
             isShowDiscount = false
         )
@@ -220,9 +217,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         position: Int
     ) {
         when (position) {
-            0 -> filterDialog.apply {
-                setFilter(filterModel = currentFilter)
-            }.show(childFragmentManager, EMPTY_STRING)
+            0 -> filterDialog.show(childFragmentManager, EMPTY_STRING)
             1 -> filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
         }
     }
@@ -233,5 +228,12 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, item.id)
 
         findNavController().navigate(R.id.nav_shop_profile, bundle)
+    }
+
+    private fun getCurrentGenderFromArgs(): String {
+        return when (arguments?.getInt(ShopCategoryListFragment.CLOTHES_TYPE_GENDER)) {
+            0 -> GenderEnum.MALE.gender
+            else -> GenderEnum.FEMALE.gender
+        }
     }
 }

@@ -18,15 +18,11 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesColorModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.filter.FilterItemModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.adapters.filter.FilterAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.adapters.filter.FilterExpandableAdapter
@@ -50,7 +46,7 @@ class FilterDialog(
     private lateinit var filterAdapter: FilterAdapter
     private lateinit var filterExpandableAdapter: FilterExpandableAdapter
     private lateinit var filterCheckAdapter: FilterCheckAdapter
-    private lateinit var currentFilter: FilterModel
+    private lateinit var currentFilter: ClothesFilterModel
 
     private lateinit var filterTitleTextView: TextView
     private lateinit var listHolderLinearLayout: LinearLayout
@@ -201,7 +197,7 @@ class FilterDialog(
         )
 
         currentFilter.categoryIdList.map {
-            filterExpandableAdapter.onCheckChildById(id = it)
+            filterExpandableAdapter.onCheckChildById(id = it.id)
         }
 
         checkEmptyFilter()
@@ -230,7 +226,7 @@ class FilterDialog(
 
     override fun processWardrobe(list: List<FilterCheckModel>) {
         currentFilter.categoryIdList.forEach { category ->
-            list.find { it.id == category }?.isChecked = true
+            list.find { it.id == category.id }?.isChecked = true
         }
 
         filterCheckAdapter.updateList(list)
@@ -238,7 +234,7 @@ class FilterDialog(
 
     override fun processColors(list: List<FilterCheckModel>) {
         currentFilter.colorList.forEach { color ->
-            list.find { (it.item as ClothesColorModel).color == color }?.isChecked = true
+            list.find { (it.item as ClothesColorModel).color == color.color }?.isChecked = true
         }
 
         filterCheckAdapter.updateList(list)
@@ -273,7 +269,7 @@ class FilterDialog(
         }
     }
 
-    fun setFilter(filterModel: FilterModel) {
+    fun setFilter(filterModel: ClothesFilterModel) {
         this.currentFilter = filterModel
     }
 
@@ -346,8 +342,12 @@ class FilterDialog(
 
     private fun selectCategoryItem(filterCheck: FilterCheckModel) {
         filterExpandableAdapter.onMultipleCheck(filterCheck)
-        currentFilter.categoryIdList = filterExpandableAdapter.getCheckedItemList()
-        currentFilter.typeIdList = filterExpandableAdapter.getCheckedFirstItemList()
+        currentFilter.categoryIdList = filterExpandableAdapter.getCheckedItemList().map { it.item as ClothesCategoryModel }
+        currentFilter.typeIdList = filterExpandableAdapter.getCheckedFirstItemList().map {
+            val type = it.item as ClothesCategoryModel
+
+            ClothesTypeModel(id = type.id, title = type.title)
+        }
 
         checkEmptyFilter()
         getFilterResults()
@@ -356,7 +356,7 @@ class FilterDialog(
 
     private fun selectWardrobeItem(position: Int) {
         filterCheckAdapter.onMultipleCheckItem(position)
-        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemIdListByRemoveFirst()
+        currentFilter.categoryIdList = filterCheckAdapter.getCheckedItemListByRemoveFirst().map { it.item as ClothesCategoryModel }
     }
 
     private fun selectClothesBrand(position: Int) {
@@ -368,13 +368,11 @@ class FilterDialog(
 
     private fun selectColor(position: Int) {
         filterCheckAdapter.onSingleCheckItem(position)
-        currentFilter.colorList = filterCheckAdapter.getCheckedItemList().map {
-            (it.item as ClothesColorModel).color
-        }
+        currentFilter.colorList = filterCheckAdapter.getCheckedItemList().map { it.item as ClothesColorModel }
     }
 
     private fun onMyWardrobeClick() {
-        currentFilter.isMy = true
+        currentFilter.inMyWardrobe = true
 
         presenter.getMyWardrobe(
             token = getTokenFromArguments(),

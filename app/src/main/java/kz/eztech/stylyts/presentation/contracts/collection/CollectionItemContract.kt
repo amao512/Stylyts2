@@ -1,8 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.collection
 
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -19,7 +18,7 @@ interface CollectionItemContract {
     interface Presenter : BasePresenter<View> {
         fun getPosts(
             token: String,
-            filterModel: FilterModel
+            filterModel: PostFilterModel
         )
     }
 }

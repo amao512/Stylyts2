@@ -11,8 +11,6 @@ import kotlinx.android.synthetic.main.dialog_filter_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.common.BrandModel
-import kz.eztech.stylyts.domain.models.common.BrandsModel
 import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.domain.models.shop.ShopCategoryModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -140,15 +138,6 @@ class ConstructorFilterDialog : DialogFragment(), View.OnClickListener,
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (item) {
-			is BrandModel -> {
-				val model = currentList[currentList.indexOf(item)] as BrandModel
-				model.isChosen = true
-				model.id?.let {
-					filterMap["brand"] = it
-				}
-
-				updateAdapter()
-			}
 			is GenderCategory -> {
 				if (chosenGenderCategoryIds.contains(item.chosenClothesTypes)) {
 					chosenGenderCategoryIds.remove(item.chosenClothesTypes)
@@ -208,23 +197,6 @@ class ConstructorFilterDialog : DialogFragment(), View.OnClickListener,
     }
 
     override fun processPostInitialization() {}
-
-    override fun processBrands(models: BrandsModel) {
-        models.results?.let {
-            if (filterMap.containsKey("brand")) {
-                val id = filterMap["brand"]
-                it.forEach { model ->
-                    if (model.id == id) {
-                        model.isChosen = true
-                    }
-                }
-            }
-
-            currentList.clear()
-            currentList.addAll(it)
-            updateAdapter()
-        }
-    }
 
     override fun processShopCategories(shopCategoryModel: ShopCategoryModel) {
         shopCategoryModel.menCategory?.let {

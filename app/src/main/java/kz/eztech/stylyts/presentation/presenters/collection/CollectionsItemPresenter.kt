@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.collection
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.posts.GetPostsUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -30,7 +30,7 @@ class CollectionsItemPresenter @Inject constructor(
 
 	override fun getPosts(
 		token: String,
-		filterModel: FilterModel
+		filterModel: PostFilterModel
 	) {
 		view.displayProgress()
 

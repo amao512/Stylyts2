@@ -26,11 +26,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
@@ -74,7 +74,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     private lateinit var typesAdapter: CollectionConstructorShopCategoryAdapter
     private lateinit var itemAdapter: CollectionConstructorShopItemAdapter
     private lateinit var filterDialog: FilterDialog
-    private lateinit var currentFilter: FilterModel
+    private lateinit var currentFilter: ClothesFilterModel
 
     private val listOfItems = ArrayList<ClothesModel>()
     private val listOfEntities = ArrayList<ImageEntity>()
@@ -126,7 +126,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     override fun initializeViewsData() {
         linearLayout2.layoutTransition.setAnimateParentHierarchy(false)
 
-        currentFilter = FilterModel()
+        currentFilter = ClothesFilterModel()
         currentFilter.onlyBrands = true
 
         filterDialog = FilterDialog.getNewInstance(
@@ -217,7 +217,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         }
 
         when (item) {
-            is FilterModel -> showFilterResults(item)
+            is ClothesFilterModel -> showFilterResults(item)
         }
     }
 
@@ -479,7 +479,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                     itemAdapter.clearList()
                     currentFilter.page = 1
                     currentFilter.isLastPage = false
-                    currentFilter.typeIdList = listOf(item.id)
+                    currentFilter.typeIdList = listOf(item)
                     currentFilter.gender = when (getTypeFromArgs()) {
                         0 -> GenderEnum.MALE.gender
                         else -> GenderEnum.FEMALE.gender
@@ -540,7 +540,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         }
     }
 
-    private fun showFilterResults(filterModel: FilterModel) {
+    private fun showFilterResults(filterModel: ClothesFilterModel) {
         currentFilter = filterModel
         itemAdapter.clearList()
 

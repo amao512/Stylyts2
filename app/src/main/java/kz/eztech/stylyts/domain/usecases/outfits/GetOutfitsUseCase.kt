@@ -4,7 +4,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.repository.OutfitsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -31,7 +31,7 @@ class GetOutfitsUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        filterModel: FilterModel
+        filterModel: OutfitFilterModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 

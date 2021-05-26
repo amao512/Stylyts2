@@ -1,10 +1,10 @@
 package kz.eztech.stylyts.presentation.contracts.filter
 
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -29,7 +29,7 @@ interface FilterContract {
 
         fun getMyWardrobe(
             token: String,
-            filterModel: FilterModel
+            filterModel: ClothesFilterModel
         )
 
         fun getClothesTypes(token: String)
@@ -41,7 +41,7 @@ interface FilterContract {
 
         fun getClothesResults(
             token: String,
-            filterModel: FilterModel
+            filterModel: ClothesFilterModel
         )
 
         fun getColors(token: String)

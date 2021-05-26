@@ -12,11 +12,13 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -33,6 +35,7 @@ import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
@@ -56,7 +59,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var wardrobeAdapter: ClothesDetailAdapter
     private lateinit var outfitsAdapter: OutfitsAdapter
     private lateinit var filterDialog: FilterDialog
-    private lateinit var currentFilter: FilterModel
+    private lateinit var postFilterModel: PostFilterModel
+    private lateinit var outfitFilterModel: OutfitFilterModel
+    private lateinit var clothesFilterModel: ClothesFilterModel
 
     private lateinit var avatarShapeableImageView: ShapeableImageView
     private lateinit var userShortNameTextView: TextView
@@ -73,6 +78,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var collectionRecyclerView: RecyclerView
 
     private var collectionMode: Int = POSTS_MODE
+    private var currentUsername: String = EMPTY_STRING
+    private var currentUserId: Int = 0
+    private var currentGender: String = GenderEnum.MALE.gender
+    private var page: Int = 1
+    private var isLastPage = false
 
     companion object {
         private const val POSTS_MODE = 1
@@ -109,22 +119,24 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun initializeArguments() {
         arguments?.let {
             if (it.containsKey(USER_ID_BUNDLE_KEY)) {
-                currentFilter.userId = it.getInt(USER_ID_BUNDLE_KEY)
+                currentUserId = it.getInt(USER_ID_BUNDLE_KEY)
             }
         }
     }
 
     override fun initializeViewsData() {
-        currentFilter = FilterModel()
-        currentFilter.onlyBrands = false
+        postFilterModel = PostFilterModel()
+        outfitFilterModel = OutfitFilterModel()
+        clothesFilterModel = ClothesFilterModel()
+        clothesFilterModel.onlyBrands = false
 
         filterDialog = FilterDialog.getNewInstance(
             token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
-            gender = currentFilter.gender,
+            gender = clothesFilterModel.gender,
             isShowDiscount = false
         ).apply {
-            setFilter(filterModel = currentFilter)
+            setFilter(filterModel = clothesFilterModel)
         }
 
         adapterFilter = CollectionsFilterAdapter()
@@ -214,7 +226,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
 
         when (item) {
-            is FilterModel -> showFilterResults(item)
+            is ClothesFilterModel -> showFilterResults(item)
             is OutfitModel -> onOutfitItemClick(item)
             is PostModel -> onPostItemClick(item)
             is ClothesModel -> onWardrobeItemClick(item)
@@ -228,9 +240,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun processProfile(userModel: UserModel) {
-        currentFilter.userId = userModel.id
-        currentFilter.username = userModel.username
-        currentFilter.gender = userModel.gender
+        currentUserId = userModel.id
+        currentUsername = userModel.username
+        currentGender = userModel.gender
 
         getFilterList()
         getFollowers()
@@ -243,15 +255,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
             toolbar_right_corner_action_image_button.show()
         } else {
-            currentFilter.owner = userModel.username
+            clothesFilterModel.owner = userModel.username
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
         }
 
-        presenter.getWardrobe(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = currentFilter
-        )
+        getWardrobe()
     }
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
@@ -321,7 +330,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun getProfile() {
         presenter.getProfile(
             token = currentActivity.getTokenFromSharedPref(),
-            userId = currentFilter.userId,
+            userId = currentUserId,
         )
     }
 
@@ -332,29 +341,65 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun getFollowers() {
         presenter.getFollowers(
             token = currentActivity.getTokenFromSharedPref(),
-            userId = currentFilter.userId
+            userId = currentUserId
         )
     }
 
     private fun getCollections() {
-        presenter.getCollections(
+        when (collectionMode) {
+            1 -> getPosts()
+            2 -> getOutfits()
+            3 -> getWardrobe()
+        }
+    }
+
+    private fun getPosts() {
+        postFilterModel.userId = currentUserId
+        postFilterModel.page = page
+        postFilterModel.isLastPage = isLastPage
+
+        presenter.getPosts(
             token = currentActivity.getTokenFromSharedPref(),
-            mode = collectionMode,
-            filterModel = currentFilter
+            filterModel = postFilterModel
+        )
+    }
+
+    private fun getOutfits() {
+        outfitFilterModel.userId = currentUserId
+        outfitFilterModel.gender = currentGender
+        outfitFilterModel.isMy = isOwnProfile()
+        outfitFilterModel.page = page
+        outfitFilterModel.isLastPage = isLastPage
+
+        presenter.getOutfits(
+            token = currentActivity.getTokenFromSharedPref(),
+            filterModel = outfitFilterModel
+        )
+    }
+
+    private fun getWardrobe() {
+        clothesFilterModel.gender = currentGender
+        clothesFilterModel.inMyWardrobe = isOwnProfile()
+        clothesFilterModel.page = page
+        clothesFilterModel.isLastPage = isLastPage
+
+        presenter.getWardrobe(
+            token = currentActivity.getTokenFromSharedPref(),
+            filterModel = clothesFilterModel
         )
     }
 
     private fun followUser() {
         presenter.followUser(
             token = currentActivity.getTokenFromSharedPref(),
-            userId = currentFilter.userId
+            userId = currentUserId
         )
     }
 
     private fun unFollowUser() {
         presenter.unfollowUser(
             token = currentActivity.getTokenFromSharedPref(),
-            userId = currentFilter.userId
+            userId = currentUserId
         )
     }
 
@@ -363,7 +408,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!collectionRecyclerView.canScrollVertically(1)
                     && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!currentFilter.isLastPage) {
+                    if (!isLastPage) {
                         getCollections()
                     }
                 }
@@ -408,7 +453,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         when (position) {
             0 -> filterDialog.apply {
                 resetPages(mode = WARDROBE_MODE)
-                setFilter(filterModel = currentFilter)
+                setFilter(filterModel = clothesFilterModel)
             }.show(childFragmentManager, EMPTY_STRING)
             1 -> onPublicationsFilterClick(position)
             2 -> onOutfitsFilterClick(position)
@@ -443,7 +488,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         resetPages(mode = WARDROBE_MODE)
 
         if (isOwnProfile()) {
-            currentFilter.isMy = true
+            clothesFilterModel.inMyWardrobe = true
         }
 
         collectionRecyclerView.adapter = wardrobeAdapter
@@ -503,8 +548,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun navigateToFollowers() {
         val bundle = Bundle()
 
-        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentFilter.userId)
-        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentFilter.username)
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentUserId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
         bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWERS_POSITION)
 
         findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
@@ -513,8 +558,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun navigateToFollowings() {
         val bundle = Bundle()
 
-        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentFilter.userId)
-        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentFilter.username)
+        bundle.putInt(UserSubsFragment.USER_ID_ARGS, currentUserId)
+        bundle.putString(UserSubsFragment.USERNAME_ARGS, currentUsername)
         bundle.putInt(UserSubsFragment.POSITION_ARGS, UserSubsFragment.FOLLOWINGS_POSITION)
 
         findNavController().navigate(R.id.action_profileFragment_to_userSubsFragment, bundle)
@@ -535,8 +580,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun showFilterResults(item: Any?) {
-        currentFilter = item as FilterModel
-        currentFilter.isMy = isOwnProfile()
+        clothesFilterModel = item as ClothesFilterModel
+        clothesFilterModel.inMyWardrobe = isOwnProfile()
         wardrobeAdapter.clearList()
         collectionRecyclerView.adapter = wardrobeAdapter
 
@@ -546,18 +591,18 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun setPagesCondition(totalPages: Int) {
-        if (totalPages > currentFilter.page) {
-            currentFilter.page++
+        if (totalPages > page) {
+            page++
         } else {
-            currentFilter.isLastPage = true
+            isLastPage = true
         }
     }
 
     private fun resetPages(mode: Int) {
-        currentFilter.page = 1
-        currentFilter.isLastPage = false
+        page = 1
+        isLastPage = false
         collectionMode = mode
     }
 
-    private fun isOwnProfile(): Boolean = currentFilter.userId == currentActivity.getUserIdFromSharedPref()
+    private fun isOwnProfile(): Boolean = currentUserId == currentActivity.getUserIdFromSharedPref()
 }

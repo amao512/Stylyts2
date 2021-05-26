@@ -2,10 +2,11 @@ package kz.eztech.stylyts.presentation.presenters.shop
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -88,7 +89,7 @@ class ShopProfilePresenter @Inject constructor(
 
     override fun getOutfits(
         token: String,
-        filterModel: FilterModel
+        filterModel: OutfitFilterModel
     ) {
         getOutfitsUseCase.initParams(token, filterModel)
         getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
@@ -104,7 +105,7 @@ class ShopProfilePresenter @Inject constructor(
 
     override fun getClothes(
         token: String,
-        filterModel: FilterModel
+        filterModel: ClothesFilterModel
     ) {
         getClothesUseCase.initParams(token, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {

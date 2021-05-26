@@ -13,7 +13,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -45,7 +45,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     @Inject lateinit var presenter: MainLinePresenter
     @Inject lateinit var imageLoader: DomainImageLoader
     private lateinit var postsAdapter: MainLineAdapter
-    private lateinit var currentFilter: FilterModel
+    private lateinit var postFilterModel: PostFilterModel
 
     private lateinit var recyclerView: RecyclerView
 
@@ -72,7 +72,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        currentFilter = FilterModel()
+        postFilterModel = PostFilterModel()
         postsAdapter = MainLineAdapter(
             ownId = currentActivity.getUserIdFromSharedPref(),
             imageLoader = imageLoader
@@ -154,10 +154,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
         postsAdapter.updateMoreList(list = resultsModel.results)
 
-        if (resultsModel.totalPages != currentFilter.page) {
-            currentFilter.page++
+        if (resultsModel.totalPages != postFilterModel.page) {
+            postFilterModel.page++
         } else {
-            currentFilter.isLastPage = true
+            postFilterModel.isLastPage = true
         }
     }
 
@@ -204,7 +204,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     private fun getPosts() {
         presenter.getPosts(
             token = currentActivity.getTokenFromSharedPref(),
-            page = currentFilter.page
+            filterModel = postFilterModel
         )
     }
 
@@ -212,7 +212,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!currentFilter.isLastPage) {
+                    if (!postFilterModel.isLastPage) {
                         getPosts()
                     }
                 }

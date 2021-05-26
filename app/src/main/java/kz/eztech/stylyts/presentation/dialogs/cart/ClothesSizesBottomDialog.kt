@@ -8,6 +8,7 @@ import android.widget.TextView
 import kotlinx.android.synthetic.main.dialog_bottom_clothes_sizes.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
+import kz.eztech.stylyts.presentation.adapters.clothes.SizeAdapter
 import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
 
 /**
@@ -51,9 +52,8 @@ class ClothesSizesBottomDialog : BaseRoundedBottomSheetDialog(R.layout.dialog_bo
             titleTextView.text = getString(R.string.detail_chooser_size_table)
 
             if (sizeModel.isNotEmpty()) {
-                val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
-                    requireContext(), R.layout.item_style, sizeModel.map { it.size }
-                )
+                val adapter = SizeAdapter(requireContext(), sizeModel)
+
                 chooserListView.adapter = adapter
                 currentItem = sizeModel[0]
                 chooserListView.setOnItemClickListener { _, _, position, _ ->

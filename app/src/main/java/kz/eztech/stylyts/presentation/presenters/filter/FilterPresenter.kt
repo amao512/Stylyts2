@@ -3,17 +3,14 @@ package kz.eztech.stylyts.presentation.presenters.filter
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.clothes.*
-import kz.eztech.stylyts.domain.models.common.ColorModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CategoryFilterSingleCheckGenre
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
-import kz.eztech.stylyts.domain.models.filter.FilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.*
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import java.util.*
-import java.util.logging.Filter
 import javax.inject.Inject
 
 class FilterPresenter @Inject constructor(
@@ -41,7 +38,7 @@ class FilterPresenter @Inject constructor(
 
     override fun getMyWardrobe(
         token: String,
-        filterModel: FilterModel
+        filterModel: ClothesFilterModel
     ) {
         getClothesUseCase.initParams(token, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
@@ -151,7 +148,7 @@ class FilterPresenter @Inject constructor(
 
     override fun getClothesResults(
         token: String,
-        filterModel: FilterModel
+        filterModel: ClothesFilterModel
     ) {
         getClothesUseCase.initParams(
             token = token,

@@ -91,8 +91,8 @@ class FilterExpandableAdapter(
         notifyDataSetChanged()
     }
 
-    fun getCheckedItemList(): List<Int> {
-        val checkedList: MutableList<Int> = mutableListOf()
+    fun getCheckedItemList(): List<FilterCheckModel> {
+        val checkedList: MutableList<FilterCheckModel> = mutableListOf()
 
         categoryFilterSingleGroupList.map {
             val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
@@ -105,7 +105,7 @@ class FilterExpandableAdapter(
 
             copyCurrentList.map { item ->
                 if (item.isChecked) {
-                    checkedList.add(item.id)
+                    checkedList.add(item)
                 }
             }
         }
@@ -113,8 +113,8 @@ class FilterExpandableAdapter(
         return checkedList
     }
 
-    fun getCheckedFirstItemList(): List<Int> {
-        val checkedList: MutableList<Int> = mutableListOf()
+    fun getCheckedFirstItemList(): List<FilterCheckModel> {
+        val checkedList: MutableList<FilterCheckModel> = mutableListOf()
 
         categoryFilterSingleGroupList.map {
             val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
@@ -123,7 +123,7 @@ class FilterExpandableAdapter(
 
             copyCurrentList.map { item ->
                 if (item.isChecked) {
-                    checkedList.add(item.id)
+                    checkedList.add(item)
                 }
             }
         }

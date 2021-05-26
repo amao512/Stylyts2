@@ -6,8 +6,8 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterItemCheckViewHolder
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterItemCheckViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
@@ -102,42 +102,6 @@ class FilterCheckAdapter : BaseAdapter() {
         notifyDataSetChanged()
     }
 
-
-    fun getCheckedItemIdListByRemoveFirst(): List<Int> {
-        val checkedList: MutableList<Int> = mutableListOf()
-        val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
-
-        currentList.map {
-            copyCurrentList.add(it as FilterCheckModel)
-        }
-
-        copyCurrentList.removeAt(0)
-
-        copyCurrentList.map {
-            if (it.isChecked) {
-                checkedList.add(it.id)
-            }
-        }
-
-        return checkedList
-    }
-
-    fun getCheckedItemIdList(): List<Int> {
-        val checkedList: MutableList<Int> = mutableListOf()
-        val copyCurrentList: MutableList<FilterCheckModel> = mutableListOf()
-
-        currentList.map {
-            copyCurrentList.add(it as FilterCheckModel)
-        }
-
-        copyCurrentList.map {
-            if (it.isChecked) {
-                checkedList.add(it.id)
-            }
-        }
-
-        return checkedList
-    }
 
     fun getCheckedItemListByRemoveFirst(): List<FilterCheckModel> {
         val checkedList: MutableList<FilterCheckModel> = mutableListOf()

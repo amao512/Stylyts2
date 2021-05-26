@@ -4,6 +4,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
@@ -41,9 +42,9 @@ class MainLinePresenter @Inject constructor(
 
 	override fun getPosts(
 		token: String,
-		page: Int
+		filterModel: PostFilterModel
 	) {
-		getHomePagePostsUseCase.initParams(token, page)
+		getHomePagePostsUseCase.initParams(token, filterModel)
 		getHomePagePostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				view.processViewAction {
