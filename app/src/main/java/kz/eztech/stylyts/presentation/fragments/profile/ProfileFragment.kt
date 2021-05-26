@@ -6,6 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -50,7 +51,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
-    UniversalViewClickListener, EditorListener {
+    UniversalViewClickListener, EditorListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject lateinit var presenter: ProfilePresenter
 
@@ -182,6 +183,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         include_toolbar_profile.toolbar_right_corner_action_image_button.setOnClickListener(this)
         toolbar_left_corner_action_image_button.setOnClickListener(this)
+        fragment_profile_swipe_refresh_layout.setOnRefreshListener(this)
     }
 
     override fun processPostInitialization() {
@@ -195,9 +197,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayProgress() = progress_bar_fragment_profile.show()
+    override fun displayProgress() {
+        fragment_profile_swipe_refresh_layout.isRefreshing = true
+    }
 
-    override fun hideProgress() = progress_bar_fragment_profile.hide()
+    override fun hideProgress() {
+        fragment_profile_swipe_refresh_layout.isRefreshing = false
+    }
 
     override fun navigateToMyData() {
         findNavController().navigate(R.id.action_profileFragment_to_myDataFragment)
@@ -326,6 +332,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>) {
         outfitsAdapter.updateMoreList(list = resultsModel.results)
         setPagesCondition(resultsModel.totalPages)
+    }
+
+    override fun onRefresh() {
+        resetPages(mode = collectionMode)
+        getProfile()
     }
 
     private fun getProfile() {

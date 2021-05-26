@@ -15,276 +15,278 @@
         layout="@layout/base_toolbar"
         />
 
-    <include
-        android:id="@+id/progress_bar_fragment_profile"
-        layout="@layout/base_progress_small"
-        android:visibility="gone"
-        />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_profile_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             >
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@android:color/white"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
                 >
 
-                <LinearLayout
+                <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_collapseMode="parallax"
+                    android:background="@android:color/white"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="@android:color/white"
+                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
                     >
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
+                        app:layout_collapseMode="parallax"
                         >
 
-                        <FrameLayout
-                            android:id="@id/frame_layout_fragment_profile_avatar_holder"
-                            android:layout_width="@dimen/profile_user_photo_size"
-                            android:layout_height="@dimen/profile_user_photo_size"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/margin_size_16x"
-                            android:background="@drawable/circle_white_gray_corners"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
                             >
 
-                            <com.google.android.material.imageview.ShapeableImageView
-                                android:id="@+id/fragment_shop_profile_avatar_shapeable_image_view"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:adjustViewBounds="true"
-                                app:shapeAppearanceOverlay="@style/circleImageView"
-                                />
+                            <FrameLayout
+                                android:id="@id/frame_layout_fragment_profile_avatar_holder"
+                                android:layout_width="@dimen/profile_user_photo_size"
+                                android:layout_height="@dimen/profile_user_photo_size"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="@dimen/margin_size_16x"
+                                android:background="@drawable/circle_white_gray_corners"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                >
+
+                                <com.google.android.material.imageview.ShapeableImageView
+                                    android:id="@+id/fragment_shop_profile_avatar_shapeable_image_view"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:adjustViewBounds="true"
+                                    app:shapeAppearanceOverlay="@style/circleImageView"
+                                    />
+
+                                <TextView
+                                    android:id="@+id/text_view_fragment_profile_user_short_name"
+                                    style="@style/TitleTextBold"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/circle_gray"
+                                    android:gravity="center"
+                                    android:textSize="@dimen/text_size_36x"
+                                    tools:text="RE"
+                                    />
+                            </FrameLayout>
+
 
                             <TextView
-                                android:id="@+id/text_view_fragment_profile_user_short_name"
+                                android:id="@+id/fragment_shop_profile_title_text_view"
                                 style="@style/TitleTextBold"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/circle_gray"
-                                android:gravity="center"
-                                android:textSize="@dimen/text_size_36x"
-                                tools:text="RE"
-                                />
-                        </FrameLayout>
-
-
-                        <TextView
-                            android:id="@+id/fragment_shop_profile_title_text_view"
-                            style="@style/TitleTextBold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="@dimen/margin_size_12x"
-                            android:layout_marginBottom="@dimen/margin_size_16x"
-                            app:layout_constraintEnd_toEndOf="@+id/frame_layout_fragment_profile_avatar_holder"
-                            app:layout_constraintStart_toStartOf="@+id/frame_layout_fragment_profile_avatar_holder"
-                            app:layout_constraintTop_toBottomOf="@+id/frame_layout_fragment_profile_avatar_holder"
-                            tools:text="Ruslan"
-                            />
-
-                        <LinearLayout
-                            android:id="@+id/fragment_shop_profile_followers_linear_layout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/margin_size_16x"
-                            android:orientation="vertical"
-                            app:layout_constraintEnd_toEndOf="@+id/fragment_shop_profile_title_text_view"
-                            app:layout_constraintStart_toStartOf="@+id/fragment_shop_profile_title_text_view"
-                            app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_title_text_view"
-                            >
-
-                            <TextView
-                                android:id="@+id/fragment_profile_followers_count"
-                                style="@style/TextRegularBold"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                tools:text="10"
+                                android:layout_margin="@dimen/margin_size_12x"
+                                android:layout_marginBottom="@dimen/margin_size_16x"
+                                app:layout_constraintEnd_toEndOf="@+id/frame_layout_fragment_profile_avatar_holder"
+                                app:layout_constraintStart_toStartOf="@+id/frame_layout_fragment_profile_avatar_holder"
+                                app:layout_constraintTop_toBottomOf="@+id/frame_layout_fragment_profile_avatar_holder"
+                                tools:text="Ruslan"
                                 />
 
-                            <TextView
-                                style="@style/TextRegular"
+                            <LinearLayout
+                                android:id="@+id/fragment_shop_profile_followers_linear_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="@string/followers"
-                                android:textColor="@color/app_gray"
-                                />
-                        </LinearLayout>
+                                android:layout_marginTop="@dimen/margin_size_16x"
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toEndOf="@+id/fragment_shop_profile_title_text_view"
+                                app:layout_constraintStart_toStartOf="@+id/fragment_shop_profile_title_text_view"
+                                app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_title_text_view"
+                                >
 
-                        <LinearLayout
-                            android:id="@+id/linear_layout_fragment_profile_photos_item"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/margin_size_24x"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
-                            app:layout_constraintEnd_toStartOf="@+id/fragment_shop_profile_followers_linear_layout"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/fragment_shop_profile_followers_linear_layout"
-                            >
+                                <TextView
+                                    android:id="@+id/fragment_profile_followers_count"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    tools:text="10"
+                                    />
 
-                            <TextView
-                                android:id="@+id/fragment_profile_publications_count"
-                                style="@style/TextRegularBold"
+                                <TextView
+                                    style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/followers"
+                                    android:textColor="@color/app_gray"
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linear_layout_fragment_profile_photos_item"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                tools:text="10"
-                                />
+                                android:layout_marginEnd="@dimen/margin_size_24x"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
+                                app:layout_constraintEnd_toStartOf="@+id/fragment_shop_profile_followers_linear_layout"
+                                app:layout_constraintHorizontal_bias="1.0"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="@+id/fragment_shop_profile_followers_linear_layout"
+                                >
 
-                            <TextView
-                                style="@style/TextRegular"
+                                <TextView
+                                    android:id="@+id/fragment_profile_publications_count"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    tools:text="10"
+                                    />
+
+                                <TextView
+                                    style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/publications"
+                                    android:textColor="@color/app_gray"
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linear_layout_fragment_profile_following_item"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="@string/publications"
-                                android:textColor="@color/app_gray"
-                                />
-                        </LinearLayout>
+                                android:layout_marginStart="@dimen/margin_size_24x"
+                                android:orientation="vertical"
+                                app:layout_constraintBottom_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toEndOf="@+id/fragment_shop_profile_followers_linear_layout"
+                                app:layout_constraintTop_toTopOf="@+id/fragment_shop_profile_followers_linear_layout"
+                                >
 
-                        <LinearLayout
-                            android:id="@+id/linear_layout_fragment_profile_following_item"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/margin_size_24x"
-                            android:orientation="vertical"
-                            app:layout_constraintBottom_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toEndOf="@+id/fragment_shop_profile_followers_linear_layout"
-                            app:layout_constraintTop_toTopOf="@+id/fragment_shop_profile_followers_linear_layout"
-                            >
+                                <TextView
+                                    android:id="@+id/fragment_profile_followings_count"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    tools:text="10"
+                                    />
 
-                            <TextView
-                                android:id="@+id/fragment_profile_followings_count"
-                                style="@style/TextRegularBold"
+                                <TextView
+                                    style="@style/TextRegular"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:text="@string/following"
+                                    android:textColor="@color/app_gray"
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/linear_layout_fragment_profile_change_buttons"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                tools:text="10"
-                                />
-
-                            <TextView
-                                style="@style/TextRegular"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:text="@string/following"
-                                android:textColor="@color/app_gray"
-                                />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linear_layout_fragment_profile_change_buttons"
-                            android:layout_width="wrap_content"
-                            android:layout_height="@dimen/icon_size_36x"
-                            android:layout_marginVertical="@dimen/margin_size_16x"
-                            android:orientation="horizontal"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="@+id/linear_layout_fragment_profile_following_item"
-                            app:layout_constraintStart_toStartOf="@+id/linear_layout_fragment_profile_photos_item"
-                            app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
-                            >
-
-                            <TextView
-                                android:id="@+id/fragment_profile_edit_text_view"
-                                style="@style/TextRegularBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/rounded_rectangle_white_gray_corners"
-                                android:gravity="center"
-                                android:padding="@dimen/padding_size_6x"
-                                android:text="@string/profile_change"
-                                />
-
-                            <TextView
-                                android:id="@+id/fragment_profile_follow_text_view"
-                                style="@style/TextRegularBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/rounded_rectangle_orange"
-                                android:gravity="center"
-                                android:paddingHorizontal="@dimen/padding_size_16x"
-                                android:text="@string/subscribe"
-                                android:textColor="@color/white"
-                                android:visibility="gone"
-                                />
-
-                            <TextView
-                                android:id="@+id/fragment_profile_unfollow_text_view"
-                                style="@style/TextRegularBold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/rounded_rectangle_white_gray_corners"
-                                android:gravity="center"
-                                android:padding="@dimen/padding_size_6x"
-                                android:text="@string/unfollow"
-                                android:visibility="gone"
-                                />
-
-                            <ImageView
-                                android:layout_width="@dimen/icon_size_36x"
                                 android:layout_height="@dimen/icon_size_36x"
-                                android:layout_marginStart="@dimen/margin_size_6x"
-                                android:background="@drawable/rounded_rectangle_white_gray_corners"
-                                android:gravity="center"
-                                android:padding="@dimen/padding_size_6x"
-                                android:src="@drawable/ic_instagram"
-                                android:visibility="gone"
-                                />
-                        </LinearLayout>
+                                android:layout_marginVertical="@dimen/margin_size_16x"
+                                android:orientation="horizontal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="@+id/linear_layout_fragment_profile_following_item"
+                                app:layout_constraintStart_toStartOf="@+id/linear_layout_fragment_profile_photos_item"
+                                app:layout_constraintTop_toBottomOf="@+id/fragment_shop_profile_followers_linear_layout"
+                                >
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                                <TextView
+                                    android:id="@+id/fragment_profile_edit_text_view"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                    android:gravity="center"
+                                    android:padding="@dimen/padding_size_6x"
+                                    android:text="@string/profile_change"
+                                    />
 
-                </LinearLayout>
+                                <TextView
+                                    android:id="@+id/fragment_profile_follow_text_view"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/rounded_rectangle_orange"
+                                    android:gravity="center"
+                                    android:paddingHorizontal="@dimen/padding_size_16x"
+                                    android:text="@string/subscribe"
+                                    android:textColor="@color/white"
+                                    android:visibility="gone"
+                                    />
 
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                                <TextView
+                                    android:id="@+id/fragment_profile_unfollow_text_view"
+                                    style="@style/TextRegularBold"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                    android:gravity="center"
+                                    android:padding="@dimen/padding_size_6x"
+                                    android:text="@string/unfollow"
+                                    android:visibility="gone"
+                                    />
+
+                                <ImageView
+                                    android:layout_width="@dimen/icon_size_36x"
+                                    android:layout_height="@dimen/icon_size_36x"
+                                    android:layout_marginStart="@dimen/margin_size_6x"
+                                    android:background="@drawable/rounded_rectangle_white_gray_corners"
+                                    android:gravity="center"
+                                    android:padding="@dimen/padding_size_6x"
+                                    android:src="@drawable/ic_instagram"
+                                    android:visibility="gone"
+                                    />
+                            </LinearLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view_fragment_profile_filter_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/padding_size_6x"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    tools:listitem="@layout/item_collection_filter"
+                    />
+            </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view_fragment_profile_filter_list"
+                android:id="@+id/recycler_view_fragment_profile_items_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:paddingStart="0dp"
-                android:paddingEnd="@dimen/padding_size_6x"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_scrollFlags="scroll|enterAlways"
-                tools:listitem="@layout/item_collection_filter"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:spanCount="2"
+                tools:listitem="@layout/item_collection"
                 />
-        </com.google.android.material.appbar.AppBarLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_fragment_profile_items_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:spanCount="2"
-            tools:listitem="@layout/item_collection"
-            />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>
