@@ -87,6 +87,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintTop_toTopOf="@id/fragment_clothes_detail_avatar_holder"
+                    android:visibility="gone"
                     />
 
                 <androidx.viewpager.widget.ViewPager

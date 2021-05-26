@@ -9,6 +9,9 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.base_toolbar.*
+import kotlinx.android.synthetic.main.base_toolbar.toolbar_left_corner_action_image_button
+import kotlinx.android.synthetic.main.base_toolbar.toolbar_right_corner_action_image_button
+import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_clothes_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -65,6 +68,10 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
             toolbar_left_corner_action_image_button.show()
             toolbar_left_corner_action_image_button.setOnClickListener(this@ClothesDetailFragment)
 
+            toolbar_right_corner_action_image_button.setBackgroundResource(R.drawable.ic_shop)
+            toolbar_right_corner_action_image_button.show()
+            toolbar_right_corner_action_image_button.setOnClickListener(this@ClothesDetailFragment)
+
             background = ContextCompat.getDrawable(requireContext(), R.color.toolbar_bg_gray)
         }
     }
@@ -104,6 +111,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         when (v?.id) {
             R.id.fragment_clothes_detail_description_holder_linear_layout -> showClothesDescription()
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
+            R.id.toolbar_right_corner_action_image_button -> CartDialog().show(childFragmentManager, EMPTY_STRING)
         }
     }
 
@@ -120,6 +128,10 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
     override fun processClothes(clothesModel: ClothesModel) {
         fillClothesModel(clothesModel)
+
+        fragment_clothes_detail_toolbar.toolbar_title_text_view.text = clothesModel.owner.username
+        fragment_clothes_detail_toolbar.toolbar_title_text_view.textSize = 14f
+        fragment_clothes_detail_toolbar.toolbar_title_text_view.show()
 
         fragment_clothes_detail_add_to_wardrobe_text_view.setOnClickListener {
             presenter.saveClothesToWardrobe(
