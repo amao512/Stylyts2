@@ -65,4 +65,28 @@ class CollectionConstructorShopCategoryAdapter(
 
 		notifyDataSetChanged()
 	}
+
+	fun onExpanded() {
+		currentList.map {
+			it as ClothesTypeModel
+
+			if (it.isExternal) {
+				it.isWiden = false
+			}
+
+			notifyDataSetChanged()
+		}
+	}
+
+	fun onCollapsed() {
+		currentList.map {
+			it as ClothesTypeModel
+
+			if (it.isExternal) {
+				it.isWiden = true
+			}
+
+			notifyDataSetChanged()
+		}
+	}
 }

@@ -56,11 +56,15 @@ class CollectionConstructorShopCategoryHolder(
 		with(clothesType) {
 			if (isExternal) {
 				iconImageView.setImageResource(externalImageId)
-				(title.substring(0, 13) + "...").also { titleTextView.text = it }
-
+				titleTextView.text = title
 			} else {
 				fillCoverPhoto(clothesType)
-				titleTextView.text = title
+
+				if (title.length > 6) {
+					(title.substring(0, 7) + "...").also { titleTextView.text = it }
+				} else {
+					titleTextView.text = title
+				}
 
 				if (isChoosen) {
 					selectedIconImageView.show()

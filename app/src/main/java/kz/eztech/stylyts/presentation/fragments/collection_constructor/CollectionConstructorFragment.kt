@@ -387,6 +387,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                                 RecyclerView.HORIZONTAL,
                                 false
                             )
+                        typesAdapter.onCollapsed()
                     }
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         recycler_view_fragment_collection_constructor_list.layoutManager =
@@ -396,6 +397,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                                 GridLayoutManager.VERTICAL,
                                 false
                             )
+                        typesAdapter.onExpanded()
                     }
                     else -> {}
                 }
