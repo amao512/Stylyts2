@@ -9,8 +9,6 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.base_toolbar.*
-import kotlinx.android.synthetic.main.base_toolbar.toolbar_left_corner_action_image_button
-import kotlinx.android.synthetic.main.base_toolbar.toolbar_right_corner_action_image_button
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_clothes_detail.*
 import kz.eztech.stylyts.R
@@ -64,11 +62,11 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
     override fun customizeActionBar() {
         with(fragment_clothes_detail_toolbar) {
-            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
             toolbar_left_corner_action_image_button.setOnClickListener(this@ClothesDetailFragment)
 
-            toolbar_right_corner_action_image_button.setBackgroundResource(R.drawable.ic_shop)
+            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setOnClickListener(this@ClothesDetailFragment)
 

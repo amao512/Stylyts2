@@ -49,11 +49,11 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
 
     override fun customizeActionBar() {
         with(fragment_shop_list_toolbar) {
-            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.setOnClickListener(this@ShopListFragment)
             toolbar_left_corner_action_image_button.show()
 
-            toolbar_right_corner_action_image_button.setBackgroundResource(R.drawable.ic_shop)
+            toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.setOnClickListener(this@ShopListFragment)
             toolbar_right_corner_action_image_button.show()
 

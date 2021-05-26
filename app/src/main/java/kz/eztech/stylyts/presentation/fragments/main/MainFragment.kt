@@ -35,7 +35,6 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
@@ -142,12 +141,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun displayProgress() {
-        fragment_main_more_small_progress_bar.show()
         fragment_main_swipe_refresh_layout.isRefreshing = true
     }
 
     override fun hideProgress() {
-        fragment_main_more_small_progress_bar.hide()
         fragment_main_swipe_refresh_layout.isRefreshing = false
     }
 
