@@ -267,6 +267,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_left_corner_action_image_button.show()
         }
 
+        wardrobeAdapter.clearList()
         getWardrobe()
     }
 
@@ -338,7 +339,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         wardrobeAdapter.clearList()
         outfitsAdapter.clearList()
         gridAdapter.clearList()
-        resetPages(mode = collectionMode)
+        resetPages(mode = POSTS_MODE)
 
         getProfile()
     }
