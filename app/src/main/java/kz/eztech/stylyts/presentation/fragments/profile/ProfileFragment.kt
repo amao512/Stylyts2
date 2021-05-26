@@ -335,7 +335,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun onRefresh() {
+        wardrobeAdapter.clearList()
+        outfitsAdapter.clearList()
+        gridAdapter.clearList()
         resetPages(mode = collectionMode)
+
         getProfile()
     }
 
@@ -391,7 +395,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun getWardrobe() {
         clothesFilterModel.gender = currentGender
-        clothesFilterModel.inMyWardrobe = isOwnProfile()
         clothesFilterModel.page = page
         clothesFilterModel.isLastPage = isLastPage
 
