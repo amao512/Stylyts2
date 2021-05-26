@@ -42,7 +42,7 @@ interface PostsDomainRepository {
         description: MultipartBody.Part,
         tags: TagsApiModel,
         hidden: MultipartBody.Part
-    ): Single<PostCreateModel>
+    ): Single<PostModel>
 
     fun likePost(
         token: String,

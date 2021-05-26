@@ -17,6 +17,7 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -43,7 +44,8 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     DialogChooserListener,
     CreateCollectionAcceptContract.View {
 
-    @Inject lateinit var presenter: CreateCollectionAcceptPresenter
+    @Inject
+    lateinit var presenter: CreateCollectionAcceptPresenter
     private lateinit var chooserDialog: CreateCollectionChooserDialog
 
     private var currentModel: OutfitCreateModel? = null
@@ -246,6 +248,18 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         )
     }
 
+    override fun processSuccessUpdatingPost(postModel: PostModel) {
+        val bundle = Bundle()
+
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, postModel.id)
+
+        findNavController().navigate(
+            R.id.action_createCollectionAcceptFragment_to_collectionDetailFragment,
+            bundle
+        )
+    }
+
     override fun processSuccessSavingToCart() {
         CartDialog().show(childFragmentManager, EMPTY_STRING)
     }
@@ -327,22 +341,33 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         val images = ArrayList<File>()
 
         listOfChosenImages.map { imageString ->
-            FileUtils.getUriFromString(imageString)?.path?.let {
-                images.add(
-                    getCompressedImageFile(file = File(it))
-                )
+            if (!isUpdating()) {
+                FileUtils.getUriFromString(imageString)?.path?.let {
+                    images.add(
+                        getCompressedImageFile(file = File(it))
+                    )
+                }
             }
         }
 
         file?.let {
-            val model = PostCreateModel(
-                description = edit_text_view_dialog_create_collection_accept_sign.text.toString(),
-                clothesList = selectedClothes,
-                userList = selectedUsers,
-                imageFile = getCompressedImageFile(file),
-                images = images,
-                hidden = isHidden
-            )
+            val model = if (!isUpdating()) {
+                PostCreateModel(
+                    description = edit_text_view_dialog_create_collection_accept_sign.text.toString(),
+                    clothesList = selectedClothes,
+                    userList = selectedUsers,
+                    imageFile = getCompressedImageFile(file),
+                    images = images,
+                    hidden = isHidden
+                )
+            } else {
+                PostCreateModel(
+                    description = edit_text_view_dialog_create_collection_accept_sign.text.toString(),
+                    clothesList = selectedClothes,
+                    userList = selectedUsers,
+                    hidden = isHidden
+                )
+            }
 
             createPost(postCreateModel = model)
         }

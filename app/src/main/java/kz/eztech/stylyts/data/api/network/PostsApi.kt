@@ -53,7 +53,7 @@ interface PostsApi {
         @Part description: MultipartBody.Part,
         @Part("tags") tagsBody: TagsApiModel,
         @Part hidden: MultipartBody.Part
-    ) : Single<Response<PostCreateApiModel>>
+    ) : Single<Response<PostApiModel>>
 
     @POST(RestConstants.LIKE_POST)
     fun likePost(

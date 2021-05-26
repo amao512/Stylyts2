@@ -82,7 +82,12 @@
         android:id="@+id/createCollectionAcceptFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
         android:label="CreateCollectionAcceptFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_createCollectionAcceptFragment_to_collectionDetailFragment"
+            app:destination="@id/collectionDetailFragment"
+            />
+    </fragment>
 
     <include app:graph="@navigation/nav_shop_profile" />
 

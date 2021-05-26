@@ -84,5 +84,9 @@
             android:id="@+id/action_collectionDetailFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
             />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_createCollectionAcceptFragment"
+            app:destination="@id/createCollectionAcceptFragment"
+            />
     </fragment>
 </navigation>

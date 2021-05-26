@@ -42,7 +42,7 @@ class UpdateOutfitUseCase @Inject constructor(
         val body = MultipartBody.Part.createFormData("cover_photo", file.name, requestFile)
 
         outfitModel.clothes.forEach {
-            data.add(MultipartBody.Part.createFormData("clothes", it.toString()))
+            data.add(MultipartBody.Part.createFormData("clothes", it.id.toString()))
         }
 
         data.add(body)

@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
-import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -10,6 +9,7 @@ import kz.eztech.stylyts.data.db.cart.CartMapper
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.outfits.CreateOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.UpdateOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.posts.CreatePostUseCase
@@ -76,11 +76,11 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         view.displayProgress()
 
         updatePostUseCase.initParams(token, postId, postCreateModel)
-        updatePostUseCase.execute(object : DisposableSingleObserver<PostCreateModel>() {
-            override fun onSuccess(t: PostCreateModel) {
+        updatePostUseCase.execute(object : DisposableSingleObserver<PostModel>() {
+            override fun onSuccess(t: PostModel) {
                 view.processViewAction {
                     hideProgress()
-                    processSuccessSavingPost(postModel = t)
+                    processSuccessUpdatingPost(postModel = t)
                 }
             }
 
@@ -103,8 +103,6 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         )
         createOutfitUseCase.execute(object : DisposableSingleObserver<OutfitCreateModel>() {
             override fun onSuccess(t: OutfitCreateModel) {
-                Log.d("TAG4", "result - $t")
-
                 view.processViewAction {
                     processSuccessSavingOutfit(outfitModel = t)
                     hideProgress()

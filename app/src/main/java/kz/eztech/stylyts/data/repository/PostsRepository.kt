@@ -95,7 +95,7 @@ class PostsRepository @Inject constructor(
         description: MultipartBody.Part,
         tags: TagsApiModel,
         hidden: MultipartBody.Part
-    ): Single<PostCreateModel> {
+    ): Single<PostModel> {
         return api.updatePost(
             token = token,
             postId = postId,
@@ -104,7 +104,7 @@ class PostsRepository @Inject constructor(
             hidden = hidden
         ).map {
             when (it.isSuccessful) {
-                true -> postCreateApiModelMapper.map(data = it.body())
+                true -> postApiModelMapper.map(data = it.body())
                 else -> throw NetworkException(it)
             }
         }

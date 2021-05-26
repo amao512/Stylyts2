@@ -39,11 +39,14 @@ class CreatePostUseCase @Inject constructor(
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
         val multipartList = ArrayList<MultipartBody.Part>()
-        val requestFile = postCreateModel.imageFile.asRequestBody(("image/*").toMediaTypeOrNull())
+        val requestFile = postCreateModel.imageFile?.asRequestBody(("image/*").toMediaTypeOrNull())
 
         multipartList.add(MultipartBody.Part.createFormData("description", postCreateModel.description))
         multipartList.add(MultipartBody.Part.createFormData("hidden", postCreateModel.hidden.toString()))
-        multipartList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, requestFile))
+
+        requestFile?.let {
+            multipartList.add(MultipartBody.Part.createFormData("image_one", postCreateModel.imageFile.name, it))
+        }
 
         var count = 2
 
