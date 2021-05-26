@@ -235,6 +235,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun completeEditing(isSuccess: Boolean) {
         if (isSuccess) {
+            resetPages(mode = collectionMode)
             getProfile()
         }
     }
