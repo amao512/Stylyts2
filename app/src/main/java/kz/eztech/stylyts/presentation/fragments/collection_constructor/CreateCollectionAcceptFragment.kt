@@ -225,27 +225,11 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     override fun processSuccessSavingOutfit(outfitModel: OutfitCreateModel) {
-        val bundle = Bundle()
-
-        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
-        bundle.putInt(CollectionDetailFragment.ID_KEY, outfitModel.id)
-
-        findNavController().navigate(
-            R.id.action_createCollectionAcceptFragment_to_collectionDetailFragment,
-            bundle
-        )
+        findNavController().navigate(R.id.nav_outfits)
     }
 
     override fun processSuccessSavingPost(postModel: PostCreateModel) {
-        val bundle = Bundle()
-
-        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
-        bundle.putInt(CollectionDetailFragment.ID_KEY, postModel.id)
-
-        findNavController().navigate(
-            R.id.action_createCollectionAcceptFragment_to_collectionDetailFragment,
-            bundle
-        )
+        findNavController().navigate(R.id.nav_outfits)
     }
 
     override fun processSuccessUpdatingPost(postModel: PostModel) {

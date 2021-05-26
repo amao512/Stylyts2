@@ -211,6 +211,9 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             R.id.image_view_item_collection_constructor_category_item_image_holder -> {
                 onCategoryItemImageClick(item)
             }
+            R.id.image_view_item_collection_constructor_category_widen_item_image_holder -> {
+                onCategoryItemImageClick(item)
+            }
             R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
                 onCategoryItemImageClick(item)
             }
