@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_size_24x"
+    android:background="@drawable/bg_rounded_dialog"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:id="@+id/dialog_add_cart_problem_message_text_view"
+        style="@style/TextRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_size_16x"
+        android:textAlignment="center"
+        android:textColor="@color/app_dark_blue_gray"
+        android:textSize="@dimen/text_size_14x"
+        tools:text="Данная вещь была загружена пользователем @emilie25 в гадероб для личного пользования,  и в связи с этим не может быть добавлена в вашу корзину."
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:background="@color/app_dark_blue_gray_half"
+        />
+
+    <TextView
+        android:id="@+id/dialog_add_cart_problem_close_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/padding_size_10x"
+        android:text="@string/close"
+        android:textAlignment="center"
+        android:textColor="@color/app_blue"
+        android:textSize="@dimen/text_size_16x"
+        />
+</LinearLayout>

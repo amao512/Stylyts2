@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.clothes
 
 import android.animation.ObjectAnimator
+import android.content.res.ColorStateList
 import android.graphics.Paint
 import android.os.Bundle
 import android.view.View
@@ -24,6 +25,7 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.clothes.ClothesDetailContract
 import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.cart.ClothesSizesBottomDialog
+import kz.eztech.stylyts.presentation.dialogs.clothes.AddToCartProblemDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
@@ -190,6 +192,13 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         } else {
             fragment_clothes_detail_brand_title_text_view.hide()
         }
+
+        if (!clothesModel.owner.isBrand) {
+            fragment_clothes_detail_add_to_cart_text_view.backgroundTintList = ColorStateList.valueOf(
+                getColor(requireContext(), R.color.disabled_button_color)
+            )
+        }
+
         fragment_clothes_detail_clothes_title_text_view.text = clothesModel.title
         fragment_clothes_detail_shop_name_text_view.text = clothesModel.owner.username
 
@@ -293,26 +302,31 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     }
 
     private fun processState(clothesModel: ClothesModel) {
-        when (currentState) {
-            CART_STATE.NONE -> {
-                currentState = CART_STATE.EDIT
+        if (clothesModel.owner.isBrand) {
+            when (currentState) {
+                CART_STATE.NONE -> {
+                    currentState = CART_STATE.EDIT
 
-                fragment_clothes_detail_create_collection_text_view.hide()
-                fragment_clothes_detail_add_to_wardrobe_text_view.hide()
-                fragment_clothes_detail_cart_holder_linear_layout.setBackgroundColor(
-                    getColor(currentActivity, R.color.app_very_light_gray)
-                )
-                fragment_clothes_detail_text_size_frame_layout.show()
-                fragment_clothes_detail_text_share_linear_layout.show()
-            }
-            CART_STATE.EDIT -> {
-                if (currentSize != null) {
-                    processCart(clothesModel)
-                } else {
-                    displayMessage(msg = getString(R.string.select_size))
+                    fragment_clothes_detail_create_collection_text_view.hide()
+                    fragment_clothes_detail_add_to_wardrobe_text_view.hide()
+                    fragment_clothes_detail_cart_holder_linear_layout.setBackgroundColor(
+                        getColor(currentActivity, R.color.app_very_light_gray)
+                    )
+                    fragment_clothes_detail_text_size_frame_layout.show()
+                    fragment_clothes_detail_text_share_linear_layout.show()
                 }
+                CART_STATE.EDIT -> {
+                    if (currentSize != null) {
+                        processCart(clothesModel)
+                    } else {
+                        displayMessage(msg = getString(R.string.select_size))
+                    }
+                }
+                else -> {}
             }
-            else -> {}
+        } else {
+            AddToCartProblemDialog.getNewInstance(username = clothesModel.owner.username)
+                .show(childFragmentManager, EMPTY_STRING)
         }
     }
 
