@@ -29,8 +29,6 @@
             android:background="@color/white"
             android:visibility="gone"
             app:shapeAppearanceOverlay="@style/circleImageView"
-            app:strokeColor="@color/app_dark_blue_gray_half"
-            app:strokeWidth="1dp"
             />
 
         <CheckedTextView

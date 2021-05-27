@@ -13,5 +13,5 @@ object ColorUtils {
 
 enum class ColorEnum(val hex: String, val title: String) {
     BLACK(hex = "#000000", title = "Black"),
-    WHITE(hex = "#ffffff", title = "White")
+    WHITE(hex = "#ffffff", title = "white")
 }
