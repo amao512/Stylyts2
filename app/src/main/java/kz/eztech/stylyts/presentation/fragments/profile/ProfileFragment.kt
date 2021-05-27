@@ -36,7 +36,6 @@ import kz.eztech.stylyts.presentation.base.EditorListener
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.profile.EditProfileDialog
-import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
@@ -53,7 +52,8 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
     UniversalViewClickListener, EditorListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject lateinit var presenter: ProfilePresenter
+    @Inject
+    lateinit var presenter: ProfilePresenter
 
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
@@ -81,7 +81,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var collectionMode: Int = POSTS_MODE
     private var currentUsername: String = EMPTY_STRING
     private var currentUserId: Int = 0
-    private var currentGender: String = GenderEnum.MALE.gender
+    private var currentGender: String = EMPTY_STRING
     private var page: Int = 1
     private var isLastPage = false
 
@@ -249,12 +249,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processProfile(userModel: UserModel) {
         currentUserId = userModel.id
         currentUsername = userModel.username
-        currentGender = userModel.gender
 
         getFilterList()
         getFollowers()
-        getWardrobeCount()
-        setFilterPosition()
 
         fillProfileInfo(userModel = userModel)
         loadProfilePhoto(userModel = userModel)
@@ -268,6 +265,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
         }
+
+        getWardrobeCount()
+        setFilterPosition()
     }
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
@@ -439,7 +439,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         collectionRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!collectionRecyclerView.canScrollVertically(1)
-                    && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    && newState == RecyclerView.SCROLL_STATE_IDLE
+                ) {
 
                     if (!isLastPage) {
                         getCollections()
@@ -455,10 +456,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         userNameTextView.text = userModel.firstName
         followersCountTextView.text = userModel.followersCount.toString()
         followingsCountTextView.text = userModel.followingsCount.toString()
-         adapterFilter.changeItemByPosition(
-             position = 2,
-             title = "${getString(R.string.filter_list_photo_outfits)} (${userModel.outfitsCount})"
-         )
+
+        adapterFilter.changeItemByPosition(
+            position = 2,
+            title = "${getString(R.string.filter_list_photo_outfits)} (${userModel.outfitsCount})"
+        )
 
         if (isOwnProfile()) {
             changeProfileTextView.show()
@@ -523,7 +525,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
 
-        findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
+        findNavController().navigate(
+            R.id.action_profileFragment_to_collectionDetailFragment,
+            bundle
+        )
     }
 
     private fun onPostItemClick(item: Any?) {
@@ -533,7 +538,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
 
-        findNavController().navigate(R.id.action_profileFragment_to_collectionDetailFragment, bundle)
+        findNavController().navigate(
+            R.id.action_profileFragment_to_collectionDetailFragment,
+            bundle
+        )
     }
 
     private fun onWardrobeItemClick(item: Any?) {
