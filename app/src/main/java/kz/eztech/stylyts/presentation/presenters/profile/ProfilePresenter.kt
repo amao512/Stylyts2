@@ -226,6 +226,26 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
+	override fun getWardrobeCount(
+		token: String,
+		filterModel: ClothesFilterModel
+	) {
+		getClothesUseCase.initParams(token = token, filterModel = filterModel)
+		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+			override fun onSuccess(t: ResultsModel<ClothesModel>) {
+				view.processViewAction {
+					processWardrobeCount(count = t.totalCount)
+				}
+			}
+
+			override fun onError(e: Throwable) {
+				view.processViewAction {
+					displayMessage(msg = errorHelper.processError(e))
+				}
+			}
+		})
+	}
+
 	private fun getOwnProfile(token: String) {
 		getProfileUseCase.initParams(token)
 		getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {

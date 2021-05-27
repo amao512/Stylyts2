@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.profile
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -254,6 +253,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         getFilterList()
         getFollowers()
+        getWardrobeCount()
         setFilterPosition()
 
         fillProfileInfo(userModel = userModel)
@@ -268,9 +268,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
         }
-
-        wardrobeAdapter.clearList()
-        getWardrobe()
     }
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
@@ -325,11 +322,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>) {
         wardrobeAdapter.updateMoreList(list = resultsModel.results)
         setPagesCondition(resultsModel.totalPages)
+    }
 
-        Log.d("TAG4", "count - ${resultsModel.totalCount}")
+    override fun processWardrobeCount(count: Int) {
         adapterFilter.changeItemByPosition(
             position = 3,
-            title = "${getString(R.string.filter_list_wardrobe)} (${resultsModel.totalCount})"
+            title = "${getString(R.string.filter_list_wardrobe)} ($count)"
         )
     }
 
@@ -340,8 +338,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun onRefresh() {
         resetPages(mode = collectionMode)
-        setFilterPosition()
-        getProfile()
+        processPostInitialization()
     }
 
     private fun getProfile() {
@@ -399,7 +396,26 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         clothesFilterModel.page = page
         clothesFilterModel.isLastPage = isLastPage
 
+        if (isOwnProfile()) {
+            clothesFilterModel.inMyWardrobe = isOwnProfile()
+        }
+
         presenter.getWardrobe(
+            token = currentActivity.getTokenFromSharedPref(),
+            filterModel = clothesFilterModel
+        )
+    }
+
+    private fun getWardrobeCount() {
+        clothesFilterModel.gender = currentGender
+        clothesFilterModel.page = page
+        clothesFilterModel.isLastPage = isLastPage
+
+        if (isOwnProfile()) {
+            clothesFilterModel.inMyWardrobe = isOwnProfile()
+        }
+
+        presenter.getWardrobeCount(
             token = currentActivity.getTokenFromSharedPref(),
             filterModel = clothesFilterModel
         )

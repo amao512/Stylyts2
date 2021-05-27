@@ -38,6 +38,8 @@ interface ProfileContract {
         fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>)
 
         fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>)
+
+        fun processWardrobeCount(count: Int)
     }
 
     interface Presenter : BasePresenter<View> {
@@ -66,6 +68,11 @@ interface ProfileContract {
         fun unfollowUser(
             token: String,
             userId: Int
+        )
+
+        fun getWardrobeCount(
+            token: String,
+            filterModel: ClothesFilterModel
         )
 
         fun getWardrobe(

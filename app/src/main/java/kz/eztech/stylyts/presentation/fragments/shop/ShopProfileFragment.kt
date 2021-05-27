@@ -91,6 +91,11 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         private const val CLOTHES_MODE = 2
     }
 
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
+    }
+
     override fun getLayoutId(): Int = R.layout.fragment_shop_profile
 
     override fun getContractView(): BaseView = this
