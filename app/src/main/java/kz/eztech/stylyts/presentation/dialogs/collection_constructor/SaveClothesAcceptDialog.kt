@@ -21,6 +21,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
+import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract
@@ -110,13 +111,7 @@ class SaveClothesAcceptDialog(
             R.id.toolbar_left_corner_action_image_button -> {
                 dismiss()
             }
-            R.id.toolbar_right_text_text_view -> {
-                clothesCreateModel.title = edit_text_view_dialog_save_clothes_accept_sign.text.toString()
-                presenter.createClothes(
-                    token = getTokenFromArgs(),
-                    clothesCreateModel = clothesCreateModel
-                )
-            }
+            R.id.toolbar_right_text_text_view -> createClothes()
             R.id.dialog_save_clothes_list_toolbar_back_text_view -> onBackClicked()
             R.id.dialog_save_clothes_list_toolbar_next_text_view -> onNextClicked()
         }
@@ -299,6 +294,16 @@ class SaveClothesAcceptDialog(
             CATEGORY_LIST_MODE -> presenter.getStyles(token = getTokenFromArgs())
             STYLE_LIST_MODE -> setListButtonsCondition()
         }
+    }
+
+    private fun createClothes() {
+        clothesCreateModel.owner = (activity as MainActivity).getUserIdFromSharedPref()
+        clothesCreateModel.title = edit_text_view_dialog_save_clothes_accept_sign.text.toString()
+
+        presenter.createClothes(
+            token = getTokenFromArgs(),
+            clothesCreateModel = clothesCreateModel
+        )
     }
 
     private fun onBackClicked() {

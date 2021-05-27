@@ -6,6 +6,7 @@ import java.io.File
 
 data class ClothesCreateModel(
     val id: Int = 0,
+    var owner: Int = 0,
     var title: String = EMPTY_STRING,
     var description: String = EMPTY_STRING,
     var gender: String = GenderEnum.MALE.gender,

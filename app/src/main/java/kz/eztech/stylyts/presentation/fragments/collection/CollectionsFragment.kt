@@ -91,7 +91,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         when (item) {
             is OutfitModel -> onOutfitClicked(item)
             is PostModel -> onPostClicked(item)
-            is CollectionFilterModel -> filterAdapter.onChooseItem(position)
+            is CollectionFilterModel -> filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
         }
     }
 

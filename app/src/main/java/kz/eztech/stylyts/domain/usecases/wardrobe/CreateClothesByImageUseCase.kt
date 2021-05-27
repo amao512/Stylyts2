@@ -34,6 +34,7 @@ class CreateClothesByImageUseCase @Inject constructor(
 
         val multipartList = ArrayList<MultipartBody.Part>()
 
+        multipartList.add(MultipartBody.Part.createFormData("owner", clothesCreateModel.owner.toString()))
         multipartList.add(MultipartBody.Part.createFormData("title", clothesCreateModel.title))
         multipartList.add(MultipartBody.Part.createFormData("gender", clothesCreateModel.gender))
         multipartList.add(
