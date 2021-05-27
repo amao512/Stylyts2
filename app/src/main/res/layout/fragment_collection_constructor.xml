@@ -197,10 +197,14 @@
                         tools:listitem="@layout/item_collection_constructor_category"
                         />
 
-                    <ListView
-                        android:id="@+id/list_view_fragment_collection_constructor_list_style"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/fragment_collection_constructor_styles_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:overScrollMode="never"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:listitem="@layout/item_style"
                         android:visibility="gone"
                         />
                 </LinearLayout>

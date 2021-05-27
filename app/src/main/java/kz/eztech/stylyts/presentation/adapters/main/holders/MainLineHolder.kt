@@ -19,7 +19,7 @@ import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.ClothesAdditionalAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -40,7 +40,7 @@ class MainLineHolder(
     private val imageLoader: DomainImageLoader
 ) : BaseViewHolder(itemView, adapter), UniversalViewClickListener {
 
-    private lateinit var additionalAdapter: MainImagesAdditionalAdapter
+    private lateinit var additionalAdapter: ClothesAdditionalAdapter
 
     private lateinit var avatarShapeableImageView: ShapeableImageView
     private lateinit var userShortNameTextView: TextView
@@ -85,7 +85,7 @@ class MainLineHolder(
     }
 
     private fun initializeAdapters(postModel: PostModel) {
-        additionalAdapter = MainImagesAdditionalAdapter()
+        additionalAdapter = ClothesAdditionalAdapter()
         additionalAdapter.itemClickListener = adapter.itemClickListener
 
         if (postModel.clothes.isEmpty()) {

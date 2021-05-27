@@ -309,12 +309,12 @@ class FilterDialog(
         filterExpandableAdapter.onResetCheckedItems()
         filterCheckAdapter.onResetCheckedItems()
 
-        currentFilter.typeIdList = emptyList()
         currentFilter.categoryIdList = emptyList()
         currentFilter.brandList = emptyList()
         currentFilter.colorList = emptyList()
         currentFilter.minPrice = 0
         currentFilter.maxPrice = 0
+        currentFilter.inMyWardrobe = false
 
         minPriceEditText.text.clear()
         maxPriceEditText.text.clear()
@@ -501,7 +501,6 @@ class FilterDialog(
     private fun checkEmptyFilter() {
         toolbar_right_text_text_view.isClickable = currentFilter.brandList.isNotEmpty() ||
                 currentFilter.categoryIdList.isNotEmpty() ||
-                currentFilter.typeIdList.isNotEmpty() ||
                 currentFilter.colorList.isNotEmpty() ||
                 currentFilter.minPrice != 0 ||
                 currentFilter.maxPrice != 0

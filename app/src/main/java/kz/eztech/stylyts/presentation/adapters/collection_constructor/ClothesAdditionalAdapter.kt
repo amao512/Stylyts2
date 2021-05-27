@@ -5,14 +5,14 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.MainImageAdditionalHolder
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.ClothesAdditionalHolder
 import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperAdapter
 import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-class MainImagesAdditionalAdapter(
+class ClothesAdditionalAdapter(
     private val onStartDragListener: OnStartDragListener? = null
 ) : BaseAdapter(), ItemTouchHelperAdapter {
 
@@ -31,8 +31,8 @@ class MainImagesAdditionalAdapter(
         }
     }
 
-    override fun getViewHolder(view: View): MainImageAdditionalHolder {
-        return MainImageAdditionalHolder(
+    override fun getViewHolder(view: View): ClothesAdditionalHolder {
+        return ClothesAdditionalHolder(
             itemView = view,
             adapter = this,
             onStartDragListener = onStartDragListener

@@ -83,11 +83,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_size_24x"
                     android:src="@drawable/ic_baseline_favorite_border_24"
+                    android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintTop_toTopOf="@id/fragment_clothes_detail_avatar_holder"
-                    android:visibility="gone"
                     />
 
                 <androidx.viewpager.widget.ViewPager
@@ -100,22 +100,21 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/fragment_clothes_detail_avatar_holder"
                     />
-
-                <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
-                    android:id="@+id/fragment_clothes_detail_photos_pager_indicator"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:spi_dotColor="@color/app_dark_blue_gray_half"
-                    app:spi_dotSelectedColor="@color/app_dark"
-                    app:spi_dotSelectedSize="7dp"
-                    app:spi_dotSize="6dp"
-                    app:spi_visibleDotCount="5"
-                    app:spi_visibleDotThreshold="2"
-                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
+                android:id="@+id/fragment_clothes_detail_photos_pager_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_size_10x"
+                app:spi_dotColor="@color/app_dark_blue_gray_half"
+                app:spi_dotSelectedColor="@color/app_dark"
+                app:spi_dotSelectedSize="7dp"
+                app:spi_dotSize="6dp"
+                app:spi_visibleDotCount="5"
+                app:spi_visibleDotThreshold="2"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"

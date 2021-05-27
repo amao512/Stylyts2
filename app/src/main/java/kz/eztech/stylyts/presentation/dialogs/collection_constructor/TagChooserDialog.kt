@@ -31,12 +31,11 @@ import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.GridImageItemFilteredAdapter
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.ClothesAdditionalAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.TagChooserContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
-import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.interfaces.MotionViewTapListener
@@ -67,7 +66,7 @@ class TagChooserDialog(
 
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var clothesAdapter: GridImageItemFilteredAdapter
-    private lateinit var selectedClothesAdapter: MainImagesAdditionalAdapter
+    private lateinit var selectedClothesAdapter: ClothesAdditionalAdapter
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: ClothesFilterModel
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -168,10 +167,13 @@ class TagChooserDialog(
     override fun initializeViewsData() {
         // Request camera permissions
         currentFilter = ClothesFilterModel()
+        currentFilter.gender = EMPTY_STRING
+        currentFilter.onlyBrands = false
+
         filterDialog = FilterDialog.getNewInstance(
             token = getTokenFromArgs(),
             itemClickListener = this,
-            gender = GenderEnum.MALE.gender,
+            gender = EMPTY_STRING,
             isShowWardrobe = true
         ).apply {
             setFilter(filterModel = currentFilter)
@@ -179,7 +181,7 @@ class TagChooserDialog(
 
         clothesAdapter = GridImageItemFilteredAdapter()
         filterAdapter = CollectionsFilterAdapter()
-        selectedClothesAdapter = MainImagesAdditionalAdapter(onStartDragListener = this)
+        selectedClothesAdapter = ClothesAdditionalAdapter(onStartDragListener = this)
 
         val callback: ItemTouchHelper.Callback = SimpleItemTouchHelperCallback(selectedClothesAdapter)
         itemTouchHelper = ItemTouchHelper(callback)

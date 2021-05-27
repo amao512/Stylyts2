@@ -24,7 +24,7 @@ import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.MainImagesAdditionalAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.ClothesAdditionalAdapter
 import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -54,7 +54,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     @Inject lateinit var presenter: CollectionDetailPresenter
     @Inject lateinit var imageLoader: DomainImageLoader
 
-    private lateinit var additionalAdapter: MainImagesAdditionalAdapter
+    private lateinit var additionalAdapter: ClothesAdditionalAdapter
     private lateinit var currentOutfitModel: OutfitModel
     private lateinit var currentPostModel: PostModel
 
@@ -136,7 +136,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         firstCommentTextView = fragment_collection_detail_first_comment_text_view
         commentsCountTextView = text_view_fragment_collection_detail_comments_count
 
-        additionalAdapter = MainImagesAdditionalAdapter()
+        additionalAdapter = ClothesAdditionalAdapter()
         additionalAdapter.setOnClickListener(listener = this)
     }
 

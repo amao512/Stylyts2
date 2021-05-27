@@ -187,8 +187,8 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         chooserDialog = ClothesSizesBottomDialog()
         chooserDialog.setChoiceListener(listener = this)
 
-        if (clothesModel.clothesBrand.title.isNotEmpty()) {
-            fragment_clothes_detail_brand_title_text_view.text = clothesModel.clothesBrand.title
+        if (clothesModel.owner.username.isNotEmpty()) {
+            fragment_clothes_detail_brand_title_text_view.text = clothesModel.owner.username
         } else {
             fragment_clothes_detail_brand_title_text_view.hide()
         }

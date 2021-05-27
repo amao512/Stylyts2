@@ -37,7 +37,7 @@ import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopCategoryAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.StylesAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.StyleAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
@@ -72,7 +72,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     lateinit var presenter: CollectionConstructorPresenter
 
     private lateinit var typesAdapter: CollectionConstructorShopCategoryAdapter
-    private lateinit var itemAdapter: CollectionConstructorShopItemAdapter
+    private lateinit var clothesAdapter: CollectionConstructorShopItemAdapter
+    private lateinit var stylesAdapter: StyleAdapter
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: ClothesFilterModel
 
@@ -138,11 +139,13 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             setFilter(filterModel = currentFilter)
         }
         typesAdapter = CollectionConstructorShopCategoryAdapter(gender = getTypeFromArgs())
-        itemAdapter = CollectionConstructorShopItemAdapter()
+        clothesAdapter = CollectionConstructorShopItemAdapter()
+        stylesAdapter = StyleAdapter()
 
         typesAdapter.itemClickListener = this
-        itemAdapter.itemClickListener = this
-        itemAdapter.itemDoubleClickListener = this
+        clothesAdapter.itemClickListener = this
+        clothesAdapter.itemDoubleClickListener = this
+        stylesAdapter.itemClickListener = this
     }
 
     override fun initializeViews() {
@@ -208,10 +211,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         item: Any?
     ) {
         when (view.id) {
-            R.id.image_view_item_collection_constructor_category_item_image_holder -> {
+            R.id.item_collection_constructor_category_root_view -> {
                 onCategoryItemImageClick(item)
             }
-            R.id.image_view_item_collection_constructor_category_widen_item_image_holder -> {
+            R.id.item_collection_constructor_category_wide_root_view -> {
                 onCategoryItemImageClick(item)
             }
             R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
@@ -221,6 +224,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
         when (item) {
             is ClothesFilterModel -> showFilterResults(item)
+            is ClothesStyleModel -> showStyles(item)
         }
     }
 
@@ -231,7 +235,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         isDouble: Boolean?
     ) {
         when (view.id) {
-            R.id.image_view_item_collection_constructor_category_item_image_holder -> {
+            R.id.item_collection_constructor_category_root_view -> {
                 onCategoryItemImageDoubleClick()
             }
             R.id.image_view_item_collection_constructor_clothes_item_image_holder -> {
@@ -275,22 +279,17 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
         text_view_fragment_collection_constructor_category_back.show()
         text_view_fragment_collection_constructor_category_back.isClickable = true
-        recycler_view_fragment_collection_constructor_list.adapter = itemAdapter
+        recycler_view_fragment_collection_constructor_list.adapter = clothesAdapter
 
-        itemAdapter.updateMoreList(list = resultsModel.results)
+        clothesAdapter.updateMoreList(list = resultsModel.results)
         isItems = true
     }
 
     override fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
-        val adapter = StylesAdapter(requireContext(), resultsModel.results)
-        recycler_view_fragment_collection_constructor_list.hide()
+        stylesAdapter.updateList(list = resultsModel.results)
 
-        list_view_fragment_collection_constructor_list_style.adapter = adapter
-        list_view_fragment_collection_constructor_list_style.show()
-        list_view_fragment_collection_constructor_list_style.setOnItemClickListener { _, _, position, _ ->
-            currentStyle = resultsModel.results[position]
-            processPostImages()
-        }
+        fragment_collection_constructor_styles_recycler_view.adapter = stylesAdapter
+        fragment_collection_constructor_styles_recycler_view.show()
     }
 
     override fun deleteSelectedView(motionEntity: MotionEntity) {
@@ -300,7 +299,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
         processDraggedItems()
         typesAdapter.removeChosenPosition(typeId = (motionEntity.item.item).clothesCategory.clothesType.id)
-        itemAdapter.removeChosenPosition(clothesId = motionEntity.item.item.id)
+        clothesAdapter.removeChosenPosition(clothesId = motionEntity.item.item.id)
 
         Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
     }
@@ -308,7 +307,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     private fun processInputImageToPlace(item: Any?) {
         item as ClothesModel
 
-        itemAdapter.choosePosition(clothesId = item.id)
+        clothesAdapter.choosePosition(clothesId = item.id)
 
         var photoUrl: String = EMPTY_STRING
         var currentSameObject: ImageEntity? = null
@@ -432,7 +431,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         recycler_view_fragment_collection_constructor_list.adapter = typesAdapter
         recycler_view_fragment_collection_constructor_list.show()
 
-        list_view_fragment_collection_constructor_list_style.hide()
+        fragment_collection_constructor_styles_recycler_view.hide()
         text_view_fragment_collection_constructor_category_back.visibility = View.INVISIBLE
         text_view_fragment_collection_constructor_category_back.isClickable = false
 
@@ -481,7 +480,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                 if (isExternal) {
                     onChoice(view, externalType)
                 } else {
-                    itemAdapter.clearList()
+                    clothesAdapter.clearList()
                     currentFilter.page = 1
                     currentFilter.isLastPage = false
                     currentFilter.typeIdList = listOf(item)
@@ -547,12 +546,17 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
     private fun showFilterResults(filterModel: ClothesFilterModel) {
         currentFilter = filterModel
-        itemAdapter.clearList()
+        clothesAdapter.clearList()
 
         Log.d("TAG4", "filter - $currentFilter")
 
         displayProgress()
         getClothes()
+    }
+
+    private fun showStyles(clothesStyleModel: ClothesStyleModel) {
+        currentStyle = clothesStyleModel
+        processPostImages()
     }
 
     private fun navigateToCameraFragment(mode: Int) {

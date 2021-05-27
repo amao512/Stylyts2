@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlinx.android.synthetic.main.item_collection_constructor_category.view.*
 import kotlinx.android.synthetic.main.item_collection_constructor_category_wide.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
@@ -21,6 +22,7 @@ class CollectionConstructorShopCategoryHolder(
     private val gender: Int
 ) : BaseViewHolder(itemView, adapter) {
 
+	private lateinit var rootViewConstraintLayout: ConstraintLayout
 	private lateinit var titleTextView: TextView
 	private lateinit var iconImageView: ImageView
 	private lateinit var selectedIconImageView: ImageView
@@ -38,10 +40,12 @@ class CollectionConstructorShopCategoryHolder(
 	private fun initializeViews(clothesTypeModel: ClothesTypeModel) {
 		with (itemView) {
 			if (clothesTypeModel.isWiden) {
+				rootViewConstraintLayout = item_collection_constructor_category_wide_root_view
 				titleTextView = text_view_item_collection_constructor_category_widen_item_title
 				iconImageView = image_view_item_collection_constructor_category_widen_item_image_holder
 				selectedIconImageView = image_view_item_collection_constructor_category_widen_item_image_chooser
 			} else {
+				rootViewConstraintLayout = item_collection_constructor_category_root_view
 				titleTextView = text_view_item_collection_constructor_category_item_title
 				iconImageView = image_view_item_collection_constructor_category_item_image_holder
 				selectedIconImageView = image_view_item_collection_constructor_category_item_image_chooser
@@ -73,7 +77,7 @@ class CollectionConstructorShopCategoryHolder(
 				}
 			}
 
-			iconImageView.setOnClickListener {
+			rootViewConstraintLayout.setOnClickListener {
 				adapter.itemClickListener?.onViewClicked(it, position, clothesType)
 			}
 		}

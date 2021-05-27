@@ -15,4 +15,23 @@
         android:layout_margin="@dimen/margin_size_10x"
         android:src="@drawable/jacket"
         />
+
+    <FrameLayout
+        android:id="@+id/item_main_image_detail_user_tag_frame_layout"
+        android:layout_width="@dimen/icon_size_24x"
+        android:layout_height="@dimen/icon_size_24x"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/margin_size_6x"
+        android:background="@drawable/circle_black"
+        android:backgroundTint="@color/app_black_half"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:layout_width="@dimen/icon_size_16x"
+            android:layout_height="@dimen/icon_size_16x"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_user_tags"
+            />
+    </FrameLayout>
 </FrameLayout>

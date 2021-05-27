@@ -5,18 +5,20 @@ import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.view.MotionEventCompat
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_main_image_detail.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperViewHolder
 import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
+import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
+import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-class MainImageAdditionalHolder(
+class ClothesAdditionalHolder(
     itemView: View,
     adapter: BaseAdapter,
     private val onStartDragListener: OnStartDragListener? = null
@@ -31,22 +33,22 @@ class MainImageAdditionalHolder(
 
         with(itemView) {
             frame_layout_item_main_image_holder_container.setOnClickListener {
-                adapter.itemClickListener?.onViewClicked(
-                    frame_layout_item_main_image_holder_container,
-                    position,
-                    item
-                )
+                adapter.itemClickListener?.onViewClicked(it, position, item)
             }
 
             if (item.coverImages.isNotEmpty()) {
-                Glide.with(image_view_image_detail_image_view.context)
-                    .load(item.coverImages[0])
-                    .into(image_view_image_detail_image_view)
+                item.coverImages[0].loadImage(target = image_view_image_detail_image_view)
+            }
+
+            if (item.clothesBrand.id != 0) {
+                item_main_image_detail_user_tag_frame_layout.hide()
+            } else {
+                item_main_image_detail_user_tag_frame_layout.show()
             }
 
             image_view_image_detail_image_view.setOnTouchListener { _, event ->
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    onStartDragListener?.onStartDrag(viewHolder = this@MainImageAdditionalHolder)
+                    onStartDragListener?.onStartDrag(viewHolder = this@ClothesAdditionalHolder)
                 }
 
                 false
