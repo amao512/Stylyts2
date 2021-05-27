@@ -37,6 +37,23 @@
             app:destination="@id/shopProfileFragment"
             />
     </fragment>
+
+    <fragment
+        android:id="@+id/clothesDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
+        android:label="fragment_clothes_detail"
+        tools:layout="@layout/fragment_clothes_detail"
+        >
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_shopProfileFragment"
+            app:destination="@id/shopProfileFragment"
+            />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
+            />
+    </fragment>
+
     <fragment
         android:id="@+id/collectionDetailFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment"
@@ -51,17 +68,34 @@
             android:id="@+id/action_collectionDetailFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
             />
-    </fragment>
-    <fragment
-        android:id="@+id/clothesDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
-        android:label="fragment_clothes_detail"
-        tools:layout="@layout/fragment_clothes_detail"
-        >
         <action
-            android:id="@+id/action_clothesDetailFragment_to_shopProfileFragment"
-            app:destination="@id/shopProfileFragment"
+            android:id="@+id/action_collectionDetailFragment_to_userCommentsFragment"
+            app:destination="@id/commentsFragment"
+            />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_createCollectionAcceptFragment"
+            app:destination="@id/createCollectionAcceptFragment"
+            />
+        <action
+            android:id="@+id/action_collectionDetailFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
             />
     </fragment>
+
     <include app:graph="@navigation/nav_profile" />
+
+    <fragment
+        android:id="@+id/commentsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment"
+        android:label="fragment_comments"
+        tools:layout="@layout/fragment_comments"
+        />
+
+    <include app:graph="@navigation/nav_create_collection" />
+
+    <fragment
+        android:id="@+id/createCollectionAcceptFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
+        android:label="CreateCollectionAcceptFragment"
+        />
 </navigation>

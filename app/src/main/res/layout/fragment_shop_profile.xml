@@ -14,23 +14,21 @@
         layout="@layout/base_toolbar"
         />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/fragment_shop_profile_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-        <com.google.android.material.appbar.AppBarLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             >
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:fitsSystemWindows="true"
-                app:contentScrim="@android:color/white"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 >
 
                 <LinearLayout
@@ -243,34 +241,36 @@
 
                 </LinearLayout>
 
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_shop_profile_filter_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:clipToPadding="false"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/padding_size_6x"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    tools:listitem="@layout/item_collection_filter"
+                    />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_shop_profile_filter_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:clipToPadding="false"
-                android:orientation="horizontal"
-                android:overScrollMode="never"
-                android:paddingStart="0dp"
-                android:paddingEnd="@dimen/padding_size_6x"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_scrollFlags="scroll|enterAlways"
-                tools:listitem="@layout/item_collection_filter"
-                />
-        </com.google.android.material.appbar.AppBarLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_shop_profile_clothes_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:spanCount="2"
+                    tools:listitem="@layout/item_clothes_detail"
+                    />
+            </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/fragment_shop_profile_clothes_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            app:spanCount="2"
-            tools:listitem="@layout/item_clothes_detail"
-            />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

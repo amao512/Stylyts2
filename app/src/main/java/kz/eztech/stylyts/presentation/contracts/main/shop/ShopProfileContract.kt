@@ -6,6 +6,8 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -24,6 +26,8 @@ interface ShopProfileContract {
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
         fun processTypes(resultsModel: ResultsModel<ClothesTypeModel>)
+
+        fun processPostResults(resultsModel: ResultsModel<PostModel>)
 
         fun processOutfits(resultsModel: ResultsModel<OutfitModel>)
 
@@ -47,6 +51,11 @@ interface ShopProfileContract {
         )
 
         fun getTypes(token: String)
+
+        fun getPosts(
+            token: String,
+            filterModel: PostFilterModel
+        )
 
         fun getOutfits(
             token: String,

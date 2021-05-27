@@ -1,10 +1,12 @@
 package kz.eztech.stylyts.presentation.fragments.shop
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_profile.*
@@ -18,6 +20,8 @@ import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.domain.models.posts.PostFilterModel
+import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -25,6 +29,7 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.OutfitsAdapter
+import kz.eztech.stylyts.presentation.adapters.common.GridImageAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -45,15 +50,17 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.View,
-    UniversalViewClickListener, View.OnClickListener {
+    UniversalViewClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject lateinit var presenter: ShopProfilePresenter
     @Inject lateinit var imageLoader: DomainImageLoader
 
+    private lateinit var publicationsAdapter: GridImageAdapter
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var outfitsAdapter: OutfitsAdapter
     private lateinit var filterDialog: FilterDialog
+    private lateinit var postFilterModel: PostFilterModel
     private lateinit var outfitFilterModel: OutfitFilterModel
     private lateinit var clothesFilterModel: ClothesFilterModel
 
@@ -70,7 +77,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     private lateinit var filterListRecyclerView: RecyclerView
     private lateinit var collectionsRecyclerView: RecyclerView
 
-    private var collectionMode = OUTFITS_MODE
+    private var collectionMode = POSTS_MODE
     private var currentUserId: Int = 0
     private var currentUsername: String = EMPTY_STRING
     private var currentGender: String = GenderEnum.MALE.gender
@@ -79,8 +86,9 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
     companion object {
         const val PROFILE_ID_KEY = "profileId"
-        private const val OUTFITS_MODE = 0
-        private const val CLOTHES_MODE = 1
+        private const val POSTS_MODE = 0
+        private const val OUTFITS_MODE = 1
+        private const val CLOTHES_MODE = 2
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_shop_profile
@@ -118,6 +126,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
+        postFilterModel = PostFilterModel()
         outfitFilterModel = OutfitFilterModel()
         clothesFilterModel = ClothesFilterModel()
 
@@ -131,6 +140,9 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
         filterAdapter = CollectionsFilterAdapter()
         filterAdapter.setOnClickListener(listener = this)
+
+        publicationsAdapter = GridImageAdapter()
+        publicationsAdapter.setOnClickListener(listener = this)
 
         clothesAdapter = ClothesDetailAdapter()
         clothesAdapter.setOnClickListener(listener = this)
@@ -163,14 +175,15 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     ) {
         when (view.id) {
             R.id.frame_layout_item_collection_filter -> onFilterItemClicked(item, position)
-            R.id.shapeable_image_view_item_collection_image -> onNavigateToOutfit(item)
-            R.id.item_clothes_detail_linear_layout -> onNavigateToClothes(item)
             R.id.dialog_bottom_change_gender_for_his_text_view -> onChangeGender(position)
             R.id.dialog_bottom_change_gender_for_her_text_view -> onChangeGender(position)
         }
 
         when (item) {
             is ClothesFilterModel -> showFilterResults(item)
+            is PostModel -> onNavigateToPost(item)
+            is OutfitModel -> onNavigateToOutfit(item)
+            is ClothesModel -> onNavigateToClothes(item)
         }
     }
 
@@ -200,6 +213,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
         fragment_shop_profile_followers_linear_layout.setOnClickListener(this)
         fragment_shop_profile_followings_linear_layout.setOnClickListener(this)
+        fragment_shop_profile_swipe_refresh_layout.setOnRefreshListener(this)
     }
 
     override fun processPostInitialization() {
@@ -222,24 +236,31 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
     override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayProgress() {}
+    override fun displayProgress() {
+        fragment_shop_profile_swipe_refresh_layout.isRefreshing = true
+    }
 
-    override fun hideProgress() {}
+    override fun hideProgress() {
+        fragment_shop_profile_swipe_refresh_layout.isRefreshing = false
+    }
 
     override fun processProfile(userModel: UserModel) {
         currentUserId = userModel.id
         currentUsername = userModel.username
-        currentGender = GenderEnum.MALE.gender
 
         shopNameTextView.text = userModel.username
         followersCountTextView.text = userModel.followersCount.toString()
         followingsCountTextView.text = userModel.followingsCount.toString()
         fragment_shop_profile_toolbar.toolbar_title_text_view.text = userModel.username
 
-
         processShopAvatar(userModel)
         getFollowers(userModel)
-        getOutfits()
+
+        publicationsAdapter.clearList()
+        clothesAdapter.clearList()
+        outfitsAdapter.clearList()
+        resetPages(mode = collectionMode)
+        getCollections()
     }
 
     override fun processFollowers(resultsModel: ResultsModel<FollowerModel>) {
@@ -271,17 +292,23 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
             icon = R.drawable.ic_filter,
             isDisabled = true
         ))
-        filterList.add(CollectionFilterModel(
-            id = 2,
-            name = getString(R.string.filter_list_photo_outfits),
-            isChosen = true
-        ))
+        filterList.add(
+            CollectionFilterModel(
+                id = 2,
+                name = getString(R.string.filter_list_publishes),
+                isChosen = true
+            )
+        )
         filterList.add(CollectionFilterModel(
             id = 3,
+            name = getString(R.string.filter_list_photo_outfits)
+        ))
+        filterList.add(CollectionFilterModel(
+            id = 4,
             name = getString(R.string.filter_list_all_positions)
         ))
 
-        var counter = 4
+        var counter = 5
 
         resultsModel.results.map {
             filterList.add(
@@ -291,6 +318,13 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         }
 
         filterAdapter.updateList(filterList)
+    }
+
+    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
+        publicationsAdapter.updateMoreList(list = resultsModel.results)
+        collectionsRecyclerView.adapter = publicationsAdapter
+
+        setPagesCondition(totalPages = resultsModel.totalPages)
     }
 
     override fun processOutfits(resultsModel: ResultsModel<OutfitModel>) {
@@ -319,6 +353,13 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 //        writeMessageTextView.hide()
     }
 
+    override fun onRefresh() {
+        presenter.getProfile(
+            token = currentActivity.getTokenFromSharedPref(),
+            id = getIdFromArgs()
+        )
+    }
+
     private fun onFilterItemClicked(
         item: Any?,
         position: Int
@@ -327,8 +368,9 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
         when (position) {
             0 -> onFilterClick()
-            1 -> onFilterOutfitsClick(position)
-            2 -> onFilterAllPositionsClick(position)
+            1 -> onFilterPublicationsClick()
+            2 -> onFilterOutfitsClick()
+            3 -> onFilterAllPositionsClick(position)
             else -> onFilterClothesClick(position, item)
         }
     }
@@ -339,20 +381,21 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         }.show(childFragmentManager, EMPTY_STRING)
     }
 
-    private fun onFilterOutfitsClick(position: Int) {
-        filterAdapter.onChooseItem(position)
-        outfitsAdapter.clearList()
+    private fun onFilterPublicationsClick() {
+        resetPages(mode = POSTS_MODE)
+        setFilterPosition()
+    }
 
+    private fun onFilterOutfitsClick() {
         resetPages(mode = OUTFITS_MODE)
-        getOutfits()
+        setFilterPosition()
     }
 
     private fun onFilterAllPositionsClick(position: Int) {
-        filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
-        clothesAdapter.clearList()
+        filterAdapter.onChooseItem(position = position, isDisabledFirstPosition = false)
 
         resetPages(mode = CLOTHES_MODE)
-        getClothes()
+        setFilterPosition()
     }
 
     private fun onFilterClothesClick(
@@ -361,27 +404,30 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     ) {
         filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
         clothesFilterModel.typeIdList = listOf(collectionFilterModel.item as ClothesTypeModel)
-        clothesAdapter.clearList()
 
         resetPages(mode = CLOTHES_MODE)
-        getClothes()
+        setFilterPosition()
     }
 
-    private fun onNavigateToOutfit(item: Any?) {
-        item as OutfitModel
-
+    private fun onNavigateToPost(postModel: PostModel) {
         val bundle = Bundle()
-        bundle.putInt(CollectionDetailFragment.ID_KEY, item.id)
+        bundle.putInt(CollectionDetailFragment.ID_KEY, postModel.id)
+        bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
+
+        findNavController().navigate(R.id.action_shopProfileFragment_to_collectionDetailFragment, bundle)
+    }
+
+    private fun onNavigateToOutfit(outfitModel: OutfitModel) {
+        val bundle = Bundle()
+        bundle.putInt(CollectionDetailFragment.ID_KEY, outfitModel.id)
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.OUTFIT_MODE)
 
         findNavController().navigate(R.id.action_shopProfileFragment_to_collectionDetailFragment, bundle)
     }
 
-    private fun onNavigateToClothes(item: Any?) {
-        item as ClothesModel
-
+    private fun onNavigateToClothes(clothesModel: ClothesModel) {
         val bundle = Bundle()
-        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, clothesModel.id)
 
         findNavController().navigate(R.id.action_shopProfileFragment_to_clothesDetailFragment, bundle)
     }
@@ -398,10 +444,8 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
             }
         }
 
-        outfitsAdapter.clearList()
-        clothesAdapter.clearList()
         resetPages(mode = collectionMode)
-        getCollections()
+        setFilterPosition()
     }
 
     private fun navigateToFollowers() {
@@ -449,9 +493,21 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
     private fun getCollections() {
         when (collectionMode) {
+            POSTS_MODE -> getPosts()
             OUTFITS_MODE -> getOutfits()
             CLOTHES_MODE -> getClothes()
         }
+    }
+
+    private fun getPosts() {
+        postFilterModel.userId = currentUserId
+        postFilterModel.isLastPage = isLastPage
+        postFilterModel.page = page
+
+        presenter.getPosts(
+            token = currentActivity.getTokenFromSharedPref(),
+            filterModel = postFilterModel
+        )
     }
 
     private fun getOutfits() {
@@ -467,6 +523,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     }
 
     private fun getClothes() {
+        clothesFilterModel.owner = currentUsername
         clothesFilterModel.gender = currentGender
         clothesFilterModel.page = page
         clothesFilterModel.isLastPage = isLastPage
@@ -505,11 +562,9 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     private fun showFilterResults(item: Any?) {
         clothesFilterModel = item as ClothesFilterModel
 
-        collectionsRecyclerView.adapter = clothesAdapter
-        clothesAdapter.clearList()
-
-        getCollections()
         resetPages(mode = CLOTHES_MODE)
+        filterAdapter.onChooseItem(position = 3, isDisabledFirstPosition = false)
+        setFilterPosition()
     }
 
     private fun setPagesCondition(totalPages: Int) {
@@ -524,6 +579,27 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         page = 1
         isLastPage = false
         collectionMode = mode
+    }
+
+    private fun setFilterPosition() {
+        when (collectionMode) {
+            POSTS_MODE -> {
+                filterAdapter.onChooseItem(position = 1)
+                publicationsAdapter.clearList()
+                collectionsRecyclerView.adapter = publicationsAdapter
+            }
+            OUTFITS_MODE -> {
+                filterAdapter.onChooseItem(position = 2)
+                outfitsAdapter.clearList()
+                collectionsRecyclerView.adapter = outfitsAdapter
+            }
+            CLOTHES_MODE -> {
+                clothesAdapter.clearList()
+                collectionsRecyclerView.adapter = clothesAdapter
+            }
+        }
+
+        getCollections()
     }
 
     private fun getIdFromArgs(): Int = arguments?.getInt(PROFILE_ID_KEY) ?: 0
