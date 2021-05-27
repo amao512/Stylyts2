@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -253,7 +254,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         getFilterList()
         getFollowers()
-        getCollections()
+        setFilterPosition()
+
         fillProfileInfo(userModel = userModel)
         loadProfilePhoto(userModel = userModel)
 
@@ -324,6 +326,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         wardrobeAdapter.updateMoreList(list = resultsModel.results)
         setPagesCondition(resultsModel.totalPages)
 
+        Log.d("TAG4", "count - ${resultsModel.totalCount}")
         adapterFilter.changeItemByPosition(
             position = 3,
             title = "${getString(R.string.filter_list_wardrobe)} (${resultsModel.totalCount})"
@@ -336,11 +339,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     override fun onRefresh() {
-        wardrobeAdapter.clearList()
-        outfitsAdapter.clearList()
-        gridAdapter.clearList()
-        resetPages(mode = POSTS_MODE)
-
+        resetPages(mode = collectionMode)
+        setFilterPosition()
         getProfile()
     }
 
@@ -424,6 +424,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!collectionRecyclerView.canScrollVertically(1)
                     && newState == RecyclerView.SCROLL_STATE_IDLE) {
+
                     if (!isLastPage) {
                         getCollections()
                     }
@@ -471,48 +472,32 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 resetPages(mode = WARDROBE_MODE)
                 setFilter(filterModel = clothesFilterModel)
             }.show(childFragmentManager, EMPTY_STRING)
-            1 -> onPublicationsFilterClick(position)
-            2 -> onOutfitsFilterClick(position)
-            3 -> onWardrobeFilterClick(position)
+            1 -> onPublicationsFilterClick()
+            2 -> onOutfitsFilterClick()
+            3 -> onWardrobeFilterClick()
             4 -> navigateToMyData()
             5 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
             6 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
         }
     }
 
-    private fun onPublicationsFilterClick(position: Int) {
+    private fun onPublicationsFilterClick() {
         resetPages(mode = POSTS_MODE)
-
-        collectionRecyclerView.adapter = gridAdapter
-        adapterFilter.onChooseItem(position)
-        gridAdapter.clearList()
-
-        getCollections()
+        setFilterPosition()
     }
 
-    private fun onOutfitsFilterClick(position: Int) {
+    private fun onOutfitsFilterClick() {
         resetPages(mode = OUTFITS_MODE)
-
-        collectionRecyclerView.adapter = outfitsAdapter
-        adapterFilter.onChooseItem(position)
-        outfitsAdapter.clearList()
-
-        getCollections()
+        setFilterPosition()
     }
 
-    private fun onWardrobeFilterClick(position: Int) {
-        resetPages(mode = WARDROBE_MODE)
-
+    private fun onWardrobeFilterClick() {
         if (isOwnProfile()) {
             clothesFilterModel.inMyWardrobe = true
         }
 
-        collectionRecyclerView.adapter = wardrobeAdapter
-
-        adapterFilter.onChooseItem(position, isDisabledFirstPosition = false)
-        wardrobeAdapter.clearList()
-
-        getCollections()
+        resetPages(mode = WARDROBE_MODE)
+        setFilterPosition()
     }
 
     private fun onOutfitItemClick(item: Any?) {
@@ -598,12 +583,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun showFilterResults(item: Any?) {
         clothesFilterModel = item as ClothesFilterModel
         clothesFilterModel.inMyWardrobe = isOwnProfile()
-        wardrobeAdapter.clearList()
-        collectionRecyclerView.adapter = wardrobeAdapter
 
-        adapterFilter.onChooseItem(position = 3, isDisabledFirstPosition = false)
         resetPages(mode = WARDROBE_MODE)
-        getCollections()
+        setFilterPosition()
     }
 
     private fun setPagesCondition(totalPages: Int) {
@@ -618,6 +600,28 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         page = 1
         isLastPage = false
         collectionMode = mode
+    }
+
+    private fun setFilterPosition() {
+        when (collectionMode) {
+            POSTS_MODE -> {
+                adapterFilter.onChooseItem(position = 1)
+                gridAdapter.clearList()
+                collectionRecyclerView.adapter = gridAdapter
+            }
+            OUTFITS_MODE -> {
+                adapterFilter.onChooseItem(position = 2)
+                outfitsAdapter.clearList()
+                collectionRecyclerView.adapter = outfitsAdapter
+            }
+            WARDROBE_MODE -> {
+                adapterFilter.onChooseItem(position = 3, isDisabledFirstPosition = false)
+                wardrobeAdapter.clearList()
+                collectionRecyclerView.adapter = wardrobeAdapter
+            }
+        }
+
+        getCollections()
     }
 
     private fun isOwnProfile(): Boolean = currentUserId == currentActivity.getUserIdFromSharedPref()
