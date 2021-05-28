@@ -46,6 +46,7 @@ class PhotoLibraryAdapter : BaseAdapter() {
     fun disableMultipleChoice() {
         currentList.map {
             (it as PhotoLibraryModel).isMultipleChoice = false
+            it.number = 0
         }
 
         notifyDataSetChanged()
@@ -55,6 +56,42 @@ class PhotoLibraryAdapter : BaseAdapter() {
         position: Int,
         payload: Int
     ) {
+        val item = currentList[position] as PhotoLibraryModel
+        item.number = payload
+        item.isChosen = true
+
         notifyItemChanged(position, payload)
+    }
+
+    fun removeNumber(position: Int) {
+        val item = currentList[position] as PhotoLibraryModel
+
+        currentList.map {
+            it as PhotoLibraryModel
+
+            if (it.number > item.number) {
+                it.number = 0
+                it.isChosen = false
+            }
+        }
+
+        item.number = 0
+        item.isChosen = false
+
+        notifyDataSetChanged()
+    }
+
+    fun getChosenPhotos(): List<PhotoLibraryModel> {
+        val chosenList: MutableList<PhotoLibraryModel> = mutableListOf()
+
+        currentList.map {
+            it as PhotoLibraryModel
+
+            if (it.isChosen) {
+                chosenList.add(it)
+            }
+        }
+
+        return chosenList
     }
 }

@@ -31,12 +31,15 @@ class PhotoLibraryHolder(
             itemView.frame_layout_item_photo_library.hide()
         }
 
+        if (item.number != 0) {
+            itemView.item_photo_library_count_text_view.show()
+            itemView.item_photo_library_count_text_view.text = item.number.toString()
+        } else {
+            itemView.item_photo_library_count_text_view.hide()
+        }
+
         itemView.image_view_photo_library.setOnClickListener {
-            adapter.itemClickListener?.onViewClicked(
-                itemView.image_view_photo_library,
-                position,
-                item
-            )
+            adapter.itemClickListener?.onViewClicked(it, position, item)
         }
     }
 
@@ -47,13 +50,11 @@ class PhotoLibraryHolder(
     ) {
         item as PhotoLibraryModel
 
-        if (payLoad != -1) {
+        if (item.number != 0) {
             itemView.item_photo_library_count_text_view.show()
-            itemView.item_photo_library_count_text_view.text = payLoad.toString()
-            item.isChosen = true
+            itemView.item_photo_library_count_text_view.text = item.number.toString()
         } else {
             itemView.item_photo_library_count_text_view.hide()
-            item.isChosen = false
         }
 
         if (item.isMultipleChoice) {
@@ -65,11 +66,7 @@ class PhotoLibraryHolder(
         item.photo.loadImage(target = itemView.image_view_photo_library)
 
         itemView.image_view_photo_library.setOnClickListener {
-            adapter.itemClickListener?.onViewClicked(
-                view = itemView.image_view_photo_library,
-                position = position,
-                item = item
-            )
+            adapter.itemClickListener?.onViewClicked(it, position, item)
         }
     }
 }

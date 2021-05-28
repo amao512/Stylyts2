@@ -45,8 +45,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     DialogChooserListener,
     CreateCollectionAcceptContract.View {
 
-    @Inject
-    lateinit var presenter: CreateCollectionAcceptPresenter
+    @Inject lateinit var presenter: CreateCollectionAcceptPresenter
     private lateinit var chooserDialog: CreateCollectionChooserDialog
 
     private var currentModel: OutfitCreateModel? = null

@@ -19,7 +19,6 @@ import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_photo_post_creator.*
 import kz.eztech.stylyts.R
@@ -71,6 +70,9 @@ class PhotoPostCreatorFragment(
 
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.text = getString(R.string.next)
+            toolbar_right_text_text_view.setTextColor(
+                ContextCompat.getColor(requireContext(), R.color.app_light_orange)
+            )
             toolbar_right_text_text_view.setOnClickListener(this@PhotoPostCreatorFragment)
         }
     }
@@ -114,11 +116,7 @@ class PhotoPostCreatorFragment(
     private fun switchToCameraPicture() {
         recycler_view_fragment_photo_post_creator_list.hide()
 
-        photoUri?.let {
-            Glide.with(currentActivity)
-                .load(it.path)
-                .into(image_view_fragment_photo_post_creator)
-        }
+        photoUri?.path?.loadImage(target = image_view_fragment_photo_post_creator)
     }
 
     private fun switchFromCameraPicture() {
@@ -284,24 +282,22 @@ class PhotoPostCreatorFragment(
                 File(photoLibraryModel.photo)
             )
         } else {
-            photoUri = if (listOfChosenImages.contains(photoLibraryModel)) {
-                listOfChosenImages.remove(photoLibraryModel)
-                photoAdapter.notifyItemChanged(position,  -1)
+            if (photoLibraryModel.isChosen) {
+                photoAdapter.removeNumber(position)
 
-                null
+                listOfChosenImages.clear()
+                listOfChosenImages.addAll(photoAdapter.getChosenPhotos())
             } else {
                 if (listOfChosenImages.size == 5) {
-                    displayMessage(msg = "Только 5 фото!")
-
                     return
                 }
 
                 listOfChosenImages.add(photoLibraryModel)
                 photoAdapter.setNumber(position, listOfChosenImages.count())
+            }
 
-                Uri.fromFile(
-                    File(photoLibraryModel.photo)
-                )
+            if (listOfChosenImages.isNotEmpty()) {
+                photoUri = Uri.fromFile(File(listOfChosenImages[0].photo))
             }
         }
 
@@ -330,7 +326,7 @@ class PhotoPostCreatorFragment(
             val bundle = Bundle()
 
             if (listOfChosenImages.isNotEmpty()) {
-                listOfChosenImages.removeLast()
+                listOfChosenImages.removeFirst()
             }
 
             val preparedImagesList = ArrayList<String>()
@@ -366,7 +362,10 @@ class PhotoPostCreatorFragment(
 
     private fun onMultipleButtonClick() {
         when (isMultipleChoice) {
-            true -> photoAdapter.disableMultipleChoice()
+            true -> {
+                photoAdapter.disableMultipleChoice()
+                listOfChosenImages.clear()
+            }
             false -> photoAdapter.enableMultipleChoice()
         }
 
