@@ -19,7 +19,7 @@ import kz.eztech.stylyts.presentation.contracts.cart.CartContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.cart.CartPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.displayToast
+import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
@@ -95,7 +95,9 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
     }
 
     override fun displayMessage(msg: String) {
-        displayToast(context = view?.context, msg)
+        view?.let {
+            displaySnackBar(context = it.context, view = it, msg = msg)
+        }
     }
 
     override fun isFragmentVisible(): Boolean = isVisible
@@ -196,22 +198,26 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
         val bundle = Bundle()
         val clothesSizes: MutableList<ClothesSizeModel> = mutableListOf()
 
-        sizesList.map { size ->
-            clothesSizes.add(
-                ClothesSizeModel(
-                    clothesId = cartEntity.id ?: 0,
-                    size = size.size,
-                    count = size.count
+        if (sizesList.isNotEmpty()) {
+            sizesList.map { size ->
+                clothesSizes.add(
+                    ClothesSizeModel(
+                        clothesId = cartEntity.id ?: 0,
+                        size = size.size,
+                        count = size.count
+                    )
                 )
-            )
-        }
+            }
 
-        bundle.putParcelableArrayList(
-            ClothesSizesBottomDialog.SIZES_KEY,
-            ArrayList(clothesSizes)
-        )
-        sizeChooserDialog.arguments = bundle
-        sizeChooserDialog.show(parentFragmentManager, EMPTY_STRING)
+            bundle.putParcelableArrayList(
+                ClothesSizesBottomDialog.SIZES_KEY,
+                ArrayList(clothesSizes)
+            )
+            sizeChooserDialog.arguments = bundle
+            sizeChooserDialog.show(parentFragmentManager, EMPTY_STRING)
+        } else {
+            displayMessage(msg = getString(R.string.there_are_not_sizes))
+        }
     }
 
     private fun openCountsDialog(

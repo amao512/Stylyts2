@@ -98,13 +98,17 @@ class SearchItemPresenter @Inject constructor(
         )
     }
 
-    override fun deleteUserFromLocalDb(userId: Int) {
+    override fun deleteUserFromLocalDb(user: UserSearchEntity) {
         disposable.clear()
         disposable.add(
-            dataSource.deleteUserSearch(userId)
+            dataSource.deleteUserSearch(user)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe()
+                .subscribe({
+                    getUserFromLocaleDb()
+                }, {
+                    view.displayMessage(msg = errorHelper.processError(it))
+                })
         )
     }
 
@@ -127,7 +131,8 @@ class SearchItemPresenter @Inject constructor(
 
     override fun searchClothesByTitle(token: String, title: String) {
         searchClothesUseCase.initParams(token, title)
-        searchClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+        searchClothesUseCase.execute(object :
+            DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processClothesResults(resultsModel = t)
             }

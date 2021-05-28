@@ -33,9 +33,9 @@ open class SearchDataSource(application: Application) {
         }
     }
 
-    fun deleteUserSearch(userId: Int): Completable {
+    fun deleteUserSearch(user: UserSearchEntity): Completable {
         return Completable.fromAction {
-            userSearchDao.delete(id = userId)
+            userSearchDao.delete(user)
         }
     }
 

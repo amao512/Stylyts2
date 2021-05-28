@@ -234,8 +234,7 @@ class SearchItemFragment(
     }
 
     private fun onRemoveUserFromHistory(item: Any?) {
-        presenter.deleteUserFromLocalDb(userId = (item as UserSearchEntity).id ?: 0)
-        presenter.getUserFromLocaleDb()
+        presenter.deleteUserFromLocalDb(user = item as UserSearchEntity)
     }
 
     private fun initializeAdapter() {

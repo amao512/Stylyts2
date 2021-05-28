@@ -80,6 +80,7 @@
         android:id="@+id/item_user_info_remove_image_view"
         android:layout_width="50dp"
         android:layout_height="match_parent"
+        android:layout_marginEnd="@dimen/margin_size_8x"
         android:visibility="gone"
         >
 

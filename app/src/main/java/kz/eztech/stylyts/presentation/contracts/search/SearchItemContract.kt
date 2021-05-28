@@ -26,7 +26,7 @@ interface SearchItemContract {
 
         fun saveUserToLocaleDb(user: UserModel)
 
-        fun deleteUserFromLocalDb(userId: Int)
+        fun deleteUserFromLocalDb(user: UserSearchEntity)
 
         fun searchShop(token: String, username: String)
 

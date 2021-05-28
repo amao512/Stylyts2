@@ -350,10 +350,7 @@ class PhotoPostCreatorFragment(
                     bundle
                 )
             } else {
-                findNavController().navigate(
-                    R.id.createCollectionAcceptFragment,
-                    bundle
-                )
+                findNavController().navigate(R.id.createCollectionAcceptFragment, bundle)
             }
         } else {
             displayMessage(msg = getString(R.string.error_choose_photo))

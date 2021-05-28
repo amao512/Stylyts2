@@ -12,8 +12,8 @@ interface UserSearchDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(user: UserSearchEntity)
 
-    @Query("DELETE FROM search_user_history_table WHERE id = :id")
-    fun delete(id: Int)
+    @Delete
+    fun delete(user: UserSearchEntity)
 
     @Query("DELETE FROM search_user_history_table")
     fun deleteAll()
