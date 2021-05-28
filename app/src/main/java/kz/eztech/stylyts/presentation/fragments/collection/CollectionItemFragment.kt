@@ -15,10 +15,9 @@ import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContract
+import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsItemPresenter
-import kz.eztech.stylyts.presentation.presenters.shop.ShopItemViewModel
-import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
 class CollectionItemFragment(
@@ -27,13 +26,10 @@ class CollectionItemFragment(
     CollectionItemContract.View,
     UniversalViewClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject
-    lateinit var presenter: CollectionsItemPresenter
+    @Inject lateinit var presenter: CollectionsItemPresenter
     private lateinit var adapter: GridImageAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var currentFilter: PostFilterModel
-
-    private val shopItemViewModel: ShopItemViewModel by inject()
 
     private var itemClickListener: UniversalViewClickListener? = null
 
@@ -83,7 +79,9 @@ class CollectionItemFragment(
     }
 
     override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
-        adapter.updateMoreList(list = resultsModel.results)
+        val preparedList: List<PostModel> = preparePosts(postList = resultsModel.results)
+
+        adapter.updateMoreList(list = preparedList)
         resetPages(resultsModel.totalPages)
     }
 
@@ -119,6 +117,24 @@ class CollectionItemFragment(
         })
     }
 
+    private fun preparePosts(postList: List<PostModel>): List<PostModel> {
+        val preparedList: MutableList<PostModel> = mutableListOf()
+
+        postList.map {
+            if (it.clothes.isEmpty()) {
+                preparedList.add(it)
+            } else {
+                it.clothes.map { clothes ->
+                    if (clothes.gender == getGender() && !preparedList.contains(it)) {
+                        preparedList.add(it)
+                    }
+                }
+            }
+        }
+
+        return preparedList
+    }
+
     private fun resetPages(totalPages: Int) {
         if (totalPages != currentFilter.page) {
             currentFilter.page++
@@ -140,5 +156,12 @@ class CollectionItemFragment(
             token = currentActivity.getTokenFromSharedPref(),
             filterModel = currentFilter
         )
+    }
+
+    private fun getGender(): String {
+        return when (currentMode) {
+            0 -> GenderEnum.MALE.gender
+            else -> GenderEnum.FEMALE.gender
+        }
     }
 }

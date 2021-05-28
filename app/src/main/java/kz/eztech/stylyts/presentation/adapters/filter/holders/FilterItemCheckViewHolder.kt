@@ -13,6 +13,7 @@ import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.ColorEnum
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import java.util.*
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
@@ -114,7 +115,7 @@ class FilterItemCheckViewHolder(
 
         with(itemView) {
             fillTitle(
-                title = colorModel.title,
+                title = colorModel.title.capitalize(Locale.getDefault()),
                 isChecked = filterCheckModel.isChecked
             )
 

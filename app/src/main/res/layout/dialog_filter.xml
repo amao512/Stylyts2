@@ -60,7 +60,7 @@
                 android:layout_weight="0.93"
                 android:clipToPadding="false"
                 android:overScrollMode="never"
-                android:paddingBottom="@dimen/padding_size_56x"
+                android:paddingBottom="@dimen/padding_size_60x"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_filter"
                 />
