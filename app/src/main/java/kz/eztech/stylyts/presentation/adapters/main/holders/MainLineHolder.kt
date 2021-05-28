@@ -316,15 +316,11 @@ class MainLineHolder(
     }
 
     private fun getTagTextView(container: ViewGroup): TextView {
-        val textView = LayoutInflater.from(container.context).inflate(
-            R.layout.text_view_tag_element,
+        return LayoutInflater.from(container.context).inflate(
+            R.layout.item_tag,
             container,
             false
         ) as TextView
-
-        textView.setPadding(10, 4, 10, 4)
-
-        return textView
     }
 
     private fun setTagPosition(

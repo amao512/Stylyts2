@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/TextRegular"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ic_tag_bg"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:maxWidth="25dp"
+    android:maxLength="20"
+    android:maxLines="1"
+    android:paddingStart="@dimen/padding_size_6x"
+    android:paddingTop="@dimen/padding_size_6x"
+    android:paddingEnd="@dimen/padding_size_6x"
+    android:textColor="@color/white"
+    tools:text="Hello fdgggggggggggggggggggggggggggggggggggggggggggggggggg"
+    />
