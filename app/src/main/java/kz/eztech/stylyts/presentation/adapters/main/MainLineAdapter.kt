@@ -2,7 +2,6 @@ package kz.eztech.stylyts.presentation.adapters.main
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
@@ -11,10 +10,7 @@ import kz.eztech.stylyts.presentation.adapters.main.holders.MainLineHolder
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
  */
-class MainLineAdapter(
-    private val ownId: Int,
-    private val imageLoader: DomainImageLoader
-) : BaseAdapter(){
+class MainLineAdapter : BaseAdapter(){
 
     override fun getLayoutId(viewType: Int): Int = R.layout.item_main_line
 
@@ -32,9 +28,7 @@ class MainLineAdapter(
     override fun getViewHolder(view: View): MainLineHolder {
         return MainLineHolder(
             itemView = view,
-            adapter = this,
-            ownId = ownId,
-            imageLoader = imageLoader
+            adapter = this
         )
     }
 

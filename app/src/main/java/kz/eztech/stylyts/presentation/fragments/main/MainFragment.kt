@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.item_main_line.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostFilterModel
@@ -41,10 +40,7 @@ import javax.inject.Inject
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,
     UniversalViewClickListener, DialogChooserListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject
-    lateinit var presenter: MainLinePresenter
-    @Inject
-    lateinit var imageLoader: DomainImageLoader
+    @Inject lateinit var presenter: MainLinePresenter
     private lateinit var postsAdapter: MainLineAdapter
     private lateinit var postFilterModel: PostFilterModel
 
@@ -74,10 +70,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun initializeViewsData() {
         postFilterModel = PostFilterModel()
-        postsAdapter = MainLineAdapter(
-            ownId = currentActivity.getUserIdFromSharedPref(),
-            imageLoader = imageLoader
-        )
+        postsAdapter = MainLineAdapter()
         postsAdapter.setOnClickListener(listener = this)
     }
 

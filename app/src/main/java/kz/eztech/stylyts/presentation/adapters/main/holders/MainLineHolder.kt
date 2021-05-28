@@ -14,12 +14,11 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.item_main_line.view.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.ClothesAdditionalAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.ClothesAdditionalAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -35,9 +34,7 @@ import java.text.NumberFormat
  */
 class MainLineHolder(
     itemView: View,
-    adapter: BaseAdapter,
-    private val ownId: Int,
-    private val imageLoader: DomainImageLoader
+    adapter: BaseAdapter
 ) : BaseViewHolder(itemView, adapter), UniversalViewClickListener {
 
     private lateinit var additionalAdapter: ClothesAdditionalAdapter

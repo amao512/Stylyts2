@@ -30,6 +30,7 @@
             android:layout_gravity="end|top"
             android:layout_margin="@dimen/margin_size_12x"
             android:src="@drawable/ic_baseline_favorite_border_24"
+            android:visibility="gone"
             />
     </FrameLayout>
 
