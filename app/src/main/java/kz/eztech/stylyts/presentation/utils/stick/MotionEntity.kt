@@ -171,10 +171,10 @@ abstract class MotionEntity(
                     BitmapStickerIcon.LEFT_BOTTOM -> configIconMatrix(it, x3, y3, rotation)
                     BitmapStickerIcon.RIGHT_BOTOM -> configIconMatrix(it, x4, y4, rotation)
                     BitmapStickerIcon.CUSTOM -> configCustomIconMatrix(
-                        it,
-                        (x3 - width / 8).toFloat(),
-                        (y3 - height / 2.5).toFloat(),
-                        0f
+                        icon = it,
+                        x = (x3 - width / 4),
+                        y = (y3 - height / 2),
+                        padding = 0f
                     )
                 }
 

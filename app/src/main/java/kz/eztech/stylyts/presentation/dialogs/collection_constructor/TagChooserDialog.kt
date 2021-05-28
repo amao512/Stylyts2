@@ -204,7 +204,7 @@ class TagChooserDialog(
         recycler_view_fragment_photo_chooser_selected_list.adapter = selectedClothesAdapter
 
         motion_view_fragment_photo_chooser_tags_container.apply {
-            setCustomDeleteIcon(R.drawable.ic_baseline_close_20)
+            setCustomDeleteIcon(R.drawable.ic_tag_close)
             setFlexible(isFlexible = false)
             attachView(motionViewContract = this@TagChooserDialog)
             setTapListener(listener = this@TagChooserDialog)
