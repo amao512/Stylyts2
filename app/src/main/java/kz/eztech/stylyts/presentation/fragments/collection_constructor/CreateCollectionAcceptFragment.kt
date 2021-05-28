@@ -28,6 +28,7 @@ import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CreateCollectionAcceptPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
@@ -225,11 +226,14 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     override fun processSuccessSavingOutfit(outfitModel: OutfitCreateModel) {
-        findNavController().navigate(R.id.nav_outfits)
+        val bundle = Bundle()
+        bundle.putInt(ProfileFragment.MODE_KEY, ProfileFragment.OUTFITS_MODE)
+
+        findNavController().navigate(R.id.nav_profile, bundle)
     }
 
     override fun processSuccessSavingPost(postModel: PostCreateModel) {
-        findNavController().navigate(R.id.nav_outfits)
+        findNavController().navigate(R.id.nav_profile)
     }
 
     override fun processSuccessUpdatingPost(postModel: PostModel) {

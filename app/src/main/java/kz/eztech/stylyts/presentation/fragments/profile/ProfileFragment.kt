@@ -52,8 +52,7 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
     UniversalViewClickListener, EditorListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject
-    lateinit var presenter: ProfilePresenter
+    @Inject lateinit var presenter: ProfilePresenter
 
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
@@ -86,10 +85,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var isLastPage = false
 
     companion object {
-        private const val POSTS_MODE = 1
-        private const val OUTFITS_MODE = 2
-        private const val WARDROBE_MODE = 3
+        const val POSTS_MODE = 1
+        const val OUTFITS_MODE = 2
+        const val WARDROBE_MODE = 3
 
+        const val MODE_KEY = "mode"
         const val USER_ID_BUNDLE_KEY = "user_id"
     }
 
@@ -121,6 +121,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         arguments?.let {
             if (it.containsKey(USER_ID_BUNDLE_KEY)) {
                 currentUserId = it.getInt(USER_ID_BUNDLE_KEY)
+            }
+
+            if (it.containsKey(MODE_KEY)) {
+                collectionMode = it.getInt(MODE_KEY)
             }
         }
     }
