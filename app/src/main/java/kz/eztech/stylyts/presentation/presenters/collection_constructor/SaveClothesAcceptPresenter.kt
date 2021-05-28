@@ -35,20 +35,20 @@ class SaveClothesAcceptPresenter @Inject constructor(
     }
 
     override fun getTypes(token: String) {
-        view.displayProgress()
+        view.displaySmallProgress()
 
         getClothesTypesUseCase.initParams(token)
         getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 view.processViewAction {
                     processTypes(resultsModel = t)
-                    hideProgress()
+                    hideSmallProgress()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
-                    hideProgress()
+                    hideSmallProgress()
                     displayMessage(msg = errorHelper.processError(e))
                 }
             }
@@ -59,20 +59,20 @@ class SaveClothesAcceptPresenter @Inject constructor(
         token: String,
         typeId: Int
     ) {
-        view.displayProgress()
+        view.displaySmallProgress()
 
         getClothesCategoriesByTypeUseCase.initParams(token, typeId)
         getClothesCategoriesByTypeUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesCategoryModel>) {
                 view.processViewAction {
                     processCategories(resultsModel = t)
-                    hideProgress()
+                    hideSmallProgress()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
-                    hideProgress()
+                    hideSmallProgress()
                     displayMessage(msg = errorHelper.processError(e))
                 }
             }
@@ -80,20 +80,20 @@ class SaveClothesAcceptPresenter @Inject constructor(
     }
 
     override fun getStyles(token: String) {
-        view.displayProgress()
+        view.displaySmallProgress()
 
         getClothesStylesUseCase.initParams(token)
         getClothesStylesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesStyleModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {
                 view.processViewAction {
                     processStyles(resultsModel = t)
-                    hideProgress()
+                    hideSmallProgress()
                 }
             }
 
             override fun onError(e: Throwable) {
                 view.processViewAction {
-                    hideProgress()
+                    hideSmallProgress()
                     displayMessage(msg = errorHelper.processError(e))
                 }
             }
@@ -104,13 +104,17 @@ class SaveClothesAcceptPresenter @Inject constructor(
         token: String,
         clothesCreateModel: ClothesCreateModel
     ) {
+        view.displayProgress()
+
         createClothesByImageUseCase.initParams(token, clothesCreateModel)
         createClothesByImageUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processSuccessCreating(wardrobeModel = t)
+                view.hideProgress()
             }
 
             override fun onError(e: Throwable) {
+                view.hideProgress()
                 view.displayMessage(msg = errorHelper.processError(e))
             }
         })

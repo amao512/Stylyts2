@@ -3,34 +3,31 @@ package kz.eztech.stylyts.presentation.dialogs.collection_constructor
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.Glide
+import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_save_clothes_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.SaveClothesAcceptPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.io.File
 import javax.inject.Inject
@@ -43,8 +40,7 @@ class SaveClothesAcceptDialog(
 ) : DialogFragment(), View.OnClickListener, UniversalViewClickListener,
     SaveClothesAcceptContract.View {
 
-    @Inject
-    lateinit var presenter: SaveClothesAcceptPresenter
+    @Inject lateinit var presenter: SaveClothesAcceptPresenter
     private lateinit var adapter: FilterCheckAdapter
     private lateinit var clothesCreateModel: ClothesCreateModel
 
@@ -181,16 +177,8 @@ class SaveClothesAcceptDialog(
     }
 
     override fun processPostInitialization() {
-        getPhotoUriFromArgs()?.let {
-            Glide.with(image_view_dialog_save_clothes_accept.context)
-                .load(it)
-                .into(image_view_dialog_save_clothes_accept)
-        }
-        getPhotoBitmapFromArgs()?.let {
-            Glide.with(image_view_dialog_save_clothes_accept.context)
-                .load(it)
-                .into(image_view_dialog_save_clothes_accept)
-        }
+        getPhotoUriFromArgs()?.loadImage(target = image_view_dialog_save_clothes_accept)
+        getPhotoBitmapFromArgs()?.loadImage(target = image_view_dialog_save_clothes_accept)
 
         presenter.getTypes(token = getTokenFromArgs())
     }
@@ -206,19 +194,28 @@ class SaveClothesAcceptDialog(
     override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {
+        dialog_save_clothes_progress_bar.show()
+    }
+
+    override fun hideProgress() {
+        dialog_save_clothes_progress_bar.hide()
+    }
+
+    override fun displaySmallProgress() {
         dialog_save_clothes_small_progress_bar.show()
         dialog_save_clothes_accept_list_toolbar.hide()
         dialog_save_clothes_recycler_view.hide()
     }
 
-    override fun hideProgress() {
+    override fun hideSmallProgress() {
         dialog_save_clothes_small_progress_bar.hide()
         dialog_save_clothes_accept_list_toolbar.show()
         dialog_save_clothes_recycler_view.show()
     }
 
     override fun processTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
-        dialog_save_clothes_accept_list_title_text_view.text = getString(R.string.choose_clothes_type)
+        dialog_save_clothes_accept_list_title_text_view.text =
+            getString(R.string.choose_clothes_type)
 
         val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
 
@@ -239,7 +236,8 @@ class SaveClothesAcceptDialog(
     }
 
     override fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>) {
-        dialog_save_clothes_accept_list_title_text_view.text = getString(R.string.choose_clothes_category)
+        dialog_save_clothes_accept_list_title_text_view.text =
+            getString(R.string.choose_clothes_category)
 
         val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
 
@@ -260,7 +258,8 @@ class SaveClothesAcceptDialog(
     }
 
     override fun processStyles(resultsModel: ResultsModel<ClothesStyleModel>) {
-        dialog_save_clothes_accept_list_title_text_view.text = getString(R.string.choose_clothes_style)
+        dialog_save_clothes_accept_list_title_text_view.text =
+            getString(R.string.choose_clothes_style)
 
         val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
 
@@ -280,8 +279,11 @@ class SaveClothesAcceptDialog(
     }
 
     override fun processSuccessCreating(wardrobeModel: ClothesModel) {
-        Log.d("TAG4", "$wardrobeModel")
-        listener.onChoice(null, wardrobeModel)
+        val bundle = Bundle()
+        bundle.putInt(ProfileFragment.MODE_KEY, ProfileFragment.WARDROBE_MODE)
+
+        findNavController().navigate(R.id.nav_profile, bundle)
+
         dismiss()
     }
 
@@ -394,18 +396,28 @@ class SaveClothesAcceptDialog(
     }
 
     private fun setDoneButtonClickable() {
-        with (include_toolbar_dialog_save_clothes) {
+        with(include_toolbar_dialog_save_clothes) {
             toolbar_right_text_text_view.isClickable = true
             toolbar_right_text_text_view.isFocusable = true
-            toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_light_orange))
+            toolbar_right_text_text_view.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.app_light_orange
+                )
+            )
         }
     }
 
     private fun setDoneButtonUnClickable() {
-        with (include_toolbar_dialog_save_clothes) {
+        with(include_toolbar_dialog_save_clothes) {
             toolbar_right_text_text_view.isClickable = false
             toolbar_right_text_text_view.isFocusable = false
-            toolbar_right_text_text_view.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_dark_blue_gray))
+            toolbar_right_text_text_view.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.app_dark_blue_gray
+                )
+            )
         }
     }
 

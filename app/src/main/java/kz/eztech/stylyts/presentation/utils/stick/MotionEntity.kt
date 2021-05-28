@@ -172,8 +172,8 @@ abstract class MotionEntity(
                     BitmapStickerIcon.RIGHT_BOTOM -> configIconMatrix(it, x4, y4, rotation)
                     BitmapStickerIcon.CUSTOM -> configCustomIconMatrix(
                         icon = it,
-                        x = (x3 - width / 4),
-                        y = (y3 - height / 2),
+                        x = (x3 - width / 8),
+                        y = (y3 - height / 2.5).toFloat(),
                         padding = 0f
                     )
                 }

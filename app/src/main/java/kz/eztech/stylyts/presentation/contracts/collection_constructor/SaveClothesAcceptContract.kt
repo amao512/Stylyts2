@@ -20,6 +20,10 @@ interface SaveClothesAcceptContract {
         fun processStyles(resultsModel: ResultsModel<ClothesStyleModel>)
 
         fun processSuccessCreating(wardrobeModel: ClothesModel)
+
+        fun displaySmallProgress()
+
+        fun hideSmallProgress()
     }
 
     interface Presenter: BasePresenter<View> {
