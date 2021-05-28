@@ -14,6 +14,8 @@
         android:id="@+id/recycler_view_fragment_collection_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:spanCount="2"

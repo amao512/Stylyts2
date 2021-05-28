@@ -41,8 +41,10 @@ import javax.inject.Inject
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,
     UniversalViewClickListener, DialogChooserListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject lateinit var presenter: MainLinePresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
+    @Inject
+    lateinit var presenter: MainLinePresenter
+    @Inject
+    lateinit var imageLoader: DomainImageLoader
     private lateinit var postsAdapter: MainLineAdapter
     private lateinit var postFilterModel: PostFilterModel
 
@@ -174,7 +176,9 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         item: Any?
     ) {
         when (v?.id) {
-            R.id.dialog_bottom_collection_context_delete_text_view -> onPostDeleteContextClicked(item)
+            R.id.dialog_bottom_collection_context_delete_text_view -> onPostDeleteContextClicked(
+                item
+            )
             R.id.dialog_bottom_collection_context_change_text_view -> onChangeCollectionClicked(item)
         }
     }
@@ -195,6 +199,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun onRefresh() {
         displayProgress()
+        postsAdapter.clearList()
         getPosts()
     }
 
@@ -242,7 +247,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
                 val bundle = Bundle()
                 bundle.putInt(ClothesDetailFragment.CLOTHES_ID, tagModel.id)
 
-                findNavController().navigate(R.id.action_mainFragment_to_clothesDetailFragment, bundle)
+                findNavController().navigate(
+                    R.id.action_mainFragment_to_clothesDetailFragment,
+                    bundle
+                )
             }
             2 -> presenter.getUserForNavigate(
                 token = currentActivity.getTokenFromSharedPref(),
