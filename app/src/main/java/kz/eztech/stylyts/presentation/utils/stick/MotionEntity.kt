@@ -172,7 +172,7 @@ abstract class MotionEntity(
                     BitmapStickerIcon.RIGHT_BOTOM -> configIconMatrix(it, x4, y4, rotation)
                     BitmapStickerIcon.CUSTOM -> configCustomIconMatrix(
                         icon = it,
-                        x = (x3 - width / 8),
+                        x = (x3 - width / 7),
                         y = (y3 - height / 2.5).toFloat(),
                         padding = 0f
                     )
@@ -182,10 +182,7 @@ abstract class MotionEntity(
                     BitmapStickerIcon.CUSTOM -> it.drawSmallRadius(canvas, borderPaint)
                     else -> it.draw(canvas, borderPaint)
                 }
-
-            } catch (e: Exception) {
-            }
-
+            } catch (e: Exception) {}
         }
     }
 

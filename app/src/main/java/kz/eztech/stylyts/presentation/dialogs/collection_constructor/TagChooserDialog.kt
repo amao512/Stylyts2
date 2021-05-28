@@ -204,7 +204,7 @@ class TagChooserDialog(
         recycler_view_fragment_photo_chooser_selected_list.adapter = selectedClothesAdapter
 
         motion_view_fragment_photo_chooser_tags_container.apply {
-            setCustomDeleteIcon(R.drawable.ic_tag_close)
+            setCustomDeleteIcon(R.drawable.ic_baseline_close_20)
             setFlexible(isFlexible = false)
             attachView(motionViewContract = this@TagChooserDialog)
             setTapListener(listener = this@TagChooserDialog)
@@ -461,10 +461,7 @@ class TagChooserDialog(
         bundle.putInt(CameraFragment.MODE_KEY, mode)
 
 
-        findNavController().navigate(
-            R.id.action_createCollectionAcceptFragment_to_cameraFragment,
-            bundle
-        )
+        findNavController().navigate(R.id.action_createCollectionAcceptFragment_to_cameraFragment, bundle)
     }
 
     private fun onClothesClicked(
@@ -582,6 +579,7 @@ class TagChooserDialog(
     }
 
     private fun showBottomSheet() {
+        clothesAdapter.clearList()
         presenter.getCategory(token = getTokenFromArgs())
         presenter.getClothes(
             token = getTokenFromArgs(),
