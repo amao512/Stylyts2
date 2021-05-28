@@ -91,7 +91,7 @@
                     android:layout_width="@dimen/profile_settings_icon_size"
                     android:layout_height="@dimen/profile_settings_icon_size"
                     android:layout_gravity="end|center"
-                    android:src="@drawable/ic_box"
+                    android:src="@drawable/ic_box_large"
                     />
             </FrameLayout>
 
@@ -117,7 +117,7 @@
                     android:layout_width="@dimen/profile_settings_icon_size"
                     android:layout_height="@dimen/profile_settings_icon_size"
                     android:layout_gravity="end|center"
-                    android:src="@drawable/ic_cart"
+                    android:src="@drawable/ic_cart_large"
                     />
             </FrameLayout>
 
@@ -217,12 +217,21 @@
                     android:text="@string/profile_help_need"
                     />
 
-                <ImageView
+                <FrameLayout
                     android:layout_width="@dimen/profile_settings_icon_size"
                     android:layout_height="@dimen/profile_settings_icon_size"
                     android:layout_gravity="end|center"
-                    android:src="@drawable/ic_save_icon"
-                    />
+                    android:background="@drawable/circle_black_corners"
+                    >
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_size_20x"
+                        android:layout_height="@dimen/icon_size_20x"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_need_help"
+                        />
+                </FrameLayout>
+
             </FrameLayout>
 
         </LinearLayout>

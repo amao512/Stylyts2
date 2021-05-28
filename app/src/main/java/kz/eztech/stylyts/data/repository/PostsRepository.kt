@@ -92,16 +92,14 @@ class PostsRepository @Inject constructor(
     override fun updatePost(
         token: String,
         postId: String,
-        description: MultipartBody.Part,
         tags: TagsApiModel,
-        hidden: MultipartBody.Part
+        multipartList: List<MultipartBody.Part>
     ): Single<PostModel> {
         return api.updatePost(
             token = token,
             postId = postId,
-            description = description,
             tagsBody = tags,
-            hidden = hidden
+            multipartList = multipartList
         ).map {
             when (it.isSuccessful) {
                 true -> postApiModelMapper.map(data = it.body())

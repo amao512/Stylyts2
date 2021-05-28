@@ -21,17 +21,15 @@ class UpdatePostUseCase @Inject constructor(
 
     private lateinit var token: String
     private lateinit var postId: String
-    private lateinit var description: MultipartBody.Part
     private lateinit var tags: TagsApiModel
-    private lateinit var hidden: MultipartBody.Part
+    private lateinit var multipartList: List<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<PostModel> {
         return postsDomainRepository.updatePost(
             token = token,
             postId = postId,
-            description = description,
             tags = tags,
-            hidden = hidden
+            multipartList = multipartList
         )
     }
 
@@ -42,7 +40,11 @@ class UpdatePostUseCase @Inject constructor(
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.postId = postId.toString()
-        this.description = MultipartBody.Part.createFormData("description", postCreateModel.description)
+
+        val multipartList = ArrayList<MultipartBody.Part>()
+
+        multipartList.add(MultipartBody.Part.createFormData("description", postCreateModel.description))
+        multipartList.add(MultipartBody.Part.createFormData("hidden", postCreateModel.hidden.toString()))
 
         val clothesTags: MutableList<TagApiModel> = mutableListOf()
         postCreateModel.clothesList.map {
@@ -53,6 +55,10 @@ class UpdatePostUseCase @Inject constructor(
                     pointX = it.clothesLocation?.pointX,
                     pointY = it.clothesLocation?.pointY
                 )
+            )
+
+            multipartList.add(
+                MultipartBody.Part.createFormData("clothes", it.id.toString())
             )
         }
 
@@ -72,6 +78,6 @@ class UpdatePostUseCase @Inject constructor(
             clothesTags = clothesTags,
             usersTags = userTags
         )
-        this.hidden = MultipartBody.Part.createFormData("hidden", postCreateModel.hidden.toString())
+        this.multipartList = multipartList
     }
 }

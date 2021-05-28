@@ -50,9 +50,8 @@ interface PostsApi {
     fun updatePost(
         @Header("Authorization") token: String,
         @Path("post_id") postId: String,
-        @Part description: MultipartBody.Part,
         @Part("tags") tagsBody: TagsApiModel,
-        @Part hidden: MultipartBody.Part
+        @Part multipartList: List<MultipartBody.Part>,
     ) : Single<Response<PostApiModel>>
 
     @POST(RestConstants.LIKE_POST)
