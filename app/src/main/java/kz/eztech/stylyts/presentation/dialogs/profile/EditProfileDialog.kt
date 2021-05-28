@@ -42,10 +42,8 @@ class EditProfileDialog(
     private val editorListener: EditorListener
 ) : DialogFragment(), EditProfileContract.View, View.OnClickListener, UniversalViewClickListener {
 
-    @Inject
-    lateinit var presenter: EditProfilePresenter
-    @Inject
-    lateinit var imageLoader: DomainImageLoader
+    @Inject lateinit var presenter: EditProfilePresenter
+    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
 
@@ -267,6 +265,7 @@ class EditProfileDialog(
             return
         }
 
+        data["username"] = checkStringValidation(text = edit_text_dialog_edit_profile_username.text.toString())
 //        data["web_site"] = checkStringValidation(text = webSite)
 //        data["instagram"] = checkStringValidation(text = instagram)
 
@@ -305,19 +304,15 @@ class EditProfileDialog(
 
     private fun setProfileImageByBitmap(bitmap: Bitmap?) {
         bitmap?.let {
-            try {
-                val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
+            val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
 
-                file?.let {
-                    presenter.changeProfilePhoto(
-                        token = getTokenFromArguments(),
-                        file = file
-                    )
-                    text_view_fragment_profile_edit_user_short_name.text = EMPTY_STRING
-                    text_view_fragment_profile_edit_user_short_name.show()
-                }
-            } catch (e: Exception) {
-                Log.wtf(TAG, e)
+            file?.let {
+                presenter.changeProfilePhoto(
+                    token = getTokenFromArguments(),
+                    file = file
+                )
+                text_view_fragment_profile_edit_user_short_name.text = EMPTY_STRING
+                text_view_fragment_profile_edit_user_short_name.show()
             }
         }
     }

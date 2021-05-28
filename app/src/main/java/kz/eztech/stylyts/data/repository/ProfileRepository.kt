@@ -34,6 +34,7 @@ class ProfileRepository @Inject constructor(
             token = token,
             firstName = data["first_name"] as String,
             lastName = data["last_name"] as String,
+            username = data["username"] as String
 //            instagram = data["instagram"] as String,
 //            webSite = data["web_site"] as String
         ).map {
