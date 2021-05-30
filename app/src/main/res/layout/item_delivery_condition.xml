@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/padding_size_16x"
+    android:paddingTop="@dimen/padding_size_16x"
+    android:paddingEnd="0dp"
+    android:paddingBottom="@dimen/padding_size_8x"
+    >
+
+    <TextView
+        android:id="@+id/item_delivery_condition_title_text_view"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_16x"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/with_fitting"
+        />
+
+    <TextView
+        android:id="@+id/item_delivery_condition_choice_text_view"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_size_16x"
+        android:background="?attr/selectableItemBackground"
+        android:text="@string/choice"
+        android:textColor="@color/app_light_orange"
+        android:textSize="@dimen/text_size_14x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/item_delivery_condition_fitting_time_text_view"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:paddingStart="0dp"
+        android:paddingEnd="@dimen/padding_size_40x"
+        android:text="@string/delivery_fitting_info"
+        android:textSize="@dimen/text_size_14x"
+        app:layout_constraintBottom_toTopOf="@id/item_delivery_condition_fitting_date_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_delivery_condition_title_text_view"
+        />
+
+    <TextView
+        android:id="@+id/item_delivery_condition_fitting_date_text_view"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delivery_date_info"
+        android:textSize="@dimen/text_size_14x"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_delivery_condition_fitting_time_text_view"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:background="@color/app_gray_hint"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_delivery_condition_fitting_date_text_view"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

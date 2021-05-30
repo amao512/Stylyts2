@@ -51,9 +51,13 @@
     <string name="city">City</string>
     <string name="address">Address</string>
     <string name="locality">Locality</string>
+    <string name="street">Sreet</string>
+    <string name="house">House</string>
+    <string name="apartment">Apartment</string>
     <string name="post_index">Postcode</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
+    <string name="other_delivery_data">Подъезд, этаж, домофон и дургие данные, которые помогут курьеру быстрее найти ваше местоположение</string>
 
     <string name="bottom_nav_bar_main">Main</string>
     <string name="bottom_nav_bar_collection">Outfits</string>
@@ -347,6 +351,12 @@
     <string name="delivery_way_courier">Курьерская доставка</string>
     <string name="delivery_way_pickup">Самовывоз</string>
     <string name="delivery_way_post">Доставка почтой</string>
+    <string name="delivery_fitting_info">Дорогие клиенты, оповещаем вас что время примерки на одну вещь составляет не более %s.</string>
+    <string name="delivery_date_info">Дата доставки: %s</string>
+    <string name="delivery_choose_deliver_way">Выберите условия доставки</string>
+    <string name="with_fitting">С примеркой</string>
+    <string name="without_fitting">Без примерки</string>
+    <string name="choice">Выбрать</string>
 
     <string name="dressing_title">Вам нужна примерочная?</string>
     <string name="dressing_way_need">Да, добавить примерочную</string>

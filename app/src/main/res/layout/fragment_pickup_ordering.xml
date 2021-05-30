@@ -6,23 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.ordering.OrderingDataFragment"
+    tools:context=".presentation.fragments.ordering.PickupOrderingFragment"
     >
 
     <include
-        android:id="@+id/fragment_ordering_data_toolbar"
+        android:id="@+id/fragment_pickup_ordering_toolbar"
         layout="@layout/base_toolbar"
         />
 
     <TextView
-        android:id="@+id/fragment_ordering_data_title_text_view"
+        android:id="@+id/fragment_pickup_ordering_title_text_view"
         style="@style/TextRegularBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/padding_size_16x"
         android:paddingTop="@dimen/padding_size_16x"
         android:paddingBottom="0dp"
-        android:text="@string/delivery_data"
+        android:text="@string/delivery_pickup"
         android:textSize="@dimen/text_size_16x"
         />
 
@@ -45,7 +45,7 @@
         />
 
     <EditText
-        android:id="@+id/fragment_ordering_data_city_edit_text"
+        android:id="@+id/fragment_pickup_ordering_city_edit_text"
         style="@style/TextRegular"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
         />
 
     <TextView
-        android:id="@+id/fragment_ordering_data_list_title_text_view"
+        android:id="@+id/fragment_pickup_ordering_list_title_text_view"
         style="@style/TextRegularBold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
         android:paddingTop="@dimen/padding_size_16x"
         android:paddingBottom="0dp"
         android:textSize="@dimen/text_size_16x"
-        android:text="@string/delivery_title"
+        android:text="@string/dressing_title"
         />
 
     <View
@@ -85,7 +85,7 @@
         />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_ordering_data_recycler_view"
+        android:id="@+id/fragment_pickup_ordering_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"

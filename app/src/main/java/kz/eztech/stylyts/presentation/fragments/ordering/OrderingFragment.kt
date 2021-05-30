@@ -23,6 +23,11 @@ class OrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.
     private lateinit var emailEditText: EditText
     private lateinit var subsMailingSwitchCompat: SwitchCompat
 
+    override fun onResume() {
+        super.onResume()
+        currentActivity.hideBottomNavigationView()
+    }
+
     override fun getLayoutId(): Int = R.layout.fragment_ordering
 
     override fun getContractView(): BaseView = this

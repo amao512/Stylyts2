@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <include
+        android:id="@+id/fragment_courier_ordering_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/fragment_ordering_data_title_text_view"
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_size_16x"
+                android:paddingTop="@dimen/padding_size_16x"
+                android:paddingBottom="0dp"
+                android:text="@string/delivery_way_courier"
+                android:textSize="@dimen/text_size_16x"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/locality"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_ordering_data_city_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                tools:text="г.Алматы"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/street"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_ordering_data_street_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/house"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_ordering_data_house_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/apartment"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_ordering_data_apartment_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:layout_marginEnd="@dimen/margin_size_70x"
+                android:text="@string/other_delivery_data"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_ordering_data_other_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/medium_divider_height"
+                android:layout_marginTop="@dimen/margin_size_10x"
+                android:background="@color/large_divider_bg_color"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_size_16x"
+                android:paddingTop="@dimen/padding_size_16x"
+                android:paddingBottom="0dp"
+                android:text="@string/delivery_choose_deliver_way"
+                android:textSize="@dimen/text_size_16x"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_courier_ordering_conditions_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_delivery_condition"
+                />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

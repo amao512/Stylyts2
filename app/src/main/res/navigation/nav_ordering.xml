@@ -23,5 +23,25 @@
         android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingDataFragment"
         android:label="fragment_ordering_data"
         tools:layout="@layout/fragment_ordering_data"
+        >
+        <action
+            android:id="@+id/action_orderingDataFragment_to_courierOrderingFragment"
+            app:destination="@id/courierOrderingFragment"
+            />
+        <action
+            android:id="@+id/action_orderingDataFragment_to_pickupOrderingFragment"
+            app:destination="@id/pickupOrderingFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/courierOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.ordering.CourierOrderingFragment"
+        android:label="CourierOrderingFragment"
+        />
+    <fragment
+        android:id="@+id/pickupOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.ordering.PickupOrderingFragment"
+        android:label="fragment_pickup_ordering"
+        tools:layout="@layout/fragment_pickup_ordering"
         />
 </navigation>
