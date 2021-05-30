@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.domain.models.ordering
+package kz.eztech.stylyts.domain.models.order
 
 data class DeliveryWayModel(
     val id: Int,

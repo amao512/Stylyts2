@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_ordering_data.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.ordering.DeliveryWayModel
+import kz.eztech.stylyts.domain.models.order.DeliveryWayModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryWayAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment

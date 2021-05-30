@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.item_ordering_way.view.*
-import kz.eztech.stylyts.domain.models.ordering.DeliveryWayModel
+import kz.eztech.stylyts.domain.models.order.DeliveryWayModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 

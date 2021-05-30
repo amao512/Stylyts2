@@ -53,7 +53,8 @@ import javax.inject.Singleton
     UserModule::class,
     OutfitsModule::class,
     WardrobeModule::class,
-    CommentsModule::class
+    CommentsModule::class,
+    OrderModule::class
 ])
 interface ApplicationComponent {
 

@@ -4,6 +4,7 @@ import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.address.AddressApiModel
 import kz.eztech.stylyts.data.api.models.clothes.*
 import kz.eztech.stylyts.data.api.models.comments.CommentApiModel
+import kz.eztech.stylyts.data.api.models.order.OrderApiModel
 import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
 import kz.eztech.stylyts.data.api.models.posts.PostApiModel
 import kz.eztech.stylyts.data.api.models.user.FollowerApiModel
@@ -12,6 +13,7 @@ import kz.eztech.stylyts.data.api.models.wardrobe.WardrobeApiModel
 import kz.eztech.stylyts.data.mappers.address.AddressApiModelMapper
 import kz.eztech.stylyts.data.mappers.clothes.*
 import kz.eztech.stylyts.data.mappers.comments.CommentApiModelMapper
+import kz.eztech.stylyts.data.mappers.order.OrderApiModelMapper
 import kz.eztech.stylyts.data.mappers.outfits.OutfitApiModelMapper
 import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.FollowerApiModelMapper
@@ -36,7 +38,8 @@ class ResultsApiModelMapper @Inject constructor(
     val outfitApiModelMapper: OutfitApiModelMapper,
     val postApiModelMapper: PostApiModelMapper,
     val wardrobeApiModelMapper: WardrobeApiModelMapper,
-    val commentApiModelMapper: CommentApiModelMapper
+    val commentApiModelMapper: CommentApiModelMapper,
+    val orderApiModelMapper: OrderApiModelMapper
 ) {
 
     inline fun <reified T, C> map(data: ResultsApiModel<T>?): ResultsModel<C> {
@@ -90,6 +93,9 @@ class ResultsApiModelMapper @Inject constructor(
             }
             CommentApiModel::class -> {
                 commentApiModelMapper.map(results as List<CommentApiModel>) as List<C>
+            }
+            OrderApiModel::class -> {
+                orderApiModelMapper.map(results as List<OrderApiModel>) as List<C>
             }
             else -> emptyList()
         }

@@ -73,4 +73,10 @@ object RestConstants {
     // Comments
     const val GET_COMMENTS: String = "post-comments"
     const val CREATE_COMMENT: String = "post-comments"
+
+    // Order
+    const val GET_ORDERS: String = "orders"
+    const val GET_ORDER_BY_ID: String = "orders/{order_id}"
+    const val CREATE_ORDER: String = "orders"
+    const val PROCESS_ORDER: String = "orders/{order_id}"
 }
