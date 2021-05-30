@@ -101,7 +101,9 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
         presenter.getClothesStyles(token = currentActivity.getTokenFromSharedPref())
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {}
 

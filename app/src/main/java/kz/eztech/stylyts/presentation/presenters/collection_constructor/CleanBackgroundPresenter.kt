@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.presenters
+package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper

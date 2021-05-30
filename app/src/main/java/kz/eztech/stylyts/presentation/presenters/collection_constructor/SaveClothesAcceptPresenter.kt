@@ -27,7 +27,10 @@ class SaveClothesAcceptPresenter @Inject constructor(
     private lateinit var view: SaveClothesAcceptContract.View
 
     override fun disposeRequests() {
-        getClothesTypesUseCase.dispose()
+        getClothesTypesUseCase.clear()
+        getClothesCategoriesByTypeUseCase.clear()
+        getClothesStylesUseCase.clear()
+        createClothesByImageUseCase.clear()
     }
 
     override fun attach(view: SaveClothesAcceptContract.View) {

@@ -5,14 +5,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_clean_background.*
 import kz.eztech.stylyts.BuildConfig
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -20,10 +19,11 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CleanBackgroundContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
-import kz.eztech.stylyts.presentation.presenters.CleanBackgroundPresenter
+import kz.eztech.stylyts.presentation.presenters.collection_constructor.CleanBackgroundPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import kz.eztech.stylyts.presentation.utils.removebg.ErrorResponse
 import kz.eztech.stylyts.presentation.utils.removebg.RemoveBg
@@ -68,11 +68,7 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     }
 
     override fun initializeArguments() {
-        getPhotoUriFromArgs()?.let {
-            Glide.with(image_view_fragment_clean_background_image.context)
-                .load(it)
-                .into(image_view_fragment_clean_background_image)
-        }
+        getPhotoUriFromArgs()?.loadImage(target = image_view_fragment_clean_background_image)
     }
 
     override fun initializeViewsData() {

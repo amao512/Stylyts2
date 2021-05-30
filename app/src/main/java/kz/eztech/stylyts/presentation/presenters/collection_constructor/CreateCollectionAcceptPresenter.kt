@@ -33,7 +33,6 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     private val disposables = CompositeDisposable()
 
     override fun disposeRequests() {
-        view.disposeRequests()
         createPostUseCase.clear()
         updatePostUseCase.clear()
         createOutfitUseCase.clear()

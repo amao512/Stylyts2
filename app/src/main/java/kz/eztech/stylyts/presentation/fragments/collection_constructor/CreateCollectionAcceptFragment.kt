@@ -135,7 +135,9 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         processPhotos()
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {}
 

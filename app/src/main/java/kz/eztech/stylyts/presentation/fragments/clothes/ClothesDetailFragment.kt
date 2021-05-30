@@ -8,7 +8,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.navigation.fragment.findNavController
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_clothes_detail.*
@@ -42,16 +41,13 @@ import javax.inject.Inject
 class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContract.View,
     View.OnClickListener, DialogChooserListener {
 
-    @Inject
-    lateinit var presenter: ClothesDetailPresenter
+    @Inject lateinit var presenter: ClothesDetailPresenter
     private lateinit var chooserDialog: ClothesSizesBottomDialog
 
     private enum class CART_STATE { NONE, EDIT, DONE }
 
     private var currentState = CART_STATE.NONE
     private var currentSize: ClothesSizeModel? = null
-
-    private var disposables = CompositeDisposable()
 
     companion object {
         const val CLOTHES_ID = "clothes_id"
@@ -161,7 +157,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     }
 
     override fun disposeRequests() {
-        disposables.clear()
         presenter.disposeRequests()
     }
 

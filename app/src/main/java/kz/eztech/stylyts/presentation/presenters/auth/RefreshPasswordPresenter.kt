@@ -7,27 +7,21 @@ import kz.eztech.stylyts.domain.usecases.auth.SetNewPasswordUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.auth.RefreshPasswordContract
 import kz.eztech.stylyts.presentation.fragments.auth.RefreshPasswordFragment
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import javax.inject.Inject
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
-class RefreshPasswordPresenter: RefreshPasswordContract.Presenter {
-    private var errorHelper: ErrorHelper
-    private var generateForgotPasswordUseCase: GenerateForgotPasswordUseCase
+class RefreshPasswordPresenter @Inject constructor(
+    private var errorHelper: ErrorHelper,
+    private var generateForgotPasswordUseCase: GenerateForgotPasswordUseCase,
     private var setNewPasswordUseCase: SetNewPasswordUseCase
-    private lateinit var view: RefreshPasswordContract.View
-    private var token =""
+) : RefreshPasswordContract.Presenter {
 
-    @Inject
-    constructor(errorHelper: ErrorHelper,
-                generateForgotPasswordUseCase: GenerateForgotPasswordUseCase,
-                setNewPasswordUseCase: SetNewPasswordUseCase,
-    ){
-        this.generateForgotPasswordUseCase = generateForgotPasswordUseCase
-        this.setNewPasswordUseCase = setNewPasswordUseCase
-        this.errorHelper = errorHelper
-    }
+    private lateinit var view: RefreshPasswordContract.View
+    private var token = EMPTY_STRING
+
     override fun disposeRequests() {
         generateForgotPasswordUseCase.clear()
         setNewPasswordUseCase.clear()
@@ -39,6 +33,7 @@ class RefreshPasswordPresenter: RefreshPasswordContract.Presenter {
 
     override fun generateForgotPassword(email: String) {
         view.displayProgress()
+
         generateForgotPasswordUseCase.initParams(email)
         generateForgotPasswordUseCase.execute(object : DisposableSingleObserver<Unit>(){
             override fun onSuccess(t: Unit) {

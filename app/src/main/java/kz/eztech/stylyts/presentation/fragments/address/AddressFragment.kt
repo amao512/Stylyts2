@@ -113,7 +113,9 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
         presenter.getAllAddress(token = currentActivity.getTokenFromSharedPref())
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) = displayToast(msg)
 

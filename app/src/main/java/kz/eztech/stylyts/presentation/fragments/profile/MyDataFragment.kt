@@ -87,7 +87,9 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
         presenter.getProfile(token = currentActivity.getTokenFromSharedPref())
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {}
 

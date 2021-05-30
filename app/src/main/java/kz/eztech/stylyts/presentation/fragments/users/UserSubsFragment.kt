@@ -102,7 +102,9 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
         )
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {}
 

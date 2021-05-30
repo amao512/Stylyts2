@@ -37,6 +37,7 @@ class SearchItemPresenter @Inject constructor(
     override fun disposeRequests() {
         searchProfileUseCase.clear()
         searchClothesUseCase.clear()
+        disposable.clear()
     }
 
     override fun searchUserByUsername(

@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.fragments.settings
 
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -14,9 +13,9 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.dialogs.settings.*
 import kz.eztech.stylyts.presentation.interfaces.MessageProblemViewListener
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 
 class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View,
     View.OnClickListener,

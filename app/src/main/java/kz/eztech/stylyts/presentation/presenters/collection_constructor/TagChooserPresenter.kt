@@ -26,7 +26,6 @@ class TagChooserPresenter @Inject constructor(
     private lateinit var view: TagChooserContract.View
 
     override fun disposeRequests() {
-        view.disposeRequests()
         getClothesTypesUseCase.clear()
         getClothesUseCase.clear()
         searchClothesUseCase.clear()

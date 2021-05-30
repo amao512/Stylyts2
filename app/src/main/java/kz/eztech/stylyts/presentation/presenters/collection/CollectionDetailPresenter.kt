@@ -30,7 +30,6 @@ class CollectionDetailPresenter @Inject constructor(
     private lateinit var view: CollectionDetailContract.View
 
     override fun disposeRequests() {
-        view.disposeRequests()
         getOutfitByIdUseCase.clear()
         getPostByIdUseCase.clear()
         deleteOutfitUseCase.clear()

@@ -68,8 +68,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     DialogChooserListener,
     UniversalViewClickListener, UniversalViewDoubleClickListener {
 
-    @Inject
-    lateinit var presenter: CollectionConstructorPresenter
+    @Inject lateinit var presenter: CollectionConstructorPresenter
 
     private lateinit var typesAdapter: CollectionConstructorShopCategoryAdapter
     private lateinit var clothesAdapter: CollectionConstructorShopItemAdapter

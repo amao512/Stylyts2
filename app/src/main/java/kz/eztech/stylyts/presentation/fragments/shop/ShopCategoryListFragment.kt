@@ -128,7 +128,9 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
         )
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {}
 

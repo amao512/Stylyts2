@@ -194,7 +194,9 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {}
 
