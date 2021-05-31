@@ -152,14 +152,16 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
 
     private fun showEmptyPage() {
         recycler_view_dialog_cart_list.hide()
-        frame_layout_dialog_cart_price_container.hide()
+        dialog_cart_price_container_contraint_layout.hide()
         linear_layout_dialog_cart_empty_page.show()
+        dialog_cart_ordering_button.hide()
     }
 
     private fun processList(list: List<CartEntity>) {
-        frame_layout_dialog_cart_price_container.show()
+        dialog_cart_price_container_contraint_layout.show()
         linear_layout_dialog_cart_empty_page.hide()
         recycler_view_dialog_cart_list.show()
+        dialog_cart_ordering_button.show()
 
         cartAdapter.updateList(list)
 
