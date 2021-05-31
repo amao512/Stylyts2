@@ -11,6 +11,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.domain.models.clothes.ClothesCountModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.CartAdapter
@@ -162,49 +163,57 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
 
         cartAdapter.updateList(list)
 
+        val fullPrice = NumberFormat.getInstance().format(
+            list.sumBy {
+                if (it.salePrice != 0) {
+                    it.salePrice!!
+                } else {
+                    it.price!!
+                }
+            }
+        )
+
         text_view_dialog_cart_total_price.text = getString(
-            R.string.price_tenge_text_format,
-            NumberFormat.getInstance().format(list.sumBy { it.price!! })
+            R.string.price_tenge_text_format, fullPrice
         )
 
         text_view_dialog_cart_pre_total_price.text = "Подытог ${
-            getString(
-                R.string.price_tenge_text_format,
-                NumberFormat.getInstance().format(list.sumBy { it.price!! })
-            )
+            getString(R.string.price_tenge_text_format, fullPrice)
         }"
     }
 
     override fun processSizes(
-        sizesList: List<ClothesSizeModel>,
+        clothesModel: ClothesModel,
         cartEntity: CartEntity,
         isSize: Boolean
     ) {
-        val currentSize = sizesList.find { it.size == cartEntity.size }
+        val currentSize = clothesModel.sizeInStock.find { it.size == cartEntity.size }
 
         if (isSize) {
-            openSizeDialog(sizesList, cartEntity)
+            openSizeDialog(clothesModel, cartEntity)
         } else {
             currentSize?.count?.let {
-                openCountsDialog(currentSize, cartEntity)
+                openCountsDialog(clothesModel, currentSize, cartEntity)
             }
         }
     }
 
     private fun openSizeDialog(
-        sizesList: List<ClothesSizeModel>,
+        clothesModel: ClothesModel,
         cartEntity: CartEntity
     ) {
         val bundle = Bundle()
         val clothesSizes: MutableList<ClothesSizeModel> = mutableListOf()
 
-        if (sizesList.isNotEmpty()) {
-            sizesList.map { size ->
+        if (clothesModel.sizeInStock.isNotEmpty()) {
+            clothesModel.sizeInStock.map { size ->
                 clothesSizes.add(
                     ClothesSizeModel(
                         clothesId = cartEntity.id ?: 0,
                         size = size.size,
-                        count = size.count
+                        count = size.count,
+                        price = clothesModel.cost,
+                        salePrice = clothesModel.salePrice
                     )
                 )
             }
@@ -221,6 +230,7 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
     }
 
     private fun openCountsDialog(
+        clothesModel: ClothesModel,
         clothesSizeModel: ClothesSizeModel,
         cartEntity: CartEntity
     ) {
@@ -229,7 +239,12 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
 
         for (i in 1..clothesSizeModel.count) {
             counts.add(
-                ClothesCountModel(clothesId = cartEntity.id ?: 0, count = i)
+                ClothesCountModel(
+                    clothesId = cartEntity.id ?: 0,
+                    count = i,
+                    price = clothesModel.cost,
+                    salePrice = clothesModel.salePrice
+                )
             )
         }
 

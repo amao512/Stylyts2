@@ -39,10 +39,10 @@ data class CartEntity(
     var count: Int? = null,
 
     @ColumnInfo(name = "clothes_price")
-    val price: Int? = null,
+    var price: Int? = null,
 
     @ColumnInfo(name = "clothes_sale_price")
-    val salePrice: Int? = null,
+    var salePrice: Int? = null,
 
     @ColumnInfo(name = "currency")
     val currency: String? = null,

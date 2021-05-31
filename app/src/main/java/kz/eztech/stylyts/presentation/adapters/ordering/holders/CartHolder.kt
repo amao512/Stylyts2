@@ -68,10 +68,18 @@ class CartHolder(
         clothesIdTextView.text = "ID изделия ${cart.id}"
         sizeTextView.text = "Размер ${cart.size ?: ""}"
         countTextView.text = "Кол-во ${cart.count}"
-        priceTextView.text = priceTextView.context.getString(
-            R.string.price_tenge_text_format,
-            NumberFormat.getInstance().format(cart.price)
-        )
+
+        if (cart.salePrice != 0) {
+            priceTextView.text = priceTextView.context.getString(
+                R.string.price_tenge_text_format,
+                NumberFormat.getInstance().format(cart.salePrice)
+            )
+        } else {
+            priceTextView.text = priceTextView.context.getString(
+                R.string.price_tenge_text_format,
+                NumberFormat.getInstance().format(cart.price)
+            )
+        }
 
         clothesRemoveImageView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, cart)

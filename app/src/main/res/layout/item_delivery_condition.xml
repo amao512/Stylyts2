@@ -43,9 +43,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_size_8x"
         android:paddingStart="0dp"
-        android:paddingEnd="@dimen/padding_size_40x"
+        android:paddingEnd="@dimen/padding_size_36x"
         android:text="@string/delivery_fitting_info"
-        android:textSize="@dimen/text_size_14x"
         app:layout_constraintBottom_toTopOf="@id/item_delivery_condition_fitting_date_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delivery_date_info"
-        android:textSize="@dimen/text_size_14x"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_delivery_condition_fitting_time_text_view"
         />

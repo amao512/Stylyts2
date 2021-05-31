@@ -67,6 +67,14 @@ class CartPresenter @Inject constructor(
                     cart?.size = clothesSizeModel.size
                     cart?.count = 1
 
+                    cart?.count?.let {
+                        if (clothesSizeModel.salePrice != 0) {
+                            cart.salePrice = clothesSizeModel.salePrice.times(it)
+                        } else {
+                            cart.price = clothesSizeModel.price.times(it)
+                        }
+                    }
+
                     cart
                 }
                 .subscribe({ cart ->
@@ -88,6 +96,13 @@ class CartPresenter @Inject constructor(
                 .map { list ->
                     val cart = list.find { it.id == clothesCountModel.clothesId }
                     cart?.count = clothesCountModel.count
+                    cart?.count?.let {
+                        if (clothesCountModel.salePrice != 0) {
+                            cart.salePrice = clothesCountModel.salePrice.times(it)
+                        } else {
+                            cart.price = clothesCountModel.price.times(it)
+                        }
+                    }
 
                     cart
                 }
@@ -139,7 +154,7 @@ class CartPresenter @Inject constructor(
         getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processSizes(
-                    sizesList = t.sizeInStock,
+                    clothesModel = t,
                     cartEntity = cartEntity,
                     isSize = isSize
                 )
