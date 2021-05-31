@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.adapters.common
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.data.db.entities.CardEntity
+import kz.eztech.stylyts.data.db.card.CardEntity
 import kz.eztech.stylyts.presentation.adapters.common.holders.CardHolder
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 

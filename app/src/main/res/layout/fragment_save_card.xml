@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <include
+        android:id="@+id/fragment_save_card_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_divider_height"
+        android:layout_marginTop="@dimen/margin_size_10x"
+        android:background="@color/large_divider_bg_color"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_size_16x"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_number"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <EditText
+            android:id="@+id/fragment_save_card_edit_text"
+            style="@style/TextRegularBold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@null"
+            android:drawableStart="@drawable/ic_credit_card"
+            android:drawablePadding="@dimen/padding_size_8x"
+            android:hint="@string/card_number"
+            android:inputType="number"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@color/app_gray_hint"
+            />
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/card_last_date"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <LinearLayout
+            android:id="@+id/card_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/fragment_save_card_month_text_view"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:gravity="center"
+                android:text="@string/month"
+                />
+
+            <TextView
+                android:id="@+id/fragment_save_card_year_text_view"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
+                android:gravity="center"
+                android:text="@string/year"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_save_card_month_and_year_text_view"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            tools:text="12/21"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@color/app_gray_hint"
+            />
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/card_name"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <EditText
+            android:id="@+id/fragment_save_card_name_in_card_edit_text"
+            style="@style/TextRegular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:background="@null"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:background="@color/app_gray_hint"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/fragment_save_card_complete_button"
+            style="@style/SubtitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_48x"
+            android:gravity="start"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/padding_size_12x"
+            android:text="@string/save_card"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/app_dark_blue_gray"
+            app:cornerRadius="@dimen/corner_radius_default"
+            />
+
+        <TextView
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_16x"
+            android:text="@string/card_we_accept"
+            android:textColor="@color/app_gray_hint"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_size_8x"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_visa"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_8x"
+                android:src="@drawable/ic_mastercard"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_8x"
+                android:src="@drawable/ic_paypal"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_8x"
+                android:src="@drawable/ic_american_express"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,8 +9,8 @@ import kz.eztech.stylyts.data.db.address.AddressDao
 import kz.eztech.stylyts.data.db.address.AddressEntity
 import kz.eztech.stylyts.data.db.cart.CartDao
 import kz.eztech.stylyts.data.db.cart.CartEntity
-import kz.eztech.stylyts.data.db.dao.CardDao
-import kz.eztech.stylyts.data.db.entities.CardEntity
+import kz.eztech.stylyts.data.db.card.CardDao
+import kz.eztech.stylyts.data.db.card.CardEntity
 import kz.eztech.stylyts.data.db.search.UserSearchDao
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 

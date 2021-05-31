@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,237 +13,43 @@
         layout="@layout/base_toolbar"
         />
 
-    <LinearLayout
-        android:id="@+id/linear_layout_fragment_card_profile_cards"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+
+    <TextView
+        android:id="@+id/text_view_fragment_card_profile_empty"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_size_24x"
+        android:text="@string/card_empty"
         android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:id="@+id/linear_layout_fragment_card_profile_add_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
         >
 
         <TextView
-            android:id="@+id/text_view_fragment_card_profile_empty"
             style="@style/TextRegular"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_margin="@dimen/margin_size_24x"
-            android:text="@string/card_empty"
-            android:visibility="gone"
-            />
-
-        <LinearLayout
-            android:id="@+id/linear_layout_fragment_card_profile_add_card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            >
-
-            <TextView
-                style="@style/TextRegular"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/margin_size_24x"
-                android:background="@drawable/rounded_rectangle_white_gray_corners"
-                android:drawableStart="@drawable/ic_credit_card"
-                android:gravity="center"
-                android:padding="@dimen/padding_size_16x"
-                android:text="@string/card_add"
-                android:textAllCaps="false"
-                />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_fragment_card"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/item_user_card"
+            android:background="@drawable/rounded_rectangle_white_gray_corners"
+            android:drawableStart="@drawable/ic_credit_card"
+            android:gravity="center"
+            android:padding="@dimen/padding_size_16x"
+            android:text="@string/card_add"
+            android:textAllCaps="false"
             />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollview_fragment_card_form"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_fragment_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_size_16x"
-            android:orientation="vertical"
-            >
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/card_number"
-                android:textColor="@color/app_gray_hint"
-                />
-
-            <EditText
-                android:id="@+id/edit_text_fragment_card_number"
-                style="@style/TextRegularBold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_8x"
-                android:background="@null"
-                android:drawableStart="@drawable/ic_credit_card"
-                android:drawablePadding="@dimen/padding_size_8x"
-                android:hint="@string/card_number"
-                android:inputType="number"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/margin_size_8x"
-                android:background="@color/app_gray_hint"
-                />
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_16x"
-                android:text="@string/card_last_date"
-                android:textColor="@color/app_gray_hint"
-                />
-
-            <LinearLayout
-                android:id="@+id/card_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
-                <TextView
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_size_8x"
-                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:gravity="center"
-                    android:text="@string/month"
-                    />
-
-                <TextView
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_size_8x"
-                    android:drawableEnd="@drawable/ic_baseline_keyboard_arrow_down_24"
-                    android:gravity="center"
-                    android:text="@string/year"
-                    />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/text_view_fragment_card_expiring"
-                style="@style/TextRegular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_16x"
-                tools:text="12/21"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/margin_size_8x"
-                android:background="@color/app_gray_hint"
-                />
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_16x"
-                android:text="@string/card_name"
-                android:textColor="@color/app_gray_hint"
-                />
-
-            <EditText
-                android:id="@+id/edit_text_fragment_card_holder"
-                style="@style/TextRegular"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_16x"
-                android:background="@null"
-                android:hint="@string/card_name"
-                tools:text="12/21"
-                />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="@dimen/margin_size_8x"
-                android:background="@color/app_gray_hint"
-                />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/button_fragment_card_submit"
-                style="@style/SubtitleText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_48x"
-                android:gravity="start"
-                android:imeOptions="actionNext"
-                android:padding="@dimen/padding_size_12x"
-                android:text="@string/fragment_registration_complete"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                app:backgroundTint="@color/app_black"
-                app:cornerRadius="@dimen/corner_radius_default"
-                />
-
-            <TextView
-                style="@style/TextRegularBold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_16x"
-                android:text="@string/card_we_accept"
-                android:textColor="@color/app_gray_hint"
-                />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_visa"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_size_8x"
-                    android:src="@drawable/ic_mastercard"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_size_8x"
-                    android:src="@drawable/ic_paypal"
-                    />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_size_8x"
-                    android:src="@drawable/ic_american_express"
-                    />
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </ScrollView>
-
+        tools:listitem="@layout/item_user_card"
+        />
 </LinearLayout>

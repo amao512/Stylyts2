@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.data.db.entities
+package kz.eztech.stylyts.data.db.card
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -17,19 +17,19 @@ data class CardEntity(
 	@Expose
 	@ColumnInfo(name = "id")
 	var id: Int? = null,
-	
+
 	@SerializedName("number")
 	@Expose
 	@ColumnInfo(name = "number")
 	var number: String? = null,
-	
+
 	@SerializedName("holder")
 	@Expose
 	@ColumnInfo(name = "holder")
-	var name_holder: String? = null,
-	
+	var nameHolder: String? = null,
+
 	@SerializedName("expiring")
 	@Expose
 	@ColumnInfo(name = "expiring")
-	var exp_date: String? = null,
+	var expDate: String? = null,
 )

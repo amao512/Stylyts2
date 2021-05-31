@@ -1,14 +1,14 @@
-package kz.eztech.stylyts.data.db.dao
+package kz.eztech.stylyts.data.db.card
 
 import androidx.room.*
 import io.reactivex.Observable
-import kz.eztech.stylyts.data.db.entities.CardEntity
 
 /**
  * Created by Ruslan Erdenoff on 02.03.2021.
  */
 @Dao
 interface CardDao {
+
 	@get:Query("SELECT * FROM card_table")
 	val all: Observable<List<CardEntity>>
 	

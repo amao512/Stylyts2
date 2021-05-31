@@ -369,6 +369,9 @@
     <string name="total">Итого</string>
     <string name="ordering_button_text_format">Оформить заказ на %s</string>
 
+    <string name="save_card_fragment_title">Кредитная/Дебетовая карта</string>
+    <string name="save_card">Сохранить карту</string>
+
     <string name="dressing_title">Вам нужна примерочная?</string>
     <string name="dressing_way_need">Да, добавить примерочную</string>
     <string name="dressing_way_not_need">Нет, я куплю заказ без примерки</string>

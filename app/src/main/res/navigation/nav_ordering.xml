@@ -54,5 +54,29 @@
         android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingFragment"
         android:label="fragment_ordering"
         tools:layout="@layout/fragment_ordering"
+        >
+        <action
+            android:id="@+id/action_orderingFragment_to_cardFragment"
+            app:destination="@id/cardFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/saveCardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.ordering.SaveCardFragment"
+        android:label="SaveCardFragment"
         />
+
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.CardFragment"
+        android:label="fragment_card"
+        tools:layout="@layout/fragment_card"
+        >
+        <action
+            android:id="@+id/action_cardFragment_to_saveCardFragment"
+            app:destination="@id/saveCardFragment"
+            />
+    </fragment>
+
 </navigation>

@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.ordering
 
+import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -12,11 +13,13 @@ import kotlinx.android.synthetic.main.fragment_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
+import kz.eztech.stylyts.data.db.card.CardEntity
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
+import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderingPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -70,7 +73,14 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
+    override fun initializeViewsData() {
+        findNavController().currentBackStackEntry?.savedStateHandle
+            ?.getLiveData<Int>(CardFragment.CARD_KEY)
+            ?.observe(viewLifecycleOwner, {
+                Log.d("TAG4", "card id - $it")
+                setPaymentType(CARD_PAYMENT)
+            })
+    }
 
     override fun initializeViews() {
         paymentCashLinearLayout = fragment_ordering_payment_cash_linear_layout
@@ -115,7 +125,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_ordering_payment_cash_linear_layout -> setPaymentType(CASH_PAYMENT)
-            R.id.fragment_ordering_payment_card_linear_layout -> setPaymentType(CARD_PAYMENT)
+            R.id.fragment_ordering_payment_card_linear_layout -> navigateToSaveCardFragment()
             R.id.fragment_ordering_complete_button -> onCompleteButtonClick()
         }
     }
@@ -169,6 +179,13 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
                 fragment_ordering_payment_card_selected_image_view.show()
             }
         }
+    }
+
+    private fun navigateToSaveCardFragment() {
+        val bundle = Bundle()
+        bundle.putInt(CardFragment.MODE_KEY, CardFragment.GET_CARD_MODE)
+
+        findNavController().navigate(R.id.action_orderingFragment_to_cardFragment, bundle)
     }
 
     private fun onCompleteButtonClick() {
