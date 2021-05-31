@@ -358,6 +358,16 @@
     <string name="with_fitting">С примеркой</string>
     <string name="without_fitting">Без примерки</string>
     <string name="choice">Выбрать</string>
+    <string name="select_payment_way">Выберите способ оплаты</string>
+    <string name="payment_cash">Оплата наличными при получении</string>
+    <string name="payment_card">Оплата-оплата картой</string>
+    <string name="to_pay">К оплате</string>
+    <string name="goods_count">Товаров в заказе</string>
+    <string name="goods_price_sum">Товаров на сумму</string>
+    <string name="delivery">Доставка</string>
+    <string name="discount">Скидка</string>
+    <string name="total">Итого</string>
+    <string name="ordering_button_text_format">Оформить заказ на %s</string>
 
     <string name="dressing_title">Вам нужна примерочная?</string>
     <string name="dressing_way_need">Да, добавить примерочную</string>

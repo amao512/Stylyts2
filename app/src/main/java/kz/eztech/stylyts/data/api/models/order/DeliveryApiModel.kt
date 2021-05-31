@@ -1,8 +1,11 @@
 package kz.eztech.stylyts.data.api.models.order
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class DeliveryApiModel(
     @SerializedName("city")
     @Expose
@@ -22,4 +25,4 @@ data class DeliveryApiModel(
     @SerializedName("delivery_status")
     @Expose
     val deliveryStatus: String? = null
-)
+) : Parcelable

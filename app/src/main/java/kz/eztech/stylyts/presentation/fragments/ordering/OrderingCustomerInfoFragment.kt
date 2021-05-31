@@ -106,7 +106,7 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
 
             bundle.putParcelable(SelectDeliveryWayFragment.CUSTOMER_KEY, customer)
             findNavController().navigate(
-                R.id.action_orderingFragment_to_orderingDataFragment,
+                R.id.action_customerInfoFragment_to_selectDeliveryWayFragment,
                 bundle
             )
         }

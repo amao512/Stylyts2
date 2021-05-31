@@ -70,9 +70,9 @@ class CartPresenter @Inject constructor(
                     cart?.count?.let {
                         if (clothesSizeModel.salePrice != 0) {
                             cart.salePrice = clothesSizeModel.salePrice.times(it)
-                        } else {
-                            cart.price = clothesSizeModel.price.times(it)
                         }
+
+                        cart.price = clothesSizeModel.price.times(it)
                     }
 
                     cart
@@ -99,9 +99,9 @@ class CartPresenter @Inject constructor(
                     cart?.count?.let {
                         if (clothesCountModel.salePrice != 0) {
                             cart.salePrice = clothesCountModel.salePrice.times(it)
-                        } else {
-                            cart.price = clothesCountModel.price.times(it)
                         }
+
+                        cart.price = clothesCountModel.price.times(it)
                     }
 
                     cart

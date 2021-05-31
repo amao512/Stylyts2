@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.ordering
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.navigation.fragment.findNavController
@@ -58,13 +57,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
 
     override fun initializePresenter() {}
 
-    override fun initializeArguments() {
-        arguments?.let {
-            if (it.containsKey(CUSTOMER_KEY)) {
-                Log.d("TAG4", "customer - ${it.getParcelable<CustomerApiModel>(CUSTOMER_KEY)}")
-            }
-        }
-    }
+    override fun initializeArguments() {}
 
     override fun initializeViewsData() {
         deliveryWayAdapter = DeliveryWayAdapter()
@@ -151,7 +144,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
                 bundle.putParcelable(CourierOrderingFragment.CUSTOMER_KEY, customer)
 
                 findNavController().navigate(
-                    R.id.action_orderingDataFragment_to_courierOrderingFragment,
+                    R.id.action_selectDeliveryWayFragment_to_courierOrderingFragment,
                     bundle
                 )
             }
@@ -160,7 +153,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
                 bundle.putParcelable(PickupOrderingFragment.CUSTOMER_KEY, customer)
 
                 findNavController().navigate(
-                    R.id.action_orderingDataFragment_to_pickupOrderingFragment,
+                    R.id.action_selectDeliveryWayFragment_to_pickupOrderingFragment,
                     bundle
                 )
             }

@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.ordering
 
-import android.util.Log
+import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.navigation.fragment.findNavController
@@ -144,6 +144,8 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
 
     private fun onConditionClicked(deliveryConditionModel: DeliveryConditionModel) {
         if (checkEditTextToValidation()) {
+            val bundle = Bundle()
+
             val delivery = DeliveryApiModel(
                 city = cityEditText.text.toString(),
                 street = streetEditText.text.toString(),
@@ -161,8 +163,12 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
                 customer = arguments?.getParcelable(CUSTOMER_KEY)
             )
 
-            Log.d("TAG4", "order - $orderCreateApiModel")
-            displayMessage(msg = "Loading...")
+            bundle.putParcelable(OrderingFragment.ORDER_KEY, orderCreateApiModel)
+
+            findNavController().navigate(
+                R.id.action_courierOrderingFragment_to_orderingFragment,
+                bundle
+            )
         }
     }
 

@@ -4,32 +4,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_ordering"
-    app:startDestination="@id/orderingFragment"
+    app:startDestination="@id/customerInfoFragment"
     >
 
     <fragment
-        android:id="@+id/orderingFragment"
+        android:id="@+id/customerInfoFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingCustomerInfoFragment"
         android:label="fragment_ordering"
         tools:layout="@layout/fragment_ordering_customer_info"
         >
         <action
-            android:id="@+id/action_orderingFragment_to_orderingDataFragment"
-            app:destination="@id/orderingDataFragment"
+            android:id="@+id/action_customerInfoFragment_to_selectDeliveryWayFragment"
+            app:destination="@id/selectDeliveryWayFragment"
             />
     </fragment>
     <fragment
-        android:id="@+id/orderingDataFragment"
+        android:id="@+id/selectDeliveryWayFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.ordering.SelectDeliveryWayFragment"
         android:label="fragment_ordering_data"
         tools:layout="@layout/fragment_select_delivery_way"
         >
         <action
-            android:id="@+id/action_orderingDataFragment_to_courierOrderingFragment"
+            android:id="@+id/action_selectDeliveryWayFragment_to_courierOrderingFragment"
             app:destination="@id/courierOrderingFragment"
             />
         <action
-            android:id="@+id/action_orderingDataFragment_to_pickupOrderingFragment"
+            android:id="@+id/action_selectDeliveryWayFragment_to_pickupOrderingFragment"
             app:destination="@id/pickupOrderingFragment"
             />
     </fragment>
@@ -37,11 +37,22 @@
         android:id="@+id/courierOrderingFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.ordering.CourierOrderingFragment"
         android:label="CourierOrderingFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_courierOrderingFragment_to_orderingFragment"
+            app:destination="@id/orderingFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/pickupOrderingFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.ordering.PickupOrderingFragment"
         android:label="fragment_pickup_ordering"
         tools:layout="@layout/fragment_pickup_ordering"
+        />
+    <fragment
+        android:id="@+id/orderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingFragment"
+        android:label="fragment_ordering"
+        tools:layout="@layout/fragment_ordering"
         />
 </navigation>
