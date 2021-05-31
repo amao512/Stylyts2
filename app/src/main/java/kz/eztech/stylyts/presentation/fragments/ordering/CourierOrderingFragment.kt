@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_courtier_ordering.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.data.api.models.order.DeliveryApiModel
+import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.domain.models.order.DeliveryConditionModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryConditionAdapter
@@ -34,6 +36,7 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
 
     companion object {
         const val CITY_KEY = "city"
+        const val CUSTOMER_KEY = "customer"
     }
 
     override fun onResume() {
@@ -70,7 +73,7 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
     }
 
     override fun initializeViews() {
-        cityEditText = fragment_ordering_data_city_edit_text
+        cityEditText = fragment_select_delivery_way_city_edit_text
         cityEditText.setText(arguments?.getString(CITY_KEY) ?: EMPTY_STRING)
 
         streetEditText = fragment_ordering_data_street_edit_text
@@ -141,7 +144,24 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
 
     private fun onConditionClicked(deliveryConditionModel: DeliveryConditionModel) {
         if (checkEditTextToValidation()) {
-            Log.d("TAG4", "order - $deliveryConditionModel")
+            val delivery = DeliveryApiModel(
+                city = cityEditText.text.toString(),
+                street = streetEditText.text.toString(),
+                house = houseEditText.text.toString(),
+                apartment = apartmentEditText.text.toString(),
+                deliveryType = when (deliveryConditionModel.id) {
+                    1 -> "courier"
+                    else -> "pickup"
+                }
+            )
+            val orderCreateApiModel = OrderCreateApiModel(
+                itemObjects = emptyList(),
+                paymentType = EMPTY_STRING,
+                delivery = delivery,
+                customer = arguments?.getParcelable(CUSTOMER_KEY)
+            )
+
+            Log.d("TAG4", "order - $orderCreateApiModel")
             displayMessage(msg = "Loading...")
         }
     }

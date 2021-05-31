@@ -9,9 +9,9 @@
 
     <fragment
         android:id="@+id/orderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingCustomerInfoFragment"
         android:label="fragment_ordering"
-        tools:layout="@layout/fragment_ordering"
+        tools:layout="@layout/fragment_ordering_customer_info"
         >
         <action
             android:id="@+id/action_orderingFragment_to_orderingDataFragment"
@@ -20,9 +20,9 @@
     </fragment>
     <fragment
         android:id="@+id/orderingDataFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingDataFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.ordering.SelectDeliveryWayFragment"
         android:label="fragment_ordering_data"
-        tools:layout="@layout/fragment_ordering_data"
+        tools:layout="@layout/fragment_select_delivery_way"
         >
         <action
             android:id="@+id/action_orderingDataFragment_to_courierOrderingFragment"

@@ -29,6 +29,7 @@ class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View,
 
     companion object {
         const val CITY_KEY = "city"
+        const val CUSTOMER_KEY = "customer"
     }
 
     override fun onResume() {

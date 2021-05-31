@@ -1,13 +1,15 @@
 package kz.eztech.stylyts.presentation.fragments.ordering
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_ordering_data.*
+import kotlinx.android.synthetic.main.fragment_select_delivery_way.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
 import kz.eztech.stylyts.domain.models.order.DeliveryWayModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryWayAdapter
@@ -18,7 +20,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
-class OrderingDataFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener,
+class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener,
     UniversalViewClickListener {
 
     private lateinit var deliveryWayAdapter: DeliveryWayAdapter
@@ -26,19 +28,23 @@ class OrderingDataFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
     private lateinit var cityEditText: EditText
     private lateinit var recyclerView: RecyclerView
 
+    companion object {
+        const val CUSTOMER_KEY = "customer"
+    }
+
     override fun onResume() {
         super.onResume()
         currentActivity.hideBottomNavigationView()
     }
 
-    override fun getLayoutId(): Int = R.layout.fragment_ordering_data
+    override fun getLayoutId(): Int = R.layout.fragment_select_delivery_way
 
     override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
-        with(fragment_ordering_data_toolbar) {
+        with(fragment_ordering_toolbar) {
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@OrderingDataFragment)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@SelectDeliveryWayFragment)
             toolbar_left_corner_action_image_button.show()
 
             toolbar_title_text_view.text = getString(R.string.button_ordering)
@@ -52,7 +58,13 @@ class OrderingDataFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
 
     override fun initializePresenter() {}
 
-    override fun initializeArguments() {}
+    override fun initializeArguments() {
+        arguments?.let {
+            if (it.containsKey(CUSTOMER_KEY)) {
+                Log.d("TAG4", "customer - ${it.getParcelable<CustomerApiModel>(CUSTOMER_KEY)}")
+            }
+        }
+    }
 
     override fun initializeViewsData() {
         deliveryWayAdapter = DeliveryWayAdapter()
@@ -60,8 +72,8 @@ class OrderingDataFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
     }
 
     override fun initializeViews() {
-        cityEditText = fragment_ordering_data_city_edit_text
-        recyclerView = fragment_ordering_data_recycler_view
+        cityEditText = fragment_select_delivery_way_city_edit_text
+        recyclerView = fragment_select_delivery_way_recycler_view
         recyclerView.adapter = deliveryWayAdapter
     }
 
@@ -131,10 +143,13 @@ class OrderingDataFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
 
     private fun onDeliveryWayClicked(deliveryWayModel: DeliveryWayModel) {
         val bundle = Bundle()
+        val customer = arguments?.getParcelable<CustomerApiModel>(CUSTOMER_KEY)
 
         when (deliveryWayModel.id) {
             1 -> {
                 bundle.putString(CourierOrderingFragment.CITY_KEY, cityEditText.text.toString())
+                bundle.putParcelable(CourierOrderingFragment.CUSTOMER_KEY, customer)
+
                 findNavController().navigate(
                     R.id.action_orderingDataFragment_to_courierOrderingFragment,
                     bundle
@@ -142,6 +157,8 @@ class OrderingDataFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
             }
             2 -> {
                 bundle.putString(PickupOrderingFragment.CITY_KEY, cityEditText.text.toString())
+                bundle.putParcelable(PickupOrderingFragment.CUSTOMER_KEY, customer)
+
                 findNavController().navigate(
                     R.id.action_orderingDataFragment_to_pickupOrderingFragment,
                     bundle

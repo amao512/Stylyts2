@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.ordering.OrderingFragment"
+    tools:context=".presentation.fragments.ordering.OrderingCustomerInfoFragment"
     >
 
     <include
-        android:id="@+id/fragment_ordering_toolbar"
+        android:id="@+id/fragment_ordering_customer_info_toolbar"
         layout="@layout/base_toolbar"
         />
 
@@ -32,7 +32,7 @@
             />
 
         <EditText
-            android:id="@+id/fragment_ordering_name_edit_text"
+            android:id="@+id/fragment_ordering_customer_info_name_edit_text"
             style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
             />
 
         <EditText
-            android:id="@+id/fragment_ordering_surname_edit_text"
+            android:id="@+id/fragment_ordering_customer_info_surname_edit_text"
             style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -87,8 +87,8 @@
             android:textColor="@color/app_gray_hint"
             />
 
-        <EditText
-            android:id="@+id/fragment_ordering_mobile_phone_edit_text"
+        <com.santalu.maskara.widget.MaskEditText
+            android:id="@+id/fragment_ordering_customer_info_mobile_phone_edit_text"
             style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,6 +96,7 @@
             android:background="@null"
             android:imeOptions="actionNext"
             android:inputType="phone"
+            app:mask="+_ (___) ___ __ __"
             tools:text="+70000000"
             />
 
@@ -116,7 +117,7 @@
             />
 
         <EditText
-            android:id="@+id/fragment_ordering_email_edit_text"
+            android:id="@+id/fragment_ordering_customer_info_email_edit_text"
             style="@style/TextRegular"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,21 +138,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingEnd="@dimen/padding_size_16x"
             android:paddingStart="0dp"
+            android:paddingEnd="@dimen/padding_size_16x"
             >
 
             <TextView
                 style="@style/TextRegular"
                 android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:text="@string/subscribe_to_mailing"
                 android:textSize="@dimen/text_size_14x"
                 />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/fragment_ordering_subs_mailing_switch_compat"
+                android:id="@+id/fragment_ordering_customer_info_subs_mailing_switch_compat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:thumbTint="@color/white"
