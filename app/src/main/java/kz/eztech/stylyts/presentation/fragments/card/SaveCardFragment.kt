@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.ordering
+package kz.eztech.stylyts.presentation.fragments.card
 
 import android.view.View
 import android.widget.EditText
@@ -130,7 +130,8 @@ class SaveCardFragment : BaseFragment<MainActivity>(), SaveCardContract.View, Vi
     }
 
     override fun processSuccessSaving() {
-        findNavController().previousBackStackEntry?.savedStateHandle?.set<Boolean>(IS_SUCCESS_CREATING, true)
+        findNavController().previousBackStackEntry?.savedStateHandle?.set<Boolean>(
+            IS_SUCCESS_CREATING, true)
         findNavController().popBackStack()
     }
 

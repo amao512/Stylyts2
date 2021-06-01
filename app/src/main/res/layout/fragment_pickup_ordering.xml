@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.ordering.PickupOrderingFragment"
+    tools:context=".presentation.fragments.order_constructor.PickupOrderingFragment"
     >
 
     <include

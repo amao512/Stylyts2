@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.profile
+package kz.eztech.stylyts.presentation.fragments.card
 
 import android.os.Bundle
 import android.view.View
@@ -14,7 +14,6 @@ import kz.eztech.stylyts.presentation.adapters.common.CardAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.CardContract
-import kz.eztech.stylyts.presentation.fragments.ordering.SaveCardFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.CardPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.hide

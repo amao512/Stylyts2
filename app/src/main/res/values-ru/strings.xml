@@ -377,4 +377,6 @@
     <string name="dressing_way_not_need">Нет, я куплю заказ без примерки</string>
 
     <string name="add_to_cart_problem_message"><![CDATA[Данная вещь была загружена пользователем <font color="#22A2EE">@%1$s</font> в гадероб для личного пользования, и в связи с этим не может быть добавлена в вашу корзину.]]></string>
+
+    <string name="order_list_title">Мои покупки</string>
 </resources>

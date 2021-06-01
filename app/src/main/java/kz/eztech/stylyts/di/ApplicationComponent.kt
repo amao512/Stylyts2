@@ -24,10 +24,11 @@ import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBack
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.main.MainFragment
-import kz.eztech.stylyts.presentation.fragments.ordering.OrderingFragment
-import kz.eztech.stylyts.presentation.fragments.ordering.PaymentFragment
-import kz.eztech.stylyts.presentation.fragments.ordering.SaveCardFragment
-import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
+import kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment
+import kz.eztech.stylyts.presentation.fragments.card.CardFragment
+import kz.eztech.stylyts.presentation.fragments.order.OrderListFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
@@ -97,6 +98,7 @@ interface ApplicationComponent {
     fun inject(fragment: OrderingFragment)
     fun inject(fragment: SaveCardFragment)
     fun inject(fragment: PaymentFragment)
+    fun inject(fragment: OrderListFragment)
 
     fun inject(dialog: TagChooserDialog)
     fun inject(dialog: CartDialog)

@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.ordering
+package kz.eztech.stylyts.presentation.fragments.order_constructor
 
 import android.os.Bundle
 import android.util.Log
@@ -18,7 +18,7 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
-import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
+import kz.eztech.stylyts.presentation.fragments.card.CardFragment
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderingPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show

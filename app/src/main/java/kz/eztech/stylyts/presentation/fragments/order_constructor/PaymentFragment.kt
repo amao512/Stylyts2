@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.ordering
+package kz.eztech.stylyts.presentation.fragments.order_constructor
 
 import android.view.View
 import android.webkit.WebView
@@ -67,7 +67,9 @@ class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, View
         )
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {
         displayToast(msg)

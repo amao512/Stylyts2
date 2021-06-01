@@ -29,6 +29,7 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
     private lateinit var avatarShapeableImageView: ShapeableImageView
     private lateinit var userShortNameTextView: TextView
     private lateinit var userNameTextView: TextView
+    private lateinit var ordersItemFrameLayout: FrameLayout
     private lateinit var paymentWayItemFrameLayout: FrameLayout
     private lateinit var addressesItemFrameLayout: FrameLayout
     private lateinit var incomesItemFrameLayout: FrameLayout
@@ -70,12 +71,14 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
         avatarShapeableImageView = fragment_my_data_avatar_shapeable_image_view
         userShortNameTextView = fragment_my_data_user_short_name_text_view
         userNameTextView = fragment_my_data_user_name_text_view
+        ordersItemFrameLayout = fragment_my_data_orders_holder_frame_layout
         paymentWayItemFrameLayout = fragment_my_data_payment_way_frame_layout
         addressesItemFrameLayout = fragment_my_data_addresses_frame_layout
         incomesItemFrameLayout = fragment_my_data_incomes_frame_layout
     }
 
     override fun initializeListeners() {
+        ordersItemFrameLayout.setOnClickListener(this)
         paymentWayItemFrameLayout.setOnClickListener(this)
         addressesItemFrameLayout.setOnClickListener(this)
         incomesItemFrameLayout.setOnClickListener(this)
@@ -132,6 +135,9 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
             }
             R.id.toolbar_right_corner_action_image_button -> {
                 findNavController().navigate(R.id.action_myDataFragment_to_settingsFragment)
+            }
+            R.id.fragment_my_data_orders_holder_frame_layout -> {
+                findNavController().navigate(R.id.action_myDataFragment_to_orderListFragment)
             }
         }
     }

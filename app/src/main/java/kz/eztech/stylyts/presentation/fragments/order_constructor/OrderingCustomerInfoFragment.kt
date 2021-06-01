@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.ordering
+package kz.eztech.stylyts.presentation.fragments.order_constructor
 
 import android.os.Bundle
 import android.view.View

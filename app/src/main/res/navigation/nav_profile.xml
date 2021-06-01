@@ -112,7 +112,7 @@
 
     <fragment
         android:id="@+id/cardFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.CardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.card.CardFragment"
         android:label="fragment_card"
         tools:layout="@layout/fragment_card"
         >
@@ -248,10 +248,19 @@
             android:id="@+id/action_myDataFragment_to_cardFragment"
             app:destination="@id/cardFragment"
             />
+        <action
+            android:id="@+id/action_myDataFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/saveCardFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.SaveCardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment"
         android:label="SaveCardFragment"
+        />
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order.OrderListFragment"
+        android:label="OrderListFragment"
         />
 </navigation>

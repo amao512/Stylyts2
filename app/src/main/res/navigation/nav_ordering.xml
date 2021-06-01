@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/customerInfoFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingCustomerInfoFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingCustomerInfoFragment"
         android:label="fragment_ordering"
         tools:layout="@layout/fragment_ordering_customer_info"
         >
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/selectDeliveryWayFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.SelectDeliveryWayFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.SelectDeliveryWayFragment"
         android:label="fragment_ordering_data"
         tools:layout="@layout/fragment_select_delivery_way"
         >
@@ -35,7 +35,7 @@
     </fragment>
     <fragment
         android:id="@+id/courierOrderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.CourierOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.CourierOrderingFragment"
         android:label="CourierOrderingFragment"
         >
         <action
@@ -45,13 +45,13 @@
     </fragment>
     <fragment
         android:id="@+id/pickupOrderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.PickupOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PickupOrderingFragment"
         android:label="fragment_pickup_ordering"
         tools:layout="@layout/fragment_pickup_ordering"
         />
     <fragment
         android:id="@+id/orderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.OrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment"
         android:label="fragment_ordering"
         tools:layout="@layout/fragment_ordering"
         >
@@ -67,13 +67,13 @@
 
     <fragment
         android:id="@+id/saveCardFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.SaveCardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment"
         android:label="SaveCardFragment"
         />
 
     <fragment
         android:id="@+id/cardFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.CardFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.card.CardFragment"
         android:label="fragment_card"
         tools:layout="@layout/fragment_card"
         >
@@ -85,7 +85,7 @@
 
     <fragment
         android:id="@+id/paymentFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.ordering.PaymentFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment"
         android:label="PaymentFragment"
         />
 

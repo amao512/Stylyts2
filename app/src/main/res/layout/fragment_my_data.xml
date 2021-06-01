@@ -71,6 +71,7 @@
                 />
 
             <FrameLayout
+                android:id="@+id/fragment_my_data_orders_holder_frame_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_size_16x"
