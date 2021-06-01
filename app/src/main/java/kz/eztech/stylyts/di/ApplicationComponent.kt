@@ -25,6 +25,7 @@ import kz.eztech.stylyts.presentation.fragments.collection_constructor.Collectio
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.presentation.fragments.main.MainFragment
 import kz.eztech.stylyts.presentation.fragments.ordering.OrderingFragment
+import kz.eztech.stylyts.presentation.fragments.ordering.PaymentFragment
 import kz.eztech.stylyts.presentation.fragments.ordering.SaveCardFragment
 import kz.eztech.stylyts.presentation.fragments.profile.CardFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
@@ -95,6 +96,7 @@ interface ApplicationComponent {
     fun inject(fragment: ShopListFragment)
     fun inject(fragment: OrderingFragment)
     fun inject(fragment: SaveCardFragment)
+    fun inject(fragment: PaymentFragment)
 
     fun inject(dialog: TagChooserDialog)
     fun inject(dialog: CartDialog)

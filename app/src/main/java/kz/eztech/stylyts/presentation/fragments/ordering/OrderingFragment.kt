@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.fragment_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
-import kz.eztech.stylyts.data.db.card.CardEntity
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -197,5 +196,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         }
 
         Log.d("TAG4", "order - $order")
+
+        findNavController().navigate(R.id.action_orderingFragment_to_paymentFragment)
     }
 }
