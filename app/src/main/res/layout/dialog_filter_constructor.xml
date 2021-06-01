@@ -175,6 +175,6 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         app:backgroundTint="@color/app_dark_blue_gray"
-        app:cornerRadius="@dimen/corner_radius_16"
+        app:cornerRadius="@dimen/corner_radius_16x"
         />
 </FrameLayout>

@@ -115,7 +115,7 @@
                         android:id="@+id/fragment_collection_detail_photos_holder_view_pager"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/collection_detail_image_size"
-                        android:background="@drawable/rounded_rectangle_gray"
+                        android:background="@drawable/rounded_rectangle_very_light_gray_white_corners_half_transparent"
                         />
 
                     <FrameLayout

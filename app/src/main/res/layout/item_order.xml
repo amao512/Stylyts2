@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:id="@+id/item_order_image_view"
+        android:layout_width="@dimen/cart_item_image_size"
+        android:layout_height="@dimen/cart_item_image_size"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:layout_marginBottom="@dimen/margin_size_16x"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/jacket"
+        />
+
+    <TextView
+        android:id="@+id/item_order_shop_name_text_view"
+        style="@style/TitleText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_12x"
+        android:maxLines="1"
+        android:textSize="@dimen/text_size_16x"
+        app:layout_constraintEnd_toStartOf="@id/item_order_detail_linear_layout"
+        app:layout_constraintStart_toEndOf="@id/item_order_image_view"
+        app:layout_constraintTop_toTopOf="@id/item_order_image_view"
+        tools:text="Zara"
+        />
+
+    <TextView
+        android:id="@+id/item_order_clothes_name_text_view"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_4x"
+        android:textSize="@dimen/text_size_14x"
+        app:layout_constraintStart_toStartOf="@id/item_order_shop_name_text_view"
+        app:layout_constraintTop_toBottomOf="@id/item_order_shop_name_text_view"
+        tools:text="Куртка"
+        />
+
+    <TextView
+        android:id="@+id/item_order_id_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_6x"
+        app:layout_constraintStart_toStartOf="@id/item_order_clothes_name_text_view"
+        app:layout_constraintTop_toBottomOf="@id/item_order_clothes_name_text_view"
+        tools:text="ID изделия: 14020492"
+        />
+
+    <LinearLayout
+        android:id="@+id/item_order_count_and_size_holder_linear_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:layout_marginEnd="@dimen/margin_size_16x"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/item_order_id_text_view"
+        app:layout_constraintTop_toBottomOf="@id/item_order_id_text_view"
+        >
+
+        <TextView
+            android:id="@+id/item_order_count_text_view"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/rounded_rectangle_white_gray_corners"
+            android:paddingHorizontal="@dimen/padding_size_12x"
+            android:paddingVertical="@dimen/padding_size_8x"
+            android:textSize="@dimen/text_size_14x"
+            tools:text="Кол-во 1"
+            />
+
+        <TextView
+            android:id="@+id/item_order_size_text_view"
+            style="@style/TextRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.5"
+            android:background="@drawable/rounded_rectangle_white_gray_corners"
+            android:paddingHorizontal="@dimen/padding_size_12x"
+            android:paddingVertical="@dimen/padding_size_8x"
+            android:textSize="@dimen/text_size_14x"
+            tools:text="Размер L"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/item_order_detail_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_size_16x"
+        android:gravity="center_vertical|end"
+        android:orientation="horizontal"
+        android:paddingStart="@dimen/padding_size_10x"
+        android:paddingEnd="0dp"
+        android:paddingBottom="@dimen/padding_size_10x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_order_shop_name_text_view"
+        app:layout_constraintTop_toTopOf="@id/item_order_shop_name_text_view"
+        >
+
+        <TextView
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_detail"
+            android:textColor="@color/app_light_orange"
+            android:textSize="@dimen/text_size_14x"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/item_order_price_text_view"
+        style="@style/TextRegularBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:layout_marginEnd="@dimen/margin_size_16x"
+        android:textSize="@dimen/text_size_14x"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_order_count_and_size_holder_linear_layout"
+        tools:text="35 000 KZT"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_divider_height"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:background="@color/large_divider_bg_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_order_price_text_view"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

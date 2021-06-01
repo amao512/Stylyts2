@@ -32,8 +32,7 @@ import javax.inject.Inject
 class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickListener,
     DialogChooserListener, CartContract.View {
 
-    @Inject
-    lateinit var presenter: CartPresenter
+    @Inject lateinit var presenter: CartPresenter
     private lateinit var cartAdapter: CartAdapter
     private lateinit var sizeChooserDialog: ClothesSizesBottomDialog
     private lateinit var countsChooserDialog: ClothesCountsBottomDialog

@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.presentation.fragments.order
 
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_order_list.*
@@ -11,18 +11,23 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.ordering.OrderAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderListContract
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderListPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     View.OnClickListener,
-    SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout.OnRefreshListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: OrderListPresenter
+    private lateinit var orderAdapter: OrderAdapter
+
+    private lateinit var recyclerView: RecyclerView
 
     override fun getLayoutId(): Int = R.layout.fragment_order_list
 
@@ -49,9 +54,15 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
+    override fun initializeViewsData() {
+        orderAdapter = OrderAdapter()
+        orderAdapter.setOnClickListener(listener = this)
+    }
 
-    override fun initializeViews() {}
+    override fun initializeViews() {
+        recyclerView = fragment_order_list_recycler_view
+        recyclerView.adapter = orderAdapter
+    }
 
     override fun initializeListeners() {
         fragment_order_list_swipe_refresh_layout.setOnRefreshListener(this)
@@ -90,8 +101,16 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     override fun processOrderList(resultsModel: ResultsModel<OrderModel>) {
-        resultsModel.results.map {
-            Log.d("TAG4", "order - $it")
+        orderAdapter.updateList(list = resultsModel.results)
+    }
+
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        when (item) {
+            is OrderModel -> {}
         }
     }
 }

@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:backgroundTint="@color/white"
         android:scaleType="fitCenter"
-        app:shapeAppearanceOverlay="@drawable/rounded_rectangle_dark_gray_half_transparent"
+        app:shapeAppearanceOverlay="@style/postImageView"
         tools:src="@drawable/jacket"
         />
 </RelativeLayout>
