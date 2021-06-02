@@ -8,7 +8,7 @@ data class OrderModel(
     val price: Int,
     val seller: UserShortModel,
     val client: UserShortModel,
-    val itemObject: List<Int>,
+    val itemObjects: List<Int>,
     val delivery: DeliveryModel,
     val customer: CustomerModel,
     val status: String,

@@ -274,12 +274,6 @@
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/fragment_ordering_progress_bar"
-        layout="@layout/base_progress"
-        android:visibility="gone"
-        />
-
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fragment_ordering_complete_button"
         style="@style/TitleText"
@@ -296,5 +290,13 @@
         android:textSize="@dimen/text_size_16x"
         app:cornerRadius="@dimen/button_corners_radius"
         tools:text="Оформить заказ на 10 500 KZT"
+        />
+
+    <include
+        android:id="@+id/fragment_ordering_progress_bar"
+        layout="@layout/base_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
         />
 </FrameLayout>

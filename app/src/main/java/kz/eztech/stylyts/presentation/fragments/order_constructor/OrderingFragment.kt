@@ -30,8 +30,7 @@ import javax.inject.Inject
 
 class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, View.OnClickListener {
 
-    @Inject
-    lateinit var presenter: OrderingPresenter
+    @Inject lateinit var presenter: OrderingPresenter
 
     private lateinit var paymentCashLinearLayout: LinearLayout
     private lateinit var paymentCardLinearLayout: LinearLayout
@@ -172,6 +171,11 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
                 orderList.add(newOrder)
             }
         }
+    }
+
+    override fun processSuccessCreating() {
+        findNavController().popBackStack(R.id.nav_profile, true)
+        findNavController().navigate(R.id.action_orderingFragment_to_orderListFragment)
     }
 
     private fun getSalePrice(list: List<CartEntity>): String {

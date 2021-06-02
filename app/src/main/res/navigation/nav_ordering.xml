@@ -63,6 +63,10 @@
             android:id="@+id/action_orderingFragment_to_paymentFragment"
             app:destination="@id/paymentFragment"
             />
+        <action
+            android:id="@+id/action_orderingFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment"
+            />
     </fragment>
 
     <fragment
@@ -89,4 +93,10 @@
         android:label="PaymentFragment"
         />
 
+    <fragment
+        android:id="@+id/orderListFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order.OrderListFragment"
+        android:label="OrderListFragment"
+        />
+    <include app:graph="@navigation/nav_profile" />
 </navigation>

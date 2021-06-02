@@ -39,6 +39,12 @@ open class CartDataSource(application: Application) {
         }
     }
 
+    fun delete(id: Int): Completable {
+        return Completable.fromAction {
+            cartDao.delete(id)
+        }
+    }
+
     fun update(item: CartEntity): Completable {
         return Completable.fromAction {
             cartDao.update(item)

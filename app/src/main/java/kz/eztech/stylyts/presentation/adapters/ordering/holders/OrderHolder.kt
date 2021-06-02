@@ -49,7 +49,7 @@ class OrderHolder(
         position: Int
     ) {
         shopNameTextView.text = orderModel.seller.username
-        countTextView.text = "Кол-во ${orderModel.itemObject.size}"
+        countTextView.text = "Кол-во ${orderModel.itemObjects.size}"
         sizeTextView.text = "Размер L"
         clothesIdTextView.text = "ID изделия: 23432423"
         priceTextView.text = priceTextView.context.getString(

@@ -10,6 +10,8 @@ interface OrderingContract {
     interface View : BaseView {
 
         fun processGoods(list: List<CartEntity>)
+
+        fun processSuccessCreating()
     }
 
     interface Presenter : BasePresenter<View> {
@@ -20,5 +22,7 @@ interface OrderingContract {
             token: String,
             orderList: List<OrderCreateApiModel>
         )
+
+        fun clearCart(cartId: Int)
     }
 }
