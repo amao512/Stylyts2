@@ -1,10 +1,15 @@
 package kz.eztech.stylyts.presentation.presenters.ordering
 
+import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartDataSource
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.order.OrderModel
+import kz.eztech.stylyts.domain.usecases.order.CreateOrderUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
 import javax.inject.Inject
@@ -12,6 +17,7 @@ import javax.inject.Inject
 class OrderingPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val cartDataSource: CartDataSource,
+    private val createOrderUseCase: CreateOrderUseCase
 ) : OrderingContract.Presenter {
 
     private lateinit var view: OrderingContract.View
@@ -20,6 +26,7 @@ class OrderingPresenter @Inject constructor(
 
     override fun disposeRequests() {
         disposable.clear()
+        createOrderUseCase.clear()
     }
 
     override fun attach(view: OrderingContract.View) {
@@ -46,5 +53,36 @@ class OrderingPresenter @Inject constructor(
                     }
                 })
         )
+    }
+
+    override fun createOrders(
+        token: String,
+        orderList: List<OrderCreateApiModel>
+    ) {
+        view.displayProgress()
+
+        var flag = true
+
+        orderList.map {
+            createOrderUseCase.initParams(token, it)
+            createOrderUseCase.execute(object : DisposableSingleObserver<OrderModel>() {
+                override fun onSuccess(t: OrderModel) {
+                    Log.d("TAG4", "order - $t")
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.d("TAG4", "order - $e")
+                    flag = false
+                }
+            })
+        }
+
+        if (flag) {
+            view.hideProgress()
+            view.displayMessage(msg = "Success")
+        } else {
+            view.hideProgress()
+            view.displayMessage(msg = "Something went wrong")
+        }
     }
 }

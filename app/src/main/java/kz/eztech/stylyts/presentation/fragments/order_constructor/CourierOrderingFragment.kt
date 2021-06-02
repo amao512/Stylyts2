@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_courtier_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.api.models.order.DeliveryApiModel
-import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.domain.models.order.DeliveryConditionModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryConditionAdapter
@@ -155,14 +154,8 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
                 deliveryType = DeliveryTypeEnum.COURIER.type
             )
 
-            val orderCreateApiModel = OrderCreateApiModel(
-                itemObjects = emptyList(),
-                paymentType = EMPTY_STRING,
-                delivery = delivery,
-                customer = arguments?.getParcelable(CUSTOMER_KEY)
-            )
-
-            bundle.putParcelable(OrderingFragment.ORDER_KEY, orderCreateApiModel)
+            bundle.putParcelable(OrderingFragment.CUSTOMER_KEY, arguments?.getParcelable(CUSTOMER_KEY))
+            bundle.putParcelable(OrderingFragment.DELIVERY_KEY, delivery)
 
             findNavController().navigate(
                 R.id.action_courierOrderingFragment_to_orderingFragment,

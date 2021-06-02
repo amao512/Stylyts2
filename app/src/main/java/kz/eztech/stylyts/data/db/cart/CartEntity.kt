@@ -26,6 +26,9 @@ data class CartEntity(
     @ColumnInfo(name = "clothes_brand_title")
     val brandTitle: String? = null,
 
+    @ColumnInfo(name = "owner_id")
+    val ownerId: Int? = null,
+
     @ColumnInfo(name = "clothes_title")
     val title: String? = null,
 

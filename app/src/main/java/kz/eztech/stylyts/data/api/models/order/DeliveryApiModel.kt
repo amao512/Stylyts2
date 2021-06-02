@@ -22,7 +22,7 @@ data class DeliveryApiModel(
     @SerializedName("delivery_type")
     @Expose
     val deliveryType: String?,
-    @SerializedName("delivery_status")
-    @Expose
-    val deliveryStatus: String? = null
+//    @SerializedName("delivery_status")
+//    @Expose
+//    val deliveryStatus: String? = null
 ) : Parcelable

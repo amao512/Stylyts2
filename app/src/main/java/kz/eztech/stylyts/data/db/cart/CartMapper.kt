@@ -28,6 +28,7 @@ object CartMapper {
             coverImage = coverImage,
             brandId = model.clothesBrand.id,
             brandTitle = model.clothesBrand.title,
+            ownerId = model.owner.id,
             title = model.title,
             productCode = model.productCode,
             totalCount = 0,

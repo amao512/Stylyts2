@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor
 
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
@@ -12,14 +11,18 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
+import kz.eztech.stylyts.data.api.models.order.DeliveryApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
+import kz.eztech.stylyts.presentation.enums.ordering.PaymentTypeEnum
 import kz.eztech.stylyts.presentation.fragments.card.CardFragment
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderingPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
@@ -27,7 +30,8 @@ import javax.inject.Inject
 
 class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, View.OnClickListener {
 
-    @Inject lateinit var presenter: OrderingPresenter
+    @Inject
+    lateinit var presenter: OrderingPresenter
 
     private lateinit var paymentCashLinearLayout: LinearLayout
     private lateinit var paymentCardLinearLayout: LinearLayout
@@ -39,12 +43,14 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
     private lateinit var completeButton: MaterialButton
 
     private var paymentType = CASH_PAYMENT
+    private var orderList: MutableList<OrderCreateApiModel> = mutableListOf()
 
     companion object {
         private const val CASH_PAYMENT = 1
         private const val CARD_PAYMENT = 2
 
-        const val ORDER_KEY = "order"
+        const val CUSTOMER_KEY = "customer"
+        const val DELIVERY_KEY = "delivery"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_ordering
@@ -52,7 +58,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
     override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
-        with (fragment_ordering_toolbar) {
+        with(fragment_ordering_toolbar) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.setOnClickListener(this@OrderingFragment)
             toolbar_left_corner_action_image_button.show()
@@ -114,10 +120,14 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
 
     override fun displayProgress() {
         fragment_ordering_progress_bar.show()
+        fragment_ordering_complete_button.isClickable = false
+        fragment_ordering_toolbar.toolbar_left_corner_action_image_button.isClickable = false
     }
 
     override fun hideProgress() {
         fragment_ordering_progress_bar.hide()
+        fragment_ordering_complete_button.isClickable = true
+        fragment_ordering_toolbar.toolbar_left_corner_action_image_button.isClickable = true
     }
 
     override fun onClick(v: View?) {
@@ -137,7 +147,31 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         totalPriceTextView.text = getTotalPrice(list)
         completeButton.text = getString(R.string.ordering_button_text_format, getTotalPrice(list))
 
-        arguments?.getParcelable<OrderCreateApiModel>(ORDER_KEY)?.itemObjects = list.map { it.id!! }
+        val delivery = arguments?.getParcelable<DeliveryApiModel>(DELIVERY_KEY)
+        val customer = arguments?.getParcelable<CustomerApiModel>(CUSTOMER_KEY)
+
+        list.map { cart ->
+            val order = orderList.find { it.ownerId == cart.ownerId }
+            val ids: MutableList<Int> = mutableListOf()
+
+            if (order != null) {
+                ids.addAll(order.itemObjects)
+                ids.add(cart.id!!)
+
+                order.itemObjects = ids
+            } else {
+                val newOrder = OrderCreateApiModel(
+                    itemObjects = arrayListOf(cart.id!!),
+                    paymentType = EMPTY_STRING,
+                    customer = customer,
+                    delivery = delivery
+                )
+
+                newOrder.ownerId = cart.ownerId ?: 0
+
+                orderList.add(newOrder)
+            }
+        }
     }
 
     private fun getSalePrice(list: List<CartEntity>): String {
@@ -189,15 +223,18 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
     }
 
     private fun onCompleteButtonClick() {
-        val order = arguments?.getParcelable<OrderCreateApiModel>(ORDER_KEY)
-
-        when (paymentType) {
-            CASH_PAYMENT -> order?.paymentType = "cash"
-            CARD_PAYMENT -> order?.paymentType = "card"
+        orderList.map { order ->
+            when (paymentType) {
+                CASH_PAYMENT -> order.paymentType = PaymentTypeEnum.CASH.type
+                CARD_PAYMENT -> order.paymentType = PaymentTypeEnum.CARD.type
+            }
         }
 
-        Log.d("TAG4", "order - $order")
+        presenter.createOrders(
+            token = currentActivity.getTokenFromSharedPref(),
+            orderList = orderList
+        )
 
-        findNavController().navigate(R.id.action_orderingFragment_to_paymentFragment)
+//        findNavController().navigate(R.id.action_orderingFragment_to_paymentFragment)
     }
 }
