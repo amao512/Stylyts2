@@ -16,6 +16,7 @@ import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryConditionAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -151,11 +152,9 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
                 street = streetEditText.text.toString(),
                 house = houseEditText.text.toString(),
                 apartment = apartmentEditText.text.toString(),
-                deliveryType = when (deliveryConditionModel.id) {
-                    1 -> "courier"
-                    else -> "pickup"
-                }
+                deliveryType = DeliveryTypeEnum.COURIER.type
             )
+
             val orderCreateApiModel = OrderCreateApiModel(
                 itemObjects = emptyList(),
                 paymentType = EMPTY_STRING,

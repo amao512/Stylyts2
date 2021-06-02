@@ -181,10 +181,11 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
     }
 
     private fun navigateToSaveCardFragment() {
-        val bundle = Bundle()
-        bundle.putInt(CardFragment.MODE_KEY, CardFragment.GET_CARD_MODE)
-
-        findNavController().navigate(R.id.action_orderingFragment_to_cardFragment, bundle)
+        setPaymentType(type = CARD_PAYMENT)
+//        val bundle = Bundle()
+//        bundle.putInt(CardFragment.MODE_KEY, CardFragment.GET_CARD_MODE)
+//
+//        findNavController().navigate(R.id.action_orderingFragment_to_cardFragment, bundle)
     }
 
     private fun onCompleteButtonClick() {
