@@ -91,7 +91,14 @@
         android:id="@+id/paymentFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment"
         android:label="PaymentFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_paymentFragment_to_orderListFragment"
+            app:destination="@id/orderListFragment"
+            app:popUpTo="@id/orderListFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/orderListFragment"

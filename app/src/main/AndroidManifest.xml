@@ -25,12 +25,14 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Stylyts"
-        android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
-        <activity android:name="kz.eztech.stylyts.presentation.activity.SplashActivity"
+
+        <activity
+            android:name="kz.eztech.stylyts.presentation.activity.SplashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
             <intent-filter>
@@ -39,6 +41,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="kz.eztech.stylyts.presentation.activity.MainActivity"
             android:screenOrientation="portrait"
@@ -46,8 +49,7 @@
         <activity
             android:name="kz.eztech.stylyts.presentation.activity.AuthorizationActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-        </activity>
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
     </application>
 
 </manifest>

@@ -274,7 +274,7 @@
 
     </LinearLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <Button
         android:id="@+id/fragment_ordering_complete_button"
         style="@style/TitleText"
         android:layout_width="match_parent"

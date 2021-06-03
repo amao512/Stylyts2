@@ -1,11 +1,12 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor
 
+import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.button.MaterialButton
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_ordering.*
@@ -40,7 +41,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
     private lateinit var deliveryPriceTextView: TextView
     private lateinit var discountPriceTextView: TextView
     private lateinit var totalPriceTextView: TextView
-    private lateinit var completeButton: MaterialButton
+    private lateinit var completeButton: Button
 
     private var paymentType = CASH_PAYMENT
     private var orderList: MutableList<OrderCreateApiModel> = mutableListOf()
@@ -180,8 +181,15 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
 
         if (createdOrderList.size == orderList.size) {
             hideProgress()
-            findNavController().popBackStack(R.id.nav_profile, true)
-            findNavController().navigate(R.id.action_orderingFragment_to_orderListFragment)
+
+            if (createdOrderList.size == 1 && orderModel.invoice.operationUrl.isNotBlank()) {
+                val bundle = Bundle()
+                bundle.putInt(PaymentFragment.ORDER_ID_KEY, orderModel.id)
+
+                findNavController().navigate(R.id.action_orderingFragment_to_paymentFragment, bundle)
+            } else {
+                findNavController().navigate(R.id.action_orderingFragment_to_orderListFragment)
+            }
         }
     }
 
@@ -193,7 +201,11 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
             }
         }
 
-        return "-${NumberFormat.getInstance().format(salePrice)}"
+        return if (salePrice != 0) {
+            "-${NumberFormat.getInstance().format(salePrice)}"
+        } else {
+            NumberFormat.getInstance().format(salePrice)
+        }
     }
 
     private fun getTotalPrice(list: List<CartEntity>): String {

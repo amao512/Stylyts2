@@ -8,6 +8,7 @@ import kz.eztech.stylyts.BuildConfig
  */
 object RestConstants {
     const val BASE_URL: String = BuildConfig.BASE_URL
+    const val PAYMENT_BACK_URL = BuildConfig.PAYMENT_BACK_URL
     const val HEADERS_AUTH_FORMAT = "JWT %s"
 
     // Authentication
