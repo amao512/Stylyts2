@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.presenters.ordering
 
+import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -60,35 +61,31 @@ class OrderingPresenter @Inject constructor(
     ) {
         view.displayProgress()
 
-        var flag = true
-
-        orderList.map {
-            createOrderUseCase.initParams(token, it)
+        orderList.map { order ->
+            createOrderUseCase.initParams(token, order)
             createOrderUseCase.execute(object : DisposableSingleObserver<OrderModel>() {
                 override fun onSuccess(t: OrderModel) {
                     t.itemObjects.map { id ->
                         clearCart(cartId = id)
                     }
+
+                    view.processSuccessCreating(orderModel = t)
                 }
 
                 override fun onError(e: Throwable) {
-                    flag = false
+                    view.processViewAction {
+                        hideProgress()
+                        displayMessage(msg = errorHelper.processError(e))
+                    }
                 }
             })
-        }
-
-        if (flag) {
-            view.processSuccessCreating()
-            view.hideProgress()
-        } else {
-            view.hideProgress()
-            view.displayMessage(msg = "Something went wrong")
         }
     }
 
     override fun clearCart(cartId: Int) {
-        disposable.clear()
+        Log.d("TAG4", "cart - $cartId")
 
+        disposable.clear()
         disposable.add(
             cartDataSource.delete(cartId)
                 .subscribeOn(Schedulers.io())

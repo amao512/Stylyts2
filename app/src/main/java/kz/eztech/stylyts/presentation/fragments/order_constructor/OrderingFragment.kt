@@ -15,6 +15,7 @@ import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
 import kz.eztech.stylyts.data.api.models.order.DeliveryApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartEntity
+import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -43,6 +44,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
 
     private var paymentType = CASH_PAYMENT
     private var orderList: MutableList<OrderCreateApiModel> = mutableListOf()
+    private var createdOrderList: MutableList<OrderModel> = mutableListOf()
 
     companion object {
         private const val CASH_PAYMENT = 1
@@ -173,9 +175,14 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         }
     }
 
-    override fun processSuccessCreating() {
-        findNavController().popBackStack(R.id.nav_profile, true)
-        findNavController().navigate(R.id.action_orderingFragment_to_orderListFragment)
+    override fun processSuccessCreating(orderModel: OrderModel) {
+        createdOrderList.add(orderModel)
+
+        if (createdOrderList.size == orderList.size) {
+            hideProgress()
+            findNavController().popBackStack(R.id.nav_profile, true)
+            findNavController().navigate(R.id.action_orderingFragment_to_orderListFragment)
+        }
     }
 
     private fun getSalePrice(list: List<CartEntity>): String {

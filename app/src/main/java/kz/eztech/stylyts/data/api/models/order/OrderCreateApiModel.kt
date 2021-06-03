@@ -18,4 +18,5 @@ data class OrderCreateApiModel(
     val delivery: DeliveryApiModel?,
 ) {
     var ownerId: Int = 0
+    var created = false
 }
