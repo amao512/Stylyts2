@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -84,7 +83,6 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         findNavController().currentBackStackEntry?.savedStateHandle
             ?.getLiveData<Int>(CardFragment.CARD_KEY)
             ?.observe(viewLifecycleOwner, {
-                Log.d("TAG4", "card id - $it")
                 setPaymentType(CARD_PAYMENT)
             })
     }

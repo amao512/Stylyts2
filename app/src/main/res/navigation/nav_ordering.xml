@@ -95,7 +95,7 @@
         <action
             android:id="@+id/action_paymentFragment_to_orderListFragment"
             app:destination="@id/orderListFragment"
-            app:popUpTo="@id/orderListFragment"
+            app:popUpTo="@id/customerInfoFragment"
             app:popUpToInclusive="true"
             />
     </fragment>

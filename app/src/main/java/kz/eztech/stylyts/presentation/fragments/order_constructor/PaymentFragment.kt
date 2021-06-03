@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor
 
-import android.util.Log
 import android.view.View
 import android.webkit.WebView
 import androidx.navigation.fragment.findNavController
@@ -40,7 +39,7 @@ class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, View
             toolbar_left_corner_action_image_button.setOnClickListener(this@PaymentFragment)
             toolbar_left_corner_action_image_button.show()
 
-            toolbar_title_text_view.text = "Payment"
+            toolbar_title_text_view.text = getString(R.string.button_ordering)
             toolbar_title_text_view.show()
         }
     }
@@ -93,16 +92,12 @@ class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, View
     }
 
     override fun processOrder(orderModel: OrderModel) {
-        fragment_payment_toolbar.base_toolbar_small_title_sub_text_view.text =
-            orderModel.invoice.operationUrl
-
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = PaymentWebViewClient(paymentListener = this)
         webView.loadUrl(orderModel.invoice.operationUrl)
     }
 
     override fun onSuccessNavigate() {
-        Log.d("TAG4", "navigated")
         findNavController().navigate(R.id.action_paymentFragment_to_orderListFragment)
     }
 }

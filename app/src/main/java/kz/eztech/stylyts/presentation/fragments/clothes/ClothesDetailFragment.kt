@@ -311,11 +311,11 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
                     fragment_clothes_detail_text_share_linear_layout.show()
                 }
                 CART_STATE.EDIT -> {
-                    if (currentSize != null) {
+//                    if (currentSize != null) {
                         processCart(clothesModel)
-                    } else {
-                        displayMessage(msg = getString(R.string.select_size))
-                    }
+//                    } else {
+//                        displayMessage(msg = getString(R.string.select_size))
+//                    }
                 }
                 else -> {}
             }
