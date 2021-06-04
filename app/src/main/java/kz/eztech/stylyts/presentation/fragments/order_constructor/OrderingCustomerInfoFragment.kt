@@ -39,7 +39,6 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
         with (fragment_ordering_customer_info_toolbar) {
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
-            toolbar_left_corner_action_image_button.setOnClickListener(this@OrderingCustomerInfoFragment)
 
             toolbar_right_text_text_view.text = getString(R.string.next)
             toolbar_right_text_text_view.setTextColor(
@@ -48,10 +47,10 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
             toolbar_right_text_text_view.show()
             toolbar_right_text_text_view.setOnClickListener(this@OrderingCustomerInfoFragment)
 
-            toolbar_title_text_view.text = getString(R.string.button_ordering)
             toolbar_title_text_view.show()
-
             toolbar_bottom_border_view.hide()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.button_ordering))
         }
     }
 
@@ -89,7 +88,6 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.toolbar_right_text_text_view -> onNextClick()
         }
     }

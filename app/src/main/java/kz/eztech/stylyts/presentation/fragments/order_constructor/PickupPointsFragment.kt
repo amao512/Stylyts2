@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor
 
 import android.view.View
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_pickup_points.*
@@ -20,7 +19,6 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.View,
-    View.OnClickListener,
     UniversalViewClickListener {
 
     @Inject lateinit var presenter: PickupPointsPresenter
@@ -35,11 +33,10 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     override fun customizeActionBar() {
         with(fragment_pickup_points_toolbar) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@PickupPointsFragment)
             toolbar_left_corner_action_image_button.show()
-
-            toolbar_title_text_view.text = getString(R.string.pickup_points)
             toolbar_title_text_view.show()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.pickup_points))
         }
     }
 
@@ -78,12 +75,6 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     override fun displayProgress() {}
 
     override fun hideProgress() {}
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-        }
-    }
 
     override fun onViewClicked(
         view: View,

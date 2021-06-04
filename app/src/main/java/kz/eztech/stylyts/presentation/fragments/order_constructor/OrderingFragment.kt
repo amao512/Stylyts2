@@ -6,13 +6,12 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
-import kz.eztech.stylyts.data.api.models.order.DeliveryApiModel
+import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.domain.models.order.OrderModel
@@ -61,11 +60,10 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
     override fun customizeActionBar() {
         with(fragment_ordering_toolbar) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@OrderingFragment)
             toolbar_left_corner_action_image_button.show()
-
-            toolbar_title_text_view.text = getString(R.string.button_ordering)
             toolbar_title_text_view.show()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.button_ordering))
         }
     }
 
@@ -132,7 +130,6 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_ordering_payment_cash_linear_layout -> setPaymentType(CASH_PAYMENT)
             R.id.fragment_ordering_payment_card_linear_layout -> navigateToSaveCardFragment()
             R.id.fragment_ordering_complete_button -> onCompleteButtonClick()
@@ -147,7 +144,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         totalPriceTextView.text = getTotalPrice(list)
         completeButton.text = getString(R.string.ordering_button_text_format, getTotalPrice(list))
 
-        val delivery = arguments?.getParcelable<DeliveryApiModel>(DELIVERY_KEY)
+        val delivery = arguments?.getParcelable<DeliveryCreateApiModel>(DELIVERY_KEY)
         val customer = arguments?.getParcelable<CustomerApiModel>(CUSTOMER_KEY)
 
         list.map { cart ->

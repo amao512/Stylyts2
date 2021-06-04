@@ -10,7 +10,7 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.base_toolbar.*
+import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kz.eztech.stylyts.R
 
 
@@ -96,7 +96,7 @@ abstract class BaseFragment<T : BaseActivity>: Fragment(){
                 title?.let { text ->
                     toolbar_title_text_view.text = text
                 }
-                toolbar_back_text_view.setOnClickListener{
+                toolbar_left_corner_action_image_button.setOnClickListener {
                     findNavController().navigateUp()
                 }
             }

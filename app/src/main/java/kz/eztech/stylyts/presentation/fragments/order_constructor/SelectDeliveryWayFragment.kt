@@ -157,6 +157,15 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
                     bundle
                 )
             }
+            3 -> {
+                bundle.putString(PostOrderingFragment.CITY_KEY, cityEditText.text.toString())
+                bundle.putParcelable(PostOrderingFragment.CUSTOMER_KEY, customer)
+
+                findNavController().navigate(
+                    R.id.action_selectDeliveryWayFragment_to_postOrderingFragment,
+                    bundle
+                )
+            }
         }
     }
 }

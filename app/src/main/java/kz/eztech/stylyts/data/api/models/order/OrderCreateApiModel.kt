@@ -15,7 +15,7 @@ data class OrderCreateApiModel(
     val customer: CustomerApiModel?,
     @SerializedName("delivery")
     @Expose
-    val delivery: DeliveryApiModel?,
+    val delivery: DeliveryCreateApiModel?,
 ) {
     var ownerId: Int = 0
     var created = false

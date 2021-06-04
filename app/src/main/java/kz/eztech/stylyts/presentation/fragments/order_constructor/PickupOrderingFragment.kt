@@ -103,7 +103,7 @@ class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View,
         item: Any?
     ) {
         when (item) {
-            is DeliveryWayModel -> {}
+            is DeliveryWayModel -> findNavController().navigate(R.id.action_pickupOrderingFragment_to_pickupPointsFragment)
         }
     }
 

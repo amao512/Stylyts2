@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor
 
-import android.view.View
 import android.webkit.WebView
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -18,8 +17,7 @@ import kz.eztech.stylyts.presentation.presenters.ordering.PaymentPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, View.OnClickListener,
-    PaymentListener {
+class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, PaymentListener {
 
     @Inject lateinit var presenter: PaymentPresenter
 
@@ -35,12 +33,11 @@ class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, View
 
     override fun customizeActionBar() {
         with(fragment_payment_toolbar) {
-            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_close)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@PaymentFragment)
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_close_20)
             toolbar_left_corner_action_image_button.show()
-
-            toolbar_title_text_view.text = getString(R.string.button_ordering)
             toolbar_title_text_view.show()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.button_ordering))
         }
     }
 
@@ -84,12 +81,6 @@ class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, View
     override fun displayProgress() {}
 
     override fun hideProgress() {}
-
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-        }
-    }
 
     override fun processOrder(orderModel: OrderModel) {
         webView.settings.javaScriptEnabled = true

@@ -14,7 +14,7 @@ class DeliveryApiModelMapper @Inject constructor() {
             house = data?.house ?: EMPTY_STRING,
             apartment = data?.apartment ?: EMPTY_STRING,
             deliveryType = data?.deliveryType ?: EMPTY_STRING,
-            deliveryStatus =  EMPTY_STRING,
+            deliveryStatus = data?.deliveryStatus ?: EMPTY_STRING,
         )
     }
 }

@@ -381,4 +381,5 @@
     <string name="order_detail">Детали заказа</string>
 
     <string name="pickup_points">Пункты самовывоза</string>
+    <string name="order_number_text_format">Заказ №%s</string>
 </resources>

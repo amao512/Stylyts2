@@ -32,6 +32,10 @@
             android:id="@+id/action_selectDeliveryWayFragment_to_pickupOrderingFragment"
             app:destination="@id/pickupOrderingFragment"
             />
+        <action
+            android:id="@+id/action_selectDeliveryWayFragment_to_postOrderingFragment"
+            app:destination="@id/postOrderingFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/courierOrderingFragment"
@@ -48,7 +52,12 @@
         android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PickupOrderingFragment"
         android:label="fragment_pickup_ordering"
         tools:layout="@layout/fragment_pickup_ordering"
-        />
+        >
+        <action
+            android:id="@+id/action_pickupOrderingFragment_to_pickupPointsFragment"
+            app:destination="@id/pickupPointsFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/orderingFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment"
@@ -104,6 +113,27 @@
         android:id="@+id/orderListFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order.OrderListFragment"
         android:label="OrderListFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_orderListFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            />
+    </fragment>
     <include app:graph="@navigation/nav_profile" />
+    <fragment
+        android:id="@+id/postOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PostOrderingFragment"
+        android:label="fragment_post_ordering"
+        tools:layout="@layout/fragment_post_ordering"
+        />
+    <fragment
+        android:id="@+id/pickupPointsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PickupPointsFragment"
+        android:label="PickupPointsFragment"
+        />
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order.OrderDetailFragment"
+        android:label="OrderDetailFragment"
+        />
 </navigation>

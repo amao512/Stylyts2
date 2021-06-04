@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_courtier_ordering.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.data.api.models.order.DeliveryApiModel
+import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
 import kz.eztech.stylyts.domain.models.order.DeliveryConditionModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryConditionAdapter
@@ -22,7 +22,6 @@ import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View,
-    View.OnClickListener,
     UniversalViewClickListener {
 
     private lateinit var deliveryConditionAdapter: DeliveryConditionAdapter
@@ -51,13 +50,12 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
     override fun customizeActionBar() {
         with(fragment_courier_ordering_toolbar) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@CourierOrderingFragment)
             toolbar_left_corner_action_image_button.show()
 
-            toolbar_title_text_view.text = getString(R.string.button_ordering)
             toolbar_title_text_view.show()
-
             toolbar_bottom_border_view.hide()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.button_ordering))
         }
     }
 
@@ -102,12 +100,6 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
 
     override fun hideProgress() {}
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-        }
-    }
-
     override fun onViewClicked(
         view: View,
         position: Int,
@@ -146,7 +138,7 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
         if (checkEditTextToValidation()) {
             val bundle = Bundle()
 
-            val delivery = DeliveryApiModel(
+            val delivery = DeliveryCreateApiModel(
                 city = cityEditText.text.toString(),
                 street = streetEditText.text.toString(),
                 house = houseEditText.text.toString(),

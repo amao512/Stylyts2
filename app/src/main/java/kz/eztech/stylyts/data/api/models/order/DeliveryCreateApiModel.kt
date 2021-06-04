@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class DeliveryApiModel(
+data class DeliveryCreateApiModel(
     @SerializedName("city")
     @Expose
     val city: String?,
@@ -21,8 +21,5 @@ data class DeliveryApiModel(
     val apartment: String?,
     @SerializedName("delivery_type")
     @Expose
-    val deliveryType: String?,
-    @SerializedName("delivery_status")
-    @Expose
-    val deliveryStatus: String? = null
+    val deliveryType: String?
 ) : Parcelable

@@ -262,5 +262,16 @@
         android:id="@+id/orderListFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order.OrderListFragment"
         android:label="OrderListFragment"
+        >
+        <action
+            android:id="@+id/action_orderListFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order.OrderDetailFragment"
+        android:label="OrderDetailFragment"
         />
 </navigation>

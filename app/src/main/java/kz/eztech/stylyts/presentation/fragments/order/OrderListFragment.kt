@@ -21,7 +21,6 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
-    View.OnClickListener,
     SwipeRefreshLayout.OnRefreshListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: OrderListPresenter
@@ -36,11 +35,10 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     override fun customizeActionBar() {
         with(fragment_order_list_toolbar) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@OrderListFragment)
             toolbar_left_corner_action_image_button.show()
-
-            toolbar_title_text_view.text = getString(R.string.order_list_title)
             toolbar_title_text_view.show()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.order_list_title))
         }
     }
 
@@ -90,12 +88,6 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         fragment_order_list_swipe_refresh_layout.isRefreshing = false
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-        }
-    }
-
     override fun onRefresh() {
         presenter.getOrderList(token = currentActivity.getTokenFromSharedPref())
     }
@@ -110,7 +102,9 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         item: Any?
     ) {
         when (item) {
-            is OrderModel -> {}
+            is OrderModel -> {
+                findNavController().navigate(R.id.action_orderListFragment_to_orderDetailFragment)
+            }
         }
     }
 }
