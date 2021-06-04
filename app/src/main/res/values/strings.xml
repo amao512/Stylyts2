@@ -379,4 +379,6 @@
 
     <string name="order_list_title">Мои покупки</string>
     <string name="order_detail">Детали заказа</string>
+
+    <string name="pickup_points">Пункты самовывоза</string>
 </resources>

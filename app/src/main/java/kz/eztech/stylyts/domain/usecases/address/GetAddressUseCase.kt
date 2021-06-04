@@ -17,12 +17,28 @@ class GetAddressUseCase @Inject constructor(
 ) : BaseUseCase<ResultsModel<AddressModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
+    private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<AddressModel>> {
         return addressDomainRepository.getAllAddress(token)
     }
 
-    fun initParams(token: String) {
+    fun initParams(
+        token: String,
+        isMy: Boolean = true,
+        owner: Int = 0
+    ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+        val queryMap = HashMap<String, String>()
+
+        queryMap["my"] = isMy.toString()
+
+        if (owner != 0) {
+            queryMap["user"] = owner.toString()
+        }
+
+        this.queryMap = queryMap
+
+
     }
 }

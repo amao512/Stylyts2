@@ -24,7 +24,8 @@ interface AddressApi {
 
     @GET(RestConstants.GET_ALL_ADDRESS)
     fun getAllAddress(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<AddressApiModel>>>
 
     @DELETE(RestConstants.DELETE_ADDRESS)

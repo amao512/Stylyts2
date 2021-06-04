@@ -12,7 +12,8 @@ interface AddressDomainRepository {
     ): Single<AddressModel>
 
     fun getAllAddress(
-        token: String
+        token: String,
+        queryMap: Map<String, String>
     ): Single<ResultsModel<AddressModel>>
 
     fun deleteAddress(

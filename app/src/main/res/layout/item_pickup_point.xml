@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_size_16x"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        >
+
+        <ImageView
+            android:id="@+id/item_pickup_point_image_view"
+            android:layout_width="@dimen/icon_size_36x"
+            android:layout_height="@dimen/icon_size_36x"
+            android:src="@drawable/ic_box"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_size_20x"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/item_pickup_point_address_title_text_view"
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_14x"
+                tools:text="Mega на Розыбакиева"
+                />
+
+            <TextView
+                android:id="@+id/item_pickup_address_text_view"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Проспект Абая, 10"
+                />
+
+            <TextView
+                android:id="@+id/item_pickup_fitting_available_text_view"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Доступна примерка"
+                />
+
+            <TextView
+                android:id="@+id/item_pickup_time_text_view"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="пн-вс: 10:00 - 17:00"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:background="@color/divider_bg_color"
+        />
+</LinearLayout>

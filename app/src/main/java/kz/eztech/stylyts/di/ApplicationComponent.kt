@@ -29,6 +29,7 @@ import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragmen
 import kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment
 import kz.eztech.stylyts.presentation.fragments.card.CardFragment
 import kz.eztech.stylyts.presentation.fragments.order.OrderListFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.PickupPointsFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
@@ -99,6 +100,7 @@ interface ApplicationComponent {
     fun inject(fragment: SaveCardFragment)
     fun inject(fragment: PaymentFragment)
     fun inject(fragment: OrderListFragment)
+    fun inject(fragment: PickupPointsFragment)
 
     fun inject(dialog: TagChooserDialog)
     fun inject(dialog: CartDialog)
