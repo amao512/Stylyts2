@@ -20,7 +20,7 @@ class GetAddressUseCase @Inject constructor(
     private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<AddressModel>> {
-        return addressDomainRepository.getAllAddress(token)
+        return addressDomainRepository.getAllAddress(token, queryMap)
     }
 
     fun initParams(
