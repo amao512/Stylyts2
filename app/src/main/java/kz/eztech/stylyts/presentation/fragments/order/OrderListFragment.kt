@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.order
 
+import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_order_list.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -25,6 +27,7 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
 
     @Inject lateinit var presenter: OrderListPresenter
     private lateinit var orderAdapter: OrderAdapter
+    private lateinit var pageFilterModel: PageFilterModel
 
     private lateinit var recyclerView: RecyclerView
 
@@ -53,6 +56,7 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
+        pageFilterModel = PageFilterModel()
         orderAdapter = OrderAdapter()
         orderAdapter.setOnClickListener(listener = this)
     }
@@ -67,7 +71,8 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     override fun processPostInitialization() {
-        presenter.getOrderList(token = currentActivity.getTokenFromSharedPref())
+        getOrders()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -89,11 +94,17 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     override fun onRefresh() {
-        presenter.getOrderList(token = currentActivity.getTokenFromSharedPref())
+        getOrders()
     }
 
     override fun processOrderList(resultsModel: ResultsModel<OrderModel>) {
-        orderAdapter.updateList(list = resultsModel.results)
+        orderAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != pageFilterModel.page) {
+            pageFilterModel.page++
+        } else {
+            pageFilterModel.isLastPage = true
+        }
     }
 
     override fun onViewClicked(
@@ -102,9 +113,33 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         item: Any?
     ) {
         when (item) {
-            is OrderModel -> {
-                findNavController().navigate(R.id.action_orderListFragment_to_orderDetailFragment)
-            }
+            is OrderModel -> navigateToOrderDetails(item)
         }
+    }
+
+    private fun navigateToOrderDetails(orderModel: OrderModel) {
+        val bundle = Bundle()
+        bundle.putInt(OrderDetailFragment.ORDER_ID_KEY, orderModel.id)
+
+        findNavController().navigate(R.id.action_orderListFragment_to_orderDetailFragment, bundle)
+    }
+
+    private fun getOrders() {
+        presenter.getOrderList(
+            token = currentActivity.getTokenFromSharedPref(),
+            pageFilterModel = pageFilterModel
+        )
+    }
+
+    private fun handleRecyclerView() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!pageFilterModel.isLastPage) {
+                        getOrders()
+                    }
+                }
+            }
+        })
     }
 }

@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.domain.models.order
 
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
 
 data class OrderModel(
@@ -8,7 +9,7 @@ data class OrderModel(
     val price: Int,
     val seller: UserShortModel,
     val client: UserShortModel,
-    val itemObjects: List<Int>,
+    val itemObjects: List<ClothesModel>,
     val delivery: DeliveryModel,
     val customer: CustomerModel,
     val status: String,

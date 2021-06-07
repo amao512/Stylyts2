@@ -2,6 +2,7 @@ package kz.eztech.stylyts.data.api.models.order
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
 import kz.eztech.stylyts.data.api.models.user.UserShortApiModel
 
 data class OrderApiModel(
@@ -22,7 +23,7 @@ data class OrderApiModel(
     val client: UserShortApiModel?,
     @SerializedName("item_objects")
     @Expose
-    val itemObject: List<Int>?,
+    val itemObjects: List<ClothesApiModel>?,
     @SerializedName("delivery")
     @Expose
     val delivery: DeliveryApiModel?,

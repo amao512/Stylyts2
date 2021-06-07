@@ -143,9 +143,10 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_divider_height"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginStart="@dimen/margin_size_16x"
         android:layout_marginTop="@dimen/margin_size_16x"
-        android:background="@color/large_divider_bg_color"
+        android:background="@color/app_gray_hint"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

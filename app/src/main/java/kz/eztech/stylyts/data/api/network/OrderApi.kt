@@ -12,7 +12,8 @@ interface OrderApi {
 
     @GET(RestConstants.GET_ORDERS)
     fun getOrderList(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<OrderApiModel>>>
 
     @GET(RestConstants.GET_ORDER_BY_ID)
@@ -25,7 +26,7 @@ interface OrderApi {
     fun createOrder(
         @Header("Authorization") token: String,
         @Body orderCreateApiModel: OrderCreateApiModel
-    ): Single<Response<OrderApiModel>>
+    ): Single<Response<OrderCreateApiModel>>
 
     @POST(RestConstants.PROCESS_ORDER)
     fun processOrder(

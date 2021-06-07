@@ -4,6 +4,12 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class OrderCreateApiModel(
+    @SerializedName("id")
+    @Expose
+    val id: Int? = null,
+    @SerializedName("invoice")
+    @Expose
+    val invoice: InvoiceApiModel? = null,
     @SerializedName("item_objects")
     @Expose
     var itemObjects: List<Int>,

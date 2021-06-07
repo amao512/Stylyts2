@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.presenters.ordering
 
-import android.util.Log
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -8,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartDataSource
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.order.OrderModel
+import kz.eztech.stylyts.domain.models.order.OrderCreateModel
 import kz.eztech.stylyts.domain.usecases.order.CreateOrderUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
@@ -63,8 +62,8 @@ class OrderingPresenter @Inject constructor(
 
         orderList.map { order ->
             createOrderUseCase.initParams(token, order)
-            createOrderUseCase.execute(object : DisposableSingleObserver<OrderModel>() {
-                override fun onSuccess(t: OrderModel) {
+            createOrderUseCase.execute(object : DisposableSingleObserver<OrderCreateModel>() {
+                override fun onSuccess(t: OrderCreateModel) {
                     t.itemObjects.map { id ->
                         clearCart(cartId = id)
                     }
@@ -83,8 +82,6 @@ class OrderingPresenter @Inject constructor(
     }
 
     override fun clearCart(cartId: Int) {
-        Log.d("TAG4", "cart - $cartId")
-
         disposable.clear()
         disposable.add(
             cartDataSource.delete(cartId)

@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.ordering
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.domain.usecases.order.GetOrderListUseCase
@@ -24,10 +25,13 @@ class OrderListPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getOrderList(token: String) {
+    override fun getOrderList(
+        token: String,
+        pageFilterModel: PageFilterModel
+    ) {
         view.displayProgress()
 
-        getOrderListUseCase.initParams(token)
+        getOrderListUseCase.initParams(token, pageFilterModel)
         getOrderListUseCase.execute(object : DisposableSingleObserver<ResultsModel<OrderModel>>() {
             override fun onSuccess(t: ResultsModel<OrderModel>) {
                 view.processViewAction {

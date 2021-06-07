@@ -14,7 +14,7 @@ import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
 import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartEntity
-import kz.eztech.stylyts.domain.models.order.OrderModel
+import kz.eztech.stylyts.domain.models.order.OrderCreateModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -43,7 +43,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
 
     private var paymentType = CASH_PAYMENT
     private var orderList: MutableList<OrderCreateApiModel> = mutableListOf()
-    private var createdOrderList: MutableList<OrderModel> = mutableListOf()
+    private var createdOrderList: MutableList<OrderCreateModel> = mutableListOf()
 
     companion object {
         private const val CASH_PAYMENT = 1
@@ -171,7 +171,7 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         }
     }
 
-    override fun processSuccessCreating(orderModel: OrderModel) {
+    override fun processSuccessCreating(orderModel: OrderCreateModel) {
         createdOrderList.add(orderModel)
 
         if (createdOrderList.size == orderList.size) {

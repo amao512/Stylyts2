@@ -2,7 +2,6 @@ package kz.eztech.stylyts.presentation.adapters.ordering
 
 import android.view.View
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
@@ -18,8 +17,8 @@ class OrderAdapter : BaseAdapter() {
                 oldItemPosition: Int,
                 newItemPosition: Int
             ): Boolean {
-                return (currentList[oldItemPosition] as OrderModel).id ==
-                        (list[newItemPosition] as OrderModel).id
+                return currentList[oldItemPosition].hashCode() ==
+                        list[newItemPosition].hashCode()
             }
         }
     }

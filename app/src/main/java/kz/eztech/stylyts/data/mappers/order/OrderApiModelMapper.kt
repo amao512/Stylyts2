@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.data.mappers.order
 
 import kz.eztech.stylyts.data.api.models.order.OrderApiModel
+import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
 import kz.eztech.stylyts.data.mappers.user.UserShortApiModelMapper
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -10,7 +11,8 @@ class OrderApiModelMapper @Inject constructor(
     private val userShortApiModelMapper: UserShortApiModelMapper,
     private val invoiceApiModelMapper: InvoiceApiModelMapper,
     private val deliveryApiModelMapper: DeliveryApiModelMapper,
-    private val customerApiModelMapper: CustomerApiModelMapper
+    private val customerApiModelMapper: CustomerApiModelMapper,
+    private val clothesApiModelMapper: ClothesApiModelMapper
 ) {
 
     fun map(data: List<OrderApiModel>?): List<OrderModel> {
@@ -23,7 +25,7 @@ class OrderApiModelMapper @Inject constructor(
                 price = it.price ?: 0,
                 seller = userShortApiModelMapper.map(data = it.seller),
                 client = userShortApiModelMapper.map(data = it.client),
-                itemObjects = it.itemObject ?: emptyList(),
+                itemObjects = clothesApiModelMapper.map(data = it.itemObjects),
                 delivery = deliveryApiModelMapper.map(data = it.delivery),
                 customer = customerApiModelMapper.map(data = it.customer),
                 status = it.status ?: EMPTY_STRING,
@@ -41,7 +43,7 @@ class OrderApiModelMapper @Inject constructor(
             price = data?.price ?: 0,
             seller = userShortApiModelMapper.map(data = data?.seller),
             client = userShortApiModelMapper.map(data = data?.client),
-            itemObjects = data?.itemObject ?: emptyList(),
+            itemObjects = clothesApiModelMapper.map(data = data?.itemObjects),
             delivery = deliveryApiModelMapper.map(data = data?.delivery),
             customer = customerApiModelMapper.map(data = data?.customer),
             status = data?.status ?: EMPTY_STRING,
