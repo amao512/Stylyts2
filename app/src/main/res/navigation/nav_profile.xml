@@ -159,7 +159,8 @@
         >
         <action
             android:id="@+id/action_cameraFragment_to_photoChooserFragment"
-            app:destination="@id/photoChooserFragment" />
+            app:destination="@id/photoChooserFragment"
+            />
         <action
             android:id="@+id/action_cameraFragment_to_cleanBackgroundFragment"
             app:destination="@id/cleanBackgroundFragment"
@@ -198,7 +199,8 @@
         android:id="@+id/photoChooserFragment"
         android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog"
         android:label="fragment_photo_chooser"
-        tools:layout="@layout/dialog_tag_chooser" />
+        tools:layout="@layout/dialog_tag_chooser"
+        />
 
     <fragment
         android:id="@+id/userSubsFragment"
@@ -273,5 +275,24 @@
         android:id="@+id/orderDetailFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order.OrderDetailFragment"
         android:label="OrderDetailFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_orderDetailFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/paymentFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment"
+        android:label="PaymentFragment"
+        >
+        <action
+            android:id="@+id/action_paymentFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
+            app:popUpTo="@id/orderListFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+
 </navigation>

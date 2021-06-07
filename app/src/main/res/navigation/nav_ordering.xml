@@ -102,8 +102,8 @@
         android:label="PaymentFragment"
         >
         <action
-            android:id="@+id/action_paymentFragment_to_orderListFragment"
-            app:destination="@id/orderListFragment"
+            android:id="@+id/action_paymentFragment_to_orderDetailFragment"
+            app:destination="@id/orderDetailFragment"
             app:popUpTo="@id/customerInfoFragment"
             app:popUpToInclusive="true"
             />
@@ -119,13 +119,16 @@
             app:destination="@id/orderDetailFragment"
             />
     </fragment>
+
     <include app:graph="@navigation/nav_profile" />
+
     <fragment
         android:id="@+id/postOrderingFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.post.PostOrderingFragment"
         android:label="fragment_post_ordering"
         tools:layout="@layout/fragment_post_ordering"
         />
+
     <fragment
         android:id="@+id/pickupPointsFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupPointsFragment"
@@ -136,14 +139,22 @@
             app:destination="@id/pickupOrderingFragment"
             />
     </fragment>
+
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order.OrderDetailFragment"
         android:label="OrderDetailFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_orderDetailFragment_to_paymentFragment"
+            app:destination="@id/paymentFragment"
+            />
+    </fragment>
+
     <fragment
         android:id="@+id/pickupOrderingFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupOrderingFragment"
         android:label="PickupOrderingFragment"
         />
+
 </navigation>

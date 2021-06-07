@@ -13,21 +13,223 @@
         layout="@layout/base_toolbar"
         />
 
-    <View
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_divider_height"
-        android:layout_marginTop="@dimen/margin_size_10x"
-        android:background="@color/large_divider_bg_color"
-        />
+        android:layout_height="match_parent"
+        >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_order_detail_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_order"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_size_16x"
+                android:paddingTop="@dimen/padding_size_16x"
+                android:paddingBottom="0dp"
+                android:text="@string/order_detail"
+                android:textSize="@dimen/text_size_16x"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_10x"
+                android:layout_marginBottom="@dimen/margin_size_16x"
+                android:orientation="vertical"
+                android:paddingHorizontal="@dimen/padding_size_16x"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/fragment_order_not_paid_status_holder_constraint_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <ImageView
+                        android:id="@+id/fragment_order_detail_not_paid_status_icon_image_view"
+                        android:layout_width="@dimen/icon_size_20x"
+                        android:layout_height="@dimen/icon_size_20x"
+                        android:layout_gravity="top|end"
+                        android:background="@drawable/circle_light_orange"
+                        android:src="@drawable/ic_baseline_close_white_24"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <TextView
+                        android:id="@+id/fragment_order_detail_status_not_paid_text_view"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_size_10x"
+                        android:text="@string/status_not_paid"
+                        android:textSize="@dimen/text_size_14x"
+                        app:layout_constraintStart_toEndOf="@+id/fragment_order_detail_not_paid_status_icon_image_view"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <TextView
+                        android:id="@+id/fragment_order_detail_not_paid_status_date_text_view"
+                        style="@style/TextRegular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/app_dark_blue_gray"
+                        app:layout_constraintStart_toStartOf="@id/fragment_order_detail_status_not_paid_text_view"
+                        app:layout_constraintTop_toBottomOf="@id/fragment_order_detail_status_not_paid_text_view"
+                        tools:text="20 May"
+                        />
+
+                    <Button
+                        android:id="@+id/fragment_order_detail_pay_button"
+                        style="@style/TextRegular"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_size_10x"
+                        android:backgroundTint="@color/app_light_orange"
+                        android:text="@string/pay"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14x"
+                        app:cornerRadius="@dimen/button_corners_radius"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/fragment_order_detail_not_paid_status_date_text_view"
+                        />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/medium_divider_height"
+                android:background="@color/large_divider_bg_color"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/fragment_order_detail_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_order"
+                />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_size_16x"
+                >
+
+                <TextView
+                    android:id="@+id/fragment_order_detail_goods_price_title_text_view"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/goods_price"
+                    android:textSize="@dimen/text_size_14x"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_order_detail_goods_price_text_view"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_14x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/fragment_order_detail_goods_price_title_text_view"
+                    tools:text="10 000 KZT"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_order_detail_delivery_title_text_view"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_8x"
+                    android:text="@string/delivery"
+                    android:textSize="@dimen/text_size_14x"
+                    app:layout_constraintStart_toStartOf="@id/fragment_order_detail_goods_price_title_text_view"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_order_detail_goods_price_title_text_view"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_order_detail_delivery_price_text_view"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_14x"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/fragment_order_detail_delivery_title_text_view"
+                    tools:text="500 KZT"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_order_detail_total_price_title_text_view"
+                    style="@style/TextRegularBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_16x"
+                    android:paddingBottom="0dp"
+                    android:text="@string/total"
+                    android:textSize="@dimen/text_size_16x"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/fragment_order_detail_delivery_title_text_view"
+                    app:layout_constraintTop_toBottomOf="@id/fragment_order_detail_delivery_title_text_view"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_order_detail_total_price_text_view"
+                    style="@style/TextRegularBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="0dp"
+                    android:textSize="@dimen/text_size_16x"
+                    app:layout_constraintBottom_toBottomOf="@id/fragment_order_detail_total_price_title_text_view"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/fragment_order_detail_total_price_title_text_view"
+                    tools:text="10 500 KZT"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/medium_divider_height"
+                android:layout_marginTop="@dimen/margin_size_10x"
+                android:background="@color/large_divider_bg_color"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_size_16x"
+                android:paddingTop="@dimen/padding_size_16x"
+                android:paddingBottom="0dp"
+                android:text="@string/delivery"
+                android:textSize="@dimen/text_size_16x"
+                />
+
+            <TextView
+                android:id="@+id/fragment_order_detail_address_text_view"
+                style="@style/TextRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:textSize="@dimen/text_size_14x"
+                tools:text="Адрес: Алматы,  Назарбаева 120,  дом 5; квартира 30"
+                />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

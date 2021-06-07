@@ -94,6 +94,10 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     override fun onRefresh() {
+        pageFilterModel.page = 1
+        pageFilterModel.isLastPage = false
+        orderAdapter.clearList()
+
         getOrders()
     }
 
