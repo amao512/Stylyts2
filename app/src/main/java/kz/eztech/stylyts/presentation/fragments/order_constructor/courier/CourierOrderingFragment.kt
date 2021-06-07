@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.order_constructor
+package kz.eztech.stylyts.presentation.fragments.order_constructor.courier
 
 import android.os.Bundle
 import android.view.View
@@ -16,6 +16,7 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
+import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -146,7 +147,10 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
                 deliveryType = DeliveryTypeEnum.COURIER.type
             )
 
-            bundle.putParcelable(OrderingFragment.CUSTOMER_KEY, arguments?.getParcelable(CUSTOMER_KEY))
+            bundle.putParcelable(
+                OrderingFragment.CUSTOMER_KEY, arguments?.getParcelable(
+                    CUSTOMER_KEY
+                ))
             bundle.putParcelable(OrderingFragment.DELIVERY_KEY, delivery)
 
             findNavController().navigate(

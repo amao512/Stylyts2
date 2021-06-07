@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.order_constructor.PickupOrderingFragment"
     >
 
     <include
@@ -14,84 +12,191 @@
         layout="@layout/base_toolbar"
         />
 
-    <TextView
-        android:id="@+id/fragment_pickup_ordering_title_text_view"
-        style="@style/TextRegularBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_size_16x"
-        android:paddingTop="@dimen/padding_size_16x"
-        android:paddingBottom="0dp"
-        android:text="@string/delivery_pickup"
-        android:textSize="@dimen/text_size_16x"
-        />
-
-    <View
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/little_divider_height"
-        android:layout_marginStart="@dimen/margin_size_16x"
-        android:layout_marginTop="@dimen/margin_size_8x"
-        android:background="@color/app_gray_hint"
-        />
+        android:layout_height="match_parent"
+        >
 
-    <TextView
-        style="@style/TextRegularBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_size_16x"
-        android:layout_marginTop="@dimen/margin_size_16x"
-        android:text="@string/locality"
-        android:textColor="@color/app_gray_hint"
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
 
-    <EditText
-        android:id="@+id/fragment_pickup_ordering_city_edit_text"
-        style="@style/TextRegular"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_size_16x"
-        android:layout_marginTop="@dimen/margin_size_4x"
-        android:background="@null"
-        android:imeOptions="actionNext"
-        android:inputType="text|textPersonName"
-        tools:text="г.Алматы"
-        />
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_size_16x"
+                android:paddingTop="@dimen/padding_size_16x"
+                android:paddingBottom="0dp"
+                android:text="@string/delivery_pickup"
+                android:textSize="@dimen/text_size_16x"
+                />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/medium_divider_height"
-        android:layout_marginTop="@dimen/margin_size_10x"
-        android:background="@color/large_divider_bg_color"
-        />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
 
-    <TextView
-        android:id="@+id/fragment_pickup_ordering_list_title_text_view"
-        style="@style/TextRegularBold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/padding_size_16x"
-        android:paddingTop="@dimen/padding_size_16x"
-        android:paddingBottom="0dp"
-        android:textSize="@dimen/text_size_16x"
-        android:text="@string/dressing_title"
-        />
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/locality"
+                android:textColor="@color/app_gray_hint"
+                />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/little_divider_height"
-        android:layout_marginStart="@dimen/margin_size_16x"
-        android:layout_marginTop="@dimen/margin_size_8x"
-        android:background="@color/app_gray_hint"
-        />
+            <EditText
+                android:id="@+id/fragment_pickup_ordering_city_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                tools:text="г.Алматы"
+                />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_pickup_ordering_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_ordering_way"
-        />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/pickup_point"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_pickup_ordering_points_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/delivery_condition"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_pickup_ordering_delivery_condition_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                android:inputType="text|textPersonName"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <TextView
+                style="@style/TextRegularBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_16x"
+                android:text="@string/delivery_date"
+                android:textColor="@color/app_gray_hint"
+                />
+
+            <EditText
+                android:id="@+id/fragment_pickup_ordering_delivery_date_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_4x"
+                android:background="@null"
+                android:imeOptions="actionNext"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_size_16x"
+                    android:layout_marginTop="@dimen/margin_size_10x"
+                    android:layout_marginEnd="@dimen/margin_size_70x"
+                    android:text="@string/pickup_additional_info"
+                    />
+
+                <TextView
+                    android:id="@+id/fragment_pickup_ordering_time_text_view"
+                    style="@style/TextRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_size_16x"
+                    tools:text="@string/pickup_time_order"
+                    />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/little_divider_height"
+                android:layout_marginStart="@dimen/margin_size_16x"
+                android:layout_marginTop="@dimen/margin_size_8x"
+                android:background="@color/app_gray_hint"
+                />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

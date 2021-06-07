@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.order_constructor
+package kz.eztech.stylyts.presentation.fragments.order_constructor.post
 
 import android.view.View
 import android.widget.EditText

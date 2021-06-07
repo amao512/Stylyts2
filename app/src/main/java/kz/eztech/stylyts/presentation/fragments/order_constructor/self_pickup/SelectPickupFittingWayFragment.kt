@@ -1,11 +1,11 @@
-package kz.eztech.stylyts.presentation.fragments.order_constructor
+package kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup
 
 import android.view.View
 import android.widget.EditText
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_pickup_ordering.*
+import kotlinx.android.synthetic.main.fragment_pickup_fitting_way_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.order.DeliveryWayModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -18,7 +18,7 @@ import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
-class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View,
+class SelectPickupFittingWayFragment : BaseFragment<MainActivity>(), EmptyContract.View,
     View.OnClickListener,
     UniversalViewClickListener {
 
@@ -37,14 +37,14 @@ class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View,
         currentActivity.hideBottomNavigationView()
     }
 
-    override fun getLayoutId(): Int = R.layout.fragment_pickup_ordering
+    override fun getLayoutId(): Int = R.layout.fragment_pickup_fitting_way_ordering
 
     override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
         with(fragment_pickup_ordering_toolbar) {
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@PickupOrderingFragment)
+            toolbar_left_corner_action_image_button.setOnClickListener(this@SelectPickupFittingWayFragment)
             toolbar_left_corner_action_image_button.show()
 
             toolbar_title_text_view.text = getString(R.string.button_ordering)
@@ -66,10 +66,10 @@ class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View,
     }
 
     override fun initializeViews() {
-        cityEditText = fragment_pickup_ordering_city_edit_text
+        cityEditText = fragment_select_pickup_fitting_way_city_edit_text
         cityEditText.setText(arguments?.getString(CITY_KEY) ?: EMPTY_STRING)
 
-        recyclerView = fragment_pickup_ordering_recycler_view
+        recyclerView = fragment_select_pickup_fitting_way_recycler_view
         recyclerView.adapter = deliveryConditionAdapter
     }
 

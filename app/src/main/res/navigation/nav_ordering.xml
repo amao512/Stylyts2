@@ -29,8 +29,8 @@
             app:destination="@id/courierOrderingFragment"
             />
         <action
-            android:id="@+id/action_selectDeliveryWayFragment_to_pickupOrderingFragment"
-            app:destination="@id/pickupOrderingFragment"
+            android:id="@+id/action_selectDeliveryWayFragment_to_selectPickupFittingWayFragment"
+            app:destination="@id/selectPickupFittingWayFragment"
             />
         <action
             android:id="@+id/action_selectDeliveryWayFragment_to_postOrderingFragment"
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/courierOrderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.CourierOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.courier.CourierOrderingFragment"
         android:label="CourierOrderingFragment"
         >
         <action
@@ -48,10 +48,10 @@
             />
     </fragment>
     <fragment
-        android:id="@+id/pickupOrderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PickupOrderingFragment"
+        android:id="@+id/selectPickupFittingWayFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.SelectPickupFittingWayFragment"
         android:label="fragment_pickup_ordering"
-        tools:layout="@layout/fragment_pickup_ordering"
+        tools:layout="@layout/fragment_pickup_fitting_way_ordering"
         >
         <action
             android:id="@+id/action_pickupOrderingFragment_to_pickupPointsFragment"
@@ -122,18 +122,28 @@
     <include app:graph="@navigation/nav_profile" />
     <fragment
         android:id="@+id/postOrderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PostOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.post.PostOrderingFragment"
         android:label="fragment_post_ordering"
         tools:layout="@layout/fragment_post_ordering"
         />
     <fragment
         android:id="@+id/pickupPointsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PickupPointsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupPointsFragment"
         android:label="PickupPointsFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_pickupPointsFragment_to_pickupOrderingFragment"
+            app:destination="@id/pickupOrderingFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/orderDetailFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.order.OrderDetailFragment"
         android:label="OrderDetailFragment"
+        />
+    <fragment
+        android:id="@+id/pickupOrderingFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupOrderingFragment"
+        android:label="PickupOrderingFragment"
         />
 </navigation>

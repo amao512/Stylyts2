@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".presentation.fragments.order_constructor.self_pickup.SelectPickupFittingWayFragment"
+    >
+
+    <include
+        android:id="@+id/fragment_pickup_ordering_toolbar"
+        layout="@layout/base_toolbar"
+        />
+
+    <TextView
+        style="@style/TextRegularBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingTop="@dimen/padding_size_16x"
+        android:paddingBottom="0dp"
+        android:text="@string/delivery_pickup"
+        android:textSize="@dimen/text_size_16x"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:background="@color/app_gray_hint"
+        />
+
+    <TextView
+        style="@style/TextRegularBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:text="@string/locality"
+        android:textColor="@color/app_gray_hint"
+        />
+
+    <EditText
+        android:id="@+id/fragment_select_pickup_fitting_way_city_edit_text"
+        style="@style/TextRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_4x"
+        android:background="@null"
+        android:imeOptions="actionNext"
+        android:inputType="text|textPersonName"
+        tools:text="г.Алматы"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_divider_height"
+        android:layout_marginTop="@dimen/margin_size_10x"
+        android:background="@color/large_divider_bg_color"
+        />
+
+    <TextView
+        style="@style/TextRegularBold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_size_16x"
+        android:paddingTop="@dimen/padding_size_16x"
+        android:paddingBottom="0dp"
+        android:textSize="@dimen/text_size_16x"
+        android:text="@string/dressing_title"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_marginTop="@dimen/margin_size_8x"
+        android:background="@color/app_gray_hint"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_select_pickup_fitting_way_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_ordering_way"
+        />
+</LinearLayout>

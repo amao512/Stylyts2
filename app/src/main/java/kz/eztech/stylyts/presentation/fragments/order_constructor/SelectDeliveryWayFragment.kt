@@ -15,6 +15,9 @@ import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryWayAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.fragments.order_constructor.courier.CourierOrderingFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.post.PostOrderingFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.SelectPickupFittingWayFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -149,11 +152,11 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
                 )
             }
             2 -> {
-                bundle.putString(PickupOrderingFragment.CITY_KEY, cityEditText.text.toString())
-                bundle.putParcelable(PickupOrderingFragment.CUSTOMER_KEY, customer)
+                bundle.putString(SelectPickupFittingWayFragment.CITY_KEY, cityEditText.text.toString())
+                bundle.putParcelable(SelectPickupFittingWayFragment.CUSTOMER_KEY, customer)
 
                 findNavController().navigate(
-                    R.id.action_selectDeliveryWayFragment_to_pickupOrderingFragment,
+                    R.id.action_selectDeliveryWayFragment_to_selectPickupFittingWayFragment,
                     bundle
                 )
             }

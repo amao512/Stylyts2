@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.order_constructor.CourierOrderingFragment"
+    tools:context=".presentation.fragments.order_constructor.courier.CourierOrderingFragment"
     >
 
     <include
@@ -27,7 +27,6 @@
             >
 
             <TextView
-                android:id="@+id/fragment_ordering_title_text_view"
                 style="@style/TextRegularBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

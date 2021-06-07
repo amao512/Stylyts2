@@ -29,7 +29,7 @@ import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragmen
 import kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment
 import kz.eztech.stylyts.presentation.fragments.card.CardFragment
 import kz.eztech.stylyts.presentation.fragments.order.OrderListFragment
-import kz.eztech.stylyts.presentation.fragments.order_constructor.PickupPointsFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupPointsFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment

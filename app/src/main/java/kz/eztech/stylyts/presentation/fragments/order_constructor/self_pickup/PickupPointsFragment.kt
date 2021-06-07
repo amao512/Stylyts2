@@ -1,8 +1,8 @@
-package kz.eztech.stylyts.presentation.fragments.order_constructor
+package kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.base_toolbar.view.*
+import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_pickup_points.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
