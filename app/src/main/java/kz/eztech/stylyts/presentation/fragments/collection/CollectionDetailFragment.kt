@@ -16,7 +16,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -40,10 +39,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.extensions.getFormattedDate
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.presentation.utils.extensions.*
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -52,7 +48,6 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
 
     @Inject lateinit var presenter: CollectionDetailPresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var additionalAdapter: ClothesAdditionalAdapter
     private lateinit var currentOutfitModel: OutfitModel
@@ -96,12 +91,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     override fun customizeActionBar() {
         with(include_toolbar_collection_detail) {
             toolbar_title_text_view.show()
-            toolbar_title_text_view.text =
-                context.getString(R.string.collection_detail_fragment_publishes)
-
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@CollectionDetailFragment)
             toolbar_left_corner_action_image_button.show()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.collection_detail_fragment_publishes))
 
             background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)
         }
@@ -184,7 +177,6 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         when (v?.id) {
             R.id.text_view_fragment_collection_detail_comments_count -> navigateToComments()
             R.id.fragment_collection_detail_comments_image_view -> navigateToComments()
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
 //            R.id.button_fragment_collection_detail_change_collection -> onChangeButtonClick()
             R.id.constraint_layout_fragment_collection_detail_profile_container -> onProfileClick()
             R.id.fragment_collection_detail_clothes_tags_icon -> onShowClothesTags()
@@ -337,10 +329,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             )
         } else {
             userShortNameTextView.hide()
-            imageLoader.load(
-                url = userShortModel.avatar,
-                target = avatarShapeableImageView
-            )
+            userShortModel.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
         }
     }
 

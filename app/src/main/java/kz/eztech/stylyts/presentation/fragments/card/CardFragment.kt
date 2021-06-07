@@ -18,7 +18,6 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.CardPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import java.util.*
 import javax.inject.Inject
 
 class CardFragment : BaseFragment<MainActivity>(), CardContract.View, View.OnClickListener,
@@ -43,11 +42,10 @@ class CardFragment : BaseFragment<MainActivity>(), CardContract.View, View.OnCli
     override fun customizeActionBar() {
         with(include_toolbar_card) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@CardFragment)
             toolbar_left_corner_action_image_button.show()
-
             toolbar_title_text_view.show()
-            toolbar_title_text_view.text = context.getString(R.string.card_fragment_add_way_payment)
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.card_fragment_add_way_payment))
         }
     }
 
@@ -82,7 +80,6 @@ class CardFragment : BaseFragment<MainActivity>(), CardContract.View, View.OnCli
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.linear_layout_fragment_card_profile_add_card -> {
                 findNavController().navigate(R.id.action_cardFragment_to_saveCardFragment)
             }

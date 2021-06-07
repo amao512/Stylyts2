@@ -5,12 +5,12 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.item_user_subs.view.*
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
@@ -18,8 +18,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
  */
 class UserSubHolder(
     itemView: View,
-    adapter: BaseAdapter,
-    private val imageLoader: DomainImageLoader
+    adapter: BaseAdapter
 ) : BaseViewHolder(itemView, adapter) {
 
     private lateinit var followerItemLinearLayout: LinearLayout
@@ -83,10 +82,7 @@ class UserSubHolder(
             avatarShapeableImageView.hide()
             userShortNameTextView.show()
         } else {
-            imageLoader.load(
-                url = followerModel.avatar,
-                target = avatarShapeableImageView
-            )
+            followerModel.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
             avatarShapeableImageView.show()
             userShortNameTextView.hide()
         }

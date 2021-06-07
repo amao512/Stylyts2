@@ -9,6 +9,7 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View {
@@ -18,6 +19,10 @@ class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View 
     private lateinit var deliveryConditionEditText: EditText
     private lateinit var deliveryDateEditText: EditText
     private lateinit var deliveryTimeTextView: TextView
+
+    companion object {
+        const val CITY_KEY = "city"
+    }
 
     override fun getLayoutId(): Int = R.layout.fragment_pickup_ordering
 
@@ -46,6 +51,8 @@ class PickupOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View 
 
     override fun initializeViews() {
         cityEditText = fragment_pickup_ordering_city_edit_text
+        cityEditText.setText(arguments?.getString(CITY_KEY) ?: EMPTY_STRING)
+
         pickupPointEditText = fragment_pickup_ordering_points_edit_text
         deliveryConditionEditText = fragment_pickup_ordering_delivery_condition_edit_text
         deliveryDateEditText = fragment_pickup_ordering_delivery_date_edit_text

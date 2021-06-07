@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +20,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_edit_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.EditorListener
@@ -43,7 +41,6 @@ class EditProfileDialog(
 ) : DialogFragment(), EditProfileContract.View, View.OnClickListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: EditProfilePresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
 
@@ -187,11 +184,7 @@ class EditProfileDialog(
             )
         } else {
             text_view_fragment_profile_edit_user_short_name.hide()
-            imageLoader.load(
-                url = userModel.avatar,
-                target = fragment_shop_profile_avatar_shapeable_image_view
-            )
-
+            userModel.avatar.loadImageWithCenterCrop(target = fragment_shop_profile_avatar_shapeable_image_view)
         }
     }
 

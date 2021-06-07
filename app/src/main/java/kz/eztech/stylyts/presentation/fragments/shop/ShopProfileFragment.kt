@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.shop
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
@@ -12,7 +11,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_profile.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
@@ -46,6 +44,7 @@ import kz.eztech.stylyts.presentation.presenters.shop.ShopProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
@@ -53,7 +52,6 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     UniversalViewClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @Inject lateinit var presenter: ShopProfilePresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var publicationsAdapter: GridImageAdapter
     private lateinit var clothesAdapter: ClothesDetailAdapter
@@ -555,10 +553,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
             shopAvatarShapeableImageView.hide()
             shopShortNameTextView.show()
         } else {
-            imageLoader.load(
-                url = userModel.avatar,
-                target = shopAvatarShapeableImageView
-            )
+            userModel.avatar.loadImageWithCenterCrop(target = shopAvatarShapeableImageView)
             shopShortNameTextView.hide()
             shopAvatarShapeableImageView.show()
         }

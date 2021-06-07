@@ -11,8 +11,6 @@ import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.db.LocalDataSource
 import kz.eztech.stylyts.data.db.card.CardDataSource
 import kz.eztech.stylyts.data.db.cart.CartDataSource
-import kz.eztech.stylyts.data.helpers.ImageLoader
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -55,7 +53,4 @@ class ApplicationModule(private val mApplication: Application) {
 
     @Provides
     fun provideCardDataSource() = CardDataSource(mApplication)
-
-    @Provides
-    fun provideImageLoader(): DomainImageLoader = ImageLoader()
 }

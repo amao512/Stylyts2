@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_user_subs_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -29,7 +28,6 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     private val userSubsViewModel: UserSubsViewModel by inject()
 
     @Inject lateinit var presenter: UserSubsPresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
     private lateinit var adapter: UserSubAdapter
 
     companion object {
@@ -68,7 +66,7 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        adapter = UserSubAdapter(imageLoader = imageLoader)
+        adapter = UserSubAdapter()
         adapter.setOnClickListener(listener = this)
     }
 

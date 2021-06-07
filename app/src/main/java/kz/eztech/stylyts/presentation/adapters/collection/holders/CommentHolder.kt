@@ -6,21 +6,20 @@ import androidx.core.text.HtmlCompat
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.android.synthetic.main.item_comment.view.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 
 /**
  * Created by Ruslan Erdenoff on 04.03.2021.
  */
 class CommentHolder(
     itemView: View,
-    adapter: BaseAdapter,
-    private val imageLoader: DomainImageLoader
+    adapter: BaseAdapter
 ) : BaseViewHolder(itemView, adapter) {
 
     private lateinit var userAvatarShapeableImageView: ShapeableImageView
@@ -64,10 +63,7 @@ class CommentHolder(
             )
             userAvatarShapeableImageView.hide()
         } else {
-            imageLoader.load(
-                url = comment.author.avatar,
-                target = userAvatarShapeableImageView
-            )
+            comment.author.avatar.loadImageWithCenterCrop(target = userAvatarShapeableImageView)
             userShortNameTextView.hide()
         }
 

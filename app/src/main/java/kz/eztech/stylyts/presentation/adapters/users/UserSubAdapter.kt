@@ -3,7 +3,6 @@ package kz.eztech.stylyts.presentation.adapters.users
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
@@ -13,9 +12,7 @@ import kz.eztech.stylyts.presentation.adapters.users.holders.UserSubHolder
 /**
  * Created by Ruslan Erdenoff on 04.03.2021.
  */
-class UserSubAdapter(
-    private val imageLoader: DomainImageLoader
-): BaseAdapter() {
+class UserSubAdapter : BaseAdapter() {
 
     override fun getLayoutId(viewType: Int): Int = R.layout.item_user_subs
 
@@ -34,8 +31,7 @@ class UserSubAdapter(
     override fun getViewHolder(view: View): BaseViewHolder {
         return UserSubHolder(
             itemView = view,
-            adapter = this,
-            imageLoader = imageLoader
+            adapter = this
         )
     }
 

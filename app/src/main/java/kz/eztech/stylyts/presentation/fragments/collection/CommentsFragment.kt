@@ -15,9 +15,8 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_comments.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -33,6 +32,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CommentsPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
@@ -40,7 +40,6 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: CommentsPresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
     private lateinit var adapter: CommentsAdapter
 
     private lateinit var postAuthorAvatarShapeableImageView: ShapeableImageView
@@ -72,11 +71,10 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     override fun customizeActionBar() {
         with(fragment_comments_toolbar) {
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@CommentsFragment)
             toolbar_left_corner_action_image_button.show()
-
-            toolbar_title_text_view.text = getString(R.string.toolbar_title_comments)
             toolbar_title_text_view.show()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.toolbar_title_comments))
 
             background = ContextCompat.getDrawable(requireContext(), R.color.toolbar_bg_gray)
         }
@@ -93,7 +91,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        adapter = CommentsAdapter(imageLoader = imageLoader)
+        adapter = CommentsAdapter()
         adapter.setOnClickListener(listener = this)
     }
 
@@ -167,7 +165,6 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_comments_send_text_view -> createComment()
         }
     }
@@ -180,10 +177,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
                 lastName = postModel.author.lastName
             )
         } else {
-            imageLoader.load(
-                url = postModel.author.avatar,
-                target = postAuthorAvatarShapeableImageView
-            )
+            postModel.author.avatar.loadImageWithCenterCrop(target = postAuthorAvatarShapeableImageView)
             postAuthorShortNameTextView.hide()
         }
 
@@ -219,10 +213,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
                 lastName = outfitModel.author.lastName
             )
         } else {
-            imageLoader.load(
-                url = outfitModel.author.avatar,
-                target = postAuthorAvatarShapeableImageView
-            )
+            outfitModel.author.avatar.loadImageWithCenterCrop(target = postAuthorAvatarShapeableImageView)
             postAuthorShortNameTextView.hide()
         }
 
@@ -258,10 +249,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
                 lastName = userModel.lastName
             )
         } else {
-            imageLoader.load(
-                url = userModel.avatar,
-                target = userAvatarShapeableImageView
-            )
+            userModel.avatar.loadImageWithCenterCrop(target = userAvatarShapeableImageView)
             userShortNameTextView.hide()
         }
     }

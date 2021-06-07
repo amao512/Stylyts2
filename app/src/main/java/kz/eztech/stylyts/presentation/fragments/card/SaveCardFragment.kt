@@ -7,8 +7,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.android.synthetic.main.base_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_camera.*
-import kotlinx.android.synthetic.main.fragment_registration.*
 import kotlinx.android.synthetic.main.fragment_save_card.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -55,13 +53,12 @@ class SaveCardFragment : BaseFragment<MainActivity>(), SaveCardContract.View, Vi
     override fun customizeActionBar() {
         with(fragment_save_card_toolbar) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
-            toolbar_left_corner_action_image_button.setOnClickListener(this@SaveCardFragment)
             toolbar_left_corner_action_image_button.show()
 
-            toolbar_title_text_view.text = getString(R.string.save_card_fragment_title)
             toolbar_title_text_view.show()
-
             toolbar_bottom_border_view.hide()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.save_card_fragment_title))
         }
     }
 
@@ -115,7 +112,6 @@ class SaveCardFragment : BaseFragment<MainActivity>(), SaveCardContract.View, Vi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.fragment_save_card_month_text_view -> displayCalendar()
             R.id.fragment_save_card_year_text_view -> displayCalendar()
             R.id.fragment_save_card_month_and_year_text_view -> displayCalendar()

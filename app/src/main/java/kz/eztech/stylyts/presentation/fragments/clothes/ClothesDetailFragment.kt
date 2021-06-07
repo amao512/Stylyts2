@@ -62,11 +62,12 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         with(fragment_clothes_detail_toolbar) {
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
-            toolbar_left_corner_action_image_button.setOnClickListener(this@ClothesDetailFragment)
 
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setOnClickListener(this@ClothesDetailFragment)
+
+            customizeActionToolBar(toolbar = this, title = EMPTY_STRING)
 
             background = ContextCompat.getDrawable(requireContext(), R.color.toolbar_bg_gray)
         }
@@ -106,7 +107,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fragment_clothes_detail_description_holder_linear_layout -> showClothesDescription()
-            R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
             R.id.toolbar_right_corner_action_image_button -> CartDialog().show(childFragmentManager, EMPTY_STRING)
         }
     }

@@ -9,7 +9,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_my_data.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.helpers.DomainImageLoader
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -18,13 +17,13 @@ import kz.eztech.stylyts.presentation.contracts.profile.MyDataContract
 import kz.eztech.stylyts.presentation.presenters.profile.MyDataPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.OnClickListener {
 
     @Inject lateinit var presenter: MyDataPresenter
-    @Inject lateinit var imageLoader: DomainImageLoader
 
     private lateinit var avatarShapeableImageView: ShapeableImageView
     private lateinit var userShortNameTextView: TextView
@@ -115,10 +114,7 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
             )
         } else {
             userShortNameTextView.hide()
-            imageLoader.load(
-                url = userModel.avatar,
-                target = avatarShapeableImageView
-            )
+            userModel.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
         }
     }
 
