@@ -175,11 +175,14 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
             }
         }
 
-        return if (salePrice != 0) {
-            "-${NumberFormat.getInstance().format(salePrice)}"
-        } else {
-            NumberFormat.getInstance().format(salePrice)
-        }
+        return getString(
+            R.string.price_tenge_text_format,
+            if (salePrice != 0) {
+                "-${NumberFormat.getInstance().format(salePrice)}"
+            } else {
+                NumberFormat.getInstance().format(salePrice)
+            }
+        )
     }
 
     private fun getTotalPrice(list: List<CartEntity>): String {
@@ -231,7 +234,5 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
             token = currentActivity.getTokenFromSharedPref(),
             orderList = orderList
         )
-
-//        findNavController().navigate(R.id.action_orderingFragment_to_paymentFragment)
     }
 }

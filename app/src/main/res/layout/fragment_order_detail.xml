@@ -39,7 +39,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_size_10x"
+                android:layout_marginTop="@dimen/margin_size_16x"
                 android:layout_marginBottom="@dimen/margin_size_16x"
                 android:orientation="vertical"
                 android:paddingHorizontal="@dimen/padding_size_16x"
@@ -49,6 +49,7 @@
                     android:id="@+id/fragment_order_not_paid_status_holder_constraint_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     >
 
                     <ImageView
@@ -79,7 +80,8 @@
                         style="@style/TextRegular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/app_dark_blue_gray"
+                        android:textColor="@color/app_dark_blue_gray_half"
+                        android:visibility="gone"
                         app:layout_constraintStart_toStartOf="@id/fragment_order_detail_status_not_paid_text_view"
                         app:layout_constraintTop_toBottomOf="@id/fragment_order_detail_status_not_paid_text_view"
                         tools:text="20 May"
@@ -103,6 +105,18 @@
                         />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
+                <include
+                    android:id="@+id/fragment_order_detail_paid_status_holder"
+                    layout="@layout/item_order_status"
+                    />
+
+                <include
+                    android:id="@+id/fragment_order_detail_delivered_status_holder"
+                    layout="@layout/item_order_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_2x"
+                    />
             </LinearLayout>
 
             <View
@@ -209,6 +223,7 @@
                 />
 
             <TextView
+                android:id="@+id/fragment_order_detail_delivery_type_title_text_view"
                 style="@style/TextRegularBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

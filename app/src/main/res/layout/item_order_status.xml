@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/item_order_status_not_paid_status_icon_image_view"
+        android:layout_width="@dimen/icon_size_20x"
+        android:layout_height="@dimen/icon_size_20x"
+        android:layout_gravity="top|end"
+        android:background="@drawable/circle_light_green"
+        android:backgroundTint="@color/app_light_green"
+        android:padding="@dimen/padding_size_2x"
+        android:src="@drawable/ic_baseline_check_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/item_order_status_status_not_paid_text_view"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_10x"
+        android:textSize="@dimen/text_size_14x"
+        app:layout_constraintStart_toEndOf="@+id/item_order_status_not_paid_status_icon_image_view"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/status_paid"
+        />
+
+    <TextView
+        android:id="@+id/item_order_status_not_paid_status_date_text_view"
+        style="@style/TextRegular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/app_dark_blue_gray_half"
+        app:layout_constraintStart_toStartOf="@id/item_order_status_status_not_paid_text_view"
+        app:layout_constraintTop_toBottomOf="@id/item_order_status_status_not_paid_text_view"
+        tools:text="20 May"
+        />
+
+    <LinearLayout
+        android:id="@+id/item_order_status_to_next_squares_linear_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/item_order_status_not_paid_status_icon_image_view"
+        app:layout_constraintStart_toStartOf="@+id/item_order_status_not_paid_status_icon_image_view"
+        app:layout_constraintTop_toBottomOf="@id/item_order_status_not_paid_status_icon_image_view"
+        >
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+
+        <FrameLayout
+            android:layout_width="@dimen/little_square_size"
+            android:layout_height="@dimen/little_square_size"
+            android:layout_marginTop="@dimen/margin_size_2x"
+            android:background="@drawable/square_little_green"
+            />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

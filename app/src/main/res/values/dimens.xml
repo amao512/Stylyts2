@@ -11,6 +11,7 @@
 
     <dimen name="line_height_24x">24dp</dimen>
 
+    <dimen name="margin_size_2x">2dp</dimen>
     <dimen name="margin_size_4x">4dp</dimen>
     <dimen name="margin_size_6x">6dp</dimen>
     <dimen name="margin_size_8x">8dp</dimen>
@@ -26,6 +27,7 @@
     <dimen name="margin_size_64x">64dp</dimen>
     <dimen name="margin_size_70x">70dp</dimen>
 
+    <dimen name="padding_size_2x">2dp</dimen>
     <dimen name="padding_size_4x">4dp</dimen>
     <dimen name="padding_size_6x">6dp</dimen>
     <dimen name="padding_size_8x">8dp</dimen>
@@ -162,4 +164,6 @@
     <dimen name="tag_icon_size">30dp</dimen>
 
     <dimen name="collection_change_button_height">42dp</dimen>
+
+    <dimen name="little_square_size">2dp</dimen>
 </resources>

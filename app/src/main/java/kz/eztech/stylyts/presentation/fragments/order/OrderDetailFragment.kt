@@ -3,10 +3,12 @@ package kz.eztech.stylyts.presentation.fragments.order
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_order_detail.*
+import kotlinx.android.synthetic.main.item_order_status.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.order.OrderModel
@@ -15,8 +17,10 @@ import kz.eztech.stylyts.presentation.adapters.ordering.OrderAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderDetailContract
+import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
 import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderDetailPresenter
+import kz.eztech.stylyts.presentation.utils.extensions.getFormattedDate
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -31,7 +35,11 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     private lateinit var deliveryPriceTextView: TextView
     private lateinit var totalPriceTextView: TextView
     private lateinit var payButton: Button
+    private lateinit var deliveryTypeTitleTextView: TextView
     private lateinit var addressTextView: TextView
+    private lateinit var notPaidStatusHolder: ConstraintLayout
+    private lateinit var paidStatusHolder: ConstraintLayout
+    private lateinit var deliveredStatusHolder: ConstraintLayout
 
     companion object {
         const val ORDER_ID_KEY = "orderId"
@@ -73,7 +81,11 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
         deliveryPriceTextView = fragment_order_detail_delivery_price_text_view
         totalPriceTextView = fragment_order_detail_total_price_text_view
         payButton = fragment_order_detail_pay_button
+        deliveryTypeTitleTextView = fragment_order_detail_delivery_type_title_text_view
         addressTextView = fragment_order_detail_address_text_view
+        notPaidStatusHolder = fragment_order_not_paid_status_holder_constraint_layout
+        paidStatusHolder = fragment_order_detail_paid_status_holder as ConstraintLayout
+        deliveredStatusHolder = fragment_order_detail_delivered_status_holder as ConstraintLayout
     }
 
     override fun initializeListeners() {}
@@ -114,12 +126,19 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
             NumberFormat.getInstance().format(orderModel.price)
         )
         clothesAdapter.updateList(list = orderModel.itemObjects)
+        deliveryPriceTextView.text = "0 тг"
 
         payButton.setOnClickListener {
             val bundle = Bundle()
             bundle.putInt(PaymentFragment.ORDER_ID_KEY, orderModel.id)
 
             findNavController().navigate(R.id.action_orderDetailFragment_to_paymentFragment, bundle)
+        }
+
+        deliveryTypeTitleTextView.text = when (orderModel.delivery.deliveryType) {
+            DeliveryTypeEnum.COURIER.type -> getString(R.string.delivery)
+            DeliveryTypeEnum.SELF_PICKUP.type -> getString(R.string.delivery_pickup)
+            else -> getString(R.string.delivery_way_post)
         }
 
         addressTextView.text = getString(
@@ -129,5 +148,16 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
             orderModel.delivery.house,
             orderModel.delivery.apartment
         )
+
+        setOrderStatus(orderModel)
+    }
+
+    private fun setOrderStatus(orderModel: OrderModel) {
+        paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
+        paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+        paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
+
+        deliveredStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_delivered)
+        deliveredStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
     }
 }
