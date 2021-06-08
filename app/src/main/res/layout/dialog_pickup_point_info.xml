@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     >
 
     <include
-        android:id="@+id/fragment_pickup_ordering_toolbar"
+        android:id="@+id/dialog_pickup_point_info_toolbar"
         layout="@layout/base_toolbar"
         />
 
@@ -52,16 +53,14 @@
                 android:textColor="@color/app_gray_hint"
                 />
 
-            <EditText
-                android:id="@+id/fragment_pickup_ordering_city_edit_text"
+            <TextView
+                android:id="@+id/dialog_pickup_point_info_city_text_view"
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_size_16x"
                 android:layout_marginTop="@dimen/margin_size_4x"
                 android:background="@null"
-                android:imeOptions="actionNext"
-                android:inputType="text|textPersonName"
                 tools:text="г.Алматы"
                 />
 
@@ -83,16 +82,14 @@
                 android:textColor="@color/app_gray_hint"
                 />
 
-            <EditText
-                android:id="@+id/fragment_pickup_ordering_points_edit_text"
+            <TextView
+                android:id="@+id/dialog_pickup_point_info_points_text_view"
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_size_16x"
                 android:layout_marginTop="@dimen/margin_size_4x"
                 android:background="@null"
-                android:imeOptions="actionNext"
-                android:inputType="text|textPersonName"
                 />
 
             <View
@@ -113,16 +110,14 @@
                 android:textColor="@color/app_gray_hint"
                 />
 
-            <EditText
-                android:id="@+id/fragment_pickup_ordering_delivery_condition_edit_text"
+            <TextView
+                android:id="@+id/dialog_pickup_point_info_delivery_condition_text_view"
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_size_16x"
                 android:layout_marginTop="@dimen/margin_size_4x"
                 android:background="@null"
-                android:imeOptions="actionNext"
-                android:inputType="text|textPersonName"
                 />
 
             <View
@@ -143,15 +138,14 @@
                 android:textColor="@color/app_gray_hint"
                 />
 
-            <EditText
-                android:id="@+id/fragment_pickup_ordering_delivery_date_edit_text"
+            <TextView
+                android:id="@+id/dialog_pickup_point_info_delivery_date_text_view"
                 style="@style/TextRegular"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_size_16x"
                 android:layout_marginTop="@dimen/margin_size_4x"
                 android:background="@null"
-                android:imeOptions="actionNext"
                 />
 
             <View
@@ -179,7 +173,7 @@
                     />
 
                 <TextView
-                    android:id="@+id/fragment_pickup_ordering_time_text_view"
+                    android:id="@+id/dialog_pickup_point_info_time_text_view"
                     style="@style/TextRegular"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

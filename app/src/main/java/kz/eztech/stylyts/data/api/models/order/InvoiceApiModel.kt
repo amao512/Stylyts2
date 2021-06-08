@@ -1,8 +1,11 @@
 package kz.eztech.stylyts.data.api.models.order
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class InvoiceApiModel(
     @SerializedName("operation_url")
     @Expose
@@ -13,4 +16,4 @@ data class InvoiceApiModel(
     @SerializedName("invoice_id")
     @Expose
     val invoiceId: String?
-)
+) : Parcelable

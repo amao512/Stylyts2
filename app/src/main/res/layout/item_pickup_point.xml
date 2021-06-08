@@ -20,12 +20,13 @@
             android:layout_width="@dimen/icon_size_36x"
             android:layout_height="@dimen/icon_size_36x"
             android:src="@drawable/ic_box"
+            android:visibility="gone"
             />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_size_20x"
+            android:layout_marginStart="@dimen/margin_size_10x"
             android:orientation="vertical"
             >
 

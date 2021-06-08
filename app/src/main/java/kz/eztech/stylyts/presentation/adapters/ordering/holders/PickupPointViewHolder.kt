@@ -26,6 +26,7 @@ class PickupPointViewHolder(
         item as AddressModel
 
         initializeViews()
+        processAddress(item, position)
     }
 
     private fun initializeViews() {
@@ -35,6 +36,18 @@ class PickupPointViewHolder(
             addressTextView = item_pickup_address_text_view
             fittingAvailableTextView = item_pickup_fitting_available_text_view
             timeTextView = item_pickup_time_text_view
+        }
+    }
+
+    private fun processAddress(
+        address: AddressModel,
+        position: Int
+    ) {
+        titleTextView.text = address.user
+        (address.city + ", " + address.street).also { addressTextView.text = it }
+
+        itemView.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, address)
         }
     }
 }

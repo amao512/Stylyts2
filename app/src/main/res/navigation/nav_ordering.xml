@@ -140,6 +140,10 @@
             android:id="@+id/action_pickupPointsFragment_to_pickupOrderingFragment"
             app:destination="@id/pickupOrderingFragment"
             />
+        <action
+            android:id="@+id/action_pickupPointsFragment_to_orderingFragment"
+            app:destination="@id/orderingFragment"
+            />
     </fragment>
 
     <fragment

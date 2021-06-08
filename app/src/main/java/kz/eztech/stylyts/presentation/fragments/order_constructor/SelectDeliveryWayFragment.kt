@@ -8,27 +8,38 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_select_delivery_way.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
+import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
+import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.domain.models.order.DeliveryWayModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryWayAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.contracts.ordering.SelectDeliveryWayContract
+import kz.eztech.stylyts.presentation.enums.ordering.PaymentTypeEnum
 import kz.eztech.stylyts.presentation.fragments.order_constructor.courier.CourierOrderingFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.post.PostOrderingFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.SelectPickupFittingWayFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.presentation.presenters.ordering.SelectDeliveryWayPresenter
+import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import java.util.*
+import javax.inject.Inject
 
-class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener,
+class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWayContract.View, View.OnClickListener,
     UniversalViewClickListener {
 
+    @Inject lateinit var presenter: SelectDeliveryWayPresenter
     private lateinit var deliveryWayAdapter: DeliveryWayAdapter
 
     private lateinit var cityEditText: EditText
     private lateinit var recyclerView: RecyclerView
+
+    private var orderList = ArrayList<OrderCreateApiModel>()
 
     companion object {
         const val CUSTOMER_KEY = "customer"
@@ -56,9 +67,13 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
         }
     }
 
-    override fun initializeDependency() {}
+    override fun initializeDependency() {
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
+    }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() {
+        presenter.attach(view = this)
+    }
 
     override fun initializeArguments() {}
 
@@ -77,9 +92,12 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
 
     override fun processPostInitialization() {
         deliveryWayAdapter.updateList(list = getDeliveryWayList())
+        presenter.getGoodsFromCart()
     }
 
-    override fun disposeRequests() {}
+    override fun disposeRequests() {
+        presenter.disposeRequests()
+    }
 
     override fun displayMessage(msg: String) {
         displayToast(msg)
@@ -104,6 +122,32 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
     ) {
         when (item) {
             is DeliveryWayModel -> onDeliveryWayClicked(item)
+        }
+    }
+
+    override fun processGoods(list: List<CartEntity>) {
+        val customer = arguments?.getParcelable<CustomerApiModel>(CUSTOMER_KEY)
+
+        list.map { cart ->
+            val order = orderList.find { it.ownerId == cart.ownerId }
+            val ids: MutableList<Int> = mutableListOf()
+
+            if (order != null) {
+                ids.addAll(order.itemObjects)
+                ids.add(cart.id!!)
+
+                order.itemObjects = ids
+            } else {
+                val newOrder = OrderCreateApiModel(
+                    itemObjects = arrayListOf(cart.id!!),
+                    paymentType = EMPTY_STRING,
+                    customer = customer
+                )
+
+                newOrder.ownerId = cart.ownerId ?: 0
+
+                orderList.add(newOrder)
+            }
         }
     }
 
@@ -139,12 +183,11 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
 
     private fun onDeliveryWayClicked(deliveryWayModel: DeliveryWayModel) {
         val bundle = Bundle()
-        val customer = arguments?.getParcelable<CustomerApiModel>(CUSTOMER_KEY)
 
         when (deliveryWayModel.id) {
             1 -> {
                 bundle.putString(CourierOrderingFragment.CITY_KEY, cityEditText.text.toString())
-                bundle.putParcelable(CourierOrderingFragment.CUSTOMER_KEY, customer)
+                bundle.putParcelableArrayList(CourierOrderingFragment.ORDER_KEY, orderList)
 
                 findNavController().navigate(
                     R.id.action_selectDeliveryWayFragment_to_courierOrderingFragment,
@@ -153,7 +196,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
             }
             2 -> {
                 bundle.putString(SelectPickupFittingWayFragment.CITY_KEY, cityEditText.text.toString())
-                bundle.putParcelable(SelectPickupFittingWayFragment.CUSTOMER_KEY, customer)
+                bundle.putParcelableArrayList(SelectPickupFittingWayFragment.ORDER_KEY, orderList)
 
                 findNavController().navigate(
                     R.id.action_selectDeliveryWayFragment_to_selectPickupFittingWayFragment,
@@ -162,7 +205,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), EmptyContract.Vi
             }
             3 -> {
                 bundle.putString(PostOrderingFragment.CITY_KEY, cityEditText.text.toString())
-                bundle.putParcelable(PostOrderingFragment.CUSTOMER_KEY, customer)
+                bundle.putParcelableArrayList(PostOrderingFragment.ORDER_KEY, orderList)
 
                 findNavController().navigate(
                     R.id.action_selectDeliveryWayFragment_to_postOrderingFragment,

@@ -393,4 +393,7 @@
     <string name="status_not_paid">Заказ не оплачен</string>
     <string name="pay">Оплатить</string>
     <string name="address_detail_text_format">Адрес: %s; %s; дом %s; квартира %s</string>
+    <string name="address_short_detail_text_format">%s; %s; %s</string>
+    <string name="address_selected">Адрес выбран</string>
+    <string name="address_not_selected">Адрес не выбран</string>
 </resources>

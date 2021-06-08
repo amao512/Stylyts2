@@ -10,8 +10,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
-import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.domain.models.order.OrderCreateModel
@@ -22,7 +20,6 @@ import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
 import kz.eztech.stylyts.presentation.enums.ordering.PaymentTypeEnum
 import kz.eztech.stylyts.presentation.fragments.card.CardFragment
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderingPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
@@ -42,15 +39,14 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
     private lateinit var completeButton: Button
 
     private var paymentType = CASH_PAYMENT
-    private var orderList: MutableList<OrderCreateApiModel> = mutableListOf()
+    private var orderList = ArrayList<OrderCreateApiModel>()
     private var createdOrderList: MutableList<OrderCreateModel> = mutableListOf()
 
     companion object {
         private const val CASH_PAYMENT = 1
         private const val CARD_PAYMENT = 2
 
-        const val CUSTOMER_KEY = "customer"
-        const val DELIVERY_KEY = "delivery"
+        const val ORDER_KEY = "order"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_ordering
@@ -75,7 +71,16 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         presenter.attach(view = this)
     }
 
-    override fun initializeArguments() {}
+    override fun initializeArguments() {
+        arguments?.let {
+            if (it.containsKey(ORDER_KEY)) {
+                orderList.clear()
+                it.getParcelableArrayList<OrderCreateApiModel>(ORDER_KEY)?.map { order ->
+                    orderList.add(order)
+                }
+            }
+        }
+    }
 
     override fun initializeViewsData() {
         findNavController().currentBackStackEntry?.savedStateHandle
@@ -143,32 +148,6 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
         discountPriceTextView.text = getSalePrice(list)
         totalPriceTextView.text = getTotalPrice(list)
         completeButton.text = getString(R.string.ordering_button_text_format, getTotalPrice(list))
-
-        val delivery = arguments?.getParcelable<DeliveryCreateApiModel>(DELIVERY_KEY)
-        val customer = arguments?.getParcelable<CustomerApiModel>(CUSTOMER_KEY)
-
-        list.map { cart ->
-            val order = orderList.find { it.ownerId == cart.ownerId }
-            val ids: MutableList<Int> = mutableListOf()
-
-            if (order != null) {
-                ids.addAll(order.itemObjects)
-                ids.add(cart.id!!)
-
-                order.itemObjects = ids
-            } else {
-                val newOrder = OrderCreateApiModel(
-                    itemObjects = arrayListOf(cart.id!!),
-                    paymentType = EMPTY_STRING,
-                    customer = customer,
-                    delivery = delivery
-                )
-
-                newOrder.ownerId = cart.ownerId ?: 0
-
-                orderList.add(newOrder)
-            }
-        }
     }
 
     override fun processSuccessCreating(orderModel: OrderCreateModel) {

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_size_16x"
+    >
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_white_gray_corners"
+        >
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/item_shop_point_user_avatar_shapeable_image_view"
+            android:layout_width="@dimen/small_image_size"
+            android:layout_height="@dimen/small_image_size"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            tools:src="@drawable/jacket"
+            />
+
+        <TextView
+            android:id="@+id/item_shop_point_user_short_name_text_view"
+            style="@style/TextRegular"
+            android:layout_width="@dimen/small_image_size"
+            android:layout_height="@dimen/small_image_size"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_gray"
+            android:gravity="center"
+            tools:text="ET"
+            />
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_size_16x"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/item_shop_point_shop_name_text_view"
+            style="@style/TextRegularBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_14x"
+            tools:text="Shop Name"
+            />
+
+        <TextView
+            android:id="@+id/item_shop_point_address_status_text_view"
+            style="@style/TextRegular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_light_orange"
+            android:textSize="@dimen/text_size_14x"
+            tools:text="Адрес не выбран"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/item_shop_point_checked_image_view"
+        android:layout_width="@dimen/icon_size_20x"
+        android:layout_height="@dimen/icon_size_20x"
+        android:background="@drawable/circle_light_green"
+        android:src="@drawable/ic_baseline_check_24"
+        android:visibility="gone"
+        />
+</LinearLayout>

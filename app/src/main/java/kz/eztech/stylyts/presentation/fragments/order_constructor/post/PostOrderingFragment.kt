@@ -25,7 +25,7 @@ class PostOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
 
     companion object {
         const val CITY_KEY = "city"
-        const val CUSTOMER_KEY = "customer"
+        const val ORDER_KEY = "order"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_post_ordering

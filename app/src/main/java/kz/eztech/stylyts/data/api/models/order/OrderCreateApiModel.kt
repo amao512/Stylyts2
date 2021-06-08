@@ -1,8 +1,11 @@
 package kz.eztech.stylyts.data.api.models.order
 
+import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class OrderCreateApiModel(
     @SerializedName("id")
     @Expose
@@ -21,8 +24,8 @@ data class OrderCreateApiModel(
     val customer: CustomerApiModel?,
     @SerializedName("delivery")
     @Expose
-    val delivery: DeliveryCreateApiModel?,
-) {
+    var delivery: DeliveryCreateApiModel? = null,
+) : Parcelable {
     var ownerId: Int = 0
     var created = false
 }

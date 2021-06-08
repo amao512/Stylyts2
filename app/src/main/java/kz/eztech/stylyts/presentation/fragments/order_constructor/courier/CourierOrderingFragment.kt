@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_courtier_ordering.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
+import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.domain.models.order.DeliveryConditionModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryConditionAdapter
@@ -36,7 +37,7 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
 
     companion object {
         const val CITY_KEY = "city"
-        const val CUSTOMER_KEY = "customer"
+        const val ORDER_KEY = "order"
     }
 
     override fun onResume() {
@@ -146,12 +147,13 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
                 apartment = apartmentEditText.text.toString(),
                 deliveryType = DeliveryTypeEnum.COURIER.type
             )
+            val orders = arguments?.getParcelableArrayList<OrderCreateApiModel>(OrderingFragment.ORDER_KEY)
 
-            bundle.putParcelable(
-                OrderingFragment.CUSTOMER_KEY, arguments?.getParcelable(
-                    CUSTOMER_KEY
-                ))
-            bundle.putParcelable(OrderingFragment.DELIVERY_KEY, delivery)
+            orders?.map {
+                it.delivery = delivery
+            }
+
+            bundle.putParcelableArrayList(OrderingFragment.ORDER_KEY, orders)
 
             findNavController().navigate(
                 R.id.action_courierOrderingFragment_to_orderingFragment,

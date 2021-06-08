@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup
 
+import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import androidx.navigation.fragment.findNavController
@@ -13,6 +14,7 @@ import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryWayAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.enums.ordering.DeliveryConditionEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -29,7 +31,7 @@ class SelectPickupFittingWayFragment : BaseFragment<MainActivity>(), EmptyContra
 
     companion object {
         const val CITY_KEY = "city"
-        const val CUSTOMER_KEY = "customer"
+        const val ORDER_KEY = "order"
     }
 
     override fun onResume() {
@@ -42,7 +44,7 @@ class SelectPickupFittingWayFragment : BaseFragment<MainActivity>(), EmptyContra
     override fun getContractView(): BaseView = this
 
     override fun customizeActionBar() {
-        with(fragment_pickup_ordering_toolbar) {
+        with(dialog_pickup_point_info_toolbar) {
             toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.setOnClickListener(this@SelectPickupFittingWayFragment)
             toolbar_left_corner_action_image_button.show()
@@ -103,8 +105,28 @@ class SelectPickupFittingWayFragment : BaseFragment<MainActivity>(), EmptyContra
         item: Any?
     ) {
         when (item) {
-            is DeliveryWayModel -> findNavController().navigate(R.id.action_pickupOrderingFragment_to_pickupPointsFragment)
+            is DeliveryWayModel -> onDeliveryWayClicked(item)
         }
+    }
+
+    private fun onDeliveryWayClicked(deliveryWayModel: DeliveryWayModel) {
+        val bundle = Bundle()
+        bundle.putParcelableArrayList(
+            PickupPointsFragment.ORDER_KEY,
+            arguments?.getParcelableArrayList(ORDER_KEY)
+        )
+        bundle.putString(
+            PickupPointsFragment.DELIVERY_CONDITION_KEY,
+            when (deliveryWayModel.id) {
+                1 -> DeliveryConditionEnum.WITH_FITTING.condition
+                else -> DeliveryConditionEnum.WITHOUT_FITTING.condition
+            }
+        )
+
+        findNavController().navigate(
+            R.id.action_pickupOrderingFragment_to_pickupPointsFragment,
+            bundle
+        )
     }
 
     private fun getFittingWayList(): List<DeliveryWayModel> {

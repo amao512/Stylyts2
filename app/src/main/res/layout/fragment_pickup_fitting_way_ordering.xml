@@ -10,7 +10,7 @@
     >
 
     <include
-        android:id="@+id/fragment_pickup_ordering_toolbar"
+        android:id="@+id/dialog_pickup_point_info_toolbar"
         layout="@layout/base_toolbar"
         />
 
