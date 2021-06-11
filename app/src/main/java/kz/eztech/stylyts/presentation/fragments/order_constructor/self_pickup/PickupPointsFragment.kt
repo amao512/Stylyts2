@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup
 
 import android.os.Bundle
 import android.view.View
+import android.view.ViewTreeObserver
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
@@ -11,7 +12,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
+import kotlinx.android.synthetic.main.fragment_collection_constructor.*
 import kotlinx.android.synthetic.main.fragment_pickup_points.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -136,6 +139,8 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
                 )
             }
         }
+
+        initializeBottomSheetBehaviorItems()
     }
 
     override fun disposeRequests() {}
@@ -203,20 +208,15 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         currentMap = googleMap
 
         val almaty = getLocationFromAddress(requireContext(), "Алматы, проспект Назарбаева 120")
-        val nursultan = getLocationFromAddress(requireContext(), "Нур-Султан")
-        val taraz = getLocationFromAddress(requireContext(), "Тараз, проспект Абая 12")
-
-        nursultan?.let {
-            currentMap.addMarker(MarkerOptions().position(it).title("Marker in Nursultan"))
-        }
+        val almaty2 = getLocationFromAddress(requireContext(), "Алматы, проспект Абая 10")
 
         almaty?.let {
-            currentMap.addMarker(MarkerOptions().position(it).title("Marker in Almaty"))
-            currentMap.moveCamera(CameraUpdateFactory.newLatLng(it))
+            currentMap.addMarker(MarkerOptions().position(it).title("Алматы, проспект Назарбаева 120"))
+            currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 12.0f))
         }
 
-        taraz?.let {
-            currentMap.addMarker(MarkerOptions().position(it).title("Marker in Тараз"))
+        almaty2?.let {
+            currentMap.addMarker(MarkerOptions().position(it).title("Алматы, проспект Абая 10"))
         }
     }
 
@@ -324,5 +324,19 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         }
 
         changeNextButtonColor()
+    }
+
+    private fun initializeBottomSheetBehaviorItems() {
+        val bottomSheetBehavior =
+            BottomSheetBehavior.from(fragment_pickup_points_addresses_bottom_behavior)
+
+        view?.viewTreeObserver
+            ?.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    bottomSheetBehavior.peekHeight = fragment_pickup_points_bottom_view.height
+
+                    view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            })
     }
 }

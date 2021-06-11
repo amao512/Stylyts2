@@ -94,19 +94,23 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
 
     private fun onNextClick() {
         if (checkInputValidation()) {
-            val bundle = Bundle()
-            val customer = CustomerApiModel(
-                firstName = nameEditText.text.toString(),
-                lastName = surnameEditText.text.toString(),
-                phoneNumber = phoneEditText.text!!.toString(),
-                email = emailEditText.text.toString()
-            )
+            if (!checkEmailValidation(email = emailEditText.text.toString())) {
+                displayMessage(msg = "Ваш email не валидный")
+            } else {
+                val bundle = Bundle()
+                val customer = CustomerApiModel(
+                    firstName = nameEditText.text.toString(),
+                    lastName = surnameEditText.text.toString(),
+                    phoneNumber = phoneEditText.text!!.toString(),
+                    email = emailEditText.text.toString()
+                )
 
-            bundle.putParcelable(SelectDeliveryWayFragment.CUSTOMER_KEY, customer)
-            findNavController().navigate(
-                R.id.action_customerInfoFragment_to_selectDeliveryWayFragment,
-                bundle
-            )
+                bundle.putParcelable(SelectDeliveryWayFragment.CUSTOMER_KEY, customer)
+                findNavController().navigate(
+                    R.id.action_customerInfoFragment_to_selectDeliveryWayFragment,
+                    bundle
+                )
+            }
         }
     }
 
@@ -122,6 +126,17 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
             displayToast(msg = getString(R.string.empty_fields_message))
         }
 
+        return flag
+    }
+
+    private fun checkEmailValidation(email: String): Boolean {
+        var flag = false
+
+        email.map {
+            if (it == '@') {
+                flag = true
+            }
+        }
         return flag
     }
 }
