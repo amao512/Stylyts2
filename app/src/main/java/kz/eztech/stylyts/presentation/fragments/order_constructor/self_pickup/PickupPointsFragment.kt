@@ -6,6 +6,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_pickup_points.*
 import kz.eztech.stylyts.R
@@ -29,12 +34,13 @@ import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragme
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.PickupPointsPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.extensions.getLocationFromAddress
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.View,
-    UniversalViewClickListener, View.OnClickListener, DialogChooserListener {
+    UniversalViewClickListener, View.OnClickListener, DialogChooserListener, OnMapReadyCallback {
 
     @Inject
     lateinit var presenter: PickupPointsPresenter
@@ -44,6 +50,7 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     private lateinit var searchView: SearchView
     private lateinit var recyclerView: RecyclerView
 
+    private lateinit var currentMap: GoogleMap
     private var orderList = ArrayList<OrderCreateApiModel>()
     private var shopList = ArrayList<ShopPointModel>()
 
@@ -72,6 +79,13 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
             }
             changeNextButtonColor()
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_pickup_points_map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     override fun initializeDependency() {
@@ -183,6 +197,27 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     override fun processPoints(resultsModel: ResultsModel<AddressModel>) {
         pickupPointsAdapter.updateList(list = resultsModel.results)
         setCurrentListCondition(isPoints = true)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        currentMap = googleMap
+
+        val almaty = getLocationFromAddress(requireContext(), "Алматы, проспект Назарбаева 120")
+        val nursultan = getLocationFromAddress(requireContext(), "Нур-Султан")
+        val taraz = getLocationFromAddress(requireContext(), "Тараз, проспект Абая 12")
+
+        nursultan?.let {
+            currentMap.addMarker(MarkerOptions().position(it).title("Marker in Nursultan"))
+        }
+
+        almaty?.let {
+            currentMap.addMarker(MarkerOptions().position(it).title("Marker in Almaty"))
+            currentMap.moveCamera(CameraUpdateFactory.newLatLng(it))
+        }
+
+        taraz?.let {
+            currentMap.addMarker(MarkerOptions().position(it).title("Marker in Тараз"))
+        }
     }
 
     private fun onShopPointClicked(shopPointModel: ShopPointModel) {

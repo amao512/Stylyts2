@@ -53,6 +53,8 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun customizeActionBar() {
         toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_send_message)
+        toolbar_right_corner_action_image_button.setOnClickListener(this)
+        toolbar_right_corner_action_image_button.show()
 
         toolbar_title_text_view.text = getString(R.string.app_name)
         toolbar_title_text_view.show()
@@ -130,7 +132,8 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_right_corner_action_image_button -> {
-                findNavController().navigate(R.id.action_mainFragment_to_chatsFragment)
+                findNavController().navigate(R.id.action_mainFragment_to_mapsFragment)
+//                findNavController().navigate(R.id.action_mainFragment_to_chatsFragment)
             }
         }
     }

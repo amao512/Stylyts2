@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.secrets_gradle_plugin' version '0.5'
 }
 
 repositories {
@@ -73,6 +74,9 @@ android {
             }
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -100,6 +104,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     implementation 'com.squareup.okhttp3:okhttp:4.9.0'
     implementation 'javax.inject:javax.inject:1'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
 
     //Dagger
     def dagger_version = "2.35.1"
@@ -179,6 +184,10 @@ dependencies {
 
     // Masked Edit Text
     implementation 'com.github.santalu:maskara:1.0.0'
+
+    // Map
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

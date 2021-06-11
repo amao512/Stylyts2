@@ -44,6 +44,10 @@
             android:id="@+id/action_mainFragment_to_nav_shop_profile"
             app:destination="@id/nav_shop_profile"
             />
+        <action
+            android:id="@+id/action_mainFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment"
+            />
     </fragment>
 
     <fragment
@@ -132,5 +136,11 @@
             />
     </fragment>
     <include app:graph="@navigation/nav_shop_profile" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.map.MapsFragment"
+        android:label="fragment_maps"
+        tools:layout="@layout/fragment_maps"
+        />
 
 </navigation>

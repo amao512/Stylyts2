@@ -6,11 +6,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    tools:context=".presentation.fragments.order_constructor.self_pickup.PickupPointsFragment"
     >
 
     <include
         android:id="@+id/fragment_pickup_points_toolbar"
         layout="@layout/base_toolbar"
+        />
+
+    <fragment
+        android:id="@+id/fragment_pickup_points_map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         />
 
     <androidx.appcompat.widget.SearchView
