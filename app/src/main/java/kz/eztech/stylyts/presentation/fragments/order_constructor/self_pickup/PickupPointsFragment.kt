@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
@@ -56,6 +57,7 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     private lateinit var currentMap: GoogleMap
     private var orderList = ArrayList<OrderCreateApiModel>()
     private var shopList = ArrayList<ShopPointModel>()
+    private var latLngList = ArrayList<LatLng>()
 
     companion object {
         const val ORDER_KEY = "order"
@@ -201,11 +203,26 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
 
     override fun processPoints(resultsModel: ResultsModel<AddressModel>) {
         pickupPointsAdapter.updateList(list = resultsModel.results)
+
+        resultsModel.results.map {
+            getLocationFromAddress(
+                context = requireContext(),
+                address = "${it.city}, ${it.street}"
+            )?.let { latLng ->
+                latLngList.add(latLng)
+            }
+        }
+
         setCurrentListCondition(isPoints = true)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         currentMap = googleMap
+
+        latLngList.map {
+            currentMap.addMarker(MarkerOptions().position(it).title(it.toString()))
+            currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 12.0f))
+        }
 
         val almaty = getLocationFromAddress(requireContext(), "Алматы, проспект Назарбаева 120")
         val almaty2 = getLocationFromAddress(requireContext(), "Алматы, проспект Абая 10")
