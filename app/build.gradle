@@ -47,13 +47,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField ("String", "BASE_URL", '"http://178.170.221.31/api/v1/"')
             buildConfigField ("String", "REMOVE_BG_API_KEY", '"8zkRHmfJBESQPgZko4BcUvuo"')
-            buildConfigField ("String", "PAYMENT_BACK_URL", '"https://www.test.wooppay.com/"')
+            buildConfigField ("String", "PAYMENT_BACK_URL", '"https://www.stylyts.com/"')
         }
         debug{
             debuggable true
             buildConfigField ("String", "BASE_URL", '"http://178.170.221.31/api/v1/"')
             buildConfigField ("String", "REMOVE_BG_API_KEY", '"8zkRHmfJBESQPgZko4BcUvuo"')
-            buildConfigField ("String", "PAYMENT_BACK_URL", '"https://www.test.wooppay.com/"')
+            buildConfigField ("String", "PAYMENT_BACK_URL", '"https://www.stylyts.com/"')
         }
         staging {
             debuggable true
