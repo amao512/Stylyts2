@@ -39,5 +39,8 @@ data class AddressApiModel(
     val postalCode: String?,
     @SerializedName("comment")
     @Expose
-    val comment: String?
+    val comment: String?,
+    @SerializedName("house")
+    @Expose
+    val house: String?
 )

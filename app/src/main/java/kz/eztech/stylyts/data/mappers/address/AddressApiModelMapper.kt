@@ -25,7 +25,8 @@ class AddressApiModelMapper @Inject constructor() {
                 floor = it.floor ?: EMPTY_STRING,
                 doorPhone = it.doorPhone ?: EMPTY_STRING,
                 postalCode = it.postalCode ?: EMPTY_STRING,
-                comment = it.comment ?: EMPTY_STRING
+                comment = it.comment ?: EMPTY_STRING,
+                house = it.house ?: EMPTY_STRING
             )
         }
     }
@@ -42,7 +43,8 @@ class AddressApiModelMapper @Inject constructor() {
             floor = data?.floor ?: EMPTY_STRING,
             doorPhone = data?.doorPhone ?: EMPTY_STRING,
             postalCode = data?.postalCode ?: EMPTY_STRING,
-            comment = data?.comment ?: EMPTY_STRING
+            comment = data?.comment ?: EMPTY_STRING,
+            house = data?.house ?: EMPTY_STRING
         )
     }
 }

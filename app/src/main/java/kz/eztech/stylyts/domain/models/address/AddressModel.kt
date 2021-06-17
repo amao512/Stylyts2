@@ -18,7 +18,8 @@ data class AddressModel(
     val floor: String,
     val doorPhone: String,
     val postalCode: String,
-    val comment: String
+    val comment: String,
+    val house: String
 ) : Parcelable {
     var isDefaultAddress: Boolean = false
 }
