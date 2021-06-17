@@ -28,7 +28,8 @@ class AddressRepository @Inject constructor(
             country = data["country"] as String,
             city = data["city"] as String,
             street = data["street"] as String,
-            postalCode = data["postal_code"] as String
+            postalCode = data["postal_code"] as String,
+            house = data["house"] as String
         ).map {
             when (it.isSuccessful) {
                 true -> addressApiModelMapper.map(data = it.body())

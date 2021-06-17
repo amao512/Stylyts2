@@ -19,6 +19,7 @@ interface AddressApi {
         @Field("country") country: String,
         @Field("city") city: String,
         @Field("street") street: String,
+        @Field("house") house: String,
         @Field("postal_code") postalCode: String
     ) : Single<Response<AddressApiModel>>
 

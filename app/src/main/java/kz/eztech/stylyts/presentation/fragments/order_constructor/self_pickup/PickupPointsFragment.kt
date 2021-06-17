@@ -277,7 +277,7 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         return DeliveryCreateApiModel(
             city = addressModel.city,
             street = addressModel.street,
-            house = "ddfgd",
+            house = addressModel.house,
             apartment = addressModel.apartment,
             deliveryType = DeliveryTypeEnum.SELF_PICKUP.type
         )

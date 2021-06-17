@@ -243,6 +243,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
         data["country"] = edit_text_fragment_address_profile_country.text.toString()
         data["postal_code"] = edit_text_fragment_address_profile_post.text.toString()
+        data["house"] = edit_text_fragment_address_profile_house.text.toString()
 
         when {
             addressList.size == 1 -> {
