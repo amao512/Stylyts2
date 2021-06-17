@@ -157,16 +157,25 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     }
 
     private fun setOrderStatus(orderModel: OrderModel) {
-        if (orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status && orderModel.status == OrderStatusEnum.ACTIVE.status) {
+        val isActiveStatus = orderModel.status == OrderStatusEnum.ACTIVE.status
+        val isOrderCompleted = orderModel.status == OrderStatusEnum.COMPLETED.status
+
+        val isPaymentPendingStatus = orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status
+        val isPaymentNewStatus = orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
+        val isPaymentPaidStatus = orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status
+
+        val isDeliveredStatus = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status
+
+        if (isPaymentPaidStatus && isActiveStatus) {
             paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
             paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
             paidStatusHolder.show()
-        } else if (orderModel.status == OrderStatusEnum.COMPLETED.status && orderModel.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status) {
+        } else if (isOrderCompleted && isDeliveredStatus) {
             paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
             deliveredStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_delivered)
             deliveredStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
             deliveredStatusHolder.show()
-        } else if (orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status && orderModel.status == OrderStatusEnum.ACTIVE.status) {
+        } else if ((isPaymentPendingStatus && isActiveStatus) || (isPaymentNewStatus && isActiveStatus)) {
             paidStatusHolder.hide()
             deliveredStatusHolder.hide()
             notPaidStatusHolder.show()
