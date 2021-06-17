@@ -4,6 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
+import kz.eztech.stylyts.BuildConfig
 
 @Parcelize
 data class OrderCreateApiModel(
@@ -25,6 +26,9 @@ data class OrderCreateApiModel(
     @SerializedName("delivery")
     @Expose
     var delivery: DeliveryCreateApiModel? = null,
+    @SerializedName("back_url")
+    @Expose
+    val backUrl: String? = BuildConfig.PAYMENT_BACK_URL
 ) : Parcelable {
     var ownerId: Int = 0
     var created = false
