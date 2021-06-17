@@ -11,7 +11,8 @@ class InvoiceApiModelMapper @Inject constructor() {
         return InvoiceModel(
             operationId = data?.operationId ?: EMPTY_STRING,
             operationUrl = data?.operationUrl ?: EMPTY_STRING,
-            invoiceId = data?.invoiceId ?: EMPTY_STRING
+            invoiceId = data?.invoiceId ?: EMPTY_STRING,
+            paymentStatus = data?.paymentStatus ?: EMPTY_STRING
         )
     }
 }

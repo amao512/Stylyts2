@@ -17,10 +17,14 @@ import kz.eztech.stylyts.presentation.adapters.ordering.OrderAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderDetailContract
+import kz.eztech.stylyts.presentation.enums.ordering.DeliveryStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
+import kz.eztech.stylyts.presentation.enums.ordering.OrderStatusEnum
+import kz.eztech.stylyts.presentation.enums.ordering.PaymentStatusEnum
 import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderDetailPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.getFormattedDate
+import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -153,11 +157,19 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     }
 
     private fun setOrderStatus(orderModel: OrderModel) {
-        paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
-        paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-        paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
-
-        deliveredStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_delivered)
-        deliveredStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+        if (orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status && orderModel.status == OrderStatusEnum.ACTIVE.status) {
+            paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
+            paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            paidStatusHolder.show()
+        } else if (orderModel.status == OrderStatusEnum.COMPLETED.status && orderModel.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status) {
+            paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
+            deliveredStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_delivered)
+            deliveredStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            deliveredStatusHolder.show()
+        } else if (orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status && orderModel.status == OrderStatusEnum.ACTIVE.status) {
+            paidStatusHolder.hide()
+            deliveredStatusHolder.hide()
+            notPaidStatusHolder.show()
+        }
     }
 }

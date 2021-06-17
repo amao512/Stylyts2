@@ -15,5 +15,8 @@ data class InvoiceApiModel(
     val operationId: String?,
     @SerializedName("invoice_id")
     @Expose
-    val invoiceId: String?
+    val invoiceId: String?,
+    @SerializedName("payment_status")
+    @Expose
+    val paymentStatus: String?
 ) : Parcelable
