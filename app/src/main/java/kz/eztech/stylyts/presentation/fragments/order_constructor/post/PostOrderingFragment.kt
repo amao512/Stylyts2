@@ -1,16 +1,22 @@
 package kz.eztech.stylyts.presentation.fragments.order_constructor.post
 
+import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_courtier_ordering.*
 import kotlinx.android.synthetic.main.fragment_post_ordering.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
+import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
+import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -42,6 +48,10 @@ class PostOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
             toolbar_title_text_view.show()
 
             toolbar_right_text_text_view.text = getString(R.string.next)
+            toolbar_right_text_text_view.setTextColor(
+                ContextCompat.getColor(requireContext(), R.color.app_light_orange)
+            )
+            toolbar_right_text_text_view.setOnClickListener(this@PostOrderingFragment)
             toolbar_right_text_text_view.show()
 
             toolbar_bottom_border_view.hide()
@@ -85,7 +95,46 @@ class PostOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.toolbar_right_text_text_view -> {}
+            R.id.toolbar_right_text_text_view -> onNextClick()
         }
+    }
+
+    private fun onNextClick() {
+        if (checkEditTextToValidation()) {
+            val bundle = Bundle()
+            val delivery = DeliveryCreateApiModel(
+                city = cityEditText.text.toString(),
+                street = streetEditText.text.toString(),
+                house = houseEditText.text.toString(),
+                apartment = apartmentEditText.text.toString(),
+                deliveryType = DeliveryTypeEnum.POST.type
+            )
+            val orders = arguments?.getParcelableArrayList<OrderCreateApiModel>(ORDER_KEY)
+
+            orders?.map {
+                it.delivery = delivery
+            }
+
+            bundle.putParcelableArrayList(OrderingFragment.ORDER_KEY, orders)
+
+            findNavController().navigate(R.id.action_postOrderingFragment_to_orderingFragment, bundle)
+        }
+    }
+
+    private fun checkEditTextToValidation(): Boolean {
+        var flag = true
+
+        if (cityEditText.text.isBlank() || streetEditText.text.isBlank() ||
+            houseEditText.text.isBlank() || apartmentEditText.text.isBlank()
+            || postIndexEditText.text.isBlank()
+        ) {
+            flag = false
+        }
+
+        if (!flag) {
+            displayToast(msg = getString(R.string.empty_fields_message))
+        }
+
+        return flag
     }
 }

@@ -11,10 +11,12 @@ class PaymentWebViewClient(
     private val paymentListener: PaymentListener
 ) : WebViewClient() {
 
+    private val testUrl = "https://www.stylyts.com/"
+
     override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
         view.loadUrl(request.url.toString())
 
-        if (request.url.equals(Uri.parse(RestConstants.PAYMENT_BACK_URL))) {
+        if (request.url.equals(Uri.parse(RestConstants.PAYMENT_BACK_URL)) || request.url.equals(Uri.parse(testUrl))) {
             paymentListener.onSuccessNavigate()
         }
 
@@ -24,7 +26,7 @@ class PaymentWebViewClient(
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
         view.loadUrl(url)
 
-        if (url == RestConstants.PAYMENT_BACK_URL) {
+        if (url == RestConstants.PAYMENT_BACK_URL || url == testUrl) {
             paymentListener.onSuccessNavigate()
         }
 

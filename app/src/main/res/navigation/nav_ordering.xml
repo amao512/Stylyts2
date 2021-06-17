@@ -129,7 +129,12 @@
         android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.post.PostOrderingFragment"
         android:label="fragment_post_ordering"
         tools:layout="@layout/fragment_post_ordering"
-        />
+        >
+        <action
+            android:id="@+id/action_postOrderingFragment_to_orderingFragment"
+            app:destination="@id/orderingFragment"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/pickupPointsFragment"

@@ -186,7 +186,7 @@
                 android:layout_marginTop="@dimen/margin_size_4x"
                 android:background="@null"
                 android:imeOptions="actionNext"
-                android:inputType="text|textPersonName"
+                android:inputType="numberDecimal"
                 />
 
             <View
