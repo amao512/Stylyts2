@@ -181,8 +181,8 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
 
         if (isOrderActive) {
             if (isPaymentPaid) {
-                paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
-                paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
+                paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
                 paidStatusHolder.show()
             } else if (
                 (isPaymentPending && isOrderActive && isOperationUrlNotBlank) ||
@@ -196,13 +196,13 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
             }
         } else {
             if (isOrderCompleted && isDelivered) {
-                paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
-                paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
+                paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
                 paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
                 paidStatusHolder.show()
 
-                deliveredStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_delivered)
-                deliveredStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                deliveredStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_delivered)
+                deliveredStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
                 deliveredStatusHolder.show()
             } else if (isOrderCancelled) {
                 paidStatusHolder.hide()
@@ -210,12 +210,12 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
                 notPaidStatusHolder.hide()
                 returnedStatusHolder.hide()
 
-                cancelledStatusHolder.item_order_status_not_paid_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
+                cancelledStatusHolder.item_order_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(requireContext(), R.color.app_light_orange)
                 )
-                cancelledStatusHolder.item_order_status_not_paid_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
-                cancelledStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_cancelled)
-                cancelledStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                cancelledStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
+                cancelledStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_cancelled)
+                cancelledStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
                 cancelledStatusHolder.show()
             } else if (isOrderReturned) {
                 paidStatusHolder.hide()
@@ -223,12 +223,12 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
                 notPaidStatusHolder.hide()
                 cancelledStatusHolder.hide()
 
-                returnedStatusHolder.item_order_status_not_paid_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
+                returnedStatusHolder.item_order_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(requireContext(), R.color.app_light_orange)
                 )
-                returnedStatusHolder.item_order_status_not_paid_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
-                returnedStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_returned)
-                returnedStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                returnedStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
+                returnedStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_returned)
+                returnedStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
                 returnedStatusHolder.show()
             }
         }
