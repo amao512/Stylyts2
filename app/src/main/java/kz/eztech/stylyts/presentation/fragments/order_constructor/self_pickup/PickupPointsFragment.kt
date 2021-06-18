@@ -23,6 +23,7 @@ import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.order.CustomLatLng
 import kz.eztech.stylyts.domain.models.order.ShopPointModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -57,7 +58,7 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     private lateinit var currentMap: GoogleMap
     private var orderList = ArrayList<OrderCreateApiModel>()
     private var shopList = ArrayList<ShopPointModel>()
-    private var latLngList = ArrayList<LatLng>()
+    private var latLngList = ArrayList<CustomLatLng>()
 
     companion object {
         const val ORDER_KEY = "order"
@@ -209,7 +210,13 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
                 context = requireContext(),
                 address = "${it.city}, ${it.street} ${it.house}"
             )?.let { latLng ->
-                latLngList.add(latLng)
+                latLngList.add(
+                    CustomLatLng(
+                        id = it.id,
+                        address = "${it.city}, ${it.street} ${it.house}",
+                        latLng = latLng
+                    )
+                )
             }
         }
 
@@ -221,9 +228,8 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         currentMap = googleMap
 
         latLngList.map {
-            currentMap.addMarker(MarkerOptions().position(it).title(it.toString()))
-            currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 12.0f))
-
+            currentMap.addMarker(MarkerOptions().position(it.latLng).title(it.address))
+            currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it.latLng, 12.0f))
         }
 
 //        val almaty = getLocationFromAddress(requireContext(), "Алматы, проспект Назарбаева 120")
