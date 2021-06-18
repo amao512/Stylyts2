@@ -11,7 +11,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.base_toolbar.*
@@ -23,7 +22,6 @@ import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.order.CustomLatLng
 import kz.eztech.stylyts.domain.models.order.ShopPointModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -58,7 +56,6 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     private lateinit var currentMap: GoogleMap
     private var orderList = ArrayList<OrderCreateApiModel>()
     private var shopList = ArrayList<ShopPointModel>()
-    private var latLngList = ArrayList<CustomLatLng>()
 
     companion object {
         const val ORDER_KEY = "order"
@@ -206,32 +203,22 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         pickupPointsAdapter.updateList(list = resultsModel.results)
 
         resultsModel.results.map {
+            val address = "${it.city}, ${it.street} ${it.house}"
+
             getLocationFromAddress(
                 context = requireContext(),
-                address = "${it.city}, ${it.street} ${it.house}"
+                address = address
             )?.let { latLng ->
-                latLngList.add(
-                    CustomLatLng(
-                        id = it.id,
-                        address = "${it.city}, ${it.street} ${it.house}",
-                        latLng = latLng
-                    )
-                )
+                currentMap.addMarker(MarkerOptions().position(latLng).title(address))
+                currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f))
             }
         }
 
         setCurrentListCondition(isPoints = true)
-        onMapReady(currentMap)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         currentMap = googleMap
-
-        latLngList.map {
-            currentMap.addMarker(MarkerOptions().position(it.latLng).title(it.address))
-            currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it.latLng, 12.0f))
-        }
-
 //        val almaty = getLocationFromAddress(requireContext(), "Алматы, проспект Назарбаева 120")
 //        val almaty2 = getLocationFromAddress(requireContext(), "Алматы, проспект Абая 10")
 //
