@@ -44,7 +44,7 @@ class PickupPointViewHolder(
         position: Int
     ) {
         titleTextView.text = address.user
-        (address.city + ", " + address.street).also { addressTextView.text = it }
+        (address.city + ", " + address.street + " " + address.house).also { addressTextView.text = it }
 
         itemView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, address)

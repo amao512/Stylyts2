@@ -1,6 +1,8 @@
 package kz.eztech.stylyts.presentation.fragments.collection_constructor
 
 import android.os.Bundle
+import android.view.View
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor_holder.*
@@ -16,7 +18,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
-    ConstructorHolderContract.View {
+    ConstructorHolderContract.View, View.OnClickListener {
 
     private lateinit var pagerAdapter: CollectionConstructorPagerAdapter
 
@@ -39,6 +41,7 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
             toolbar_right_corner_action_image_button.hide()
 
             toolbar_back_text_view.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            toolbar_back_text_view.setOnClickListener(this@CollectionConstructorHolderFragment)
             toolbar_back_text_view.text = context.getString(R.string.close)
             toolbar_back_text_view.show()
 
@@ -106,6 +109,12 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.toolbar_back_text_view -> findNavController().navigateUp()
+        }
+    }
 
     private fun getIdFromArgs(): Int = arguments?.getInt(MAIN_ID_KEY) ?: 0
 

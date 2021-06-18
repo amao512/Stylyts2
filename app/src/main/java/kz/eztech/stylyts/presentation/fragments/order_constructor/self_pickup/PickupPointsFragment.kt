@@ -207,13 +207,14 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         resultsModel.results.map {
             getLocationFromAddress(
                 context = requireContext(),
-                address = "${it.city}, ${it.street}"
+                address = "${it.city}, ${it.street} ${it.house}"
             )?.let { latLng ->
                 latLngList.add(latLng)
             }
         }
 
         setCurrentListCondition(isPoints = true)
+        onMapReady(currentMap)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -222,19 +223,20 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         latLngList.map {
             currentMap.addMarker(MarkerOptions().position(it).title(it.toString()))
             currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 12.0f))
+
         }
 
-        val almaty = getLocationFromAddress(requireContext(), "Алматы, проспект Назарбаева 120")
-        val almaty2 = getLocationFromAddress(requireContext(), "Алматы, проспект Абая 10")
-
-        almaty?.let {
-            currentMap.addMarker(MarkerOptions().position(it).title("Алматы, проспект Назарбаева 120"))
-            currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 12.0f))
-        }
-
-        almaty2?.let {
-            currentMap.addMarker(MarkerOptions().position(it).title("Алматы, проспект Абая 10"))
-        }
+//        val almaty = getLocationFromAddress(requireContext(), "Алматы, проспект Назарбаева 120")
+//        val almaty2 = getLocationFromAddress(requireContext(), "Алматы, проспект Абая 10")
+//
+//        almaty?.let {
+//            currentMap.addMarker(MarkerOptions().position(it).title("Алматы, проспект Назарбаева 120"))
+//            currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(it, 12.0f))
+//        }
+//
+//        almaty2?.let {
+//            currentMap.addMarker(MarkerOptions().position(it).title("Алматы, проспект Абая 10"))
+//        }
     }
 
     private fun onShopPointClicked(shopPointModel: ShopPointModel) {
