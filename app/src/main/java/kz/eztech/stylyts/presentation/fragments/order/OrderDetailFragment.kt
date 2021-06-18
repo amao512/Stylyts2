@@ -47,6 +47,7 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     private lateinit var paidStatusHolder: ConstraintLayout
     private lateinit var deliveredStatusHolder: ConstraintLayout
     private lateinit var cancelledStatusHolder: ConstraintLayout
+    private lateinit var returnedStatusHolder: ConstraintLayout
 
     companion object {
         const val ORDER_ID_KEY = "orderId"
@@ -94,6 +95,7 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
         paidStatusHolder = fragment_order_detail_paid_status_holder as ConstraintLayout
         deliveredStatusHolder = fragment_order_detail_delivered_status_holder as ConstraintLayout
         cancelledStatusHolder = fragment_order_detail_cancelled_status_holder as ConstraintLayout
+        returnedStatusHolder = fragment_order_detail_returned_status_holder as ConstraintLayout
     }
 
     override fun initializeListeners() {}
@@ -188,6 +190,8 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
             ) {
                 paidStatusHolder.hide()
                 deliveredStatusHolder.hide()
+                returnedStatusHolder.hide()
+                cancelledStatusHolder.hide()
                 notPaidStatusHolder.show()
             }
         } else {
@@ -204,6 +208,7 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
                 paidStatusHolder.hide()
                 deliveredStatusHolder.hide()
                 notPaidStatusHolder.hide()
+                returnedStatusHolder.hide()
 
                 cancelledStatusHolder.item_order_status_not_paid_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(requireContext(), R.color.app_light_orange)
@@ -212,6 +217,19 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
                 cancelledStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_cancelled)
                 cancelledStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
                 cancelledStatusHolder.show()
+            } else if (isOrderReturned) {
+                paidStatusHolder.hide()
+                deliveredStatusHolder.hide()
+                notPaidStatusHolder.hide()
+                cancelledStatusHolder.hide()
+
+                returnedStatusHolder.item_order_status_not_paid_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.app_light_orange)
+                )
+                returnedStatusHolder.item_order_status_not_paid_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
+                returnedStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_returned)
+                returnedStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                returnedStatusHolder.show()
             }
         }
     }
