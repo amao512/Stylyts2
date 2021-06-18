@@ -1,9 +1,11 @@
 package kz.eztech.stylyts.presentation.fragments.order
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -44,6 +46,7 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     private lateinit var notPaidStatusHolder: ConstraintLayout
     private lateinit var paidStatusHolder: ConstraintLayout
     private lateinit var deliveredStatusHolder: ConstraintLayout
+    private lateinit var cancelledStatusHolder: ConstraintLayout
 
     companion object {
         const val ORDER_ID_KEY = "orderId"
@@ -90,6 +93,7 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
         notPaidStatusHolder = fragment_order_not_paid_status_holder_constraint_layout
         paidStatusHolder = fragment_order_detail_paid_status_holder as ConstraintLayout
         deliveredStatusHolder = fragment_order_detail_delivered_status_holder as ConstraintLayout
+        cancelledStatusHolder = fragment_order_detail_cancelled_status_holder as ConstraintLayout
     }
 
     override fun initializeListeners() {}
@@ -157,28 +161,58 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     }
 
     private fun setOrderStatus(orderModel: OrderModel) {
-        val isActiveStatus = orderModel.status == OrderStatusEnum.ACTIVE.status
+        val isOrderActive = orderModel.status == OrderStatusEnum.ACTIVE.status
         val isOrderCompleted = orderModel.status == OrderStatusEnum.COMPLETED.status
+        val isOrderReturned = orderModel.status == OrderStatusEnum.RETURNED.status
+        val isOrderCancelled = orderModel.status == OrderStatusEnum.CANCELLED.status
 
-        val isPaymentPendingStatus = orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status
-        val isPaymentNewStatus = orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
-        val isPaymentPaidStatus = orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status
+        val isPaymentPending = orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status
+        val isPaymentNew = orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
+        val isPaymentPaid = orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status
+        val isPaymentRefund = orderModel.invoice.paymentStatus == PaymentStatusEnum.REFUND.status
 
-        val isDeliveredStatus = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status
+        val isDelivered = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status
+        val isDeliveryNew = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.NEW.status
+        val isDeliveryInProgress = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.IN_PROGRESS.status
 
-        if (isPaymentPaidStatus && isActiveStatus) {
-            paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
-            paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-            paidStatusHolder.show()
-        } else if (isOrderCompleted && isDeliveredStatus) {
-            paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
-            deliveredStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_delivered)
-            deliveredStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-            deliveredStatusHolder.show()
-        } else if ((isPaymentPendingStatus && isActiveStatus) || (isPaymentNewStatus && isActiveStatus)) {
-            paidStatusHolder.hide()
-            deliveredStatusHolder.hide()
-            notPaidStatusHolder.show()
+        val isOperationUrlNotBlank = orderModel.invoice.operationUrl.isNotBlank()
+
+        if (isOrderActive) {
+            if (isPaymentPaid) {
+                paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
+                paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                paidStatusHolder.show()
+            } else if (
+                (isPaymentPending && isOrderActive && isOperationUrlNotBlank) ||
+                (isPaymentNew && isOrderActive && isOperationUrlNotBlank)
+            ) {
+                paidStatusHolder.hide()
+                deliveredStatusHolder.hide()
+                notPaidStatusHolder.show()
+            }
+        } else {
+            if (isOrderCompleted && isDelivered) {
+                paidStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_paid)
+                paidStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
+                paidStatusHolder.show()
+
+                deliveredStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_delivered)
+                deliveredStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                deliveredStatusHolder.show()
+            } else if (isOrderCancelled) {
+                paidStatusHolder.hide()
+                deliveredStatusHolder.hide()
+                notPaidStatusHolder.hide()
+
+                cancelledStatusHolder.item_order_status_not_paid_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(requireContext(), R.color.app_light_orange)
+                )
+                cancelledStatusHolder.item_order_status_not_paid_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
+                cancelledStatusHolder.item_order_status_status_not_paid_text_view.text = getString(R.string.status_cancelled)
+                cancelledStatusHolder.item_order_status_not_paid_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                cancelledStatusHolder.show()
+            }
         }
     }
 }
