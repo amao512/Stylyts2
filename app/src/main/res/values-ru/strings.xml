@@ -400,4 +400,7 @@
     <string name="address_short_detail_text_format">%s; %s; %s</string>
     <string name="address_selected">Адрес выбран</string>
     <string name="address_not_selected">Адрес не выбран</string>
+    <string name="no_addresses">Адреса не найдены</string>
+
+    <string name="title_activity_maps">Map</string>
 </resources>

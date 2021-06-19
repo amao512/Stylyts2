@@ -151,9 +151,13 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
 
     override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayProgress() {}
+    override fun displayProgress() {
+        fragment_pickup_points_progress_bar.show()
+    }
 
-    override fun hideProgress() {}
+    override fun hideProgress() {
+        fragment_pickup_points_progress_bar.hide()
+    }
 
     override fun onViewClicked(
         view: View,
@@ -173,6 +177,8 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
                     findNavController().navigateUp()
                 } else {
                     recyclerView.adapter = shopPointsAdapter
+                    currentMap.clear()
+                    setCurrentListCondition(isPoints = false)
                 }
             }
             R.id.toolbar_right_text_text_view -> onNextClick()
@@ -200,17 +206,24 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     }
 
     override fun processPoints(resultsModel: ResultsModel<AddressModel>) {
-        pickupPointsAdapter.updateList(list = resultsModel.results)
+        if (resultsModel.results.isEmpty()) {
+            displayMessage(msg = getString(R.string.no_addresses))
 
-        resultsModel.results.map {
-            val address = "${it.city}, ${it.street} ${it.house}"
+            currentMap.clear()
+            pickupPointsAdapter.clearList()
+        } else {
+            pickupPointsAdapter.updateList(list = resultsModel.results)
 
-            getLocationFromAddress(
-                context = requireContext(),
-                address = address
-            )?.let { latLng ->
-                currentMap.addMarker(MarkerOptions().position(latLng).title(address))
-                currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f))
+            resultsModel.results.map {
+                val address = "${it.city}, ${it.street} ${it.house}"
+
+                getLocationFromAddress(
+                    context = requireContext(),
+                    address = address
+                )?.let { latLng ->
+                    currentMap.addMarker(MarkerOptions().position(latLng).title(address))
+                    currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f))
+                }
             }
         }
 

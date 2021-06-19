@@ -32,13 +32,17 @@ class PickupPointsPresenter @Inject constructor(
         token: String,
         id: Int
     ) {
+        view.displayProgress()
+
         getUserByIdUseCase.initParams(token, id)
         getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processShop(userModel = t)
+                view.hideProgress()
             }
 
             override fun onError(e: Throwable) {
+                view.hideProgress()
                 view.displayMessage(msg = errorHelper.processError(e))
             }
         })

@@ -1,78 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".presentation.fragments.order_constructor.self_pickup.PickupPointsFragment"
     >
 
-    <include
-        android:id="@+id/fragment_pickup_points_toolbar"
-        layout="@layout/base_toolbar"
-        />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".presentation.fragments.order_constructor.self_pickup.PickupPointsFragment"
         >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <include
+            android:id="@+id/fragment_pickup_points_toolbar"
+            layout="@layout/base_toolbar"
+            />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingBottom="200dp"
             >
 
-            <fragment
-                android:id="@+id/fragment_pickup_points_map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:paddingBottom="200dp"
+                >
 
-        <LinearLayout
-            android:id="@+id/fragment_pickup_points_addresses_bottom_behavior"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/padding_size_10x"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-            >
+                <fragment
+                    android:id="@+id/fragment_pickup_points_map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/fragment_pickup_points_search_view"
+            <LinearLayout
+                android:id="@+id/fragment_pickup_points_addresses_bottom_behavior"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/search_view_height"
-                android:layout_marginHorizontal="@dimen/margin_size_16x"
-                android:inputType="text"
-                android:theme="@style/SearchView"
-                app:queryBackground="@android:color/transparent"
-                app:queryHint="Поиск"
-                app:searchIcon="@drawable/ic_search"
-                />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/fragment_pickup_points_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
+                android:layout_height="match_parent"
+                android:background="@color/white"
                 android:orientation="vertical"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_pickup_point"
+                android:paddingTop="@dimen/padding_size_10x"
+                app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+                >
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/fragment_pickup_points_search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/search_view_height"
+                    android:layout_marginHorizontal="@dimen/margin_size_16x"
+                    android:inputType="text"
+                    android:theme="@style/SearchView"
+                    app:queryBackground="@android:color/transparent"
+                    app:queryHint="Поиск"
+                    app:searchIcon="@drawable/ic_search"
+                    />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_pickup_points_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_pickup_point"
+                    />
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment_pickup_points_bottom_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_gravity="bottom"
                 />
-        </LinearLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <FrameLayout
-            android:id="@+id/fragment_pickup_points_bottom_view"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom"
-            />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </LinearLayout>
 
-</LinearLayout>
+    <include
+        android:id="@+id/fragment_pickup_points_progress_bar"
+        layout="@layout/base_progress"
+        android:visibility="gone"
+        />
+
+</FrameLayout>
