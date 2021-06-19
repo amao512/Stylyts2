@@ -4,13 +4,13 @@ import android.annotation.SuppressLint
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.View
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection_constructor_clothes.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.CollectionConstructorShopItemAdapter
+import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 /**
@@ -34,9 +34,7 @@ class CollectionConstructorShopItemHolder(
 				)
 
 				if (coverImages.isNotEmpty()) {
-					Glide.with(image_view_item_collection_constructor_clothes_item_image_holder.context)
-						.load(coverImages[0])
-						.into(image_view_item_collection_constructor_clothes_item_image_holder)
+					constructorImage.loadImage(target = image_view_item_collection_constructor_clothes_item_image_holder)
 				}
 
 				if (title.toCharArray().size > 7) {
