@@ -27,6 +27,7 @@
             android:orientation="vertical"
             android:overScrollMode="never"
             android:paddingTop="@dimen/padding_size_16x"
+            android:paddingBottom="@dimen/padding_size_10x"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_user_order"
             />

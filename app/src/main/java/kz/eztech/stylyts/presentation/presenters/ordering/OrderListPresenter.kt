@@ -22,6 +22,7 @@ class OrderListPresenter @Inject constructor(
 
     override fun disposeRequests() {
         getOrderListUseCase.clear()
+        getProfileUseCase.clear()
     }
 
     override fun attach(view: OrderListContract.View) {
@@ -32,8 +33,6 @@ class OrderListPresenter @Inject constructor(
         token: String,
         pageFilterModel: PageFilterModel
     ) {
-        view.displayProgress()
-
         getProfileUseCase.initParams(token)
         getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
@@ -45,7 +44,10 @@ class OrderListPresenter @Inject constructor(
             }
 
             override fun onError(e: Throwable) {
-                TODO("Not yet implemented")
+                view.processViewAction {
+                    hideProgress()
+                    displayMessage(msg = errorHelper.processError(e))
+                }
             }
         })
     }

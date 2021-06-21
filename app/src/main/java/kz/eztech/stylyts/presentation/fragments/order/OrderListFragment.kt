@@ -75,6 +75,7 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     override fun processPostInitialization() {
+        displayProgress()
         getOrders()
         handleRecyclerView()
     }
@@ -149,7 +150,10 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     private fun navigateToShopOrderDetails(orderModel: OrderModel) {
+        val bundle = Bundle()
+        bundle.putInt(ShopOrderDetailFragment.ORDER_ID_KEY, orderModel.id)
 
+        findNavController().navigate(R.id.action_orderListFragment_to_shopOrderDetailFragment, bundle)
     }
 
     private fun getOrders() {

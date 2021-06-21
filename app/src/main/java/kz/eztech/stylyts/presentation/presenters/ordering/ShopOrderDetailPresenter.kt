@@ -5,25 +5,25 @@ import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.domain.usecases.order.GetOrderByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
-import kz.eztech.stylyts.presentation.contracts.ordering.OrderDetailContract
+import kz.eztech.stylyts.presentation.contracts.ordering.ShopOrderDetailContract
 import javax.inject.Inject
 
-class OrderDetailPresenter @Inject constructor(
+class ShopOrderDetailPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getOrderByIdUseCase: GetOrderByIdUseCase
-) : OrderDetailContract.Presenter {
+) : ShopOrderDetailContract.Presenter {
 
-    private lateinit var view: OrderDetailContract.View
+    private lateinit var view: ShopOrderDetailContract.View
 
     override fun disposeRequests() {
         getOrderByIdUseCase.clear()
     }
 
-    override fun attach(view: OrderDetailContract.View) {
+    override fun attach(view: ShopOrderDetailContract.View) {
         this.view = view
     }
 
-    override fun getOrderById(
+    override fun getOrder(
         token: String,
         orderId: Int
     ) {

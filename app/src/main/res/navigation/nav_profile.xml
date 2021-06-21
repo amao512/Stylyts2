@@ -269,6 +269,10 @@
             android:id="@+id/action_orderListFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment"
             />
+        <action
+            android:id="@+id/action_orderListFragment_to_shopOrderDetailFragment"
+            app:destination="@id/shopOrderDetailFragment"
+            />
     </fragment>
 
     <fragment
@@ -295,4 +299,19 @@
             />
     </fragment>
 
+    <fragment
+        android:id="@+id/shopOrderDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order.ShopOrderDetailFragment"
+        android:label="fragment_shop_order_detail"
+        tools:layout="@layout/fragment_shop_order_detail"
+        >
+        <action
+            android:id="@+id/action_shopOrderDetailFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            />
+        <action
+            android:id="@+id/action_shopOrderDetailFragment_to_clothesDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+    </fragment>
 </navigation>

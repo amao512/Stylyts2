@@ -4,7 +4,7 @@ import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
-interface OrderDetailContract {
+interface ShopOrderDetailContract {
 
     interface View : BaseView {
 
@@ -13,7 +13,7 @@ interface OrderDetailContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getOrderById(
+        fun getOrder(
             token: String,
             orderId: Int
         )

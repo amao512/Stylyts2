@@ -18,22 +18,22 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.UserOrderAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.contracts.ordering.OrderDetailContract
+import kz.eztech.stylyts.presentation.contracts.ordering.UserOrderDetailContract
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
 import kz.eztech.stylyts.presentation.enums.ordering.OrderStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.PaymentStatusEnum
 import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
-import kz.eztech.stylyts.presentation.presenters.ordering.OrderDetailPresenter
+import kz.eztech.stylyts.presentation.presenters.ordering.UserOrderDetailPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.getFormattedDate
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class UserOrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.View {
+class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailContract.View {
 
-    @Inject lateinit var presenter: OrderDetailPresenter
+    @Inject lateinit var presenterUser: UserOrderDetailPresenter
     private lateinit var clothesAdapterUser: UserOrderAdapter
 
     private lateinit var recyclerView: RecyclerView
@@ -72,7 +72,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContrac
     }
 
     override fun initializePresenter() {
-        presenter.attach(view = this)
+        presenterUser.attach(view = this)
     }
 
     override fun initializeArguments() {}
@@ -101,14 +101,14 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContrac
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getOrderById(
+        presenterUser.getOrderById(
             token = currentActivity.getTokenFromSharedPref(),
             orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0
         )
     }
 
     override fun disposeRequests() {
-        presenter.disposeRequests()
+        presenterUser.disposeRequests()
     }
 
     override fun displayMessage(msg: String) {

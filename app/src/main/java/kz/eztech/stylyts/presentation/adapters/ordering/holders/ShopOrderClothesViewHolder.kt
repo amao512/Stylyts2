@@ -33,7 +33,7 @@ class ShopOrderClothesViewHolder(
     }
 
     private fun initializeViews() {
-        with (itemView) {
+        with(itemView) {
             brandTitleTextView = item_shop_order_clothes_brand_name_text_view
             priceTextView = item_shop_order_clothes_price_text_view
             clothesImageView = item_shop_order_clothes_image_view
@@ -48,10 +48,24 @@ class ShopOrderClothesViewHolder(
         position: Int
     ) {
         brandTitleTextView.text = clothes.clothesBrand.title
-        priceTextView.text = priceTextView.context.getString(R.string.price_tenge_text_format, clothes.cost.toString())
         clothesTitleTextView.text = clothes.title
-        secondPriceTextView.text = secondPriceTextView.context.getString(R.string.price_tenge_text_format, clothes.cost.toString())
+
+        val price = priceTextView.context.getString(
+            R.string.price_tenge_text_format,
+            if (clothes.salePrice != 0) {
+                clothes.salePrice.toString()
+            } else {
+                clothes.cost.toString()
+            }
+        )
+
+        priceTextView.text = price
+        secondPriceTextView.text = price
 
         clothes.constructorImage.loadImage(target = clothesImageView)
+
+        clothesImageView.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, clothes)
+        }
     }
 }
