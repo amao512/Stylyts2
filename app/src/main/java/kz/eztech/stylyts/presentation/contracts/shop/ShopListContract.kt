@@ -15,7 +15,10 @@ interface ShopListContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getShops(token: String)
+        fun getShops(
+            token: String,
+            currentId: Int
+        )
 
         fun searchShop(
             token: String,

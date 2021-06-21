@@ -10,8 +10,8 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
@@ -133,16 +133,11 @@ class SearchItemFragment(
     }
 
     override fun processUserResults(resultsModel: ResultsModel<UserModel>) {
-        val userList: MutableList<UserModel> = mutableListOf()
-        val currentUser = currentActivity.getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY)
-
-        resultsModel.results.map { user ->
-            if (user.id != currentUser && !user.isBrand) {
-                userList.add(user)
+        userSearchAdapter.updateList(
+            list = resultsModel.results.filter {
+                it.id != currentActivity.getUserIdFromSharedPref() && !it.isBrand
             }
-        }
-
-        userSearchAdapter.updateList(list = userList)
+        )
     }
 
     override fun processUserFromLocalDb(userList: List<UserSearchEntity>) {
@@ -171,7 +166,9 @@ class SearchItemFragment(
     }
 
     override fun processShopResults(resultsModel: ResultsModel<UserModel>) {
-        shopsAdapter.updateList(list = resultsModel.results)
+        shopsAdapter.updateList(
+            list = resultsModel.results.filter { it.id != currentActivity.getUserIdFromSharedPref() }
+        )
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {

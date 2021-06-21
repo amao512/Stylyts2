@@ -103,7 +103,10 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
 
     override fun processPostInitialization() {
         filterAdapter.updateList(list = getFilterList())
-        presenter.getShops(token = currentActivity.getTokenFromSharedPref())
+        presenter.getShops(
+            token = currentActivity.getTokenFromSharedPref(),
+            currentId = currentActivity.getUserIdFromSharedPref()
+        )
 
         handleSearchView()
     }
@@ -202,7 +205,10 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         shopAdapter.clearList()
 
         if (username.isBlank()) {
-            presenter.getShops(token = currentActivity.getTokenFromSharedPref())
+            presenter.getShops(
+                token = currentActivity.getTokenFromSharedPref(),
+                currentId = currentActivity.getUserIdFromSharedPref()
+            )
         } else {
             presenter.searchShop(
                 token = currentActivity.getTokenFromSharedPref(),

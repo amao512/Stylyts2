@@ -26,7 +26,10 @@ class ShopListPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getShops(token: String) {
+    override fun getShops(
+        token: String,
+        currentId: Int
+    ) {
         searchProfileUseCase.initParams(
             token = token,
             username = EMPTY_STRING,
@@ -37,7 +40,9 @@ class ShopListPresenter @Inject constructor(
                 val preparedResults: MutableList<ShopListItem> = mutableListOf()
                 val characterList: MutableList<String> = mutableListOf()
 
-                sortedShopList(results = t.results).map { list ->
+                sortedShopList(
+                    results = t.results.filter { it.id != currentId }
+                ).map { list ->
                     list.map {
                         preparedResults.add(it)
                     }
