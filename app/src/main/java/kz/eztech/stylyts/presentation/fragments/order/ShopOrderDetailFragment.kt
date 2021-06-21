@@ -1,15 +1,20 @@
 package kz.eztech.stylyts.presentation.fragments.order
 
+import android.view.View
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_order_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.ordering.ShopOrderClothesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
-class ShopOrderDetailFragment : BaseFragment<MainActivity>(), EmptyContract.View {
+class ShopOrderDetailFragment : BaseFragment<MainActivity>(), EmptyContract.View, UniversalViewClickListener {
+
+    private lateinit var shopOrderClothesAdapter: ShopOrderClothesAdapter
 
     override fun getLayoutId(): Int = R.layout.fragment_shop_order_detail
 
@@ -34,7 +39,10 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), EmptyContract.View
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
+    override fun initializeViewsData() {
+        shopOrderClothesAdapter = ShopOrderClothesAdapter()
+        shopOrderClothesAdapter.setOnClickListener(listener = this)
+    }
 
     override fun initializeViews() {}
 
@@ -53,4 +61,8 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), EmptyContract.View
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    override fun onViewClicked(view: View, position: Int, item: Any?) {
+
+    }
 }
