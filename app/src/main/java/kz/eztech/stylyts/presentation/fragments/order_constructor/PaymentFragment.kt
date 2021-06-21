@@ -13,7 +13,7 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.PaymentContract
-import kz.eztech.stylyts.presentation.fragments.order.OrderDetailFragment
+import kz.eztech.stylyts.presentation.fragments.order.UserOrderDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.PaymentListener
 import kz.eztech.stylyts.presentation.presenters.ordering.PaymentPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -97,7 +97,7 @@ class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, Paym
 
     override fun onSuccessNavigate() {
         val bundle = Bundle()
-        bundle.putInt(OrderDetailFragment.ORDER_ID_KEY, arguments?.getInt(ORDER_ID_KEY) ?: 0)
+        bundle.putInt(UserOrderDetailFragment.ORDER_ID_KEY, arguments?.getInt(ORDER_ID_KEY) ?: 0)
 
         findNavController().navigate(R.id.action_paymentFragment_to_orderDetailFragment, bundle)
     }

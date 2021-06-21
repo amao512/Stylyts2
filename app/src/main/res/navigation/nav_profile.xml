@@ -273,7 +273,7 @@
 
     <fragment
         android:id="@+id/orderDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order.OrderDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.order.UserOrderDetailFragment"
         android:label="OrderDetailFragment"
         >
         <action

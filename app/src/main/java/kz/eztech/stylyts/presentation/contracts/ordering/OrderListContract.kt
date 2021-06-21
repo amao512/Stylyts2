@@ -10,12 +10,24 @@ interface OrderListContract {
 
     interface View : BaseView {
 
-        fun processOrderList(resultsModel: ResultsModel<OrderModel>)
+        fun processUserOrders(resultsModel: ResultsModel<OrderModel>)
+
+        fun processShopOrders(resultsModel: ResultsModel<OrderModel>)
     }
 
     interface Presenter : BasePresenter<View> {
 
         fun getOrderList(
+            token: String,
+            pageFilterModel: PageFilterModel
+        )
+
+        fun getUserOrders(
+            token: String,
+            pageFilterModel: PageFilterModel
+        )
+
+        fun getShopOrders(
             token: String,
             pageFilterModel: PageFilterModel
         )

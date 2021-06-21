@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.adapters.ordering.holders
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import kotlinx.android.synthetic.main.item_order.view.*
+import kotlinx.android.synthetic.main.item_user_order.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
@@ -12,7 +12,7 @@ import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 
-class OrderHolder(
+class UserOrderHolder(
     itemView: View,
     adapter: BaseAdapter
 ) : BaseViewHolder(itemView, adapter) {

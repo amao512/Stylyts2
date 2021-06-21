@@ -5,11 +5,11 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.ordering.holders.OrderHolder
+import kz.eztech.stylyts.presentation.adapters.ordering.holders.UserOrderHolder
 
-class OrderAdapter : BaseAdapter() {
+class UserOrderAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_order
+    override fun getLayoutId(viewType: Int): Int = R.layout.item_user_order
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -24,7 +24,7 @@ class OrderAdapter : BaseAdapter() {
     }
 
     override fun getViewHolder(view: View): BaseViewHolder {
-        return OrderHolder(
+        return UserOrderHolder(
             itemView = view,
             adapter = this
         )

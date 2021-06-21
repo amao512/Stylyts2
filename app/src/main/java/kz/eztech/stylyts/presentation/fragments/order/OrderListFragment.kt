@@ -13,7 +13,8 @@ import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ordering.OrderAdapter
+import kz.eztech.stylyts.presentation.adapters.ordering.ShopOrderAdapter
+import kz.eztech.stylyts.presentation.adapters.ordering.UserOrderAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderListContract
@@ -26,7 +27,8 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     SwipeRefreshLayout.OnRefreshListener, UniversalViewClickListener {
 
     @Inject lateinit var presenter: OrderListPresenter
-    private lateinit var orderAdapter: OrderAdapter
+    private lateinit var userOrderAdapter: UserOrderAdapter
+    private lateinit var shopOrderAdapter: ShopOrderAdapter
     private lateinit var pageFilterModel: PageFilterModel
 
     private lateinit var recyclerView: RecyclerView
@@ -57,13 +59,15 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
 
     override fun initializeViewsData() {
         pageFilterModel = PageFilterModel()
-        orderAdapter = OrderAdapter()
-        orderAdapter.setOnClickListener(listener = this)
+        userOrderAdapter = UserOrderAdapter()
+        userOrderAdapter.setOnClickListener(listener = this)
+
+        shopOrderAdapter = ShopOrderAdapter()
+        shopOrderAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
         recyclerView = fragment_order_list_recycler_view
-        recyclerView.adapter = orderAdapter
     }
 
     override fun initializeListeners() {
@@ -96,13 +100,28 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     override fun onRefresh() {
         pageFilterModel.page = 1
         pageFilterModel.isLastPage = false
-        orderAdapter.clearList()
+        userOrderAdapter.clearList()
+        shopOrderAdapter.clearList()
 
         getOrders()
     }
 
-    override fun processOrderList(resultsModel: ResultsModel<OrderModel>) {
-        orderAdapter.updateMoreList(list = resultsModel.results)
+    override fun processUserOrders(resultsModel: ResultsModel<OrderModel>) {
+        recyclerView.adapter = userOrderAdapter
+        userOrderAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != pageFilterModel.page) {
+            pageFilterModel.page++
+        } else {
+            pageFilterModel.isLastPage = true
+        }
+    }
+
+    override fun processShopOrders(resultsModel: ResultsModel<OrderModel>) {
+        recyclerView.adapter = shopOrderAdapter
+        shopOrderAdapter.updateMoreList(list = resultsModel.results.filter {
+            it.seller.id == currentActivity.getUserIdFromSharedPref()
+        })
 
         if (resultsModel.totalPages != pageFilterModel.page) {
             pageFilterModel.page++
@@ -123,7 +142,7 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
 
     private fun navigateToOrderDetails(orderModel: OrderModel) {
         val bundle = Bundle()
-        bundle.putInt(OrderDetailFragment.ORDER_ID_KEY, orderModel.id)
+        bundle.putInt(UserOrderDetailFragment.ORDER_ID_KEY, orderModel.id)
 
         findNavController().navigate(R.id.action_orderListFragment_to_orderDetailFragment, bundle)
     }

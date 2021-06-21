@@ -403,4 +403,8 @@
     <string name="no_addresses">Адреса не найдены</string>
 
     <string name="title_activity_maps">Map</string>
+
+    <string name="new_order">Новый заказ</string>
+    <string name="order_delivered">Доставлен</string>
+    <string name="complete_order">Завершить</string>
 </resources>

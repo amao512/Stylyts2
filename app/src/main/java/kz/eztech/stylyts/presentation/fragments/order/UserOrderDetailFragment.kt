@@ -15,7 +15,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ordering.OrderAdapter
+import kz.eztech.stylyts.presentation.adapters.ordering.UserOrderAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderDetailContract
@@ -31,10 +31,10 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.View {
+class UserOrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.View {
 
     @Inject lateinit var presenter: OrderDetailPresenter
-    private lateinit var clothesAdapter: OrderAdapter
+    private lateinit var clothesAdapterUser: UserOrderAdapter
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var goodsPriceTextView: TextView
@@ -68,7 +68,7 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     }
 
     override fun initializeDependency() {
-        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragmentUser = this)
     }
 
     override fun initializePresenter() {
@@ -78,12 +78,12 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        clothesAdapter = OrderAdapter()
+        clothesAdapterUser = UserOrderAdapter()
     }
 
     override fun initializeViews() {
         recyclerView = fragment_order_detail_recycler_view
-        recyclerView.adapter = clothesAdapter
+        recyclerView.adapter = clothesAdapterUser
 
         goodsPriceTextView = fragment_order_detail_goods_price_text_view
         deliveryPriceTextView = fragment_order_detail_delivery_price_text_view
@@ -135,7 +135,7 @@ class OrderDetailFragment : BaseFragment<MainActivity>(), OrderDetailContract.Vi
             R.string.price_tenge_text_format,
             NumberFormat.getInstance().format(orderModel.price)
         )
-        clothesAdapter.updateList(list = orderModel.itemObjects)
+        clothesAdapterUser.updateList(list = orderModel.itemObjects)
         deliveryPriceTextView.text = "0 тг"
 
         payButton.setOnClickListener {

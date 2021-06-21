@@ -28,7 +28,7 @@
             android:overScrollMode="never"
             android:paddingTop="@dimen/padding_size_16x"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_order"
+            tools:listitem="@layout/item_user_order"
             />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
