@@ -8,32 +8,13 @@
     android:background="@color/white"
     >
 
-    <FrameLayout
-        android:id="@+id/frameLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <include
+        android:id="@+id/fragment_cart_toolbar"
+        layout="@layout/base_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        >
-
-        <ImageView
-            android:id="@+id/image_view_dialog_cart_close"
-            android:layout_width="wrap_content"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_gravity="start|center"
-            android:layout_marginStart="16dp"
-            android:src="@drawable/ic_baseline_close_24"
-            />
-
-        <TextView
-            style="@style/SubtitleTextBold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/my_basket"
-            />
-    </FrameLayout>
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/dialog_cart_price_container_contraint_layout"
@@ -41,7 +22,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_cart_toolbar"
         >
 
         <LinearLayout
@@ -148,7 +129,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frameLayout3"
+        app:layout_constraintTop_toBottomOf="@id/fragment_cart_toolbar"
         >
 
         <TextView

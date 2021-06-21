@@ -19,7 +19,6 @@ import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapt
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -208,9 +207,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.toolbar_right_corner_action_image_button -> CartDialog().show(
-                childFragmentManager, EMPTY_STRING
-            )
+            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.nav_ordering)
         }
     }
 

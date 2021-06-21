@@ -33,7 +33,7 @@ class UserOrderHolder(
 
         when (item) {
             is OrderModel -> processOrder(orderModel = item, position)
-            is ClothesModel -> processClothes(clothesModel = item)
+            is ClothesModel -> processClothes(clothesModel = item, position)
         }
     }
 
@@ -72,7 +72,10 @@ class UserOrderHolder(
         }
     }
 
-    private fun processClothes(clothesModel: ClothesModel) {
+    private fun processClothes(
+        clothesModel: ClothesModel,
+        position: Int
+    ) {
         priceTextView.hide()
         itemView.item_order_detail_linear_layout.hide()
 
@@ -82,5 +85,13 @@ class UserOrderHolder(
         sizeTextView.text = "Размер L"
         clothesIdTextView.text = "ID изделия: ${clothesModel.id}"
         clothesModel.constructorImage.loadImage(target = imageView)
+
+        imageView.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, clothesModel)
+        }
+
+        shopNameTextView.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, clothesModel)
+        }
     }
 }

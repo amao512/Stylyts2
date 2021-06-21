@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.fragments.order
 
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,7 @@ import kotlinx.android.synthetic.main.fragment_order_detail.*
 import kotlinx.android.synthetic.main.item_order_status.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.UserOrderAdapter
@@ -23,7 +25,9 @@ import kz.eztech.stylyts.presentation.enums.ordering.DeliveryStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
 import kz.eztech.stylyts.presentation.enums.ordering.OrderStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.PaymentStatusEnum
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.UserOrderDetailPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.getFormattedDate
 import kz.eztech.stylyts.presentation.utils.extensions.hide
@@ -31,7 +35,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
 
-class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailContract.View {
+class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenterUser: UserOrderDetailPresenter
     private lateinit var clothesAdapterUser: UserOrderAdapter
@@ -79,6 +83,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
 
     override fun initializeViewsData() {
         clothesAdapterUser = UserOrderAdapter()
+        clothesAdapterUser.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
@@ -120,6 +125,16 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        when (item) {
+            is ClothesModel -> navigateToClothes(item)
+        }
+    }
 
     override fun processOrder(orderModel: OrderModel) {
         fragment_order_detail_toolbar.toolbar_title_text_view.text = getString(
@@ -163,74 +178,85 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
     }
 
     private fun setOrderStatus(orderModel: OrderModel) {
-        val isOrderActive = orderModel.status == OrderStatusEnum.ACTIVE.status
+        if (orderModel.status == OrderStatusEnum.ACTIVE.status) {
+            processActiveStatus(orderModel)
+        } else {
+            processNotActiveStatus(orderModel)
+        }
+    }
+
+    private fun processActiveStatus(orderModel: OrderModel) {
+        val isPaymentNew = orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
+        val isPaymentPaid = orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status
+        val isPaymentPending = orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status
+
+        val isOperationUrlNotBlank = orderModel.invoice.operationUrl.isNotBlank()
+
+        if (isPaymentPaid) {
+            paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
+            paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            paidStatusHolder.show()
+        } else if (
+            (isPaymentPending && isOperationUrlNotBlank) ||
+            (isPaymentNew && isOperationUrlNotBlank)
+        ) {
+            paidStatusHolder.hide()
+            deliveredStatusHolder.hide()
+            returnedStatusHolder.hide()
+            cancelledStatusHolder.hide()
+            notPaidStatusHolder.show()
+        }
+    }
+
+    private fun processNotActiveStatus(orderModel: OrderModel) {
         val isOrderCompleted = orderModel.status == OrderStatusEnum.COMPLETED.status
         val isOrderReturned = orderModel.status == OrderStatusEnum.RETURNED.status
         val isOrderCancelled = orderModel.status == OrderStatusEnum.CANCELLED.status
 
-        val isPaymentPending = orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status
-        val isPaymentNew = orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
-        val isPaymentPaid = orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status
-        val isPaymentRefund = orderModel.invoice.paymentStatus == PaymentStatusEnum.REFUND.status
-
         val isDelivered = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status
-        val isDeliveryNew = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.NEW.status
-        val isDeliveryInProgress = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.IN_PROGRESS.status
 
-        val isOperationUrlNotBlank = orderModel.invoice.operationUrl.isNotBlank()
+        if (isOrderCompleted && isDelivered) {
+            paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
+            paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
+            paidStatusHolder.show()
 
-        if (isOrderActive) {
-            if (isPaymentPaid) {
-                paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
-                paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-                paidStatusHolder.show()
-            } else if (
-                (isPaymentPending && isOrderActive && isOperationUrlNotBlank) ||
-                (isPaymentNew && isOrderActive && isOperationUrlNotBlank)
-            ) {
-                paidStatusHolder.hide()
-                deliveredStatusHolder.hide()
-                returnedStatusHolder.hide()
-                cancelledStatusHolder.hide()
-                notPaidStatusHolder.show()
-            }
-        } else {
-            if (isOrderCompleted && isDelivered) {
-                paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
-                paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-                paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
-                paidStatusHolder.show()
+            deliveredStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_delivered)
+            deliveredStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            deliveredStatusHolder.show()
+        } else if (isOrderCancelled) {
+            paidStatusHolder.hide()
+            deliveredStatusHolder.hide()
+            notPaidStatusHolder.hide()
+            returnedStatusHolder.hide()
 
-                deliveredStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_delivered)
-                deliveredStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-                deliveredStatusHolder.show()
-            } else if (isOrderCancelled) {
-                paidStatusHolder.hide()
-                deliveredStatusHolder.hide()
-                notPaidStatusHolder.hide()
-                returnedStatusHolder.hide()
+            cancelledStatusHolder.item_order_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(requireContext(), R.color.app_light_orange)
+            )
+            cancelledStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
+            cancelledStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_cancelled)
+            cancelledStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            cancelledStatusHolder.show()
+        } else if (isOrderReturned) {
+            paidStatusHolder.hide()
+            deliveredStatusHolder.hide()
+            notPaidStatusHolder.hide()
+            cancelledStatusHolder.hide()
 
-                cancelledStatusHolder.item_order_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.app_light_orange)
-                )
-                cancelledStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
-                cancelledStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_cancelled)
-                cancelledStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-                cancelledStatusHolder.show()
-            } else if (isOrderReturned) {
-                paidStatusHolder.hide()
-                deliveredStatusHolder.hide()
-                notPaidStatusHolder.hide()
-                cancelledStatusHolder.hide()
-
-                returnedStatusHolder.item_order_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
-                    ContextCompat.getColor(requireContext(), R.color.app_light_orange)
-                )
-                returnedStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
-                returnedStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_returned)
-                returnedStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
-                returnedStatusHolder.show()
-            }
+            returnedStatusHolder.item_order_status_icon_image_view.backgroundTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(requireContext(), R.color.app_light_orange)
+            )
+            returnedStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
+            returnedStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_returned)
+            returnedStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            returnedStatusHolder.show()
         }
+    }
+
+    private fun navigateToClothes(clothes: ClothesModel) {
+        val bundle = Bundle()
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, clothes.id)
+
+        findNavController().navigate(R.id.action_orderDetailFragment_to_clothesDetailFragment, bundle)
     }
 }

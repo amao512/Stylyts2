@@ -24,7 +24,6 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CreateCollectionAcceptContract
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
@@ -250,7 +249,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     }
 
     override fun processSuccessSavingToCart() {
-        CartDialog().show(childFragmentManager, EMPTY_STRING)
+        findNavController().navigate(R.id.nav_ordering)
     }
 
     private fun processPhotos() {

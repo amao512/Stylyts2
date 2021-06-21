@@ -1,12 +1,10 @@
-package kz.eztech.stylyts.presentation.dialogs.cart
+package kz.eztech.stylyts.presentation.fragments.order_constructor
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.dialog_cart.*
+import kotlinx.android.synthetic.main.base_toolbar.view.*
+import kotlinx.android.synthetic.main.fragment_cart.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.db.cart.CartEntity
@@ -15,8 +13,13 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.CartAdapter
+import kz.eztech.stylyts.presentation.base.BaseFragment
+import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.cart.CartContract
+import kz.eztech.stylyts.presentation.dialogs.cart.ClothesCountsBottomDialog
+import kz.eztech.stylyts.presentation.dialogs.cart.ClothesSizesBottomDialog
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.cart.CartPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -29,7 +32,7 @@ import javax.inject.Inject
 /**
  * Created by Ruslan Erdenoff on 28.01.2021.
  */
-class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickListener,
+class CartFragment : BaseFragment<MainActivity>(), View.OnClickListener, UniversalViewClickListener,
     DialogChooserListener, CartContract.View {
 
     @Inject lateinit var presenter: CartPresenter
@@ -37,28 +40,27 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
     private lateinit var sizeChooserDialog: ClothesSizesBottomDialog
     private lateinit var countsChooserDialog: ClothesCountsBottomDialog
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.dialog_cart, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initializeDependency()
-        initializePresenter()
-        initializeViewsData()
-        initializeViews()
-
-        initializeListeners()
-        processPostInitialization()
+    override fun onResume() {
+        super.onResume()
+        currentActivity.hideBottomNavigationView()
     }
 
-    override fun customizeActionBar() {}
+    override fun getLayoutId(): Int = R.layout.fragment_cart
+
+    override fun getContractView(): BaseView = this
+
+    override fun customizeActionBar() {
+        with (fragment_cart_toolbar) {
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.show()
+            toolbar_title_text_view.show()
+
+            customizeActionToolBar(toolbar = this, title = getString(R.string.my_basket))
+        }
+    }
 
     override fun initializeDependency() {
-        (requireContext().applicationContext as StylytsApp).applicationComponent.inject(dialog = this)
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
     }
 
     override fun initializePresenter() {
@@ -82,7 +84,6 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
     override fun initializeViews() {}
 
     override fun initializeListeners() {
-        image_view_dialog_cart_close.setOnClickListener(this)
         dialog_cart_ordering_button.setOnClickListener(this)
     }
 
@@ -115,17 +116,14 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
             R.id.item_cart_clothes_remove_image_view -> presenter.removeCart(item as CartEntity)
             R.id.frame_layout_item_cart_item_size -> onSizeStockClicked(item)
             R.id.frame_layout_item_cart_item_count -> onSizeStockClicked(item, isSize = false)
+            R.id.item_cart_clothes_image_view -> navigateToClothes(item as CartEntity)
+            R.id.item_cart_clothes_title_text_view -> navigateToClothes(item as CartEntity)
         }
     }
 
-    override fun getTheme(): Int = R.style.FullScreenDialog
-
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.image_view_dialog_cart_close -> dismiss()
-            R.id.dialog_cart_ordering_button -> {
-                findNavController().navigate(R.id.nav_ordering)
-            }
+            R.id.dialog_cart_ordering_button -> findNavController().navigate(R.id.action_cartFragment_to_customerInfoFragment)
         }
     }
 
@@ -269,5 +267,12 @@ class CartDialog : DialogFragment(), View.OnClickListener, UniversalViewClickLis
                 isSize = isSize
             )
         }
+    }
+
+    private fun navigateToClothes(cartEntity: CartEntity) {
+        val bundle = Bundle()
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, cartEntity.id!!)
+
+        findNavController().navigate(R.id.action_cartFragment_to_clothesDetailFragment, bundle)
     }
 }

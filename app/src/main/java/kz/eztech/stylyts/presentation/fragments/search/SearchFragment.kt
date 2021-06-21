@@ -16,7 +16,6 @@ import kz.eztech.stylyts.presentation.adapters.search.SearchViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchContract
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
@@ -57,8 +56,7 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
 
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.setOnClickListener {
-                val cartDialog = CartDialog()
-                cartDialog.show(childFragmentManager, "Cart")
+                findNavController().navigate(R.id.nav_ordering)
             }
 
             background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)

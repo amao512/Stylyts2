@@ -81,6 +81,14 @@ class CartHolder(
             )
         }
 
+        clothesImageView.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, cart)
+        }
+
+        clothesTitleTextView.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, cart)
+        }
+
         clothesRemoveImageView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, cart)
         }

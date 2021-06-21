@@ -20,7 +20,6 @@ import kz.eztech.stylyts.presentation.adapters.shop.ShopAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.shop.ShopListContract
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -128,10 +127,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.toolbar_right_corner_action_image_button -> CartDialog().show(
-                childFragmentManager,
-                EMPTY_STRING
-            )
+            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.nav_ordering)
         }
     }
 

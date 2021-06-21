@@ -22,7 +22,6 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.clothes.ClothesDetailContract
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.cart.ClothesSizesBottomDialog
 import kz.eztech.stylyts.presentation.dialogs.clothes.AddToCartProblemDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
@@ -107,7 +106,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fragment_clothes_detail_description_holder_linear_layout -> showClothesDescription()
-            R.id.toolbar_right_corner_action_image_button -> CartDialog().show(childFragmentManager, EMPTY_STRING)
+            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.nav_ordering)
         }
     }
 
@@ -175,7 +174,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     }
 
     override fun processInsertingCart() {
-        CartDialog().show(childFragmentManager, "Cart")
+        findNavController().navigate(R.id.nav_ordering)
     }
 
     private fun fillClothesModel(clothesModel: ClothesModel) {

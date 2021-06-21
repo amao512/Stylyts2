@@ -33,6 +33,11 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
 
     private lateinit var recyclerView: RecyclerView
 
+    override fun onResume() {
+        super.onResume()
+        currentActivity.displayBottomNavigationView()
+    }
+
     override fun getLayoutId(): Int = R.layout.fragment_order_list
 
     override fun getContractView(): BaseView = this

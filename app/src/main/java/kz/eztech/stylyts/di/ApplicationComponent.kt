@@ -3,7 +3,7 @@ package kz.eztech.stylyts.di
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.di.modules.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
+import kz.eztech.stylyts.presentation.fragments.order_constructor.CartFragment
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
@@ -107,9 +107,9 @@ interface ApplicationComponent {
     fun inject(fragmentUser: UserOrderDetailFragment)
     fun inject(fragment: SelectDeliveryWayFragment)
     fun inject(fragment: ShopOrderDetailFragment)
+    fun inject(fragment: CartFragment)
 
     fun inject(dialog: TagChooserDialog)
-    fun inject(dialog: CartDialog)
     fun inject(dialog: UserSearchDialog)
     fun inject(dialog: EditProfileDialog)
     fun inject(dialog: ExitDialog)

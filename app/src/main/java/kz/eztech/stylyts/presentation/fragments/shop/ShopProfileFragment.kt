@@ -32,7 +32,6 @@ import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopProfileContract
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.dialogs.shop.ChangeGenderDialog
 import kz.eztech.stylyts.presentation.enums.GenderEnum
@@ -111,7 +110,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setOnClickListener {
-                CartDialog().show(childFragmentManager, EMPTY_STRING)
+                findNavController().navigate(R.id.nav_ordering)
             }
 
             customizeActionToolBar(toolbar = this)

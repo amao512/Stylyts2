@@ -15,7 +15,6 @@ import kz.eztech.stylyts.presentation.adapters.shop.ShopViewPagerAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopContract
-import kz.eztech.stylyts.presentation.dialogs.cart.CartDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -37,8 +36,7 @@ class ShopFragment : BaseFragment<MainActivity>(), ShopContract.View, UniversalV
 
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.setOnClickListener {
-                val cartDialog = CartDialog()
-                cartDialog.show(childFragmentManager, "Cart")
+                findNavController().navigate(R.id.nav_ordering)
             }
 
             background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)
