@@ -135,16 +135,21 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         position: Int,
         item: Any?
     ) {
-        when (item) {
-            is OrderModel -> navigateToOrderDetails(item)
+        when (view.id) {
+            R.id.item_order_detail_linear_layout -> navigateToUserOrderDetails(item as OrderModel)
+            R.id.item_shop_order_root_view -> navigateToShopOrderDetails(item as OrderModel)
         }
     }
 
-    private fun navigateToOrderDetails(orderModel: OrderModel) {
+    private fun navigateToUserOrderDetails(orderModel: OrderModel) {
         val bundle = Bundle()
         bundle.putInt(UserOrderDetailFragment.ORDER_ID_KEY, orderModel.id)
 
         findNavController().navigate(R.id.action_orderListFragment_to_orderDetailFragment, bundle)
+    }
+
+    private fun navigateToShopOrderDetails(orderModel: OrderModel) {
+
     }
 
     private fun getOrders() {

@@ -52,5 +52,9 @@ class ShopOrderHolder(
             order.createdAt,
             DateFormatterHelper.FORMAT_DATE_dd_MM_yyyy_dash
         )
+
+        itemView.item_shop_order_root_view.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, order)
+        }
     }
 }

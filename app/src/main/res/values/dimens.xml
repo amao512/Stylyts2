@@ -51,6 +51,8 @@
     <dimen name="icon_size_24x">24dp</dimen>
     <dimen name="icon_size_26x">26dp</dimen>
     <dimen name="icon_size_36x">36dp</dimen>
+    <dimen name="icon_size_50x">50dp</dimen>
+    <dimen name="icon_size_60x">60dp</dimen>
 
     <dimen name="splash_logo_size">50sp</dimen>
 
