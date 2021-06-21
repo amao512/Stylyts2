@@ -62,7 +62,11 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), EmptyContract.View
 
     override fun hideProgress() {}
 
-    override fun onViewClicked(view: View, position: Int, item: Any?) {
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
 
     }
 }
