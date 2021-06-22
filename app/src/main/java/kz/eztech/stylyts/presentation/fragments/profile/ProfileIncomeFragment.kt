@@ -8,7 +8,6 @@ import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileIncomeContract
-import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
 class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContract.View {
@@ -19,10 +18,8 @@ class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContrac
 
     override fun customizeActionBar() {
         with(include_toolbar_income){
-            toolbar_left_corner_action_image_button.hide()
-            toolbar_back_text_view.show()
-            toolbar_title_text_view.hide()
-            toolbar_right_corner_action_image_button.hide()
+            toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
+            toolbar_left_corner_action_image_button.show()
 
             customizeActionToolBar(toolbar = this)
         }

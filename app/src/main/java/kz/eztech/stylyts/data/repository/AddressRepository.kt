@@ -3,10 +3,10 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.AddressApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
-import kz.eztech.stylyts.data.mappers.address.AddressApiModelMapper
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.address.map
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
 import kz.eztech.stylyts.domain.models.address.AddressModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.AddressDomainRepository
 import javax.inject.Inject
 
@@ -14,9 +14,7 @@ import javax.inject.Inject
  * Created by Asylzhan Seytbek on 14.03.2021.
  */
 class AddressRepository @Inject constructor(
-    private val api: AddressApi,
-    private val addressApiModelMapper: AddressApiModelMapper,
-    private val resultsApiModelMapper: ResultsApiModelMapper
+    private val api: AddressApi
 ) : AddressDomainRepository {
 
     override fun postAddress(
@@ -32,7 +30,7 @@ class AddressRepository @Inject constructor(
             house = data["house"] as String
         ).map {
             when (it.isSuccessful) {
-                true -> addressApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 else -> throw NetworkException(it)
             }
         }
@@ -44,7 +42,7 @@ class AddressRepository @Inject constructor(
     ): Single<ResultsModel<AddressModel>> {
         return api.getAllAddress(token, queryMap).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 else -> throw NetworkException(it)
             }
         }

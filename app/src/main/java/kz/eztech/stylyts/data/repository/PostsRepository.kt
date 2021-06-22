@@ -4,10 +4,8 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.data.api.network.PostsApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.ActionApiModelMapper
-import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
-import kz.eztech.stylyts.data.mappers.posts.PostApiModelMapper
-import kz.eztech.stylyts.data.mappers.posts.PostCreateApiModelMapper
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.posts.map
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
@@ -17,11 +15,7 @@ import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class PostsRepository @Inject constructor(
-    private val api: PostsApi,
-    private val resultsApiModelMapper: ResultsApiModelMapper,
-    private val postApiModelMapper: PostApiModelMapper,
-    private val actionApiModelMapper: ActionApiModelMapper,
-    private val postCreateApiModelMapper: PostCreateApiModelMapper
+    private val api: PostsApi
 ) : PostsDomainRepository {
 
     override fun createPost(
@@ -35,7 +29,7 @@ class PostsRepository @Inject constructor(
             tagsBody = tags
         ).map {
             when (it.isSuccessful) {
-                true -> postCreateApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 else -> throw NetworkException(it)
             }
         }
@@ -47,7 +41,7 @@ class PostsRepository @Inject constructor(
     ): Single<ResultsModel<PostModel>> {
         return api.getPosts(token, queryMap).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -59,7 +53,7 @@ class PostsRepository @Inject constructor(
     ): Single<PostModel> {
         return api.getPostById(token, postId).map {
             when (it.isSuccessful) {
-                true -> postApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -71,7 +65,7 @@ class PostsRepository @Inject constructor(
     ): Single<ResultsModel<PostModel>> {
         return api.getHomePagePosts(token, queryMap).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -102,7 +96,7 @@ class PostsRepository @Inject constructor(
             multipartList = multipartList
         ).map {
             when (it.isSuccessful) {
-                true -> postApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 else -> throw NetworkException(it)
             }
         }
@@ -117,7 +111,7 @@ class PostsRepository @Inject constructor(
             postId = postId
         ).map {
             when (it.isSuccessful) {
-                true -> actionApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 else -> throw NetworkException(it)
             }
         }

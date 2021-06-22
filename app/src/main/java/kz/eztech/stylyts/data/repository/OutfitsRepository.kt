@@ -3,9 +3,8 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.OutfitsApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
-import kz.eztech.stylyts.data.mappers.outfits.OutfitApiModelMapper
-import kz.eztech.stylyts.data.mappers.outfits.OutfitCreateApiModelMapper
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.outfits.map
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
@@ -14,10 +13,7 @@ import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class OutfitsRepository @Inject constructor(
-    private val api: OutfitsApi,
-    private val resultsApiModelMapper: ResultsApiModelMapper,
-    private val outfitApiModelMapper: OutfitApiModelMapper,
-    private val outfitCreateApiModelMapper: OutfitCreateApiModelMapper
+    private val api: OutfitsApi
 ) : OutfitsDomainRepository {
 
     override fun saveOutfit(
@@ -26,7 +22,7 @@ class OutfitsRepository @Inject constructor(
     ): Single<OutfitCreateModel> {
         return api.saveOutfit(token, data).map {
             when (it.isSuccessful) {
-                true -> outfitCreateApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -43,7 +39,7 @@ class OutfitsRepository @Inject constructor(
             stringQueryMap = stringQueryMap
         ).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -55,7 +51,7 @@ class OutfitsRepository @Inject constructor(
     ): Single<OutfitModel> {
         return api.getOutfitById(token, outfitId).map {
             when (it.isSuccessful) {
-                true -> outfitApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -84,7 +80,7 @@ class OutfitsRepository @Inject constructor(
             files = data
         ).map {
             when (it.isSuccessful) {
-                true -> outfitCreateApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }

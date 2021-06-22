@@ -3,7 +3,7 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.AuthApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.auth.AuthApiModelMapper
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.auth.map
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import kz.eztech.stylyts.domain.repository.AuthorizationDomainRepository
@@ -13,8 +13,7 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
 class AuthorizationRepository @Inject constructor(
-    private val api: AuthApi,
-    private val authApiModelMapper: AuthApiModelMapper
+    private val api: AuthApi
 ) : AuthorizationDomainRepository {
 
     override fun registerUser(
@@ -26,7 +25,7 @@ class AuthorizationRepository @Inject constructor(
             fieldBooleanMap = fieldBooleanMap
         ).map {
             when (it.isSuccessful) {
-                true -> authApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -38,7 +37,7 @@ class AuthorizationRepository @Inject constructor(
             password = data["password"] as String
         ).map {
             when (it.isSuccessful) {
-                true -> authApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }

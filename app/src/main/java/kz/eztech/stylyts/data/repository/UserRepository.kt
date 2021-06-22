@@ -3,8 +3,8 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.UserApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
-import kz.eztech.stylyts.data.mappers.user.FollowSuccessApiModelMapper
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.user.map
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -12,9 +12,7 @@ import kz.eztech.stylyts.domain.repository.UserDomainRepository
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val api: UserApi,
-    private val resultsApiModelMapper: ResultsApiModelMapper,
-    private val followSuccessApiModelMapper: FollowSuccessApiModelMapper
+    private val api: UserApi
 ) : UserDomainRepository {
 
     override fun getFollowersById(
@@ -28,7 +26,7 @@ class UserRepository @Inject constructor(
             queryMap = queryMap
         ).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -45,7 +43,7 @@ class UserRepository @Inject constructor(
             queryMap = queryMap
         ).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -57,7 +55,7 @@ class UserRepository @Inject constructor(
     ): Single<FollowSuccessModel> {
         return api.followUser(token, userId).map {
             when (it.isSuccessful) {
-                true -> followSuccessApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }

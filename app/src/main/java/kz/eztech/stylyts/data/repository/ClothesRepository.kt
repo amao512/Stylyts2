@@ -3,25 +3,21 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.ClothesApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.ResultsApiModelMapper
-import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
-import kz.eztech.stylyts.data.mappers.clothes.ClothesBrandApiModelMapper
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.clothes.map
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
 import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import javax.inject.Inject
 
 class ClothesRepository @Inject constructor(
-    private val api: ClothesApi,
-    private val resultsApiModelMapper: ResultsApiModelMapper,
-    private val clothesApiModelMapper: ClothesApiModelMapper,
-    private val clothesBrandApiModelMapper: ClothesBrandApiModelMapper
+    private val api: ClothesApi
 ) : ClothesDomainRepository {
 
     override fun getClothesTypes(token: String): Single<ResultsModel<ClothesTypeModel>> {
         return api.getClothesTypes(token).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -30,7 +26,7 @@ class ClothesRepository @Inject constructor(
     override fun getClothesStyles(token: String): Single<ResultsModel<ClothesStyleModel>> {
         return api.getClothesStyles(token).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -39,7 +35,7 @@ class ClothesRepository @Inject constructor(
     override fun getClothesCategories(token: String): Single<ResultsModel<ClothesCategoryModel>> {
         return api.getClothesCategories(token).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -54,7 +50,7 @@ class ClothesRepository @Inject constructor(
             clothesTypeId = typeId
         ).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -69,7 +65,7 @@ class ClothesRepository @Inject constructor(
             clothesId = clothesId
         ).map {
             when (it.isSuccessful) {
-                true -> clothesApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -78,7 +74,7 @@ class ClothesRepository @Inject constructor(
     override fun getClothesBrands(token: String): Single<ResultsModel<ClothesBrandModel>> {
         return api.getClothesBrands(token).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -93,7 +89,7 @@ class ClothesRepository @Inject constructor(
             brandId = brandId
         ).map {
             when (it.isSuccessful) {
-                true -> clothesBrandApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -102,7 +98,7 @@ class ClothesRepository @Inject constructor(
     override fun getClothesColors(token: String): Single<ResultsModel<ClothesColorModel>> {
         return api.getClothesColors(token).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -119,7 +115,7 @@ class ClothesRepository @Inject constructor(
             booleanQueryMap = booleanQueryMap
         ).map {
             when (it.isSuccessful) {
-                true -> resultsApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
@@ -143,7 +139,7 @@ class ClothesRepository @Inject constructor(
     ): Single<ClothesModel> {
         return api.getClothesByBarcode(token, barcode).map {
             when (it.isSuccessful) {
-                true -> clothesApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }

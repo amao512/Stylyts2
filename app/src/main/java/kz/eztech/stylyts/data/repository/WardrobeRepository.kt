@@ -3,15 +3,14 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.WardrobeApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.data.mappers.clothes.ClothesApiModelMapper
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.clothes.map
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.repository.WardrobeDomainRepository
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class WardrobeRepository @Inject constructor(
-    private val api: WardrobeApi,
-    private val clothesApiModelMapper: ClothesApiModelMapper
+    private val api: WardrobeApi
 ) : WardrobeDomainRepository {
 
     override fun createClothesByPhoto(
@@ -23,7 +22,7 @@ class WardrobeRepository @Inject constructor(
             multipartList = multipartList
         ).map {
             when (it.isSuccessful) {
-                true -> clothesApiModelMapper.map(data = it.body())
+                true -> it.body().map()
                 false -> throw NetworkException(it)
             }
         }
