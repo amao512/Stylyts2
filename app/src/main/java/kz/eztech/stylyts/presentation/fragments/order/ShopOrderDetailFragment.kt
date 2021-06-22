@@ -19,6 +19,8 @@ import kz.eztech.stylyts.presentation.adapters.ordering.ShopOrderClothesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.ShopOrderDetailContract
+import kz.eztech.stylyts.presentation.enums.ordering.DeliveryStatusEnum
+import kz.eztech.stylyts.presentation.enums.ordering.PaymentStatusEnum
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
@@ -44,6 +46,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
     private lateinit var clientFullNameTextView: TextView
     private lateinit var dateTextView: TextView
     private lateinit var priceTextView: TextView
+    private lateinit var notPaidTextView: TextView
     private lateinit var clothesRecyclerView: RecyclerView
     private lateinit var completeButton: Button
 
@@ -98,6 +101,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         completeButton = fragment_shop_order_detail_complete_button
         clothesRecyclerView = fragment_shop_order_detail_recycler_view
         clothesRecyclerView.adapter = shopOrderClothesAdapter
+        notPaidTextView = fragment_shop_order_detail_not_paid_text_view
     }
 
     override fun initializeListeners() {
@@ -173,6 +177,17 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         } else {
             clientShortNameTextView.hide()
             client.avatar.loadImageWithCenterCrop(target = clientAvatarShapeableImageView)
+        }
+
+        if (
+            orderModel.delivery.deliveryStatus == DeliveryStatusEnum.NEW.status &&
+            orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
+        ) {
+            completeButton.hide()
+            notPaidTextView.show()
+        } else {
+            completeButton.show()
+            notPaidTextView.hide()
         }
 
         clientAvatarShapeableImageView.setOnClickListener {
