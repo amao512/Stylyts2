@@ -311,7 +311,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         var photoUrl: String = EMPTY_STRING
         var currentSameObject: ImageEntity? = null
 
-        if (item.coverImages.isNotEmpty()) {
+        if (item.constructorImage.isNotBlank()) {
+            photoUrl = when (item.constructorImage.contains("http", true)) {
+                true -> item.constructorImage
+                else -> "http://178.170.221.31${item.constructorImage}"
+            }
+        } else if (item.coverImages.isNotEmpty()) {
             photoUrl = when (item.coverImages[0].contains("http", true)) {
                 true -> item.coverImages[0]
                 else -> "http://178.170.221.31${item.coverImages[0]}"

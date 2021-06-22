@@ -33,8 +33,10 @@ class CollectionConstructorShopItemHolder(
 					position = position
 				)
 
-				if (coverImages.isNotEmpty()) {
+				if (constructorImage.isNotBlank()) {
 					constructorImage.loadImage(target = image_view_item_collection_constructor_clothes_item_image_holder)
+				} else if (coverImages.isNotEmpty()) {
+					coverImages[0].loadImage(target = image_view_item_collection_constructor_clothes_item_image_holder)
 				}
 
 				if (title.toCharArray().size > 7) {
