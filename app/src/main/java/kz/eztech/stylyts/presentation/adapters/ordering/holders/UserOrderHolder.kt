@@ -64,7 +64,12 @@ class UserOrderHolder(
         if (orderModel.itemObjects.isNotEmpty()) {
             clothesNameTextView.text = orderModel.itemObjects[0].title
             clothesIdTextView.text = "ID изделия: ${orderModel.itemObjects[0].id}"
-            orderModel.itemObjects[0].constructorImage.loadImage(target = imageView)
+
+            if (orderModel.itemObjects[0].constructorImage.isBlank()) {
+                orderModel.itemObjects[0].coverImages[0].loadImage(target = imageView)
+            } else {
+                orderModel.itemObjects[0].constructorImage.loadImage(target = imageView)
+            }
         }
 
         itemView.item_order_detail_linear_layout.setOnClickListener {
@@ -84,7 +89,12 @@ class UserOrderHolder(
         countTextView.text = "Кол-во 1"
         sizeTextView.text = "Размер L"
         clothesIdTextView.text = "ID изделия: ${clothesModel.id}"
-        clothesModel.constructorImage.loadImage(target = imageView)
+
+        if (clothesModel.constructorImage.isBlank()) {
+            clothesModel.coverImages[0].loadImage(target = imageView)
+        } else {
+            clothesModel.constructorImage.loadImage(target = imageView)
+        }
 
         imageView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, clothesModel)

@@ -62,7 +62,11 @@ class ShopOrderClothesViewHolder(
         priceTextView.text = price
         secondPriceTextView.text = price
 
-        clothes.constructorImage.loadImage(target = clothesImageView)
+        if (clothes.constructorImage.isBlank()) {
+            clothes.coverImages[0].loadImage(target = clothesImageView)
+        } else {
+            clothes.constructorImage.loadImage(target = clothesImageView)
+        }
 
         clothesImageView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, clothes)
