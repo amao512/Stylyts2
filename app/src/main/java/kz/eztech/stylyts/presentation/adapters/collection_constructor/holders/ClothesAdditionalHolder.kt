@@ -40,7 +40,7 @@ class ClothesAdditionalHolder(
                 item.coverImages[0].loadImage(target = image_view_image_detail_image_view)
             }
 
-            if (item.clothesBrand.id != 0) {
+            if (item.clothesBrand.id != 0 && item.cost != 0) {
                 item_main_image_detail_user_tag_frame_layout.hide()
             } else {
                 item_main_image_detail_user_tag_frame_layout.show()

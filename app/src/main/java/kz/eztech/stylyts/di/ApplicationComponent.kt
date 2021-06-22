@@ -35,6 +35,7 @@ import kz.eztech.stylyts.presentation.fragments.order_constructor.SelectDelivery
 import kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupPointsFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileIncomeFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.*
@@ -108,6 +109,7 @@ interface ApplicationComponent {
     fun inject(fragment: SelectDeliveryWayFragment)
     fun inject(fragment: ShopOrderDetailFragment)
     fun inject(fragment: CartFragment)
+    fun inject(fragment: ProfileIncomeFragment)
 
     fun inject(dialog: TagChooserDialog)
     fun inject(dialog: UserSearchDialog)

@@ -112,6 +112,41 @@
                 />
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/dialog_save_clothes_accept_price_holder_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_size_16x"
+            android:visibility="gone"
+            >
+
+            <EditText
+                android:id="@+id/dialog_save_clothes_accept_price_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                android:hint="@string/price"
+                android:inputType="number"
+                android:paddingHorizontal="@dimen/padding_size_12x"
+                android:paddingVertical="@dimen/padding_size_10x"
+                />
+
+            <EditText
+                android:id="@+id/dialog_save_clothes_accept_sale_price_edit_text"
+                style="@style/TextRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_size_12x"
+                android:background="@drawable/rounded_rectangle_white_gray_corners"
+                android:hint="@string/sale_price"
+                android:inputType="number"
+                android:paddingHorizontal="@dimen/padding_size_12x"
+                android:paddingVertical="@dimen/padding_size_10x"
+                />
+        </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/dialog_save_clothes_recycler_view"
             android:layout_width="match_parent"

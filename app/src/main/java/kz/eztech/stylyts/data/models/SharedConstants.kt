@@ -8,6 +8,7 @@ object SharedConstants {
 	const val REFRESH_TOKEN_KEY = "refresh_token"
 	const val USER_ID_KEY = "id"
 	const val USERNAME_KEY = "username"
+	const val IS_BRAND_KEY = "isBrand"
 
 	const val DEFAULT_ADDRESS_ID_KEY = "default_address_id"
 

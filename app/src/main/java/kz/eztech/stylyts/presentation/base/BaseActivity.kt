@@ -38,6 +38,10 @@ abstract class BaseActivity : AppCompatActivity() {
         return getSharedPrefByKey<Int>(SharedConstants.USER_ID_KEY) ?: 0
     }
 
+    fun getIsBrandFromSharedPref(): Boolean {
+        return getSharedPrefByKey<Boolean>(SharedConstants.IS_BRAND_KEY) ?: false
+    }
+
     inline fun <reified T> getSharedPrefByKey(key: String): T? {
         return try {
             val sharedPref =

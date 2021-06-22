@@ -18,6 +18,7 @@ import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
+import kz.eztech.stylyts.presentation.base.BaseActivity
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
@@ -40,7 +41,8 @@ class SaveClothesAcceptDialog(
 ) : DialogFragment(), View.OnClickListener, UniversalViewClickListener,
     SaveClothesAcceptContract.View {
 
-    @Inject lateinit var presenter: SaveClothesAcceptPresenter
+    @Inject
+    lateinit var presenter: SaveClothesAcceptPresenter
     private lateinit var adapter: FilterCheckAdapter
     private lateinit var clothesCreateModel: ClothesCreateModel
 
@@ -54,6 +56,8 @@ class SaveClothesAcceptDialog(
         private const val TYPE_LIST_MODE = 0
         private const val CATEGORY_LIST_MODE = 1
         private const val STYLE_LIST_MODE = 2
+        private const val BRAND_LIST_MODE = 3
+        private const val COST_MODE = 4
 
         fun getNewInstance(
             token: String,
@@ -278,6 +282,29 @@ class SaveClothesAcceptDialog(
         setListButtonsCondition()
     }
 
+    override fun processBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
+        dialog_save_clothes_accept_list_title_text_view.text =
+            getString(R.string.choose_clothes_style)
+        dialog_save_clothes_accept_price_holder_linear_layout.hide()
+        dialog_save_clothes_recycler_view.show()
+
+        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+
+        resultsModel.results.map {
+            preparedTypes.add(
+                FilterCheckModel(
+                    id = it.id,
+                    item = it
+                )
+            )
+        }
+
+        adapter.updateList(list = preparedTypes)
+        listMode = BRAND_LIST_MODE
+
+        setListButtonsCondition()
+    }
+
     override fun processSuccessCreating(wardrobeModel: ClothesModel) {
         val bundle = Bundle()
         bundle.putInt(ProfileFragment.MODE_KEY, ProfileFragment.WARDROBE_MODE)
@@ -294,7 +321,13 @@ class SaveClothesAcceptDialog(
                 typeId = clothesCreateModel.clothesType
             )
             CATEGORY_LIST_MODE -> presenter.getStyles(token = getTokenFromArgs())
-            STYLE_LIST_MODE -> setListButtonsCondition()
+            STYLE_LIST_MODE -> if (!(activity as BaseActivity).getIsBrandFromSharedPref()) {
+                setListButtonsCondition()
+            } else {
+                presenter.getBrands(token = getTokenFromArgs())
+            }
+            BRAND_LIST_MODE -> setListButtonsCondition()
+            COST_MODE -> handleCostEditText()
         }
     }
 
@@ -316,23 +349,18 @@ class SaveClothesAcceptDialog(
             )
             CATEGORY_LIST_MODE -> presenter.getTypes(token = getTokenFromArgs())
             TYPE_LIST_MODE -> setListButtonsCondition()
+            BRAND_LIST_MODE -> presenter.getStyles(token = getTokenFromArgs())
+            COST_MODE -> presenter.getBrands(token = getTokenFromArgs())
         }
     }
 
     private fun setListButtonsCondition() {
+        hideNextButton()
+        setDoneButtonUnClickable()
+
         when (listMode) {
-            STYLE_LIST_MODE -> {
-                hideNextButton()
-                showBackButton()
-            }
-            CATEGORY_LIST_MODE -> {
-                hideNextButton()
-                showBackButton()
-            }
-            TYPE_LIST_MODE -> {
-                hideNextButton()
-                hideBackButton()
-            }
+            TYPE_LIST_MODE -> hideBackButton()
+            else -> showBackButton()
         }
     }
 
@@ -368,6 +396,7 @@ class SaveClothesAcceptDialog(
             is ClothesTypeModel -> onTypeItemClicked(item.item, position)
             is ClothesCategoryModel -> onCategoryItemClicked(item.item, position)
             is ClothesStyleModel -> onStyleItemClicked(item.item, position)
+            is ClothesBrandModel -> onBrandItemClicked(item.item, position)
         }
     }
 
@@ -392,7 +421,53 @@ class SaveClothesAcceptDialog(
         adapter.onSingleCheckItem(position)
         clothesCreateModel.clothesStyle = item.id
 
+        if ((activity as BaseActivity).getIsBrandFromSharedPref()) {
+            showNextButton()
+        } else {
+            setDoneButtonClickable()
+        }
+    }
+
+    private fun onBrandItemClicked(brand: ClothesBrandModel, position: Int) {
+        adapter.onSingleCheckItem(position)
+        clothesCreateModel.clothesBrand = brand.id
+        listMode = COST_MODE
+
+        showNextButton()
         setDoneButtonClickable()
+    }
+
+    private fun handleCostEditText() {
+        listMode = COST_MODE
+
+        val costEditText = dialog_save_clothes_accept_price_edit_text
+        val salePriceEditText = dialog_save_clothes_accept_sale_price_edit_text
+
+        dialog_save_clothes_recycler_view.hide()
+        dialog_save_clothes_accept_price_holder_linear_layout.show()
+        setListButtonsCondition()
+
+        costEditText.setOnKeyListener { _, _, _ ->
+            if (costEditText.text.isNotBlank()) {
+                clothesCreateModel.cost = costEditText.text.toString().toInt()
+                setDoneButtonClickable()
+            } else {
+                clothesCreateModel.cost = 0
+                setDoneButtonUnClickable()
+            }
+
+            false
+        }
+
+        salePriceEditText.setOnKeyListener { _, _, _ ->
+            if (salePriceEditText.text.isNotBlank()) {
+                clothesCreateModel.salePrice = salePriceEditText.text.toString().toInt()
+            } else {
+                clothesCreateModel.salePrice = 0
+            }
+
+            false
+        }
     }
 
     private fun setDoneButtonClickable() {

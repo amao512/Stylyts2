@@ -10,8 +10,11 @@ data class ClothesCreateModel(
     var title: String = EMPTY_STRING,
     var description: String = EMPTY_STRING,
     var gender: String = GenderEnum.MALE.gender,
+    var cost: Int = 0,
+    var salePrice: Int = 0,
     var coverPhoto: File? = null,
     var clothesType: Int = 0,
     var clothesCategory: Int = 0,
     var clothesStyle: Int = 0,
+    var clothesBrand: Int = 0
 )

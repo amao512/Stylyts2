@@ -4,13 +4,18 @@ import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile_income.*
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileIncomeContract
+import kz.eztech.stylyts.presentation.presenters.profile.IncomesPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import javax.inject.Inject
 
 class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContract.View {
+
+    @Inject lateinit var presenter: IncomesPresenter
 
     override fun getLayoutId(): Int = R.layout.fragment_profile_income
 
@@ -25,9 +30,13 @@ class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContrac
         }
     }
 
-    override fun initializeDependency() {}
+    override fun initializeDependency() {
+        (currentActivity.application as StylytsApp).applicationComponent.inject(fragment = this)
+    }
 
-    override fun initializePresenter() {}
+    override fun initializePresenter() {
+        presenter.attach(view = this)
+    }
 
     override fun initializeArguments() {}
 

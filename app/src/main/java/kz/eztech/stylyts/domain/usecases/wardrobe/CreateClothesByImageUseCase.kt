@@ -3,8 +3,8 @@ package kz.eztech.stylyts.domain.usecases.wardrobe
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.repository.WardrobeDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -55,6 +55,24 @@ class CreateClothesByImageUseCase @Inject constructor(
                 clothesCreateModel.clothesCategory.toString()
             )
         )
+
+        if (clothesCreateModel.clothesBrand != 0) {
+            multipartList.add(
+                MultipartBody.Part.createFormData("clothes_brand", clothesCreateModel.clothesBrand.toString())
+            )
+        }
+
+        if (clothesCreateModel.cost != 0) {
+            multipartList.add(
+                MultipartBody.Part.createFormData("cost", clothesCreateModel.cost.toString())
+            )
+        }
+
+        if (clothesCreateModel.cost != 0 && clothesCreateModel.salePrice != 0) {
+            multipartList.add(
+                MultipartBody.Part.createFormData("sale_price", clothesCreateModel.salePrice.toString())
+            )
+        }
 
         clothesCreateModel.coverPhoto?.let {
             val request = it.asRequestBody(("image/*").toMediaTypeOrNull())

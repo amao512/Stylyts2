@@ -2,15 +2,9 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
+import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesStylesUseCase
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.*
 import kz.eztech.stylyts.domain.usecases.wardrobe.CreateClothesByImageUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract
@@ -21,6 +15,7 @@ class SaveClothesAcceptPresenter @Inject constructor(
     private val getClothesTypesUseCase: GetClothesTypesUseCase,
     private val getClothesCategoriesByTypeUseCase: GetClothesCategoriesByTypeUseCase,
     private val getClothesStylesUseCase: GetClothesStylesUseCase,
+    private val getClothesBrandsUseCase: GetClothesBrandsUseCase,
     private val createClothesByImageUseCase: CreateClothesByImageUseCase
 ) : SaveClothesAcceptContract.Presenter {
 
@@ -30,6 +25,7 @@ class SaveClothesAcceptPresenter @Inject constructor(
         getClothesTypesUseCase.clear()
         getClothesCategoriesByTypeUseCase.clear()
         getClothesStylesUseCase.clear()
+        getClothesBrandsUseCase.clear()
         createClothesByImageUseCase.clear()
     }
 
@@ -90,6 +86,27 @@ class SaveClothesAcceptPresenter @Inject constructor(
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {
                 view.processViewAction {
                     processStyles(resultsModel = t)
+                    hideSmallProgress()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideSmallProgress()
+                    displayMessage(msg = errorHelper.processError(e))
+                }
+            }
+        })
+    }
+
+    override fun getBrands(token: String) {
+        view.displaySmallProgress()
+
+        getClothesBrandsUseCase.initParams(token)
+        getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
+            override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
+                view.processViewAction {
+                    processBrands(resultsModel = t)
                     hideSmallProgress()
                 }
             }
