@@ -90,7 +90,7 @@
         <action
             android:id="@+id/action_orderingFragment_to_orderListFragment"
             app:destination="@id/orderListFragment"
-            app:popUpTo="@id/customerInfoFragment"
+            app:popUpTo="@id/cartFragment"
             app:popUpToInclusive="true"
             />
     </fragment>
@@ -121,7 +121,7 @@
         <action
             android:id="@+id/action_paymentFragment_to_orderDetailFragment"
             app:destination="@id/orderDetailFragment"
-            app:popUpTo="@id/customerInfoFragment"
+            app:popUpTo="@id/cartFragment"
             app:popUpToInclusive="true"
             />
     </fragment>
@@ -157,10 +157,6 @@
         android:label="PickupPointsFragment"
         >
         <action
-            android:id="@+id/action_pickupPointsFragment_to_pickupOrderingFragment"
-            app:destination="@id/pickupOrderingFragment"
-            />
-        <action
             android:id="@+id/action_pickupPointsFragment_to_orderingFragment"
             app:destination="@id/orderingFragment"
             />
@@ -178,16 +174,11 @@
     </fragment>
 
     <fragment
-        android:id="@+id/pickupOrderingFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupOrderingFragment"
-        android:label="PickupOrderingFragment"
-        />
-
-    <fragment
         android:id="@+id/clothesDetailFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
         android:label="fragment_clothes_detail"
         tools:layout="@layout/fragment_clothes_detail"
         />
+
     <include app:graph="@navigation/nav_shop_profile" />
 </navigation>
