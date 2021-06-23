@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.fragments.shop
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_filter.*
 import kotlinx.android.synthetic.main.fragment_category_type_detail.*
@@ -138,17 +139,8 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
     override fun processPostInitialization() {
         presenter.getClothesBrands(token = currentActivity.getTokenFromSharedPref())
 
-        if (currentFilter.categoryIdList.isEmpty() && currentFilter.typeIdList.isNotEmpty()) {
-            presenter.getClothesByType(
-                token = currentActivity.getTokenFromSharedPref(),
-                filterModel = currentFilter
-            )
-        } else {
-            presenter.getCategoryTypeDetail(
-                token = currentActivity.getTokenFromSharedPref(),
-                filterModel = currentFilter
-            )
-        }
+        getClothes()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -177,7 +169,13 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
             )
         }
 
-        clothesAdapter.updateList(list = resultsModel.results)
+        clothesAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != currentFilter.page) {
+            currentFilter.page++
+        } else {
+            currentFilter.isLastPage = true
+        }
     }
 
     override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
@@ -211,6 +209,32 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
         }
     }
 
+    private fun getClothes() {
+        if (currentFilter.categoryIdList.isEmpty() && currentFilter.typeIdList.isNotEmpty()) {
+            presenter.getClothesByType(
+                token = currentActivity.getTokenFromSharedPref(),
+                filterModel = currentFilter
+            )
+        } else {
+            presenter.getCategoryTypeDetail(
+                token = currentActivity.getTokenFromSharedPref(),
+                filterModel = currentFilter
+            )
+        }
+    }
+
+    private fun handleRecyclerView() {
+        recycler_view_fragment_category_type_detail.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recycler_view_fragment_category_type_detail.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!currentFilter.isLastPage) {
+                        getClothes()
+                    }
+                }
+            }
+        })
+    }
+
     private fun onClothesItemClick(item: Any?) {
         item as ClothesModel
 
@@ -227,10 +251,12 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
         position: Int,
         item: CollectionFilterModel
     ) {
+        currentFilter.page = 1
+        currentFilter.isLastPage = false
+        clothesAdapter.clearList()
+
         if (position == 0) {
             filterDialog.apply {
-                currentFilter.page = 1
-                currentFilter.isLastPage = false
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, EMPTY_STRING)
         } else {

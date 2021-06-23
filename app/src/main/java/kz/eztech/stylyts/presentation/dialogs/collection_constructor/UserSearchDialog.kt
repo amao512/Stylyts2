@@ -194,7 +194,6 @@ class UserSearchDialog(
     private fun resetPages() {
         filterModel.page = 1
         filterModel.isLastPage = false
-        filterModel.totalPages = 1
     }
 
     private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
