@@ -284,7 +284,8 @@ class SaveClothesAcceptDialog(
 
     override fun processBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
         dialog_save_clothes_accept_list_title_text_view.text =
-            getString(R.string.choose_clothes_style)
+            getString(R.string.choose_clothes_brand)
+        dialog_save_clothes_accept_list_title_text_view.show()
         dialog_save_clothes_accept_price_holder_linear_layout.hide()
         dialog_save_clothes_recycler_view.show()
 
@@ -440,6 +441,7 @@ class SaveClothesAcceptDialog(
     private fun handleCostEditText() {
         listMode = COST_MODE
 
+        dialog_save_clothes_accept_list_title_text_view.visibility = View.INVISIBLE
         val costEditText = dialog_save_clothes_accept_price_edit_text
         val salePriceEditText = dialog_save_clothes_accept_sale_price_edit_text
 
