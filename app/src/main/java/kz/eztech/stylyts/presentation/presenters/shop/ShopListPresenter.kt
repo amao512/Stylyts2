@@ -3,11 +3,11 @@ package kz.eztech.stylyts.presentation.presenters.shop
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.presentation.contracts.shop.ShopListContract
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import java.util.*
 import javax.inject.Inject
 
@@ -28,12 +28,12 @@ class ShopListPresenter @Inject constructor(
 
     override fun getShops(
         token: String,
-        currentId: Int
+        currentId: Int,
+        searchFilterModel: SearchFilterModel
     ) {
         searchProfileUseCase.initParams(
             token = token,
-            username = EMPTY_STRING,
-            isBrand = true
+            searchFilterModel = SearchFilterModel(isBrand = true)
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
@@ -62,12 +62,13 @@ class ShopListPresenter @Inject constructor(
 
     override fun searchShop(
         token: String,
-        username: String
+        searchFilterModel: SearchFilterModel
     ) {
+        searchFilterModel.isBrand = true
+
         searchProfileUseCase.initParams(
             token = token,
-            username = username,
-            isBrand = true
+            searchFilterModel = searchFilterModel,
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {

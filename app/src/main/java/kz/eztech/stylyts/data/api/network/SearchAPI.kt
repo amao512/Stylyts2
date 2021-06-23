@@ -26,6 +26,7 @@ interface SearchAPI {
     @GET(RestConstants.SEARCH_CLOTHES_BY_TITLE)
     fun searchClothesByTitle(
         @Header("Authorization") token: String,
-        @Query("title") title: String
+        @Query("title") title: String,
+        @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<ClothesApiModel>>>
 }

@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -16,6 +17,9 @@ interface UserSearchContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getUserByUsername(token: String, username: String)
+        fun getUserByUsername(
+            token: String,
+            searchFilterModel: SearchFilterModel
+        )
     }
 }

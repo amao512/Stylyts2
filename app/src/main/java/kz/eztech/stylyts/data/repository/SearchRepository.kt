@@ -36,9 +36,14 @@ class SearchRepository @Inject constructor(
 
     override fun searchClothesByTitle(
         token: String,
-        title: String
+        title: String,
+        map: Map<String, String>
     ): Single<ResultsModel<ClothesModel>> {
-        return api.searchClothesByTitle(token, title).map {
+        return api.searchClothesByTitle(
+            token = token,
+            title = title,
+            queryMap = map
+        ).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 else -> throw NetworkException(it)

@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.search
 import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
@@ -26,12 +27,11 @@ class UserSearchPresenter @Inject constructor(
 
     override fun getUserByUsername(
         token: String,
-        username: String
+        searchFilterModel: SearchFilterModel
     ) {
         searchProfileUseCase.initParams(
             token = token,
-            username = username,
-            isBrand = false
+            searchFilterModel = searchFilterModel
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {

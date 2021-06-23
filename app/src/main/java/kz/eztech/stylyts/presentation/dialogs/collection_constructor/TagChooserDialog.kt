@@ -25,13 +25,14 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.motion.MotionItemModel
 import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.GridImageItemFilteredAdapter
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.ClothesAdditionalAdapter
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.GridImageItemFilteredAdapter
 import kz.eztech.stylyts.presentation.adapters.helpers.GridSpacesItemDecoration
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.TagChooserContract
@@ -416,7 +417,7 @@ class TagChooserDialog(
 
         presenter.searchClothes(
             token = getTokenFromArgs(),
-            title = title
+            searchFilterModel = SearchFilterModel(query = title)
         )
     }
 

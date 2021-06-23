@@ -18,6 +18,7 @@ interface SearchDomainRepository {
 
     fun searchClothesByTitle(
         token: String,
-        title: String
+        title: String,
+        map: Map<String, String>
     ): Single<ResultsModel<ClothesModel>>
 }

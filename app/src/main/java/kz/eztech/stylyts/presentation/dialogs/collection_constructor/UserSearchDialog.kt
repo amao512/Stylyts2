@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_user_search.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
@@ -32,8 +34,7 @@ class UserSearchDialog(
 
     @Inject lateinit var presenter: UserSearchPresenter
     private lateinit var usersAdapter: UserSearchAdapter
-
-    private var currentQuery: String = EMPTY_STRING
+    private lateinit var filterModel: SearchFilterModel
 
     companion object {
         private const val TOKEN_KEY = "token_key"
@@ -86,6 +87,8 @@ class UserSearchDialog(
     override fun initializeViewsData() {
         usersAdapter = UserSearchAdapter()
         usersAdapter.setOnClickListener(this)
+
+        filterModel = SearchFilterModel()
     }
 
     override fun initializeViews() {
@@ -117,10 +120,8 @@ class UserSearchDialog(
     }
 
     override fun processPostInitialization() {
-        presenter.getUserByUsername(
-            token = getTokenFromArgs(),
-            username = currentQuery
-        )
+        getUsers()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -142,40 +143,58 @@ class UserSearchDialog(
     override fun getTheme(): Int = R.style.FullScreenDialog
 
     override fun onQueryTextSubmit(query: String): Boolean {
-        currentQuery = query
-        presenter.getUserByUsername(
-            token = getTokenFromArgs(),
-            username = currentQuery
-        )
+        filterModel.query = query
+        usersAdapter.clearList()
+
+        resetPages()
+        getUsers()
 
         return false
     }
 
     override fun onQueryTextChange(newText: String): Boolean {
-        currentQuery = newText
+        filterModel.query = newText
+        usersAdapter.clearList()
 
-        if (newText.length % 2 == 0 && newText.isNotEmpty()) {
-            presenter.getUserByUsername(
-                token = getTokenFromArgs(),
-                username = currentQuery
-            )
-        } else if (newText.isEmpty()) {
-            presenter.getUserByUsername(
-                token = getTokenFromArgs(),
-                username = currentQuery
-            )
-        }
-
-        presenter.getUserByUsername(
-            token = getTokenFromArgs(),
-            username = currentQuery
-        )
+        resetPages()
+        getUsers()
 
         return false
     }
 
     override fun processUserResults(resultsModel: ResultsModel<UserModel>) {
-        usersAdapter.updateList(list = resultsModel.results)
+        usersAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != filterModel.page) {
+            filterModel.page++
+        } else {
+            filterModel.isLastPage = true
+        }
+    }
+
+    private fun handleRecyclerView() {
+        recycler_view_dialog_user_search_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recycler_view_dialog_user_search_list.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!filterModel.isLastPage) {
+                        getUsers()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun getUsers() {
+        presenter.getUserByUsername(
+            token = getTokenFromArgs(),
+            searchFilterModel = filterModel
+        )
+    }
+
+    private fun resetPages() {
+        filterModel.page = 1
+        filterModel.isLastPage = false
+        filterModel.totalPages = 1
     }
 
     private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING

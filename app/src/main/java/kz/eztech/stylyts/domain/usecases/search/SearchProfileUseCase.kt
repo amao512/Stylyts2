@@ -4,6 +4,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.SearchDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -33,15 +34,18 @@ class SearchProfileUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        username: String,
-        isBrand: Boolean
+        searchFilterModel: SearchFilterModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.username = username
+        this.username = searchFilterModel.query
 
         val map = HashMap<String, String>()
 
-        map["is_brand"] = isBrand.toString()
+        map["is_brand"] = searchFilterModel.isBrand.toString()
+
+        if (searchFilterModel.page > 1) {
+            map["page"] = searchFilterModel.page.toString()
+        }
 
         this.map = map
     }

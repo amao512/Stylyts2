@@ -6,6 +6,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase
@@ -82,9 +83,9 @@ class TagChooserPresenter @Inject constructor(
 
     override fun searchClothes(
         token: String,
-        title: String
+        searchFilterModel: SearchFilterModel
     ) {
-        searchClothesUseCase.initParams(token, title)
+        searchClothesUseCase.initParams(token, searchFilterModel)
         searchClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processClothesResults(resultsModel = t)

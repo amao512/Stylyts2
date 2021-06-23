@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.contracts.shop
 
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -17,12 +18,13 @@ interface ShopListContract {
 
         fun getShops(
             token: String,
-            currentId: Int
+            currentId: Int,
+            searchFilterModel: SearchFilterModel
         )
 
         fun searchShop(
             token: String,
-            username: String
+            searchFilterModel: SearchFilterModel
         )
     }
 }

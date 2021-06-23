@@ -9,9 +9,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_search_item.*
 import kotlinx.android.synthetic.main.fragment_shop_list.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -41,6 +43,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     private lateinit var filterRecyclerView: RecyclerView
     private lateinit var searchView: SearchView
     private lateinit var shopsRecyclerView: RecyclerView
+    private lateinit var filterModel: SearchFilterModel
 
     override fun getLayoutId(): Int = R.layout.fragment_shop_list
 
@@ -87,6 +90,8 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
             isShowWardrobe = false,
             isShowDiscount = false
         )
+
+        filterModel = SearchFilterModel()
     }
 
     override fun initializeViews() {
@@ -102,12 +107,15 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
 
     override fun processPostInitialization() {
         filterAdapter.updateList(list = getFilterList())
+
         presenter.getShops(
             token = currentActivity.getTokenFromSharedPref(),
-            currentId = currentActivity.getUserIdFromSharedPref()
+            currentId = currentActivity.getUserIdFromSharedPref(),
+            searchFilterModel = filterModel
         )
 
         handleSearchView()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -197,18 +205,36 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         })
     }
 
+    private fun handleRecyclerView() {
+        shopsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!shopsRecyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!filterModel.isLastPage) {
+                        getShops()
+                    }
+                }
+            }
+        })
+    }
+
     private fun searchShop(username: String) {
         shopAdapter.clearList()
+        filterModel.query = username
 
-        if (username.isBlank()) {
+        getShops()
+    }
+
+    private fun getShops() {
+        if (filterModel.query.isBlank()) {
             presenter.getShops(
                 token = currentActivity.getTokenFromSharedPref(),
-                currentId = currentActivity.getUserIdFromSharedPref()
+                currentId = currentActivity.getUserIdFromSharedPref(),
+                searchFilterModel = filterModel
             )
         } else {
             presenter.searchShop(
                 token = currentActivity.getTokenFromSharedPref(),
-                username = username
+                searchFilterModel = filterModel
             )
             fragment_shop_list_right_character_list_linear_layout.hide()
         }

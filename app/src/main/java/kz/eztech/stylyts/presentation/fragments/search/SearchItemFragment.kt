@@ -5,6 +5,7 @@ import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_search_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -12,6 +13,7 @@ import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.models.SharedConstants
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
@@ -28,8 +30,6 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchItemPresenter
 import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
 import org.koin.android.ext.android.inject
 import javax.inject.Inject
 
@@ -47,6 +47,7 @@ class SearchItemFragment(
     private lateinit var userSearchHistoryAdapter: UserSearchHistoryAdapter
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var shopsAdapter: ShopsSearchAdapter
+    private lateinit var filterModel: SearchFilterModel
 
     private var query: String = EMPTY_STRING
     private var isHistory: Boolean = true
@@ -86,6 +87,7 @@ class SearchItemFragment(
     }
 
     override fun initializeViews() {
+        filterModel = SearchFilterModel()
         initializeAdapter()
     }
 
@@ -94,26 +96,28 @@ class SearchItemFragment(
             query = it
             currentActivity.removeFromSharedPrefByKey(SharedConstants.QUERY_KEY)
 
-            processPostInitialization()
+            val oldQuery = currentActivity.getSharedPrefByKey(SharedConstants.QUERY_KEY) ?: EMPTY_STRING
+            userSearchAdapter.clearList()
+            clothesAdapter.clearList()
+            shopsAdapter.clearList()
+
+            if (query.isBlank() && oldQuery.isNotEmpty()) {
+                onSearch(oldQuery)
+                initializeAdapter()
+            } else if (query.isBlank() && position == 0) {
+                presenter.getUserFromLocaleDb()
+                isHistory = true
+                initializeAdapter()
+            } else {
+                onSearch(query)
+                initializeAdapter()
+            }
         })
     }
 
     override fun processPostInitialization() {
-        val oldQuery = currentActivity.getSharedPrefByKey(SharedConstants.QUERY_KEY) ?: EMPTY_STRING
-        userSearchAdapter.clearList()
-        clothesAdapter.clearList()
-
-        if (query.isBlank() && oldQuery.isNotEmpty()) {
-            onSearch(oldQuery)
-            initializeAdapter()
-        } else if (query.isBlank() && position == 0) {
-            presenter.getUserFromLocaleDb()
-            isHistory = true
-            initializeAdapter()
-        } else {
-            onSearch(query)
-            initializeAdapter()
-        }
+        getList(query = currentActivity.getSharedPrefByKey(SharedConstants.QUERY_KEY) ?: EMPTY_STRING)
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -124,20 +128,22 @@ class SearchItemFragment(
 
     override fun isFragmentVisible(): Boolean = isVisible
 
-    override fun displayProgress() {
-        fragment_search_item_recycler_view.hide()
-    }
+    override fun displayProgress() {}
 
-    override fun hideProgress() {
-        fragment_search_item_recycler_view.show()
-    }
+    override fun hideProgress() {}
 
     override fun processUserResults(resultsModel: ResultsModel<UserModel>) {
-        userSearchAdapter.updateList(
+        userSearchAdapter.updateMoreList(
             list = resultsModel.results.filter {
                 it.id != currentActivity.getUserIdFromSharedPref() && !it.isBrand
             }
         )
+
+        if (resultsModel.totalPages != filterModel.page) {
+            filterModel.page++
+        } else {
+            filterModel.isLastPage = true
+        }
     }
 
     override fun processUserFromLocalDb(userList: List<UserSearchEntity>) {
@@ -166,31 +172,65 @@ class SearchItemFragment(
     }
 
     override fun processShopResults(resultsModel: ResultsModel<UserModel>) {
-        shopsAdapter.updateList(
+        shopsAdapter.updateMoreList(
             list = resultsModel.results.filter { it.id != currentActivity.getUserIdFromSharedPref() }
         )
+
+        if (resultsModel.totalPages != filterModel.page) {
+            filterModel.page++
+        } else {
+            filterModel.isLastPage = true
+        }
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        clothesAdapter.updateList(list = resultsModel.results)
+        clothesAdapter.updateMoreList(list = resultsModel.results)
+
+        if (resultsModel.totalPages != filterModel.page) {
+            filterModel.page++
+        } else {
+            filterModel.isLastPage = true
+        }
     }
 
     private fun onSearch(query: String) {
+        filterModel.page = 1
+        filterModel.isLastPage = false
+
+        getList(query)
+    }
+
+    private fun handleRecyclerView() {
+        fragment_search_item_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!fragment_search_item_recycler_view.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!filterModel.isLastPage) {
+                        val oldQuery = currentActivity.getSharedPrefByKey(SharedConstants.QUERY_KEY) ?: EMPTY_STRING
+                        getList(oldQuery)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun getList(query: String) {
+        filterModel.query = query
+
         when (position) {
             USERS_POSITION -> {
                 presenter.searchUserByUsername(
                     token = currentActivity.getTokenFromSharedPref(),
-                    username = query
+                    searchFilterModel = filterModel
                 )
                 isHistory = false
             }
             SHOPS_POSITION -> presenter.searchShop(
                 token = currentActivity.getTokenFromSharedPref(),
-                username = query
+                searchFilterModel = filterModel
             )
             CLOTHES_POSITION -> presenter.searchClothesByTitle(
                 token = currentActivity.getTokenFromSharedPref(),
-                title = query
+                searchFilterModel = filterModel
             )
         }
     }

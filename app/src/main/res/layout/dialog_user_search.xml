@@ -49,7 +49,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/margin_size_8x"
+        android:clipToPadding="false"
         android:orientation="vertical"
+        android:overScrollMode="never"
+        android:paddingBottom="@dimen/padding_size_16x"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_user_info"
         />

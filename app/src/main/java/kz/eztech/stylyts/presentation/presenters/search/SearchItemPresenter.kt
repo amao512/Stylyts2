@@ -7,8 +7,9 @@ import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase
 import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
@@ -42,12 +43,11 @@ class SearchItemPresenter @Inject constructor(
 
     override fun searchUserByUsername(
         token: String,
-        username: String
+        searchFilterModel: SearchFilterModel
     ) {
         searchProfileUseCase.initParams(
             token = token,
-            username = username,
-            isBrand = false
+            searchFilterModel = searchFilterModel
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
@@ -113,11 +113,13 @@ class SearchItemPresenter @Inject constructor(
         )
     }
 
-    override fun searchShop(token: String, username: String) {
+    override fun searchShop(
+        token: String,
+        searchFilterModel: SearchFilterModel
+    ) {
         searchProfileUseCase.initParams(
             token = token,
-            username = username,
-            isBrand = true
+            searchFilterModel = searchFilterModel
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
@@ -130,8 +132,11 @@ class SearchItemPresenter @Inject constructor(
         })
     }
 
-    override fun searchClothesByTitle(token: String, title: String) {
-        searchClothesUseCase.initParams(token, title)
+    override fun searchClothesByTitle(
+        token: String,
+        searchFilterModel: SearchFilterModel
+    ) {
+        searchClothesUseCase.initParams(token, searchFilterModel)
         searchClothesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {

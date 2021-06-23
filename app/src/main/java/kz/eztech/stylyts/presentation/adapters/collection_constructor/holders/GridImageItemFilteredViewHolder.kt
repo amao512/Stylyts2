@@ -1,11 +1,11 @@
 package kz.eztech.stylyts.presentation.adapters.collection_constructor.holders
 
 import android.view.View
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_collection.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
@@ -22,10 +22,10 @@ class GridImageItemFilteredViewHolder(
         item as ClothesModel
 
         with(itemView) {
-            if (item.coverImages.isNotEmpty()) {
-                Glide.with(shapeable_image_view_item_collection_image.context)
-                    .load(item.coverImages[0])
-                    .into(shapeable_image_view_item_collection_image)
+            if (item.constructorImage.isNotEmpty()) {
+                item.constructorImage.loadImage(target = shapeable_image_view_item_collection_image)
+            } else {
+                item.coverImages[0].loadImage(target = shapeable_image_view_item_collection_image)
             }
 
             shapeable_image_view_item_collection_image.setOnClickListener {
