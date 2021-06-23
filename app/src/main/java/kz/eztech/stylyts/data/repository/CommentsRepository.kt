@@ -17,9 +17,9 @@ class CommentsRepository @Inject constructor(
 
     override fun getComments(
         token: String,
-        postId: String
+        map: Map<String, String>
     ): Single<ResultsModel<CommentModel>> {
-        return api.getComments(token, postId).map {
+        return api.getComments(token, map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)

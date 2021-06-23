@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_comments.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
@@ -41,6 +42,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
 
     @Inject lateinit var presenter: CommentsPresenter
     private lateinit var adapter: CommentsAdapter
+    private lateinit var filterModel: PageFilterModel
 
     private lateinit var postAuthorAvatarShapeableImageView: ShapeableImageView
     private lateinit var postAuthorShortNameTextView: TextView
@@ -93,6 +95,8 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     override fun initializeViewsData() {
         adapter = CommentsAdapter()
         adapter.setOnClickListener(listener = this)
+
+        filterModel = PageFilterModel()
     }
 
     override fun initializeViews() {
@@ -120,6 +124,8 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     }
 
     override fun processPostInitialization() {
+        displayProgress()
+
         presenter.getCollection(
             token = currentActivity.getTokenFromSharedPref(),
             mode = getModeFromArgs(),
@@ -127,12 +133,8 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         )
         presenter.getProfile(token = currentActivity.getTokenFromSharedPref())
 
-        if (getModeFromArgs() == POST_MODE) {
-            presenter.getComments(
-                token = currentActivity.getTokenFromSharedPref(),
-                postId = getPostIdFromArgs()
-            )
-        }
+        getComments()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -255,12 +257,40 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     }
 
     override fun processComments(results: ResultsModel<CommentModel>) {
-        adapter.updateList(list = results.results)
+        adapter.updateMoreList(list = results.results)
+
+        if (results.totalPages != filterModel.page) {
+            filterModel.page++
+        } else {
+            filterModel.isLastPage = true
+        }
     }
 
     override fun processCreatingComment(commentModel: CommentModel) {
         adapter.addItem(commentModel)
         commentEditText.text.clear()
+    }
+
+    private fun handleRecyclerView() {
+        commentsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!commentsRecyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    if (!filterModel.isLastPage) {
+                        getComments()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun getComments() {
+        if (getModeFromArgs() == POST_MODE) {
+            presenter.getComments(
+                token = currentActivity.getTokenFromSharedPref(),
+                postId = getPostIdFromArgs(),
+                pageFilterModel = filterModel
+            )
+        }
     }
 
     private fun navigateToProfile(

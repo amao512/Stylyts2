@@ -5,6 +5,7 @@ import kz.eztech.stylyts.data.api.models.comments.CommentCreateModel
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -98,11 +99,10 @@ class CommentsPresenter @Inject constructor(
 
     override fun getComments(
         token: String,
-        postId: Int
+        postId: Int,
+        pageFilterModel: PageFilterModel
     ) {
-        view.displayProgress()
-
-        getCommentsUseCase.initParams(token, postId)
+        getCommentsUseCase.initParams(token, postId, pageFilterModel)
         getCommentsUseCase.execute(object : DisposableSingleObserver<ResultsModel<CommentModel>>() {
             override fun onSuccess(t: ResultsModel<CommentModel>) {
                 view.processViewAction {

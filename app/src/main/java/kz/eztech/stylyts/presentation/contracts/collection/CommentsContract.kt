@@ -2,6 +2,7 @@ package kz.eztech.stylyts.presentation.contracts.collection
 
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -45,7 +46,8 @@ interface CommentsContract {
 
         fun getComments(
             token: String,
-            postId: Int
+            postId: Int,
+            pageFilterModel: PageFilterModel
         )
 
         fun createComment(
