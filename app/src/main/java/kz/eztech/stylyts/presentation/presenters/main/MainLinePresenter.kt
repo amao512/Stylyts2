@@ -1,10 +1,13 @@
 package kz.eztech.stylyts.presentation.presenters.main
 
 import io.reactivex.observers.DisposableSingleObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.posts.DeletePostUseCase
@@ -14,6 +17,7 @@ import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.MainContract
 import kz.eztech.stylyts.presentation.enums.LikeEnum
+import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
 
 /**
@@ -21,13 +25,26 @@ import javax.inject.Inject
  */
 class MainLinePresenter @Inject constructor(
 	private val errorHelper: ErrorHelper,
+	private val paginator: Paginator.Store<PostModel>,
 	private val getHomePagePostsUseCase: GetHomePagePostsUseCase,
 	private val deletePostUseCase: DeletePostUseCase,
 	private val likePostUseCase: LikePostUseCase,
 	private val getUserByIdUseCase: GetUserByIdUseCase
-) : MainContract.Presenter {
+) : MainContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
 	private lateinit var view: MainContract.View
+
+	init {
+	    launch {
+	    	paginator.render = { view.renderPaginatorState(it) }
+			paginator.sideEffects.consumeEach { effect ->
+				when (effect) {
+					is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+					is Paginator.SideEffect.ErrorEvent -> {}
+				}
+			}
+		}
+	}
 
 	override fun disposeRequests() {
 		getHomePagePostsUseCase.clear()
@@ -40,26 +57,28 @@ class MainLinePresenter @Inject constructor(
 		this.view = view
 	}
 
-	override fun getPosts(
-		token: String,
-		filterModel: PostFilterModel
-	) {
-		getHomePagePostsUseCase.initParams(token, filterModel)
+	override fun loadPage(page: Int) {
+		getHomePagePostsUseCase.initParams(view.getToken(), page)
 		getHomePagePostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
-				view.processViewAction {
-					processPostResults(resultsModel = t)
-					hideProgress()
-				}
+				paginator.proceed(Paginator.Action.NewPage(
+					pageNumber = t.page,
+					items = t.results
+				))
 			}
 
 			override fun onError(e: Throwable) {
-				view.processViewAction {
-					hideProgress()
-					displayMessage(msg = errorHelper.processError(e))
-				}
+				paginator.proceed(Paginator.Action.PageError(error = e))
 			}
 		})
+	}
+
+	override fun getPosts() {
+		paginator.proceed(Paginator.Action.Refresh)
+	}
+
+	override fun loadMorePost() {
+		paginator.proceed(Paginator.Action.LoadMore)
 	}
 
 	override fun deletePost(

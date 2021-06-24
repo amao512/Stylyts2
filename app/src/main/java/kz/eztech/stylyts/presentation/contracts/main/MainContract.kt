@@ -1,11 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.main
 
-import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
@@ -14,7 +12,11 @@ interface MainContract {
 
     interface View : BaseView {
 
-        fun processPostResults(resultsModel: ResultsModel<PostModel>)
+        fun getToken(): String
+
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processPostResults(list: List<Any?>)
 
         fun processSuccessDeleting()
 
@@ -28,10 +30,11 @@ interface MainContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getPosts(
-            token: String,
-            filterModel: PostFilterModel
-        )
+        fun loadPage(page: Int)
+
+        fun getPosts()
+
+        fun loadMorePost()
 
         fun deletePost(
             token: String,

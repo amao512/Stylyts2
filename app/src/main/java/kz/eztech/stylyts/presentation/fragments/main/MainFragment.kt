@@ -11,8 +11,6 @@ import kotlinx.android.synthetic.main.item_main_line.view.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.posts.TagModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -34,6 +32,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
@@ -42,8 +41,6 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     @Inject lateinit var presenter: MainLinePresenter
     private lateinit var postsAdapter: MainLineAdapter
-    private lateinit var postFilterModel: PostFilterModel
-
     private lateinit var recyclerView: RecyclerView
 
     override fun onResume() {
@@ -69,7 +66,6 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        postFilterModel = PostFilterModel()
         postsAdapter = MainLineAdapter()
         postsAdapter.setOnClickListener(listener = this)
     }
@@ -109,7 +105,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun processPostInitialization() {
-        getPosts()
+        presenter.getPosts()
         handleRecyclerView()
     }
 
@@ -143,13 +139,21 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         fragment_main_swipe_refresh_layout.isRefreshing = false
     }
 
-    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
-        postsAdapter.updateMoreList(list = resultsModel.results)
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
-        if (resultsModel.totalPages != postFilterModel.page) {
-            postFilterModel.page++
-        } else {
-            postFilterModel.isLastPage = true
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processPostResults(state.data)
+            is Paginator.State.NewPageProgress<*> -> processPostResults(state.data)
+            else -> {}
+        }
+
+        hideProgress()
+    }
+
+    override fun processPostResults(list: List<Any?>) {
+        list.map { it!! }.let {
+            postsAdapter.updateList(it)
         }
     }
 
@@ -193,23 +197,14 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun onRefresh() {
         displayProgress()
         postsAdapter.clearList()
-        getPosts()
-    }
-
-    private fun getPosts() {
-        presenter.getPosts(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = postFilterModel
-        )
+        presenter.getPosts()
     }
 
     private fun handleRecyclerView() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!postFilterModel.isLastPage) {
-                        getPosts()
-                    }
+                    presenter.loadMorePost()
                 }
             }
         })

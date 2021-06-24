@@ -4,7 +4,6 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -26,13 +25,13 @@ class GetHomePagePostsUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        filterModel: PostFilterModel
+        page: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
         val queryMap = HashMap<String, String>()
 
-        queryMap["page"] = filterModel.page.toString()
+        queryMap["page"] = page.toString()
 
         this.queryMap = queryMap
     }
