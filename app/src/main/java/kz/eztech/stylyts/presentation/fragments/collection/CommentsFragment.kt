@@ -171,12 +171,8 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
             is Paginator.State.Data<*> -> processComments(state.data)
-            is Paginator.State.Empty -> {}
-            is Paginator.State.EmptyProgress -> {}
-            is Paginator.State.EmptyError -> {}
-            is Paginator.State.Refresh<*> -> {}
             is Paginator.State.NewPageProgress<*> -> processComments(state.data)
-            is Paginator.State.FullData<*> -> {}
+            else -> {}
         }
 
         hideProgress()
@@ -239,7 +235,10 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     private fun createComment() {
         if (commentEditText.text.isNotBlank()) {
             presenter.createComment(
-                CommentCreateModel(text = commentEditText.text.toString(), postId = getPostId())
+                CommentCreateModel(
+                    text = commentEditText.text.toString(),
+                    postId = getPostId()
+                )
             )
         }
     }
