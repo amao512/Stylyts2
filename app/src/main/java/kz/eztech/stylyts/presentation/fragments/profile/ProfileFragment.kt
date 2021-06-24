@@ -43,6 +43,7 @@ import kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
@@ -52,7 +53,8 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
     UniversalViewClickListener, EditorListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject lateinit var presenter: ProfilePresenter
+    @Inject
+    lateinit var presenter: ProfilePresenter
 
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
@@ -81,8 +83,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private var currentUsername: String = EMPTY_STRING
     private var currentUserId: Int = 0
     private var currentGender: String = EMPTY_STRING
-    private var page: Int = 1
-    private var isLastPage = false
 
     companion object {
         const val POSTS_MODE = 1
@@ -245,7 +245,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun completeEditing(isSuccess: Boolean) {
         if (isSuccess) {
-            resetPages(mode = collectionMode)
             getProfile()
         }
     }
@@ -300,11 +299,29 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         adapterFilter.updateList(filterList)
     }
 
-    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
-        gridAdapter.updateMoreList(list = resultsModel.results)
-        setPagesCondition(resultsModel.totalPages)
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processResults(state.data)
+            is Paginator.State.NewPageProgress<*> -> processResults(state.data)
+            else -> {}
+        }
 
-        publicationsCountTextView.text = resultsModel.totalCount.toString()
+        hideProgress()
+    }
+
+    override fun processResults(list: List<Any?>) {
+        when (list[0]) {
+            is PostModel -> list.map { it!! }.let {
+                gridAdapter.updateList(list = it)
+                publicationsCountTextView.text = it.size.toString()
+            }
+            is ClothesModel -> list.map { it!! }.let {
+                wardrobeAdapter.updateList(list = it)
+            }
+            is OutfitModel -> list.map { it!! }.let {
+                outfitsAdapter.updateList(list = it)
+            }
+        }
     }
 
     override fun processSuccessFollowing(followSuccessModel: FollowSuccessModel) {
@@ -323,11 +340,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    override fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>) {
-        wardrobeAdapter.updateMoreList(list = resultsModel.results)
-        setPagesCondition(resultsModel.totalPages)
-    }
-
     override fun processWardrobeCount(count: Int) {
         adapterFilter.changeItemByPosition(
             position = 3,
@@ -335,15 +347,19 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         )
     }
 
-    override fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>) {
-        outfitsAdapter.updateMoreList(list = resultsModel.results)
-        setPagesCondition(resultsModel.totalPages)
-    }
-
     override fun onRefresh() {
-        resetPages(mode = collectionMode)
         processPostInitialization()
     }
+
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
+
+    override fun getCollectionMode(): Int = collectionMode
+
+    override fun getUserId(): Int = currentUserId
+
+    override fun getClothesFilter(): ClothesFilterModel = clothesFilterModel
+
+    override fun getOutfitFilter(): OutfitFilterModel = outfitFilterModel
 
     private fun getProfile() {
         presenter.getProfile(
@@ -373,47 +389,30 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     private fun getPosts() {
         postFilterModel.userId = currentUserId
-        postFilterModel.page = page
-        postFilterModel.isLastPage = isLastPage
 
-        presenter.getPosts(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = postFilterModel
-        )
+        presenter.getCollections()
     }
 
     private fun getOutfits() {
         outfitFilterModel.userId = currentUserId
         outfitFilterModel.gender = currentGender
         outfitFilterModel.isMy = isOwnProfile()
-        outfitFilterModel.page = page
-        outfitFilterModel.isLastPage = isLastPage
 
-        presenter.getOutfits(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = outfitFilterModel
-        )
+        presenter.getCollections()
     }
 
     private fun getWardrobe() {
         clothesFilterModel.gender = currentGender
-        clothesFilterModel.page = page
-        clothesFilterModel.isLastPage = isLastPage
 
         if (isOwnProfile()) {
             clothesFilterModel.inMyWardrobe = isOwnProfile()
         }
 
-        presenter.getWardrobe(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = clothesFilterModel
-        )
+        presenter.getCollections()
     }
 
     private fun getWardrobeCount() {
         clothesFilterModel.gender = currentGender
-        clothesFilterModel.page = page
-        clothesFilterModel.isLastPage = isLastPage
 
         if (isOwnProfile()) {
             clothesFilterModel.inMyWardrobe = isOwnProfile()
@@ -445,10 +444,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 if (!collectionRecyclerView.canScrollVertically(1)
                     && newState == RecyclerView.SCROLL_STATE_IDLE
                 ) {
-
-                    if (!isLastPage) {
-                        getCollections()
-                    }
+                    presenter.loadMoreList()
                 }
             }
         })
@@ -491,7 +487,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private fun onFilterClick(position: Int) {
         when (position) {
             0 -> filterDialog.apply {
-                resetPages(mode = WARDROBE_MODE)
+                collectionMode = WARDROBE_MODE
                 setFilter(filterModel = clothesFilterModel)
             }.show(childFragmentManager, EMPTY_STRING)
             1 -> onPublicationsFilterClick()
@@ -504,12 +500,12 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     }
 
     private fun onPublicationsFilterClick() {
-        resetPages(mode = POSTS_MODE)
+        collectionMode = POSTS_MODE
         setFilterPosition()
     }
 
     private fun onOutfitsFilterClick() {
-        resetPages(mode = OUTFITS_MODE)
+        collectionMode = OUTFITS_MODE
         setFilterPosition()
     }
 
@@ -517,8 +513,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         if (isOwnProfile()) {
             clothesFilterModel.inMyWardrobe = true
         }
-
-        resetPages(mode = WARDROBE_MODE)
+        collectionMode = WARDROBE_MODE
         setFilterPosition()
     }
 
@@ -612,22 +607,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         clothesFilterModel = item as ClothesFilterModel
         clothesFilterModel.inMyWardrobe = isOwnProfile()
 
-        resetPages(mode = WARDROBE_MODE)
+        collectionMode = WARDROBE_MODE
         setFilterPosition()
-    }
-
-    private fun setPagesCondition(totalPages: Int) {
-        if (totalPages > page) {
-            page++
-        } else {
-            isLastPage = true
-        }
-    }
-
-    private fun resetPages(mode: Int) {
-        page = 1
-        isLastPage = false
-        collectionMode = mode
     }
 
     private fun setFilterPosition() {

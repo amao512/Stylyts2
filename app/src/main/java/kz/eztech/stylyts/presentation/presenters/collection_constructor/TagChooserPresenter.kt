@@ -63,7 +63,7 @@ class TagChooserPresenter @Inject constructor(
     ) {
         view.displayProgress()
 
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {

@@ -117,7 +117,7 @@ class ShopProfilePresenter @Inject constructor(
         token: String,
         filterModel: OutfitFilterModel
     ) {
-        getOutfitsUseCase.initParams(token, filterModel)
+        getOutfitsUseCase.initParams(token, filterModel.page, filterModel)
         getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
             override fun onSuccess(t: ResultsModel<OutfitModel>) {
                 view.processOutfits(resultsModel = t)
@@ -134,7 +134,7 @@ class ShopProfilePresenter @Inject constructor(
         filterModel: ClothesFilterModel
     ) {
         Log.d("TAG4", "$filterModel")
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processClothes(resultsModel = t)

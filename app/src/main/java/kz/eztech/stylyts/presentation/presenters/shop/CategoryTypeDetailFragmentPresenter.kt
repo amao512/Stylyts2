@@ -38,7 +38,7 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
     ) {
         view.displayProgress()
 
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
@@ -60,7 +60,7 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
         token: String,
         filterModel: ClothesFilterModel
     ) {
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
@@ -97,7 +97,7 @@ class CategoryTypeDetailFragmentPresenter @Inject constructor(
         token: String,
         filterModel: ClothesFilterModel
     ) {
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {

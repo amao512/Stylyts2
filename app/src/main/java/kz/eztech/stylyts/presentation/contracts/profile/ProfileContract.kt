@@ -13,6 +13,7 @@ import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
@@ -21,23 +22,31 @@ interface ProfileContract {
 
     interface View : BaseView {
 
+        fun getToken(): String
+
+        fun getCollectionMode(): Int
+
+        fun getUserId(): Int
+
+        fun getClothesFilter(): ClothesFilterModel
+
+        fun getOutfitFilter(): OutfitFilterModel
+
         fun navigateToMyData()
 
         fun processProfile(userModel: UserModel)
 
         fun processFilter(filterList: List<CollectionFilterModel>)
 
-        fun processPostResults(resultsModel: ResultsModel<PostModel>)
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processResults(list: List<Any?>)
 
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
         fun processSuccessFollowing(followSuccessModel: FollowSuccessModel)
 
         fun processSuccessUnfollowing()
-
-        fun processWardrobeResults(resultsModel: ResultsModel<ClothesModel>)
-
-        fun processOutfitResults(resultsModel: ResultsModel<OutfitModel>)
 
         fun processWardrobeCount(count: Int)
     }
@@ -50,10 +59,17 @@ interface ProfileContract {
 
         fun getFilerList(isOwnProfile: Boolean)
 
-        fun getPosts(
-            token: String,
-            filterModel: PostFilterModel
-        )
+        fun loadPage(page: Int)
+
+        fun loadMoreList()
+
+        fun loadPosts(page: Int)
+
+        fun loadWardrobes(page: Int)
+
+        fun loadOutfits(page: Int)
+
+        fun getCollections()
 
         fun getFollowers(
             token: String,
@@ -73,16 +89,6 @@ interface ProfileContract {
         fun getWardrobeCount(
             token: String,
             filterModel: ClothesFilterModel
-        )
-
-        fun getWardrobe(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
-
-        fun getOutfits(
-            token: String,
-            filterModel: OutfitFilterModel
         )
     }
 }

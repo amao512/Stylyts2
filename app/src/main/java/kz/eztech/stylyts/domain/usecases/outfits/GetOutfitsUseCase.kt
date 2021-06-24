@@ -31,6 +31,7 @@ class GetOutfitsUseCase @Inject constructor(
 
     fun initParams(
         token: String,
+        page: Int,
         filterModel: OutfitFilterModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
@@ -40,10 +41,6 @@ class GetOutfitsUseCase @Inject constructor(
 
         if (filterModel.userId != 0) {
             stringQueryMap["author"] = filterModel.userId.toString()
-        }
-
-        if (filterModel.page != 0) {
-            stringQueryMap["page"] = filterModel.page.toString()
         }
 
         if (filterModel.isMy) {
@@ -59,7 +56,7 @@ class GetOutfitsUseCase @Inject constructor(
         }
 
         stringQueryMap["gender"] = filterModel.gender
-
+        stringQueryMap["page"] = page.toString()
 
         this.booleanQueryMap = booleanQueryMap
         this.stringQueryMap = stringQueryMap

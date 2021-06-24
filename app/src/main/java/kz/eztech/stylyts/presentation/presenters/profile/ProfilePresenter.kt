@@ -2,15 +2,17 @@ package kz.eztech.stylyts.presentation.presenters.profile
 
 import android.app.Application
 import io.reactivex.observers.DisposableSingleObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -25,6 +27,8 @@ import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
 import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
+import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
 
 /**
@@ -33,6 +37,7 @@ import javax.inject.Inject
 class ProfilePresenter @Inject constructor(
     private val application: Application,
     private val errorHelper: ErrorHelper,
+	private val paginator: Paginator.Store<Any>,
     private val getProfileUseCase: GetProfileUseCase,
     private val getUserByIdUseCase: GetUserByIdUseCase,
     private val getFollowersUseCase: GetFollowersUseCase,
@@ -41,9 +46,22 @@ class ProfilePresenter @Inject constructor(
     private val getClothesUseCase: GetClothesUseCase,
     private val getOutfitsUseCase: GetOutfitsUseCase,
 	private val getPostsUseCase: GetPostsUseCase
-) : ProfileContract.Presenter {
+) : ProfileContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
 	private lateinit var view: ProfileContract.View
+
+	init {
+		launch {
+			paginator.render = { view.renderPaginatorState(it) }
+
+			paginator.sideEffects.consumeEach { effect ->
+				when (effect) {
+					is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+					is Paginator.SideEffect.ErrorEvent -> {}
+				}
+			}
+		}
+	}
 
 	override fun disposeRequests() {
         getProfileUseCase.clear()
@@ -113,21 +131,81 @@ class ProfilePresenter @Inject constructor(
 		view.processFilter(filterList)
 	}
 
-    override fun getPosts(
-		token: String,
-		filterModel: PostFilterModel
-	) {
-		getPostsUseCase.initParams(token, filterModel.userId, filterModel.page)
+	override fun loadPage(page: Int) {
+		when (view.getCollectionMode()) {
+			ProfileFragment.POSTS_MODE -> loadPosts(page)
+			ProfileFragment.WARDROBE_MODE -> loadWardrobes(page)
+			ProfileFragment.OUTFITS_MODE -> loadOutfits(page)
+		}
+	}
+
+	override fun loadPosts(page: Int) {
+		getPostsUseCase.initParams(
+			token = view.getToken(),
+			userId = view.getUserId(),
+			page = page
+		)
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
-				view.processPostResults(resultsModel = t)
+				paginator.proceed(Paginator.Action.NewPage(
+					pageNumber = t.page,
+					items = t.results
+				))
 			}
 
 			override fun onError(e: Throwable) {
-				view.displayMessage(msg = errorHelper.processError(e))
+				paginator.proceed(Paginator.Action.PageError(e))
 			}
 		})
+	}
+
+	override fun loadWardrobes(page: Int) {
+		getClothesUseCase.initParams(
+			token = view.getToken(),
+			page = page,
+			filterModel = view.getClothesFilter()
+		)
+		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
+			override fun onSuccess(t: ResultsModel<ClothesModel>) {
+				paginator.proceed(Paginator.Action.NewPage(
+					pageNumber = t.page,
+					items = t.results
+				))
+			}
+
+			override fun onError(e: Throwable) {
+				paginator.proceed(Paginator.Action.PageError(e))
+			}
+		})
+	}
+
+	override fun loadOutfits(page: Int) {
+		getOutfitsUseCase.initParams(
+			token = view.getToken(),
+			page = page,
+			filterModel = view.getOutfitFilter()
+		)
+		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
+			override fun onSuccess(t: ResultsModel<OutfitModel>) {
+				paginator.proceed(Paginator.Action.NewPage(
+					pageNumber = t.page,
+					items = t.results
+				))
+			}
+
+			override fun onError(e: Throwable) {
+				paginator.proceed(Paginator.Action.PageError(e))
+			}
+		})
+	}
+
+	override fun getCollections() {
+		paginator.proceed(Paginator.Action.Refresh)
     }
+
+	override fun loadMoreList() {
+		paginator.proceed(Paginator.Action.LoadMore)
+	}
 
 	override fun getFollowers(token: String, userId: Int) {
 		getFollowersUseCase.initParams(token, userId)
@@ -186,51 +264,15 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun getWardrobe(
-		token: String,
-		filterModel: ClothesFilterModel
-	) {
-		getClothesUseCase.initParams(token = token, filterModel = filterModel)
-		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
-			override fun onSuccess(t: ResultsModel<ClothesModel>) {
-				view.processViewAction {
-					processWardrobeResults(resultsModel = t)
-				}
-			}
-
-			override fun onError(e: Throwable) {
-				view.processViewAction {
-					displayMessage(msg = errorHelper.processError(e))
-				}
-			}
-		})
-	}
-
-	override fun getOutfits(
-		token: String,
-		filterModel: OutfitFilterModel
-	) {
-		getOutfitsUseCase.initParams(token, filterModel)
-		getOutfitsUseCase.execute(object : DisposableSingleObserver<ResultsModel<OutfitModel>>() {
-			override fun onSuccess(t: ResultsModel<OutfitModel>) {
-				view.processViewAction {
-					processOutfitResults(resultsModel = t)
-				}
-			}
-
-			override fun onError(e: Throwable) {
-				view.processViewAction {
-					displayMessage(msg = errorHelper.processError(e))
-				}
-			}
-		})
-	}
-
 	override fun getWardrobeCount(
 		token: String,
 		filterModel: ClothesFilterModel
 	) {
-		getClothesUseCase.initParams(token = token, filterModel = filterModel)
+		getClothesUseCase.initParams(
+			token = token,
+			filterModel = filterModel,
+			page = 1
+		)
 		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
 			override fun onSuccess(t: ResultsModel<ClothesModel>) {
 				view.processViewAction {

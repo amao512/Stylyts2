@@ -57,7 +57,7 @@ class ShopItemListPresenter @Inject constructor(
         token: String,
         filterModel: ClothesFilterModel
     ) {
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
@@ -77,7 +77,7 @@ class ShopItemListPresenter @Inject constructor(
         token: String,
         filterModel: ClothesFilterModel
     ) {
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processClothesResults(resultsModel = t)

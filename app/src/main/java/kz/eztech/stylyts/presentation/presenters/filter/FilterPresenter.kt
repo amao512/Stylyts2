@@ -40,7 +40,7 @@ class FilterPresenter @Inject constructor(
         token: String,
         filterModel: ClothesFilterModel
     ) {
-        getClothesUseCase.initParams(token, filterModel)
+        getClothesUseCase.initParams(token, filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 val categoryList: MutableList<ClothesCategoryModel> = mutableListOf()
@@ -152,7 +152,8 @@ class FilterPresenter @Inject constructor(
     ) {
         getClothesUseCase.initParams(
             token = token,
-            filterModel = filterModel
+            filterModel = filterModel,
+            page = filterModel.page
         )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
