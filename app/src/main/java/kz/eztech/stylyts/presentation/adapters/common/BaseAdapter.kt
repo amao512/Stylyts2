@@ -62,12 +62,8 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     }
 
     fun updateMoreList(list: List<Any>) {
-        val diffCallback = getDiffUtilCallBack(list)
-
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
         currentList.addAll(list)
-
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     fun addItem(item: Any) {

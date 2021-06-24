@@ -19,104 +19,15 @@
             layout="@layout/base_toolbar"
             />
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragment_comments_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_size_16x"
-                    android:layout_marginTop="@dimen/margin_size_16x"
-                    android:orientation="horizontal"
-                    android:visibility="gone"
-                    >
-
-                    <FrameLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        >
-
-                        <com.google.android.material.imageview.ShapeableImageView
-                            android:id="@+id/fragment_comments_post_avatar_shapeable_image_view"
-                            android:layout_width="@dimen/small_image_size"
-                            android:layout_height="@dimen/small_image_size"
-                            android:layout_gravity="center"
-                            android:adjustViewBounds="true"
-                            app:shapeAppearanceOverlay="@style/circleImageView"
-                            tools:src="@drawable/jacket"
-                            />
-
-                        <TextView
-                            android:id="@+id/fragment_comments_post_user_short_name_text_view"
-                            style="@style/TextRegular"
-                            android:layout_width="@dimen/small_image_size"
-                            android:layout_height="@dimen/small_image_size"
-                            android:layout_gravity="center"
-                            android:background="@drawable/circle_gray"
-                            android:gravity="center"
-                            tools:text="RE"
-                            />
-                    </FrameLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/margin_size_16x"
-                        android:layout_weight="0.9"
-                        android:orientation="vertical"
-                        >
-
-                        <TextView
-                            android:id="@+id/fragment_comments_post_author_name_desc_text_view"
-                            style="@style/TextRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="Ruslan Rus"
-                            />
-
-                        <TextView
-                            android:id="@+id/fragment_comments_post_date_text_view"
-                            style="@style/TextRegular"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/app_gray_hint"
-                            android:visibility="gone"
-                            tools:text="6 янв. 2021"
-                            />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/little_divider_height"
-                    android:layout_marginTop="@dimen/margin_size_16x"
-                    android:background="@color/divider_bg_color"
-                    android:visibility="gone"
-                    />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/fragment_comments_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:overScrollMode="never"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_comment"
-                    />
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_comment"
+            />
     </LinearLayout>
 
     <LinearLayout

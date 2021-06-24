@@ -4,7 +4,6 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.comments.CommentModel
-import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.CommentsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -27,13 +26,14 @@ class GetCommentsUseCase @Inject constructor(
     fun initParams(
         token: String,
         postId: Int,
-        pageFilterModel: PageFilterModel
+        page: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
 
         val map = HashMap<String, String>()
+
         map["post"] = postId.toString()
-        map["page"] = pageFilterModel.page.toString()
+        map["page"] = page.toString()
 
         this.map = map
     }

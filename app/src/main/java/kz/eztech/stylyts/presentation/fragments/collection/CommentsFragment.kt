@@ -2,12 +2,10 @@ package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.text.HtmlCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.imageview.ShapeableImageView
@@ -15,11 +13,8 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_comments.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.data.api.models.comments.CommentCreateModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
-import kz.eztech.stylyts.domain.models.common.PageFilterModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.collection.CommentsAdapter
@@ -31,6 +26,8 @@ import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CommentsPresenter
+import kz.eztech.stylyts.presentation.utils.AbstractTextWatcher
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
@@ -42,12 +39,7 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
 
     @Inject lateinit var presenter: CommentsPresenter
     private lateinit var adapter: CommentsAdapter
-    private lateinit var filterModel: PageFilterModel
 
-    private lateinit var postAuthorAvatarShapeableImageView: ShapeableImageView
-    private lateinit var postAuthorShortNameTextView: TextView
-    private lateinit var postAuthorNameDescTextView: TextView
-    private lateinit var postDateTextView: TextView
     private lateinit var commentsRecyclerView: RecyclerView
     private lateinit var userAvatarShapeableImageView: ShapeableImageView
     private lateinit var userShortNameTextView: TextView
@@ -95,27 +87,22 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     override fun initializeViewsData() {
         adapter = CommentsAdapter()
         adapter.setOnClickListener(listener = this)
-
-        filterModel = PageFilterModel()
     }
 
     override fun initializeViews() {
-        postAuthorAvatarShapeableImageView = fragment_comments_post_avatar_shapeable_image_view
-        postAuthorShortNameTextView = fragment_comments_post_user_short_name_text_view
-        postAuthorNameDescTextView = fragment_comments_post_author_name_desc_text_view
-        postDateTextView = fragment_comments_post_date_text_view
-
         commentsRecyclerView = fragment_comments_recycler_view
         commentsRecyclerView.adapter = adapter
         commentsRecyclerView.addItemDecoration(CommentSpaceItemDecoration(space = 8))
 
         userAvatarShapeableImageView = fragment_comments_avatar_shapeable_image_view
         userShortNameTextView = fragment_comments_user_short_name_text_view
-
         commentEditText = fragment_comments_edit_text
-        sendTextView = fragment_comments_send_text_view
-        sendTextView.isClickable = false
-        sendTextView.isFocusable = false
+
+        sendTextView = fragment_comments_send_text_view.apply {
+            isClickable = false
+            isFocusable = false
+        }
+
         handleCommentEditText()
     }
 
@@ -125,16 +112,13 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
 
     override fun processPostInitialization() {
         displayProgress()
-
-        presenter.getCollection(
-            token = currentActivity.getTokenFromSharedPref(),
-            mode = getModeFromArgs(),
-            id = getPostIdFromArgs()
-        )
-        presenter.getProfile(token = currentActivity.getTokenFromSharedPref())
-
-        getComments()
         handleRecyclerView()
+
+        presenter.getProfile()
+
+        if (getModeFromArgs() == POST_MODE) {
+            presenter.getComments()
+        }
     }
 
     override fun disposeRequests() {
@@ -171,78 +155,6 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         }
     }
 
-    override fun processPost(postModel: PostModel) {
-        if (postModel.author.avatar.isBlank()) {
-            postAuthorAvatarShapeableImageView.hide()
-            postAuthorShortNameTextView.text = getShortName(
-                firstName = postModel.author.firstName,
-                lastName = postModel.author.lastName
-            )
-        } else {
-            postModel.author.avatar.loadImageWithCenterCrop(target = postAuthorAvatarShapeableImageView)
-            postAuthorShortNameTextView.hide()
-        }
-
-        postAuthorNameDescTextView.text =  HtmlCompat.fromHtml(
-            postAuthorNameDescTextView.context.getString(
-                R.string.comment_text_with_user_text_format,
-                postModel.author.firstName,
-                postModel.author.lastName,
-                postModel.description
-            ), HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
-
-        postAuthorAvatarShapeableImageView.setOnClickListener {
-            navigateToProfile(
-                userId = postModel.author.id,
-                isBrand = postModel.author.isBrand
-            )
-        }
-
-        postAuthorShortNameTextView.setOnClickListener {
-            navigateToProfile(
-                userId = postModel.author.id,
-                isBrand = postModel.author.isBrand
-            )
-        }
-    }
-
-    override fun processOutfit(outfitModel: OutfitModel) {
-        if (outfitModel.author.avatar.isBlank()) {
-            postAuthorAvatarShapeableImageView.hide()
-            postAuthorShortNameTextView.text = getShortName(
-                firstName = outfitModel.author.firstName,
-                lastName = outfitModel.author.lastName
-            )
-        } else {
-            outfitModel.author.avatar.loadImageWithCenterCrop(target = postAuthorAvatarShapeableImageView)
-            postAuthorShortNameTextView.hide()
-        }
-
-        postAuthorNameDescTextView.text =  HtmlCompat.fromHtml(
-            postAuthorNameDescTextView.context.getString(
-                R.string.comment_text_with_user_text_format,
-                outfitModel.author.firstName,
-                outfitModel.author.lastName,
-                outfitModel.text
-            ), HtmlCompat.FROM_HTML_MODE_LEGACY
-        )
-
-        postAuthorAvatarShapeableImageView.setOnClickListener {
-            navigateToProfile(
-                userId = outfitModel.author.id,
-                isBrand = outfitModel.author.isBrand
-            )
-        }
-
-        postAuthorShortNameTextView.setOnClickListener {
-            navigateToProfile(
-                userId = outfitModel.author.id,
-                isBrand = outfitModel.author.isBrand
-            )
-        }
-    }
-
     override fun processProfile(userModel: UserModel) {
         if (userModel.avatar.isBlank()) {
             userAvatarShapeableImageView.hide()
@@ -256,13 +168,23 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         }
     }
 
-    override fun processComments(results: ResultsModel<CommentModel>) {
-        adapter.updateMoreList(list = results.results)
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processComments(state.data)
+            is Paginator.State.Empty -> {}
+            is Paginator.State.EmptyProgress -> {}
+            is Paginator.State.EmptyError -> {}
+            is Paginator.State.Refresh<*> -> {}
+            is Paginator.State.NewPageProgress<*> -> processComments(state.data)
+            is Paginator.State.FullData<*> -> {}
+        }
 
-        if (results.totalPages != filterModel.page) {
-            filterModel.page++
-        } else {
-            filterModel.isLastPage = true
+        hideProgress()
+    }
+
+    override fun processComments(list: List<Any?>) {
+        list.map { it!! }.let {
+            adapter.updateList(list = it)
         }
     }
 
@@ -271,26 +193,18 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         commentEditText.text.clear()
     }
 
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
+
+    override fun getPostId(): Int = arguments?.getInt(COLLECTION_ID_KEY) ?: 0
+
     private fun handleRecyclerView() {
         commentsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!commentsRecyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!filterModel.isLastPage) {
-                        getComments()
-                    }
+                    presenter.loadMoreComments()
                 }
             }
         })
-    }
-
-    private fun getComments() {
-        if (getModeFromArgs() == POST_MODE) {
-            presenter.getComments(
-                token = currentActivity.getTokenFromSharedPref(),
-                postId = getPostIdFromArgs(),
-                pageFilterModel = filterModel
-            )
-        }
     }
 
     private fun navigateToProfile(
@@ -309,16 +223,14 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     }
 
     private fun handleCommentEditText() {
-        commentEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
+        commentEditText.addTextChangedListener(object : AbstractTextWatcher() {
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString().isNotBlank()) {
-                    sendTextView.setTextColor(ContextCompat.getColor(requireContext(), R.color.app_blue))
-                    sendTextView.isClickable = true
-                    sendTextView.isFocusable = true
+                    sendTextView.apply {
+                        setTextColor(ContextCompat.getColor(requireContext(), R.color.app_blue))
+                        isClickable = true
+                        isFocusable = true
+                    }
                 }
             }
         })
@@ -327,14 +239,10 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
     private fun createComment() {
         if (commentEditText.text.isNotBlank()) {
             presenter.createComment(
-                token = currentActivity.getTokenFromSharedPref(),
-                text = commentEditText.text.toString(),
-                postId = getPostIdFromArgs()
+                CommentCreateModel(text = commentEditText.text.toString(), postId = getPostId())
             )
         }
     }
-
-    private fun getPostIdFromArgs(): Int = arguments?.getInt(COLLECTION_ID_KEY) ?: 0
 
     private fun getModeFromArgs(): Int = arguments?.getInt(MODE_KEY) ?: OUTFIT_MODE
 }

@@ -1,59 +1,39 @@
 package kz.eztech.stylyts.presentation.contracts.collection
 
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.data.api.models.comments.CommentCreateModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
-import kz.eztech.stylyts.domain.models.common.PageFilterModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 interface CommentsContract {
 
     interface View : BaseView {
 
-        fun processPost(postModel: PostModel)
+        fun getToken(): String
 
-        fun processOutfit(outfitModel: OutfitModel)
+        fun getPostId(): Int
 
         fun processProfile(userModel: UserModel)
 
-        fun processComments(results: ResultsModel<CommentModel>)
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processComments(list: List<Any?>)
 
         fun processCreatingComment(commentModel: CommentModel)
     }
 
     interface Presenter: BasePresenter<View> {
 
-        fun getCollection(
-            token: String,
-            id: Int,
-            mode: Int
-        )
+        fun getProfile()
 
-        fun getPost(
-            token: String,
-            postId: Int
-        )
+        fun getComments()
 
-        fun getOutfit(
-            token: String,
-            outfitId: Int
-        )
+        fun loadMoreComments()
 
-        fun getProfile(token: String)
+        fun loadPage(page: Int)
 
-        fun getComments(
-            token: String,
-            postId: Int,
-            pageFilterModel: PageFilterModel
-        )
-
-        fun createComment(
-            token: String,
-            text: String,
-            postId: Int
-        )
+        fun createComment(commentCreateModel: CommentCreateModel)
     }
 }
