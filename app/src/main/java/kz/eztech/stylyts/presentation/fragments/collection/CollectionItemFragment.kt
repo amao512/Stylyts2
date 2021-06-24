@@ -6,8 +6,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.fragment_collection_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.common.GridImageAdapter
@@ -18,6 +16,7 @@ import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContrac
 import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsItemPresenter
+import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
 
 class CollectionItemFragment(
@@ -29,7 +28,6 @@ class CollectionItemFragment(
     @Inject lateinit var presenter: CollectionsItemPresenter
     private lateinit var adapter: GridImageAdapter
     private lateinit var recyclerView: RecyclerView
-    private lateinit var currentFilter: PostFilterModel
 
     private var itemClickListener: UniversalViewClickListener? = null
 
@@ -54,7 +52,6 @@ class CollectionItemFragment(
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        currentFilter = PostFilterModel()
         adapter = GridImageAdapter()
         adapter.setOnClickListener(this)
     }
@@ -78,13 +75,6 @@ class CollectionItemFragment(
         handleListRecyclerView()
     }
 
-    override fun processPostResults(resultsModel: ResultsModel<PostModel>) {
-        val preparedList: List<PostModel> = preparePosts(postList = resultsModel.results)
-
-        adapter.updateMoreList(list = preparedList)
-        resetPages(resultsModel.totalPages)
-    }
-
     override fun disposeRequests() {
         presenter.disposeRequests()
     }
@@ -105,22 +95,40 @@ class CollectionItemFragment(
         getCollections()
     }
 
+    override fun getTokenId(): String = currentActivity.getTokenFromSharedPref()
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processPostResults(state.data)
+            is Paginator.State.NewPageProgress<*> -> processPostResults(state.data)
+            else -> {}
+        }
+
+        hideProgress()
+    }
+
+    override fun processPostResults(list: List<Any?>) {
+        val preparedList: List<PostModel> = preparePosts(postList = list)
+
+        adapter.updateList(list = preparedList)
+    }
+
     private fun handleListRecyclerView() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!currentFilter.isLastPage) {
-                        getPosts()
-                    }
+                    presenter.loadMorePost()
                 }
             }
         })
     }
 
-    private fun preparePosts(postList: List<PostModel>): List<PostModel> {
+    private fun preparePosts(postList: List<Any?>): List<PostModel> {
         val preparedList: MutableList<PostModel> = mutableListOf()
 
         postList.map {
+            it as PostModel
+
             if (it.clothes.isEmpty()) {
                 preparedList.add(it)
             } else {
@@ -135,27 +143,9 @@ class CollectionItemFragment(
         return preparedList
     }
 
-    private fun resetPages(totalPages: Int) {
-        if (totalPages != currentFilter.page) {
-            currentFilter.page++
-        } else {
-            currentFilter.isLastPage = true
-        }
-    }
-
     private fun getCollections() {
-        currentFilter.page = 1
-        currentFilter.isLastPage = false
         adapter.clearList()
-
-        getPosts()
-    }
-
-    private fun getPosts() {
-        presenter.getPosts(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = currentFilter
-        )
+        presenter.getPosts()
     }
 
     private fun getGender(): String {

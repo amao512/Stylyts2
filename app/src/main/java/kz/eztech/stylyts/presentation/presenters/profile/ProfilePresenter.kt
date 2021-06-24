@@ -117,7 +117,7 @@ class ProfilePresenter @Inject constructor(
 		token: String,
 		filterModel: PostFilterModel
 	) {
-		getPostsUseCase.initParams(token, filterModel)
+		getPostsUseCase.initParams(token, filterModel.userId, filterModel.page)
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				view.processPostResults(resultsModel = t)

@@ -1,10 +1,8 @@
 package kz.eztech.stylyts.presentation.contracts.collection
 
-import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
@@ -12,13 +10,20 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface CollectionItemContract {
 
     interface View : BaseView {
-        fun processPostResults(resultsModel: ResultsModel<PostModel>)
+
+        fun getTokenId(): String
+
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processPostResults(list: List<Any?>)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getPosts(
-            token: String,
-            filterModel: PostFilterModel
-        )
+
+        fun loadPage(page: Int)
+
+        fun getPosts()
+
+        fun loadMorePost()
     }
 }
