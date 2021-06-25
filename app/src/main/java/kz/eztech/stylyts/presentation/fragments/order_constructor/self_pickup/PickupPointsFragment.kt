@@ -21,7 +21,6 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.api.models.order.DeliveryCreateApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.ShopPointModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -37,6 +36,7 @@ import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragme
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.PickupPointsPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.getLocationFromAddress
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -56,6 +56,7 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     private lateinit var currentMap: GoogleMap
     private var orderList = ArrayList<OrderCreateApiModel>()
     private var shopList = ArrayList<ShopPointModel>()
+    private var currentShopId: Int = 0
 
     companion object {
         const val ORDER_KEY = "order"
@@ -127,20 +128,15 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
 
     override fun processPostInitialization() {
         if (orderList.size == 1) {
-            presenter.getPickupPoints(
-                token = currentActivity.getTokenFromSharedPref(),
-                owner = orderList[0].ownerId
-            )
+            presenter.getPickupPoints()
         } else {
             orderList.map {
-                presenter.getShop(
-                    token = currentActivity.getTokenFromSharedPref(),
-                    id = it.ownerId
-                )
+                presenter.getShop(id = it.ownerId)
             }
         }
 
         initializeBottomSheetBehaviorItems()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {}
@@ -205,24 +201,42 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         setCurrentListCondition(isPoints = false)
     }
 
-    override fun processPoints(resultsModel: ResultsModel<AddressModel>) {
-        if (resultsModel.results.isEmpty()) {
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
+
+    override fun getShopId(): Int = currentShopId
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processPoints(state.data)
+            is Paginator.State.NewPageProgress<*> -> processPoints(state.data)
+            else -> {}
+        }
+
+        hideProgress()
+    }
+
+    override fun processPoints(list: List<Any?>) {
+        if (list.isEmpty()) {
             displayMessage(msg = getString(R.string.no_addresses))
 
             currentMap.clear()
             pickupPointsAdapter.clearList()
         } else {
-            pickupPointsAdapter.updateList(list = resultsModel.results)
+            list.map { it!! }.let {
+                pickupPointsAdapter.updateList(list = it)
 
-            resultsModel.results.map {
-                val address = "${it.city}, ${it.street} ${it.house}"
+                it.map { item ->
+                    item as AddressModel
 
-                getLocationFromAddress(
-                    context = requireContext(),
-                    address = address
-                )?.let { latLng ->
-                    currentMap.addMarker(MarkerOptions().position(latLng).title(address))
-                    currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f))
+                    val address = "${item.city}, ${item.street} ${item.house}"
+
+                    getLocationFromAddress(
+                        context = requireContext(),
+                        address = address
+                    )?.let { latLng ->
+                        currentMap.addMarker(MarkerOptions().position(latLng).title(address))
+                        currentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12.0f))
+                    }
                 }
             }
         }
@@ -246,10 +260,8 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
     }
 
     private fun onShopPointClicked(shopPointModel: ShopPointModel) {
-        presenter.getPickupPoints(
-            token = currentActivity.getTokenFromSharedPref(),
-            owner = shopPointModel.id
-        )
+        currentShopId = shopPointModel.id
+        presenter.getPickupPoints()
     }
 
     private fun onAddressClicked(addressModel: AddressModel) {
@@ -363,5 +375,15 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
                     view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
                 }
             })
+    }
+
+    private fun handleRecyclerView() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    presenter.loadMorePage()
+                }
+            }
+        })
     }
 }

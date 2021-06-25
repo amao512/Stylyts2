@@ -26,12 +26,14 @@ class GetAddressUseCase @Inject constructor(
     fun initParams(
         token: String,
         isMy: Boolean = true,
-        owner: Int = 0
+        owner: Int = 0,
+        page: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         val queryMap = HashMap<String, String>()
 
         queryMap["my"] = isMy.toString()
+        queryMap["page"] = page.toString()
 
         if (owner != 0) {
             queryMap["user"] = owner.toString()

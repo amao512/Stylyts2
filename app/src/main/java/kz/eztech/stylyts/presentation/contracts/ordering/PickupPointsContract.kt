@@ -1,30 +1,33 @@
 package kz.eztech.stylyts.presentation.contracts.ordering
 
-import kz.eztech.stylyts.domain.models.address.AddressModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 interface PickupPointsContract {
 
     interface View : BaseView {
 
+        fun getToken(): String
+
+        fun getShopId(): Int
+
         fun processShop(userModel: UserModel)
 
-        fun processPoints(resultsModel: ResultsModel<AddressModel>)
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processPoints(list: List<Any?>)
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun getShop(
-            token: String,
-            id: Int
-        )
+        fun loadPage(page: Int)
 
-        fun getPickupPoints(
-            token: String,
-            owner: Int
-        )
+        fun getShop(id: Int)
+
+        fun getPickupPoints()
+
+        fun loadMorePage()
     }
 }
