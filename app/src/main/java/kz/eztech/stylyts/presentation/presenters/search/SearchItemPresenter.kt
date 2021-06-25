@@ -4,17 +4,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase
 import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.search.SearchItemContract
+import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
+import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
 
 /**
@@ -22,12 +27,25 @@ import javax.inject.Inject
  */
 class SearchItemPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
+    private val paginator: Paginator.Store<Any>,
     private val searchProfileUseCase: SearchProfileUseCase,
     private val dataSource: SearchDataSource,
     private val searchClothesUseCase: SearchClothesUseCase
-) : SearchItemContract.Presenter {
+) : SearchItemContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private val disposable = CompositeDisposable()
+
+    init {
+        launch {
+            paginator.render = { view.renderPaginatorState(it) }
+            paginator.sideEffects.consumeEach { effect ->
+                when (effect) {
+                    is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+                    is Paginator.SideEffect.ErrorEvent -> {}
+                }
+            }
+        }
+    }
 
     private lateinit var view: SearchItemContract.View
 
@@ -41,21 +59,38 @@ class SearchItemPresenter @Inject constructor(
         disposable.clear()
     }
 
-    override fun searchUserByUsername(
-        token: String,
-        searchFilterModel: SearchFilterModel
-    ) {
+    override fun loadPage(page: Int) {
+        when (view.getCurrentPosition()) {
+            SearchItemFragment.CLOTHES_POSITION -> searchClothes(page)
+            SearchItemFragment.USERS_POSITION -> searchUser(page)
+            SearchItemFragment.SHOPS_POSITION -> searchShop(page)
+        }
+    }
+
+    override fun getList() {
+        paginator.proceed(Paginator.Action.Refresh)
+    }
+
+    override fun loadMorePage() {
+        paginator.proceed(Paginator.Action.LoadMore)
+    }
+
+    override fun searchUser(page: Int) {
         searchProfileUseCase.initParams(
-            token = token,
-            searchFilterModel = searchFilterModel
+            token = view.getToken(),
+            searchFilterModel = view.getSearchFilter().apply { isBrand = false },
+            page = page
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
-                view.processUserResults(t)
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.displayMessage(errorHelper.processError(e))
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }
@@ -113,38 +148,43 @@ class SearchItemPresenter @Inject constructor(
         )
     }
 
-    override fun searchShop(
-        token: String,
-        searchFilterModel: SearchFilterModel
-    ) {
+    override fun searchShop(page: Int) {
         searchProfileUseCase.initParams(
-            token = token,
-            searchFilterModel = searchFilterModel
+            token = view.getToken(),
+            searchFilterModel = view.getSearchFilter().apply { isBrand = true },
+            page = page
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
-                view.processShopResults(resultsModel = t)
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.displayMessage(msg = errorHelper.processError(e))
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }
 
-    override fun searchClothesByTitle(
-        token: String,
-        searchFilterModel: SearchFilterModel
-    ) {
-        searchClothesUseCase.initParams(token, searchFilterModel)
+    override fun searchClothes(page: Int) {
+        searchClothesUseCase.initParams(
+            token = view.getToken(),
+            searchFilterModel = view.getSearchFilter(),
+            page = page
+        )
         searchClothesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
-                view.processClothesResults(resultsModel = t)
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.displayMessage(msg = errorHelper.processError(e))
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }

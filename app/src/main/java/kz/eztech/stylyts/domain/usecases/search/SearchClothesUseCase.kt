@@ -27,13 +27,14 @@ class SearchClothesUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        searchFilterModel: SearchFilterModel
+        searchFilterModel: SearchFilterModel,
+        page: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.title = searchFilterModel.query
 
         val map = HashMap<String, String>()
-        map["page"] = searchFilterModel.page.toString()
+        map["page"] = page.toString()
 
         this.map = map
     }

@@ -34,7 +34,8 @@ class SearchProfileUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        searchFilterModel: SearchFilterModel
+        searchFilterModel: SearchFilterModel,
+        page: Int
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.username = searchFilterModel.query
@@ -42,10 +43,7 @@ class SearchProfileUseCase @Inject constructor(
         val map = HashMap<String, String>()
 
         map["is_brand"] = searchFilterModel.isBrand.toString()
-
-        if (searchFilterModel.page > 1) {
-            map["page"] = searchFilterModel.page.toString()
-        }
+        map["page"] = page.toString()
 
         this.map = map
     }

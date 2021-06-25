@@ -1,30 +1,36 @@
 package kz.eztech.stylyts.presentation.contracts.search
 
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 interface SearchItemContract {
 
     interface View : BaseView {
-        fun processUserResults(resultsModel: ResultsModel<UserModel>)
+
+        fun getToken(): String
+
+        fun getCurrentPosition(): Int
+
+        fun getSearchFilter(): SearchFilterModel
+
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processList(list: List<Any?>)
 
         fun processUserFromLocalDb(userList: List<UserSearchEntity>)
-
-        fun processShopResults(resultsModel: ResultsModel<UserModel>)
-
-        fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun searchUserByUsername(
-            token: String,
-            searchFilterModel: SearchFilterModel
-        )
+
+        fun loadPage(page: Int)
+
+        fun getList()
+
+        fun searchUser(page: Int)
 
         fun getUserFromLocaleDb()
 
@@ -32,14 +38,10 @@ interface SearchItemContract {
 
         fun deleteUserFromLocalDb(user: UserSearchEntity)
 
-        fun searchShop(
-            token: String,
-            searchFilterModel: SearchFilterModel
-        )
+        fun searchShop(page: Int)
 
-        fun searchClothesByTitle(
-            token: String,
-            searchFilterModel: SearchFilterModel
-        )
+        fun searchClothes(page: Int)
+
+        fun loadMorePage()
     }
 }
