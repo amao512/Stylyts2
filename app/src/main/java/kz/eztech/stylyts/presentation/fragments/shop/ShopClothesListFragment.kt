@@ -19,20 +19,21 @@ import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
 import kz.eztech.stylyts.presentation.adapters.collection.CollectionsFilterAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.contracts.main.shop.CategoryTypeDetailContract
+import kz.eztech.stylyts.presentation.contracts.main.shop.ShopClothesListContract
 import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.presenters.shop.CategoryTypeDetailFragmentPresenter
+import kz.eztech.stylyts.presentation.presenters.shop.ShopClothesListPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetailContract.View,
+class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListContract.View,
     UniversalViewClickListener, View.OnClickListener {
 
-    @Inject lateinit var presenter: CategoryTypeDetailFragmentPresenter
+    @Inject lateinit var presenter: ShopClothesListPresenter
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
     private lateinit var filterDialog: FilterDialog
@@ -102,11 +103,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
         when (item) {
             is ClothesFilterModel -> {
                 currentFilter = item
-
-                presenter.getClothesByType(
-                    token = currentActivity.getTokenFromSharedPref(),
-                    filterModel = currentFilter
-                )
+                presenter.getClothes()
             }
         }
     }
@@ -137,9 +134,9 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getClothesBrands(token = currentActivity.getTokenFromSharedPref())
+        presenter.getClothesBrands()
+        presenter.getClothes()
 
-        getClothes()
         handleRecyclerView()
     }
 
@@ -157,24 +154,34 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
 
     override fun hideProgress() {}
 
-    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        with (include_toolbar_profile) {
-            base_toolbar_small_title_sub_text_view.text = getString(
-                if (resultsModel.totalCount == 1) {
-                    R.string.toolbar_position_text_format
-                } else {
-                    R.string.toolbar_positions_text_format
-                },
-                resultsModel.totalCount.toString()
-            )
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
+
+    override fun getClothesFilter(): ClothesFilterModel = currentFilter
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processClothes(state.data)
+            is Paginator.State.NewPageProgress<*> -> processClothes(state.data)
+            else -> {}
         }
 
-        clothesAdapter.updateMoreList(list = resultsModel.results)
+        hideProgress()
+    }
 
-        if (resultsModel.totalPages != currentFilter.page) {
-            currentFilter.page++
-        } else {
-            currentFilter.isLastPage = true
+    override fun processClothes(list: List<Any?>) {
+        list.map { it!! }.let {
+            with (include_toolbar_profile) {
+                base_toolbar_small_title_sub_text_view.text = getString(
+                    if (list.size == 1) {
+                        R.string.toolbar_position_text_format
+                    } else {
+                        R.string.toolbar_positions_text_format
+                    },
+                    list.size.toString()
+                )
+            }
+
+            clothesAdapter.updateList(list = it)
         }
     }
 
@@ -209,27 +216,16 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
         }
     }
 
-    private fun getClothes() {
-        if (currentFilter.categoryIdList.isEmpty() && currentFilter.typeIdList.isNotEmpty()) {
-            presenter.getClothesByType(
-                token = currentActivity.getTokenFromSharedPref(),
-                filterModel = currentFilter
-            )
-        } else {
-            presenter.getCategoryTypeDetail(
-                token = currentActivity.getTokenFromSharedPref(),
-                filterModel = currentFilter
-            )
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        currentFilter.brandList = emptyList()
     }
 
     private fun handleRecyclerView() {
         recycler_view_fragment_category_type_detail.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recycler_view_fragment_category_type_detail.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!currentFilter.isLastPage) {
-                        getClothes()
-                    }
+                    presenter.loadMorePage()
                 }
             }
         })
@@ -251,8 +247,6 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
         position: Int,
         item: CollectionFilterModel
     ) {
-        currentFilter.page = 1
-        currentFilter.isLastPage = false
         clothesAdapter.clearList()
 
         if (position == 0) {
@@ -262,10 +256,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), CategoryTypeDetail
         } else {
             brandsFilterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
             currentFilter.brandList = listOf(item.item as ClothesBrandModel)
-            presenter.getClothesByBrand(
-                token = currentActivity.getTokenFromSharedPref(),
-                filterModel = currentFilter
-            )
+            presenter.getClothes()
         }
     }
 }
