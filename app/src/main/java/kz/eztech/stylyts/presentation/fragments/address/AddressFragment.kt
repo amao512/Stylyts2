@@ -22,6 +22,7 @@ import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.address.AddressPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -110,7 +111,8 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     }
 
     override fun processPostInitialization() {
-        presenter.getAllAddress(token = currentActivity.getTokenFromSharedPref())
+        presenter.getAddresses()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {
@@ -149,15 +151,26 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
         edit_text_fragment_address_profile_post.setText(EMPTY_STRING)
     }
 
-    override fun processAddressList(addressList: List<AddressModel>) {
-        val defaultAddressId: Int = currentActivity.getSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY) ?: 0
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
-        addressList.forEach {
-            it.isDefaultAddress = it.id == defaultAddressId
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processAddressList(state.data)
+            is Paginator.State.NewPageProgress<*> -> processAddressList(state.data)
+            else -> {}
         }
 
-        addressAdapter.updateList(addressList)
-        addressAdapter.notifyDataSetChanged()
+        hideProgress()
+    }
+
+    override fun processAddressList(list: List<Any?>) {
+        list.map {
+            (it as AddressModel).apply {
+                isDefaultAddress = id == currentActivity.getSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY) ?: 0
+            }
+        }.let {
+            addressAdapter.updateList(it)
+        }
     }
 
     override fun processAddress(addressModel: AddressModel) {
@@ -181,10 +194,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     }
 
     override fun onSwipeDelete(addressModel: AddressModel) {
-        presenter.deleteAddress(
-            token = currentActivity.getTokenFromSharedPref(),
-            addressId = addressModel.id.toString()
-        )
+        presenter.deleteAddress(addressId = addressModel.id.toString())
     }
 
     override fun displayDeletedAddress() {
@@ -193,6 +203,16 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
             .postDelayed({
                 fragment_address_profile_success_deleted_text_view.hide()
             }, 1000)
+    }
+
+    private fun handleRecyclerView() {
+        recycler_view_fragment_address_profile.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!recycler_view_fragment_address_profile.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    presenter.loadMorePage()
+                }
+            }
+        })
     }
 
     private fun displayExistForm(addressModel: AddressModel) {
@@ -207,10 +227,7 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     private fun createAddress() {
         if (checkValidation()) {
-            presenter.createAddress(
-                token = currentActivity.getTokenFromSharedPref(),
-                data = getAddressData()
-            )
+            presenter.createAddress(data = getAddressData())
         } else {
             displayToast(getString(R.string.empty_fields_message))
         }
