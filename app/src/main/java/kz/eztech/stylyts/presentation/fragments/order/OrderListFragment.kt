@@ -9,8 +9,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_order_list.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.PageFilterModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.ordering.ShopOrderAdapter
@@ -20,6 +18,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderListContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderListPresenter
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
@@ -29,7 +28,6 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     @Inject lateinit var presenter: OrderListPresenter
     private lateinit var userOrderAdapter: UserOrderAdapter
     private lateinit var shopOrderAdapter: ShopOrderAdapter
-    private lateinit var pageFilterModel: PageFilterModel
 
     private lateinit var recyclerView: RecyclerView
 
@@ -63,7 +61,6 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        pageFilterModel = PageFilterModel()
         userOrderAdapter = UserOrderAdapter()
         userOrderAdapter.setOnClickListener(listener = this)
 
@@ -73,6 +70,12 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
 
     override fun initializeViews() {
         recyclerView = fragment_order_list_recycler_view
+
+        if (currentActivity.getIsBrandFromSharedPref()) {
+            recyclerView.adapter = shopOrderAdapter
+        } else {
+            recyclerView.adapter = userOrderAdapter
+        }
     }
 
     override fun initializeListeners() {
@@ -80,8 +83,7 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     override fun processPostInitialization() {
-        displayProgress()
-        getOrders()
+        presenter.getOrders()
         handleRecyclerView()
     }
 
@@ -104,35 +106,32 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     }
 
     override fun onRefresh() {
-        pageFilterModel.page = 1
-        pageFilterModel.isLastPage = false
         userOrderAdapter.clearList()
         shopOrderAdapter.clearList()
-
-        getOrders()
+        presenter.getOrders()
     }
 
-    override fun processUserOrders(resultsModel: ResultsModel<OrderModel>) {
-        recyclerView.adapter = userOrderAdapter
-        userOrderAdapter.updateMoreList(list = resultsModel.results)
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
-        if (resultsModel.totalPages != pageFilterModel.page) {
-            pageFilterModel.page++
-        } else {
-            pageFilterModel.isLastPage = true
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processOrders(state.data)
+            is Paginator.State.NewPageProgress<*> -> processOrders(state.data)
+            else -> {}
         }
+
+        hideProgress()
     }
 
-    override fun processShopOrders(resultsModel: ResultsModel<OrderModel>) {
-        recyclerView.adapter = shopOrderAdapter
-        shopOrderAdapter.updateMoreList(list = resultsModel.results.filter {
-            it.seller.id == currentActivity.getUserIdFromSharedPref()
-        })
-
-        if (resultsModel.totalPages != pageFilterModel.page) {
-            pageFilterModel.page++
-        } else {
-            pageFilterModel.isLastPage = true
+    override fun processOrders(list: List<Any?>) {
+        list.map { it!! }.let {
+            if (currentActivity.getIsBrandFromSharedPref()) {
+                shopOrderAdapter.updateList(list = it.filter { order ->
+                    (order as OrderModel).seller.id == currentActivity.getUserIdFromSharedPref()
+                })
+            } else {
+                userOrderAdapter.updateList(list = it)
+            }
         }
     }
 
@@ -161,20 +160,11 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         findNavController().navigate(R.id.action_orderListFragment_to_shopOrderDetailFragment, bundle)
     }
 
-    private fun getOrders() {
-        presenter.getOrderList(
-            token = currentActivity.getTokenFromSharedPref(),
-            pageFilterModel = pageFilterModel
-        )
-    }
-
     private fun handleRecyclerView() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!pageFilterModel.isLastPage) {
-                        getOrders()
-                    }
+                    presenter.loadMorePage()
                 }
             }
         })

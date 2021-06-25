@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.collection
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.api.models.comments.CommentCreateModel
@@ -50,6 +51,7 @@ class CommentsPresenter @Inject constructor(
         createCommentUseCase.clear()
         getPostByIdUseCase.clear()
         getOutfitByIdUseCase.clear()
+        cancel()
     }
 
     override fun attach(view: CommentsContract.View) {

@@ -1,98 +1,73 @@
 package kz.eztech.stylyts.presentation.presenters.ordering
 
 import io.reactivex.observers.DisposableSingleObserver
-import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.common.PageFilterModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
-import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.order.GetOrderListUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
-import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderListContract
+import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
 
 class OrderListPresenter @Inject constructor(
-    private val errorHelper: ErrorHelper,
+    private val paginator: Paginator.Store<OrderModel>,
     private val getOrderListUseCase: GetOrderListUseCase,
     private val getProfileUseCase: GetProfileUseCase
-) : OrderListContract.Presenter {
+) : OrderListContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private lateinit var view: OrderListContract.View
+
+    init {
+        launch {
+            paginator.render = { view.renderPaginatorState(it) }
+            paginator.sideEffects.consumeEach { effect ->
+                when (effect) {
+                    is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+                    is Paginator.SideEffect.ErrorEvent -> {}
+                }
+            }
+        }
+    }
 
     override fun disposeRequests() {
         getOrderListUseCase.clear()
         getProfileUseCase.clear()
+        cancel()
     }
 
     override fun attach(view: OrderListContract.View) {
         this.view = view
     }
 
-    override fun getOrderList(
-        token: String,
-        pageFilterModel: PageFilterModel
-    ) {
-        getProfileUseCase.initParams(token)
-        getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
-            override fun onSuccess(t: UserModel) {
-                if (t.isBrand) {
-                    getShopOrders(token, pageFilterModel)
-                } else {
-                    getUserOrders(token, pageFilterModel)
-                }
+    override fun loadPage(page: Int) {
+        getOrderListUseCase.initParams(
+            token = view.getToken(),
+            page = page
+        )
+        getOrderListUseCase.execute(object : DisposableSingleObserver<ResultsModel<OrderModel>>() {
+            override fun onSuccess(t: ResultsModel<OrderModel>) {
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(msg = errorHelper.processError(e))
-                }
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }
 
-    override fun getUserOrders(
-        token: String,
-        pageFilterModel: PageFilterModel
-    ) {
-        getOrderListUseCase.initParams(token, pageFilterModel)
-        getOrderListUseCase.execute(object : DisposableSingleObserver<ResultsModel<OrderModel>>() {
-            override fun onSuccess(t: ResultsModel<OrderModel>) {
-                view.processViewAction {
-                    processUserOrders(resultsModel = t)
-                    hideProgress()
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(msg = errorHelper.processError(e))
-                }
-            }
-        })
+    override fun loadMorePage() {
+        paginator.proceed(Paginator.Action.LoadMore)
     }
 
-    override fun getShopOrders(
-        token: String,
-        pageFilterModel: PageFilterModel
-    ) {
-        getOrderListUseCase.initParams(token, pageFilterModel)
-        getOrderListUseCase.execute(object : DisposableSingleObserver<ResultsModel<OrderModel>>() {
-            override fun onSuccess(t: ResultsModel<OrderModel>) {
-                view.processViewAction {
-                    processShopOrders(resultsModel = t)
-                    hideProgress()
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(msg = errorHelper.processError(e))
-                }
-            }
-        })
+    override fun getOrders() {
+        paginator.proceed(Paginator.Action.Refresh)
     }
 }

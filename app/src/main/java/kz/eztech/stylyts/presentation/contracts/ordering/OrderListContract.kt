@@ -1,35 +1,26 @@
 package kz.eztech.stylyts.presentation.contracts.ordering
 
-import kz.eztech.stylyts.domain.models.common.PageFilterModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 interface OrderListContract {
 
     interface View : BaseView {
 
-        fun processUserOrders(resultsModel: ResultsModel<OrderModel>)
+        fun getToken(): String
 
-        fun processShopOrders(resultsModel: ResultsModel<OrderModel>)
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processOrders(list: List<Any?>)
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun getOrderList(
-            token: String,
-            pageFilterModel: PageFilterModel
-        )
+        fun loadPage(page: Int)
 
-        fun getUserOrders(
-            token: String,
-            pageFilterModel: PageFilterModel
-        )
+        fun loadMorePage()
 
-        fun getShopOrders(
-            token: String,
-            pageFilterModel: PageFilterModel
-        )
+        fun getOrders()
     }
 }

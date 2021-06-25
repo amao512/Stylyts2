@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.main
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.exception.ErrorHelper
@@ -51,6 +52,7 @@ class MainLinePresenter @Inject constructor(
 		deletePostUseCase.clear()
 		likePostUseCase.clear()
 		getUserByIdUseCase.clear()
+		cancel()
 	}
 
 	override fun attach(view: MainContract.View) {

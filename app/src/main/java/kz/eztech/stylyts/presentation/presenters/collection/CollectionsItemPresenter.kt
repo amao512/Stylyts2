@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.collection
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.domain.models.common.ResultsModel
@@ -37,6 +38,7 @@ class CollectionsItemPresenter @Inject constructor(
 
 	override fun disposeRequests() {
 		getPostsUseCase.clear()
+		cancel()
 	}
 
 	override fun attach(view: CollectionItemContract.View) {
