@@ -4,27 +4,31 @@ import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 interface ShopListContract {
 
     interface View : BaseView {
 
-        fun processShops(shopList: List<ShopListItem>)
+        fun getToken(): String
+
+        fun getCurrendId(): Int
+
+        fun getSearchFilter(): SearchFilterModel
+
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processShops(list: List<Any?>)
 
         fun processCharacter(character: List<String>)
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun getShops(
-            token: String,
-            currentId: Int,
-            searchFilterModel: SearchFilterModel
-        )
+        fun loadPage(page: Int)
 
-        fun searchShop(
-            token: String,
-            searchFilterModel: SearchFilterModel
-        )
+        fun loadMorePage()
+
+        fun getShops()
     }
 }

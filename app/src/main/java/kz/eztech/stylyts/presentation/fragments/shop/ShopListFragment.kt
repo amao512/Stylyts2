@@ -27,6 +27,7 @@ import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopListPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
@@ -34,7 +35,8 @@ import javax.inject.Inject
 class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, View.OnClickListener,
     UniversalViewClickListener {
 
-    @Inject lateinit var presenter: ShopListPresenter
+    @Inject
+    lateinit var presenter: ShopListPresenter
 
     private lateinit var filterAdapter: CollectionsFilterAdapter
     private lateinit var shopAdapter: ShopAdapter
@@ -92,6 +94,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         )
 
         filterModel = SearchFilterModel()
+        filterModel.isBrand = true
     }
 
     override fun initializeViews() {
@@ -107,12 +110,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
 
     override fun processPostInitialization() {
         filterAdapter.updateList(list = getFilterList())
-
-        presenter.getShops(
-            token = currentActivity.getTokenFromSharedPref(),
-            currentId = currentActivity.getUserIdFromSharedPref(),
-            searchFilterModel = filterModel
-        )
+        presenter.getShops()
 
         handleSearchView()
         handleRecyclerView()
@@ -150,8 +148,27 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         }
     }
 
-    override fun processShops(shopList: List<ShopListItem>) {
-        shopAdapter.updateMoreList(list = shopList)
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
+
+    override fun getCurrendId(): Int = currentActivity.getUserIdFromSharedPref()
+
+    override fun getSearchFilter(): SearchFilterModel = filterModel
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processShops(state.data)
+            is Paginator.State.NewPageProgress<*> -> processShops(state.data)
+            else -> {
+            }
+        }
+
+        hideProgress()
+    }
+
+    override fun processShops(list: List<Any?>) {
+        list.map { it!! }.let {
+            shopAdapter.updateList(list = it)
+        }
     }
 
     override fun processCharacter(character: List<String>) {
@@ -209,9 +226,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         shopsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!shopsRecyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!filterModel.isLastPage) {
-                        getShops()
-                    }
+                    presenter.loadMorePage()
                 }
             }
         })
@@ -225,17 +240,9 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     }
 
     private fun getShops() {
-        if (filterModel.query.isBlank()) {
-            presenter.getShops(
-                token = currentActivity.getTokenFromSharedPref(),
-                currentId = currentActivity.getUserIdFromSharedPref(),
-                searchFilterModel = filterModel
-            )
-        } else {
-            presenter.searchShop(
-                token = currentActivity.getTokenFromSharedPref(),
-                searchFilterModel = filterModel
-            )
+        presenter.getShops()
+
+        if (filterModel.query.isNotBlank()) {
             fragment_shop_list_right_character_list_linear_layout.hide()
         }
     }

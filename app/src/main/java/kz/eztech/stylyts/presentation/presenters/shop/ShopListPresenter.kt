@@ -1,39 +1,54 @@
 package kz.eztech.stylyts.presentation.presenters.shop
 
 import io.reactivex.observers.DisposableSingleObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.presentation.contracts.shop.ShopListContract
+import kz.eztech.stylyts.presentation.utils.Paginator
 import java.util.*
 import javax.inject.Inject
 
 class ShopListPresenter @Inject constructor(
-    private val errorHelper: ErrorHelper,
+    private val paginator: Paginator.Store<ShopListItem>,
     private val searchProfileUseCase: SearchProfileUseCase
-) : ShopListContract.Presenter {
+) : ShopListContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private lateinit var view: ShopListContract.View
 
+    init {
+        launch {
+            paginator.render = { view.renderPaginatorState(it) }
+            paginator.sideEffects.consumeEach { effect ->
+                when (effect) {
+                    is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+                    is Paginator.SideEffect.ErrorEvent -> {}
+                }
+            }
+        }
+    }
+
     override fun disposeRequests() {
         searchProfileUseCase.clear()
+        cancel()
     }
 
     override fun attach(view: ShopListContract.View) {
         this.view = view
     }
 
-    override fun getShops(
-        token: String,
-        currentId: Int,
-        searchFilterModel: SearchFilterModel
-    ) {
+    override fun loadPage(page: Int) {
         searchProfileUseCase.initParams(
-            token = token,
-            searchFilterModel = SearchFilterModel(isBrand = true)
+            token = view.getToken(),
+            searchFilterModel = view.getSearchFilter(),
+            page = page
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
@@ -41,7 +56,7 @@ class ShopListPresenter @Inject constructor(
                 val characterList: MutableList<String> = mutableListOf()
 
                 sortedShopList(
-                    results = t.results.filter { it.id != currentId }
+                    results = t.results.filter { it.id != view.getCurrendId() }
                 ).map { list ->
                     list.map {
                         preparedResults.add(it)
@@ -50,43 +65,25 @@ class ShopListPresenter @Inject constructor(
                     characterList.add(list[0].item as String)
                 }
 
-                view.processShops(shopList = preparedResults)
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = preparedResults
+                ))
                 view.processCharacter(character = characterList)
             }
 
             override fun onError(e: Throwable) {
-                view.displayMessage(msg = errorHelper.processError(e))
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }
 
-    override fun searchShop(
-        token: String,
-        searchFilterModel: SearchFilterModel
-    ) {
-        searchFilterModel.isBrand = true
+    override fun getShops() {
+        paginator.proceed(Paginator.Action.Refresh)
+    }
 
-        searchProfileUseCase.initParams(
-            token = token,
-            searchFilterModel = searchFilterModel,
-        )
-        searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
-            override fun onSuccess(t: ResultsModel<UserModel>) {
-                val preparedResults: MutableList<ShopListItem> = mutableListOf()
-
-                t.results.map {
-                    preparedResults.add(
-                        ShopListItem(id = it.id, item = it)
-                    )
-                }
-
-                view.processShops(shopList = preparedResults)
-            }
-
-            override fun onError(e: Throwable) {
-                view.displayMessage(msg = errorHelper.processError(e))
-            }
-        })
+    override fun loadMorePage() {
+        paginator.proceed(Paginator.Action.LoadMore)
     }
 
     private fun sortedShopList(results: List<UserModel>): List<List<ShopListItem>> {
