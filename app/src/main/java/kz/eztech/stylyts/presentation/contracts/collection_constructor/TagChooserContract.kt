@@ -7,6 +7,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 23.12.2020.
@@ -18,23 +19,31 @@ interface TagChooserContract {
 
         fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>)
 
-        fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
+        fun processList(list: List<Any?>)
+
+        fun getToken(): String
+
+        fun getClothesFilter(): ClothesFilterModel
+
+        fun getSearchFilter(): SearchFilterModel
+
+        fun renderPaginatorState(state: Paginator.State)
 
         fun getFilterMap(): HashMap<String, Any>
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun getCategory(token: String)
+        fun getCategory()
 
-        fun getClothes(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun loadPage(page: Int)
 
-        fun searchClothes(
-            token: String,
-            searchFilterModel: SearchFilterModel
-        )
+        fun loadMorePage()
+
+        fun getList()
+
+        fun getClothes(page: Int)
+
+        fun searchClothes(page: Int)
     }
 }

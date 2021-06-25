@@ -44,6 +44,7 @@ import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.TagChooserPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
 import kz.eztech.stylyts.presentation.utils.ViewUtils.createBitmapScreenshot
 import kz.eztech.stylyts.presentation.utils.extensions.displayToast
@@ -70,6 +71,7 @@ class TagChooserDialog(
     private lateinit var selectedClothesAdapter: ClothesAdditionalAdapter
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: ClothesFilterModel
+    private lateinit var searchFilterModel: SearchFilterModel
     private lateinit var itemTouchHelper: ItemTouchHelper
 
     private val filterMap = HashMap<String, Any>()
@@ -171,8 +173,10 @@ class TagChooserDialog(
         currentFilter.gender = EMPTY_STRING
         currentFilter.onlyBrands = false
 
+        searchFilterModel = SearchFilterModel()
+
         filterDialog = FilterDialog.getNewInstance(
-            token = getTokenFromArgs(),
+            token = getToken(),
             itemClickListener = this,
             gender = EMPTY_STRING,
             isShowWardrobe = true
@@ -289,10 +293,26 @@ class TagChooserDialog(
         }
     }
 
-    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        clothesAdapter.updateMoreList(list = resultsModel.results)
+    override fun getToken(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 
-        setPagesCondition(resultsModel.totalPages)
+    override fun getClothesFilter(): ClothesFilterModel = currentFilter
+
+    override fun getSearchFilter(): SearchFilterModel = searchFilterModel
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processList(state.data)
+            is Paginator.State.NewPageProgress<*> -> processList(state.data)
+            else -> {}
+        }
+
+        hideProgress()
+    }
+
+    override fun processList(list: List<Any?>) {
+        list.map { it!! }.let {
+            clothesAdapter.updateList(list = it)
+        }
     }
 
     override fun getFilterMap(): HashMap<String, Any> = filterMap
@@ -301,7 +321,7 @@ class TagChooserDialog(
         when (mode) {
             CLOTHES_MODE -> showBottomSheet()
             USERS_MODE -> UserSearchDialog.getNewInstance(
-                token = getTokenFromArgs(),
+                token = getToken(),
                 chooserListener = this
             ).show(childFragmentManager, EMPTY_STRING)
         }
@@ -387,9 +407,7 @@ class TagChooserDialog(
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recycler_view_fragment_photo_chooser.canScrollVertically(1)
                     && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!currentFilter.isLastPage) {
-                        getClothes()
-                    }
+                    presenter.loadMorePage()
                 }
             }
         })
@@ -413,12 +431,8 @@ class TagChooserDialog(
 
     private fun searchClothes(title: String) {
         clothesAdapter.clearList()
-        resetPages()
-
-        presenter.searchClothes(
-            token = getTokenFromArgs(),
-            searchFilterModel = SearchFilterModel(query = title)
-        )
+        searchFilterModel.query = title
+        presenter.getList()
     }
 
     private fun onFilterModelClicked(
@@ -427,14 +441,12 @@ class TagChooserDialog(
     ) {
         when (collectionFilterModel.mode) {
             0 -> filterDialog.apply {
-                resetPages()
                 setFilter(filterModel = currentFilter)
             }.show(childFragmentManager, "FilterDialog")
             1 -> {
                 currentFilter.typeIdList = listOf(collectionFilterModel.item as ClothesTypeModel)
                 clothesAdapter.clearList()
-                resetPages()
-                getClothes()
+                presenter.getList()
 
                 if (position != 0) {
                     filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
@@ -443,18 +455,6 @@ class TagChooserDialog(
             2 -> navigateToCameraFragment(mode = CameraFragment.BARCODE_MODE)
             3 -> navigateToCameraFragment(mode = CameraFragment.PHOTO_MODE)
         }
-    }
-
-    private fun resetPages() {
-        currentFilter.page = 1
-        currentFilter.isLastPage = false
-    }
-
-    private fun getClothes() {
-        presenter.getClothes(
-            token = getTokenFromArgs(),
-            filterModel = currentFilter
-        )
     }
 
     private fun navigateToCameraFragment(mode: Int) {
@@ -581,11 +581,8 @@ class TagChooserDialog(
 
     private fun showBottomSheet() {
         clothesAdapter.clearList()
-        presenter.getCategory(token = getTokenFromArgs())
-        presenter.getClothes(
-            token = getTokenFromArgs(),
-            filterModel = currentFilter
-        )
+        presenter.getCategory()
+        presenter.getList()
 
         BottomSheetBehavior.from(bottom_sheet_clothes).apply {
             state = BottomSheetBehavior.STATE_EXPANDED
@@ -633,7 +630,7 @@ class TagChooserDialog(
     private fun showFilterResults(filterModel: ClothesFilterModel) {
         currentFilter = filterModel
         clothesAdapter.clearList()
-        getClothes()
+        presenter.getList()
     }
 
     private fun showCompleteDialog() {
@@ -705,14 +702,4 @@ class TagChooserDialog(
 
         return users
     }
-
-    private fun setPagesCondition(totalPages: Int) {
-        if (totalPages > currentFilter.page) {
-            currentFilter.page++
-        } else {
-            currentFilter.isLastPage = true
-        }
-    }
-
-    private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 }

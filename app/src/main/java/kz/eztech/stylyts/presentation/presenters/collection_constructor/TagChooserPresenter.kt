@@ -1,17 +1,20 @@
 package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.domain.usecases.search.SearchClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.TagChooserContract
+import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
 
 /**
@@ -19,12 +22,25 @@ import javax.inject.Inject
  */
 class TagChooserPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
+    private val paginator: Paginator.Store<ClothesModel>,
     private val getClothesTypesUseCase: GetClothesTypesUseCase,
     private val getClothesUseCase: GetClothesUseCase,
     private val searchClothesUseCase: SearchClothesUseCase
-) : TagChooserContract.Presenter {
+) : TagChooserContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private lateinit var view: TagChooserContract.View
+
+    init {
+        launch {
+            paginator.render = { view.renderPaginatorState(it) }
+            paginator.sideEffects.consumeEach { effect ->
+                when (effect) {
+                    is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+                    is Paginator.SideEffect.ErrorEvent -> {}
+                }
+            }
+        }
+    }
 
     override fun disposeRequests() {
         getClothesTypesUseCase.clear()
@@ -36,10 +52,10 @@ class TagChooserPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getCategory(token: String) {
+    override fun getCategory() {
         view.displayProgress()
 
-        getClothesTypesUseCase.initParams(token)
+        getClothesTypesUseCase.initParams(token = view.getToken())
         getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 view.processViewAction {
@@ -57,42 +73,57 @@ class TagChooserPresenter @Inject constructor(
         })
     }
 
-    override fun getClothes(
-        token: String,
-        filterModel: ClothesFilterModel
-    ) {
-        view.displayProgress()
+    override fun loadPage(page: Int) {
+        when (view.getSearchFilter().query.isBlank()) {
+            true -> getClothes(page)
+            false -> searchClothes(page)
+        }
+    }
 
-        getClothesUseCase.initParams(token, filterModel.page, filterModel)
+    override fun getList() {
+        paginator.proceed(Paginator.Action.Refresh)
+    }
+
+    override fun loadMorePage() {
+        paginator.proceed(Paginator.Action.LoadMore)
+    }
+
+    override fun getClothes(page: Int) {
+        getClothesUseCase.initParams(
+            token = view.getToken(),
+            page = page,
+            filterModel = view.getClothesFilter()
+        )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
-                view.processViewAction {
-                    processClothesResults(resultsModel = t)
-                    hideProgress()
-                }
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(errorHelper.processError(e))
-                }
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }
 
-    override fun searchClothes(
-        token: String,
-        searchFilterModel: SearchFilterModel
-    ) {
-        searchClothesUseCase.initParams(token, searchFilterModel)
+    override fun searchClothes(page: Int) {
+        searchClothesUseCase.initParams(
+            token = view.getToken(),
+            searchFilterModel = view.getSearchFilter(),
+            page = page
+        )
         searchClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
-                view.processClothesResults(resultsModel = t)
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.displayMessage(msg = errorHelper.processError(e))
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }
