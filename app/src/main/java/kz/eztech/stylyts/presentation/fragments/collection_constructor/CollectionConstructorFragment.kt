@@ -49,6 +49,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CollectionConstructorPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.RelativeImageMeasurements
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil
 import kz.eztech.stylyts.presentation.utils.RelativeMeasureUtil.reMeasureEntity
@@ -171,7 +172,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     }
 
     override fun processPostInitialization() {
-        presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
+        presenter.getTypes()
 
         handleRecyclerView()
     }
@@ -260,17 +261,34 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         )
     }
 
-    override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {
-        if (listOfItems.isNotEmpty()) {
-            listOfItems.forEach { clothes ->
-                resultsModel.results.find { it.id == clothes.id }?.isChosen = true
-            }
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
+
+    override fun getClothesFilter(): ClothesFilterModel = currentFilter
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processList(state.data)
+            is Paginator.State.NewPageProgress<*> -> processList(state.data)
+            else -> {}
         }
 
-        if (resultsModel.totalPages != currentFilter.page) {
-            currentFilter.page++
-        } else {
-            currentFilter.isLastPage = true
+        hideProgress()
+    }
+
+    override fun processList(list: List<Any?>) {
+        list.map { it!! }.let {
+            when (it[0]) {
+                is ClothesModel -> processClothes(list as List<ClothesModel>)
+                is ClothesStyleModel -> processStyles(list as List<ClothesStyleModel>)
+            }
+        }
+    }
+
+    override fun processClothes(clothes: List<ClothesModel>) {
+        if (listOfItems.isNotEmpty()) {
+            listOfItems.forEach { item ->
+                clothes.find { it.id == item.id }?.isChosen = true
+            }
         }
 
         text_view_fragment_collection_constructor_category_next.hide()
@@ -278,16 +296,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
         text_view_fragment_collection_constructor_category_back.show()
         text_view_fragment_collection_constructor_category_back.isClickable = true
-        recycler_view_fragment_collection_constructor_list.adapter = clothesAdapter
 
-        clothesAdapter.updateMoreList(list = resultsModel.results)
+        clothesAdapter.updateList(list = clothes)
         isItems = true
     }
 
-    override fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>) {
-        stylesAdapter.updateList(list = resultsModel.results)
+    override fun processStyles(styles: List<ClothesStyleModel>) {
+        stylesAdapter.updateList(list = styles)
 
-        fragment_collection_constructor_styles_recycler_view.adapter = stylesAdapter
         fragment_collection_constructor_styles_recycler_view.show()
     }
 
@@ -302,6 +318,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
 
         Log.wtf("deletedSelectedEntity", "res1:$res res2:$res2 res3:$res3")
     }
+
+    override fun isItems(): Boolean = isItems
+
+    override fun isStyles(): Boolean = isStyle
 
     private fun processInputImageToPlace(item: Any?) {
         item as ClothesModel
@@ -426,7 +446,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             isStyle -> showStyles()
             isItems -> showItems()
             else -> {
-                presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
+                presenter.getTypes()
             }
         }
     }
@@ -443,7 +463,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         isItems = false
 
         checkIsListEmpty()
-        presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
+        presenter.getTypes()
     }
 
     private fun showItems() {
@@ -457,7 +477,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         isItems = false
         isStyle = false
 
-        presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
+        presenter.getTypes()
     }
 
     private fun onCategoryNextClick() {
@@ -470,9 +490,10 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             isStyle = true
             isItems = false
 
+            fragment_collection_constructor_styles_recycler_view.adapter = stylesAdapter
             recycler_view_fragment_collection_constructor_list.hide()
 
-            presenter.getStyles(token = currentActivity.getTokenFromSharedPref())
+            presenter.getClothesAndStyles()
         }
     }
 
@@ -485,16 +506,18 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                     onChoice(view, externalType)
                 } else {
                     clothesAdapter.clearList()
-                    currentFilter.page = 1
-                    currentFilter.isLastPage = false
                     currentFilter.typeIdList = listOf(item)
                     currentFilter.gender = when (getTypeFromArgs()) {
                         0 -> GenderEnum.MALE.gender
                         else -> GenderEnum.FEMALE.gender
                     }
 
+
                     displayProgress()
-                    getClothes()
+                    recycler_view_fragment_collection_constructor_list.adapter = clothesAdapter
+                    isItems = true
+                    isStyle = false
+                    presenter.getClothesAndStyles()
                 }
             }
         }
@@ -506,19 +529,12 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!currentFilter.isLastPage) {
-                        getClothes()
+                    if (isItems) {
+                        presenter.getClothesAndStyles()
                     }
                 }
             }
         })
-    }
-
-    private fun getClothes() {
-        presenter.getClothesByType(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = currentFilter
-        )
     }
 
     private fun onCategoryItemImageDoubleClick() {
@@ -534,7 +550,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             isItems = false
             isStyle = false
 
-            presenter.getTypes(token = currentActivity.getTokenFromSharedPref())
+            presenter.getTypes()
         }
     }
 
@@ -555,7 +571,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         Log.d("TAG4", "filter - $currentFilter")
 
         displayProgress()
-        getClothes()
+        presenter.getClothesAndStyles()
     }
 
     private fun showStyles(clothesStyleModel: ClothesStyleModel) {

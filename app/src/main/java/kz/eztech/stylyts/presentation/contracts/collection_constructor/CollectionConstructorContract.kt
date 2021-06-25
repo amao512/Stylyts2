@@ -6,29 +6,46 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 21.12.2020.
  */
 interface CollectionConstructorContract {
+
     interface View : MotionViewContract {
+
+        fun getToken(): String
+
+        fun isItems(): Boolean
+
+        fun isStyles(): Boolean
+
+        fun getClothesFilter(): ClothesFilterModel
+
+        fun renderPaginatorState(state: Paginator.State)
 
         fun processTypesResults(resultsModel: ResultsModel<ClothesTypeModel>)
 
-        fun processStylesResults(resultsModel: ResultsModel<ClothesStyleModel>)
+        fun processList(list: List<Any?>)
 
-        fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
+        fun processClothes(clothes: List<ClothesModel>)
+
+        fun processStyles(styles: List<ClothesStyleModel>)
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun getTypes(token: String)
+        fun loadPage(page: Int)
 
-        fun getClothesByType(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun loadMorePage(page: Int)
 
-        fun getStyles(token: String)
+        fun loadClothes(page: Int)
+
+        fun loadStyles(page: Int)
+
+        fun getTypes()
+
+        fun getClothesAndStyles()
     }
 }

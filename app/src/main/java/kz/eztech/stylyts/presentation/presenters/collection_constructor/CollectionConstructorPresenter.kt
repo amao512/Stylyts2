@@ -1,8 +1,12 @@
 package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import io.reactivex.observers.DisposableSingleObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
@@ -12,6 +16,7 @@ import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorContract
+import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
 
 /**
@@ -19,27 +24,41 @@ import javax.inject.Inject
  */
 class CollectionConstructorPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
+    private val paginator: Paginator.Store<Any>,
     private val getClothesTypesUseCase: GetClothesTypesUseCase,
     private val getClothesUseCase: GetClothesUseCase,
     private val getClothesStylesUseCase: GetClothesStylesUseCase
-) : CollectionConstructorContract.Presenter {
+) : CollectionConstructorContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private lateinit var view: CollectionConstructorContract.View
+
+    init {
+        launch {
+            paginator.render = { view.renderPaginatorState(it) }
+            paginator.sideEffects.consumeEach { effect ->
+                when (effect) {
+                    is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+                    is Paginator.SideEffect.ErrorEvent -> {}
+                }
+            }
+        }
+    }
 
     override fun disposeRequests() {
         getClothesTypesUseCase.clear()
         getClothesUseCase.clear()
         getClothesStylesUseCase.clear()
+        cancel()
     }
 
     override fun attach(view: CollectionConstructorContract.View) {
         this.view = view
     }
 
-    override fun getTypes(token: String) {
+    override fun getTypes() {
         view.displayProgress()
 
-        getClothesTypesUseCase.initParams(token)
+        getClothesTypesUseCase.initParams(token = view.getToken())
         getClothesTypesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
@@ -58,47 +77,58 @@ class CollectionConstructorPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesByType(
-        token: String,
-        filterModel: ClothesFilterModel
-    ) {
-        getClothesUseCase.initParams(token, filterModel.page, filterModel)
+    override fun loadPage(page: Int) {
+        if (view.isItems()) {
+            loadClothes(page)
+        }
+
+        if (view.isStyles()) {
+            loadStyles(page)
+        }
+    }
+
+    override fun loadClothes(page: Int) {
+        getClothesUseCase.initParams(
+            token = view.getToken(),
+            page = page,
+            filterModel = view.getClothesFilter()
+        )
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
-                view.processViewAction {
-                    processClothesResults(resultsModel = t)
-                    hideProgress()
-                }
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(errorHelper.processError(e))
-                }
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
     }
 
-    override fun getStyles(token: String) {
-        view.displayProgress()
-
-        getClothesStylesUseCase.initParams(token)
+    override fun loadStyles(page: Int) {
+        getClothesStylesUseCase.initParams(token = view.getToken())
         getClothesStylesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesStyleModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {
-                view.processViewAction {
-                    processStylesResults(resultsModel = t)
-                    hideProgress()
-                }
+                paginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    displayMessage(errorHelper.processError(e))
-                    hideProgress()
-                }
+                paginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
+    }
+
+    override fun loadMorePage(page: Int) {
+        paginator.proceed(Paginator.Action.LoadMore)
+    }
+
+    override fun getClothesAndStyles() {
+        paginator.proceed(Paginator.Action.Refresh)
     }
 }
