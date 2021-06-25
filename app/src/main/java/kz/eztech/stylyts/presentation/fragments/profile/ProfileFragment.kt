@@ -53,8 +53,7 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
     UniversalViewClickListener, EditorListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject
-    lateinit var presenter: ProfilePresenter
+    @Inject lateinit var presenter: ProfilePresenter
 
     private lateinit var gridAdapter: GridImageAdapter
     private lateinit var adapterFilter: CollectionsFilterAdapter
@@ -221,8 +220,8 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             R.id.linear_layout_fragment_profile_following_item -> navigateToFollowings()
             R.id.linear_layout_fragment_profile_photos_item -> navigateToSubs()
             R.id.toolbar_left_corner_action_image_button -> navigateBack()
-            R.id.fragment_profile_follow_text_view -> followUser()
-            R.id.fragment_profile_unfollow_text_view -> unFollowUser()
+            R.id.fragment_profile_follow_text_view -> presenter.followUser()
+            R.id.fragment_profile_unfollow_text_view -> presenter.unfollowUser()
         }
     }
 
@@ -254,7 +253,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         currentUsername = userModel.username
 
         getFilterList()
-        getFollowers()
+        presenter.getFollowers()
 
         fillProfileInfo(userModel = userModel)
         loadProfilePhoto(userModel = userModel)
@@ -301,15 +300,15 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
-            is Paginator.State.Data<*> -> processResults(state.data)
-            is Paginator.State.NewPageProgress<*> -> processResults(state.data)
+            is Paginator.State.Data<*> -> processCollections(state.data)
+            is Paginator.State.NewPageProgress<*> -> processCollections(state.data)
             else -> {}
         }
 
         hideProgress()
     }
 
-    override fun processResults(list: List<Any?>) {
+    override fun processCollections(list: List<Any?>) {
         when (list[0]) {
             is PostModel -> list.map { it!! }.let {
                 gridAdapter.updateList(list = it)
@@ -362,21 +361,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun getOutfitFilter(): OutfitFilterModel = outfitFilterModel
 
     private fun getProfile() {
-        presenter.getProfile(
-            token = currentActivity.getTokenFromSharedPref(),
-            userId = currentUserId,
-        )
+        presenter.getProfile()
     }
 
     private fun getFilterList() {
         presenter.getFilerList(isOwnProfile = isOwnProfile())
-    }
-
-    private fun getFollowers() {
-        presenter.getFollowers(
-            token = currentActivity.getTokenFromSharedPref(),
-            userId = currentUserId
-        )
     }
 
     private fun getCollections() {
@@ -418,24 +407,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             clothesFilterModel.inMyWardrobe = isOwnProfile()
         }
 
-        presenter.getWardrobeCount(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = clothesFilterModel
-        )
-    }
-
-    private fun followUser() {
-        presenter.followUser(
-            token = currentActivity.getTokenFromSharedPref(),
-            userId = currentUserId
-        )
-    }
-
-    private fun unFollowUser() {
-        presenter.unfollowUser(
-            token = currentActivity.getTokenFromSharedPref(),
-            userId = currentUserId
-        )
+        presenter.getWardrobeCount()
     }
 
     private fun handleRecyclerViewScrolling() {

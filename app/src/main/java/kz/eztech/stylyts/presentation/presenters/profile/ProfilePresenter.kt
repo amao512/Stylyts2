@@ -8,7 +8,6 @@ import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
@@ -77,16 +76,13 @@ class ProfilePresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getProfile(
-		token: String,
-		userId: Int,
-	) {
+    override fun getProfile() {
         view.displayProgress()
 
-		if (userId == 0) {
-			getOwnProfile(token)
+		if (view.getUserId() == 0) {
+			getOwnProfile()
 		} else {
-			getProfileById(token, userId)
+			getProfileById()
 		}
     }
 
@@ -207,8 +203,11 @@ class ProfilePresenter @Inject constructor(
 		paginator.proceed(Paginator.Action.LoadMore)
 	}
 
-	override fun getFollowers(token: String, userId: Int) {
-		getFollowersUseCase.initParams(token, userId)
+	override fun getFollowers() {
+		getFollowersUseCase.initParams(
+			token = view.getToken(),
+			userId = view.getUserId()
+		)
 		getFollowersUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
 			override fun onSuccess(t: ResultsModel<FollowerModel>) {
 				view.processViewAction {
@@ -224,11 +223,11 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun followUser(
-		token: String,
-		userId: Int
-	) {
-		followUserUseCase.initParams(token, userId)
+	override fun followUser() {
+		followUserUseCase.initParams(
+			token = view.getToken(),
+			userId = view.getUserId()
+		)
 		followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
 			override fun onSuccess(t: FollowSuccessModel) {
 				view.processViewAction {
@@ -244,11 +243,11 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun unfollowUser(
-		token: String,
-		userId: Int
-	) {
-		unfollowUserUseCase.initParams(token, userId)
+	override fun unfollowUser() {
+		unfollowUserUseCase.initParams(
+			token = view.getToken(),
+			userId = view.getUserId()
+		)
 		unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
 			override fun onSuccess(t: Any) {
 				view.processViewAction {
@@ -264,13 +263,10 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	override fun getWardrobeCount(
-		token: String,
-		filterModel: ClothesFilterModel
-	) {
+	override fun getWardrobeCount() {
 		getClothesUseCase.initParams(
-			token = token,
-			filterModel = filterModel,
+			token = view.getToken(),
+			filterModel = view.getClothesFilter(),
 			page = 1
 		)
 		getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
@@ -288,8 +284,8 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	private fun getOwnProfile(token: String) {
-		getProfileUseCase.initParams(token)
+	private fun getOwnProfile() {
+		getProfileUseCase.initParams(token = view.getToken())
 		getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
 				view.processViewAction {
@@ -307,11 +303,11 @@ class ProfilePresenter @Inject constructor(
 		})
 	}
 
-	private fun getProfileById(
-		token: String,
-		userId: Int
-	) {
-		getUserByIdUseCase.initParams(token, userId)
+	private fun getProfileById() {
+		getUserByIdUseCase.initParams(
+			token = view.getToken(),
+			userId = view.getUserId()
+		)
 		getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
 				view.processViewAction {

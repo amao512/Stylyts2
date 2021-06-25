@@ -1,13 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -40,7 +36,7 @@ interface ProfileContract {
 
         fun renderPaginatorState(state: Paginator.State)
 
-        fun processResults(list: List<Any?>)
+        fun processCollections(list: List<Any?>)
 
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
@@ -52,10 +48,8 @@ interface ProfileContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getProfile(
-            token: String,
-            userId: Int
-        )
+
+        fun getProfile()
 
         fun getFilerList(isOwnProfile: Boolean)
 
@@ -71,24 +65,12 @@ interface ProfileContract {
 
         fun getCollections()
 
-        fun getFollowers(
-            token: String,
-            userId: Int
-        )
+        fun getFollowers()
 
-        fun followUser(
-            token: String,
-            userId: Int
-        )
+        fun followUser()
 
-        fun unfollowUser(
-            token: String,
-            userId: Int
-        )
+        fun unfollowUser()
 
-        fun getWardrobeCount(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun getWardrobeCount()
     }
 }

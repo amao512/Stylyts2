@@ -13,6 +13,7 @@ import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 21.12.2020.
@@ -21,17 +22,25 @@ interface ShopProfileContract {
 
     interface View: BaseView {
 
+        fun getToken(): String
+
+        fun getUserId(): Int
+
         fun processProfile(userModel: UserModel)
 
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
         fun processTypes(resultsModel: ResultsModel<ClothesTypeModel>)
 
-        fun processPostResults(resultsModel: ResultsModel<PostModel>)
+        fun renderPaginatorState(state: Paginator.State)
 
-        fun processOutfits(resultsModel: ResultsModel<OutfitModel>)
+        fun getCollectionMode(): Int
 
-        fun processClothes(resultsModel: ResultsModel<ClothesModel>)
+        fun getOutfitFilter(): OutfitFilterModel
+
+        fun getClothesFilter(): ClothesFilterModel
+
+        fun processCollections(list: List<Any?>)
 
         fun processSuccessFollowing(followSuccessModel: FollowSuccessModel)
 
@@ -40,41 +49,26 @@ interface ShopProfileContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun getProfile(
-            token: String,
-            id: Int
-        )
+        fun getProfile()
 
-        fun getFollowers(
-            token: String,
-            userId: Int
-        )
+        fun getFollowers()
 
-        fun getTypes(token: String)
+        fun getTypes()
 
-        fun getPosts(
-            token: String,
-            filterModel: PostFilterModel
-        )
+        fun loadPage(page: Int)
 
-        fun getOutfits(
-            token: String,
-            filterModel: OutfitFilterModel
-        )
+        fun loadPostsPage(page: Int)
 
-        fun getClothes(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun loadOutfitsPage(page: Int)
 
-        fun onFollow(
-            token: String,
-            userId: Int
-        )
+        fun loadClothesPage(page: Int)
 
-        fun onUnFollow(
-            token: String,
-            userId: Int
-        )
+        fun getCollections()
+
+        fun loadMorePage()
+
+        fun onFollow()
+
+        fun onUnFollow()
     }
 }
