@@ -12,15 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_user_search.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.common.SearchFilterModel
-import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.UserSearchAdapter
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.profile.UserSearchContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.UserSearchPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.displayToast
 import javax.inject.Inject
 
@@ -120,7 +119,7 @@ class UserSearchDialog(
     }
 
     override fun processPostInitialization() {
-        getUsers()
+        presenter.getUsers()
         handleRecyclerView()
     }
 
@@ -145,9 +144,7 @@ class UserSearchDialog(
     override fun onQueryTextSubmit(query: String): Boolean {
         filterModel.query = query
         usersAdapter.clearList()
-
-        resetPages()
-        getUsers()
+        presenter.getUsers()
 
         return false
     }
@@ -155,20 +152,28 @@ class UserSearchDialog(
     override fun onQueryTextChange(newText: String): Boolean {
         filterModel.query = newText
         usersAdapter.clearList()
-
-        resetPages()
-        getUsers()
+        presenter.getUsers()
 
         return false
     }
 
-    override fun processUserResults(resultsModel: ResultsModel<UserModel>) {
-        usersAdapter.updateMoreList(list = resultsModel.results)
+    override fun getToken(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 
-        if (resultsModel.totalPages != filterModel.page) {
-            filterModel.page++
-        } else {
-            filterModel.isLastPage = true
+    override fun getSearchFilter(): SearchFilterModel = filterModel
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processUserResults(state.data)
+            is Paginator.State.NewPageProgress<*> -> processUserResults(state.data)
+            else -> {}
+        }
+
+        hideProgress()
+    }
+
+    override fun processUserResults(list: List<Any?>) {
+        list.map { it!! }.let {
+            usersAdapter.updateList(list = it)
         }
     }
 
@@ -176,25 +181,9 @@ class UserSearchDialog(
         recycler_view_dialog_user_search_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recycler_view_dialog_user_search_list.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!filterModel.isLastPage) {
-                        getUsers()
-                    }
+                    presenter.loadMorePage()
                 }
             }
         })
     }
-
-    private fun getUsers() {
-        presenter.getUserByUsername(
-            token = getTokenFromArgs(),
-            searchFilterModel = filterModel
-        )
-    }
-
-    private fun resetPages() {
-        filterModel.page = 1
-        filterModel.isLastPage = false
-    }
-
-    private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 }

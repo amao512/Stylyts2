@@ -1,10 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.common.SearchFilterModel
-import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 22.02.2021.
@@ -13,13 +12,21 @@ interface UserSearchContract {
 
     interface View : BaseView {
 
-        fun processUserResults(resultsModel: ResultsModel<UserModel>)
+        fun getToken(): String
+
+        fun getSearchFilter(): SearchFilterModel
+
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processUserResults(list: List<Any?>)
     }
 
     interface Presenter : BasePresenter<View> {
-        fun getUserByUsername(
-            token: String,
-            searchFilterModel: SearchFilterModel
-        )
+
+        fun loadPage(page: Int)
+
+        fun loadMorePage()
+
+        fun getUsers()
     }
 }
