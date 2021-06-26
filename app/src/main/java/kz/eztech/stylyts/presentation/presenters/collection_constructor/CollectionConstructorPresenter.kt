@@ -124,11 +124,12 @@ class CollectionConstructorPresenter @Inject constructor(
         })
     }
 
-    override fun loadMorePage(page: Int) {
+    override fun loadMorePage() {
         paginator.proceed(Paginator.Action.LoadMore)
     }
 
     override fun getClothesAndStyles() {
+        view.displayProgress()
         paginator.proceed(Paginator.Action.Refresh)
     }
 }

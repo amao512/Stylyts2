@@ -38,7 +38,7 @@ interface CollectionConstructorContract {
 
         fun loadPage(page: Int)
 
-        fun loadMorePage(page: Int)
+        fun loadMorePage()
 
         fun loadClothes(page: Int)
 

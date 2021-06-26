@@ -269,10 +269,16 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         when (state) {
             is Paginator.State.Data<*> -> processList(state.data)
             is Paginator.State.NewPageProgress<*> -> processList(state.data)
+            is Paginator.State.Empty -> {
+                hideProgress()
+                text_view_fragment_collection_constructor_category_next.hide()
+                text_view_fragment_collection_constructor_category_filter.show()
+
+                text_view_fragment_collection_constructor_category_back.show()
+                text_view_fragment_collection_constructor_category_back.isClickable = true
+            }
             else -> {}
         }
-
-        hideProgress()
     }
 
     override fun processList(list: List<Any?>) {
@@ -282,6 +288,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                 is ClothesStyleModel -> processStyles(list as List<ClothesStyleModel>)
             }
         }
+
+        hideProgress()
     }
 
     override fun processClothes(clothes: List<ClothesModel>) {
@@ -487,12 +495,11 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             text_view_fragment_collection_constructor_category_back.show()
             text_view_fragment_collection_constructor_category_back.isClickable = true
 
-            isStyle = true
-            isItems = false
-
             fragment_collection_constructor_styles_recycler_view.adapter = stylesAdapter
             recycler_view_fragment_collection_constructor_list.hide()
 
+            isStyle = true
+            isItems = false
             presenter.getClothesAndStyles()
         }
     }
@@ -512,9 +519,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                         else -> GenderEnum.FEMALE.gender
                     }
 
-
-                    displayProgress()
                     recycler_view_fragment_collection_constructor_list.adapter = clothesAdapter
+
                     isItems = true
                     isStyle = false
                     presenter.getClothesAndStyles()
@@ -529,8 +535,8 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (isItems) {
-                        presenter.getClothesAndStyles()
+                    if (isItems || isStyle) {
+                        presenter.loadMorePage()
                     }
                 }
             }
@@ -568,9 +574,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         currentFilter = filterModel
         clothesAdapter.clearList()
 
-        Log.d("TAG4", "filter - $currentFilter")
-
-        displayProgress()
         presenter.getClothesAndStyles()
     }
 
