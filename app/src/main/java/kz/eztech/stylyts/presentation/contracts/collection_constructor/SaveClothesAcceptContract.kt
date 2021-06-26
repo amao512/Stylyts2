@@ -4,18 +4,29 @@ import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
+import kz.eztech.stylyts.presentation.utils.Paginator
 
 interface SaveClothesAcceptContract {
 
     interface View : BaseView {
 
-        fun processTypes(resultsModel: ResultsModel<ClothesTypeModel>)
+        fun getToken(): String
 
-        fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>)
+        fun getCurrentMode(): Int
 
-        fun processStyles(resultsModel: ResultsModel<ClothesStyleModel>)
+        fun getClothesCreateModel(): ClothesCreateModel
 
-        fun processBrands(resultsModel: ResultsModel<ClothesBrandModel>)
+        fun renderPaginatorState(state: Paginator.State)
+
+        fun processList(list: List<Any?>)
+
+        fun processTypes(list: List<Any>)
+
+        fun processCategories(list: List<Any>)
+
+        fun processStyles(list: List<Any>)
+
+        fun processBrands(list: List<Any>)
 
         fun processSuccessCreating(wardrobeModel: ClothesModel)
 
@@ -26,20 +37,20 @@ interface SaveClothesAcceptContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun getTypes(token: String)
+        fun loadPage(page: Int)
 
-        fun getCategories(
-            token: String,
-            typeId: Int
-        )
+        fun loadTypes(page: Int)
 
-        fun getStyles(token: String)
+        fun loadCategories(page: Int)
 
-        fun getBrands(token: String)
+        fun loadStyles(page: Int)
 
-        fun createClothes(
-            token: String,
-            clothesCreateModel: ClothesCreateModel
-        )
+        fun loadBrands(page: Int)
+
+        fun getList()
+
+        fun loadMorePage()
+
+        fun createClothes()
     }
 }

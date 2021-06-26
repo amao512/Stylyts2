@@ -20,12 +20,20 @@ class GetClothesTypesUseCase @Inject constructor(
 ) : BaseUseCase<ResultsModel<ClothesTypeModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
+    private lateinit var map: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesTypeModel>> {
-        return clothesDomainRepository.getClothesTypes(token)
+        return clothesDomainRepository.getClothesTypes(token, map)
     }
 
-    fun initParams(token: String) {
+    fun initParams(
+        token: String,
+        page: Int = 1
+    ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+        val map = HashMap<String, String>()
+        map["page"] = page.toString()
+
+        this.map = map
     }
 }

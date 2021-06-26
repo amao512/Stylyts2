@@ -9,12 +9,12 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.dialog_save_clothes_accept.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.*
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
@@ -26,6 +26,7 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.SaveClothesAcceptPresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
+import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImage
@@ -53,11 +54,11 @@ class SaveClothesAcceptDialog(
         private const val PHOTO_URI_KEY = "photoUri"
         private const val PHOTO_BITMAP_KEY = "photoBitmap"
 
-        private const val TYPE_LIST_MODE = 0
-        private const val CATEGORY_LIST_MODE = 1
-        private const val STYLE_LIST_MODE = 2
-        private const val BRAND_LIST_MODE = 3
-        private const val COST_MODE = 4
+        const val TYPE_LIST_MODE = 0
+        const val CATEGORY_LIST_MODE = 1
+        const val STYLE_LIST_MODE = 2
+        const val BRAND_LIST_MODE = 3
+        const val COST_MODE = 4
 
         fun getNewInstance(
             token: String,
@@ -184,7 +185,8 @@ class SaveClothesAcceptDialog(
         getPhotoUriFromArgs()?.loadImage(target = image_view_dialog_save_clothes_accept)
         getPhotoBitmapFromArgs()?.loadImage(target = image_view_dialog_save_clothes_accept)
 
-        presenter.getTypes(token = getTokenFromArgs())
+        presenter.getList()
+        handleRecyclerView()
     }
 
     override fun disposeRequests() {}
@@ -217,92 +219,109 @@ class SaveClothesAcceptDialog(
         dialog_save_clothes_recycler_view.show()
     }
 
-    override fun processTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
+    override fun getToken(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
+
+    override fun getCurrentMode(): Int = listMode
+
+    override fun getClothesCreateModel(): ClothesCreateModel = clothesCreateModel
+
+    override fun renderPaginatorState(state: Paginator.State) {
+        when (state) {
+            is Paginator.State.Data<*> -> processList(state.data)
+            is Paginator.State.NewPageProgress<*> -> processList(state.data)
+            else -> hideSmallProgress()
+        }
+    }
+
+    override fun processList(list: List<Any?>) {
+        list.map { it!! }.let {
+            when (it[0]) {
+                is ClothesTypeModel -> processTypes(it)
+                is ClothesCategoryModel -> processCategories(it)
+                is ClothesStyleModel -> processStyles(it)
+                is ClothesBrandModel -> processBrands(it)
+            }
+        }
+
+        hideSmallProgress()
+    }
+
+    override fun processTypes(list: List<Any>) {
         dialog_save_clothes_accept_list_title_text_view.text =
             getString(R.string.choose_clothes_type)
 
-        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+        val preparedList: MutableList<FilterCheckModel> = mutableListOf()
 
-        resultsModel.results.map {
-            preparedTypes.add(
-                FilterCheckModel(
-                    id = it.id,
-                    item = it
-                )
+        list.map {
+            it as ClothesTypeModel
+
+            preparedList.add(
+                FilterCheckModel(id = it.id, item = it)
             )
         }
 
-        adapter.updateList(list = preparedTypes)
-        listMode = TYPE_LIST_MODE
+        adapter.updateList(list = preparedList)
 
         setDoneButtonUnClickable()
         setListButtonsCondition()
     }
 
-    override fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>) {
+    override fun processCategories(list: List<Any>) {
         dialog_save_clothes_accept_list_title_text_view.text =
             getString(R.string.choose_clothes_category)
 
-        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+        val preparedList: MutableList<FilterCheckModel> = mutableListOf()
 
-        resultsModel.results.map {
-            preparedTypes.add(
-                FilterCheckModel(
-                    id = it.id,
-                    item = it
-                )
+        list.map {
+            it as ClothesCategoryModel
+
+            preparedList.add(
+                FilterCheckModel(id = it.id, item = it)
             )
         }
 
-        adapter.updateList(list = preparedTypes)
-        listMode = CATEGORY_LIST_MODE
+        adapter.updateList(list = preparedList)
 
         setDoneButtonUnClickable()
         setListButtonsCondition()
     }
 
-    override fun processStyles(resultsModel: ResultsModel<ClothesStyleModel>) {
+    override fun processStyles(list: List<Any>) {
         dialog_save_clothes_accept_list_title_text_view.text =
             getString(R.string.choose_clothes_style)
 
-        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+        val preparedList: MutableList<FilterCheckModel> = mutableListOf()
 
-        resultsModel.results.map {
-            preparedTypes.add(
-                FilterCheckModel(
-                    id = it.id,
-                    item = it
-                )
+        list.map {
+            it as ClothesStyleModel
+
+            preparedList.add(
+                FilterCheckModel(id = it.id, item = it)
             )
         }
 
-        adapter.updateList(list = preparedTypes)
-        listMode = STYLE_LIST_MODE
-
+        adapter.updateList(list = preparedList)
         setListButtonsCondition()
     }
 
-    override fun processBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
+    override fun processBrands(list: List<Any>) {
         dialog_save_clothes_accept_list_title_text_view.text =
             getString(R.string.choose_clothes_brand)
         dialog_save_clothes_accept_list_title_text_view.show()
         dialog_save_clothes_accept_price_holder_linear_layout.hide()
         dialog_save_clothes_recycler_view.show()
 
-        val preparedTypes: MutableList<FilterCheckModel> = mutableListOf()
+        val preparedList: MutableList<FilterCheckModel> = mutableListOf()
 
-        resultsModel.results.map {
-            preparedTypes.add(
-                FilterCheckModel(
-                    id = it.id,
-                    item = it
-                )
+        list.map {
+            it as ClothesBrandModel
+
+            preparedList.add(
+                FilterCheckModel(id = it.id, item = it)
             )
         }
 
-        adapter.updateList(list = preparedTypes)
-        listMode = BRAND_LIST_MODE
-
+        adapter.updateList(list = preparedList)
         setListButtonsCondition()
     }
 
@@ -315,19 +334,34 @@ class SaveClothesAcceptDialog(
         dismiss()
     }
 
+    private fun handleRecyclerView() {
+        dialog_save_clothes_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!dialog_save_clothes_recycler_view.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    presenter.loadMorePage()
+                }
+            }
+        })
+    }
+
     private fun onNextClicked() {
         when (listMode) {
-            TYPE_LIST_MODE -> presenter.getCategories(
-                token = getTokenFromArgs(),
-                typeId = clothesCreateModel.clothesType
-            )
-            CATEGORY_LIST_MODE -> presenter.getStyles(token = getTokenFromArgs())
-            STYLE_LIST_MODE -> if (!(activity as BaseActivity).getIsBrandFromSharedPref()) {
-                setListButtonsCondition()
-            } else {
-                presenter.getBrands(token = getTokenFromArgs())
+            TYPE_LIST_MODE -> {
+                listMode = CATEGORY_LIST_MODE
+                presenter.getList()
             }
-            BRAND_LIST_MODE -> setListButtonsCondition()
+            CATEGORY_LIST_MODE -> {
+                listMode = STYLE_LIST_MODE
+                presenter.getList()
+            }
+            STYLE_LIST_MODE -> {
+                listMode = BRAND_LIST_MODE
+                presenter.getList()
+            }
+            BRAND_LIST_MODE -> {
+                listMode = COST_MODE
+                presenter.getList()
+            }
             COST_MODE -> handleCostEditText()
         }
     }
@@ -336,23 +370,22 @@ class SaveClothesAcceptDialog(
         clothesCreateModel.owner = (activity as MainActivity).getUserIdFromSharedPref()
         clothesCreateModel.title = edit_text_view_dialog_save_clothes_accept_sign.text.toString()
 
-        presenter.createClothes(
-            token = getTokenFromArgs(),
-            clothesCreateModel = clothesCreateModel
-        )
+        presenter.createClothes()
     }
 
     private fun onBackClicked() {
-        when (listMode) {
-            STYLE_LIST_MODE -> presenter.getCategories(
-                token = getTokenFromArgs(),
-                typeId = clothesCreateModel.clothesType
-            )
-            CATEGORY_LIST_MODE -> presenter.getTypes(token = getTokenFromArgs())
-            TYPE_LIST_MODE -> setListButtonsCondition()
-            BRAND_LIST_MODE -> presenter.getStyles(token = getTokenFromArgs())
-            COST_MODE -> presenter.getBrands(token = getTokenFromArgs())
+        listMode = when (listMode) {
+            COST_MODE -> BRAND_LIST_MODE
+            BRAND_LIST_MODE -> STYLE_LIST_MODE
+            STYLE_LIST_MODE -> CATEGORY_LIST_MODE
+            CATEGORY_LIST_MODE -> {
+                setListButtonsCondition()
+                TYPE_LIST_MODE
+            }
+            else -> TYPE_LIST_MODE
         }
+
+        presenter.getList()
     }
 
     private fun setListButtonsCondition() {
@@ -497,8 +530,6 @@ class SaveClothesAcceptDialog(
             )
         }
     }
-
-    private fun getTokenFromArgs(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 
     private fun getPhotoBitmapFromArgs(): Bitmap? = arguments?.getParcelable(PHOTO_BITMAP_KEY)
 

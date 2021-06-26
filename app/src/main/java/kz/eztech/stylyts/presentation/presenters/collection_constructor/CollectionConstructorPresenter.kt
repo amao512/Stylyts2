@@ -108,7 +108,10 @@ class CollectionConstructorPresenter @Inject constructor(
     }
 
     override fun loadStyles(page: Int) {
-        getClothesStylesUseCase.initParams(token = view.getToken())
+        getClothesStylesUseCase.initParams(
+            token = view.getToken(),
+            page = page
+        )
         getClothesStylesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesStyleModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {

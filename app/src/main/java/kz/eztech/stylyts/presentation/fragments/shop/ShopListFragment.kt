@@ -187,17 +187,17 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     private fun getFilterList(): List<CollectionFilterModel> {
         val filterList: MutableList<CollectionFilterModel> = mutableListOf()
 
-        filterList.add(
-            CollectionFilterModel(
-                id = 1,
-                name = getString(R.string.filter_list_filter),
-                icon = R.drawable.ic_filter
-            )
-        )
+//        filterList.add(
+//            CollectionFilterModel(
+//                id = 1,
+//                name = getString(R.string.filter_list_filter),
+//                icon = R.drawable.ic_filter
+//            )
+//        )
 
         filterList.add(
             CollectionFilterModel(
-                id = 2,
+                id = 1,
                 name = getString(R.string.filter_favorite_brands),
                 icon = R.drawable.ic_baseline_favorite_border_24
             )
@@ -252,8 +252,8 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         position: Int
     ) {
         when (position) {
-            0 -> filterDialog.show(childFragmentManager, EMPTY_STRING)
-            1 -> filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
+//            0 -> filterDialog.show(childFragmentManager, EMPTY_STRING)
+            0 -> filterAdapter.onChooseItem(position, isDisabledFirstPosition = false)
         }
     }
 

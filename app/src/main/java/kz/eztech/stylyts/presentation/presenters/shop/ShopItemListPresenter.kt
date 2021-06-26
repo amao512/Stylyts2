@@ -6,7 +6,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesByTypeUseCase
+import kz.eztech.stylyts.domain.usecases.clothes.GetClothesCategoriesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
@@ -18,14 +18,14 @@ import javax.inject.Inject
 class ShopItemListPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getClothesUseCase: GetClothesUseCase,
-    private val getClothesCategoriesByTypeUseCase: GetClothesCategoriesByTypeUseCase
+    private val getClothesCategoriesUseCase: GetClothesCategoriesUseCase
 ) : ShopItemListContract.Presenter {
 
     private lateinit var view: ShopItemListContract.View
 
     override fun disposeRequests() {
         getClothesUseCase.clear()
-        getClothesCategoriesByTypeUseCase.clear()
+        getClothesCategoriesUseCase.clear()
     }
 
     override fun attach(view: ShopItemListContract.View) {
@@ -35,8 +35,8 @@ class ShopItemListPresenter @Inject constructor(
     override fun getCategoriesByType(token: String, clothesTypeId: Int) {
         view.displayProgress()
 
-        getClothesCategoriesByTypeUseCase.initParams(token, clothesTypeId)
-        getClothesCategoriesByTypeUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
+        getClothesCategoriesUseCase.initParams(token, clothesTypeId)
+        getClothesCategoriesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesCategoryModel>) {
                 view.processViewAction {
                     processCategories(resultsModel = t)

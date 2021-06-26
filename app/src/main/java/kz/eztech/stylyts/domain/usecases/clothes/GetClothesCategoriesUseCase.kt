@@ -13,27 +13,33 @@ import javax.inject.Named
 /**
  * Created by Asylzhan Seytbek on 08.04.2021.
  */
-class GetClothesCategoriesByTypeUseCase @Inject constructor(
+class GetClothesCategoriesUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val clothesDomainRepository: ClothesDomainRepository
 ) : BaseUseCase<ResultsModel<ClothesCategoryModel>>(executorThread, uiThread) {
 
     private lateinit var token: String
-    private var typeId: Int = 0
+    private lateinit var map: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesCategoryModel>> {
-        return clothesDomainRepository.getClothesCategoriesByType(
-            token = token,
-            typeId = typeId.toString()
-        )
+        return clothesDomainRepository.getClothesCategories(token, map)
     }
 
     fun initParams(
         token: String,
-        typeId: Int = 0
+        typeId: Int = 0,
+        page: Int = 1
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-        this.typeId = typeId
+
+        val map = HashMap<String, String>()
+        map["page"] = page.toString()
+
+        if (typeId != 0) {
+            map["clothes_type"] = typeId.toString()
+        }
+
+        this.map = map
     }
 }

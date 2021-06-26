@@ -14,41 +14,35 @@ class ClothesRepository @Inject constructor(
     private val api: ClothesApi
 ) : ClothesDomainRepository {
 
-    override fun getClothesTypes(token: String): Single<ResultsModel<ClothesTypeModel>> {
-        return api.getClothesTypes(token).map {
-            when (it.isSuccessful) {
-                true -> it.body().map()
-                false -> throw NetworkException(it)
-            }
-        }
-    }
-
-    override fun getClothesStyles(token: String): Single<ResultsModel<ClothesStyleModel>> {
-        return api.getClothesStyles(token).map {
-            when (it.isSuccessful) {
-                true -> it.body().map()
-                false -> throw NetworkException(it)
-            }
-        }
-    }
-
-    override fun getClothesCategories(token: String): Single<ResultsModel<ClothesCategoryModel>> {
-        return api.getClothesCategories(token).map {
-            when (it.isSuccessful) {
-                true -> it.body().map()
-                false -> throw NetworkException(it)
-            }
-        }
-    }
-
-    override fun getClothesCategoriesByType(
+    override fun getClothesTypes(
         token: String,
-        typeId: String
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesTypeModel>> {
+        return api.getClothesTypes(token, map).map {
+            when (it.isSuccessful) {
+                true -> it.body().map()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothesStyles(
+        token: String,
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesStyleModel>> {
+        return api.getClothesStyles(token, map).map {
+            when (it.isSuccessful) {
+                true -> it.body().map()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun getClothesCategories(
+        token: String,
+        map: Map<String, String>
     ): Single<ResultsModel<ClothesCategoryModel>> {
-        return api.getClothesCategoriesByType(
-            token = token,
-            clothesTypeId = typeId
-        ).map {
+        return api.getClothesCategories(token, map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -71,8 +65,11 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesBrands(token: String): Single<ResultsModel<ClothesBrandModel>> {
-        return api.getClothesBrands(token).map {
+    override fun getClothesBrands(
+        token: String,
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesBrandModel>> {
+        return api.getClothesBrands(token, map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -95,8 +92,11 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesColors(token: String): Single<ResultsModel<ClothesColorModel>> {
-        return api.getClothesColors(token).map {
+    override fun getClothesColors(
+        token: String,
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesColorModel>> {
+        return api.getClothesColors(token, map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)

@@ -6,15 +6,19 @@ import kz.eztech.stylyts.domain.models.clothes.*
 
 interface ClothesDomainRepository {
 
-    fun getClothesTypes(token: String): Single<ResultsModel<ClothesTypeModel>>
-
-    fun getClothesStyles(token: String): Single<ResultsModel<ClothesStyleModel>>
-
-    fun getClothesCategories(token: String): Single<ResultsModel<ClothesCategoryModel>>
-
-    fun getClothesCategoriesByType(
+    fun getClothesTypes(
         token: String,
-        typeId: String
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesTypeModel>>
+
+    fun getClothesStyles(
+        token: String,
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesStyleModel>>
+
+    fun getClothesCategories(
+        token: String,
+        map: Map<String, String>
     ): Single<ResultsModel<ClothesCategoryModel>>
 
     fun getClothesById(
@@ -22,14 +26,20 @@ interface ClothesDomainRepository {
         clothesId: String
     ): Single<ClothesModel>
 
-    fun getClothesBrands(token: String): Single<ResultsModel<ClothesBrandModel>>
+    fun getClothesBrands(
+        token: String,
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesBrandModel>>
 
     fun getClothesBrandById(
         token: String,
         brandId: String
     ): Single<ClothesBrandModel>
 
-    fun getClothesColors(token: String): Single<ResultsModel<ClothesColorModel>>
+    fun getClothesColors(
+        token: String,
+        map: Map<String, String>
+    ): Single<ResultsModel<ClothesColorModel>>
 
     fun getClothes(
         token: String,

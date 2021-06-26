@@ -22,7 +22,7 @@ import javax.inject.Inject
  */
 class ShopClothesListPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
-    private val paginator: Paginator.Store<ClothesModel>,
+    private val paginator: Paginator.Store<Any>,
     private val getClothesBrandsUseCase: GetClothesBrandsUseCase,
     private val getClothesUseCase: GetClothesUseCase
 ) : ShopClothesListContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {

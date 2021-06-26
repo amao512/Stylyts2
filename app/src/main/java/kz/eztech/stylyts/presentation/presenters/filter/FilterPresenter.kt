@@ -16,7 +16,7 @@ import javax.inject.Inject
 class FilterPresenter @Inject constructor(
     private val errorHelper: ErrorHelper,
     private val getClothesTypesUseCase: GetClothesTypesUseCase,
-    private val getClothesCategoriesByTypeUseCase: GetClothesCategoriesByTypeUseCase,
+    private val getClothesCategoriesUseCase: GetClothesCategoriesUseCase,
     private val getClothesBrandsUseCase: GetClothesBrandsUseCase,
     private val getClothesUseCase: GetClothesUseCase,
     private val getClothesColorsUseCase: GetClothesColorsUseCase
@@ -26,7 +26,7 @@ class FilterPresenter @Inject constructor(
 
     override fun disposeRequests() {
         getClothesTypesUseCase.clear()
-        getClothesCategoriesByTypeUseCase.clear()
+        getClothesCategoriesUseCase.clear()
         getClothesBrandsUseCase.clear()
         getClothesUseCase.clear()
         getClothesColorsUseCase.clear()
@@ -251,8 +251,8 @@ class FilterPresenter @Inject constructor(
         typeId: Int,
         onResults: (ResultsModel<ClothesCategoryModel>) -> Unit
     ) {
-        getClothesCategoriesByTypeUseCase.initParams(token, typeId)
-        getClothesCategoriesByTypeUseCase.execute(
+        getClothesCategoriesUseCase.initParams(token, typeId)
+        getClothesCategoriesUseCase.execute(
             object : DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
                 override fun onSuccess(t: ResultsModel<ClothesCategoryModel>) {
                     onResults(t)

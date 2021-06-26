@@ -117,10 +117,8 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         when (state) {
             is Paginator.State.Data<*> -> processOrders(state.data)
             is Paginator.State.NewPageProgress<*> -> processOrders(state.data)
-            else -> {}
+            else -> hideProgress()
         }
-
-        hideProgress()
     }
 
     override fun processOrders(list: List<Any?>) {
@@ -133,6 +131,8 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
                 userOrderAdapter.updateList(list = it)
             }
         }
+
+        hideProgress()
     }
 
     override fun onViewClicked(

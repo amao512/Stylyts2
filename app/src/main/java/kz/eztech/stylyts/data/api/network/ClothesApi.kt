@@ -14,23 +14,20 @@ interface ClothesApi {
 
     @GET(RestConstants.GET_CLOTHES_TYPES)
     fun getClothesTypes(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap map: Map<String, String>
     ): Single<Response<ResultsApiModel<ClothesTypeApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_STYLES)
     fun getClothesStyles(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap map: Map<String, String>
     ): Single<Response<ResultsApiModel<ClothesStyleApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_CATEGORIES)
     fun getClothesCategories(
-        @Header("Authorization") token: String
-    ): Single<Response<ResultsApiModel<ClothesCategoryApiModel>>>
-
-    @GET(RestConstants.GET_CLOTHES_CATEGORIES)
-    fun getClothesCategoriesByType(
         @Header("Authorization") token: String,
-        @Query("clothes_type") clothesTypeId: String
+        @QueryMap map: Map<String, String>
     ): Single<Response<ResultsApiModel<ClothesCategoryApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_BY_ID)
@@ -41,7 +38,8 @@ interface ClothesApi {
 
     @GET(RestConstants.GET_CLOTHES_BRANDS)
     fun getClothesBrands(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap map: Map<String, String>
     ): Single<Response<ResultsApiModel<ClothesBrandApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES_BRAND_BY_ID)
@@ -52,7 +50,8 @@ interface ClothesApi {
 
     @GET(RestConstants.GET_CLOTHES_COLORS)
     fun getClothesColors(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @QueryMap map: Map<String, String>
     ): Single<Response<ResultsApiModel<ClothesColorApiModel>>>
 
     @GET(RestConstants.GET_CLOTHES)
