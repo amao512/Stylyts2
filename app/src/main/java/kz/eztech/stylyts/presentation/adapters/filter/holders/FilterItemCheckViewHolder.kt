@@ -12,6 +12,7 @@ import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.ColorEnum
+import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import java.util.*
 
@@ -53,6 +54,7 @@ class FilterItemCheckViewHolder(
             item_filter_check_title_checked_text_view.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
+            item_filter_check_color_view.hide()
         }
     }
 
@@ -70,6 +72,7 @@ class FilterItemCheckViewHolder(
             item_filter_check_title_checked_text_view.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
+            item_filter_check_color_view.hide()
         }
     }
 
@@ -87,6 +90,7 @@ class FilterItemCheckViewHolder(
             item_filter_check_title_checked_text_view.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
+            item_filter_check_color_view.hide()
         }
     }
 
@@ -104,6 +108,7 @@ class FilterItemCheckViewHolder(
             item_filter_check_title_checked_text_view.setOnClickListener {
                 adapter.itemClickListener?.onViewClicked(it, position, filterCheckModel)
             }
+            item_filter_check_color_view.hide()
         }
     }
 

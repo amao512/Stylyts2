@@ -31,7 +31,7 @@ class GetClothesUseCase @Inject constructor(
 
     fun initParams(
         token: String,
-        page: Int,
+        page: Int = 1,
         filterModel: ClothesFilterModel
     ) {
         this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)

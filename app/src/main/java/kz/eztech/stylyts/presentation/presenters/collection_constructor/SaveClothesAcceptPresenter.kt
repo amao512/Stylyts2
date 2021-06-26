@@ -3,6 +3,7 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.data.exception.ErrorHelper
@@ -48,6 +49,7 @@ class SaveClothesAcceptPresenter @Inject constructor(
         getClothesStylesUseCase.clear()
         getClothesBrandsUseCase.clear()
         createClothesByImageUseCase.clear()
+        cancel()
     }
 
     override fun attach(view: SaveClothesAcceptContract.View) {

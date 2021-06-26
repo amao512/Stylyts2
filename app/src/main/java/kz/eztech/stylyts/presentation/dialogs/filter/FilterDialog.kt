@@ -391,7 +391,7 @@ class FilterDialog(
     private fun onBrandsClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_brands))
         recyclerView.adapter = filterCheckAdapter
-        searchView.show()
+//        searchView.show()
         rightCharacterListLinearLayout.show()
 
         presenter.getClothesBrands(
