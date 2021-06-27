@@ -48,6 +48,7 @@ import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewDoubleClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CollectionConstructorPresenter
+import kz.eztech.stylyts.presentation.presenters.common.PagerViewModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.RelativeImageMeasurements
@@ -59,6 +60,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import kz.eztech.stylyts.presentation.utils.stick.ImageEntity
 import kz.eztech.stylyts.presentation.utils.stick.Layer
 import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
+import org.koin.android.ext.android.inject
 import java.io.File
 import java.text.NumberFormat
 import javax.inject.Inject
@@ -77,11 +79,13 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
     private lateinit var filterDialog: FilterDialog
     private lateinit var currentFilter: ClothesFilterModel
 
+    private val pagerViewModel: PagerViewModel by inject()
     private val listOfItems = ArrayList<ClothesModel>()
     private val listOfEntities = ArrayList<ImageEntity>()
     private val listOfIdsChosen = ArrayList<Int>()
     private val listOfTypes = ArrayList<ClothesTypeModel>()
 
+    private var currentPosition: Int = 0
     private var isItems = false
     private var isStyle = false
     private var currentId: Int = -1
@@ -138,7 +142,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         ).apply {
             setFilter(filterModel = currentFilter)
         }
-        typesAdapter = CollectionConstructorShopCategoryAdapter(gender = getTypeFromArgs())
+        typesAdapter = CollectionConstructorShopCategoryAdapter(gender = currentPosition)
         clothesAdapter = CollectionConstructorShopItemAdapter()
         stylesAdapter = StyleAdapter()
 
@@ -175,6 +179,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         presenter.getTypes()
 
         handleRecyclerView()
+        observeGender()
     }
 
     override fun disposeRequests() = presenter.disposeRequests()
@@ -516,10 +521,7 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
                 } else {
                     clothesAdapter.clearList()
                     currentFilter.typeIdList = listOf(item)
-                    currentFilter.gender = when (getTypeFromArgs()) {
-                        0 -> GenderEnum.MALE.gender
-                        else -> GenderEnum.FEMALE.gender
-                    }
+                    currentFilter.gender = getGender()
 
                     recycler_view_fragment_collection_constructor_list.adapter = clothesAdapter
 
@@ -832,14 +834,18 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         canvasHeight = frame_layout_fragment_collection_constructor_images_container.height
     )
 
-    private fun getGender(): String = when (getTypeFromArgs()) {
+    private fun observeGender() {
+        pagerViewModel.positionLiveData.observe(viewLifecycleOwner, {
+            currentPosition = it
+        })
+    }
+
+    private fun getGender(): String = when (currentPosition) {
         0 -> GenderEnum.MALE.gender
         else -> GenderEnum.FEMALE.gender
     }
 
     private fun isUpdating(): Boolean = arguments?.getBoolean(IS_UPDATING_KEY) ?: false
-
-    private fun getTypeFromArgs(): Int = arguments?.getInt(CURRENT_TYPE_KEY) ?: 0
 
     private fun getMainIdFromArgs(): Int = arguments?.getInt(MAIN_ID_KEY) ?: -1
 }

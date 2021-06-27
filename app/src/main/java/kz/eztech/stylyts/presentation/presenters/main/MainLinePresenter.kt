@@ -76,6 +76,7 @@ class MainLinePresenter @Inject constructor(
 	}
 
 	override fun getPosts() {
+		view.displayProgress()
 		paginator.proceed(Paginator.Action.Refresh)
 	}
 

@@ -1,8 +1,10 @@
 package kz.eztech.stylyts.presentation.fragments.collection_constructor
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_constructor_holder.*
@@ -14,14 +16,17 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.Collection
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.ConstructorHolderContract
+import kz.eztech.stylyts.presentation.presenters.common.PagerViewModel
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import org.koin.android.ext.android.inject
 
 class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
     ConstructorHolderContract.View, View.OnClickListener {
 
     private lateinit var pagerAdapter: CollectionConstructorPagerAdapter
 
+    private val pagerViewModel: PagerViewModel by inject()
     private val inputClotheList = ArrayList<ClothesModel>()
 
     companion object {
@@ -96,6 +101,13 @@ class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),
                 1 -> tab.text = getString(R.string.for_her)
             }
         }.attach()
+
+        view_pager_fragment_collection_constructor_holder.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                pagerViewModel.setPosition(position)
+            }
+        })
     }
 
     override fun processPostInitialization() {}

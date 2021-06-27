@@ -33,13 +33,15 @@ import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,
     UniversalViewClickListener, DialogChooserListener, SwipeRefreshLayout.OnRefreshListener {
 
-    @Inject lateinit var presenter: MainLinePresenter
+    @Inject
+    lateinit var presenter: MainLinePresenter
     private lateinit var postsAdapter: MainLineAdapter
     private lateinit var recyclerView: RecyclerView
 
@@ -145,16 +147,22 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         when (state) {
             is Paginator.State.Data<*> -> processPostResults(state.data)
             is Paginator.State.NewPageProgress<*> -> processPostResults(state.data)
-            else -> {}
+            else -> {
+                recycler_view_fragment_main_images_list.hide()
+                fragment_main_empty_posts_text_view.show()
+                hideProgress()
+            }
         }
-
-        hideProgress()
     }
 
     override fun processPostResults(list: List<Any?>) {
         list.map { it!! }.let {
             postsAdapter.updateList(it)
         }
+
+        fragment_main_empty_posts_text_view.hide()
+        recycler_view_fragment_main_images_list.show()
+        hideProgress()
     }
 
     override fun processSuccessDeleting() {
