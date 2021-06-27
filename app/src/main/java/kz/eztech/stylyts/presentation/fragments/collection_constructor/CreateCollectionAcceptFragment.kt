@@ -17,7 +17,6 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -238,7 +237,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     override fun processSuccessUpdatingPost(postModel: PostCreateModel) {
         val bundle = Bundle()
-        Log.d("TAG4", "id - ${postModel.id}")
+
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
         bundle.putInt(CollectionDetailFragment.ID_KEY, postModel.id)
 

@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.contracts.profile
 
-import kz.eztech.stylyts.domain.models.common.PageFilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 
@@ -17,7 +16,7 @@ interface ProfileIncomeContract {
 
         fun getIncomes(
             token: String,
-            pageFilterModel: PageFilterModel
+            page: Int
         )
     }
 }
