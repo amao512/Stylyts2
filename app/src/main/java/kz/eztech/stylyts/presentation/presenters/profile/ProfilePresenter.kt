@@ -4,6 +4,7 @@ import android.app.Application
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.R
@@ -70,6 +71,7 @@ class ProfilePresenter @Inject constructor(
 		unfollowUserUseCase.clear()
 		getOutfitsUseCase.clear()
 		getPostsUseCase.clear()
+		cancel()
     }
 
     override fun attach(view: ProfileContract.View) {

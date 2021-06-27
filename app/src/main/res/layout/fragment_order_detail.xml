@@ -112,6 +112,15 @@
                     />
 
                 <include
+                    android:id="@+id/fragment_order_detail_applied_status_holder"
+                    layout="@layout/item_order_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_size_2x"
+                    android:visibility="gone"
+                    />
+
+                <include
                     android:id="@+id/fragment_order_detail_delivered_status_holder"
                     layout="@layout/item_order_status"
                     android:layout_width="match_parent"

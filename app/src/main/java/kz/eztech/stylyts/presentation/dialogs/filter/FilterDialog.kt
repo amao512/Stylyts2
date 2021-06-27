@@ -107,7 +107,7 @@ class FilterDialog(
 
     override fun customizeActionBar() {
         with (dialog_filter_toolbar) {
-            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_close_24)
+            toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
 
             toolbar_title_text_view.text = getString(R.string.filter_list_filter)
@@ -289,7 +289,6 @@ class FilterDialog(
         with (dialog_filter_toolbar) {
             if (isOpenedFilter) {
                 toolbar_title_text_view.text = getString(R.string.filter_list_filter)
-                toolbar_left_corner_action_image_button.setBackgroundResource(R.drawable.ic_baseline_close_24)
 
                 filterTitleTextView.show()
                 listHolderLinearLayout.show()
@@ -445,11 +444,9 @@ class FilterDialog(
     }
 
     private fun processOpenedFilterGroup(title: String) {
-        filterTitleTextView.hide()
         toolbar_title_text_view.text = title
-        toolbar_left_corner_action_image_button.setBackgroundResource(
-            R.drawable.ic_baseline_keyboard_arrow_left_24
-        )
+
+        filterTitleTextView.hide()
         isOpenedFilter = true
     }
 

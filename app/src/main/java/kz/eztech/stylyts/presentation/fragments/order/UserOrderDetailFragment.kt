@@ -52,6 +52,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
     private lateinit var deliveredStatusHolder: ConstraintLayout
     private lateinit var cancelledStatusHolder: ConstraintLayout
     private lateinit var returnedStatusHolder: ConstraintLayout
+    private lateinit var appliedStatusHolder: ConstraintLayout
 
     companion object {
         const val ORDER_ID_KEY = "orderId"
@@ -101,6 +102,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
         deliveredStatusHolder = fragment_order_detail_delivered_status_holder as ConstraintLayout
         cancelledStatusHolder = fragment_order_detail_cancelled_status_holder as ConstraintLayout
         returnedStatusHolder = fragment_order_detail_returned_status_holder as ConstraintLayout
+        appliedStatusHolder = fragment_order_detail_applied_status_holder as ConstraintLayout
     }
 
     override fun initializeListeners() {}
@@ -191,6 +193,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
         val isPaymentPending = orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status
 
         val isOperationUrlNotBlank = orderModel.invoice.operationUrl.isNotBlank()
+        val isOperationUrlBlank = orderModel.invoice.operationUrl.isBlank()
 
         if (isPaymentPaid) {
             paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
@@ -205,6 +208,12 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
             returnedStatusHolder.hide()
             cancelledStatusHolder.hide()
             notPaidStatusHolder.show()
+        } else if (isPaymentPending && isOperationUrlBlank) {
+            appliedStatusHolder.apply {
+                item_order_status_title_text_view.text = getString(R.string.status_applied)
+                item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                show()
+            }
         }
     }
 
