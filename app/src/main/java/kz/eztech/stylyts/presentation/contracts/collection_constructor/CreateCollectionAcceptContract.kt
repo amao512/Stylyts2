@@ -16,7 +16,7 @@ interface CreateCollectionAcceptContract {
 
         fun processSuccessSavingPost(postModel: PostCreateModel)
 
-        fun processSuccessUpdatingPost(postModel: PostModel)
+        fun processSuccessUpdatingPost(postModel: PostCreateModel)
 
         fun processSuccessSavingToCart()
     }

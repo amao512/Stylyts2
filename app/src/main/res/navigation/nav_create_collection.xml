@@ -15,7 +15,8 @@
         >
         <action
             android:id="@+id/action_createCollectionFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            />
         <action
             android:id="@+id/action_createCollectionFragment_to_createCollectionAcceptFragment"
             app:destination="@id/createCollectionAcceptFragment"
@@ -26,20 +27,24 @@
         android:id="@+id/cameraFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.camera.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" >
+        tools:layout="@layout/fragment_camera"
+        >
         <action
             android:id="@+id/action_cameraFragment_to_photoChooserFragment"
-            app:destination="@id/photoChooserFragment" />
+            app:destination="@id/photoChooserFragment"
+            />
         <action
             android:id="@+id/action_cameraFragment_to_cleanBackgroundFragment"
-            app:destination="@id/cleanBackgroundFragment" />
+            app:destination="@id/cleanBackgroundFragment"
+            />
     </fragment>
 
     <fragment
         android:id="@+id/photoChooserFragment"
         android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog"
         android:label="fragment_photo_chooser"
-        tools:layout="@layout/dialog_tag_chooser" />
+        tools:layout="@layout/dialog_tag_chooser"
+        />
 
     <fragment
         android:id="@+id/createCollectionAcceptFragment"
@@ -54,6 +59,8 @@
         <action
             android:id="@+id/action_createCollectionAcceptFragment_to_collectionDetailFragment"
             app:destination="@id/collectionDetailFragment"
+            app:popUpTo="@id/createCollectionFragment"
+            app:popUpToInclusive="true"
             />
     </fragment>
 
@@ -61,7 +68,8 @@
         android:id="@+id/cleanBackgroundFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment"
         android:label="fragment_clean_background"
-        tools:layout="@layout/fragment_clean_background" >
+        tools:layout="@layout/fragment_clean_background"
+        >
         <action
             android:id="@+id/action_cleanBackgroundFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"

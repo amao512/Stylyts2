@@ -41,7 +41,7 @@ interface PostsDomainRepository {
         postId: String,
         tags: TagsApiModel,
         multipartList: List<MultipartBody.Part>
-    ): Single<PostModel>
+    ): Single<PostCreateModel>
 
     fun likePost(
         token: String,

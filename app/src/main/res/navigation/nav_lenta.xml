@@ -112,7 +112,8 @@
         android:id="@+id/userCommentsFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment"
         android:label="fragment_user_comments"
-        tools:layout="@layout/fragment_comments" >
+        tools:layout="@layout/fragment_comments"
+        >
         <action
             android:id="@+id/action_userCommentsFragment_to_nav_profile"
             app:destination="@id/nav_profile"
@@ -133,6 +134,8 @@
         <action
             android:id="@+id/action_createCollectionAcceptFragment_to_collectionDetailFragment"
             app:destination="@id/collectionDetailFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true"
             />
     </fragment>
     <include app:graph="@navigation/nav_shop_profile" />

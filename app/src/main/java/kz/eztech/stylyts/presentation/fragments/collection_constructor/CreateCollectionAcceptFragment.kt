@@ -236,9 +236,9 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
         findNavController().navigate(R.id.nav_profile)
     }
 
-    override fun processSuccessUpdatingPost(postModel: PostModel) {
+    override fun processSuccessUpdatingPost(postModel: PostCreateModel) {
         val bundle = Bundle()
-
+        Log.d("TAG4", "id - ${postModel.id}")
         bundle.putInt(CollectionDetailFragment.MODE_KEY, CollectionDetailFragment.POST_MODE)
         bundle.putInt(CollectionDetailFragment.ID_KEY, postModel.id)
 

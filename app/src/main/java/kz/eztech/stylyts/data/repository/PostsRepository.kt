@@ -4,13 +4,13 @@ import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.data.api.network.PostsApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.posts.map
 import kz.eztech.stylyts.domain.models.common.ActionModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.posts.map
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
@@ -88,7 +88,7 @@ class PostsRepository @Inject constructor(
         postId: String,
         tags: TagsApiModel,
         multipartList: List<MultipartBody.Part>
-    ): Single<PostModel> {
+    ): Single<PostCreateModel> {
         return api.updatePost(
             token = token,
             postId = postId,

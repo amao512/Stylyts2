@@ -75,8 +75,8 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         view.displayProgress()
 
         updatePostUseCase.initParams(token, postId, postCreateModel)
-        updatePostUseCase.execute(object : DisposableSingleObserver<PostModel>() {
-            override fun onSuccess(t: PostModel) {
+        updatePostUseCase.execute(object : DisposableSingleObserver<PostCreateModel>() {
+            override fun onSuccess(t: PostCreateModel) {
                 view.processViewAction {
                     hideProgress()
                     processSuccessUpdatingPost(postModel = t)

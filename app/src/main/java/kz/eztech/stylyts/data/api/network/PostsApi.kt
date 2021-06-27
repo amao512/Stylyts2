@@ -52,7 +52,7 @@ interface PostsApi {
         @Path("post_id") postId: String,
         @Part("tags") tagsBody: TagsApiModel,
         @Part multipartList: List<MultipartBody.Part>,
-    ) : Single<Response<PostApiModel>>
+    ) : Single<Response<PostCreateApiModel>>
 
     @POST(RestConstants.LIKE_POST)
     fun likePost(

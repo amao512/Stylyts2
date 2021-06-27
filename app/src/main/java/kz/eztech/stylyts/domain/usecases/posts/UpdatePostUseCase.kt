@@ -17,14 +17,14 @@ class UpdatePostUseCase @Inject constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val postsDomainRepository: PostsDomainRepository
-) : BaseUseCase<PostModel>(executorThread, uiThread) {
+) : BaseUseCase<PostCreateModel>(executorThread, uiThread) {
 
     private lateinit var token: String
     private lateinit var postId: String
     private lateinit var tags: TagsApiModel
     private lateinit var multipartList: List<MultipartBody.Part>
 
-    override fun createSingleObservable(): Single<PostModel> {
+    override fun createSingleObservable(): Single<PostCreateModel> {
         return postsDomainRepository.updatePost(
             token = token,
             postId = postId,
