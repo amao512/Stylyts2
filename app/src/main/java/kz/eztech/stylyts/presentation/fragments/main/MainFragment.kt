@@ -183,7 +183,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun navigateToUserProfile(userModel: UserModel) {
         val bundle = Bundle()
 
-        if (userModel.isBrand) {
+        if (userModel.isBrand && userModel.id != currentActivity.getUserIdFromSharedPref()) {
             bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, userModel.id)
 
             findNavController().navigate(R.id.action_mainFragment_to_nav_shop_profile, bundle)
@@ -215,7 +215,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
         val bundle = Bundle()
 
-        if (item.author.isBrand) {
+        if (item.author.isBrand && item.author.id != currentActivity.getUserIdFromSharedPref()) {
             bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, item.author.id)
 
             findNavController().navigate(R.id.action_mainFragment_to_nav_shop_profile, bundle)
