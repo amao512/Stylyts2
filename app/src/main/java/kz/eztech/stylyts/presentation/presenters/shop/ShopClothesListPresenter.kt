@@ -6,13 +6,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesBrandsUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesUseCase
-import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopClothesListContract
 import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
@@ -21,8 +19,8 @@ import javax.inject.Inject
  * Created by Ruslan Erdenoff on 18.12.2020.
  */
 class ShopClothesListPresenter @Inject constructor(
-    private val errorHelper: ErrorHelper,
-    private val paginator: Paginator.Store<Any>,
+    private val paginator: Paginator.Store<ClothesModel>,
+    private val brandsPaginator: Paginator.Store<ClothesBrandModel>,
     private val getClothesBrandsUseCase: GetClothesBrandsUseCase,
     private val getClothesUseCase: GetClothesUseCase
 ) : ShopClothesListContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
@@ -35,6 +33,16 @@ class ShopClothesListPresenter @Inject constructor(
             paginator.sideEffects.consumeEach { effect ->
                 when (effect) {
                     is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
+                    is Paginator.SideEffect.ErrorEvent -> {}
+                }
+            }
+        }
+
+        launch {
+            brandsPaginator.render = { view.renderPaginatorState(it) }
+            brandsPaginator.sideEffects.consumeEach { effect ->
+                when (effect) {
+                    is Paginator.SideEffect.LoadPage -> loadBrandsPage(effect.currentPage)
                     is Paginator.SideEffect.ErrorEvent -> {}
                 }
             }
@@ -79,20 +87,30 @@ class ShopClothesListPresenter @Inject constructor(
         paginator.proceed(Paginator.Action.LoadMore)
     }
 
-    override fun getClothesBrands() {
-        getClothesBrandsUseCase.initParams(token = view.getToken())
+    override fun loadBrandsPage(page: Int) {
+        getClothesBrandsUseCase.initParams(
+            token = view.getToken(),
+            page = page
+        )
         getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
-                view.processViewAction {
-                    processClothesBrands(resultsModel = t)
-                }
+                brandsPaginator.proceed(Paginator.Action.NewPage(
+                    pageNumber = t.page,
+                    items = t.results
+                ))
             }
 
             override fun onError(e: Throwable) {
-                view.processViewAction {
-                    displayMessage(msg = errorHelper.processError(e))
-                }
+                brandsPaginator.proceed(Paginator.Action.PageError(error = e))
             }
         })
+    }
+
+    override fun getClothesBrands() {
+        brandsPaginator.proceed(Paginator.Action.Refresh)
+    }
+
+    override fun loadMoreBrands() {
+        brandsPaginator.proceed(Paginator.Action.LoadMore)
     }
 }

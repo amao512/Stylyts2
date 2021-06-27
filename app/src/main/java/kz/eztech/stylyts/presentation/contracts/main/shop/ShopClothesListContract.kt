@@ -20,19 +20,25 @@ interface ShopClothesListContract {
 
         fun renderPaginatorState(state: Paginator.State)
 
-        fun processClothes(list: List<Any?>)
+        fun processList(list: List<Any?>)
 
-        fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>)
+        fun processClothes(list: List<Any>)
+
+        fun processClothesBrands(list: List<Any>)
     }
 
     interface Presenter: BasePresenter<View> {
 
         fun loadPage(page: Int)
 
+        fun loadBrandsPage(page: Int)
+
         fun getClothes()
 
         fun loadMorePage()
 
         fun getClothesBrands()
+
+        fun loadMoreBrands()
     }
 }

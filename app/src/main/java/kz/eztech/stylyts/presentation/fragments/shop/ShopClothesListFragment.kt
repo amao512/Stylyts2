@@ -12,7 +12,6 @@ import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.clothes.ClothesDetailAdapter
@@ -33,7 +32,8 @@ import javax.inject.Inject
 class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListContract.View,
     UniversalViewClickListener, View.OnClickListener {
 
-    @Inject lateinit var presenter: ShopClothesListPresenter
+    @Inject
+    lateinit var presenter: ShopClothesListPresenter
     private lateinit var clothesAdapter: ClothesDetailAdapter
     private lateinit var brandsFilterAdapter: CollectionsFilterAdapter
     private lateinit var filterDialog: FilterDialog
@@ -97,7 +97,10 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         when (view.id) {
             R.id.item_clothes_detail_linear_layout -> onClothesItemClick(item)
-            R.id.frame_layout_item_collection_filter -> onBrandFilterClick(position, item as CollectionFilterModel)
+            R.id.frame_layout_item_collection_filter -> onBrandFilterClick(
+                position,
+                item as CollectionFilterModel
+            )
         }
 
         when (item) {
@@ -160,32 +163,39 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
 
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
-            is Paginator.State.Data<*> -> processClothes(state.data)
-            is Paginator.State.NewPageProgress<*> -> processClothes(state.data)
+            is Paginator.State.Data<*> -> processList(state.data)
+            is Paginator.State.NewPageProgress<*> -> processList(state.data)
             else -> {}
         }
 
         hideProgress()
     }
 
-    override fun processClothes(list: List<Any?>) {
+    override fun processList(list: List<Any?>) {
         list.map { it!! }.let {
-            with (include_toolbar_profile) {
-                base_toolbar_small_title_sub_text_view.text = getString(
-                    if (list.size == 1) {
-                        R.string.toolbar_position_text_format
-                    } else {
-                        R.string.toolbar_positions_text_format
-                    },
-                    list.size.toString()
-                )
+            when (it[0]) {
+                is ClothesModel -> processClothes(it)
+                is ClothesBrandModel -> processClothesBrands(it)
             }
-
-            clothesAdapter.updateList(list = it)
         }
     }
 
-    override fun processClothesBrands(resultsModel: ResultsModel<ClothesBrandModel>) {
+    override fun processClothes(list: List<Any>) {
+        with(include_toolbar_profile) {
+            base_toolbar_small_title_sub_text_view.text = getString(
+                if (list.size == 1) {
+                    R.string.toolbar_position_text_format
+                } else {
+                    R.string.toolbar_positions_text_format
+                },
+                list.size.toString()
+            )
+        }
+
+        clothesAdapter.updateList(list = list)
+    }
+
+    override fun processClothesBrands(list: List<Any>) {
         val filterList = mutableListOf<CollectionFilterModel>()
 
         filterList.add(
@@ -196,7 +206,9 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
             )
         )
 
-        resultsModel.results.map {
+        list.map {
+            it as ClothesBrandModel
+
             filterList.add(
                 CollectionFilterModel(
                     id = it.id,
@@ -222,7 +234,17 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
     }
 
     private fun handleRecyclerView() {
-        recycler_view_fragment_category_type_detail.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        fragment_category_type_detail_brands_recycler_view.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if (!fragment_category_type_detail_brands_recycler_view.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    presenter.loadMoreBrands()
+                }
+            }
+        })
+
+        recycler_view_fragment_category_type_detail.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recycler_view_fragment_category_type_detail.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     presenter.loadMorePage()
