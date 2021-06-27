@@ -270,12 +270,14 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             is Paginator.State.Data<*> -> processList(state.data)
             is Paginator.State.NewPageProgress<*> -> processList(state.data)
             is Paginator.State.Empty -> {
-                hideProgress()
-                text_view_fragment_collection_constructor_category_next.hide()
-                text_view_fragment_collection_constructor_category_filter.show()
+                if (isItems || isStyle) {
+                    hideProgress()
+                    text_view_fragment_collection_constructor_category_next.hide()
+                    text_view_fragment_collection_constructor_category_filter.show()
 
-                text_view_fragment_collection_constructor_category_back.show()
-                text_view_fragment_collection_constructor_category_back.isClickable = true
+                    text_view_fragment_collection_constructor_category_back.show()
+                    text_view_fragment_collection_constructor_category_back.isClickable = true
+                }
             }
             else -> {}
         }
