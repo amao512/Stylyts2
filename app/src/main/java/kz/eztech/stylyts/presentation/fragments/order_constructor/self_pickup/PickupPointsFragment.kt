@@ -128,6 +128,7 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
 
     override fun processPostInitialization() {
         if (orderList.size == 1) {
+            currentShopId = orderList[0].ownerId
             presenter.getPickupPoints()
         } else {
             orderList.map {

@@ -17,7 +17,9 @@ object CartMapper {
     fun mapToEntity(model: ClothesModel): CartEntity {
         var coverImage: String = EMPTY_STRING
 
-        if (model.coverImages.isNotEmpty()) {
+        if (model.constructorImage.isNotEmpty()) {
+            coverImage = model.constructorImage
+        } else if (model.coverImages.isNotEmpty()) {
             coverImage = model.coverImages[0]
         }
 
