@@ -567,7 +567,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private fun navigateToProfile(author: UserShortModel) {
         val bundle = Bundle()
 
-        if (author.isBrand) {
+        if (author.isBrand && author.id != currentActivity.getUserIdFromSharedPref()) {
             bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, author.id)
 
             findNavController().navigate(R.id.nav_shop_profile, bundle)

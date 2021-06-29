@@ -106,7 +106,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.show()
             toolbar_right_corner_action_image_button.setOnClickListener {
-                findNavController().navigate(R.id.nav_ordering)
+                findNavController().navigate(R.id.action_shopProfileFragment_to_nav_ordering)
             }
 
             customizeActionToolBar(toolbar = this)

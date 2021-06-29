@@ -56,7 +56,7 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
 
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_shop)
             toolbar_right_corner_action_image_button.setOnClickListener {
-                findNavController().navigate(R.id.nav_ordering)
+                findNavController().navigate(R.id.action_clothesDetailFragment_to_nav_ordering)
             }
 
             background = ContextCompat.getDrawable(context, R.color.toolbar_bg_gray)
