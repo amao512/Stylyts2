@@ -25,9 +25,11 @@ import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View, UniversalViewClickListener {
+class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
+    UniversalViewClickListener {
 
-    @Inject lateinit var presenter: OrderListPresenter
+    @Inject
+    lateinit var presenter: OrderListPresenter
     private lateinit var userOrderAdapter: UserOrderAdapter
     private lateinit var shopOrderAdapter: ShopOrderAdapter
 
@@ -165,7 +167,10 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View, 
         val bundle = Bundle()
         bundle.putInt(ShopOrderDetailFragment.ORDER_ID_KEY, orderModel.id)
 
-        findNavController().navigate(R.id.action_orderListFragment_to_shopOrderDetailFragment, bundle)
+        findNavController().navigate(
+            R.id.action_orderListFragment_to_shopOrderDetailFragment,
+            bundle
+        )
     }
 
     private fun handleRefreshLayout() {
@@ -174,6 +179,8 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View, 
                 super.onRefresh(refreshLayout)
 
                 refreshLayout?.startRefresh()
+                shopOrderAdapter.clearList()
+                userOrderAdapter.clearList()
                 presenter.getOrders()
             }
 
