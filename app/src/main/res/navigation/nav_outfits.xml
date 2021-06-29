@@ -61,6 +61,14 @@
             android:id="@+id/action_clothesDetailFragment_to_nav_profile"
             app:destination="@id/nav_profile"
             />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_ordering"
+            app:destination="@id/nav_ordering"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
 
     <include app:graph="@navigation/nav_create_collection" />
@@ -78,6 +86,7 @@
     </fragment>
 
     <include app:graph="@navigation/nav_profile" />
+
     <fragment
         android:id="@+id/createCollectionAcceptFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"

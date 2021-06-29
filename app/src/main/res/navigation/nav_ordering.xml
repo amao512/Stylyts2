@@ -178,7 +178,20 @@
         android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
         android:label="fragment_clothes_detail"
         tools:layout="@layout/fragment_clothes_detail"
-        />
+        >
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_ordering"
+            app:destination="@id/cartFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
+            app:destination="@id/nav_create_collection"
+            />
+    </fragment>
 
     <include app:graph="@navigation/nav_shop_profile" />
 </navigation>

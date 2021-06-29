@@ -61,12 +61,20 @@
             app:destination="@id/nav_create_collection"
             />
         <action
-            android:id="@+id/action_clothesDetailFragment_to_nav_profile2"
+            android:id="@+id/action_clothesDetailFragment_to_nav_profile"
             app:destination="@id/nav_profile"
             />
         <action
             android:id="@+id/action_clothesDetailFragment_to_nav_shop_profile"
             app:destination="@id/nav_shop_profile"
+            />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_ordering"
+            app:destination="@id/nav_ordering"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
     </fragment>
 
@@ -138,12 +146,13 @@
             app:popUpToInclusive="true"
             />
     </fragment>
+
     <include app:graph="@navigation/nav_shop_profile" />
+
     <fragment
         android:id="@+id/mapsFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.map.MapsFragment"
         android:label="fragment_maps"
         tools:layout="@layout/fragment_maps"
         />
-
 </navigation>

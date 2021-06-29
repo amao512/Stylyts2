@@ -106,7 +106,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fragment_clothes_detail_description_holder_linear_layout -> showClothesDescription()
-            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.nav_ordering)
+            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.action_clothesDetailFragment_to_nav_ordering)
         }
     }
 

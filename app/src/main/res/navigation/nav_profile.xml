@@ -19,6 +19,10 @@
         <action
             android:id="@+id/action_profileFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
         <action
             android:id="@+id/action_profileFragment_to_cameraFragment"
@@ -99,9 +103,15 @@
             android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
             app:destination="@id/nav_create_collection"
             />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_ordering"
+            app:destination="@id/nav_ordering"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
-
-    <include app:graph="@navigation/nav_create_collection" />
 
     <fragment
         android:id="@+id/addressProfileFragment"
@@ -247,6 +257,10 @@
         <action
             android:id="@+id/action_myDataFragment_to_settingsFragment"
             app:destination="@id/settingsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
         <action
             android:id="@+id/action_myDataFragment_to_cardFragment"

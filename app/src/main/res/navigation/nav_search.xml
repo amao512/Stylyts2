@@ -15,6 +15,10 @@
         <action
             android:id="@+id/action_shopFragment_to_shopItemListFragment"
             app:destination="@id/shopItemListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
         <action
             android:id="@+id/action_shopFragment_to_searchFragment"
@@ -23,6 +27,18 @@
         <action
             android:id="@+id/action_shopFragment_to_shopListFragment"
             app:destination="@id/shopListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
+        <action
+            android:id="@+id/action_shopFragment_to_nav_ordering"
+            app:destination="@id/nav_ordering"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
     </fragment>
 
@@ -34,19 +50,31 @@
         >
         <action
             android:id="@+id/action_shopItemListFragment_to_categoryTypeDetailFragment"
-            app:destination="@id/categoryTypeDetailFragment"
+            app:destination="@id/shopClothesListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
     </fragment>
 
     <fragment
-        android:id="@+id/categoryTypeDetailFragment"
+        android:id="@+id/shopClothesListFragment"
         android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopClothesListFragment"
         android:label="fragment_category_type_detail"
         tools:layout="@layout/fragment_category_type_detail"
         >
         <action
-            android:id="@+id/action_categoryTypeDetailFragment_to_clothesDetailFragment"
+            android:id="@+id/action_shopClothesListFragment_to_clothesDetailFragment"
             app:destination="@id/clothesDetailFragment"
+            />
+        <action
+            android:id="@+id/action_shopClothesListFragment_to_nav_ordering"
+            app:destination="@id/nav_ordering"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
     </fragment>
 
@@ -59,6 +87,14 @@
         <action
             android:id="@+id/action_clothesDetailFragment_to_nav_create_collection"
             app:destination="@id/nav_create_collection"
+            />
+        <action
+            android:id="@+id/action_clothesDetailFragment_to_nav_ordering"
+            app:destination="@id/nav_ordering"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             />
     </fragment>
 

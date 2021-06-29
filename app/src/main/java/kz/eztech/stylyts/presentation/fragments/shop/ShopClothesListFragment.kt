@@ -224,7 +224,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.nav_ordering)
+            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.action_shopClothesListFragment_to_nav_ordering)
         }
     }
 
@@ -260,7 +260,7 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
 
         findNavController().navigate(
-            R.id.action_categoryTypeDetailFragment_to_clothesDetailFragment,
+            R.id.action_shopClothesListFragment_to_clothesDetailFragment,
             bundle
         )
     }
