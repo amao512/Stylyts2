@@ -5,8 +5,11 @@ import android.view.View
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.imageview.ShapeableImageView
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+import com.lcodecore.tkrefreshlayout.footer.LoadingView
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_shop_profile.*
 import kz.eztech.stylyts.R
@@ -48,7 +51,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.View,
-    UniversalViewClickListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+    UniversalViewClickListener, View.OnClickListener {
 
     @Inject lateinit var presenter: ShopProfilePresenter
 
@@ -72,6 +75,7 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     private lateinit var selectGenderTextView: TextView
     private lateinit var filterListRecyclerView: RecyclerView
     private lateinit var collectionsRecyclerView: RecyclerView
+    private lateinit var refreshLayout: TwinklingRefreshLayout
 
     private var collectionMode = POSTS_MODE
     private var currentUsername: String = EMPTY_STRING
@@ -195,6 +199,10 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         filterListRecyclerView.adapter = filterAdapter
         collectionsRecyclerView.adapter = outfitsAdapter
         collectionsRecyclerView.addItemDecoration(GridSpacesItemDecoration(space = 16))
+
+        refreshLayout = fragment_shop_profile_swipe_refresh_layout
+        refreshLayout.setHeaderView(ProgressLayout(requireContext()))
+        refreshLayout.setBottomView(LoadingView(requireContext()))
     }
 
     override fun initializeListeners() {
@@ -204,14 +212,13 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
         fragment_shop_profile_followers_linear_layout.setOnClickListener(this)
         fragment_shop_profile_followings_linear_layout.setOnClickListener(this)
-        fragment_shop_profile_swipe_refresh_layout.setOnRefreshListener(this)
     }
 
     override fun processPostInitialization() {
         presenter.getProfile()
         presenter.getTypes()
 
-        handleCollectionRecyclerView()
+        handleRefreshLayout()
     }
 
     override fun disposeRequests() {
@@ -225,11 +232,11 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
     override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {
-        fragment_shop_profile_swipe_refresh_layout.isRefreshing = true
+        refreshLayout.startRefresh()
     }
 
     override fun hideProgress() {
-        fragment_shop_profile_swipe_refresh_layout.isRefreshing = false
+        refreshLayout.finishRefreshing()
     }
 
     override fun processProfile(userModel: UserModel) {
@@ -319,9 +326,17 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
-            is Paginator.State.Data<*> -> processCollections(state.data)
-            is Paginator.State.NewPageProgress<*> -> processCollections(state.data)
+            is Paginator.State.Data<*> -> {
+                processCollections(state.data)
+                refreshLayout.finishRefreshing()
+            }
+            is Paginator.State.NewPageProgress<*> -> {
+                processCollections(state.data)
+                refreshLayout.finishLoadmore()
+            }
             else -> {
+                hideProgress()
+                refreshLayout.finishLoadmore()
             }
         }
     }
@@ -359,10 +374,6 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         followTextView.show()
         alreadyFollowedTextView.hide()
 //        writeMessageTextView.hide()
-    }
-
-    override fun onRefresh() {
-        presenter.getProfile()
     }
 
     private fun onFilterItemClicked(
@@ -494,14 +505,18 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         ).show(childFragmentManager, EMPTY_STRING)
     }
 
-    private fun handleCollectionRecyclerView() {
-        collectionsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!collectionsRecyclerView.canScrollVertically(1)
-                    && newState == RecyclerView.SCROLL_STATE_IDLE
-                ) {
-                    presenter.loadMorePage()
-                }
+    private fun handleRefreshLayout() {
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                super.onRefresh(refreshLayout)
+                refreshLayout?.startRefresh()
+                presenter.getProfile()
+            }
+
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                super.onLoadMore(refreshLayout)
+                refreshLayout?.startLoadMore()
+                presenter.loadMorePage()
             }
         })
     }

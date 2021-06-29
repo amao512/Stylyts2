@@ -28,10 +28,10 @@ class ShopCategoryPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getClothesTypes(token: String) {
+    override fun getClothesTypes() {
         view.displayProgress()
 
-        getClothesTypesUseCase.initParams(token)
+        getClothesTypesUseCase.initParams(token = view.getToken())
         getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 view.processViewAction {

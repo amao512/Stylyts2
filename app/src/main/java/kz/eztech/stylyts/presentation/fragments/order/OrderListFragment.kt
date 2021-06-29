@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+import com.lcodecore.tkrefreshlayout.footer.LoadingView
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_order_list.*
 import kz.eztech.stylyts.R
@@ -22,14 +25,14 @@ import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
-    SwipeRefreshLayout.OnRefreshListener, UniversalViewClickListener {
+class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: OrderListPresenter
     private lateinit var userOrderAdapter: UserOrderAdapter
     private lateinit var shopOrderAdapter: ShopOrderAdapter
 
     private lateinit var recyclerView: RecyclerView
+    private lateinit var refreshLayout: TwinklingRefreshLayout
 
     override fun onResume() {
         super.onResume()
@@ -76,15 +79,17 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         } else {
             recyclerView.adapter = userOrderAdapter
         }
+
+        refreshLayout = fragment_order_list_swipe_refresh_layout
+        refreshLayout.setHeaderView(ProgressLayout(requireContext()))
+        refreshLayout.setBottomView(LoadingView(requireContext()))
     }
 
-    override fun initializeListeners() {
-        fragment_order_list_swipe_refresh_layout.setOnRefreshListener(this)
-    }
+    override fun initializeListeners() {}
 
     override fun processPostInitialization() {
         presenter.getOrders()
-        handleRecyclerView()
+        handleRefreshLayout()
     }
 
     override fun disposeRequests() {
@@ -98,26 +103,29 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
     override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {
-        fragment_order_list_swipe_refresh_layout.isRefreshing = true
+        refreshLayout.startRefresh()
     }
 
     override fun hideProgress() {
-        fragment_order_list_swipe_refresh_layout.isRefreshing = false
-    }
-
-    override fun onRefresh() {
-        userOrderAdapter.clearList()
-        shopOrderAdapter.clearList()
-        presenter.getOrders()
+        refreshLayout.finishRefreshing()
     }
 
     override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
-            is Paginator.State.Data<*> -> processOrders(state.data)
-            is Paginator.State.NewPageProgress<*> -> processOrders(state.data)
-            else -> hideProgress()
+            is Paginator.State.Data<*> -> {
+                processOrders(state.data)
+                refreshLayout.finishRefreshing()
+            }
+            is Paginator.State.NewPageProgress<*> -> {
+                processOrders(state.data)
+                refreshLayout.finishLoadmore()
+            }
+            else -> {
+                hideProgress()
+                refreshLayout.finishLoadmore()
+            }
         }
     }
 
@@ -160,12 +168,20 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         findNavController().navigate(R.id.action_orderListFragment_to_shopOrderDetailFragment, bundle)
     }
 
-    private fun handleRecyclerView() {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    presenter.loadMorePage()
-                }
+    private fun handleRefreshLayout() {
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                super.onRefresh(refreshLayout)
+
+                refreshLayout?.startRefresh()
+                presenter.getOrders()
+            }
+
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                super.onLoadMore(refreshLayout)
+
+                refreshLayout?.startLoadMore()
+                presenter.loadMorePage()
             }
         })
     }

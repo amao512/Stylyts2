@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,9 +13,9 @@
         android:id="@+id/recycler_view_fragment_shop_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="@dimen/margin_size_16x"
         android:orientation="vertical"
+        android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_shop_category"
         />
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>

@@ -2,7 +2,11 @@ package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.facebook.shimmer.ShimmerFrameLayout
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+import com.lcodecore.tkrefreshlayout.footer.LoadingView
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout
 import kotlinx.android.synthetic.main.fragment_collection_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
@@ -23,11 +27,13 @@ class CollectionItemFragment(
     private val currentMode: Int
 ) : BaseFragment<MainActivity>(),
     CollectionItemContract.View,
-    UniversalViewClickListener, SwipeRefreshLayout.OnRefreshListener {
+    UniversalViewClickListener {
 
     @Inject lateinit var presenter: CollectionsItemPresenter
     private lateinit var adapter: GridImageAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var refreshLayout: TwinklingRefreshLayout
+    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
 
     private var itemClickListener: UniversalViewClickListener? = null
 
@@ -57,22 +63,25 @@ class CollectionItemFragment(
     }
 
     override fun initializeViews() {
+        shimmerFrameLayout = fragment_collection_item_shimmer_frame_layout
         recyclerView = recycler_view_fragment_collection_item
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(GridSpacesItemDecoration(space = 16))
+
+        refreshLayout = fragment_collection_item_swipe_refresh_layout
+        refreshLayout.setHeaderView(ProgressLayout(requireContext()))
+        refreshLayout.setBottomView(LoadingView(requireContext()))
     }
 
     override fun onViewClicked(view: View, position: Int, item: Any?) {
         itemClickListener?.onViewClicked(view, position, item)
     }
 
-    override fun initializeListeners() {
-        fragment_collection_item_swipe_refresh_layout.setOnRefreshListener(this)
-    }
+    override fun initializeListeners() {}
 
     override fun processPostInitialization() {
         getCollections()
-        handleListRecyclerView()
+        handleRefreshLayout()
     }
 
     override fun disposeRequests() {
@@ -84,27 +93,34 @@ class CollectionItemFragment(
     override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {
-        fragment_collection_item_swipe_refresh_layout.isRefreshing = true
+        fragment_collection_item_swipe_refresh_layout.startRefresh()
+        shimmerFrameLayout.showShimmer(true)
+        shimmerFrameLayout.startShimmer()
     }
 
     override fun hideProgress() {
-        fragment_collection_item_swipe_refresh_layout.isRefreshing = false
-    }
-
-    override fun onRefresh() {
-        getCollections()
+        fragment_collection_item_swipe_refresh_layout.finishRefreshing()
+        shimmerFrameLayout.hideShimmer()
+        shimmerFrameLayout.stopShimmer()
     }
 
     override fun getTokenId(): String = currentActivity.getTokenFromSharedPref()
 
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
-            is Paginator.State.Data<*> -> processPostResults(state.data)
-            is Paginator.State.NewPageProgress<*> -> processPostResults(state.data)
-            else -> {}
+            is Paginator.State.Data<*> -> {
+                processPostResults(state.data)
+                refreshLayout.finishRefreshing()
+            }
+            is Paginator.State.NewPageProgress<*> -> {
+                processPostResults(state.data)
+                refreshLayout.finishLoadmore()
+            }
+            else -> {
+                refreshLayout.finishRefreshing()
+                refreshLayout.finishLoadmore()
+            }
         }
-
-        hideProgress()
     }
 
     override fun processPostResults(list: List<Any?>) {
@@ -113,12 +129,19 @@ class CollectionItemFragment(
         adapter.updateList(list = preparedList)
     }
 
-    private fun handleListRecyclerView() {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    presenter.loadMorePost()
-                }
+    private fun handleRefreshLayout() {
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                super.onRefresh(refreshLayout)
+                refreshLayout?.startRefresh()
+                shimmerFrameLayout.startShimmer()
+                presenter.getPosts()
+            }
+
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                super.onLoadMore(refreshLayout)
+                refreshLayout?.startLoadMore()
+                presenter.loadMorePost()
             }
         })
     }
@@ -140,10 +163,13 @@ class CollectionItemFragment(
             }
         }
 
+        hideProgress()
+
         return preparedList
     }
 
     private fun getCollections() {
+        shimmerFrameLayout.startShimmer()
         adapter.clearList()
         presenter.getPosts()
     }

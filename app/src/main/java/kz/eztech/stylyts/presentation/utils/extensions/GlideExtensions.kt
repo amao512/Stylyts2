@@ -4,6 +4,8 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import kz.eztech.stylyts.R
+import retrofit2.http.Url
 
 fun String.loadImage(target: ImageView) {
     Glide.with(target.context)
@@ -11,11 +13,21 @@ fun String.loadImage(target: ImageView) {
         .into(target)
 }
 
-fun String.loadImageWithCenterCrop(target: ImageView) {
+fun String.loadImageWithCenterCrop(
+    target: ImageView,
+    withPlaceHolder: Boolean = false
+) {
     Glide.with(target.context)
         .load(this)
-        .centerCrop()
-        .into(target)
+        .apply {
+            centerCrop()
+
+            if (withPlaceHolder) {
+                placeholder(R.color.app_gray)
+            }
+
+            into(target)
+        }
 }
 
 fun Uri.loadImage(target: ImageView) {

@@ -2,12 +2,14 @@ package kz.eztech.stylyts.presentation.fragments.shop
 
 import android.net.Uri
 import android.view.View
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout
 import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.shop.ShopCategoryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -21,7 +23,7 @@ import javax.inject.Inject
 
 class ShopItemFragment(
     private var position: Int
-) : BaseFragment<MainActivity>(), ShopItemContract.View, SwipeRefreshLayout.OnRefreshListener,
+) : BaseFragment<MainActivity>(), ShopItemContract.View,
     UniversalViewClickListener {
 
     @Inject lateinit var presenter: ShopCategoryPresenter
@@ -29,10 +31,12 @@ class ShopItemFragment(
     private lateinit var adapter: ShopCategoryAdapter
     private var itemClickListener: UniversalViewClickListener? = null
 
+    private lateinit var refreshLayout: TwinklingRefreshLayout
+
     override fun onResume() {
         super.onResume()
 
-        presenter.getClothesTypes(token = currentActivity.getTokenFromSharedPref())
+        presenter.getClothesTypes()
         currentActivity.displayBottomNavigationView()
     }
 
@@ -63,16 +67,22 @@ class ShopItemFragment(
 
     override fun initializeViews() {
         recycler_view_fragment_shop_item.adapter = adapter
+
+        refreshLayout = swipe_refresh_fragment_shop_item
+        refreshLayout.setHeaderView(ProgressLayout(requireContext()))
+        refreshLayout.setEnableLoadmore(false)
     }
 
-    override fun initializeListeners() {
-        swipe_refresh_fragment_shop_item.setOnRefreshListener(this)
-    }
+    override fun initializeListeners() {}
 
-    override fun processPostInitialization() {}
-
-    override fun onRefresh() {
-        presenter.getClothesTypes(token = currentActivity.getTokenFromSharedPref())
+    override fun processPostInitialization() {
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                super.onRefresh(refreshLayout)
+                refreshLayout?.startRefresh()
+                presenter.getClothesTypes()
+            }
+        })
     }
 
     override fun disposeRequests() {
@@ -87,13 +97,15 @@ class ShopItemFragment(
 
     override fun displayProgress() {
         recycler_view_fragment_shop_item.hide()
-        swipe_refresh_fragment_shop_item.isRefreshing = true
+        swipe_refresh_fragment_shop_item.startRefresh()
     }
 
     override fun hideProgress() {
         recycler_view_fragment_shop_item.show()
-        swipe_refresh_fragment_shop_item.isRefreshing = false
+        swipe_refresh_fragment_shop_item.finishRefreshing()
     }
+
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun processClothesTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
         val preparedTypes: MutableList<ClothesTypeModel> = mutableListOf()

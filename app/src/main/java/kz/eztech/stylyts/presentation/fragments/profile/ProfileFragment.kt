@@ -6,8 +6,11 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.imageview.ShapeableImageView
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+import com.lcodecore.tkrefreshlayout.footer.LoadingView
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -51,7 +54,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View.OnClickListener,
-    UniversalViewClickListener, EditorListener, SwipeRefreshLayout.OnRefreshListener {
+    UniversalViewClickListener, EditorListener {
 
     @Inject lateinit var presenter: ProfilePresenter
 
@@ -77,6 +80,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     private lateinit var unFollowTextView: TextView
     private lateinit var filterRecyclerVew: RecyclerView
     private lateinit var collectionRecyclerView: RecyclerView
+    private lateinit var refreshLayout: TwinklingRefreshLayout
 
     private var collectionMode: Int = POSTS_MODE
     private var currentUsername: String = EMPTY_STRING
@@ -172,6 +176,10 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         changeProfileTextView = fragment_profile_edit_text_view
         followTextView = fragment_profile_follow_text_view
         unFollowTextView = fragment_profile_unfollow_text_view
+
+        refreshLayout = fragment_profile_swipe_refresh_layout
+        refreshLayout.setHeaderView(ProgressLayout(requireContext()))
+        refreshLayout.setBottomView(LoadingView(requireContext()))
     }
 
     override fun initializeListeners() {
@@ -186,12 +194,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
         include_toolbar_profile.toolbar_right_corner_action_image_button.setOnClickListener(this)
         toolbar_left_corner_action_image_button.setOnClickListener(this)
-        fragment_profile_swipe_refresh_layout.setOnRefreshListener(this)
     }
 
     override fun processPostInitialization() {
         getProfile()
-        handleRecyclerViewScrolling()
+        handleRefreshLayout()
     }
 
     override fun disposeRequests() = presenter.disposeRequests()
@@ -201,11 +208,11 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
     override fun isFragmentVisible(): Boolean = isVisible
 
     override fun displayProgress() {
-        fragment_profile_swipe_refresh_layout.isRefreshing = true
+        refreshLayout.startRefresh()
     }
 
     override fun hideProgress() {
-        fragment_profile_swipe_refresh_layout.isRefreshing = false
+        refreshLayout.finishRefreshing()
     }
 
     override fun navigateToMyData() {
@@ -300,12 +307,19 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
 
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
-            is Paginator.State.Data<*> -> processCollections(state.data)
-            is Paginator.State.NewPageProgress<*> -> processCollections(state.data)
-            else -> {}
+            is Paginator.State.Data<*> -> {
+                processCollections(state.data)
+                refreshLayout.finishRefreshing()
+            }
+            is Paginator.State.NewPageProgress<*> -> {
+                processCollections(state.data)
+                refreshLayout.finishLoadmore()
+            }
+            else -> {
+                refreshLayout.finishRefreshing()
+                refreshLayout.finishLoadmore()
+            }
         }
-
-        hideProgress()
     }
 
     override fun processCollections(list: List<Any?>) {
@@ -344,10 +358,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             position = 3,
             title = "${getString(R.string.filter_list_wardrobe)} ($count)"
         )
-    }
-
-    override fun onRefresh() {
-        processPostInitialization()
     }
 
     override fun getToken(): String = currentActivity.getTokenFromSharedPref()
@@ -410,14 +420,18 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         presenter.getWardrobeCount()
     }
 
-    private fun handleRecyclerViewScrolling() {
-        collectionRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!collectionRecyclerView.canScrollVertically(1)
-                    && newState == RecyclerView.SCROLL_STATE_IDLE
-                ) {
-                    presenter.loadMoreList()
-                }
+    private fun handleRefreshLayout() {
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                super.onRefresh(refreshLayout)
+                refreshLayout?.startRefresh()
+                presenter.getProfile()
+            }
+
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                super.onLoadMore(refreshLayout)
+                refreshLayout?.startLoadMore()
+                presenter.loadMoreList()
             }
         })
     }

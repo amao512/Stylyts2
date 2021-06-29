@@ -13,7 +13,7 @@
         layout="@layout/base_toolbar"
         />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
         android:id="@+id/fragment_order_list_swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,5 +31,5 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_user_order"
             />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 </LinearLayout>
