@@ -36,43 +36,25 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
             android:id="@+id/fragment_main_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             >
 
-            <FrameLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_fragment_main_images_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                >
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_fragment_main_images_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-                    tools:listitem="@layout/item_main_line"
-                    />
-
-                <TextView
-                    android:id="@+id/fragment_main_empty_posts_text_view"
-                    style="@style/TextRegular"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="@string/posts_not_found"
-                    android:textColor="@color/app_dark_blue_gray"
-                    android:textSize="@dimen/text_size_16x"
-                    android:visibility="gone"
-                    />
-            </FrameLayout>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                tools:listitem="@layout/item_main_line"
+                />
+        </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

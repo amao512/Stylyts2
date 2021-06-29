@@ -4,7 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+import com.lcodecore.tkrefreshlayout.footer.LoadingView
+import com.lcodecore.tkrefreshlayout.header.progresslayout.ProgressLayout
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.item_main_line.view.*
@@ -37,12 +40,13 @@ import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,
-    UniversalViewClickListener, DialogChooserListener, SwipeRefreshLayout.OnRefreshListener {
+    UniversalViewClickListener, DialogChooserListener {
 
     @Inject
     lateinit var presenter: MainLinePresenter
     private lateinit var postsAdapter: MainLineAdapter
     private lateinit var recyclerView: RecyclerView
+    private lateinit var refreshLayout: TwinklingRefreshLayout
 
     override fun onResume() {
         super.onResume()
@@ -74,11 +78,14 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     override fun initializeViews() {
         recyclerView = recycler_view_fragment_main_images_list
         recyclerView.adapter = postsAdapter
+
+        refreshLayout = fragment_main_swipe_refresh_layout
+        refreshLayout.setHeaderView(ProgressLayout(requireContext()))
+        refreshLayout.setBottomView(LoadingView(requireContext()))
     }
 
     override fun initializeListeners() {
         toolbar_right_corner_action_image_button.setOnClickListener(this)
-        fragment_main_swipe_refresh_layout.setOnRefreshListener(this)
     }
 
     override fun onViewClicked(
@@ -107,7 +114,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun processPostInitialization() {
         presenter.getPosts()
-        handleRecyclerView()
+        handleRefreshLayout()
     }
 
     override fun disposeRequests() {
@@ -133,19 +140,29 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     }
 
     override fun displayProgress() {
-        fragment_main_swipe_refresh_layout.isRefreshing = true
+        refreshLayout.startRefresh()
     }
 
     override fun hideProgress() {
-        fragment_main_swipe_refresh_layout.isRefreshing = false
+        refreshLayout.finishRefreshing()
     }
 
     override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
-            is Paginator.State.Data<*> -> processPostResults(state.data)
-            is Paginator.State.NewPageProgress<*> -> processPostResults(state.data)
+            is Paginator.State.Data<*> -> {
+                processPostResults(state.data)
+                refreshLayout.finishRefreshing()
+            }
+            is Paginator.State.NewPageProgress<*> -> {
+                processPostResults(state.data)
+                refreshLayout.finishLoadmore()
+            }
+            is Paginator.State.Empty -> {
+                refreshLayout.finishRefreshing()
+                refreshLayout.finishLoadmore()
+            }
             else -> hideProgress()
         }
     }
@@ -154,8 +171,6 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         list.map { it!! }.let {
             postsAdapter.updateList(it)
         }
-
-        hideProgress()
     }
 
     override fun processSuccessDeleting() {
@@ -195,18 +210,18 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         }
     }
 
-    override fun onRefresh() {
-        displayProgress()
-        postsAdapter.clearList()
-        presenter.getPosts()
-    }
+    private fun handleRefreshLayout() {
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                super.onRefresh(refreshLayout)
+                refreshLayout?.startRefresh()
+                presenter.getPosts()
+            }
 
-    private fun handleRecyclerView() {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    presenter.loadMorePost()
-                }
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                super.onLoadMore(refreshLayout)
+                refreshLayout?.startLoadMore()
+                presenter.loadMorePost()
             }
         })
     }

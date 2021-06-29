@@ -189,6 +189,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
+    // Refresh Layout
+    implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'
+
+    // Shimmer
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
