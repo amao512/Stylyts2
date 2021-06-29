@@ -70,8 +70,6 @@ class ShopProfilePresenter @Inject constructor(
     }
 
     override fun getProfile() {
-        view.displayProgress()
-
         getUserByIdUseCase.initParams(
             token = view.getToken(),
             userId = view.getUserId()

@@ -79,8 +79,6 @@ class ProfilePresenter @Inject constructor(
     }
 
     override fun getProfile() {
-        view.displayProgress()
-
 		if (view.getUserId() == 0) {
 			getOwnProfile()
 		} else {

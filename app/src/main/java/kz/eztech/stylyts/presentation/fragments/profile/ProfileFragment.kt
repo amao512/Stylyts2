@@ -315,10 +315,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 processCollections(state.data)
                 refreshLayout.finishLoadmore()
             }
-            else -> {
-                refreshLayout.finishRefreshing()
-                refreshLayout.finishLoadmore()
-            }
+            else -> {}
         }
     }
 

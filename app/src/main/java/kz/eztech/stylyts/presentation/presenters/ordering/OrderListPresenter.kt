@@ -68,7 +68,6 @@ class OrderListPresenter @Inject constructor(
     }
 
     override fun getOrders() {
-        view.displayProgress()
         paginator.proceed(Paginator.Action.Refresh)
     }
 }

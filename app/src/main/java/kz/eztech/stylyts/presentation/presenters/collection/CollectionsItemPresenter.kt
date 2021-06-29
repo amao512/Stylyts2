@@ -65,7 +65,6 @@ class CollectionsItemPresenter @Inject constructor(
 	}
 
 	override fun getPosts() {
-		view.displayProgress()
 		paginator.proceed(Paginator.Action.Refresh)
 	}
 
