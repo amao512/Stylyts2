@@ -2,7 +2,6 @@ package kz.eztech.stylyts.presentation.fragments.collection
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.facebook.shimmer.ShimmerFrameLayout
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import com.lcodecore.tkrefreshlayout.footer.LoadingView
@@ -29,11 +28,11 @@ class CollectionItemFragment(
     CollectionItemContract.View,
     UniversalViewClickListener {
 
-    @Inject lateinit var presenter: CollectionsItemPresenter
+    @Inject
+    lateinit var presenter: CollectionsItemPresenter
     private lateinit var adapter: GridImageAdapter
     private lateinit var recyclerView: RecyclerView
     private lateinit var refreshLayout: TwinklingRefreshLayout
-    private lateinit var shimmerFrameLayout: ShimmerFrameLayout
 
     private var itemClickListener: UniversalViewClickListener? = null
 
@@ -63,7 +62,6 @@ class CollectionItemFragment(
     }
 
     override fun initializeViews() {
-        shimmerFrameLayout = fragment_collection_item_shimmer_frame_layout
         recyclerView = recycler_view_fragment_collection_item
         recyclerView.adapter = adapter
         recyclerView.addItemDecoration(GridSpacesItemDecoration(space = 16))
@@ -94,14 +92,10 @@ class CollectionItemFragment(
 
     override fun displayProgress() {
         fragment_collection_item_swipe_refresh_layout.startRefresh()
-        shimmerFrameLayout.showShimmer(true)
-        shimmerFrameLayout.startShimmer()
     }
 
     override fun hideProgress() {
         fragment_collection_item_swipe_refresh_layout.finishRefreshing()
-        shimmerFrameLayout.hideShimmer()
-        shimmerFrameLayout.stopShimmer()
     }
 
     override fun getTokenId(): String = currentActivity.getTokenFromSharedPref()
@@ -134,8 +128,7 @@ class CollectionItemFragment(
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
                 super.onRefresh(refreshLayout)
                 refreshLayout?.startRefresh()
-                shimmerFrameLayout.startShimmer()
-                presenter.getPosts()
+                getCollections()
             }
 
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
@@ -163,13 +156,10 @@ class CollectionItemFragment(
             }
         }
 
-        hideProgress()
-
         return preparedList
     }
 
     private fun getCollections() {
-        shimmerFrameLayout.startShimmer()
         adapter.clearList()
         presenter.getPosts()
     }
