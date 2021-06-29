@@ -133,7 +133,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.toolbar_left_corner_action_image_button -> findNavController().navigateUp()
-            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.nav_ordering)
+            R.id.toolbar_right_corner_action_image_button -> findNavController().navigate(R.id.action_shopListFragment_to_nav_ordering)
         }
     }
 
