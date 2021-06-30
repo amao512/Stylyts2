@@ -82,6 +82,8 @@ class CourierOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View
         otherInfoEditText = fragment_ordering_data_other_edit_text
         deliveryConditionsRecyclerView = fragment_courier_ordering_conditions_recycler_view
         deliveryConditionsRecyclerView.adapter = deliveryConditionAdapter
+
+        initializeHideKeyboardView(view = fragment_courier_ordering_hide_keyboard)
     }
 
     override fun initializeListeners() {}

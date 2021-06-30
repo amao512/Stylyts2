@@ -74,6 +74,8 @@ class PostOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View, V
         houseEditText = fragment_post_ordering_house_edit_text
         apartmentEditText = fragment_post_ordering_apartment_edit_text
         postIndexEditText = fragment_post_ordering_post_index_edit_text
+
+        initializeHideKeyboardView(view = fragment_post_ordering_hide_keyboard)
     }
 
     override fun initializeListeners() {}

@@ -86,6 +86,8 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
         cityEditText = fragment_select_delivery_way_city_edit_text
         recyclerView = fragment_select_delivery_way_recycler_view
         recyclerView.adapter = deliveryWayAdapter
+
+        initializeHideKeyboardView(view = fragment_select_delivery_way_hide_keyboard)
     }
 
     override fun initializeListeners() {}

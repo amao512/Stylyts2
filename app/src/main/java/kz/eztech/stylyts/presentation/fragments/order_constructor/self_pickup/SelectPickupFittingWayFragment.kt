@@ -73,6 +73,8 @@ class SelectPickupFittingWayFragment : BaseFragment<MainActivity>(), EmptyContra
 
         recyclerView = fragment_select_pickup_fitting_way_recycler_view
         recyclerView.adapter = deliveryConditionAdapter
+
+        initializeHideKeyboardView(view = fragment_pickup_fitting_way_hide_keyboard)
     }
 
     override fun initializeListeners() {}

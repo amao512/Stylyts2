@@ -9,8 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
+import androidx.annotation.CallSuper
 import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.base_toolbar.view.*
@@ -34,6 +37,15 @@ abstract class BaseFragment<T : BaseActivity> : Fragment() {
     var hasInitializedRootView = false
 
     private var rootView: View? = null
+    private var keyboardHideView: View? = null
+
+    private val keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
+        if (isKeyboardOpen()) {
+            keyboardHideView?.show()
+        } else {
+            keyboardHideView?.hide()
+        }
+    }
 
     fun displayToast(msg: String) {
         rootView?.let {
@@ -87,6 +99,11 @@ abstract class BaseFragment<T : BaseActivity> : Fragment() {
         currentView.disposeRequests()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        getRootView()?.viewTreeObserver?.removeOnGlobalLayoutListener(keyboardListener)
+    }
+
     fun hideSoftWareKeyboard() {
         val imm =
             currentActivity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -115,6 +132,8 @@ abstract class BaseFragment<T : BaseActivity> : Fragment() {
     }
 
     fun initializeHideKeyboardView(view: View? = null) {
+        keyboardHideView = view
+
         view?.let {
             it.hide_keyboard_text_view.setOnClickListener {
                 val inputMethodManager =
@@ -122,25 +141,18 @@ abstract class BaseFragment<T : BaseActivity> : Fragment() {
                 inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
             }
 
-            val keyboardListener = ViewTreeObserver.OnGlobalLayoutListener {
-                if (isKeyboardOpen()) {
-                    it.show()
-                } else {
-                    it.hide()
-                }
-            }
-
-            rootView?.viewTreeObserver?.addOnGlobalLayoutListener(keyboardListener)
+            getRootView()?.viewTreeObserver?.addOnGlobalLayoutListener(keyboardListener)
         }
     }
 
-    private fun getRootView(): View = currentActivity.findViewById(android.R.id.content)
+    private fun getRootView(): View? = activity?.findViewById(android.R.id.content)
 
     private fun isKeyboardOpen(): Boolean {
         val visibleBounds = Rect()
-        getRootView().getWindowVisibleDisplayFrame(visibleBounds)
 
-        val heightDiff = getRootView().height - visibleBounds.height()
+        getRootView()?.getWindowVisibleDisplayFrame(visibleBounds)
+
+        val heightDiff = (getRootView()?.height ?: 0) - visibleBounds.height()
         val marginOfError = this.convertDpToPx(dp = 50F).roundToInt()
 
         return heightDiff > marginOfError
@@ -152,5 +164,11 @@ abstract class BaseFragment<T : BaseActivity> : Fragment() {
             dp,
             this.resources.displayMetrics
         )
+    }
+
+    @OnLifecycleEvent(value = Lifecycle.Event.ON_PAUSE)
+    @CallSuper
+    private fun onLifecyclePause() {
+        getRootView()?.viewTreeObserver?.removeOnGlobalLayoutListener(keyboardListener)
     }
 }
