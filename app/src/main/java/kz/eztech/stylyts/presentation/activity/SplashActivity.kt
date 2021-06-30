@@ -32,6 +32,6 @@ class SplashActivity : BaseActivity() {
 
             override fun onAnimationRepeat(animation: Animation?) {}
         })
-        text_view_activity_splash_title.startAnimation(animation)
+        activity_splash_logo_image_view.startAnimation(animation)
     }
 }

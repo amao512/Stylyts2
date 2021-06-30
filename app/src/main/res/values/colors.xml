@@ -35,8 +35,7 @@
 
     <color name="divider_bg_color">#979797</color>
     <color name="large_divider_bg_color">#F5F5F5</color>
-
+    <color name="ic_launcher_background">#060606</color>
     <color name="income_text_color">#73C75D</color>
-
     <color name="disabled_button_color">#4D2F3641</color>
 </resources>

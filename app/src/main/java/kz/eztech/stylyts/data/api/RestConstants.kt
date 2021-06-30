@@ -51,6 +51,7 @@ object RestConstants {
     const val GET_CLOTHES_BRAND_BY_ID: String = "clothes/brands/{brand_id}"
     const val GET_CLOTHES_COLORS: String = "clothes/colors"
     const val SAVE_CLOTHES_TO_WARDROBE: String = "clothes/{clothes_id}/save"
+    const val DELETE_CLOTHES_FROM_WARDROVE: String = "clothes/{clothes_id}"
 
     // Wardrobe
     const val CREATE_CLOTHES_BY_PHOTO: String = "wardrobes/add-using-image"
