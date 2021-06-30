@@ -8,6 +8,7 @@ import kz.eztech.stylyts.data.db.cart.CartDataSource
 import kz.eztech.stylyts.data.db.cart.CartMapper
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.domain.usecases.clothes.DeleteClothesUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByBarcode
 import kz.eztech.stylyts.domain.usecases.clothes.GetClothesByIdUseCase
 import kz.eztech.stylyts.domain.usecases.clothes.SaveClothesToWardrobeUseCase
@@ -23,7 +24,8 @@ class ClothesDetailPresenter @Inject constructor(
     private val getClothesByIdUseCase: GetClothesByIdUseCase,
     private val getClothesByBarcode: GetClothesByBarcode,
     private val saveClothesToWardrobeUseCase: SaveClothesToWardrobeUseCase,
-    private val cartDataSource: CartDataSource
+    private val cartDataSource: CartDataSource,
+    private val deleteClothesUseCase: DeleteClothesUseCase
 ) : ClothesDetailContract.Presenter {
 
     private lateinit var view: ClothesDetailContract.View
@@ -34,19 +36,17 @@ class ClothesDetailPresenter @Inject constructor(
         getClothesByIdUseCase.clear()
         getClothesByBarcode.clear()
         saveClothesToWardrobeUseCase.clear()
+        deleteClothesUseCase.clear()
     }
 
     override fun attach(view: ClothesDetailContract.View) {
         this.view = view
     }
 
-    override fun getClothesById(
-        token: String,
-        clothesId: Int
-    ) {
+    override fun getClothesById(clothesId: Int) {
         view.displayProgress()
 
-        getClothesByIdUseCase.initParams(token, clothesId)
+        getClothesByIdUseCase.initParams(token = view.getToken(), clothesId)
         getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processViewAction {
@@ -64,10 +64,10 @@ class ClothesDetailPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesByBarcode(token: String, barcode: String) {
+    override fun getClothesByBarcode(barcode: String) {
         view.displayProgress()
 
-        getClothesByBarcode.initParams(token, barcode)
+        getClothesByBarcode.initParams(token = view.getToken(), barcode)
         getClothesByBarcode.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processViewAction {
@@ -85,11 +85,11 @@ class ClothesDetailPresenter @Inject constructor(
         })
     }
 
-    override fun saveClothesToWardrobe(
-        token: String,
-        clothesId: Int
-    ) {
-        saveClothesToWardrobeUseCase.initParams(token, clothesId.toString())
+    override fun saveClothesToWardrobe(clothesId: Int) {
+        saveClothesToWardrobeUseCase.initParams(
+            token = view.getToken(),
+            clothesId.toString()
+        )
         saveClothesToWardrobeUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processSuccessSavedWardrobe()
@@ -111,5 +111,29 @@ class ClothesDetailPresenter @Inject constructor(
                     view.processInsertingCart()
                 }
         )
+    }
+
+    override fun deleteClothes(clothesId: Int) {
+        view.displayProgress()
+
+        deleteClothesUseCase.initParams(
+            token = view.getToken(),
+            clothesId = clothesId
+        )
+        deleteClothesUseCase.execute(object : DisposableSingleObserver<Any>() {
+            override fun onSuccess(t: Any) {
+                view.processViewAction {
+                    hideProgress()
+                    processDeleting()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                view.processViewAction {
+                    hideProgress()
+                    processDeleting()
+                }
+            }
+        })
     }
 }

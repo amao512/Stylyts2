@@ -144,4 +144,16 @@ class ClothesRepository @Inject constructor(
             }
         }
     }
+
+    override fun deleteClothes(
+        token: String,
+        clothesId: String
+    ): Single<Any> {
+        return api.deleteClothes(token, clothesId).map {
+            when (it.isSuccessful) {
+                true -> it.body()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
 }

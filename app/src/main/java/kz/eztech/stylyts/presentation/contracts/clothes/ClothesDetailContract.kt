@@ -11,30 +11,27 @@ interface ClothesDetailContract {
 
     interface View : BaseView {
 
+        fun getToken(): String
+
         fun processClothes(clothesModel: ClothesModel)
 
         fun processSuccessSavedWardrobe()
 
         fun processInsertingCart()
+
+        fun processDeleting()
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun getClothesById(
-            token: String,
-            clothesId: Int
-        )
+        fun getClothesById(clothesId: Int)
 
-        fun getClothesByBarcode(
-            token: String,
-            barcode: String
-        )
+        fun getClothesByBarcode(barcode: String)
 
-        fun saveClothesToWardrobe(
-            token: String,
-            clothesId: Int
-        )
+        fun saveClothesToWardrobe(clothesId: Int)
 
         fun insertToCart(clothesModel: ClothesModel)
+
+        fun deleteClothes(clothesId: Int)
     }
 }

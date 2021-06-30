@@ -56,4 +56,9 @@ interface ClothesDomainRepository {
         token: String,
         barcode: String
     ): Single<ClothesModel>
+
+    fun deleteClothes(
+        token: String,
+        clothesId: String
+    ): Single<Any>
 }

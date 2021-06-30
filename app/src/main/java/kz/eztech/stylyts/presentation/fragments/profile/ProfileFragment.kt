@@ -130,6 +130,13 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
                 collectionMode = it.getInt(MODE_KEY)
             }
         }
+
+        findNavController().currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<String>(ClothesDetailFragment.DELETED_STATE_KEY)
+            ?.observe(viewLifecycleOwner, {
+                processPostInitialization()
+            })
     }
 
     override fun initializeViewsData() {

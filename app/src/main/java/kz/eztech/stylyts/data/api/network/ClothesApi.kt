@@ -72,4 +72,10 @@ interface ClothesApi {
         @Header("Authorization") token: String,
         @Path("barcode") barcode: String
     ): Single<Response<ClothesApiModel>>
+
+    @DELETE(RestConstants.DELETE_CLOTHES)
+    fun deleteClothes(
+        @Header("Authorization") token: String,
+        @Path("clothes_id") barcode: String
+    ): Single<Response<Any>>
 }

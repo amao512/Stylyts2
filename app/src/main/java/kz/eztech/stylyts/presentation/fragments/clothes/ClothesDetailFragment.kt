@@ -51,6 +51,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     companion object {
         const val CLOTHES_ID = "clothes_id"
         const val BARCODE_KEY = "barcode_code"
+        const val DELETED_STATE_KEY = "deletedState"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_clothes_detail
@@ -99,6 +100,8 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         fragment_clothes_detail_description_holder_linear_layout.setOnClickListener(this)
     }
 
+    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
+
     override fun processPostInitialization() {
         getClothes()
     }
@@ -129,10 +132,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         fragment_clothes_detail_toolbar.toolbar_title_text_view.show()
 
         fragment_clothes_detail_add_to_wardrobe_text_view.setOnClickListener {
-            presenter.saveClothesToWardrobe(
-                token = currentActivity.getTokenFromSharedPref(),
-                clothesId = clothesModel.id
-            )
+            presenter.saveClothesToWardrobe(clothesId = clothesModel.id)
         }
 
         fragment_clothes_detail_text_size_frame_layout.setOnClickListener {
@@ -150,8 +150,13 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         fragment_clothes_detail_avatar_holder.setOnClickListener {
             navigateToProfile(user = clothesModel.owner)
         }
+
         fragment_clothes_detail_shop_name_text_view.setOnClickListener {
             navigateToProfile(user = clothesModel.owner)
+        }
+
+        fragment_clothes_detail_delete_text_view.setOnClickListener {
+            presenter.deleteClothes(clothesId = clothesModel.id)
         }
     }
 
@@ -177,6 +182,11 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         findNavController().navigate(R.id.nav_ordering)
     }
 
+    override fun processDeleting() {
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(DELETED_STATE_KEY, "success")
+        findNavController().popBackStack()
+    }
+
     private fun fillClothesModel(clothesModel: ClothesModel) {
         chooserDialog = ClothesSizesBottomDialog()
         chooserDialog.setChoiceListener(listener = this)
@@ -191,6 +201,14 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
             fragment_clothes_detail_add_to_cart_text_view.backgroundTintList = ColorStateList.valueOf(
                 getColor(requireContext(), R.color.disabled_button_color)
             )
+        }
+
+        if (clothesModel.owner.id == currentActivity.getUserIdFromSharedPref() && !clothesModel.owner.isBrand) {
+            fragment_clothes_detail_delete_text_view.show()
+            fragment_clothes_detail_add_to_wardrobe_text_view.hide()
+        } else {
+            fragment_clothes_detail_delete_text_view.hide()
+            fragment_clothes_detail_add_to_wardrobe_text_view.show()
         }
 
         fragment_clothes_detail_clothes_title_text_view.text = clothesModel.title
@@ -283,15 +301,9 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
     private fun getClothes() {
         if (getBarcodeFromArgs().isNotEmpty()) {
-            presenter.getClothesByBarcode(
-                token = currentActivity.getTokenFromSharedPref(),
-                barcode = getBarcodeFromArgs()
-            )
+            presenter.getClothesByBarcode(barcode = getBarcodeFromArgs())
         } else {
-            presenter.getClothesById(
-                currentActivity.getTokenFromSharedPref(),
-                clothesId = getClothesIdFromArgs()
-            )
+            presenter.getClothesById(clothesId = getClothesIdFromArgs())
         }
     }
 
