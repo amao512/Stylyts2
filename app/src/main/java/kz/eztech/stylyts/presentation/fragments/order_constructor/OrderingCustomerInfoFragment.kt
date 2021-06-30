@@ -60,7 +60,9 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
+    override fun initializeViewsData() {
+        initializeHideKeyboardView(view = fragment_ordering_customer_info_hide_keyboard)
+    }
 
     override fun initializeViews() {
         nameEditText = fragment_ordering_customer_info_name_edit_text

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/little_divider_height"
+        android:layout_gravity="top"
+        android:background="@color/app_gray_hint"
+        />
+
+    <TextView
+        android:id="@+id/hide_keyboard_text_view"
+        style="@style/TitleText"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:padding="@dimen/padding_size_10x"
+        android:text="@string/create_collection_ready"
+        android:textAllCaps="true"
+        android:textSize="@dimen/text_size_14x"
+        />
+</FrameLayout>
