@@ -1,21 +1,26 @@
 package kz.eztech.stylyts.presentation.fragments.profile
 
+import android.view.View
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_profile_income.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.income.IncomeModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.incomes.IncomesAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileIncomeContract
+import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.IncomesPresenter
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
-class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContract.View {
+class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: IncomesPresenter
+    private lateinit var incomesAdapter: IncomesAdapter
 
     override fun getLayoutId(): Int = R.layout.fragment_profile_income
 
@@ -40,15 +45,30 @@ class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContrac
 
     override fun initializeArguments() {}
 
-    override fun initializeViewsData() {}
-
-    override fun initializeViews() {}
-
-    override fun initializeListeners() {
-        include_item_profile_income_dates.setOnClickListener {
-            findNavController().navigate(R.id.action_profileIncomeFragment_to_profileIncomeDetailFragment)
-        }
+    override fun initializeViewsData() {
+        incomesAdapter = IncomesAdapter()
+        incomesAdapter.setOnClickListener(listener = this)
     }
+
+    override fun initializeViews() {
+        fragment_profile_income_recycler_view.adapter = incomesAdapter
+
+        val testList: MutableList<IncomeModel> = mutableListOf()
+
+        testList.add(
+            IncomeModel(id = 1, date = "19 July - 25 July", price = 1000)
+        )
+        testList.add(
+            IncomeModel(id = 1, date = "26 July - 1 August", price = 100)
+        )
+        testList.add(
+            IncomeModel(id = 1, date = "2 August - 8 August", price = 15000)
+        )
+
+        incomesAdapter.updateList(list = testList)
+    }
+
+    override fun initializeListeners() {}
 
     override fun processPostInitialization() {}
 
@@ -61,4 +81,14 @@ class ProfileIncomeFragment : BaseFragment<MainActivity>(), ProfileIncomeContrac
     override fun displayProgress() {}
 
     override fun hideProgress() {}
+
+    override fun onViewClicked(
+        view: View,
+        position: Int,
+        item: Any?
+    ) {
+        when (item) {
+            is IncomeModel -> findNavController().navigate(R.id.action_profileIncomeFragment_to_profileIncomeDetailFragment)
+        }
+    }
 }
