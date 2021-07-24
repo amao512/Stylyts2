@@ -52,6 +52,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         const val CLOTHES_ID = "clothes_id"
         const val BARCODE_KEY = "barcode_code"
         const val DELETED_STATE_KEY = "deletedState"
+        const val INFLUENCER_ID_KEY = "influencerId"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_clothes_detail
@@ -385,6 +386,12 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
     private fun processCart(clothesModel: ClothesModel) {
         clothesModel.selectedSize = currentSize
+
+        val influencerId = getInfluencerIdFromArgs()
+        if (influencerId != 0) {
+            clothesModel.influencerId = influencerId
+        }
+
         presenter.insertToCart(clothesModel = clothesModel)
     }
 
@@ -419,4 +426,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
     private fun getClothesIdFromArgs(): Int = arguments?.getInt(CLOTHES_ID) ?: 0
 
     private fun getBarcodeFromArgs(): String = arguments?.getString(BARCODE_KEY) ?: EMPTY_STRING
+
+    private fun getInfluencerIdFromArgs(): Int = arguments?.getInt(INFLUENCER_ID_KEY) ?: 0
 }

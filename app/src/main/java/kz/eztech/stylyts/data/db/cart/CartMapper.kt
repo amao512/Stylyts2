@@ -14,7 +14,9 @@ object CartMapper {
         }
     }
 
-    fun mapToEntity(model: ClothesModel): CartEntity {
+    fun mapToEntity(
+        model: ClothesModel
+    ): CartEntity {
         var coverImage: String = EMPTY_STRING
 
         if (model.constructorImage.isNotEmpty()) {
@@ -39,7 +41,8 @@ object CartMapper {
             salePrice = model.salePrice,
             currency = model.currency,
             size = model.selectedSize?.size,
-            sizeList = getSizeList(model)
+            sizeList = getSizeList(model),
+            influencerId = model.influencerId
         )
     }
 

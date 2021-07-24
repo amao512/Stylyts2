@@ -72,6 +72,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     private lateinit var firstCommentTextView: TextView
     private lateinit var commentsCountTextView: TextView
 
+    private var authorId: Int = 0
+
     companion object {
         const val ID_KEY = "collection_id"
         const val MODE_KEY = "mode_key"
@@ -210,6 +212,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     override fun processOutfit(outfitModel: OutfitModel) {
+        authorId = outfitModel.author.id
         additionalAdapter.updateList(list = outfitModel.clothes)
         currentOutfitModel = outfitModel
         commentsCountTextView.text = getString(
@@ -241,6 +244,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     override fun processPost(postModel: PostModel) {
+        authorId = postModel.author.id
         additionalAdapter.updateList(list = postModel.clothes)
         currentPostModel = postModel
 
@@ -545,6 +549,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
         val bundle = Bundle()
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+        bundle.putInt(ClothesDetailFragment.INFLUENCER_ID_KEY, authorId)
 
         findNavController().navigate(
             R.id.action_collectionDetailFragment_to_clothesDetailFragment,

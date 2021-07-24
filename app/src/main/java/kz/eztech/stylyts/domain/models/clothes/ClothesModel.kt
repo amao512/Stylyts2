@@ -26,6 +26,7 @@ data class ClothesModel(
     val clothesBrand: ClothesBrandModel,
     val sizeInStock: List<ClothesSizeModel>,
 
+    var influencerId: Int = 0,
     var clothesLocation: ItemLocationModel? = null,
     var isChosen: Boolean = false,
     var selectedSize: ClothesSizeModel? = null

@@ -101,7 +101,9 @@ class ClothesDetailPresenter @Inject constructor(
         })
     }
 
-    override fun insertToCart(clothesModel: ClothesModel) {
+    override fun insertToCart(
+        clothesModel: ClothesModel
+    ) {
         disposables.clear()
         disposables.add(
             cartDataSource.insert(CartMapper.mapToEntity(clothesModel))
