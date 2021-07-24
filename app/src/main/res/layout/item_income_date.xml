@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/padding_size_16x"
+    >
+
+    <TextView
+        android:id="@+id/item_income_date_text_view"
+        style="@style/TitleTextBold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_40x"
+        android:textSize="@dimen/text_size_30x"
+        tools:text="Декабрь 2020"
+        />
+</FrameLayout>

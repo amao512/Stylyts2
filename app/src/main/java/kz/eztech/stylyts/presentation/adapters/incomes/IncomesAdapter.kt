@@ -9,8 +9,6 @@ import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 
 class IncomesAdapter : BaseAdapter() {
 
-//    override fun getLayoutId(viewType: Int): Int = R.layout.item_income
-
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
             override fun getAreContentsTheSame(
@@ -23,14 +21,18 @@ class IncomesAdapter : BaseAdapter() {
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return super.getItemViewType(position)
-    }
+    override fun getItemViewType(position: Int): Int = (currentList[position] as IncomesItem).type
 
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return IncomeViewHolder(
-            itemView = inflateView(parent, R.layout.item_income),
-            adapter = this
-        )
+        return when (viewType) {
+            INCOME_DATE_TYPE -> IncomeDateViewHolder(
+                itemView = inflateView(parent, R.layout.item_income_date),
+                adapter = this
+            )
+            else -> IncomeViewHolder(
+                itemView = inflateView(parent, R.layout.item_income),
+                adapter = this
+            )
+        }
     }
 }

@@ -20,10 +20,13 @@ class IncomeViewHolder(
         item: Any,
         position: Int
     ) {
-        item as IncomeModel
+        val income = ((item as IncomesItem) as? IncomeListItem)?.data
 
         initViews()
-        processIncome(income = item, position)
+
+        income?.let {
+            processIncome(income = it, position)
+        }
     }
 
     private fun initViews() {
