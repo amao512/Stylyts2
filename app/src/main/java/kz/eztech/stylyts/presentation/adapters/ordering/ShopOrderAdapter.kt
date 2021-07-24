@@ -1,15 +1,15 @@
 package kz.eztech.stylyts.presentation.adapters.ordering
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.ordering.holders.ShopOrderHolder
+import kz.eztech.stylyts.presentation.adapters.ordering.holders.ShopOrderViewHolder
 
 class ShopOrderAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_shop_order
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_shop_order
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -23,9 +23,9 @@ class ShopOrderAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
-        return ShopOrderHolder(
-            itemView = view,
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        return ShopOrderViewHolder(
+            itemView = inflateView(parent, R.layout.item_shop_order),
             adapter = this
         )
     }

@@ -1,11 +1,12 @@
 package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.ClothesAdditionalHolder
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.ClothesAdditionalHolder
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperAdapter
 import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
 
@@ -15,8 +16,6 @@ import kz.eztech.stylyts.presentation.interfaces.OnStartDragListener
 class ClothesAdditionalAdapter(
     private val onStartDragListener: OnStartDragListener? = null
 ) : BaseAdapter(), ItemTouchHelperAdapter {
-
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_main_image_detail
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
@@ -31,9 +30,12 @@ class ClothesAdditionalAdapter(
         }
     }
 
-    override fun getViewHolder(view: View): ClothesAdditionalHolder {
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
         return ClothesAdditionalHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_main_image_detail),
             adapter = this,
             onStartDragListener = onStartDragListener
         )

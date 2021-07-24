@@ -14,7 +14,11 @@ class StylesAdapter(
     styles: List<ClothesStyleModel>
 ) : ArrayAdapter<ClothesStyleModel>(context, 0, styles) {
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+    override fun getView(
+        position: Int,
+        convertView: View?,
+        parent: ViewGroup
+    ): View {
         val style: ClothesStyleModel? = getItem(position)
 
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_style, parent, false)

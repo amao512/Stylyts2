@@ -18,10 +18,10 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     var itemClickListener: UniversalViewClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(getLayoutId(viewType), parent, false)
-        return getViewHolder(view)
-    }
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder = getViewHolder(parent, viewType)
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         holder.bindData(currentList[position], position)
@@ -89,11 +89,22 @@ abstract class BaseAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         itemClickListener = listener
     }
 
-    abstract fun getLayoutId(viewType: Int): Int
+    fun inflateView(
+        parent: ViewGroup,
+        layoutId: Int
+    ): View {
+        return LayoutInflater.from(parent.context).inflate(
+            layoutId,
+            parent,
+            false
+        )
+    }
+
+//    abstract fun getLayoutId(viewType: Int): Int
 
     abstract fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack
 
-    abstract fun getViewHolder(view: View): BaseViewHolder
+    abstract fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder
 }
 
 

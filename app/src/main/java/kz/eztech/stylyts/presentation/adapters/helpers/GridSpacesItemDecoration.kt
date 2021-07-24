@@ -18,7 +18,7 @@ class GridSpacesItemDecoration(
 
         outRect.bottom = space
 
-        if (parent.getChildLayoutPosition(view) == 0  || parent.getChildLayoutPosition(view) == 1) {
+        if (parent.getChildLayoutPosition(view) == 0 || parent.getChildLayoutPosition(view) == 1) {
             outRect.top = space
         } else {
             outRect.top = 0

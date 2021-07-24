@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.incomes
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.income.IncomeModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -9,7 +9,7 @@ import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 
 class IncomesAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_income
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_income
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -23,7 +23,14 @@ class IncomesAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
-        return IncomeViewHolder(itemView = view, adapter = this)
+    override fun getItemViewType(position: Int): Int {
+        return super.getItemViewType(position)
+    }
+
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        return IncomeViewHolder(
+            itemView = inflateView(parent, R.layout.item_income),
+            adapter = this
+        )
     }
 }

@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.address
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -15,8 +15,6 @@ class AddressAdapter(
     private val addressViewClickListener: AddressViewClickListener
 ) : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_address_profile
-
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
             override fun getAreContentsTheSame(
@@ -29,9 +27,12 @@ class AddressAdapter(
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
         return AddressHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_address_profile),
             adapter = this,
             addressViewClickListener = addressViewClickListener
         )

@@ -1,10 +1,11 @@
 package kz.eztech.stylyts.presentation.adapters.main
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
+import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.adapters.main.holders.MainLineHolder
 
 /**
@@ -12,7 +13,7 @@ import kz.eztech.stylyts.presentation.adapters.main.holders.MainLineHolder
  */
 class MainLineAdapter : BaseAdapter(){
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_main_line
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_main_line
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
@@ -25,9 +26,9 @@ class MainLineAdapter : BaseAdapter(){
         }
     }
 
-    override fun getViewHolder(view: View): MainLineHolder {
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return MainLineHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_main_line),
             adapter = this
         )
     }

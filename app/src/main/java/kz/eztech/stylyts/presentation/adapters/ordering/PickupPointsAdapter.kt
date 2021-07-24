@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.ordering
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -10,7 +10,7 @@ import kz.eztech.stylyts.presentation.adapters.ordering.holders.PickupPointViewH
 
 class PickupPointsAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_pickup_point
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_pickup_point
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -24,9 +24,9 @@ class PickupPointsAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return PickupPointViewHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_pickup_point),
             adapter = this
         )
     }

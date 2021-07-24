@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
-import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
@@ -22,13 +22,6 @@ class CollectionConstructorShopCategoryAdapter(
 			false -> 0
 		}
 	}
-
-	override fun getLayoutId(viewType: Int): Int {
-		return when (viewType) {
-			1 -> R.layout.item_collection_constructor_category_wide
-			else -> R.layout.item_collection_constructor_category
-		}
-	}
 	
 	override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
 		return object : BaseDiffUtilCallBack(currentList, list){
@@ -41,8 +34,16 @@ class CollectionConstructorShopCategoryAdapter(
 			}
 		}
 	}
-	
-	override fun getViewHolder(view: View): BaseViewHolder {
+
+	override fun getViewHolder(
+		parent: ViewGroup,
+		viewType: Int
+	): BaseViewHolder {
+		val view = when (viewType) {
+			1 -> inflateView(parent, R.layout.item_collection_constructor_category_wide)
+			else -> inflateView(parent, R.layout.item_collection_constructor_category)
+		}
+
 		return CollectionConstructorShopCategoryHolder(
 			itemView = view,
 			adapter = this,

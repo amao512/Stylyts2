@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.ordering
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.order.DeliveryWayModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -10,7 +10,7 @@ import kz.eztech.stylyts.presentation.adapters.ordering.holders.DeliveryWayHolde
 
 class DeliveryWayAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_ordering_way
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_ordering_way
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -24,9 +24,9 @@ class DeliveryWayAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return DeliveryWayHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_ordering_way),
             adapter = this
         )
     }

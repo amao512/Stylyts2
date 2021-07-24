@@ -1,19 +1,17 @@
 package kz.eztech.stylyts.presentation.adapters.collection
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.presentation.adapters.collection.holders.OutfitViewHolder
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.collection.holders.OutfitViewHolder
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
  */
 class OutfitsAdapter : BaseAdapter() {
-
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_collection
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -27,7 +25,13 @@ class OutfitsAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
-        return OutfitViewHolder(view, this)
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
+        return OutfitViewHolder(
+            itemView = inflateView(parent, R.layout.item_collection),
+            adapter = this
+        )
     }
 }

@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.users
 
-import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -14,7 +14,7 @@ import kz.eztech.stylyts.presentation.adapters.users.holders.UserSubHolder
  */
 class UserSubAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_user_subs
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_user_subs
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
@@ -28,9 +28,9 @@ class UserSubAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return UserSubHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_user_subs),
             adapter = this
         )
     }

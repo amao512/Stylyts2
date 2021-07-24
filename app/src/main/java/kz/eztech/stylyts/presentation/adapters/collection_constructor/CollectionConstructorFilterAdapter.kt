@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.shop.GenderCategory
 import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.CollectionConstructorFilterHolder
@@ -13,8 +13,6 @@ import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
  */
 class CollectionConstructorFilterAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_constructor_filter_clothe_items
-
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return when (list[0]) {
             is GenderCategory -> getGenderCategoryDiffUtil(list)
@@ -22,9 +20,12 @@ class CollectionConstructorFilterAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
         return CollectionConstructorFilterHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_constructor_filter_clothe_items),
             adapter = this
         )
     }

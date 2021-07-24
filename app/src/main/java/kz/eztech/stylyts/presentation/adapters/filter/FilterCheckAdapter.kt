@@ -1,13 +1,14 @@
 package kz.eztech.stylyts.presentation.adapters.filter
 
-import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterItemCheckViewHolder
+import kz.eztech.stylyts.presentation.adapters.filter.holders.*
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
@@ -17,18 +18,21 @@ class FilterCheckAdapter : BaseAdapter() {
     companion object {
         private const val CHARACTER_TYPE = 0
         private const val OTHER_TYPE = 1
-    }
-
-    override fun getLayoutId(viewType: Int): Int {
-        return when (viewType) {
-            CHARACTER_TYPE -> R.layout.item_filter_character
-            else -> R.layout.item_filter_check
-        }
+        private const val CATEGORY = 2
+        private const val BRAND = 3
+        private const val TYPE = 4
+        private const val STYLE = 5
+        private const val COLOR = 6
     }
 
     override fun getItemViewType(position: Int): Int {
         return when ((currentList[position] as FilterCheckModel).item) {
             is String -> CHARACTER_TYPE
+            is ClothesCategoryModel -> CATEGORY
+            is ClothesBrandModel -> BRAND
+            is ClothesTypeModel -> TYPE
+            is ClothesStyleModel -> STYLE
+            is ClothesColorModel -> COLOR
             else -> OTHER_TYPE
         }
     }
@@ -45,8 +49,24 @@ class FilterCheckAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
-        return FilterItemCheckViewHolder(view, this)
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
+        val view = inflateView(parent, layoutId = R.layout.item_filter_check)
+
+        return when (viewType) {
+            CATEGORY -> CategoryFilterCheckViewHolder(view, adapter = this)
+            BRAND -> BrandFilterCheckViewHolder(view, adapter = this)
+            TYPE -> TypeFilterCheckViewHolder(view, adapter = this)
+            STYLE -> StyleFilterCheckViewHolder(view, adapter = this)
+            COLOR -> ColorFilterCheckViewHolder(view, adapter = this)
+            CHARACTER_TYPE -> CharacterFilterCheckViewHolder(
+                itemView = inflateView(parent, R.layout.item_filter_character),
+                adapter = this
+            )
+            else -> FilterItemCheckViewHolder(view, adapter = this)
+        }
     }
 
     fun onMultipleCheckItem(position: Int) {

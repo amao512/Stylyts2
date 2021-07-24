@@ -1,20 +1,18 @@
 package kz.eztech.stylyts.presentation.adapters.collection
 
-import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
+import kz.eztech.stylyts.presentation.adapters.collection.holders.CollectionFilterHolder
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
-import kz.eztech.stylyts.presentation.adapters.collection.holders.CollectionFilterHolder
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.
  */
 class CollectionsFilterAdapter : BaseAdapter() {
-
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_collection_filter
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -28,9 +26,12 @@ class CollectionsFilterAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
         return CollectionFilterHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_collection_filter),
             adapter = this
         )
     }

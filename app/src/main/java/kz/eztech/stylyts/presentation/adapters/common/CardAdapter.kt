@@ -1,17 +1,15 @@
 package kz.eztech.stylyts.presentation.adapters.common
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.card.CardEntity
-import kz.eztech.stylyts.presentation.adapters.common.holders.CardHolder
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.adapters.common.holders.CardHolder
 
 /**
  * Created by Ruslan Erdenoff on 03.03.2021.
  */
 class CardAdapter : BaseAdapter() {
-
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_user_card
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
@@ -25,7 +23,13 @@ class CardAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
-        return CardHolder(view,this)
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
+        return CardHolder(
+            itemView = inflateView(parent, R.layout.item_user_card),
+            adapter = this
+        )
     }
 }

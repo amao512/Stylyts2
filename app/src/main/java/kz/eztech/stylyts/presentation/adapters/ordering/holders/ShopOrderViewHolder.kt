@@ -13,7 +13,7 @@ import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
-class ShopOrderHolder(
+class ShopOrderViewHolder(
     itemView: View,
     adapter: BaseAdapter
 ) : BaseViewHolder(itemView, adapter) {

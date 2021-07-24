@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.ordering
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.order.DeliveryConditionModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -10,7 +10,7 @@ import kz.eztech.stylyts.presentation.adapters.ordering.holders.DeliveryConditio
 
 class DeliveryConditionAdapter : BaseAdapter() {
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_delivery_condition
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_delivery_condition
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -24,7 +24,10 @@ class DeliveryConditionAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
-        return DeliveryConditionViewHolder(view, adapter = this)
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        return DeliveryConditionViewHolder(
+            itemView = inflateView(parent, R.layout.item_delivery_condition),
+            adapter = this
+        )
     }
 }

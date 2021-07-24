@@ -12,7 +12,7 @@ import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImage
 
-class UserOrderHolder(
+class UserOrderViewHolder(
     itemView: View,
     adapter: BaseAdapter
 ) : BaseViewHolder(itemView, adapter) {

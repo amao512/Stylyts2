@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.shop
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -15,7 +15,7 @@ class ShopCategoryAdapter(
     private val gender: Int
 ): BaseAdapter(){
 
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_shop_category
+//    override fun getLayoutId(viewType: Int): Int = R.layout.item_shop_category
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
@@ -29,9 +29,9 @@ class ShopCategoryAdapter(
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return ShopCategoryHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_shop_category),
             adapter = this,
             gender = gender
         )

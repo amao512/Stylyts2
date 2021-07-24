@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.presentation.adapters.filter
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.filter.FilterItemModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -9,8 +9,6 @@ import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterViewHolder
 
 class FilterAdapter : BaseAdapter() {
-
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_filter
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -24,9 +22,12 @@ class FilterAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
         return FilterViewHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_filter),
             adapter = this
         )
     }

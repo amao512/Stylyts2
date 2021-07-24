@@ -1,19 +1,17 @@
 package kz.eztech.stylyts.presentation.adapters.collection_constructor
 
-import android.view.View
+import android.view.ViewGroup
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.common.PhotoLibraryModel
+import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.PhotoLibraryHolder
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.collection_constructor.holders.PhotoLibraryHolder
 
 /**
  * Created by Ruslan Erdenoff on 22.01.2021.
  */
 class PhotoLibraryAdapter : BaseAdapter() {
-
-    override fun getLayoutId(viewType: Int): Int = R.layout.item_photo_library
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -28,9 +26,12 @@ class PhotoLibraryAdapter : BaseAdapter() {
         }
     }
 
-    override fun getViewHolder(view: View): BaseViewHolder {
+    override fun getViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): BaseViewHolder {
         return PhotoLibraryHolder(
-            itemView = view,
+            itemView = inflateView(parent, R.layout.item_photo_library),
             adapter = this
         )
     }
