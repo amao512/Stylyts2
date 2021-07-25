@@ -17,14 +17,8 @@ interface CleanBackgroundContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun saveClothes(
-            token: String,
-            clothesCreateModel: ClothesCreateModel
-        )
+        fun saveClothes(clothesCreateModel: ClothesCreateModel)
 
-        fun getClothesById(
-            token: String,
-            clothesId: Int
-        )
+        fun getClothesById(clothesId: Int)
     }
 }

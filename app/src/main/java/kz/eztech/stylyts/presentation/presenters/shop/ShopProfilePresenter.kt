@@ -70,10 +70,7 @@ class ShopProfilePresenter @Inject constructor(
     }
 
     override fun getProfile() {
-        getUserByIdUseCase.initParams(
-            token = view.getToken(),
-            userId = view.getUserId()
-        )
+        getUserByIdUseCase.initParams(userId = view.getUserId())
         getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processProfile(userModel = t)
@@ -88,10 +85,7 @@ class ShopProfilePresenter @Inject constructor(
     }
 
     override fun getFollowers() {
-        getFollowersUseCase.initParams(
-            token = view.getToken(),
-            userId = view.getUserId()
-        )
+        getFollowersUseCase.initParams(userId = view.getUserId())
         getFollowersUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
             override fun onSuccess(t: ResultsModel<FollowerModel>) {
                 view.processFollowers(resultsModel = t)
@@ -104,7 +98,7 @@ class ShopProfilePresenter @Inject constructor(
     }
 
     override fun getTypes() {
-        getClothesTypesUseCase.initParams(token = view.getToken())
+        getClothesTypesUseCase.initParams()
         getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 view.processTypes(resultsModel = t)
@@ -126,7 +120,6 @@ class ShopProfilePresenter @Inject constructor(
 
     override fun loadPostsPage(page: Int) {
         getPostsUseCase.initParams(
-            token = view.getToken(),
             userId = view.getUserId(),
             page = page
         )
@@ -146,7 +139,6 @@ class ShopProfilePresenter @Inject constructor(
 
     override fun loadOutfitsPage(page: Int) {
         getOutfitsUseCase.initParams(
-            token = view.getToken(),
             page = page,
             filterModel = view.getOutfitFilter()
         )
@@ -166,7 +158,6 @@ class ShopProfilePresenter @Inject constructor(
 
     override fun loadClothesPage(page: Int) {
         getClothesUseCase.initParams(
-            token = view.getToken(),
             page = page,
             filterModel = view.getClothesFilter()
         )
@@ -193,10 +184,7 @@ class ShopProfilePresenter @Inject constructor(
     }
 
     override fun onFollow() {
-       followUserUseCase.initParams(
-           token = view.getToken(),
-           userId = view.getUserId()
-       )
+       followUserUseCase.initParams(userId = view.getUserId())
         followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
             override fun onSuccess(t: FollowSuccessModel) {
                 view.processSuccessFollowing(followSuccessModel = t)
@@ -209,10 +197,7 @@ class ShopProfilePresenter @Inject constructor(
     }
 
     override fun onUnFollow() {
-        unfollowUserUseCase.initParams(
-            token = view.getToken(),
-            userId = view.getUserId()
-        )
+        unfollowUserUseCase.initParams(userId = view.getUserId())
         unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processSuccessUnfollowing()

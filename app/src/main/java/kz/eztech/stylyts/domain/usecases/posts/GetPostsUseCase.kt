@@ -16,20 +16,16 @@ class GetPostsUseCase @Inject constructor(
     private val postsDomainRepository: PostsDomainRepository
 ) : BaseUseCase<ResultsModel<PostModel>>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<PostModel>> {
-        return postsDomainRepository.getPosts(token, queryMap)
+        return postsDomainRepository.getPosts(queryMap)
     }
 
     fun initParams(
-        token: String,
         userId: Int = 0,
         page: Int
     ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
         val map = HashMap<String, String>()
 
         if (userId != 0) {

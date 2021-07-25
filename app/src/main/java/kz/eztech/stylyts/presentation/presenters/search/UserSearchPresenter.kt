@@ -43,7 +43,6 @@ class UserSearchPresenter @Inject constructor(
 
     override fun loadPage(page: Int) {
         searchProfileUseCase.initParams(
-            token = view.getToken(),
             searchFilterModel = view.getSearchFilter(),
             page = page
         )

@@ -9,20 +9,11 @@ import okhttp3.MultipartBody
  */
 interface ProfileDomainRepository {
 
-    fun getUserProfile(token: String): Single<UserModel>
+    fun getUserProfile(): Single<UserModel>
 
-    fun editUserProfile(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<UserModel>
+    fun editUserProfile(data: HashMap<String, Any>): Single<UserModel>
 
-    fun setProfilePhoto(
-        token: String,
-        avatar: MultipartBody.Part
-    ): Single<UserModel>
+    fun setProfilePhoto(avatar: MultipartBody.Part): Single<UserModel>
 
-    fun getUserProfileById(
-        token: String,
-        userId: String
-    ): Single<UserModel>
+    fun getUserProfileById(userId: String): Single<UserModel>
 }

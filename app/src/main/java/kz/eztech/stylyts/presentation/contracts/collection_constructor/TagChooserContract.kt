@@ -21,8 +21,6 @@ interface TagChooserContract {
 
         fun processList(list: List<Any?>)
 
-        fun getToken(): String
-
         fun getClothesFilter(): ClothesFilterModel
 
         fun getSearchFilter(): SearchFilterModel

@@ -6,18 +6,9 @@ import kz.eztech.stylyts.domain.models.address.AddressModel
 
 interface AddressDomainRepository {
 
-    fun postAddress(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<AddressModel>
+    fun postAddress(data: HashMap<String, Any>): Single<AddressModel>
 
-    fun getAllAddress(
-        token: String,
-        queryMap: Map<String, String>
-    ): Single<ResultsModel<AddressModel>>
+    fun getAllAddress(queryMap: Map<String, String>): Single<ResultsModel<AddressModel>>
 
-    fun deleteAddress(
-        token: String,
-        id: String
-    ): Single<Any>
+    fun deleteAddress(id: String): Single<Any>
 }

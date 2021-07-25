@@ -12,8 +12,6 @@ interface UserSearchContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun getSearchFilter(): SearchFilterModel
 
         fun renderPaginatorState(state: Paginator.State)

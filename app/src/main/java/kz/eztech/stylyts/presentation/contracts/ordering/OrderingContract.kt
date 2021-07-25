@@ -19,10 +19,7 @@ interface OrderingContract {
 
         fun getGoodsFromCart()
 
-        fun createOrders(
-            token: String,
-            orderList: List<OrderCreateApiModel>
-        )
+        fun createOrders(orderList: List<OrderCreateApiModel>)
 
         fun clearCart(cartId: Int)
     }

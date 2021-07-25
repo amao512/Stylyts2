@@ -11,40 +11,25 @@ import okhttp3.MultipartBody
 interface PostsDomainRepository {
 
     fun createPost(
-        token: String,
         multipartList: List<MultipartBody.Part>,
         tags: TagsApiModel
     ): Single<PostCreateModel>
 
     fun getPosts(
-        token: String,
         queryMap: Map<String, String>
     ): Single<ResultsModel<PostModel>>
 
-    fun getPostById(
-        token: String,
-        postId: String
-    ): Single<PostModel>
+    fun getPostById(postId: String): Single<PostModel>
 
-    fun getHomepagePosts(
-        token: String,
-        queryMap: Map<String, String>
-    ): Single<ResultsModel<PostModel>>
+    fun getHomepagePosts(queryMap: Map<String, String>): Single<ResultsModel<PostModel>>
 
-    fun deletePost(
-        token: String,
-        postId: String
-    ): Single<Any>
+    fun deletePost(postId: String): Single<Any>
 
     fun updatePost(
-        token: String,
         postId: String,
         tags: TagsApiModel,
         multipartList: List<MultipartBody.Part>
     ): Single<PostCreateModel>
 
-    fun likePost(
-        token: String,
-        postId: String,
-    ): Single<ActionModel>
+    fun likePost(postId: String, ): Single<ActionModel>
 }

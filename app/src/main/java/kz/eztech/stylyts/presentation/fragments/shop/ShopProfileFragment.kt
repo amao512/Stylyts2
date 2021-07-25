@@ -132,7 +132,6 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         clothesFilterModel = ClothesFilterModel()
 
         filterDialog = FilterDialog.getNewInstance(
-            token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
             gender = clothesFilterModel.gender
         ).apply {
@@ -319,8 +318,6 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
 
         filterAdapter.updateList(filterList)
     }
-
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun getUserId(): Int = arguments?.getInt(PROFILE_ID_KEY) ?: 0
 

@@ -16,12 +16,10 @@ class UserRepository @Inject constructor(
 ) : UserDomainRepository {
 
     override fun getFollowersById(
-        token: String,
         userId: String,
         queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>> {
         return api.getUserFollowers(
-            token = token,
             userId = userId,
             queryMap = queryMap
         ).map {
@@ -33,12 +31,10 @@ class UserRepository @Inject constructor(
     }
 
     override fun getFollowingsById(
-        token: String,
         userId: String,
         queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>> {
         return api.getUserFollowings(
-            token = token,
             userId = userId,
             queryMap = queryMap
         ).map {
@@ -49,11 +45,8 @@ class UserRepository @Inject constructor(
         }
     }
 
-    override fun followUser(
-        token: String,
-        userId: String
-    ): Single<FollowSuccessModel> {
-        return api.followUser(token, userId).map {
+    override fun followUser(userId: String): Single<FollowSuccessModel> {
+        return api.followUser(userId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -61,10 +54,5 @@ class UserRepository @Inject constructor(
         }
     }
 
-    override fun unfollowUser(
-        token: String,
-        userId: String
-    ): Single<Any> {
-        return api.unfollowUser(token, userId)
-    }
+    override fun unfollowUser(userId: String): Single<Any> = api.unfollowUser(userId)
 }

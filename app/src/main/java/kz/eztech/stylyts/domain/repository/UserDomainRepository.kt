@@ -8,24 +8,16 @@ import kz.eztech.stylyts.domain.models.user.FollowerModel
 interface UserDomainRepository {
 
     fun getFollowersById(
-        token: String,
         userId: String,
         queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>>
 
     fun getFollowingsById(
-        token: String,
         userId: String,
         queryMap: Map<String, String>
     ): Single<ResultsModel<FollowerModel>>
 
-    fun followUser(
-        token: String,
-        userId: String
-    ): Single<FollowSuccessModel>
+    fun followUser(userId: String): Single<FollowSuccessModel>
 
-    fun unfollowUser(
-        token: String,
-        userId: String
-    ): Single<Any>
+    fun unfollowUser(userId: String): Single<Any>
 }

@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.outfits
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
@@ -17,25 +16,20 @@ class GetOutfitsUseCase @Inject constructor(
     private val outfitsDomainRepository: OutfitsDomainRepository
 ) : BaseUseCase<ResultsModel<OutfitModel>>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var booleanQueryMap: Map<String, Boolean>
     private lateinit var stringQueryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<OutfitModel>> {
         return outfitsDomainRepository.getOutfits(
-            token = token,
             booleanQueryMap = booleanQueryMap,
             stringQueryMap = stringQueryMap
         )
     }
 
     fun initParams(
-        token: String,
         page: Int,
         filterModel: OutfitFilterModel
     ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
         val booleanQueryMap = HashMap<String, Boolean>()
         val stringQueryMap = HashMap<String, String>()
 

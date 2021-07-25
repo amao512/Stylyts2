@@ -24,13 +24,10 @@ class IncomesPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getIncomes(
-        token: String,
-        page: Int
-    ) {
+    override fun getIncomes(page: Int) {
         view.displayProgress()
 
-        getOrderListUseCase.initParams(token, page)
+        getOrderListUseCase.initParams(page)
         getOrderListUseCase.execute(object : DisposableSingleObserver<ResultsModel<OrderModel>>() {
             override fun onSuccess(t: ResultsModel<OrderModel>) {
                 view.processViewAction {

@@ -128,12 +128,10 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     private fun getUsers(username: String = EMPTY_STRING) {
         when (getPositionFromArgs()) {
             0 -> presenter.getFollowers(
-                token = currentActivity.getTokenFromSharedPref(),
                 userId = getUserIdFromArgs(),
                 username = username
             )
             1 -> presenter.getFollowings(
-                token = currentActivity.getTokenFromSharedPref(),
                 userId = getUserIdFromArgs(),
                 username = username
             )
@@ -152,19 +150,13 @@ class UserSubsItemFragment : BaseFragment<MainActivity>(), UserSubsContract.View
     private fun onFollowUser(item: Any?) {
         item as FollowerModel
 
-        presenter.followUser(
-            token = currentActivity.getTokenFromSharedPref(),
-            followerId = item.id
-        )
+        presenter.followUser(followerId = item.id)
     }
 
     private fun onUnFollowUser(item: Any?) {
         item as FollowerModel
 
-        presenter.unFollowUser(
-            token = currentActivity.getTokenFromSharedPref(),
-            followerId = item.id
-        )
+        presenter.unFollowUser(followerId = item.id)
     }
 
     private fun getPositionFromArgs(): Int = arguments?.getInt(POSITION_ARGS) ?: 0

@@ -13,9 +13,6 @@ interface ShopOrderDetailContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getOrder(
-            token: String,
-            orderId: Int
-        )
+        fun getOrder(orderId: Int)
     }
 }

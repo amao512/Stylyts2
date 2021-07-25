@@ -20,19 +20,10 @@ interface ShopItemListContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun getClothesResultsByType(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun getClothesResultsByType(filterModel: ClothesFilterModel)
 
-        fun getClothesResultsByCategory(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun getClothesResultsByCategory(filterModel: ClothesFilterModel)
 
-        fun getCategoriesByType(
-            token: String,
-            clothesTypeId: Int
-        )
+        fun getCategoriesByType(clothesTypeId: Int)
     }
 }

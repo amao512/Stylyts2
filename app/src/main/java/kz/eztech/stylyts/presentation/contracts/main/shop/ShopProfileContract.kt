@@ -1,13 +1,9 @@
 package kz.eztech.stylyts.presentation.contracts.main.shop
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.domain.models.posts.PostFilterModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -21,8 +17,6 @@ import kz.eztech.stylyts.presentation.utils.Paginator
 interface ShopProfileContract {
 
     interface View: BaseView {
-
-        fun getToken(): String
 
         fun getUserId(): Int
 

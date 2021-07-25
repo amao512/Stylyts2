@@ -108,10 +108,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenterUser.getOrderById(
-            token = currentActivity.getTokenFromSharedPref(),
-            orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0
-        )
+        presenterUser.getOrderById(orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0)
     }
 
     override fun disposeRequests() {

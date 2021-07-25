@@ -2,9 +2,8 @@ package kz.eztech.stylyts.domain.usecases.address
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.address.AddressModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.AddressDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
@@ -16,20 +15,17 @@ class GetAddressUseCase @Inject constructor(
     private val addressDomainRepository: AddressDomainRepository
 ) : BaseUseCase<ResultsModel<AddressModel>>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<AddressModel>> {
-        return addressDomainRepository.getAllAddress(token, queryMap)
+        return addressDomainRepository.getAllAddress(queryMap)
     }
 
     fun initParams(
-        token: String,
         isMy: Boolean = true,
         owner: Int = 0,
         page: Int
     ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         val queryMap = HashMap<String, String>()
 
         queryMap["my"] = isMy.toString()

@@ -8,8 +8,6 @@ interface OrderListContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun renderPaginatorState(state: Paginator.State)
 
         fun processOrders(list: List<Any?>)

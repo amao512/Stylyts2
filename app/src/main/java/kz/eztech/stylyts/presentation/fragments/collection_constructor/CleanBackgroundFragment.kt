@@ -203,10 +203,7 @@ class CleanBackgroundFragment : BaseFragment<MainActivity>(), CleanBackgroundCon
     }
 
     private fun saveClothes(clothesCreateModel: ClothesCreateModel) {
-        presenter.saveClothes(
-            token = currentActivity.getTokenFromSharedPref(),
-            clothesCreateModel = clothesCreateModel
-        )
+        presenter.saveClothes(clothesCreateModel = clothesCreateModel)
     }
 
     private fun getPhotoUriFromArgs(): Uri? = arguments?.getParcelable(URI_KEY)

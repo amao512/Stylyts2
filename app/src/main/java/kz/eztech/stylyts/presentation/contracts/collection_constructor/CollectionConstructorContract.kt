@@ -15,8 +15,6 @@ interface CollectionConstructorContract {
 
     interface View : MotionViewContract {
 
-        fun getToken(): String
-
         fun isItems(): Boolean
 
         fun isStyles(): Boolean

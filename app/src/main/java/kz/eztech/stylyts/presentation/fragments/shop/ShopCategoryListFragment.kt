@@ -118,14 +118,8 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
 
         currentFilter.typeIdList = arrayListOf(clothesType)
 
-        presenter.getCategoriesByType(
-            token = currentActivity.getTokenFromSharedPref(),
-            clothesTypeId = clothesType.id
-        )
-        presenter.getClothesResultsByType(
-            token = currentActivity.getTokenFromSharedPref(),
-            filterModel = currentFilter
-        )
+        presenter.getCategoriesByType(clothesTypeId = clothesType.id)
+        presenter.getClothesResultsByType(filterModel = currentFilter)
     }
 
     override fun disposeRequests() {
@@ -215,10 +209,7 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
             setResetTextColor()
             setCurrentGender()
 
-            presenter.getClothesResultsByCategory(
-                token = currentActivity.getTokenFromSharedPref(),
-                filterModel = currentFilter
-            )
+            presenter.getClothesResultsByCategory(filterModel = currentFilter)
         }
     }
 

@@ -101,8 +101,6 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         fragment_clothes_detail_description_holder_linear_layout.setOnClickListener(this)
     }
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun processPostInitialization() {
         getClothes()
     }

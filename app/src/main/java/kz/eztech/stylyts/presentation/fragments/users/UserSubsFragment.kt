@@ -92,14 +92,8 @@ class UserSubsFragment : BaseFragment<MainActivity>(), UserSubsContract.View, Vi
     }
 
     override fun processPostInitialization() {
-        presenter.getFollowers(
-            token = currentActivity.getTokenFromSharedPref(),
-            userId = getUserIdFromArgs()
-        )
-        presenter.getFollowings(
-            token = currentActivity.getTokenFromSharedPref(),
-            userId = getUserIdFromArgs()
-        )
+        presenter.getFollowers(userId = getUserIdFromArgs())
+        presenter.getFollowings(userId = getUserIdFromArgs())
     }
 
     override fun disposeRequests() {

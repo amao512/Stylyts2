@@ -11,8 +11,6 @@ interface ClothesDetailContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun processClothes(clothesModel: ClothesModel)
 
         fun processSuccessSavedWardrobe()

@@ -151,8 +151,6 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
         edit_text_fragment_address_profile_post.setText(EMPTY_STRING)
     }
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
             is Paginator.State.Data<*> -> processAddressList(state.data)

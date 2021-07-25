@@ -202,8 +202,6 @@ class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.
         setCurrentListCondition(isPoints = false)
     }
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun getShopId(): Int = currentShopId
 
     override fun renderPaginatorState(state: Paginator.State) {

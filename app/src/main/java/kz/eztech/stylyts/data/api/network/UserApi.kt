@@ -12,27 +12,23 @@ interface UserApi {
 
     @GET(RestConstants.GET_FOLLOWERS_BY_ID)
     fun getUserFollowers(
-        @Header("Authorization") token: String,
         @Path("user_id") userId: String,
         @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<FollowerApiModel>>>
 
     @GET(RestConstants.GET_FOLLOWINGS_BY_ID)
     fun getUserFollowings(
-        @Header("Authorization") token: String,
         @Path("user_id") userId: String,
         @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<FollowerApiModel>>>
 
     @POST(RestConstants.FOLLOW_USER_BY_ID)
     fun followUser(
-        @Header("Authorization") token: String,
         @Path("user_id") userId: String
     ): Single<Response<FollowSuccessApiModel>>
 
     @POST(RestConstants.UNFOLLOW_USER_BY_ID)
     fun unfollowUser(
-        @Header("Authorization") token: String,
         @Path("user_id") userId: String
     ): Single<Any>
 }

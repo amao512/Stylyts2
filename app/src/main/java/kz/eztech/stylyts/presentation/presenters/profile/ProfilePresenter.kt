@@ -137,7 +137,6 @@ class ProfilePresenter @Inject constructor(
 
 	override fun loadPosts(page: Int) {
 		getPostsUseCase.initParams(
-			token = view.getToken(),
 			userId = view.getUserId(),
 			page = page
 		)
@@ -157,7 +156,6 @@ class ProfilePresenter @Inject constructor(
 
 	override fun loadWardrobes(page: Int) {
 		getClothesUseCase.initParams(
-			token = view.getToken(),
 			page = page,
 			filterModel = view.getClothesFilter()
 		)
@@ -177,7 +175,6 @@ class ProfilePresenter @Inject constructor(
 
 	override fun loadOutfits(page: Int) {
 		getOutfitsUseCase.initParams(
-			token = view.getToken(),
 			page = page,
 			filterModel = view.getOutfitFilter()
 		)
@@ -204,10 +201,7 @@ class ProfilePresenter @Inject constructor(
 	}
 
 	override fun getFollowers() {
-		getFollowersUseCase.initParams(
-			token = view.getToken(),
-			userId = view.getUserId()
-		)
+		getFollowersUseCase.initParams(userId = view.getUserId())
 		getFollowersUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
 			override fun onSuccess(t: ResultsModel<FollowerModel>) {
 				view.processViewAction {
@@ -224,10 +218,7 @@ class ProfilePresenter @Inject constructor(
 	}
 
 	override fun followUser() {
-		followUserUseCase.initParams(
-			token = view.getToken(),
-			userId = view.getUserId()
-		)
+		followUserUseCase.initParams(userId = view.getUserId())
 		followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
 			override fun onSuccess(t: FollowSuccessModel) {
 				view.processViewAction {
@@ -244,10 +235,7 @@ class ProfilePresenter @Inject constructor(
 	}
 
 	override fun unfollowUser() {
-		unfollowUserUseCase.initParams(
-			token = view.getToken(),
-			userId = view.getUserId()
-		)
+		unfollowUserUseCase.initParams(userId = view.getUserId())
 		unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
 			override fun onSuccess(t: Any) {
 				view.processViewAction {
@@ -265,7 +253,6 @@ class ProfilePresenter @Inject constructor(
 
 	override fun getWardrobeCount() {
 		getClothesUseCase.initParams(
-			token = view.getToken(),
 			filterModel = view.getClothesFilter(),
 			page = 1
 		)
@@ -285,7 +272,7 @@ class ProfilePresenter @Inject constructor(
 	}
 
 	private fun getOwnProfile() {
-		getProfileUseCase.initParams(token = view.getToken())
+		getProfileUseCase.initParams()
 		getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
 				view.processViewAction {
@@ -304,10 +291,7 @@ class ProfilePresenter @Inject constructor(
 	}
 
 	private fun getProfileById() {
-		getUserByIdUseCase.initParams(
-			token = view.getToken(),
-			userId = view.getUserId()
-		)
+		getUserByIdUseCase.initParams(userId = view.getUserId())
 		getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
 				view.processViewAction {

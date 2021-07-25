@@ -1,13 +1,14 @@
 package kz.eztech.stylyts.di.modules
 
 import android.app.Application
+import android.content.Context
 import android.content.SharedPreferences
-import androidx.preference.PreferenceManager
 import dagger.Module
 import dagger.Provides
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.LocalDataSource
 import kz.eztech.stylyts.data.db.card.CardDataSource
 import kz.eztech.stylyts.data.db.cart.CartDataSource
@@ -23,27 +24,24 @@ class ApplicationModule(private val mApplication: Application) {
 
     @Singleton
     @Provides
-    internal fun providesApplication(): Application {
-        return mApplication
-    }
-
-    @Provides
-    @Singleton
-    internal fun providesSharedPreferences(application: Application): SharedPreferences {
-        return PreferenceManager.getDefaultSharedPreferences(application)
-    }
+    internal fun providesApplication(): Application = mApplication
 
     @Provides
     @Named("executor_thread")
-    fun providesExecutorThread(): Scheduler {
-        return Schedulers.io()
-    }
+    fun providesExecutorThread(): Scheduler = Schedulers.io()
 
     @Provides
     @Named("ui_thread")
-    fun providesUiThread(): Scheduler {
-        return AndroidSchedulers.mainThread()
-    }
+    fun providesUiThread(): Scheduler = AndroidSchedulers.mainThread()
+
+    @Provides
+    @Singleton
+    fun providesSharedPreferences(): SharedPreferences =
+        mApplication.applicationContext
+            .getSharedPreferences(
+                mApplication.applicationContext.getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE
+            )
 
     @Provides
     fun provideDataSource() = LocalDataSource(mApplication)

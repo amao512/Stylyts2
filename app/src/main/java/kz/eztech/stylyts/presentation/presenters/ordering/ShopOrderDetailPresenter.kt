@@ -23,13 +23,10 @@ class ShopOrderDetailPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getOrder(
-        token: String,
-        orderId: Int
-    ) {
+    override fun getOrder(orderId: Int) {
         view.displayProgress()
 
-        getOrderByIdUseCase.initParams(token, orderId)
+        getOrderByIdUseCase.initParams(orderId)
         getOrderByIdUseCase.execute(object : DisposableSingleObserver<OrderModel>() {
             override fun onSuccess(t: OrderModel) {
                 view.processViewAction {

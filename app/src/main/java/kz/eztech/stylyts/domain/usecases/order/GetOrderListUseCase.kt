@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.order
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.domain.repository.OrderDomainRepository
@@ -16,19 +15,13 @@ class GetOrderListUseCase @Inject constructor(
     private val orderDomainRepository: OrderDomainRepository
 ) : BaseUseCase<ResultsModel<OrderModel>>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<OrderModel>> {
-        return orderDomainRepository.getOrderList(token, queryMap)
+        return orderDomainRepository.getOrderList(queryMap)
     }
 
-    fun initParams(
-        token: String,
-        page: Int
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
+    fun initParams(page: Int) {
         val queryMap = HashMap<String, String>()
 
         queryMap["page"] = page.toString()

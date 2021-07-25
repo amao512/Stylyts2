@@ -16,8 +16,8 @@ class ProfileRepository @Inject constructor(
     private var api: ProfileApi
 ) : ProfileDomainRepository {
 
-    override fun getUserProfile(token: String): Single<UserModel> {
-        return api.getMyProfile(token).map {
+    override fun getUserProfile(): Single<UserModel> {
+        return api.getMyProfile().map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 else -> throw NetworkException(it)
@@ -25,12 +25,8 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    override fun editUserProfile(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<UserModel> {
+    override fun editUserProfile(data: HashMap<String, Any>): Single<UserModel> {
         return api.editUserProfile(
-            token = token,
             firstName = data["first_name"] as String,
             lastName = data["last_name"] as String,
             username = data["username"] as String
@@ -44,14 +40,8 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    override fun setProfilePhoto(
-        token: String,
-        avatar: MultipartBody.Part
-    ): Single<UserModel> {
-        return api.setProfilePhoto(
-            token = token,
-            avatar = avatar
-        ).map {
+    override fun setProfilePhoto(avatar: MultipartBody.Part): Single<UserModel> {
+        return api.setProfilePhoto(avatar).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -59,14 +49,8 @@ class ProfileRepository @Inject constructor(
         }
     }
 
-    override fun getUserProfileById(
-        token: String,
-        userId: String
-    ): Single<UserModel> {
-        return api.getUserProfileById(
-            token = token,
-            userId = userId
-        ).map {
+    override fun getUserProfileById(userId: String): Single<UserModel> {
+        return api.getUserProfileById(userId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 else -> throw NetworkException(it)

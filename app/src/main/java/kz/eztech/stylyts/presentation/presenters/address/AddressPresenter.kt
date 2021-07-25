@@ -48,10 +48,7 @@ class AddressPresenter @Inject constructor(
     }
 
     override fun loadPage(page: Int) {
-        getAddressUseCase.initParams(
-            token = view.getToken(),
-            page = page
-        )
+        getAddressUseCase.initParams(page = page)
         getAddressUseCase.execute(object : DisposableSingleObserver<ResultsModel<AddressModel>>() {
             override fun onSuccess(t: ResultsModel<AddressModel>) {
                 view.processViewAction {
@@ -84,7 +81,7 @@ class AddressPresenter @Inject constructor(
     }
 
     override fun createAddress(data: HashMap<String, Any>) {
-        postAddressUseCase.initParams(token = view.getToken(), data)
+        postAddressUseCase.initParams(data)
         postAddressUseCase.execute(object : DisposableSingleObserver<AddressModel>() {
             override fun onSuccess(t: AddressModel) {
                 view.processViewAction {
@@ -103,7 +100,7 @@ class AddressPresenter @Inject constructor(
     }
 
     override fun deleteAddress(addressId: String) {
-        deleteAddressUseCase.initParams(token = view.getToken(), addressId)
+        deleteAddressUseCase.initParams(addressId)
         deleteAddressUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processViewAction {

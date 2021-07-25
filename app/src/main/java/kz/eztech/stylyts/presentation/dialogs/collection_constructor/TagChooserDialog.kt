@@ -176,7 +176,6 @@ class TagChooserDialog(
         searchFilterModel = SearchFilterModel()
 
         filterDialog = FilterDialog.getNewInstance(
-            token = getToken(),
             itemClickListener = this,
             gender = EMPTY_STRING,
             isShowWardrobe = true
@@ -293,8 +292,6 @@ class TagChooserDialog(
         }
     }
 
-    override fun getToken(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
-
     override fun getClothesFilter(): ClothesFilterModel = currentFilter
 
     override fun getSearchFilter(): SearchFilterModel = searchFilterModel
@@ -320,10 +317,8 @@ class TagChooserDialog(
     override fun onSingleTapUp() {
         when (mode) {
             CLOTHES_MODE -> showBottomSheet()
-            USERS_MODE -> UserSearchDialog.getNewInstance(
-                token = getToken(),
-                chooserListener = this
-            ).show(childFragmentManager, EMPTY_STRING)
+            USERS_MODE -> UserSearchDialog.getNewInstance(chooserListener = this)
+                .show(childFragmentManager, EMPTY_STRING)
         }
     }
 

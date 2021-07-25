@@ -15,11 +15,8 @@ class CommentsRepository @Inject constructor(
     private val api: CommentsApi
 ) : CommentsDomainRepository {
 
-    override fun getComments(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<CommentModel>> {
-        return api.getComments(token, map).map {
+    override fun getComments(map: Map<String, String>): Single<ResultsModel<CommentModel>> {
+        return api.getComments( map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -27,11 +24,8 @@ class CommentsRepository @Inject constructor(
         }
     }
 
-    override fun createComment(
-        token: String,
-        commentCreateModel: CommentCreateModel
-    ): Single<CommentModel> {
-        return api.createComment(token, commentCreateModel).map {
+    override fun createComment(commentCreateModel: CommentCreateModel): Single<CommentModel> {
+        return api.createComment(commentCreateModel).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)

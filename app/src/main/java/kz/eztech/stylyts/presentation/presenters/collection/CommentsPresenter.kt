@@ -59,7 +59,7 @@ class CommentsPresenter @Inject constructor(
     }
 
     override fun getProfile() {
-        getProfileUseCase.initParams(token = view.getToken())
+        getProfileUseCase.initParams()
         getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processProfile(userModel = t)
@@ -81,7 +81,6 @@ class CommentsPresenter @Inject constructor(
 
     override fun loadPage(page: Int) {
         getCommentsUseCase.initParams(
-            token = view.getToken(),
             postId = view.getPostId(),
             page = page
         )
@@ -99,7 +98,7 @@ class CommentsPresenter @Inject constructor(
     }
 
     override fun createComment(commentCreateModel: CommentCreateModel) {
-        createCommentUseCase.initParams(view.getToken(), commentCreateModel)
+        createCommentUseCase.initParams(commentCreateModel)
         createCommentUseCase.execute(object : DisposableSingleObserver<CommentModel>() {
             override fun onSuccess(t: CommentModel) {
                 view.processCreatingComment(commentModel = t)

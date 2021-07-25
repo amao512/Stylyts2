@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
-import kz.eztech.stylyts.domain.models.clothes.*
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
+import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.utils.Paginator
@@ -9,8 +9,6 @@ import kz.eztech.stylyts.presentation.utils.Paginator
 interface SaveClothesAcceptContract {
 
     interface View : BaseView {
-
-        fun getToken(): String
 
         fun getCurrentMode(): Int
 

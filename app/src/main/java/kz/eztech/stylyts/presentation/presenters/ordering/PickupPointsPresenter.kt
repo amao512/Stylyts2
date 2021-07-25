@@ -50,7 +50,7 @@ class PickupPointsPresenter @Inject constructor(
     override fun getShop(id: Int) {
         view.displayProgress()
 
-        getUserByIdUseCase.initParams(token = view.getToken(), id)
+        getUserByIdUseCase.initParams(id)
         getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processShop(userModel = t)
@@ -66,7 +66,6 @@ class PickupPointsPresenter @Inject constructor(
 
     override fun loadPage(page: Int) {
         getAddressUseCase.initParams(
-            token = view.getToken(),
             isMy = false,
             owner = view.getShopId(),
             page = page

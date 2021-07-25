@@ -13,18 +13,15 @@ class DeleteAddressUseCase @Inject constructor(
     private val addressDomainRepository: AddressDomainRepository
 ) : BaseUseCase<Any>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var addressId: String
 
     override fun createSingleObservable(): Single<Any> {
-        return addressDomainRepository.deleteAddress(token, addressId)
+        return addressDomainRepository.deleteAddress(addressId)
     }
 
     fun initParams(
-        token: String,
         addressId: String
     ) {
-        this.token = "JWT $token"
         this.addressId = addressId
     }
 }

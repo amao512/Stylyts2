@@ -46,10 +46,7 @@ class CollectionsItemPresenter @Inject constructor(
 	}
 
 	override fun loadPage(page: Int) {
-		getPostsUseCase.initParams(
-			token = view.getTokenId(),
-			page = page
-		)
+		getPostsUseCase.initParams(page = page)
 		getPostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				paginator.proceed(Paginator.Action.NewPage(

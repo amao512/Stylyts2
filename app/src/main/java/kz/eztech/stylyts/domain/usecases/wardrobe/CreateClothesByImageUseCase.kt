@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.wardrobe
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.clothes.ClothesCreateModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.repository.WardrobeDomainRepository
@@ -19,19 +18,13 @@ class CreateClothesByImageUseCase @Inject constructor(
     private val wardrobeDomainRepository: WardrobeDomainRepository
 ) : BaseUseCase<ClothesModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var multipartList: ArrayList<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<ClothesModel> {
-        return wardrobeDomainRepository.createClothesByPhoto(token, multipartList)
+        return wardrobeDomainRepository.createClothesByPhoto(multipartList)
     }
 
-    fun initParams(
-        token: String,
-        clothesCreateModel: ClothesCreateModel
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
+    fun initParams(clothesCreateModel: ClothesCreateModel) {
         val multipartList = ArrayList<MultipartBody.Part>()
 
         multipartList.add(MultipartBody.Part.createFormData("owner", clothesCreateModel.owner.toString()))

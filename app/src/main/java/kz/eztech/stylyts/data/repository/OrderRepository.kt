@@ -16,11 +16,8 @@ class OrderRepository @Inject constructor(
     private val api: OrderApi
 ) : OrderDomainRepository {
 
-    override fun getOrderList(
-        token: String,
-        queryMap: Map<String, String>
-    ): Single<ResultsModel<OrderModel>> {
-        return api.getOrderList(token, queryMap).map {
+    override fun getOrderList(queryMap: Map<String, String>): Single<ResultsModel<OrderModel>> {
+        return api.getOrderList(queryMap).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -28,11 +25,8 @@ class OrderRepository @Inject constructor(
         }
     }
 
-    override fun getOrderById(
-        token: String,
-        orderId: Int
-    ): Single<OrderModel> {
-        return api.getOrderById(token, orderId).map {
+    override fun getOrderById(orderId: Int): Single<OrderModel> {
+        return api.getOrderById(orderId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -40,11 +34,8 @@ class OrderRepository @Inject constructor(
         }
     }
 
-    override fun createOrder(
-        token: String,
-        orderCreateApiModel: OrderCreateApiModel
-    ): Single<OrderCreateModel> {
-        return api.createOrder(token, orderCreateApiModel).map {
+    override fun createOrder(orderCreateApiModel: OrderCreateApiModel): Single<OrderCreateModel> {
+        return api.createOrder(orderCreateApiModel).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)

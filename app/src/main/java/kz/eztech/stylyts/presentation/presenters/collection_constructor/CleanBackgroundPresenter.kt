@@ -30,17 +30,14 @@ class CleanBackgroundPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun saveClothes(
-        token: String,
-        clothesCreateModel: ClothesCreateModel
-    ) {
+    override fun saveClothes(clothesCreateModel: ClothesCreateModel) {
         view.displayProgress()
 
-        createClothesByImageUseCase.initParams(token, clothesCreateModel)
+        createClothesByImageUseCase.initParams(clothesCreateModel)
         createClothesByImageUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.hideProgress()
-                getClothesById(token, t.id)
+                getClothesById(t.id)
             }
 
             override fun onError(e: Throwable) {
@@ -52,9 +49,9 @@ class CleanBackgroundPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesById(token: String, clothesId: Int) {
+    override fun getClothesById(clothesId: Int) {
         view.displayProgress()
-        getClothesByIdUseCase.initParams(token, clothesId)
+        getClothesByIdUseCase.initParams(clothesId)
         getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>(){
             override fun onSuccess(t: ClothesModel) {
                 view.processViewAction {

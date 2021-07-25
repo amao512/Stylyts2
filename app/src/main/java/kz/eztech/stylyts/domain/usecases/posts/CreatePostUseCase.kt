@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.posts
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.posts.TagApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
@@ -20,24 +19,17 @@ class CreatePostUseCase @Inject constructor(
     private val postsDomainRepository: PostsDomainRepository
 ) : BaseUseCase<PostCreateModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var multipartList: List<MultipartBody.Part>
     private lateinit var tags: TagsApiModel
 
     override fun createSingleObservable(): Single<PostCreateModel> {
         return postsDomainRepository.createPost(
-            token = token,
             multipartList = multipartList,
             tags = tags
         )
     }
 
-    fun initParams(
-        token: String,
-        postCreateModel: PostCreateModel
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
+    fun initParams(postCreateModel: PostCreateModel) {
         val multipartList = ArrayList<MultipartBody.Part>()
         val requestFile = postCreateModel.imageFile?.asRequestBody(("image/*").toMediaTypeOrNull())
 

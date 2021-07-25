@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.profile
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.ProfileDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -18,13 +17,9 @@ class GetProfileUseCase @Inject constructor(
     private var profileDomainRepository: ProfileDomainRepository
 ) : BaseUseCase<UserModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
-
     override fun createSingleObservable(): Single<UserModel> {
-        return profileDomainRepository.getUserProfile(token)
+        return profileDomainRepository.getUserProfile()
     }
 
-    fun initParams(token: String) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-    }
+    fun initParams() {}
 }

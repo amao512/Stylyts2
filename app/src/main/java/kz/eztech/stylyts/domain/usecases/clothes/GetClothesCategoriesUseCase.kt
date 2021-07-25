@@ -2,9 +2,8 @@ package kz.eztech.stylyts.domain.usecases.clothes
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
+import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
@@ -19,20 +18,16 @@ class GetClothesCategoriesUseCase @Inject constructor(
     private val clothesDomainRepository: ClothesDomainRepository
 ) : BaseUseCase<ResultsModel<ClothesCategoryModel>>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var map: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<ClothesCategoryModel>> {
-        return clothesDomainRepository.getClothesCategories(token, map)
+        return clothesDomainRepository.getClothesCategories(map)
     }
 
     fun initParams(
-        token: String,
         typeId: Int = 0,
         page: Int = 1
     ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
         val map = HashMap<String, String>()
         map["page"] = page.toString()
 

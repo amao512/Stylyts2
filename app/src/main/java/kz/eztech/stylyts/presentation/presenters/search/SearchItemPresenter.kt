@@ -77,7 +77,6 @@ class SearchItemPresenter @Inject constructor(
 
     override fun searchUser(page: Int) {
         searchProfileUseCase.initParams(
-            token = view.getToken(),
             searchFilterModel = view.getSearchFilter().apply { isBrand = false },
             page = page
         )
@@ -150,7 +149,6 @@ class SearchItemPresenter @Inject constructor(
 
     override fun searchShop(page: Int) {
         searchProfileUseCase.initParams(
-            token = view.getToken(),
             searchFilterModel = view.getSearchFilter().apply { isBrand = true },
             page = page
         )
@@ -170,7 +168,6 @@ class SearchItemPresenter @Inject constructor(
 
     override fun searchClothes(page: Int) {
         searchClothesUseCase.initParams(
-            token = view.getToken(),
             searchFilterModel = view.getSearchFilter(),
             page = page
         )

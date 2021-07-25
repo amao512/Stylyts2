@@ -31,10 +31,9 @@ class EditProfilePresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getProfile(token: String) {
+    override fun getProfile() {
         view.displayProgress()
 
-        getProfileUseCase.initParams(token)
         getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processViewAction {
@@ -52,13 +51,10 @@ class EditProfilePresenter @Inject constructor(
         })
     }
 
-    override fun editProfile(
-        token: String,
-        data: HashMap<String, Any>
-    ) {
+    override fun editProfile(data: HashMap<String, Any>) {
         view.displayProgress()
 
-        editProfileUseCase.initParams(token, data)
+        editProfileUseCase.initParams(data)
         editProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processViewAction {
@@ -77,10 +73,7 @@ class EditProfilePresenter @Inject constructor(
         })
     }
 
-    override fun changeProfilePhoto(
-        token: String,
-        file: File
-    ) {
+    override fun changeProfilePhoto(file: File) {
         view.displayProgress()
 
         val requestFile = file.asRequestBody(("image/*").toMediaTypeOrNull())
@@ -91,7 +84,7 @@ class EditProfilePresenter @Inject constructor(
             requestFile
         )
 
-        changeProfilePhotoUseCase.initParams(token, multipartBody)
+        changeProfilePhotoUseCase.initParams(multipartBody)
         changeProfilePhotoUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processViewAction {
@@ -109,12 +102,12 @@ class EditProfilePresenter @Inject constructor(
         })
     }
 
-    override fun deleteProfilePhoto(token: String) {
+    override fun deleteProfilePhoto() {
         view.displayProgress()
 
         val multipartBody = MultipartBody.Part.createFormData("avatar", EMPTY_STRING)
 
-        changeProfilePhotoUseCase.initParams(token, multipartBody)
+        changeProfilePhotoUseCase.initParams(multipartBody)
         changeProfilePhotoUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processViewAction {

@@ -69,10 +69,7 @@ class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, Paym
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getOrderById(
-            token = currentActivity.getTokenFromSharedPref(),
-            orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0
-        )
+        presenter.getOrderById(orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0)
     }
 
     override fun disposeRequests() {

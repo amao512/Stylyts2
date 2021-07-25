@@ -261,7 +261,6 @@ class CartFragment : BaseFragment<MainActivity>(), View.OnClickListener, Univers
 
         item.let {
             presenter.getSizes(
-                token = (activity as MainActivity).getTokenFromSharedPref(),
                 clothesId = it.id ?: 0,
                 cartEntity = item,
                 isSize = isSize

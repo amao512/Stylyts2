@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.profile
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.ProfileDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -16,18 +15,13 @@ class ChangeProfilePhotoUseCase @Inject constructor(
     private var profileDomainRepository: ProfileDomainRepository
 ) : BaseUseCase<UserModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var avatar: MultipartBody.Part
 
     override fun createSingleObservable(): Single<UserModel> {
-        return profileDomainRepository.setProfilePhoto(token, avatar)
+        return profileDomainRepository.setProfilePhoto(avatar)
     }
 
-    fun initParams(
-        token: String,
-        avatar: MultipartBody.Part
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+    fun initParams(avatar: MultipartBody.Part) {
         this.avatar = avatar
     }
 }

@@ -17,6 +17,6 @@ interface CollectionsContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun getClothesStyles(token: String)
+        fun getClothesStyles()
     }
 }

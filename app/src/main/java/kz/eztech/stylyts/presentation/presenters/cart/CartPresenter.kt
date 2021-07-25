@@ -145,12 +145,11 @@ class CartPresenter @Inject constructor(
     }
 
     override fun getSizes(
-        token: String,
         clothesId: Int,
         cartEntity: CartEntity,
         isSize: Boolean
     ) {
-        getClothesByIdUseCase.initParams(token, clothesId)
+        getClothesByIdUseCase.initParams(clothesId)
         getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processSizes(

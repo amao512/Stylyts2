@@ -9,8 +9,6 @@ interface PickupPointsContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun getShopId(): Int
 
         fun processShop(userModel: UserModel)

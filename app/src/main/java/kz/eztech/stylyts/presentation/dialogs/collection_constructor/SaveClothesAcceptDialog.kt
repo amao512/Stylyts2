@@ -24,7 +24,6 @@ import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveCloth
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.SaveClothesAcceptPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
@@ -218,8 +217,6 @@ class SaveClothesAcceptDialog(
         dialog_save_clothes_accept_list_toolbar.show()
         dialog_save_clothes_recycler_view.show()
     }
-
-    override fun getToken(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 
     override fun getCurrentMode(): Int = listMode
 

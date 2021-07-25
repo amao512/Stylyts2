@@ -18,7 +18,6 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.profile.UserSearchContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.UserSearchPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.Paginator
 import kz.eztech.stylyts.presentation.utils.extensions.displayToast
 import javax.inject.Inject
@@ -38,17 +37,8 @@ class UserSearchDialog(
     companion object {
         private const val TOKEN_KEY = "token_key"
 
-        fun getNewInstance(
-            token: String,
-            chooserListener: DialogChooserListener? = null
-        ): UserSearchDialog {
-            val dialog = UserSearchDialog(chooserListener)
-            val bundle = Bundle()
-
-            bundle.putString(TOKEN_KEY, token)
-            dialog.arguments = bundle
-
-            return dialog
+        fun getNewInstance(chooserListener: DialogChooserListener? = null): UserSearchDialog {
+            return UserSearchDialog(chooserListener)
         }
     }
 
@@ -156,8 +146,6 @@ class UserSearchDialog(
 
         return false
     }
-
-    override fun getToken(): String = arguments?.getString(TOKEN_KEY) ?: EMPTY_STRING
 
     override fun getSearchFilter(): SearchFilterModel = filterModel
 

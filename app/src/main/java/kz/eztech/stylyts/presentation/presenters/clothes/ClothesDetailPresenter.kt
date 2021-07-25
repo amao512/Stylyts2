@@ -46,7 +46,7 @@ class ClothesDetailPresenter @Inject constructor(
     override fun getClothesById(clothesId: Int) {
         view.displayProgress()
 
-        getClothesByIdUseCase.initParams(token = view.getToken(), clothesId)
+        getClothesByIdUseCase.initParams(clothesId)
         getClothesByIdUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processViewAction {
@@ -67,7 +67,7 @@ class ClothesDetailPresenter @Inject constructor(
     override fun getClothesByBarcode(barcode: String) {
         view.displayProgress()
 
-        getClothesByBarcode.initParams(token = view.getToken(), barcode)
+        getClothesByBarcode.initParams(barcode)
         getClothesByBarcode.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processViewAction {
@@ -86,10 +86,7 @@ class ClothesDetailPresenter @Inject constructor(
     }
 
     override fun saveClothesToWardrobe(clothesId: Int) {
-        saveClothesToWardrobeUseCase.initParams(
-            token = view.getToken(),
-            clothesId.toString()
-        )
+        saveClothesToWardrobeUseCase.initParams(clothesId = clothesId.toString())
         saveClothesToWardrobeUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processSuccessSavedWardrobe()
@@ -118,10 +115,7 @@ class ClothesDetailPresenter @Inject constructor(
     override fun deleteClothes(clothesId: Int) {
         view.displayProgress()
 
-        deleteClothesUseCase.initParams(
-            token = view.getToken(),
-            clothesId = clothesId
-        )
+        deleteClothesUseCase.initParams(clothesId = clothesId)
         deleteClothesUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processViewAction {

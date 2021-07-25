@@ -18,8 +18,6 @@ interface ProfileContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun getCollectionMode(): Int
 
         fun getUserId(): Int

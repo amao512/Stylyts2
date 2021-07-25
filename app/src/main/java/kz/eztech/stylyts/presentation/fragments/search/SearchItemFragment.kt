@@ -129,8 +129,6 @@ class SearchItemFragment(
 
     override fun hideProgress() {}
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun getCurrentPosition(): Int = position
 
     override fun getSearchFilter(): SearchFilterModel = filterModel

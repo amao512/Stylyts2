@@ -27,23 +27,14 @@ interface FilterContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getMyWardrobe(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun getMyWardrobe(filterModel: ClothesFilterModel)
 
-        fun getClothesTypes(token: String)
+        fun getClothesTypes()
 
-        fun getClothesBrands(
-            token: String,
-            title: String
-        )
+        fun getClothesBrands(title: String)
 
-        fun getClothesResults(
-            token: String,
-            filterModel: ClothesFilterModel
-        )
+        fun getClothesResults(filterModel: ClothesFilterModel)
 
-        fun getColors(token: String)
+        fun getColors()
     }
 }

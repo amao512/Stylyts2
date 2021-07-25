@@ -35,11 +35,10 @@ class UserSubsPresenter @Inject constructor(
     }
 
     override fun getFollowers(
-        token: String,
         userId: Int,
         username: String
     ) {
-        getFollowersUseCase.initParams(token, userId, username)
+        getFollowersUseCase.initParams(userId, username)
         getFollowersUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
             override fun onSuccess(t: ResultsModel<FollowerModel>) {
                 view.processViewAction {
@@ -56,11 +55,10 @@ class UserSubsPresenter @Inject constructor(
     }
 
     override fun getFollowings(
-        token: String,
         userId: Int,
         username: String
     ) {
-        getFollowingsUseCase.initParams(token, userId, username)
+        getFollowingsUseCase.initParams(userId, username)
         getFollowingsUseCase.execute(object : DisposableSingleObserver<ResultsModel<FollowerModel>>() {
             override fun onSuccess(t: ResultsModel<FollowerModel>) {
                 view.processViewAction {
@@ -76,11 +74,8 @@ class UserSubsPresenter @Inject constructor(
         })
     }
 
-    override fun followUser(
-        token: String,
-        followerId: Int
-    ) {
-        followUserUseCase.initParams(token, followerId)
+    override fun followUser(followerId: Int) {
+        followUserUseCase.initParams(followerId)
         followUserUseCase.execute(object : DisposableSingleObserver<FollowSuccessModel>() {
             override fun onSuccess(t: FollowSuccessModel) {
                 view.processSuccessFollowing(followSuccessModel = t)
@@ -92,11 +87,8 @@ class UserSubsPresenter @Inject constructor(
         })
     }
 
-    override fun unFollowUser(
-        token: String,
-        followerId: Int
-    ) {
-        unfollowUserUseCase.initParams(token, followerId)
+    override fun unFollowUser(followerId: Int) {
+        unfollowUserUseCase.initParams(followerId)
         unfollowUserUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processSuccessUnFollowing(followerId = followerId)

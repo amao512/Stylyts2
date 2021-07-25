@@ -7,13 +7,7 @@ import kz.eztech.stylyts.domain.models.comments.CommentModel
 
 interface CommentsDomainRepository {
 
-    fun getComments(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<CommentModel>>
+    fun getComments(map: Map<String, String>): Single<ResultsModel<CommentModel>>
 
-    fun createComment(
-        token: String,
-        commentCreateModel: CommentCreateModel
-    ): Single<CommentModel>
+    fun createComment(commentCreateModel: CommentCreateModel): Single<CommentModel>
 }

@@ -2,11 +2,9 @@ package kz.eztech.stylyts.domain.usecases.posts
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.posts.TagApiModel
 import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import okhttp3.MultipartBody
@@ -19,14 +17,12 @@ class UpdatePostUseCase @Inject constructor(
     private val postsDomainRepository: PostsDomainRepository
 ) : BaseUseCase<PostCreateModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var postId: String
     private lateinit var tags: TagsApiModel
     private lateinit var multipartList: List<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<PostCreateModel> {
         return postsDomainRepository.updatePost(
-            token = token,
             postId = postId,
             tags = tags,
             multipartList = multipartList
@@ -34,11 +30,9 @@ class UpdatePostUseCase @Inject constructor(
     }
 
     fun initParams(
-        token: String,
         postId: Int,
         postCreateModel: PostCreateModel
     ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.postId = postId.toString()
 
         val multipartList = ArrayList<MultipartBody.Part>()

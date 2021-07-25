@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.order
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.domain.repository.OrderDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -15,18 +14,13 @@ class GetOrderByIdUseCase @Inject constructor(
     private val orderDomainRepository: OrderDomainRepository
 ) : BaseUseCase<OrderModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private var orderId: Int = 0
 
     override fun createSingleObservable(): Single<OrderModel> {
-        return orderDomainRepository.getOrderById(token, orderId)
+        return orderDomainRepository.getOrderById(orderId)
     }
 
-    fun initParams(
-        token: String,
-        orderId: Int
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+    fun initParams(orderId: Int) {
         this.orderId = orderId
     }
 }

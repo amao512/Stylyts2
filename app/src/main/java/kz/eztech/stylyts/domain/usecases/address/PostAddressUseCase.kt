@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.address
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.repository.AddressDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -15,18 +14,13 @@ class PostAddressUseCase @Inject constructor(
     private val addressDomainRepository: AddressDomainRepository
 ) : BaseUseCase<AddressModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var data: HashMap<String, Any>
 
     override fun createSingleObservable(): Single<AddressModel> {
-        return addressDomainRepository.postAddress(token, data)
+        return addressDomainRepository.postAddress(data)
     }
 
-    fun initParams(
-        token: String,
-        data: HashMap<String, Any>
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+    fun initParams(data: HashMap<String, Any>) {
         this.data = data
     }
 }

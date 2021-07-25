@@ -45,10 +45,7 @@ class OrderListPresenter @Inject constructor(
     }
 
     override fun loadPage(page: Int) {
-        getOrderListUseCase.initParams(
-            token = view.getToken(),
-            page = page
-        )
+        getOrderListUseCase.initParams(page = page)
         getOrderListUseCase.execute(object : DisposableSingleObserver<ResultsModel<OrderModel>>() {
             override fun onSuccess(t: ResultsModel<OrderModel>) {
                 paginator.proceed(Paginator.Action.NewPage(

@@ -22,8 +22,8 @@ class MyDataPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getProfile(token: String) {
-        getProfileUseCase.initParams(token)
+    override fun getProfile() {
+        getProfileUseCase.initParams()
         getProfileUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.processProfile(userModel = t)

@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.posts
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
@@ -16,19 +15,13 @@ class GetHomePagePostsUseCase @Inject constructor(
     private val postsDomainRepository: PostsDomainRepository
 ) : BaseUseCase<ResultsModel<PostModel>>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var queryMap: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<PostModel>> {
-        return postsDomainRepository.getHomepagePosts(token, queryMap)
+        return postsDomainRepository.getHomepagePosts(queryMap)
     }
 
-    fun initParams(
-        token: String,
-        page: Int
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
+    fun initParams(page: Int) {
         val queryMap = HashMap<String, String>()
 
         queryMap["page"] = page.toString()

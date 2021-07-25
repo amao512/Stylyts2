@@ -60,7 +60,7 @@ class MainLinePresenter @Inject constructor(
 	}
 
 	override fun loadPage(page: Int) {
-		getHomePagePostsUseCase.initParams(view.getToken(), page)
+		getHomePagePostsUseCase.initParams(page)
 		getHomePagePostsUseCase.execute(object : DisposableSingleObserver<ResultsModel<PostModel>>() {
 			override fun onSuccess(t: ResultsModel<PostModel>) {
 				paginator.proceed(Paginator.Action.NewPage(
@@ -83,13 +83,10 @@ class MainLinePresenter @Inject constructor(
 		paginator.proceed(Paginator.Action.LoadMore)
 	}
 
-	override fun deletePost(
-		token: String,
-		postId: Int
-	) {
+	override fun deletePost(postId: Int) {
 		view.displayProgress()
 
-		deletePostUseCase.initParams(token, postId)
+		deletePostUseCase.initParams(postId)
 		deletePostUseCase.execute(object : DisposableSingleObserver<Any>() {
 			override fun onSuccess(t: Any) {
 				view.processViewAction {
@@ -107,11 +104,8 @@ class MainLinePresenter @Inject constructor(
 		})
 	}
 
-	override fun likePost(
-		token: String,
-		postId: Int
-	) {
-		likePostUseCase.initParams(token, postId)
+	override fun likePost(postId: Int) {
+		likePostUseCase.initParams(postId)
 		likePostUseCase.execute(object : DisposableSingleObserver<ActionModel>() {
 			override fun onSuccess(t: ActionModel) {
 				when (t.action) {
@@ -126,8 +120,8 @@ class MainLinePresenter @Inject constructor(
 		})
 	}
 
-	override fun getUserForNavigate(token: String, userId: Int) {
-		getUserByIdUseCase.initParams(token, userId)
+	override fun getUserForNavigate(userId: Int) {
+		getUserByIdUseCase.initParams(userId)
 		getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
 			override fun onSuccess(t: UserModel) {
 				view.navigateToUserProfile(userModel = t)

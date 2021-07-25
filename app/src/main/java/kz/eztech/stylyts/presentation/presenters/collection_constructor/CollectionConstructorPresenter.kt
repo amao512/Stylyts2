@@ -58,7 +58,7 @@ class CollectionConstructorPresenter @Inject constructor(
     override fun getTypes() {
         view.displayProgress()
 
-        getClothesTypesUseCase.initParams(token = view.getToken())
+        getClothesTypesUseCase.initParams()
         getClothesTypesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
@@ -89,7 +89,6 @@ class CollectionConstructorPresenter @Inject constructor(
 
     override fun loadClothes(page: Int) {
         getClothesUseCase.initParams(
-            token = view.getToken(),
             page = page,
             filterModel = view.getClothesFilter()
         )
@@ -108,10 +107,7 @@ class CollectionConstructorPresenter @Inject constructor(
     }
 
     override fun loadStyles(page: Int) {
-        getClothesStylesUseCase.initParams(
-            token = view.getToken(),
-            page = page
-        )
+        getClothesStylesUseCase.initParams(page = page)
         getClothesStylesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesStyleModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {

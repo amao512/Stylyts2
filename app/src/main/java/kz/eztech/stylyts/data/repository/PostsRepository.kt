@@ -19,12 +19,10 @@ class PostsRepository @Inject constructor(
 ) : PostsDomainRepository {
 
     override fun createPost(
-        token: String,
         multipartList: List<MultipartBody.Part>,
         tags: TagsApiModel
     ): Single<PostCreateModel> {
         return api.createPost(
-            token = token,
             multipartList = multipartList,
             tagsBody = tags
         ).map {
@@ -35,11 +33,8 @@ class PostsRepository @Inject constructor(
         }
     }
 
-    override fun getPosts(
-        token: String,
-        queryMap: Map<String, String>
-    ): Single<ResultsModel<PostModel>> {
-        return api.getPosts(token, queryMap).map {
+    override fun getPosts(queryMap: Map<String, String>): Single<ResultsModel<PostModel>> {
+        return api.getPosts(queryMap).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -47,11 +42,8 @@ class PostsRepository @Inject constructor(
         }
     }
 
-    override fun getPostById(
-        token: String,
-        postId: String
-    ): Single<PostModel> {
-        return api.getPostById(token, postId).map {
+    override fun getPostById(postId: String): Single<PostModel> {
+        return api.getPostById(postId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -59,11 +51,8 @@ class PostsRepository @Inject constructor(
         }
     }
 
-    override fun getHomepagePosts(
-        token: String,
-        queryMap: Map<String, String>
-    ): Single<ResultsModel<PostModel>> {
-        return api.getHomePagePosts(token, queryMap).map {
+    override fun getHomepagePosts(queryMap: Map<String, String>): Single<ResultsModel<PostModel>> {
+        return api.getHomePagePosts(queryMap).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -71,11 +60,8 @@ class PostsRepository @Inject constructor(
         }
     }
 
-    override fun deletePost(
-        token: String,
-        postId: String
-    ): Single<Any> {
-        return api.deletePost(token, postId).map {
+    override fun deletePost(postId: String): Single<Any> {
+        return api.deletePost(postId).map {
             when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)
@@ -84,13 +70,11 @@ class PostsRepository @Inject constructor(
     }
 
     override fun updatePost(
-        token: String,
         postId: String,
         tags: TagsApiModel,
         multipartList: List<MultipartBody.Part>
     ): Single<PostCreateModel> {
         return api.updatePost(
-            token = token,
             postId = postId,
             tagsBody = tags,
             multipartList = multipartList
@@ -102,14 +86,8 @@ class PostsRepository @Inject constructor(
         }
     }
 
-    override fun likePost(
-        token: String,
-        postId: String
-    ): Single<ActionModel> {
-        return api.likePost(
-            token = token,
-            postId = postId
-        ).map {
+    override fun likePost(postId: String): Single<ActionModel> {
+        return api.likePost(postId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 else -> throw NetworkException(it)

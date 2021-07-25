@@ -135,7 +135,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
         currentFilter.onlyBrands = true
 
         filterDialog = FilterDialog.getNewInstance(
-            token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
             gender = getGender(),
             isShowWardrobe = true
@@ -265,8 +264,6 @@ class CollectionConstructorFragment : BaseFragment<MainActivity>(),
             typesList = preparedTypes(list = resultsModel.results)
         )
     }
-
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun getClothesFilter(): ClothesFilterModel = currentFilter
 

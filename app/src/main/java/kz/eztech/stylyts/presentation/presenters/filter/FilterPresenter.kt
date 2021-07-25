@@ -36,11 +36,8 @@ class FilterPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getMyWardrobe(
-        token: String,
-        filterModel: ClothesFilterModel
-    ) {
-        getClothesUseCase.initParams(token, filterModel.page, filterModel)
+    override fun getMyWardrobe(filterModel: ClothesFilterModel) {
+        getClothesUseCase.initParams(filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 val categoryList: MutableList<ClothesCategoryModel> = mutableListOf()
@@ -85,15 +82,14 @@ class FilterPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesTypes(token: String) {
+    override fun getClothesTypes() {
         view.displayProgress()
 
-        getClothesTypesUseCase.initParams(token)
+        getClothesTypesUseCase.initParams()
         getClothesTypesUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 getPreparedCategories(
-                    token = token,
                     resultsModel = t,
                     onCategories = {
                         view.processViewAction {
@@ -113,11 +109,8 @@ class FilterPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesBrands(
-        token: String,
-        title: String
-    ) {
-        getClothesBrandsUseCase.initParams(token)
+    override fun getClothesBrands(title: String) {
+        getClothesBrandsUseCase.initParams()
         getClothesBrandsUseCase.execute(object :
             DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
@@ -146,12 +139,8 @@ class FilterPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesResults(
-        token: String,
-        filterModel: ClothesFilterModel
-    ) {
+    override fun getClothesResults(filterModel: ClothesFilterModel) {
         getClothesUseCase.initParams(
-            token = token,
             filterModel = filterModel,
             page = filterModel.page
         )
@@ -170,8 +159,8 @@ class FilterPresenter @Inject constructor(
         })
     }
 
-    override fun getColors(token: String) {
-        getClothesColorsUseCase.initParams(token)
+    override fun getColors() {
+        getClothesColorsUseCase.initParams()
         getClothesColorsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesColorModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesColorModel>) {
                 val preparedList: MutableList<FilterCheckModel> = mutableListOf()
@@ -195,7 +184,6 @@ class FilterPresenter @Inject constructor(
     }
 
     private fun getPreparedCategories(
-        token: String,
         resultsModel: ResultsModel<ClothesTypeModel>,
         onCategories: (List<CategoryFilterSingleCheckGenre>) -> Unit
     ) {
@@ -203,7 +191,6 @@ class FilterPresenter @Inject constructor(
 
         resultsModel.results.map { type ->
             getClothesCategoriesByType(
-                token = token,
                 typeId = type.id,
                 onResults = { resultsModel ->
                     val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
@@ -247,11 +234,10 @@ class FilterPresenter @Inject constructor(
     }
 
     private fun getClothesCategoriesByType(
-        token: String,
         typeId: Int,
         onResults: (ResultsModel<ClothesCategoryModel>) -> Unit
     ) {
-        getClothesCategoriesUseCase.initParams(token, typeId)
+        getClothesCategoriesUseCase.initParams(typeId)
         getClothesCategoriesUseCase.execute(
             object : DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
                 override fun onSuccess(t: ResultsModel<ClothesCategoryModel>) {

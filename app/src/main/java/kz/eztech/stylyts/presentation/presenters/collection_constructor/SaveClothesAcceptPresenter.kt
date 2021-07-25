@@ -66,10 +66,7 @@ class SaveClothesAcceptPresenter @Inject constructor(
     }
 
     override fun loadTypes(page: Int) {
-        getClothesTypesUseCase.initParams(
-            token = view.getToken(),
-            page = page
-        )
+        getClothesTypesUseCase.initParams(page = page)
         getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 paginator.proceed(Paginator.Action.NewPage(
@@ -86,7 +83,6 @@ class SaveClothesAcceptPresenter @Inject constructor(
 
     override fun loadCategories(page: Int) {
         getClothesCategoriesUseCase.initParams(
-            token = view.getToken(),
             typeId = view.getClothesCreateModel().clothesType,
             page = page
         )
@@ -105,10 +101,7 @@ class SaveClothesAcceptPresenter @Inject constructor(
     }
 
     override fun loadStyles(page: Int) {
-        getClothesStylesUseCase.initParams(
-            token = view.getToken(),
-            page = page
-        )
+        getClothesStylesUseCase.initParams(page = page)
         getClothesStylesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesStyleModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {
                 paginator.proceed(Paginator.Action.NewPage(
@@ -124,10 +117,7 @@ class SaveClothesAcceptPresenter @Inject constructor(
     }
 
     override fun loadBrands(page: Int) {
-        getClothesBrandsUseCase.initParams(
-            token = view.getToken(),
-            page = page
-        )
+        getClothesBrandsUseCase.initParams(page = page)
         getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
                 paginator.proceed(Paginator.Action.NewPage(
@@ -154,10 +144,7 @@ class SaveClothesAcceptPresenter @Inject constructor(
     override fun createClothes() {
         view.displayProgress()
 
-        createClothesByImageUseCase.initParams(
-            token = view.getToken(),
-            clothesCreateModel = view.getClothesCreateModel()
-        )
+        createClothesByImageUseCase.initParams(clothesCreateModel = view.getClothesCreateModel())
         createClothesByImageUseCase.execute(object : DisposableSingleObserver<ClothesModel>() {
             override fun onSuccess(t: ClothesModel) {
                 view.processSuccessCreating(wardrobeModel = t)

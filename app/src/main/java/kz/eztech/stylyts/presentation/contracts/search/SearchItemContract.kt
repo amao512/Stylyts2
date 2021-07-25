@@ -11,8 +11,6 @@ interface SearchItemContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun getCurrentPosition(): Int
 
         fun getSearchFilter(): SearchFilterModel

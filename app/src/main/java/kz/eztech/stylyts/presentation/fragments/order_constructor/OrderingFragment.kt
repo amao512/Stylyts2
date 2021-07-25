@@ -230,9 +230,6 @@ class OrderingFragment : BaseFragment<MainActivity>(), OrderingContract.View, Vi
             }
         }
 
-        presenter.createOrders(
-            token = currentActivity.getTokenFromSharedPref(),
-            orderList = orderList
-        )
+        presenter.createOrders(orderList = orderList)
     }
 }

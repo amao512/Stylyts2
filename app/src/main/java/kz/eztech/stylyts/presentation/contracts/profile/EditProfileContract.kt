@@ -19,18 +19,12 @@ interface EditProfileContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getProfile(token: String)
+        fun getProfile()
 
-        fun editProfile(
-            token: String,
-            data: HashMap<String, Any>
-        )
+        fun editProfile(data: HashMap<String, Any>)
 
-        fun changeProfilePhoto(
-            token: String,
-            file: File
-        )
+        fun changeProfilePhoto(file: File)
 
-        fun deleteProfilePhoto(token: String)
+        fun deleteProfilePhoto()
     }
 }

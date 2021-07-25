@@ -26,34 +26,16 @@ interface CollectionDetailContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun getOutfitById(
-            token: String,
-            outfitId: Int
-        )
+        fun getOutfitById(outfitId: Int)
 
-        fun getPostById(
-            token: String,
-            postId: Int
-        )
+        fun getPostById(postId: Int)
 
-        fun deleteOutfit(
-            token: String,
-            outfitId: Int
-        )
+        fun deleteOutfit(outfitId: Int)
 
-        fun deletePost(
-            token: String,
-            postId: Int
-        )
+        fun deletePost(postId: Int)
 
-        fun onLikeClick(
-            token: String,
-            postId: Int
-        )
+        fun onLikeClick(postId: Int)
 
-        fun getUserForNavigate(
-            token: String,
-            userId: Int
-        )
+        fun getUserForNavigate(userId: Int)
     }
 }

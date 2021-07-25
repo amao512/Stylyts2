@@ -54,14 +54,11 @@ class OrderingPresenter @Inject constructor(
         )
     }
 
-    override fun createOrders(
-        token: String,
-        orderList: List<OrderCreateApiModel>
-    ) {
+    override fun createOrders(orderList: List<OrderCreateApiModel>) {
         view.displayProgress()
 
         orderList.map { order ->
-            createOrderUseCase.initParams(token, order)
+            createOrderUseCase.initParams(order)
             createOrderUseCase.execute(object : DisposableSingleObserver<OrderCreateModel>() {
                 override fun onSuccess(t: OrderCreateModel) {
                     t.itemObjects.map { id ->

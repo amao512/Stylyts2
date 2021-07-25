@@ -369,15 +369,11 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     private fun createPost(postCreateModel: PostCreateModel) {
         if (isUpdating()) {
             presenter.updatePost(
-                token = currentActivity.getTokenFromSharedPref(),
                 postCreateModel = postCreateModel,
                 postId = getIdFromArgs()
             )
         } else {
-            presenter.createPost(
-                token = currentActivity.getTokenFromSharedPref(),
-                postCreateModel = postCreateModel
-            )
+            presenter.createPost(postCreateModel = postCreateModel)
         }
     }
 
@@ -405,14 +401,12 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
     ) {
         if (isUpdating()) {
             presenter.updateOutfit(
-                token = currentActivity.getTokenFromSharedPref(),
                 id = getIdFromArgs(),
                 model = outfitCreateModel,
                 data = file
             )
         } else {
             presenter.createOutfit(
-                token = currentActivity.getTokenFromSharedPref(),
                 model = outfitCreateModel,
                 data = file
             )
@@ -421,10 +415,7 @@ class CreateCollectionAcceptFragment : BaseFragment<MainActivity>(), View.OnClic
 
     private fun onBuyOutfitClicked() {
         currentModel?.let {
-            presenter.saveToCart(
-                token = currentActivity.getTokenFromSharedPref(),
-                outfitCreateModel = it
-            )
+            presenter.saveToCart(outfitCreateModel = it)
         }
     }
 

@@ -98,7 +98,7 @@ class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.Vi
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getClothesStyles(token = currentActivity.getTokenFromSharedPref())
+        presenter.getClothesStyles()
     }
 
     override fun disposeRequests() {

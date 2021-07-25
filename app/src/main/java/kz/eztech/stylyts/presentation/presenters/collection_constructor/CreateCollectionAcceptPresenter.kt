@@ -9,7 +9,6 @@ import kz.eztech.stylyts.data.db.cart.CartMapper
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.outfits.CreateOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.outfits.UpdateOutfitUseCase
 import kz.eztech.stylyts.domain.usecases.posts.CreatePostUseCase
@@ -43,13 +42,10 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun createPost(
-        token: String,
-        postCreateModel: PostCreateModel
-    ) {
+    override fun createPost(postCreateModel: PostCreateModel) {
         view.displayProgress()
 
-        createPostUseCase.initParams(token, postCreateModel)
+        createPostUseCase.initParams(postCreateModel)
         createPostUseCase.execute(object : DisposableSingleObserver<PostCreateModel>() {
             override fun onSuccess(t: PostCreateModel) {
                 view.processViewAction {
@@ -68,13 +64,12 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     }
 
     override fun updatePost(
-        token: String,
         postId: Int,
         postCreateModel: PostCreateModel
     ) {
         view.displayProgress()
 
-        updatePostUseCase.initParams(token, postId, postCreateModel)
+        updatePostUseCase.initParams(postId, postCreateModel)
         updatePostUseCase.execute(object : DisposableSingleObserver<PostCreateModel>() {
             override fun onSuccess(t: PostCreateModel) {
                 view.processViewAction {
@@ -92,11 +87,10 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         })
     }
 
-    override fun createOutfit(token: String, model: OutfitCreateModel, data: File) {
+    override fun createOutfit(model: OutfitCreateModel, data: File) {
         view.displayProgress()
 
         createOutfitUseCase.initParam(
-            token = token,
             file = data,
             outfitCreateModel = model
         )
@@ -118,7 +112,6 @@ class CreateCollectionAcceptPresenter @Inject constructor(
     }
 
     override fun updateOutfit(
-        token: String,
         id: Int,
         model: OutfitCreateModel,
         data: File
@@ -126,7 +119,6 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         view.displayProgress()
 
         updateOutfitUseCase.initParams(
-            token = token,
             outfitId = id,
             file = data,
             outfitModel = model
@@ -148,10 +140,7 @@ class CreateCollectionAcceptPresenter @Inject constructor(
         })
     }
 
-    override fun saveToCart(
-        token: String,
-        outfitCreateModel: OutfitCreateModel
-    ) {
+    override fun saveToCart(outfitCreateModel: OutfitCreateModel) {
         disposables.clear()
         disposables.add(
 

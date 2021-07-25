@@ -16,11 +16,8 @@ class OutfitsRepository @Inject constructor(
     private val api: OutfitsApi
 ) : OutfitsDomainRepository {
 
-    override fun saveOutfit(
-        token: String,
-        data: ArrayList<MultipartBody.Part>
-    ): Single<OutfitCreateModel> {
-        return api.saveOutfit(token, data).map {
+    override fun saveOutfit(data: ArrayList<MultipartBody.Part>): Single<OutfitCreateModel> {
+        return api.saveOutfit(data).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -29,12 +26,10 @@ class OutfitsRepository @Inject constructor(
     }
 
     override fun getOutfits(
-        token: String,
         booleanQueryMap: Map<String, Boolean>,
         stringQueryMap: Map<String, String>
     ): Single<ResultsModel<OutfitModel>> {
         return api.getOutfits(
-            token = token,
             booleanQueryMap = booleanQueryMap,
             stringQueryMap = stringQueryMap
         ).map {
@@ -45,11 +40,8 @@ class OutfitsRepository @Inject constructor(
         }
     }
 
-    override fun getOutfitById(
-        token: String,
-        outfitId: String
-    ): Single<OutfitModel> {
-        return api.getOutfitById(token, outfitId).map {
+    override fun getOutfitById(outfitId: String): Single<OutfitModel> {
+        return api.getOutfitById(outfitId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -57,11 +49,8 @@ class OutfitsRepository @Inject constructor(
         }
     }
 
-    override fun deleteOutfit(
-        token: String,
-        outfitId: String
-    ): Single<Any> {
-        return api.deleteOutfit(token, outfitId).map {
+    override fun deleteOutfit(outfitId: String): Single<Any> {
+        return api.deleteOutfit(outfitId).map {
             when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)
@@ -70,12 +59,10 @@ class OutfitsRepository @Inject constructor(
     }
 
     override fun updateOutfit(
-        token: String,
         outfitId: String,
         data: ArrayList<MultipartBody.Part>
     ): Single<OutfitCreateModel> {
         return api.updateOutfit(
-            token = token,
             outfitId = outfitId,
             files = data
         ).map {

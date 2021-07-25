@@ -6,7 +6,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
-import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.domain.models.user.UserModel
@@ -46,7 +45,6 @@ class ShopListPresenter @Inject constructor(
 
     override fun loadPage(page: Int) {
         searchProfileUseCase.initParams(
-            token = view.getToken(),
             searchFilterModel = view.getSearchFilter(),
             page = page
         )

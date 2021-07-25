@@ -12,8 +12,6 @@ interface MainContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun renderPaginatorState(state: Paginator.State)
 
         fun processPostResults(list: List<Any?>)
@@ -36,19 +34,10 @@ interface MainContract {
 
         fun loadMorePost()
 
-        fun deletePost(
-            token: String,
-            postId: Int
-        )
+        fun deletePost(postId: Int)
 
-        fun likePost(
-            token: String,
-            postId: Int
-        )
+        fun likePost(postId: Int)
 
-        fun getUserForNavigate(
-            token: String,
-            userId: Int
-        )
+        fun getUserForNavigate(userId: Int)
     }
 }

@@ -13,6 +13,6 @@ interface MyDataContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun getProfile(token: String)
+        fun getProfile()
     }
 }

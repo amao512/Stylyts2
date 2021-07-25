@@ -32,10 +32,10 @@ class ShopItemListPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getCategoriesByType(token: String, clothesTypeId: Int) {
+    override fun getCategoriesByType(clothesTypeId: Int) {
         view.displayProgress()
 
-        getClothesCategoriesUseCase.initParams(token, clothesTypeId)
+        getClothesCategoriesUseCase.initParams(clothesTypeId)
         getClothesCategoriesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesCategoryModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesCategoryModel>) {
                 view.processViewAction {
@@ -53,11 +53,8 @@ class ShopItemListPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesResultsByType(
-        token: String,
-        filterModel: ClothesFilterModel
-    ) {
-        getClothesUseCase.initParams(token, filterModel.page, filterModel)
+    override fun getClothesResultsByType(filterModel: ClothesFilterModel) {
+        getClothesUseCase.initParams(filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processViewAction {
@@ -73,11 +70,8 @@ class ShopItemListPresenter @Inject constructor(
         })
     }
 
-    override fun getClothesResultsByCategory(
-        token: String,
-        filterModel: ClothesFilterModel
-    ) {
-        getClothesUseCase.initParams(token, filterModel.page, filterModel)
+    override fun getClothesResultsByCategory(filterModel: ClothesFilterModel) {
+        getClothesUseCase.initParams(filterModel.page, filterModel)
         getClothesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesModel>) {
                 view.processClothesResults(resultsModel = t)

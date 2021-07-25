@@ -8,18 +8,9 @@ import kz.eztech.stylyts.domain.models.order.OrderModel
 
 interface OrderDomainRepository {
 
-    fun getOrderList(
-        token: String,
-        queryMap: Map<String, String>
-    ): Single<ResultsModel<OrderModel>>
+    fun getOrderList(queryMap: Map<String, String>): Single<ResultsModel<OrderModel>>
 
-    fun getOrderById(
-        token: String,
-        orderId: Int
-    ): Single<OrderModel>
+    fun getOrderById(orderId: Int): Single<OrderModel>
 
-    fun createOrder(
-        token: String,
-        orderCreateApiModel: OrderCreateApiModel
-    ): Single<OrderCreateModel>
+    fun createOrder(orderCreateApiModel: OrderCreateApiModel): Single<OrderCreateModel>
 }

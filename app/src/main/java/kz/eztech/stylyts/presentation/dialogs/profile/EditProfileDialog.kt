@@ -40,7 +40,8 @@ class EditProfileDialog(
     private val editorListener: EditorListener
 ) : DialogFragment(), EditProfileContract.View, View.OnClickListener, UniversalViewClickListener {
 
-    @Inject lateinit var presenter: EditProfilePresenter
+    @Inject
+    lateinit var presenter: EditProfilePresenter
 
     private lateinit var galleryResultLaunch: ActivityResultLauncher<Intent>
 
@@ -148,7 +149,7 @@ class EditProfileDialog(
     }
 
     override fun processPostInitialization() {
-        presenter.getProfile(token = getTokenFromArguments())
+        presenter.getProfile()
     }
 
     override fun disposeRequests() {}
@@ -212,9 +213,7 @@ class EditProfileDialog(
         when (view.id) {
             R.id.dialog_bottom_change_profile_photo_choose_from_gallery_text_view -> openGalleryForImage()
             R.id.dialog_bottom_change_profile_photo_take_photo_text_view -> openCameraForImage()
-            R.id.dialog_bottom_change_profile_photo_delete_text_view -> presenter.deleteProfilePhoto(
-                token = getTokenFromArguments()
-            )
+            R.id.dialog_bottom_change_profile_photo_delete_text_view -> presenter.deleteProfilePhoto()
         }
     }
 
@@ -258,14 +257,12 @@ class EditProfileDialog(
             return
         }
 
-        data["username"] = checkStringValidation(text = edit_text_dialog_edit_profile_username.text.toString())
+        data["username"] =
+            checkStringValidation(text = edit_text_dialog_edit_profile_username.text.toString())
 //        data["web_site"] = checkStringValidation(text = webSite)
 //        data["instagram"] = checkStringValidation(text = instagram)
 
-        presenter.editProfile(
-            token = getTokenFromArguments(),
-            data = data
-        )
+        presenter.editProfile(data)
     }
 
     private fun checkStringValidation(text: String): String = when (text.isBlank()) {
@@ -300,10 +297,7 @@ class EditProfileDialog(
             val file = FileUtils.createPngFileFromBitmap(requireContext(), it)
 
             file?.let {
-                presenter.changeProfilePhoto(
-                    token = getTokenFromArguments(),
-                    file = file
-                )
+                presenter.changeProfilePhoto(file)
                 text_view_fragment_profile_edit_user_short_name.text = EMPTY_STRING
                 text_view_fragment_profile_edit_user_short_name.show()
             }
@@ -316,6 +310,4 @@ class EditProfileDialog(
             it
         ) == PackageManager.PERMISSION_GRANTED
     }
-
-    private fun getTokenFromArguments(): String = arguments?.getString(TOKEN_ARGS_KEY) ?: EMPTY_STRING
 }

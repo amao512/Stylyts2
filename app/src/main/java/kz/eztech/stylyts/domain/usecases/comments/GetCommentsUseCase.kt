@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.comments
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.CommentsDomainRepository
@@ -16,20 +15,16 @@ class GetCommentsUseCase @Inject constructor(
     private val commentsDomainRepository: CommentsDomainRepository
 ) : BaseUseCase<ResultsModel<CommentModel>>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var map: Map<String, String>
 
     override fun createSingleObservable(): Single<ResultsModel<CommentModel>> {
-        return commentsDomainRepository.getComments(token, map)
+        return commentsDomainRepository.getComments(map)
     }
 
     fun initParams(
-        token: String,
         postId: Int,
         page: Int
     ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
-
         val map = HashMap<String, String>()
 
         map["post"] = postId.toString()

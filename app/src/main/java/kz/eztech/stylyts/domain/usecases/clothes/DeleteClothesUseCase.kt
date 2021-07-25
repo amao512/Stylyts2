@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.clothes
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
 import javax.inject.Inject
@@ -14,18 +13,13 @@ class DeleteClothesUseCase @Inject constructor(
     private val clothesDomainRepository: ClothesDomainRepository
 ) : BaseUseCase<Any>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var clothesId: String
 
     override fun createSingleObservable(): Single<Any> {
-        return clothesDomainRepository.deleteClothes(token, clothesId)
+        return clothesDomainRepository.deleteClothes(clothesId)
     }
 
-    fun initParams(
-        token: String,
-        clothesId: Int
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+    fun initParams(clothesId: Int) {
         this.clothesId = clothesId.toString()
     }
 }

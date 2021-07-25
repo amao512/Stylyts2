@@ -29,7 +29,6 @@ import kz.eztech.stylyts.presentation.adapters.filter.FilterExpandableAdapter
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.filter.FilterPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -61,27 +60,18 @@ class FilterDialog(
     private var isOpenedFilter = false
 
     companion object {
-        private const val TOKEN_ARGS = "token_args"
-
         fun getNewInstance(
-            token: String,
             itemClickListener: UniversalViewClickListener,
             gender: String,
             isShowWardrobe: Boolean = false,
             isShowDiscount: Boolean = true,
         ): FilterDialog {
-            val filterDialog = FilterDialog(
+            return FilterDialog(
                 itemClickListener = itemClickListener,
                 currentGender = gender,
                 isShowWardrobe = isShowWardrobe,
                 isShowDiscount = isShowDiscount
             )
-            val bundle = Bundle()
-
-            bundle.putString(TOKEN_ARGS, token)
-            filterDialog.arguments = bundle
-
-            return filterDialog
         }
     }
 
@@ -169,7 +159,7 @@ class FilterDialog(
     }
 
     override fun processPostInitialization() {
-        presenter.getClothesTypes(token = getTokenFromArguments())
+        presenter.getClothesTypes()
     }
 
     override fun disposeRequests() {}
@@ -373,10 +363,7 @@ class FilterDialog(
     private fun onMyWardrobeClick() {
         currentFilter.inMyWardrobe = true
 
-        presenter.getMyWardrobe(
-            token = getTokenFromArguments(),
-            filterModel = currentFilter
-        )
+        presenter.getMyWardrobe(filterModel = currentFilter)
 
         processOpenedFilterGroup(title = getString(R.string.filter_my_wardrobe))
         recyclerView.adapter = filterCheckAdapter
@@ -393,17 +380,14 @@ class FilterDialog(
 //        searchView.show()
         rightCharacterListLinearLayout.show()
 
-        presenter.getClothesBrands(
-            title = getString(R.string.filter_brands),
-            token = getTokenFromArguments()
-        )
+        presenter.getClothesBrands(title = getString(R.string.filter_brands),)
     }
 
     private fun onColorsClick() {
         processOpenedFilterGroup(title = getString(R.string.filter_colors))
         recyclerView.adapter = filterCheckAdapter
 
-        presenter.getColors(token = getTokenFromArguments())
+        presenter.getColors()
     }
 
     private fun onPriceRangeClick() {
@@ -460,10 +444,7 @@ class FilterDialog(
     }
 
     private fun getFilterResults() {
-        presenter.getClothesResults(
-            token = getTokenFromArguments(),
-            filterModel = currentFilter
-        )
+        presenter.getClothesResults(filterModel = currentFilter)
     }
 
     private fun getFilterList(): List<FilterItemModel> {
@@ -501,9 +482,5 @@ class FilterDialog(
                 currentFilter.colorList.isNotEmpty() ||
                 currentFilter.minPrice != 0 ||
                 currentFilter.maxPrice != 0
-    }
-
-    private fun getTokenFromArguments(): String {
-        return arguments?.getString(TOKEN_ARGS) ?: EMPTY_STRING
     }
 }

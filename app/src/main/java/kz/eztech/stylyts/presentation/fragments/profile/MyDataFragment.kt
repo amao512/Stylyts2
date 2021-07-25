@@ -86,7 +86,7 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
     }
 
     override fun processPostInitialization() {
-        presenter.getProfile(token = currentActivity.getTokenFromSharedPref())
+        presenter.getProfile()
     }
 
     override fun disposeRequests() {

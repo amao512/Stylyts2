@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.outfits
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
 import kz.eztech.stylyts.domain.repository.OutfitsDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -19,21 +18,18 @@ class UpdateOutfitUseCase @Inject constructor(
     private var outfitsDomainRepository: OutfitsDomainRepository
 ) : BaseUseCase<OutfitCreateModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var outfitId: String
     private lateinit var data: ArrayList<MultipartBody.Part>
 
     override fun createSingleObservable(): Single<OutfitCreateModel> {
-        return outfitsDomainRepository.updateOutfit(token, outfitId, data)
+        return outfitsDomainRepository.updateOutfit(outfitId, data)
     }
 
     fun initParams(
-        token: String,
         outfitId: Int,
         outfitModel: OutfitCreateModel,
         file: File
     ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
         this.outfitId = outfitId.toString()
 
         val data = ArrayList<MultipartBody.Part>()

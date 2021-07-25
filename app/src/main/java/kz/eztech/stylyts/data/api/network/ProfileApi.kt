@@ -13,14 +13,11 @@ import retrofit2.http.*
 interface ProfileApi {
 
     @GET(RestConstants.GET_MY_PROFILE)
-    fun getMyProfile(
-        @Header("Authorization") token: String
-    ): Single<Response<UserApiModel>>
+    fun getMyProfile(): Single<Response<UserApiModel>>
 
     @FormUrlEncoded
     @PATCH(RestConstants.EDIT_PROFILE)
     fun editUserProfile(
-        @Header("Authorization") token: String,
         @Field("first_name") firstName: String,
         @Field("last_name") lastName: String,
         @Field("username") username: String
@@ -30,14 +27,8 @@ interface ProfileApi {
 
     @Multipart
     @PATCH(RestConstants.EDIT_PROFILE)
-    fun setProfilePhoto(
-        @Header("Authorization") token: String,
-        @Part avatar: MultipartBody.Part?
-    ): Single<Response<UserApiModel>>
+    fun setProfilePhoto(@Part avatar: MultipartBody.Part?): Single<Response<UserApiModel>>
 
     @GET(RestConstants.GET_USER_BY_ID)
-    fun getUserProfileById(
-        @Header("Authorization") token: String,
-        @Path("user_id") userId: String
-    ): Single<Response<UserApiModel>>
+    fun getUserProfileById(@Path("user_id") userId: String): Single<Response<UserApiModel>>
 }

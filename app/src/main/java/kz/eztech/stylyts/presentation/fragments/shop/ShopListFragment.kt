@@ -86,7 +86,6 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         shopAdapter.setOnClickListener(listener = this)
 
         filterDialog = FilterDialog.getNewInstance(
-            token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
             gender = getCurrentGenderFromArgs(),
             isShowWardrobe = false,
@@ -147,8 +146,6 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
             is ShopListItem -> navigateToShopFragment(item)
         }
     }
-
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun getCurrendId(): Int = currentActivity.getUserIdFromSharedPref()
 

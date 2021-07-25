@@ -11,8 +11,6 @@ interface CommentsContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun getPostId(): Int
 
         fun processProfile(userModel: UserModel)

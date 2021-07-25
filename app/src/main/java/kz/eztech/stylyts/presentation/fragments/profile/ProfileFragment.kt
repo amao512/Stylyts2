@@ -146,7 +146,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         clothesFilterModel.onlyBrands = false
 
         filterDialog = FilterDialog.getNewInstance(
-            token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
             gender = clothesFilterModel.gender,
             isShowDiscount = false
@@ -363,8 +362,6 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             title = "${getString(R.string.filter_list_wardrobe)} ($count)"
         )
     }
-
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun getCollectionMode(): Int = collectionMode
 

@@ -24,8 +24,8 @@ class CollectionsPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getClothesStyles(token: String) {
-        getClothesStylesUseCase.initParams(token)
+    override fun getClothesStyles() {
+        getClothesStylesUseCase.initParams()
         getClothesStylesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesStyleModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesStyleModel>) {
                 view.processViewAction {

@@ -10,8 +10,6 @@ interface ShopListContract {
 
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun getCurrendId(): Int
 
         fun getSearchFilter(): SearchFilterModel

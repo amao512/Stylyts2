@@ -12,13 +12,11 @@ interface CommentsApi {
 
     @GET(RestConstants.GET_COMMENTS)
     fun getComments(
-        @Header("Authorization") token: String,
         @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<CommentApiModel>>>
 
     @POST(RestConstants.CREATE_COMMENT)
     fun createComment(
-        @Header("Authorization") token: String,
         @Body commentCreateModel: CommentCreateModel
     ): Single<Response<CommentApiModel>>
 }

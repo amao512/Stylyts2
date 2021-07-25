@@ -105,8 +105,6 @@ class ShopItemFragment(
         swipe_refresh_fragment_shop_item.finishRefreshing()
     }
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun processClothesTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
         val preparedTypes: MutableList<ClothesTypeModel> = mutableListOf()
         val shopsIcon = Uri.parse("android.resource://${R::class.java.`package`.name}/${R.drawable.ic_shops}")

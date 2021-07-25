@@ -14,9 +14,6 @@ interface ProfileIncomeContract {
 
     interface Presenter: BasePresenter<View> {
 
-        fun getIncomes(
-            token: String,
-            page: Int
-        )
+        fun getIncomes(page: Int)
     }
 }

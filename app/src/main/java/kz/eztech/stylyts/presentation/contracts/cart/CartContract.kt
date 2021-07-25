@@ -33,7 +33,6 @@ interface CartContract {
         fun removeCart(cartEntity: CartEntity)
 
         fun getSizes(
-            token: String,
             clothesId: Int,
             cartEntity: CartEntity,
             isSize: Boolean = true

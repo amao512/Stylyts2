@@ -2,7 +2,6 @@ package kz.eztech.stylyts.domain.usecases.clothes
 
 import io.reactivex.Scheduler
 import io.reactivex.Single
-import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.domain.models.clothes.ClothesBrandModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
@@ -15,18 +14,13 @@ class GetClothesBrandByIdUseCase @Inject constructor(
     private val clothesDomainRepository: ClothesDomainRepository
 ) : BaseUseCase<ClothesBrandModel>(executorThread, uiThread) {
 
-    private lateinit var token: String
     private lateinit var brandId: String
 
     override fun createSingleObservable(): Single<ClothesBrandModel> {
-        return clothesDomainRepository.getClothesBrandById(token, brandId)
+        return clothesDomainRepository.getClothesBrandById(brandId)
     }
 
-    fun initParams(
-        token: String,
-        brandId: String
-    ) {
-        this.token = RestConstants.HEADERS_AUTH_FORMAT.format(token)
+    fun initParams(brandId: String) {
         this.brandId = brandId
     }
 }

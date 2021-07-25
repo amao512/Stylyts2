@@ -61,7 +61,6 @@ class ShopClothesListPresenter @Inject constructor(
 
     override fun loadPage(page: Int) {
         getClothesUseCase.initParams(
-            token = view.getToken(),
             page = page,
             filterModel = view.getClothesFilter()
         )
@@ -88,10 +87,7 @@ class ShopClothesListPresenter @Inject constructor(
     }
 
     override fun loadBrandsPage(page: Int) {
-        getClothesBrandsUseCase.initParams(
-            token = view.getToken(),
-            page = page
-        )
+        getClothesBrandsUseCase.initParams(page = page)
         getClothesBrandsUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesBrandModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesBrandModel>) {
                 brandsPaginator.proceed(Paginator.Action.NewPage(

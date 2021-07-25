@@ -153,14 +153,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         displayProgress()
 
         when (getModeFromArgs()) {
-            OUTFIT_MODE -> presenter.getOutfitById(
-                token = currentActivity.getTokenFromSharedPref(),
-                outfitId = getCollectionIdFromArgs()
-            )
-            POST_MODE -> presenter.getPostById(
-                token = currentActivity.getTokenFromSharedPref(),
-                postId = getCollectionIdFromArgs()
-            )
+            OUTFIT_MODE -> presenter.getOutfitById(outfitId = getCollectionIdFromArgs())
+            POST_MODE -> presenter.getPostById(postId = getCollectionIdFromArgs())
         }
     }
 
@@ -467,10 +461,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
                         }
 
                         textView.setOnClickListener {
-                            presenter.getUserForNavigate(
-                                token = currentActivity.getTokenFromSharedPref(),
-                                userId = tag.id
-                            )
+                            presenter.getUserForNavigate(userId = tag.id)
                         }
 
                         view!!.viewTreeObserver.removeOnGlobalLayoutListener(this)
@@ -532,15 +523,9 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
     }
 
     private fun onLikeClicked() {
-        presenter.onLikeClick(
-            token = currentActivity.getTokenFromSharedPref(),
-            postId = getCollectionIdFromArgs()
-        )
+        presenter.onLikeClick(postId = getCollectionIdFromArgs())
         when (getModeFromArgs()) {
-            POST_MODE -> presenter.getPostById(
-                token = currentActivity.getTokenFromSharedPref(),
-                postId = getCollectionIdFromArgs()
-            )
+            POST_MODE -> presenter.getPostById(postId = getCollectionIdFromArgs())
         }
     }
 
@@ -662,14 +647,8 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
     private fun onDeleteContextClicked() {
         when (getModeFromArgs()) {
-            OUTFIT_MODE -> presenter.deleteOutfit(
-                token = currentActivity.getTokenFromSharedPref(),
-                outfitId = getCollectionIdFromArgs()
-            )
-            POST_MODE -> presenter.deletePost(
-                token = currentActivity.getTokenFromSharedPref(),
-                postId = getCollectionIdFromArgs()
-            )
+            OUTFIT_MODE -> presenter.deleteOutfit(outfitId = getCollectionIdFromArgs())
+            POST_MODE -> presenter.deletePost(postId = getCollectionIdFromArgs())
         }
     }
 

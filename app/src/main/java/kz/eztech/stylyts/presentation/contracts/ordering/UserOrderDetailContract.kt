@@ -13,9 +13,6 @@ interface UserOrderDetailContract {
 
     interface Presenter : BasePresenter<View> {
 
-        fun getOrderById(
-            token: String,
-            orderId: Int
-        )
+        fun getOrderById(orderId: Int)
     }
 }

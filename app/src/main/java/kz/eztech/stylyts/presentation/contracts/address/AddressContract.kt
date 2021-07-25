@@ -16,8 +16,6 @@ interface AddressContract {
 
         fun displayForm()
 
-        fun getToken(): String
-
         fun renderPaginatorState(state: Paginator.State)
 
         fun processAddressList(list: List<Any?>)

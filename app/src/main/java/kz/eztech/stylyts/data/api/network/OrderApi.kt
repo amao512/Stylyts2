@@ -12,25 +12,21 @@ interface OrderApi {
 
     @GET(RestConstants.GET_ORDERS)
     fun getOrderList(
-        @Header("Authorization") token: String,
         @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<OrderApiModel>>>
 
     @GET(RestConstants.GET_ORDER_BY_ID)
     fun getOrderById(
-        @Header("Authorization") token: String,
         @Path("order_id") orderId: Int
     ): Single<Response<OrderApiModel>>
 
     @POST(RestConstants.CREATE_ORDER)
     fun createOrder(
-        @Header("Authorization") token: String,
         @Body orderCreateApiModel: OrderCreateApiModel
     ): Single<Response<OrderCreateApiModel>>
 
     @POST(RestConstants.PROCESS_ORDER)
     fun processOrder(
-        @Header("Authorization") token: String,
         @Path("order_id") orderId: Int
     ): Single<Response<OrderApiModel>>
 }

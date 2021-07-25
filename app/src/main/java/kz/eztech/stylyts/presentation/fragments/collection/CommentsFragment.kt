@@ -189,8 +189,6 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         commentEditText.text.clear()
     }
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun getPostId(): Int = arguments?.getInt(COLLECTION_ID_KEY) ?: 0
 
     private fun handleRecyclerView() {

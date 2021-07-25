@@ -112,8 +112,6 @@ class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,
         refreshLayout.finishRefreshing()
     }
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
             is Paginator.State.Data<*> -> {

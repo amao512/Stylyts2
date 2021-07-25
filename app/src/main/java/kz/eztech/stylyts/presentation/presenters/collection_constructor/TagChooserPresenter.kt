@@ -55,7 +55,7 @@ class TagChooserPresenter @Inject constructor(
     override fun getCategory() {
         view.displayProgress()
 
-        getClothesTypesUseCase.initParams(token = view.getToken())
+        getClothesTypesUseCase.initParams()
         getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
                 view.processViewAction {
@@ -90,7 +90,6 @@ class TagChooserPresenter @Inject constructor(
 
     override fun getClothes(page: Int) {
         getClothesUseCase.initParams(
-            token = view.getToken(),
             page = page,
             filterModel = view.getClothesFilter()
         )
@@ -110,7 +109,6 @@ class TagChooserPresenter @Inject constructor(
 
     override fun searchClothes(page: Int) {
         searchClothesUseCase.initParams(
-            token = view.getToken(),
             searchFilterModel = view.getSearchFilter(),
             page = page
         )

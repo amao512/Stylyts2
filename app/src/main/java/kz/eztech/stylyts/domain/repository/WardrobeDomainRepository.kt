@@ -6,8 +6,5 @@ import okhttp3.MultipartBody
 
 interface WardrobeDomainRepository {
 
-    fun createClothesByPhoto(
-        token: String,
-        multipartList: ArrayList<MultipartBody.Part>
-    ): Single<ClothesModel>
+    fun createClothesByPhoto(multipartList: ArrayList<MultipartBody.Part>): Single<ClothesModel>
 }

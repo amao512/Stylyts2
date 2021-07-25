@@ -12,8 +12,6 @@ interface ShopClothesListContract {
 
     interface View: BaseView {
 
-        fun getToken(): String
-
         fun getClothesFilter(): ClothesFilterModel
 
         fun renderPaginatorState(state: Paginator.State)

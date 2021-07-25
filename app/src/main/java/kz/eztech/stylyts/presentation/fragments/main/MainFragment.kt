@@ -147,8 +147,6 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         refreshLayout.finishRefreshing()
     }
 
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
-
     override fun renderPaginatorState(state: Paginator.State) {
         when (state) {
             is Paginator.State.Data<*> -> {
@@ -256,10 +254,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
                     bundle
                 )
             }
-            2 -> presenter.getUserForNavigate(
-                token = currentActivity.getTokenFromSharedPref(),
-                userId = tagModel.id
-            )
+            2 -> presenter.getUserForNavigate(userId = tagModel.id)
         }
     }
 
@@ -347,18 +342,12 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     private fun likePost(item: Any?) {
         item as PostModel
 
-        presenter.likePost(
-            token = currentActivity.getTokenFromSharedPref(),
-            postId = item.id
-        )
+        presenter.likePost(postId = item.id)
     }
 
     private fun onPostDeleteContextClicked(item: Any?) {
         item as PostModel
 
-        presenter.deletePost(
-            token = currentActivity.getTokenFromSharedPref(),
-            postId = item.id
-        )
+        presenter.deletePost(postId = item.id)
     }
 }

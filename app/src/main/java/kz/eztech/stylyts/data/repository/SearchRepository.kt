@@ -18,12 +18,10 @@ class SearchRepository @Inject constructor(
 ) : SearchDomainRepository {
 
     override fun searchProfileByUsername(
-        token: String,
         username: String,
         map: Map<String, String>
     ): Single<ResultsModel<UserModel>> {
         return api.searchUserByUsername(
-            token = token,
             username = username,
             queryMap = map
         ).map {
@@ -35,12 +33,10 @@ class SearchRepository @Inject constructor(
     }
 
     override fun searchClothesByTitle(
-        token: String,
         title: String,
         map: Map<String, String>
     ): Single<ResultsModel<ClothesModel>> {
         return api.searchClothesByTitle(
-            token = token,
             title = title,
             queryMap = map
         ).map {

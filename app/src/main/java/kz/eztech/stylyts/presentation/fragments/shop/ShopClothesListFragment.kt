@@ -121,7 +121,6 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
         clothesAdapter.setOnClickListener(listener = this)
 
         filterDialog = FilterDialog.getNewInstance(
-            token = currentActivity.getTokenFromSharedPref(),
             itemClickListener = this,
             gender = currentFilter.gender
         ).apply {
@@ -156,8 +155,6 @@ class ShopClothesListFragment : BaseFragment<MainActivity>(), ShopClothesListCon
     override fun displayProgress() {}
 
     override fun hideProgress() {}
-
-    override fun getToken(): String = currentActivity.getTokenFromSharedPref()
 
     override fun getClothesFilter(): ClothesFilterModel = currentFilter
 

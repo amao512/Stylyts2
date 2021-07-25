@@ -23,25 +23,17 @@ interface UserSubsContract {
     interface Presenter: BasePresenter<View> {
 
         fun getFollowers(
-            token: String,
             userId: Int,
             username: String = EMPTY_STRING
         )
 
         fun getFollowings(
-            token: String,
             userId: Int,
             username: String = EMPTY_STRING
         )
 
-        fun followUser(
-            token: String,
-            followerId: Int
-        )
+        fun followUser(followerId: Int)
 
-        fun unFollowUser(
-            token: String,
-            followerId: Int
-        )
+        fun unFollowUser(followerId: Int)
     }
 }

@@ -11,8 +11,6 @@ import kz.eztech.stylyts.presentation.base.BaseView
 interface ShopItemContract {
     interface View : BaseView {
 
-        fun getToken(): String
-
         fun processClothesTypes(resultsModel: ResultsModel<ClothesTypeModel>)
     }
     interface Presenter: BasePresenter<View> {

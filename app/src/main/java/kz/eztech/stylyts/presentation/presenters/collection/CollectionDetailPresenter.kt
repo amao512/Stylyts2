@@ -42,11 +42,8 @@ class CollectionDetailPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getOutfitById(
-        token: String,
-        outfitId: Int
-    ) {
-        getOutfitByIdUseCase.initParams(token, outfitId)
+    override fun getOutfitById(outfitId: Int) {
+        getOutfitByIdUseCase.initParams(outfitId)
         getOutfitByIdUseCase.execute(object : DisposableSingleObserver<OutfitModel>() {
             override fun onSuccess(t: OutfitModel) {
                 view.processViewAction {
@@ -64,8 +61,8 @@ class CollectionDetailPresenter @Inject constructor(
         })
     }
 
-    override fun getPostById(token: String, postId: Int) {
-        getPostByIdUseCase.initParams(token, postId)
+    override fun getPostById(postId: Int) {
+        getPostByIdUseCase.initParams(postId)
         getPostByIdUseCase.execute(object : DisposableSingleObserver<PostModel>() {
             override fun onSuccess(t: PostModel) {
                 view.processViewAction {
@@ -83,13 +80,10 @@ class CollectionDetailPresenter @Inject constructor(
         })
     }
 
-    override fun deleteOutfit(
-        token: String,
-        outfitId: Int
-    ) {
+    override fun deleteOutfit(outfitId: Int) {
         view.displayProgress()
 
-        deleteOutfitUseCase.initParams(token, outfitId)
+        deleteOutfitUseCase.initParams(outfitId)
         deleteOutfitUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processViewAction {
@@ -107,13 +101,10 @@ class CollectionDetailPresenter @Inject constructor(
         })
     }
 
-    override fun deletePost(
-        token: String,
-        postId: Int
-    ) {
+    override fun deletePost(postId: Int) {
         view.displayProgress()
 
-        deletePostUseCase.initParams(token, postId)
+        deletePostUseCase.initParams(postId)
         deletePostUseCase.execute(object : DisposableSingleObserver<Any>() {
             override fun onSuccess(t: Any) {
                 view.processViewAction {
@@ -131,11 +122,8 @@ class CollectionDetailPresenter @Inject constructor(
         })
     }
 
-    override fun onLikeClick(
-        token: String,
-        postId: Int
-    ) {
-        likePostUseCase.initParams(token, postId)
+    override fun onLikeClick(postId: Int) {
+        likePostUseCase.initParams(postId)
         likePostUseCase.execute(object : DisposableSingleObserver<ActionModel>() {
             override fun onSuccess(t: ActionModel) {
                 when (t.action) {
@@ -150,11 +138,8 @@ class CollectionDetailPresenter @Inject constructor(
         })
     }
 
-    override fun getUserForNavigate(
-        token: String,
-        userId: Int
-    ) {
-        getUserByIdUseCase.initParams(token, userId)
+    override fun getUserForNavigate(userId: Int) {
+        getUserByIdUseCase.initParams(userId)
         getUserByIdUseCase.execute(object : DisposableSingleObserver<UserModel>() {
             override fun onSuccess(t: UserModel) {
                 view.navigateToUserProfile(userModel = t)

@@ -6,59 +6,28 @@ import kz.eztech.stylyts.domain.models.clothes.*
 
 interface ClothesDomainRepository {
 
-    fun getClothesTypes(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesTypeModel>>
+    fun getClothesTypes(map: Map<String, String>): Single<ResultsModel<ClothesTypeModel>>
 
-    fun getClothesStyles(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesStyleModel>>
+    fun getClothesStyles(map: Map<String, String>): Single<ResultsModel<ClothesStyleModel>>
 
-    fun getClothesCategories(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesCategoryModel>>
+    fun getClothesCategories(map: Map<String, String>): Single<ResultsModel<ClothesCategoryModel>>
 
-    fun getClothesById(
-        token: String,
-        clothesId: String
-    ): Single<ClothesModel>
+    fun getClothesById(clothesId: String): Single<ClothesModel>
 
-    fun getClothesBrands(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesBrandModel>>
+    fun getClothesBrands(map: Map<String, String>): Single<ResultsModel<ClothesBrandModel>>
 
-    fun getClothesBrandById(
-        token: String,
-        brandId: String
-    ): Single<ClothesBrandModel>
+    fun getClothesBrandById(brandId: String): Single<ClothesBrandModel>
 
-    fun getClothesColors(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesColorModel>>
+    fun getClothesColors(map: Map<String, String>): Single<ResultsModel<ClothesColorModel>>
 
     fun getClothes(
-        token: String,
         stringQueryMap: Map<String, String>,
         booleanQueryMap: Map<String, Boolean>
     ): Single<ResultsModel<ClothesModel>>
 
-    fun saveClothesToWardrobe(
-        token: String,
-        clothesId: String
-    ): Single<Any>
+    fun saveClothesToWardrobe(clothesId: String): Single<Any>
 
-    fun getClothesByBarcode(
-        token: String,
-        barcode: String
-    ): Single<ClothesModel>
+    fun getClothesByBarcode(barcode: String): Single<ClothesModel>
 
-    fun deleteClothes(
-        token: String,
-        clothesId: String
-    ): Single<Any>
+    fun deleteClothes(clothesId: String): Single<Any>
 }

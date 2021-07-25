@@ -109,10 +109,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
     }
 
     override fun processPostInitialization() {
-        presenter.getOrder(
-            token = currentActivity.getTokenFromSharedPref(),
-            orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0
-        )
+        presenter.getOrder(orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0)
     }
 
     override fun disposeRequests() {}

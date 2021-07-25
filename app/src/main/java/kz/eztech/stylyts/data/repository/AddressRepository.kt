@@ -17,12 +17,8 @@ class AddressRepository @Inject constructor(
     private val api: AddressApi
 ) : AddressDomainRepository {
 
-    override fun postAddress(
-        token: String,
-        data: HashMap<String, Any>
-    ): Single<AddressModel> {
+    override fun postAddress(data: HashMap<String, Any>): Single<AddressModel> {
         return api.postAddress(
-            token = token,
             country = data["country"] as String,
             city = data["city"] as String,
             street = data["street"] as String,
@@ -36,11 +32,8 @@ class AddressRepository @Inject constructor(
         }
     }
 
-    override fun getAllAddress(
-        token: String,
-        queryMap: Map<String, String>
-    ): Single<ResultsModel<AddressModel>> {
-        return api.getAllAddress(token, queryMap).map {
+    override fun getAllAddress(queryMap: Map<String, String>): Single<ResultsModel<AddressModel>> {
+        return api.getAllAddress(queryMap).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 else -> throw NetworkException(it)
@@ -48,13 +41,7 @@ class AddressRepository @Inject constructor(
         }
     }
 
-    override fun deleteAddress(
-        token: String,
-        id: String
-    ): Single<Any> {
-        return api.deleteAddress(
-            token = token,
-            id = id
-        )
+    override fun deleteAddress(id: String): Single<Any> {
+        return api.deleteAddress(id = id)
     }
 }

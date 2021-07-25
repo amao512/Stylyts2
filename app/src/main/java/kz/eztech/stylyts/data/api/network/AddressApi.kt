@@ -15,7 +15,6 @@ interface AddressApi {
     @FormUrlEncoded
     @POST(RestConstants.POST_ADDRESS)
     fun postAddress(
-        @Header("Authorization") token: String,
         @Field("country") country: String,
         @Field("city") city: String,
         @Field("street") street: String,
@@ -25,13 +24,11 @@ interface AddressApi {
 
     @GET(RestConstants.GET_ALL_ADDRESS)
     fun getAllAddress(
-        @Header("Authorization") token: String,
         @QueryMap queryMap: Map<String, String>
     ): Single<Response<ResultsApiModel<AddressApiModel>>>
 
     @DELETE(RestConstants.DELETE_ADDRESS)
     fun deleteAddress(
-        @Header("Authorization") token: String,
         @Path("address_id") id: String
     ): Single<Any>
 }

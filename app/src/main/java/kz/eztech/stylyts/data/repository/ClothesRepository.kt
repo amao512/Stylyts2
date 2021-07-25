@@ -3,22 +3,19 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.ClothesApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.clothes.map
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
 import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.clothes.map
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
 import javax.inject.Inject
 
 class ClothesRepository @Inject constructor(
     private val api: ClothesApi
 ) : ClothesDomainRepository {
 
-    override fun getClothesTypes(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesTypeModel>> {
-        return api.getClothesTypes(token, map).map {
+    override fun getClothesTypes(map: Map<String, String>): Single<ResultsModel<ClothesTypeModel>> {
+        return api.getClothesTypes(map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -26,11 +23,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesStyles(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesStyleModel>> {
-        return api.getClothesStyles(token, map).map {
+    override fun getClothesStyles(map: Map<String, String>): Single<ResultsModel<ClothesStyleModel>> {
+        return api.getClothesStyles(map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -38,11 +32,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesCategories(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesCategoryModel>> {
-        return api.getClothesCategories(token, map).map {
+    override fun getClothesCategories(map: Map<String, String>): Single<ResultsModel<ClothesCategoryModel>> {
+        return api.getClothesCategories(map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -50,14 +41,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesById(
-        token: String,
-        clothesId: String
-    ): Single<ClothesModel> {
-        return api.getClothesById(
-            token = token,
-            clothesId = clothesId
-        ).map {
+    override fun getClothesById(clothesId: String): Single<ClothesModel> {
+        return api.getClothesById(clothesId = clothesId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -65,11 +50,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesBrands(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesBrandModel>> {
-        return api.getClothesBrands(token, map).map {
+    override fun getClothesBrands(map: Map<String, String>): Single<ResultsModel<ClothesBrandModel>> {
+        return api.getClothesBrands(map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -77,14 +59,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesBrandById(
-        token: String,
-        brandId: String
-    ): Single<ClothesBrandModel> {
-        return api.getClothesBrandById(
-            token = token,
-            brandId = brandId
-        ).map {
+    override fun getClothesBrandById(brandId: String): Single<ClothesBrandModel> {
+        return api.getClothesBrandById(brandId = brandId).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -92,11 +68,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesColors(
-        token: String,
-        map: Map<String, String>
-    ): Single<ResultsModel<ClothesColorModel>> {
-        return api.getClothesColors(token, map).map {
+    override fun getClothesColors(map: Map<String, String>): Single<ResultsModel<ClothesColorModel>> {
+        return api.getClothesColors(map).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -105,12 +78,10 @@ class ClothesRepository @Inject constructor(
     }
 
     override fun getClothes(
-        token: String,
         stringQueryMap: Map<String, String>,
         booleanQueryMap: Map<String, Boolean>
     ): Single<ResultsModel<ClothesModel>> {
         return api.getClothes(
-            token = token,
             stringQueryMap = stringQueryMap,
             booleanQueryMap = booleanQueryMap
         ).map {
@@ -121,11 +92,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun saveClothesToWardrobe(
-        token: String,
-        clothesId: String
-    ): Single<Any> {
-        return api.saveClothesToWardrobe(token, clothesId).map {
+    override fun saveClothesToWardrobe(clothesId: String): Single<Any> {
+        return api.saveClothesToWardrobe(clothesId).map {
             when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)
@@ -133,11 +101,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun getClothesByBarcode(
-        token: String,
-        barcode: String
-    ): Single<ClothesModel> {
-        return api.getClothesByBarcode(token, barcode).map {
+    override fun getClothesByBarcode(barcode: String): Single<ClothesModel> {
+        return api.getClothesByBarcode(barcode).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
@@ -145,11 +110,8 @@ class ClothesRepository @Inject constructor(
         }
     }
 
-    override fun deleteClothes(
-        token: String,
-        clothesId: String
-    ): Single<Any> {
-        return api.deleteClothes(token, clothesId).map {
+    override fun deleteClothes(clothesId: String): Single<Any> {
+        return api.deleteClothes(clothesId).map {
             when (it.isSuccessful) {
                 true -> it.body()
                 false -> throw NetworkException(it)

@@ -14,13 +14,9 @@ class WardrobeRepository @Inject constructor(
 ) : WardrobeDomainRepository {
 
     override fun createClothesByPhoto(
-        token: String,
         multipartList: ArrayList<MultipartBody.Part>
     ): Single<ClothesModel> {
-        return api.createClothesByPhoto(
-            token = token,
-            multipartList = multipartList
-        ).map {
+        return api.createClothesByPhoto(multipartList = multipartList).map {
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
