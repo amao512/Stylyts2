@@ -28,8 +28,12 @@ data class OrderCreateApiModel(
     var delivery: DeliveryCreateApiModel? = null,
     @SerializedName("back_url")
     @Expose
-    val backUrl: String? = BuildConfig.PAYMENT_BACK_URL
+    val backUrl: String? = BuildConfig.PAYMENT_BACK_URL,
+//    @SerializedName("referral_user")
+//    @Expose
+//    val referralUser: Int? = null
 ) : Parcelable {
     var ownerId: Int = 0
     var created = false
+    var referralUser: Int = 0
 }

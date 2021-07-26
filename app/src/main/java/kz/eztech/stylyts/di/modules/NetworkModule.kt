@@ -88,8 +88,13 @@ class NetworkModule {
             .readTimeout(30000, TimeUnit.MILLISECONDS)
             .writeTimeout(30000, TimeUnit.MILLISECONDS)
             .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", getToken(sharedPreferences))
+                val token = getToken(sharedPreferences)
+
+                val request = chain.request().newBuilder().apply {
+                    if (token.isNotBlank()) {
+                        this.addHeader("Authorization", token)
+                    }
+                }
                     .build()
 
                 return@addInterceptor chain.proceed(request)
@@ -100,13 +105,15 @@ class NetworkModule {
         return enableTls12OnPreLollipop(client).build()
     }
 
-    fun getToken(sharedPreferences: SharedPreferences): String {
-        return RestConstants.HEADERS_AUTH_FORMAT.format(
-            sharedPreferences.getString(
-                SharedConstants.ACCESS_TOKEN_KEY,
-                EMPTY_STRING
-            ).orEmpty()
-        )
+    private fun getToken(sharedPreferences: SharedPreferences): String {
+        val token =
+            sharedPreferences.getString(SharedConstants.ACCESS_TOKEN_KEY, EMPTY_STRING).orEmpty()
+
+        return if (token.isBlank()) {
+            EMPTY_STRING
+        } else {
+            RestConstants.HEADERS_AUTH_FORMAT.format(token)
+        }
     }
 
     private fun enableTls12OnPreLollipop(client: OkHttpClient.Builder): OkHttpClient.Builder {

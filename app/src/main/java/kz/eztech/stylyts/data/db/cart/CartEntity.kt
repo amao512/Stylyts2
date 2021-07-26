@@ -56,6 +56,6 @@ data class CartEntity(
     @ColumnInfo(name = "size_list")
     val sizeList: ArrayList<String>? = null,
 
-    @ColumnInfo(name = "influencer_id")
-    val influencerId: Int? = null
+    @ColumnInfo(name = "referral_user")
+    val referralUser: Int? = null
 )

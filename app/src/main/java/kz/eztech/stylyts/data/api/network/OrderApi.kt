@@ -25,6 +25,13 @@ interface OrderApi {
         @Body orderCreateApiModel: OrderCreateApiModel
     ): Single<Response<OrderCreateApiModel>>
 
+    @FormUrlEncoded
+    @POST(RestConstants.CREATE_ORDER)
+    fun createOrder(
+        @Body orderCreateApiModel: OrderCreateApiModel,
+        @Field("referral_user") referralUser: Int
+    ): Single<Response<OrderCreateApiModel>>
+
     @POST(RestConstants.PROCESS_ORDER)
     fun processOrder(
         @Path("order_id") orderId: Int

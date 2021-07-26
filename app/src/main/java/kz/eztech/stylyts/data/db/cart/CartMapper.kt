@@ -42,7 +42,7 @@ object CartMapper {
             currency = model.currency,
             size = model.selectedSize?.size,
             sizeList = getSizeList(model),
-            influencerId = model.influencerId
+            referralUser = model.influencerId
         )
     }
 

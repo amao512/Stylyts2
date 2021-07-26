@@ -143,10 +143,11 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
                 val newOrder = OrderCreateApiModel(
                     itemObjects = arrayListOf(cart.id!!),
                     paymentType = EMPTY_STRING,
-                    customer = customer
+                    customer = customer,
                 )
 
                 newOrder.ownerId = cart.ownerId ?: 0
+                newOrder.referralUser = cart.referralUser ?: 0
 
                 orderList.add(newOrder)
             }
