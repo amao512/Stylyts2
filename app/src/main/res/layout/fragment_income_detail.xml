@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -19,21 +21,23 @@
         >
 
         <TextView
+            android:id="@+id/fragment_income_detail_date_text_view"
             style="@style/TitleTextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Втроник, 10 декабря"
             android:textSize="@dimen/text_size_30x"
+            tools:text="Втроник, 10 декабря"
             />
 
         <TextView
+            android:id="@+id/fragment_income_detail_cost_text_view"
             style="@style/TitleTextBold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_size_16x"
-            android:text="3 290 тг."
             android:textColor="@color/income_text_color"
             android:textSize="@dimen/text_size_30x"
+            tools:text="3 290 тг."
             />
     </LinearLayout>
 
@@ -43,7 +47,18 @@
         android:background="@color/large_divider_bg_color"
         />
 
-    <include layout="@layout/item_profile_income_item_detail" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_income_detail_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:overScrollMode="never"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_shop_order_clothes"
+        />
 
-    <include layout="@layout/item_profile_income_item_detail" />
+    <!--    <include layout="@layout/item_profile_income_item_detail" />-->
+
+    <!--    <include layout="@layout/item_profile_income_item_detail" />-->
 </LinearLayout>

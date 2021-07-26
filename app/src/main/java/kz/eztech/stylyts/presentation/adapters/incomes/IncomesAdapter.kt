@@ -2,7 +2,6 @@ package kz.eztech.stylyts.presentation.adapters.incomes
 
 import android.view.ViewGroup
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.income.IncomeModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
@@ -15,8 +14,7 @@ class IncomesAdapter : BaseAdapter() {
                 oldItemPosition: Int,
                 newItemPosition: Int
             ): Boolean {
-                return (currentList[oldItemPosition] as IncomeModel).id ==
-                        (list[newItemPosition] as IncomeModel).id
+                return currentList[oldItemPosition].hashCode() == list[newItemPosition].hashCode()
             }
         }
     }

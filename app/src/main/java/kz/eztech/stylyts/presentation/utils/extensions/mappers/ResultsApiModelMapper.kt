@@ -7,6 +7,7 @@ import kz.eztech.stylyts.data.api.models.comments.CommentApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderApiModel
 import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
 import kz.eztech.stylyts.data.api.models.posts.PostApiModel
+import kz.eztech.stylyts.data.api.models.referrals.ReferralApiModel
 import kz.eztech.stylyts.data.api.models.user.FollowerApiModel
 import kz.eztech.stylyts.data.api.models.user.UserApiModel
 import kz.eztech.stylyts.data.api.models.wardrobe.WardrobeApiModel
@@ -19,6 +20,7 @@ import kz.eztech.stylyts.presentation.utils.extensions.mappers.posts.map
 import kz.eztech.stylyts.presentation.utils.extensions.mappers.user.map
 import kz.eztech.stylyts.presentation.utils.extensions.mappers.wardrobe.map
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.presentation.utils.extensions.mappers.referrals.map
 
 /**
  * Created by Asylzhan Seytbek on 11.04.2021.
@@ -77,6 +79,9 @@ inline fun <reified T, C> List<T>?.map(): List<C> {
         }
         OrderApiModel::class -> {
             (this as List<OrderApiModel>).map() as List<C>
+        }
+        ReferralApiModel::class -> {
+            (this as List<ReferralApiModel>).map() as List<C>
         }
         else -> emptyList()
     }

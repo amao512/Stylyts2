@@ -48,9 +48,9 @@
 
     <fragment
         android:id="@+id/profileIncomeFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.ProfileIncomeFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.incomes.IncomesFragment"
         android:label="fragment_profile_income"
-        tools:layout="@layout/fragment_profile_income"
+        tools:layout="@layout/fragment_incomes"
         >
         <action
             android:id="@+id/action_profileIncomeFragment_to_profileIncomeDetailFragment"
@@ -60,10 +60,15 @@
 
     <fragment
         android:id="@+id/profileIncomeDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.ProfileIncomeDetailFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.incomes.IncomeDetailFragment"
         android:label="ProfileIncomeDetailFragment"
-        tools:layout="@layout/fragment_profile_income_detail"
-        />
+        tools:layout="@layout/fragment_income_detail"
+        >
+        <action
+            android:id="@+id/action_profileIncomeDetailFragment_to_clothesDetailFragment"
+            app:destination="@id/clothesDetailFragment"
+            />
+    </fragment>
 
     <fragment
         android:id="@+id/collectionDetailFragment"

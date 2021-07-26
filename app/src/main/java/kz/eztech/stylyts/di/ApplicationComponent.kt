@@ -3,7 +3,6 @@ package kz.eztech.stylyts.di
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.di.modules.*
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.fragments.order_constructor.CartFragment
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.ConstructorFilterDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
@@ -15,6 +14,8 @@ import kz.eztech.stylyts.presentation.fragments.address.AddressFragment
 import kz.eztech.stylyts.presentation.fragments.auth.LoginFragment
 import kz.eztech.stylyts.presentation.fragments.auth.RefreshPasswordFragment
 import kz.eztech.stylyts.presentation.fragments.auth.RegistrationFragment
+import kz.eztech.stylyts.presentation.fragments.card.CardFragment
+import kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionItemFragment
@@ -23,19 +24,19 @@ import kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment
+import kz.eztech.stylyts.presentation.fragments.incomes.IncomeDetailFragment
 import kz.eztech.stylyts.presentation.fragments.main.MainFragment
-import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment
-import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
-import kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment
-import kz.eztech.stylyts.presentation.fragments.card.CardFragment
-import kz.eztech.stylyts.presentation.fragments.order.UserOrderDetailFragment
 import kz.eztech.stylyts.presentation.fragments.order.OrderListFragment
 import kz.eztech.stylyts.presentation.fragments.order.ShopOrderDetailFragment
+import kz.eztech.stylyts.presentation.fragments.order.UserOrderDetailFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.CartFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment
+import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.SelectDeliveryWayFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupPointsFragment
 import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
-import kz.eztech.stylyts.presentation.fragments.profile.ProfileIncomeFragment
+import kz.eztech.stylyts.presentation.fragments.incomes.IncomesFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment
 import kz.eztech.stylyts.presentation.fragments.shop.*
@@ -63,7 +64,8 @@ import javax.inject.Singleton
     OutfitsModule::class,
     WardrobeModule::class,
     CommentsModule::class,
-    OrderModule::class
+    OrderModule::class,
+    ReferralsModule::class
 ])
 interface ApplicationComponent {
 
@@ -109,7 +111,8 @@ interface ApplicationComponent {
     fun inject(fragment: SelectDeliveryWayFragment)
     fun inject(fragment: ShopOrderDetailFragment)
     fun inject(fragment: CartFragment)
-    fun inject(fragment: ProfileIncomeFragment)
+    fun inject(fragment: IncomesFragment)
+    fun inject(fragment: IncomeDetailFragment)
 
     fun inject(dialog: TagChooserDialog)
     fun inject(dialog: UserSearchDialog)
