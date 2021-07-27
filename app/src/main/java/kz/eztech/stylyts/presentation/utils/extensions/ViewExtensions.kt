@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
+import org.threeten.bp.ZonedDateTime
 import java.util.Locale
 
 fun View.show() {
@@ -45,4 +46,14 @@ fun getFormattedDate(date: String): String {
         date,
         DateFormatterHelper.FORMAT_DATE_DD_MMMM
     )
+}
+
+fun String.getTimeByFormat(): ZonedDateTime = try {
+    ZonedDateTime.parse(this) ?: ZonedDateTime.now()
+} catch (e: Exception) {
+    ZonedDateTime.now()
+}
+
+fun String.capitalizeWord(): String {
+    return first().toUpperCase() + substring(1).toLowerCase(Locale.getDefault())
 }

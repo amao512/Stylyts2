@@ -4,9 +4,10 @@ import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_income.view.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.domain.models.income.IncomeModel
+import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
+import kz.eztech.stylyts.presentation.utils.extensions.getIncomeDateTime
 
 class IncomeViewHolder(
     itemView: View,
@@ -37,13 +38,13 @@ class IncomeViewHolder(
     }
 
     private fun processIncome(
-        income: IncomeModel,
+        income: ReferralModel,
         position: Int
     ) {
-        dateTextView.text = income.date
+        dateTextView.text = income.createdAt.getIncomeDateTime()
         priceTextView.text = priceTextView.context.getString(
             R.string.price_tenge_text_format,
-            income.price.toString()
+            income.referralCost.toString()
         )
 
         dateTextView.setOnClickListener {

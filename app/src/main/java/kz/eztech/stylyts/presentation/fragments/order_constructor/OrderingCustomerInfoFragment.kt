@@ -135,10 +135,11 @@ class OrderingCustomerInfoFragment : BaseFragment<MainActivity>(), EmptyContract
         var flag = false
 
         email.map {
-            if (it == '@') {
+            if (it == '@' || it == '.') {
                 flag = true
             }
         }
+
         return flag
     }
 }

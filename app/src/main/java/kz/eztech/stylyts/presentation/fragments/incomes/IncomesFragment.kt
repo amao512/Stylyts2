@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_incomes.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.income.IncomeModel
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
@@ -99,7 +98,7 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
         item: Any?
     ) {
         when (item) {
-            is IncomeModel -> navigateToIncome(item)
+            is ReferralModel -> navigateToIncome(item)
         }
     }
 
@@ -122,7 +121,7 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
 
     override fun processReferrals(list: List<Any?>) {
         val incomes: MutableList<IncomeListItem> = mutableListOf()
-        var referralCost: Int = 0
+        var referralCost = 0
 
         list.map { it!! }.let {
             it.map { referral ->
@@ -130,13 +129,7 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
 
                 referralCost += referral.referralCost
 
-                val income = IncomeModel(
-                    id = referral.id,
-                    date = referral.createdAt,
-                    price = referral.referralCost
-                )
-
-                incomes.add(IncomeListItem(data = income))
+                incomes.add(IncomeListItem(data = referral))
             }
         }
 
@@ -147,7 +140,7 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
         incomesAdapter.updateList(incomes)
     }
 
-    private fun navigateToIncome(income: IncomeModel) {
+    private fun navigateToIncome(income: ReferralModel) {
         val bundle = Bundle()
         bundle.putInt(IncomeDetailFragment.REFERRAL_ID_KEY, income.id)
 

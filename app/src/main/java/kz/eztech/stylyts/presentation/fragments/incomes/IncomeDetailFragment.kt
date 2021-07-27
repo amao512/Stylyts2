@@ -18,6 +18,7 @@ import kz.eztech.stylyts.presentation.contracts.incomes.IncomeDetailContract
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.incomes.IncomeDetailPresenter
+import kz.eztech.stylyts.presentation.utils.extensions.getIncomeDateTime
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
@@ -94,7 +95,7 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
     override fun processReferral(referralModel: ReferralModel) {
         presenter.getOrder(orderId = referralModel.order)
 
-        fragment_income_detail_date_text_view.text = referralModel.createdAt
+        fragment_income_detail_date_text_view.text = referralModel.createdAt.getIncomeDateTime()
         fragment_income_detail_cost_text_view.text = getString(
             R.string.price_tenge_text_format,
             referralModel.referralCost.toString()
