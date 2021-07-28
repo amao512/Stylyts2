@@ -13,8 +13,10 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
+import kz.eztech.stylyts.presentation.adapters.incomes.INCOME_TYPE
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomesAdapter
+import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeContract
@@ -120,16 +122,18 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
     }
 
     override fun processReferrals(list: List<Any?>) {
-        val incomes: MutableList<IncomeListItem> = mutableListOf()
+        val incomes: MutableList<IncomesItem> = mutableListOf()
         var referralCost = 0
 
         list.map { it!! }.let {
             it.map { referral ->
-                referral as ReferralModel
+                referral as IncomesItem
 
-                referralCost += referral.referralCost
+                if (referral.type == INCOME_TYPE) {
+                    referralCost += (referral as IncomeListItem).data.referralCost
+                }
 
-                incomes.add(IncomeListItem(data = referral))
+                incomes.add(referral)
             }
         }
 

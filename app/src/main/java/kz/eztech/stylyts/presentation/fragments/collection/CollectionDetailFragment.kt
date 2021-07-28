@@ -535,7 +535,10 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
         val bundle = Bundle()
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
-        bundle.putInt(ClothesDetailFragment.INFLUENCER_ID_KEY, authorId)
+
+        if (authorId != currentActivity.getUserIdFromSharedPref()) {
+            bundle.putInt(ClothesDetailFragment.INFLUENCER_ID_KEY, authorId)
+        }
 
         findNavController().navigate(
             R.id.action_collectionDetailFragment_to_clothesDetailFragment,

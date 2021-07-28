@@ -90,6 +90,11 @@ class MainLineHolder(
         }
 
         clothesRecyclerView.adapter = additionalAdapter
+
+        postModel.clothes.forEach {
+            it.referralUser = postModel.author.id
+        }
+
         additionalAdapter.updateList(list = postModel.clothes)
     }
 
@@ -275,6 +280,7 @@ class MainLineHolder(
                         }
 
                         textView.setOnClickListener { view ->
+                            it.referralUser = postModel.author.id
                             adapter.itemClickListener?.onViewClicked(view, position = 1, item = it)
                         }
 

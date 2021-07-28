@@ -387,7 +387,7 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
 
         val influencerId = getInfluencerIdFromArgs()
         if (influencerId != 0) {
-            clothesModel.influencerId = influencerId
+            clothesModel.referralUser = influencerId
         }
 
         presenter.insertToCart(clothesModel = clothesModel)

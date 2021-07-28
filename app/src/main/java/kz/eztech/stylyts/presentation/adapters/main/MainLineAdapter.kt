@@ -13,8 +13,6 @@ import kz.eztech.stylyts.presentation.adapters.main.holders.MainLineHolder
  */
 class MainLineAdapter : BaseAdapter(){
 
-//    override fun getLayoutId(viewType: Int): Int = R.layout.item_main_line
-
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list){
             override fun getAreContentsTheSame(

@@ -5,4 +5,6 @@ data class TagModel(
     val title: String,
     val pointX: Double,
     val pointY: Double
-)
+) {
+    var referralUser: Int = 0
+}

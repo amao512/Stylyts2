@@ -249,6 +249,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
                 val bundle = Bundle()
                 bundle.putInt(ClothesDetailFragment.CLOTHES_ID, tagModel.id)
 
+                if (tagModel.referralUser != currentActivity.getUserIdFromSharedPref()) {
+                    bundle.putInt(ClothesDetailFragment.INFLUENCER_ID_KEY, tagModel.referralUser)
+                }
+
                 findNavController().navigate(
                     R.id.action_mainFragment_to_clothesDetailFragment,
                     bundle
@@ -304,6 +308,10 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
         val bundle = Bundle()
         bundle.putInt(ClothesDetailFragment.CLOTHES_ID, item.id)
+
+        if (item.referralUser != currentActivity.getUserIdFromSharedPref()) {
+            bundle.putInt(ClothesDetailFragment.INFLUENCER_ID_KEY, item.referralUser)
+        }
 
         findNavController().navigate(R.id.action_mainFragment_to_clothesDetailFragment, bundle)
     }

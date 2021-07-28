@@ -8,6 +8,10 @@ import kotlinx.coroutines.launch
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.domain.usecases.referrals.GetReferralListUseCase
+import kz.eztech.stylyts.presentation.adapters.incomes.INCOME_DATE_TYPE
+import kz.eztech.stylyts.presentation.adapters.incomes.IncomeDateItem
+import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
+import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeContract
 import kz.eztech.stylyts.presentation.utils.Paginator
 import javax.inject.Inject
@@ -41,12 +45,15 @@ class IncomesPresenter @Inject constructor(
 
     override fun loadPage(page: Int) {
         getReferralListUseCase.initParams(page)
-        getReferralListUseCase.execute(object : DisposableSingleObserver<ResultsModel<ReferralModel>>() {
+        getReferralListUseCase.execute(object :
+            DisposableSingleObserver<ResultsModel<ReferralModel>>() {
             override fun onSuccess(t: ResultsModel<ReferralModel>) {
-                paginator.proceed(Paginator.Action.NewPage(
-                    pageNumber = t.page,
-                    items = t.results
-                ))
+                paginator.proceed(
+                    Paginator.Action.NewPage(
+                        pageNumber = t.page,
+                        items = getPreparedIncomesList(list = t.results)
+                    )
+                )
             }
 
             override fun onError(e: Throwable) {
@@ -61,5 +68,35 @@ class IncomesPresenter @Inject constructor(
 
     override fun loadMorePage() {
         paginator.proceed(Paginator.Action.LoadMore)
+    }
+
+    private fun getPreparedIncomesList(list: List<ReferralModel>): List<IncomesItem> {
+        val preparedList: MutableList<IncomesItem> = mutableListOf()
+
+        list.map {
+            val dateItem = IncomeDateItem(
+                data = it.createdAt,
+                month = it.createdAt.month,
+                year = it.createdAt.year
+            )
+
+            if (preparedList.isEmpty()) {
+                preparedList.add(dateItem)
+            } else {
+                preparedList.map { income ->
+                    if (income.type == INCOME_DATE_TYPE) {
+                        income as IncomeDateItem
+
+                        if (income.month != it.createdAt.month && income.year != it.createdAt.year) {
+                            preparedList.add(dateItem)
+                        }
+                    }
+                }
+            }
+
+            preparedList.add(IncomeListItem(data = it))
+        }
+
+        return preparedList
     }
 }
