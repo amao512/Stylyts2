@@ -12,8 +12,18 @@ sealed class IncomesItem(
 )
 
 data class IncomeListItem(
-    val data: ReferralModel
-) : IncomesItem(INCOME_TYPE)
+    val year: Int,
+    val month: Month,
+    val startDay: Int
+) : IncomesItem(INCOME_TYPE) {
+    private var referralList: MutableList<ReferralModel> = mutableListOf()
+
+    fun addReferral(item: ReferralModel) {
+        referralList.add(item)
+    }
+
+    fun getReferralList(): List<ReferralModel> = referralList
+}
 
 data class IncomeDateItem(
     val data: ZonedDateTime,

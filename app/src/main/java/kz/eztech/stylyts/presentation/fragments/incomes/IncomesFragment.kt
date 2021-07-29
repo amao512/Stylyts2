@@ -125,16 +125,14 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
         val incomes: MutableList<IncomesItem> = mutableListOf()
         var referralCost = 0
 
-        list.map { it!! }.let {
-            it.map { referral ->
-                referral as IncomesItem
+        list.map { it!! }.map { referral ->
+            referral as IncomesItem
 
-                if (referral.type == INCOME_TYPE) {
-                    referralCost += (referral as IncomeListItem).data.referralCost
-                }
-
-                incomes.add(referral)
+            if (referral.type == INCOME_TYPE) {
+                referralCost += (referral as IncomeListItem).getReferralList().sumBy { it.referralCost }
             }
+
+            incomes.add(referral)
         }
 
         fragment_incomes_referral_cost_text_view.text = getString(

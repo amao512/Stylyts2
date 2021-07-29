@@ -8,12 +8,12 @@ import kotlinx.coroutines.launch
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.domain.usecases.referrals.GetReferralListUseCase
-import kz.eztech.stylyts.presentation.adapters.incomes.INCOME_DATE_TYPE
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeDateItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeContract
 import kz.eztech.stylyts.presentation.utils.Paginator
+import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 class IncomesPresenter @Inject constructor(
@@ -29,7 +29,8 @@ class IncomesPresenter @Inject constructor(
             paginator.sideEffects.consumeEach { effect ->
                 when (effect) {
                     is Paginator.SideEffect.LoadPage -> loadPage(effect.currentPage)
-                    is Paginator.SideEffect.ErrorEvent -> {}
+                    is Paginator.SideEffect.ErrorEvent -> {
+                    }
                 }
             }
         }
@@ -72,31 +73,60 @@ class IncomesPresenter @Inject constructor(
 
     private fun getPreparedIncomesList(list: List<ReferralModel>): List<IncomesItem> {
         val preparedList: MutableList<IncomesItem> = mutableListOf()
+        var lastIncomeCounter = 0
 
         list.map {
-            val dateItem = IncomeDateItem(
-                data = it.createdAt,
-                month = it.createdAt.month,
-                year = it.createdAt.year
-            )
-
             if (preparedList.isEmpty()) {
-                preparedList.add(dateItem)
-            } else {
-                preparedList.map { income ->
-                    if (income.type == INCOME_DATE_TYPE) {
-                        income as IncomeDateItem
+                preparedList.add(
+                    getIncomeDate(createdAt = it.createdAt)
+                )
+                preparedList.add(getIncomeItem(it.createdAt).also { income ->
+                    income.addReferral(it)
+                })
 
-                        if (income.month != it.createdAt.month && income.year != it.createdAt.year) {
-                            preparedList.add(dateItem)
-                        }
+                lastIncomeCounter = 1
+            } else {
+                val lastIncome = preparedList[lastIncomeCounter] as IncomeListItem
+
+                if (lastIncome.year == it.createdAt.year && lastIncome.month == it.createdAt.month) {
+                    if ((lastIncome.startDay + 7) < it.createdAt.dayOfMonth) {
+                        preparedList.add(getIncomeItem(it.createdAt).also { income ->
+                            income.addReferral(it)
+                        })
+
+                        lastIncomeCounter++
+                    } else {
+                        lastIncome.addReferral(it)
                     }
+                } else {
+                    preparedList.add(
+                        getIncomeDate(createdAt = it.createdAt)
+                    )
+                    preparedList.add(getIncomeItem(it.createdAt).also { income ->
+                        income.addReferral(it)
+                    })
+
+                    lastIncomeCounter += 2
                 }
             }
-
-            preparedList.add(IncomeListItem(data = it))
         }
 
         return preparedList
+    }
+
+    private fun getIncomeDate(createdAt: ZonedDateTime): IncomeDateItem {
+        return IncomeDateItem(
+            data = createdAt,
+            month = createdAt.month,
+            year = createdAt.year
+        )
+    }
+
+    private fun getIncomeItem(createdAt: ZonedDateTime): IncomeListItem {
+        return IncomeListItem(
+            year = createdAt.year,
+            month = createdAt.month,
+            startDay = createdAt.dayOfMonth
+        )
     }
 }
