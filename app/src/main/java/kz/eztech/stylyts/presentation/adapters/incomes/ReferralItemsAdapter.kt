@@ -5,10 +5,9 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.incomes.viewHolders.IncomeDateViewHolder
-import kz.eztech.stylyts.presentation.adapters.incomes.viewHolders.IncomeViewHolder
+import kz.eztech.stylyts.presentation.adapters.incomes.viewHolders.ReferralIncomeViewHolder
 
-class IncomesAdapter : BaseAdapter() {
+class ReferralItemsAdapter : BaseAdapter() {
 
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
@@ -21,18 +20,10 @@ class IncomesAdapter : BaseAdapter() {
         }
     }
 
-    override fun getItemViewType(position: Int): Int = (currentList[position] as IncomesItem).type
-
     override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        return when (viewType) {
-            INCOME_DATE_TYPE -> IncomeDateViewHolder(
-                itemView = inflateView(parent, R.layout.item_income_date),
-                adapter = this
-            )
-            else -> IncomeViewHolder(
-                itemView = inflateView(parent, R.layout.item_income),
-                adapter = this
-            )
-        }
+        return ReferralIncomeViewHolder(
+            itemView = inflateView(parent, R.layout.item_shop_order_clothes),
+            adapter = this
+        )
     }
 }

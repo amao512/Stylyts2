@@ -413,4 +413,5 @@
     <string name="sale_price">Цена со скидкой (не объязтельно)</string>
 
     <string name="posts_not_found">Посты не найдены</string>
+    <string name="income_comission">Комиссия за продажу</string>
 </resources>

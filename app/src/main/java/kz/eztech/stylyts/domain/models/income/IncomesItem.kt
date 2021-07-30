@@ -1,5 +1,7 @@
 package kz.eztech.stylyts.presentation.adapters.incomes
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import org.threeten.bp.Month
 import org.threeten.bp.ZonedDateTime
@@ -11,11 +13,12 @@ sealed class IncomesItem(
     val type: Int
 )
 
+@Parcelize
 data class IncomeListItem(
     val year: Int,
     val month: Month,
     val startDay: Int
-) : IncomesItem(INCOME_TYPE) {
+) : IncomesItem(INCOME_TYPE), Parcelable {
     private var referralList: MutableList<ReferralModel> = mutableListOf()
 
     fun addReferral(item: ReferralModel) {

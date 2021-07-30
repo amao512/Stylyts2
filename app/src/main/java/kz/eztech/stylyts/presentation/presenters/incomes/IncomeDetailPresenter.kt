@@ -1,12 +1,8 @@
 package kz.eztech.stylyts.presentation.presenters.incomes
 
-import io.reactivex.observers.DisposableSingleObserver
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.order.OrderModel
-import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.domain.usecases.order.GetOrderByIdUseCase
 import kz.eztech.stylyts.domain.usecases.referrals.GetReferralUseCase
-import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeDetailContract
 import javax.inject.Inject
 
@@ -27,37 +23,37 @@ class IncomeDetailPresenter @Inject constructor(
         this.view = view
     }
 
-    override fun getReferral(referralId: Int) {
-        view.displayProgress()
-
-        getReferralUseCase.initParams(referralId)
-        getReferralUseCase.execute(object : DisposableSingleObserver<ReferralModel>() {
-            override fun onSuccess(t: ReferralModel) {
-                view.processViewAction {
-                    processReferral(referralModel = t)
-                    hideProgress()
-                }
-            }
-
-            override fun onError(e: Throwable) {
-                view.processViewAction {
-                    hideProgress()
-                    displayMessage(msg = errorHelper.processError(e))
-                }
-            }
-        })
-    }
-
-    override fun getOrder(orderId: Int) {
-        getOrderByIdUseCase.initParams(orderId)
-        getOrderByIdUseCase.execute(object : DisposableSingleObserver<OrderModel>() {
-            override fun onSuccess(t: OrderModel) {
-                view.processOrder(orderModel = t)
-            }
-
-            override fun onError(e: Throwable) {
-                view.displayMessage(msg = errorHelper.processError(e))
-            }
-        })
-    }
+//    override fun getReferral(referralId: Int) {
+//        view.displayProgress()
+//
+//        getReferralUseCase.initParams(referralId)
+//        getReferralUseCase.execute(object : DisposableSingleObserver<ReferralModel>() {
+//            override fun onSuccess(t: ReferralModel) {
+//                view.processViewAction {
+//                    processReferral(referralModel = t)
+//                    hideProgress()
+//                }
+//            }
+//
+//            override fun onError(e: Throwable) {
+//                view.processViewAction {
+//                    hideProgress()
+//                    displayMessage(msg = errorHelper.processError(e))
+//                }
+//            }
+//        })
+//    }
+//
+//    override fun getOrder(orderId: Int) {
+//        getOrderByIdUseCase.initParams(orderId)
+//        getOrderByIdUseCase.execute(object : DisposableSingleObserver<OrderModel>() {
+//            override fun onSuccess(t: OrderModel) {
+//                view.processOrder(orderModel = t)
+//            }
+//
+//            override fun onError(e: Throwable) {
+//                view.displayMessage(msg = errorHelper.processError(e))
+//            }
+//        })
+//    }
 }

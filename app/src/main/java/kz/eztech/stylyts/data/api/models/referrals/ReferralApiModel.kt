@@ -11,12 +11,18 @@ data class ReferralApiModel(
     @SerializedName("buyer")
     @Expose
     val buyer: UserShortApiModel?,
+    @SerializedName("items")
+    @Expose
+    val items: List<ReferralItemApiModel>?,
     @SerializedName("approved")
     @Expose
     val approved: Boolean,
-    @SerializedName("referral_cost")
+    @SerializedName("total_profit")
     @Expose
-    val referralCost: Int?,
+    val totalProfit: Int?,
+    @SerializedName("referral_percentage")
+    @Expose
+    val referralPercentage: Int?,
     @SerializedName("created_at")
     @Expose
     val createdAt: String?,

@@ -8,27 +8,27 @@ import kotlinx.android.synthetic.main.fragment_income_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.domain.models.order.OrderModel
-import kz.eztech.stylyts.domain.models.referrals.ReferralModel
+import kz.eztech.stylyts.domain.models.referrals.ReferralItemModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.ordering.ShopOrderClothesAdapter
+import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
+import kz.eztech.stylyts.presentation.adapters.incomes.ReferralItemsAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeDetailContract
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.incomes.IncomeDetailPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.getIncomeDateTime
+import kz.eztech.stylyts.presentation.utils.extensions.getIncomeDateString
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import javax.inject.Inject
 
 class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.View, UniversalViewClickListener {
 
     @Inject lateinit var presenter: IncomeDetailPresenter
-    private lateinit var clothesOrdersAdapter: ShopOrderClothesAdapter
+    private lateinit var referralItemsAdapter: ReferralItemsAdapter
 
     companion object {
-        const val REFERRAL_ID_KEY = "referralId"
+        const val REFERRAL_KEY = "referral"
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_income_detail
@@ -39,9 +39,8 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
         with(include_toolbar_income_detail){
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
-            toolbar_title_text_view.show()
 
-            customizeActionToolBar(this,"Заказ №1231231")
+            customizeActionToolBar(this)
         }
     }
 
@@ -56,18 +55,18 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
     override fun initializeArguments() {}
 
     override fun initializeViewsData() {
-        clothesOrdersAdapter = ShopOrderClothesAdapter()
-        clothesOrdersAdapter.setOnClickListener(listener = this)
+        referralItemsAdapter = ReferralItemsAdapter()
+        referralItemsAdapter.setOnClickListener(listener = this)
     }
 
     override fun initializeViews() {
-        fragment_income_detail_recycler_view.adapter = clothesOrdersAdapter
+        fragment_income_detail_recycler_view.adapter = referralItemsAdapter
     }
 
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        presenter.getReferral(referralId = getReferralId())
+        processReferral()
     }
 
     override fun disposeRequests() {
@@ -92,18 +91,22 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
         }
     }
 
-    override fun processReferral(referralModel: ReferralModel) {
-        presenter.getOrder(orderId = referralModel.order)
+    private fun processReferral() {
+        getIncome()?.let { income ->
+            val clothes: MutableList<ReferralItemModel> = mutableListOf()
 
-        fragment_income_detail_date_text_view.text = referralModel.createdAt.getIncomeDateTime()
-        fragment_income_detail_cost_text_view.text = getString(
-            R.string.price_tenge_text_format,
-            referralModel.referralCost.toString()
-        )
-    }
+            fragment_income_detail_date_text_view.text = income.getReferralList().getIncomeDateString()
+            fragment_income_detail_cost_text_view.text = getString(
+                R.string.price_tenge_text_format,
+                income.getReferralList().sumBy { it.totalProfit }.toString()
+            )
 
-    override fun processOrder(orderModel: OrderModel) {
-        clothesOrdersAdapter.updateList(list = orderModel.itemObjects)
+            income.getReferralList().map {
+                clothes.addAll(it.items)
+            }
+
+            referralItemsAdapter.updateList(list = clothes)
+        }
     }
 
     private fun navigateToClothesDetail(clothesModel: ClothesModel) {
@@ -116,5 +119,5 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
         )
     }
 
-    private fun getReferralId(): Int = arguments?.getInt(REFERRAL_ID_KEY) ?: 0
+    private fun getIncome(): IncomeListItem? = arguments?.getParcelable(REFERRAL_KEY)
 }

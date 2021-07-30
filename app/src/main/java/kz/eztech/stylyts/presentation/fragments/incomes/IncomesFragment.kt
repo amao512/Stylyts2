@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_incomes.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.incomes.INCOME_TYPE
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
@@ -29,8 +28,7 @@ import javax.inject.Inject
 class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
     UniversalViewClickListener {
 
-    @Inject
-    lateinit var presenter: IncomesPresenter
+    @Inject lateinit var presenter: IncomesPresenter
     private lateinit var incomesAdapter: IncomesAdapter
 
     private lateinit var refreshLayout: TwinklingRefreshLayout
@@ -100,7 +98,7 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
         item: Any?
     ) {
         when (item) {
-            is ReferralModel -> navigateToIncome(item)
+            is IncomeListItem -> navigateToIncome(item)
         }
     }
 
@@ -129,7 +127,7 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
             referral as IncomesItem
 
             if (referral.type == INCOME_TYPE) {
-                referralCost += (referral as IncomeListItem).getReferralList().sumBy { it.referralCost }
+                referralCost += (referral as IncomeListItem).getReferralList().sumBy { it.totalProfit }
             }
 
             incomes.add(referral)
@@ -142,9 +140,9 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
         incomesAdapter.updateList(incomes)
     }
 
-    private fun navigateToIncome(income: ReferralModel) {
+    private fun navigateToIncome(income: IncomeListItem) {
         val bundle = Bundle()
-        bundle.putInt(IncomeDetailFragment.REFERRAL_ID_KEY, income.id)
+        bundle.putParcelable(IncomeDetailFragment.REFERRAL_KEY, income)
 
         findNavController().navigate(
             R.id.action_profileIncomeFragment_to_profileIncomeDetailFragment,
