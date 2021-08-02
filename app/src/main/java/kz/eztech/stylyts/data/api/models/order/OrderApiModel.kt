@@ -41,5 +41,8 @@ data class OrderApiModel(
     val createdAt: String?,
     @SerializedName("modified_at")
     @Expose
-    val modifiedAt: String?
+    val modifiedAt: String?,
+    @SerializedName("items_meta_data")
+    @Expose
+    val itemsMetaData: List<OrderItemApiModel>?,
 )

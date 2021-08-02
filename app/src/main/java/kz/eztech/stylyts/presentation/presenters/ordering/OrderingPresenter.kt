@@ -61,8 +61,8 @@ class OrderingPresenter @Inject constructor(
             createOrderUseCase.initParams(order)
             createOrderUseCase.execute(object : DisposableSingleObserver<OrderCreateModel>() {
                 override fun onSuccess(t: OrderCreateModel) {
-                    t.itemObjects.map { id ->
-                        clearCart(cartId = id)
+                    t.itemsMetaData.map { item ->
+                        clearCart(cartId = item.clothes)
                     }
 
                     view.processSuccessCreating(orderModel = t)

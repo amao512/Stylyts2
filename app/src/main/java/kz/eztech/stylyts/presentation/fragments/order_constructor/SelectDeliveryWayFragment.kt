@@ -9,8 +9,7 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_select_delivery_way.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
-import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
+import kz.eztech.stylyts.data.api.models.order.*
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.domain.models.order.DeliveryWayModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
@@ -18,7 +17,6 @@ import kz.eztech.stylyts.presentation.adapters.ordering.DeliveryWayAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.SelectDeliveryWayContract
-import kz.eztech.stylyts.presentation.enums.ordering.PaymentTypeEnum
 import kz.eztech.stylyts.presentation.fragments.order_constructor.courier.CourierOrderingFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.post.PostOrderingFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.SelectPickupFittingWayFragment
@@ -132,25 +130,40 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
 
         list.map { cart ->
             val order = orderList.find { it.ownerId == cart.ownerId }
-            val ids: MutableList<Int> = mutableListOf()
+            val items: MutableList<BaseOrderItemModel> = mutableListOf()
 
             if (order != null) {
-                ids.addAll(order.itemObjects)
-                ids.add(cart.id!!)
-
-                order.itemObjects = ids
+                items.add(
+                    getOrderItem(cartEntity = cart)
+                )
             } else {
                 val newOrder = OrderCreateApiModel(
-                    itemObjects = arrayListOf(cart.id!!),
+                    itemsMetaData = arrayListOf(getOrderItem(cartEntity = cart)),
                     paymentType = EMPTY_STRING,
-                    customer = customer,
+                    customer = customer
                 )
 
                 newOrder.ownerId = cart.ownerId ?: 0
-                newOrder.referralUser = cart.referralUser ?: 0
 
                 orderList.add(newOrder)
             }
+        }
+    }
+
+    private fun getOrderItem(cartEntity: CartEntity): BaseOrderItemModel {
+        return if (cartEntity.referralUser != 0) {
+            OrderItemApiModel(
+                clothes = cartEntity.id,
+                count = cartEntity.count,
+                size = cartEntity.size,
+                referralUser = cartEntity.referralUser ?: 0
+            )
+        } else {
+            OrderItemWithoutReferralApiModel(
+                clothes = cartEntity.id,
+                count = cartEntity.count,
+                size = cartEntity.size
+            )
         }
     }
 

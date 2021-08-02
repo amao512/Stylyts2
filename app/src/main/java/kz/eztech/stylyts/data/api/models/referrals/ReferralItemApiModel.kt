@@ -16,6 +16,9 @@ data class ReferralItemApiModel(
     @SerializedName("cost")
     @Expose
     val cost: Int?,
+    @SerializedName("count")
+    @Expose
+    val count: Int?,
     @SerializedName("referral_profit")
     @Expose
     val referralProfit: Int?

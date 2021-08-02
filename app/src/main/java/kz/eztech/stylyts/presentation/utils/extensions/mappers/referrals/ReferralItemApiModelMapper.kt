@@ -13,7 +13,8 @@ fun List<ReferralItemApiModel>?.map(): List<ReferralItemModel> {
             description = it.description ?: EMPTY_STRING,
             coverImages = it.coverImages ?: emptyList(),
             cost = it.cost ?: 0,
-            referralProfit = it.referralProfit ?: 0
+            referralProfit = it.referralProfit ?: 0,
+            count = it.count ?: 0
         )
     }
 }
@@ -24,6 +25,7 @@ fun ReferralItemApiModel?.map(): ReferralItemModel {
         description = this?.description ?: EMPTY_STRING,
         coverImages = this?.coverImages ?: emptyList(),
         cost = this?.cost ?: 0,
-        referralProfit = this?.referralProfit ?: 0
+        referralProfit = this?.referralProfit ?: 0,
+        count = this?.count ?: 0
     )
 }

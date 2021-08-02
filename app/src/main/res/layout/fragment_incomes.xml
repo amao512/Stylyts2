@@ -54,7 +54,7 @@
                         android:layout_marginTop="@dimen/margin_size_16x"
                         android:textColor="@color/income_text_color"
                         android:textSize="@dimen/text_size_30x"
-                        tools:text="70 360 тг."
+                        android:text="0 тг."
                         />
                 </LinearLayout>
 

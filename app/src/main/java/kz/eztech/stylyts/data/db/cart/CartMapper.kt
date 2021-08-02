@@ -25,6 +25,13 @@ object CartMapper {
             coverImage = model.coverImages[0]
         }
 
+        var size: String = "M"
+        model.selectedSize?.size?.let {
+            if (it.isNotBlank()) {
+                size = it
+            }
+        }
+
         return CartEntity(
             id = model.id,
             typeId = model.clothesCategory.clothesType.id,
@@ -40,7 +47,7 @@ object CartMapper {
             price = model.cost,
             salePrice = model.salePrice,
             currency = model.currency,
-            size = model.selectedSize?.size,
+            size = size,
             sizeList = getSizeList(model),
             referralUser = model.referralUser
         )

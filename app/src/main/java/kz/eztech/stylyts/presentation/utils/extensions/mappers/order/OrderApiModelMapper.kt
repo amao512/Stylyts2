@@ -22,7 +22,8 @@ fun List<OrderApiModel>?.map(): List<OrderModel> {
             status = it.status ?: EMPTY_STRING,
             itemTitles = it.itemTitles ?: emptyList(),
             createdAt = it.createdAt ?: EMPTY_STRING,
-            modifiedAt = it.modifiedAt ?: EMPTY_STRING
+            modifiedAt = it.modifiedAt ?: EMPTY_STRING,
+            itemsMetaData = it.itemsMetaData.map()
         )
     }
 }
@@ -40,6 +41,7 @@ fun OrderApiModel?.map(): OrderModel {
         status = this?.status ?: EMPTY_STRING,
         itemTitles = this?.itemTitles ?: emptyList(),
         createdAt = this?.createdAt ?: EMPTY_STRING,
-        modifiedAt = this?.modifiedAt ?: EMPTY_STRING
+        modifiedAt = this?.modifiedAt ?: EMPTY_STRING,
+        itemsMetaData = this?.itemsMetaData.map()
     )
 }

@@ -65,7 +65,7 @@ class ReferralIncomeViewHolder(
             R.string.price_tenge_text_format,
             clothes.referralProfit.toString()
         )
-
+        countsTextView.text = clothes.count.toString()
 
         if (clothes.coverImages.isNotEmpty()) {
             clothes.coverImages[0].loadImage(target = clothesImageView)

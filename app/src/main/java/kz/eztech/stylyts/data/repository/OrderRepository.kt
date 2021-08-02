@@ -2,7 +2,6 @@ package kz.eztech.stylyts.data.repository
 
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
-import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModelWithReferral
 import kz.eztech.stylyts.data.api.network.OrderApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.common.ResultsModel
@@ -36,28 +35,10 @@ class OrderRepository @Inject constructor(
     }
 
     override fun createOrder(orderCreateApiModel: OrderCreateApiModel): Single<OrderCreateModel> {
-        return if (orderCreateApiModel.referralUser != 0) {
-            api.createOrder(
-                OrderCreateApiModelWithReferral(
-                    itemObjects = orderCreateApiModel.itemObjects,
-                    paymentType = orderCreateApiModel.paymentType,
-                    customer = orderCreateApiModel.customer,
-                    delivery = orderCreateApiModel.delivery,
-                    backUrl = orderCreateApiModel.backUrl,
-                    referralUser = orderCreateApiModel.referralUser
-                )
-            ).map {
-                when (it.isSuccessful) {
-                    true -> it.body().map()
-                    false -> throw NetworkException(it)
-                }
-            }
-        } else {
-            api.createOrder(orderCreateApiModel).map {
-                when (it.isSuccessful) {
-                    true -> it.body().map()
-                    false -> throw NetworkException(it)
-                }
+        return api.createOrder(orderCreateApiModel).map {
+            when (it.isSuccessful) {
+                true -> it.body().map()
+                false -> throw NetworkException(it)
             }
         }
     }

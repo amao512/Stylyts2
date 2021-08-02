@@ -15,5 +15,6 @@ data class OrderModel(
     val status: String,
     val itemTitles: List<String>,
     val createdAt: String,
-    val modifiedAt: String
+    val modifiedAt: String,
+    val itemsMetaData: List<OrderItemModel>,
 )

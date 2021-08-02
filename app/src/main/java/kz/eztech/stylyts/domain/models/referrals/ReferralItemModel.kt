@@ -5,5 +5,6 @@ data class ReferralItemModel(
     val description: String,
     val coverImages: List<String>,
     val cost: Int,
+    val count: Int,
     val referralProfit: Int
 )
