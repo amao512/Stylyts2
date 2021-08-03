@@ -198,36 +198,46 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
     }
 
     private fun onDeliveryWayClicked(deliveryWayModel: DeliveryWayModel) {
+        when (deliveryWayModel.id) {
+            1 -> navigateToCourierOrdering()
+            2 -> navigateToSelectPickupFittingWay()
+            3 -> navigateToPostOrdering()
+        }
+    }
+
+    private fun navigateToCourierOrdering() {
         val bundle = Bundle()
 
-        when (deliveryWayModel.id) {
-            1 -> {
-                bundle.putString(CourierOrderingFragment.CITY_KEY, cityEditText.text.toString())
-                bundle.putParcelableArrayList(CourierOrderingFragment.ORDER_KEY, orderList)
+        bundle.putString(CourierOrderingFragment.CITY_KEY, cityEditText.text.toString())
+        bundle.putParcelableArrayList(CourierOrderingFragment.ORDER_KEY, orderList)
 
-                findNavController().navigate(
-                    R.id.action_selectDeliveryWayFragment_to_courierOrderingFragment,
-                    bundle
-                )
-            }
-            2 -> {
-                bundle.putString(SelectPickupFittingWayFragment.CITY_KEY, cityEditText.text.toString())
-                bundle.putParcelableArrayList(SelectPickupFittingWayFragment.ORDER_KEY, orderList)
+        findNavController().navigate(
+            R.id.action_selectDeliveryWayFragment_to_courierOrderingFragment,
+            bundle
+        )
+    }
 
-                findNavController().navigate(
-                    R.id.action_selectDeliveryWayFragment_to_selectPickupFittingWayFragment,
-                    bundle
-                )
-            }
-            3 -> {
-                bundle.putString(PostOrderingFragment.CITY_KEY, cityEditText.text.toString())
-                bundle.putParcelableArrayList(PostOrderingFragment.ORDER_KEY, orderList)
+    private fun navigateToSelectPickupFittingWay() {
+        val bundle = Bundle()
 
-                findNavController().navigate(
-                    R.id.action_selectDeliveryWayFragment_to_postOrderingFragment,
-                    bundle
-                )
-            }
-        }
+        bundle.putString(SelectPickupFittingWayFragment.CITY_KEY, cityEditText.text.toString())
+        bundle.putParcelableArrayList(SelectPickupFittingWayFragment.ORDER_KEY, orderList)
+
+        findNavController().navigate(
+            R.id.action_selectDeliveryWayFragment_to_selectPickupFittingWayFragment,
+            bundle
+        )
+    }
+
+    private fun navigateToPostOrdering() {
+        val bundle = Bundle()
+
+        bundle.putString(PostOrderingFragment.CITY_KEY, cityEditText.text.toString())
+        bundle.putParcelableArrayList(PostOrderingFragment.ORDER_KEY, orderList)
+
+        findNavController().navigate(
+            R.id.action_selectDeliveryWayFragment_to_postOrderingFragment,
+            bundle
+        )
     }
 }
