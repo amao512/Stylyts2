@@ -7,7 +7,6 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_income_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.referrals.ReferralItemModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
@@ -87,7 +86,7 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
         item: Any?
     ) {
         when (item) {
-            is ClothesModel -> navigateToClothesDetail(item)
+            is ReferralItemModel -> navigateToClothesDetail(item)
         }
     }
 
@@ -109,9 +108,9 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
         }
     }
 
-    private fun navigateToClothesDetail(clothesModel: ClothesModel) {
+    private fun navigateToClothesDetail(referralItem: ReferralItemModel) {
         val bundle = Bundle()
-        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, clothesModel.id)
+//        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, referralItem.id)
 
         findNavController().navigate(
             R.id.action_profileIncomeDetailFragment_to_clothesDetailFragment,

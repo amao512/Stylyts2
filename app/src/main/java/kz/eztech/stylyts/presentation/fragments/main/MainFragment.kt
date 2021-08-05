@@ -50,6 +50,7 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
 
     override fun onResume() {
         super.onResume()
+
         currentActivity.displayBottomNavigationView()
     }
 

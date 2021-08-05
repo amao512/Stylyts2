@@ -6,8 +6,8 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.clothes.*
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.ClothesDomainRepository
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.clothes.map
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
+import kz.eztech.stylyts.presentation.utils.mappers.clothes.map
+import kz.eztech.stylyts.presentation.utils.mappers.map
 import javax.inject.Inject
 
 class ClothesRepository @Inject constructor(

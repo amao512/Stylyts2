@@ -6,8 +6,8 @@ import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.domain.repository.ReferralsDomainRepository
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.referrals.map
+import kz.eztech.stylyts.presentation.utils.mappers.map
+import kz.eztech.stylyts.presentation.utils.mappers.referrals.map
 import javax.inject.Inject
 
 class ReferralsRepository @Inject constructor(

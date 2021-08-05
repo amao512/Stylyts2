@@ -73,7 +73,6 @@ class RefreshPasswordPresenter @Inject constructor(
                     hideProgress()
                     displayMessage(errorHelper.processError(e))
                 }
-
             }
         })
     }

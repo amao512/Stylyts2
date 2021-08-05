@@ -3,7 +3,7 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.WardrobeApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.clothes.map
+import kz.eztech.stylyts.presentation.utils.mappers.clothes.map
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.repository.WardrobeDomainRepository
 import okhttp3.MultipartBody

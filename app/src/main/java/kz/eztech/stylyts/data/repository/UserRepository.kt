@@ -3,8 +3,8 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.UserApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.map
-import kz.eztech.stylyts.presentation.utils.extensions.mappers.user.map
+import kz.eztech.stylyts.presentation.utils.mappers.map
+import kz.eztech.stylyts.presentation.utils.mappers.user.map
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
