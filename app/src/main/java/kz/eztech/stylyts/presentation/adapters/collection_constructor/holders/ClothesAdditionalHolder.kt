@@ -36,14 +36,18 @@ class ClothesAdditionalHolder(
                 adapter.itemClickListener?.onViewClicked(it, position, item)
             }
 
-            if (item.coverImages.isNotEmpty()) {
-                item.coverImages[0].loadImage(target = image_view_image_detail_image_view)
-            }
+            with (item) {
+                if (constructorImage.isNotBlank()) {
+                    constructorImage.loadImage(target = image_view_image_detail_image_view)
+                } else if (coverImages.isNotEmpty()) {
+                    coverImages[0].loadImage(target = image_view_image_detail_image_view)
+                }
 
-            if (item.clothesBrand.id != 0 && item.cost != 0) {
-                item_main_image_detail_user_tag_frame_layout.hide()
-            } else {
-                item_main_image_detail_user_tag_frame_layout.show()
+                if (clothesBrand.id != 0 && cost != 0) {
+                    item_main_image_detail_user_tag_frame_layout.hide()
+                } else {
+                    item_main_image_detail_user_tag_frame_layout.show()
+                }
             }
 
             image_view_image_detail_image_view.setOnTouchListener { _, event ->
