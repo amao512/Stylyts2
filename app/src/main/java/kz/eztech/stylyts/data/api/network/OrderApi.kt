@@ -29,4 +29,11 @@ interface OrderApi {
     fun processOrder(
         @Path("order_id") orderId: Int
     ): Single<Response<OrderApiModel>>
+
+    @FormUrlEncoded
+    @POST(RestConstants.SET_DELIVERY_STATUS)
+    fun setDeliveryStatus(
+        @Path("order_id") orderId: Int,
+        @Field("delivery_status") deliveryStatus: String
+    ): Single<Response<Any>>
 }

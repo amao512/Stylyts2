@@ -92,7 +92,7 @@
         android:background="@drawable/rounded_rectangle_white_gray_corners"
         android:backgroundTint="@color/app_dark_blue_gray"
         android:gravity="center"
-        android:text="@string/complete_order"
+        android:text="@string/complete"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_14x"
         android:visibility="gone"

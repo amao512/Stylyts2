@@ -9,8 +9,6 @@ import kz.eztech.stylyts.presentation.adapters.ordering.holders.ShopOrderViewHol
 
 class ShopOrderAdapter : BaseAdapter() {
 
-//    override fun getLayoutId(viewType: Int): Int = R.layout.item_shop_order
-
     override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
         return object : BaseDiffUtilCallBack(currentList, list) {
             override fun getAreContentsTheSame(

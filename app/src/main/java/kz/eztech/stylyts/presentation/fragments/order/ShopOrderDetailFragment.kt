@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.presentation.fragments.order
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -36,8 +37,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
     UniversalViewClickListener,
     View.OnClickListener {
 
-    @Inject
-    lateinit var presenter: ShopOrderDetailPresenter
+    @Inject lateinit var presenter: ShopOrderDetailPresenter
     private lateinit var shopOrderClothesAdapter: ShopOrderClothesAdapter
 
     private lateinit var clientAvatarShapeableImageView: ShapeableImageView
@@ -49,6 +49,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
     private lateinit var notPaidTextView: TextView
     private lateinit var clothesRecyclerView: RecyclerView
     private lateinit var completeButton: Button
+    private lateinit var applyButton: Button
 
     companion object {
         const val ORDER_ID_KEY = "orderId"
@@ -102,14 +103,16 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         clothesRecyclerView = fragment_shop_order_detail_recycler_view
         clothesRecyclerView.adapter = shopOrderClothesAdapter
         notPaidTextView = fragment_shop_order_detail_not_paid_text_view
+        applyButton = fragment_shop_order_detail_apply_button
     }
 
     override fun initializeListeners() {
         completeButton.setOnClickListener(this)
+        applyButton.setOnClickListener(this)
     }
 
     override fun processPostInitialization() {
-        presenter.getOrder(orderId = arguments?.getInt(ORDER_ID_KEY) ?: 0)
+        presenter.getOrder(orderId = getOrderId())
     }
 
     override fun disposeRequests() {}
@@ -130,8 +133,12 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.fragment_shop_order_detail_complete_button -> {
-            }
+            R.id.fragment_shop_order_detail_complete_button -> presenter.setStatusDelivered(
+                orderId = getOrderId()
+            )
+            R.id.fragment_shop_order_detail_apply_button -> presenter.setStatusInProgress(
+                orderId = getOrderId()
+            )
         }
     }
 
@@ -145,28 +152,9 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         }
     }
 
-    override fun processOrder(orderModel: OrderModel) {
-        fragment_shop_order_toolbar.toolbar_title_text_view.text = getString(
-            R.string.order_number_text_format,
-            orderModel.id.toString()
-        )
-
-        val client = orderModel.client
-
-        clientUsernameTextView.text = client.username
-        clientFullNameTextView.text = getString(
-            R.string.full_name_text_format,
-            client.firstName,
-            client.lastName
-        )
-        dateTextView.text = DateFormatterHelper.formatISO_8601(
-            orderModel.createdAt,
-            DateFormatterHelper.FORMAT_DATE_DD_MMMM
-        )
-        priceTextView.text =
-            getString(R.string.price_tenge_text_format, orderModel.price.toString())
-
-        shopOrderClothesAdapter.updateList(list = orderModel.itemObjects)
+    override fun processOrder(orderModel: OrderModel) = with(orderModel) {
+        processOrderInfo(orderModel = orderModel)
+        processOrderStatus(orderModel = orderModel)
 
         if (client.avatar.isEmpty()) {
             clientAvatarShapeableImageView.hide()
@@ -174,17 +162,6 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         } else {
             clientShortNameTextView.hide()
             client.avatar.loadImageWithCenterCrop(target = clientAvatarShapeableImageView)
-        }
-
-        if (
-            orderModel.delivery.deliveryStatus == DeliveryStatusEnum.NEW.status &&
-            orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
-        ) {
-            completeButton.hide()
-            notPaidTextView.show()
-        } else {
-            completeButton.show()
-            notPaidTextView.hide()
         }
 
         clientAvatarShapeableImageView.setOnClickListener {
@@ -204,6 +181,55 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         }
     }
 
+    private fun processOrderInfo(orderModel: OrderModel) = with (orderModel) {
+        fragment_shop_order_toolbar.toolbar_title_text_view.text = getString(R.string.order_number_text_format, id.toString())
+
+        clientUsernameTextView.text = client.username
+        clientFullNameTextView.text = getString(
+            R.string.full_name_text_format,
+            client.firstName,
+            client.lastName
+        )
+        dateTextView.text = DateFormatterHelper.formatISO_8601(createdAt, DateFormatterHelper.FORMAT_DATE_DD_MMMM)
+        priceTextView.text = getString(R.string.price_tenge_text_format, price.toString())
+
+        shopOrderClothesAdapter.updateList(list = itemObjects)
+    }
+
+    private fun processOrderStatus(orderModel: OrderModel) = with(orderModel) {
+        Log.d("TAG4", "payment - ${invoice.paymentStatus}")
+        Log.d("TAG4", "delivery - ${delivery.deliveryStatus}")
+
+        if (invoice.paymentStatus == PaymentStatusEnum.NEW.status) {
+            completeButton.hide()
+            notPaidTextView.show()
+            applyButton.hide()
+        } else if (
+            (invoice.paymentStatus == PaymentStatusEnum.PAID.status ||
+            invoice.paymentStatus == PaymentStatusEnum.PENDING.status) &&
+            delivery.deliveryStatus == DeliveryStatusEnum.NEW.status
+        ) {
+            applyButton.show()
+            completeButton.hide()
+            notPaidTextView.hide()
+        } else if (
+            (invoice.paymentStatus == PaymentStatusEnum.PAID.status ||
+            invoice.paymentStatus == PaymentStatusEnum.PENDING.status) &&
+            delivery.deliveryStatus == DeliveryStatusEnum.IN_PROGRESS.status
+        ) {
+            completeButton.show()
+            notPaidTextView.hide()
+            applyButton.hide()
+        } else if (
+            invoice.paymentStatus == PaymentStatusEnum.PAID.status &&
+            delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status
+        ) {
+            completeButton.hide()
+            notPaidTextView.hide()
+            applyButton.hide()
+        }
+    }
+
     private fun navigateToClient(userShortModel: UserShortModel) {
         val bundle = Bundle()
         bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, userShortModel.id)
@@ -220,4 +246,6 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
             bundle
         )
     }
+
+    private fun getOrderId(): Int = arguments?.getInt(ORDER_ID_KEY) ?: 0
 }

@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.data.repository
 
+import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.api.network.OrderApi
@@ -36,8 +37,24 @@ class OrderRepository @Inject constructor(
 
     override fun createOrder(orderCreateApiModel: OrderCreateApiModel): Single<OrderCreateModel> {
         return api.createOrder(orderCreateApiModel).map {
+            Log.d("TAG4", "after - ${it.message()}")
             when (it.isSuccessful) {
                 true -> it.body().map()
+                false -> throw NetworkException(it)
+            }
+        }
+    }
+
+    override fun setOrderStatus(
+        orderId: Int,
+        deliveryStatus: String
+    ): Single<Any> {
+        return api.setDeliveryStatus(
+            orderId = orderId,
+            deliveryStatus = deliveryStatus
+        ).map {
+            when (it.isSuccessful) {
+                true -> it.body()
                 false -> throw NetworkException(it)
             }
         }

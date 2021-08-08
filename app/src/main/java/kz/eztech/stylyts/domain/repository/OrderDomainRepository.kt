@@ -13,4 +13,9 @@ interface OrderDomainRepository {
     fun getOrderById(orderId: Int): Single<OrderModel>
 
     fun createOrder(orderCreateApiModel: OrderCreateApiModel): Single<OrderCreateModel>
+
+    fun setOrderStatus(
+        orderId: Int,
+        deliveryStatus: String
+    ): Single<Any>
 }

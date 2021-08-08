@@ -81,6 +81,7 @@ object RestConstants {
     const val GET_ORDER_BY_ID: String = "orders/{order_id}"
     const val CREATE_ORDER: String = "orders"
     const val PROCESS_ORDER: String = "orders/{order_id}"
+    const val SET_DELIVERY_STATUS: String = "orders/{order_id}/delivery/set-status"
 
     // Referrals
     const val GET_REFERRALS: String = "referrals"

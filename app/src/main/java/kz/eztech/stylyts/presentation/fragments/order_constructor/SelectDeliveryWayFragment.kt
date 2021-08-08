@@ -130,23 +130,35 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
 
         list.map { cart ->
             val order = orderList.find { it.ownerId == cart.ownerId }
-            val items: MutableList<BaseOrderItemModel> = mutableListOf()
 
             if (order != null) {
-                items.add(
+                order.orderItemList.add(
                     getOrderItem(cartEntity = cart)
                 )
             } else {
                 val newOrder = OrderCreateApiModel(
-                    itemsMetaData = arrayListOf(getOrderItem(cartEntity = cart)),
                     paymentType = EMPTY_STRING,
                     customer = customer
+                )
+
+                newOrder.orderItemList.add(
+                    getOrderItem(cartEntity = cart)
                 )
 
                 newOrder.ownerId = cart.ownerId ?: 0
 
                 orderList.add(newOrder)
             }
+        }
+
+        orderList.map { order ->
+            val items: MutableList<BaseOrderItemModel> = mutableListOf()
+
+            order.orderItemList.map {
+                items.add(it)
+            }
+
+            order.itemsMetaData = items
         }
     }
 

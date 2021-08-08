@@ -14,5 +14,9 @@ interface ShopOrderDetailContract {
     interface Presenter : BasePresenter<View> {
 
         fun getOrder(orderId: Int)
+
+        fun setStatusInProgress(orderId: Int)
+
+        fun setStatusDelivered(orderId: Int)
     }
 }
