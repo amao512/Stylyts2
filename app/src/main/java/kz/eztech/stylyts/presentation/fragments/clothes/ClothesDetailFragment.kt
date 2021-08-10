@@ -30,11 +30,9 @@ import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.presenters.clothes.ClothesDetailPresenter
 import kz.eztech.stylyts.presentation.utils.ColorUtils
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import java.text.NumberFormat
 import javax.inject.Inject
 
 class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContract.View,
@@ -186,23 +184,23 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         findNavController().popBackStack()
     }
 
-    private fun fillClothesModel(clothesModel: ClothesModel) {
+    private fun fillClothesModel(clothesModel: ClothesModel) = with (clothesModel) {
         chooserDialog = ClothesSizesBottomDialog()
-        chooserDialog.setChoiceListener(listener = this)
+        chooserDialog.setChoiceListener(listener = this@ClothesDetailFragment)
 
-        if (clothesModel.owner.username.isNotEmpty()) {
-            fragment_clothes_detail_brand_title_text_view.text = clothesModel.owner.username
+        if (owner.username.isNotEmpty()) {
+            fragment_clothes_detail_brand_title_text_view.text = owner.username
         } else {
             fragment_clothes_detail_brand_title_text_view.hide()
         }
 
-        if (!clothesModel.owner.isBrand) {
+        if (!owner.isBrand) {
             fragment_clothes_detail_add_to_cart_text_view.backgroundTintList = ColorStateList.valueOf(
                 getColor(requireContext(), R.color.disabled_button_color)
             )
         }
 
-        if (clothesModel.owner.id == currentActivity.getUserIdFromSharedPref() && !clothesModel.owner.isBrand) {
+        if (owner.id == currentActivity.getUserIdFromSharedPref() && !owner.isBrand) {
             fragment_clothes_detail_delete_text_view.show()
             fragment_clothes_detail_add_to_wardrobe_text_view.hide()
         } else {
@@ -210,35 +208,28 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
             fragment_clothes_detail_add_to_wardrobe_text_view.show()
         }
 
-        fragment_clothes_detail_clothes_title_text_view.text = clothesModel.title
-        fragment_clothes_detail_shop_name_text_view.text = clothesModel.owner.username
+        fragment_clothes_detail_clothes_title_text_view.text = title
+        fragment_clothes_detail_shop_name_text_view.text = owner.username
 
         processImages(clothesModel)
         processPrice(clothesModel)
         processDescription(clothesModel)
 
-        if (clothesModel.owner.id != 0) {
-            processClothesOwner(owner = clothesModel.owner)
+        if (owner.id != 0) {
+            processClothesOwner(owner = owner)
         }
     }
 
-    private fun processClothesOwner(owner: UserShortModel) {
-        fragment_clothes_detail_desc_author_text_view.text = getString(
-            R.string.full_name_text_format,
-            owner.firstName,
-            owner.lastName
-        )
+    private fun processClothesOwner(owner: UserShortModel) = with (owner) {
+        fragment_clothes_detail_desc_author_text_view.text = displayFullName
 
-        if (owner.avatar.isBlank()) {
+        if (avatar.isBlank()) {
             fragment_clothes_detail_avatar_shapeable_image_view.hide()
-            fragment_clothes_detail_user_short_name_text_view.text = getShortName(
-                firstName = owner.firstName,
-                lastName = owner.lastName
-            )
+            fragment_clothes_detail_user_short_name_text_view.text = displayShortName
         } else {
             fragment_clothes_detail_user_short_name_text_view.hide()
 
-            owner.avatar.loadImageWithCenterCrop(target = fragment_clothes_detail_avatar_shapeable_image_view)
+            avatar.loadImageWithCenterCrop(target = fragment_clothes_detail_avatar_shapeable_image_view)
         }
     }
 
@@ -261,41 +252,30 @@ class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContrac
         )
     }
 
-    private fun processPrice(clothesModel: ClothesModel) {
-        if (clothesModel.salePrice != 0) {
+    private fun processPrice(clothesModel: ClothesModel) = with (clothesModel) {
+        if (salePrice != 0) {
             fragment_clothes_detail_price_text_view.hide()
             fragment_clothes_detail_default_price_text_view.apply {
-                text = getString(
-                    R.string.price_tenge_text_format,
-                    NumberFormat.getInstance().format(clothesModel.cost)
-                )
+                text = displayPrice
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
-            fragment_clothes_detail_sale_price_text_view.text = getString(
-                R.string.price_tenge_text_format,
-                NumberFormat.getInstance().format(clothesModel.salePrice)
-            )
+            fragment_clothes_detail_sale_price_text_view.text = displaySalePrice
             fragment_clothes_detail_sale_prices_linear_layout.show()
         } else {
             fragment_clothes_detail_sale_prices_linear_layout.hide()
 
-            if (clothesModel.cost != 0) {
-                fragment_clothes_detail_price_text_view.text = getString(
-                    R.string.price_tenge_text_format,
-                    NumberFormat.getInstance().format(clothesModel.cost)
-                )
+            if (cost != 0) {
+                fragment_clothes_detail_price_text_view.text = displayPrice
             } else {
                 fragment_clothes_detail_price_text_view.hide()
             }
         }
     }
 
-    private fun processDescription(clothesModel: ClothesModel) {
-        fragment_clothes_detail_desc_text_view.text = clothesModel.description
-        fragment_clothes_detail_desc_id_text_view.text = clothesModel.id.toString()
-        fragment_clothes_detail_desc_color_text_view.text = ColorUtils.getColorTitleFromHex(
-            hex = clothesModel.clothesColor
-        )
+    private fun processDescription(clothesModel: ClothesModel) = with (clothesModel) {
+        fragment_clothes_detail_desc_text_view.text = description
+        fragment_clothes_detail_desc_id_text_view.text = id.toString()
+        fragment_clothes_detail_desc_color_text_view.text = ColorUtils.getColorTitleFromHex(hex = clothesColor)
     }
 
     private fun getClothes() {

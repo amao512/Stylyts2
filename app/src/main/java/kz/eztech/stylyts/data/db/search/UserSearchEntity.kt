@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "search_user_history_table", indices = [Index(value = ["id"], unique = true)])
 data class UserSearchEntity(
@@ -25,4 +26,10 @@ data class UserSearchEntity(
 
     @ColumnInfo(name = "username")
     val username: String? = null
-)
+) {
+    val displayFullName
+        get() = "$name $lastName"
+
+    val displayShortName
+        get() = "${name?.toUpperCase(Locale.getDefault())?.get(0)}${lastName?.toUpperCase(Locale.getDefault())?.get(0)}"
+}

@@ -47,7 +47,6 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.ProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -261,9 +260,9 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    override fun processProfile(userModel: UserModel) {
-        currentUserId = userModel.id
-        currentUsername = userModel.username
+    override fun processProfile(userModel: UserModel) = with (userModel) {
+        currentUserId = id
+        currentUsername = username
 
         getFilterList()
         presenter.getFollowers()
@@ -276,7 +275,7 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
             toolbar_right_corner_action_image_button.setImageResource(R.drawable.ic_drawer)
             toolbar_right_corner_action_image_button.show()
         } else {
-            clothesFilterModel.owner = userModel.username
+            clothesFilterModel.owner = username
             toolbar_left_corner_action_image_button.setImageResource(R.drawable.ic_baseline_keyboard_arrow_left_24)
             toolbar_left_corner_action_image_button.show()
         }
@@ -437,16 +436,16 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         })
     }
 
-    private fun fillProfileInfo(userModel: UserModel) {
-        include_toolbar_profile.toolbar_title_text_view.text = userModel.username
+    private fun fillProfileInfo(userModel: UserModel) = with (userModel) {
+        include_toolbar_profile.toolbar_title_text_view.text = username
 
-        userNameTextView.text = userModel.firstName
-        followersCountTextView.text = userModel.followersCount.toString()
-        followingsCountTextView.text = userModel.followingsCount.toString()
+        userNameTextView.text = firstName
+        followersCountTextView.text = followersCount.toString()
+        followingsCountTextView.text = followingsCount.toString()
 
         adapterFilter.changeItemByPosition(
             position = 2,
-            title = "${getString(R.string.filter_list_photo_outfits)} (${userModel.outfitsCount})"
+            title = "${getString(R.string.filter_list_photo_outfits)} (${outfitsCount})"
         )
 
         if (isOwnProfile()) {
@@ -456,18 +455,14 @@ class ProfileFragment : BaseFragment<MainActivity>(), ProfileContract.View, View
         }
     }
 
-    private fun loadProfilePhoto(userModel: UserModel) {
-        if (userModel.avatar.isBlank()) {
+    private fun loadProfilePhoto(userModel: UserModel) = with (userModel) {
+        if (avatar.isBlank()) {
             avatarShapeableImageView.hide()
             userShortNameTextView.show()
-            userShortNameTextView.text = getShortName(
-                firstName = userModel.firstName,
-                lastName = userModel.lastName
-            )
+            userShortNameTextView.text = displayShortName
         } else {
             userShortNameTextView.hide()
-            userModel.avatar
-                .loadImageWithCenterCrop(target = avatarShapeableImageView)
+            avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
         }
     }
 

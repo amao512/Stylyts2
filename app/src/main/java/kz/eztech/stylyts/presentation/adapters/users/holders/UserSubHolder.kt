@@ -8,7 +8,6 @@ import kotlinx.android.synthetic.main.item_user_subs.view.*
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -67,36 +66,26 @@ class UserSubHolder(
         }
     }
 
-    private fun processFollower(followerModel: FollowerModel) {
+    private fun processFollower(followerModel: FollowerModel) = with (followerModel) {
         usernameTextView.text = followerModel.username
-        userFullNameTextView.text = SPACE_TEXT_FORMAT.format(
-            followerModel.firstName,
-            followerModel.firstName
-        )
+        userFullNameTextView.text = displayFullName
 
-        if (followerModel.avatar.isBlank()) {
-            userShortNameTextView.text = getShortName(
-                firstName = followerModel.firstName,
-                lastName = followerModel.lastName
-            )
+        if (avatar.isBlank()) {
+            userShortNameTextView.text = displayShortName
             avatarShapeableImageView.hide()
             userShortNameTextView.show()
         } else {
-            followerModel.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
+            avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
             avatarShapeableImageView.show()
             userShortNameTextView.hide()
         }
 
-        if (followerModel.isAlreadyFollow) {
+        if (isAlreadyFollow) {
             unFollowTextView.show()
             followTextView.hide()
         } else {
             unFollowTextView.hide()
             followTextView.show()
         }
-    }
-
-    companion object {
-        private const val SPACE_TEXT_FORMAT = "%s %s"
     }
 }

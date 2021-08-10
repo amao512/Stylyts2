@@ -9,8 +9,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
+import kz.eztech.stylyts.presentation.utils.extensions.getDayAndMonth
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 
@@ -46,31 +45,25 @@ class CommentHolder(
     private fun processComment(
         comment: CommentModel,
         position: Int
-    ) {
+    ) = with (comment) {
         commentWithFullNameTextView.text = HtmlCompat.fromHtml(
             commentWithFullNameTextView.context.getString(
                 R.string.comment_text_with_user_text_format,
-                comment.author.firstName,
-                comment.author.lastName,
-                comment.text
+                author.firstName,
+                author.lastName,
+                text
             ), HtmlCompat.FROM_HTML_MODE_LEGACY
         )
 
-        if (comment.author.avatar.isBlank()) {
-            userShortNameTextView.text = getShortName(
-                firstName = comment.author.firstName,
-                lastName = comment.author.lastName
-            )
+        if (author.avatar.isBlank()) {
+            userShortNameTextView.text = author.displayShortName
             userAvatarShapeableImageView.hide()
         } else {
-            comment.author.avatar.loadImageWithCenterCrop(target = userAvatarShapeableImageView)
+            author.avatar.loadImageWithCenterCrop(target = userAvatarShapeableImageView)
             userShortNameTextView.hide()
         }
 
-        commentDateTextView.text = DateFormatterHelper.formatISO_8601(
-            comment.createdAt,
-            DateFormatterHelper.FORMAT_DATE_DD_MMMM
-        )
+        commentDateTextView.text = createdAt.getDayAndMonth()
 
         userAvatarShapeableImageView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, comment)

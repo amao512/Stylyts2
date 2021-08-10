@@ -26,11 +26,7 @@ import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.ShopOrderDetailPresenter
-import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.presentation.utils.extensions.*
 import javax.inject.Inject
 
 class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailContract.View,
@@ -158,7 +154,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
 
         if (client.avatar.isEmpty()) {
             clientAvatarShapeableImageView.hide()
-            clientShortNameTextView.text = getShortName(client.firstName, client.lastName)
+            clientShortNameTextView.text = client.displayShortName
         } else {
             clientShortNameTextView.hide()
             client.avatar.loadImageWithCenterCrop(target = clientAvatarShapeableImageView)
@@ -185,13 +181,9 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         fragment_shop_order_toolbar.toolbar_title_text_view.text = getString(R.string.order_number_text_format, id.toString())
 
         clientUsernameTextView.text = client.username
-        clientFullNameTextView.text = getString(
-            R.string.full_name_text_format,
-            client.firstName,
-            client.lastName
-        )
-        dateTextView.text = DateFormatterHelper.formatISO_8601(createdAt, DateFormatterHelper.FORMAT_DATE_DD_MMMM)
-        priceTextView.text = getString(R.string.price_tenge_text_format, price.toString())
+        clientFullNameTextView.text = client.displayFullName
+        dateTextView.text = createdAt.getDayAndMonth()
+        priceTextView.text = displayPrice
 
         shopOrderClothesAdapter.updateList(list = itemObjects)
     }

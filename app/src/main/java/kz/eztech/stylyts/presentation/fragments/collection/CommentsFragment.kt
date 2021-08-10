@@ -28,7 +28,6 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CommentsPresenter
 import kz.eztech.stylyts.presentation.utils.AbstractTextWatcher
 import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -155,15 +154,12 @@ class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,
         }
     }
 
-    override fun processProfile(userModel: UserModel) {
-        if (userModel.avatar.isBlank()) {
+    override fun processProfile(userModel: UserModel) = with (userModel) {
+        if (avatar.isBlank()) {
             userAvatarShapeableImageView.hide()
-            userShortNameTextView.text = getShortName(
-                firstName = userModel.firstName,
-                lastName = userModel.lastName
-            )
+            userShortNameTextView.text = displayShortName
         } else {
-            userModel.avatar.loadImageWithCenterCrop(target = userAvatarShapeableImageView)
+            avatar.loadImageWithCenterCrop(target = userAvatarShapeableImageView)
             userShortNameTextView.hide()
         }
     }

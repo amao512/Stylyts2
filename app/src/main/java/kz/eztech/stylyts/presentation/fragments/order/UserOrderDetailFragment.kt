@@ -29,10 +29,9 @@ import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.UserOrderDetailPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.getFormattedDate
+import kz.eztech.stylyts.presentation.utils.extensions.getDayAndMonth
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
-import java.text.NumberFormat
 import javax.inject.Inject
 
 class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailContract.View, UniversalViewClickListener {
@@ -135,31 +134,25 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
         }
     }
 
-    override fun processOrder(orderModel: OrderModel) {
+    override fun processOrder(orderModel: OrderModel) = with (orderModel) {
         fragment_order_detail_toolbar.toolbar_title_text_view.text = getString(
             R.string.order_number_text_format,
-            orderModel.id.toString()
+            id.toString()
         )
 
-        goodsPriceTextView.text = getString(
-            R.string.price_tenge_text_format,
-            NumberFormat.getInstance().format(orderModel.price)
-        )
-        totalPriceTextView.text = getString(
-            R.string.price_tenge_text_format,
-            NumberFormat.getInstance().format(orderModel.price)
-        )
-        clothesAdapterUser.updateList(list = orderModel.itemObjects)
-        deliveryPriceTextView.text = "0 тг"
+        goodsPriceTextView.text = displayPrice
+        totalPriceTextView.text = displayPrice
+        clothesAdapterUser.updateList(list = itemObjects)
+        deliveryPriceTextView.text = "0 ₸"
 
         payButton.setOnClickListener {
             val bundle = Bundle()
-            bundle.putInt(PaymentFragment.ORDER_ID_KEY, orderModel.id)
+            bundle.putInt(PaymentFragment.ORDER_ID_KEY, id)
 
             findNavController().navigate(R.id.action_orderDetailFragment_to_paymentFragment, bundle)
         }
 
-        deliveryTypeTitleTextView.text = when (orderModel.delivery.deliveryType) {
+        deliveryTypeTitleTextView.text = when (delivery.deliveryType) {
             DeliveryTypeEnum.COURIER.type -> getString(R.string.delivery)
             DeliveryTypeEnum.SELF_PICKUP.type -> getString(R.string.delivery_pickup)
             else -> getString(R.string.delivery_way_post)
@@ -167,10 +160,10 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
 
         addressTextView.text = getString(
             R.string.address_detail_text_format,
-            orderModel.delivery.city,
-            orderModel.delivery.street,
-            orderModel.delivery.house,
-            orderModel.delivery.apartment
+            delivery.city,
+            delivery.street,
+            delivery.house,
+            delivery.apartment
         )
 
         setOrderStatus(orderModel)
@@ -184,17 +177,17 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
         }
     }
 
-    private fun processActiveStatus(orderModel: OrderModel) {
-        val isPaymentNew = orderModel.invoice.paymentStatus == PaymentStatusEnum.NEW.status
-        val isPaymentPaid = orderModel.invoice.paymentStatus == PaymentStatusEnum.PAID.status
-        val isPaymentPending = orderModel.invoice.paymentStatus == PaymentStatusEnum.PENDING.status
+    private fun processActiveStatus(orderModel: OrderModel) = with (orderModel) {
+        val isPaymentNew = invoice.paymentStatus == PaymentStatusEnum.NEW.status
+        val isPaymentPaid = invoice.paymentStatus == PaymentStatusEnum.PAID.status
+        val isPaymentPending = invoice.paymentStatus == PaymentStatusEnum.PENDING.status
 
-        val isOperationUrlNotBlank = orderModel.invoice.operationUrl.isNotBlank()
-        val isOperationUrlBlank = orderModel.invoice.operationUrl.isBlank()
+        val isOperationUrlNotBlank = invoice.operationUrl.isNotBlank()
+        val isOperationUrlBlank = invoice.operationUrl.isBlank()
 
         if (isPaymentPaid) {
             paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
-            paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            paidStatusHolder.item_order_status_date_text_view.text = createdAt.getDayAndMonth()
             paidStatusHolder.show()
         } else if (
             (isPaymentPending && isOperationUrlNotBlank) ||
@@ -208,27 +201,27 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
         } else if (isPaymentPending && isOperationUrlBlank) {
             appliedStatusHolder.apply {
                 item_order_status_title_text_view.text = getString(R.string.status_applied)
-                item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+                item_order_status_date_text_view.text = createdAt.getDayAndMonth()
                 show()
             }
         }
     }
 
-    private fun processNotActiveStatus(orderModel: OrderModel) {
-        val isOrderCompleted = orderModel.status == OrderStatusEnum.COMPLETED.status
-        val isOrderReturned = orderModel.status == OrderStatusEnum.RETURNED.status
-        val isOrderCancelled = orderModel.status == OrderStatusEnum.CANCELLED.status
+    private fun processNotActiveStatus(orderModel: OrderModel) = with (orderModel) {
+        val isOrderCompleted = status == OrderStatusEnum.COMPLETED.status
+        val isOrderReturned = status == OrderStatusEnum.RETURNED.status
+        val isOrderCancelled = status == OrderStatusEnum.CANCELLED.status
 
-        val isDelivered = orderModel.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status
+        val isDelivered = delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status
 
         if (isOrderCompleted && isDelivered) {
             paidStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_paid)
-            paidStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            paidStatusHolder.item_order_status_date_text_view.text = createdAt.getDayAndMonth()
             paidStatusHolder.item_order_status_to_next_squares_linear_layout.show()
             paidStatusHolder.show()
 
             deliveredStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_delivered)
-            deliveredStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            deliveredStatusHolder.item_order_status_date_text_view.text = createdAt.getDayAndMonth()
             deliveredStatusHolder.show()
         } else if (isOrderCancelled) {
             paidStatusHolder.hide()
@@ -241,7 +234,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
             )
             cancelledStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
             cancelledStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_cancelled)
-            cancelledStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            cancelledStatusHolder.item_order_status_date_text_view.text = createdAt.getDayAndMonth()
             cancelledStatusHolder.show()
         } else if (isOrderReturned) {
             paidStatusHolder.hide()
@@ -254,7 +247,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
             )
             returnedStatusHolder.item_order_status_icon_image_view.setImageResource(R.drawable.ic_baseline_close_white_24)
             returnedStatusHolder.item_order_status_title_text_view.text = getString(R.string.status_returned)
-            returnedStatusHolder.item_order_status_date_text_view.text = getFormattedDate(orderModel.createdAt)
+            returnedStatusHolder.item_order_status_date_text_view.text = createdAt.getDayAndMonth()
             returnedStatusHolder.show()
         }
     }

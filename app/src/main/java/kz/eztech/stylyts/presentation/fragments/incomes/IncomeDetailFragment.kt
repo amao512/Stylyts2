@@ -14,11 +14,10 @@ import kz.eztech.stylyts.presentation.adapters.incomes.ReferralItemsAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeDetailContract
-import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.incomes.IncomeDetailPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.getIncomeDateString
 import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.presentation.utils.getIncomeDateString
 import javax.inject.Inject
 
 class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.View, UniversalViewClickListener {

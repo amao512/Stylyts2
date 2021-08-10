@@ -11,5 +11,5 @@ data class OrderCreateModel(
 data class ResponseOrderCreateModel(
     val id: Int,
     val invoice: InvoiceModel,
-    var itemsMetaData: List<OrderItemModel>,
+    val itemObjects: List<Int>
 )

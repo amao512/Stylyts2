@@ -9,7 +9,7 @@ import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.PaymentStatusEnum
-import kz.eztech.stylyts.presentation.utils.DateFormatterHelper
+import kz.eztech.stylyts.presentation.utils.extensions.getSlashDate
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.show
 
@@ -54,10 +54,7 @@ class ShopOrderViewHolder(
             itemView.context.getString(R.string.order_number_text_format, "${order.id} - ")
         priceTextView.text =
             itemView.context.getString(R.string.price_tenge_text_format, order.price.toString())
-        dateTextView.text = DateFormatterHelper.formatISO_8601(
-            order.createdAt,
-            DateFormatterHelper.FORMAT_DATE_dd_MM_yyyy_dash
-        )
+        dateTextView.text = order.createdAt.getSlashDate()
 
         if (
             order.delivery.deliveryStatus == DeliveryStatusEnum.NEW.status &&

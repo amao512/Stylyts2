@@ -41,7 +41,6 @@ import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.FileUtils
 import kz.eztech.stylyts.presentation.utils.extensions.*
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
-import java.text.NumberFormat
 import javax.inject.Inject
 
 class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailContract.View,
@@ -205,49 +204,47 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
     }
 
-    override fun processOutfit(outfitModel: OutfitModel) {
-        authorId = outfitModel.author.id
-        additionalAdapter.updateList(list = outfitModel.clothes)
+    override fun processOutfit(outfitModel: OutfitModel) = with (outfitModel) {
+        authorId = author.id
+        additionalAdapter.updateList(list = clothes)
         currentOutfitModel = outfitModel
         commentsCountTextView.text = getString(
             R.string.comments_count_text_format,
             0.toString()
         )
-        firstCommentTextView.text = outfitModel.text
+        firstCommentTextView.text = text
         firstCommentTextView.hide()
         likesCountTextView.hide()
-        text_view_fragment_collection_detail_date.text = getFormattedDate(outfitModel.createdAt)
+        text_view_fragment_collection_detail_date.text = createdAt.getDayAndMonth()
 
-        if (outfitModel.clothes.isNotEmpty() && outfitModel.clothes.sumBy { it.cost } != 0) {
+        if (clothes.isNotEmpty() && totalPrice != 0) {
             totalPriceTextView.text = HtmlCompat.fromHtml(
                 totalPriceTextView.context.getString(
                     R.string.total_cost_text_format,
-                    NumberFormat.getInstance().format(outfitModel.clothes.sumBy { it.cost })
-                        .toString(),
-                    outfitModel.clothes[0].currency,
+                    totalPriceNumberFormat,
+                    clothes[0].currency,
                 ), HtmlCompat.FROM_HTML_MODE_LEGACY
             )
         } else {
             totalPriceTextView.hide()
         }
 
-        processAuthor(userShortModel = outfitModel.author)
-        loadImages(images = arrayListOf(outfitModel.coverPhoto))
-        processClothes(list = outfitModel.clothes)
-        processOwnViews(authorId = outfitModel.author.id)
+        processAuthor(userShortModel = author)
+        loadImages(images = arrayListOf(coverPhoto))
+        processClothes(list = clothes)
+        processOwnViews(authorId = author.id)
     }
 
-    override fun processPost(postModel: PostModel) {
-        authorId = postModel.author.id
-        additionalAdapter.updateList(list = postModel.clothes)
+    override fun processPost(postModel: PostModel) = with (postModel) {
+        authorId = author.id
+        additionalAdapter.updateList(list = clothes)
         currentPostModel = postModel
 
-        if (postModel.clothes.isNotEmpty() && postModel.clothes.sumBy { it.cost } != 0) {
+        if (clothes.isNotEmpty() && totalPrice != 0) {
             totalPriceTextView.text = HtmlCompat.fromHtml(
                 totalPriceTextView.context.getString(
                     R.string.total_cost_text_format,
-                    NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost })
-                        .toString(),
+                    totalPriceNumberFormat,
                     postModel.clothes[0].currency,
                 ), HtmlCompat.FROM_HTML_MODE_LEGACY
             )
@@ -255,23 +252,23 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
             totalPriceTextView.hide()
         }
 
-        if (postModel.likesCount > 0) {
+        if (likesCount > 0) {
             likesCountTextView.show()
             likesCountTextView.text = getString(
                 R.string.likes_count_text_format,
-                postModel.likesCount.toString()
+                likesCount.toString()
             )
         } else {
             likesCountTextView.hide()
         }
 
-        if (postModel.firstComment.text.isNotBlank()) {
+        if (firstComment.text.isNotBlank()) {
             firstCommentTextView.text = HtmlCompat.fromHtml(
                 firstCommentTextView.context.getString(
                     R.string.comment_text_with_user_text_format,
-                    postModel.firstComment.author.username,
+                    firstComment.author.username,
                     EMPTY_STRING,
-                    postModel.firstComment.text
+                    firstComment.text
                 ), HtmlCompat.FROM_HTML_MODE_LEGACY
             )
             firstCommentTextView.show()
@@ -281,15 +278,15 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
 
         commentsCountTextView.text = getString(
             R.string.comments_count_text_format,
-            postModel.commentsCount.toString()
+            commentsCount.toString()
         )
 
-        processAuthor(userShortModel = postModel.author)
-        loadImages(images = postModel.images)
+        processAuthor(userShortModel = author)
+        loadImages(images = images)
         loadTags(postModel = postModel)
-        processLike(isLiked = postModel.alreadyLiked)
-        processClothes(list = postModel.clothes)
-        processOwnViews(authorId = postModel.author.id)
+        processLike(isLiked = alreadyLiked)
+        processClothes(list = clothes)
+        processOwnViews(authorId = author.id)
     }
 
     private fun processOwnViews(authorId: Int) {
@@ -311,23 +308,16 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         }
     }
 
-    private fun processAuthor(userShortModel: UserShortModel) {
-        userFullNameTextView.text = getString(
-            R.string.full_name_text_format,
-            userShortModel.firstName,
-            userShortModel.lastName
-        )
+    private fun processAuthor(userShortModel: UserShortModel) = with (userShortModel) {
+        userFullNameTextView.text = displayFullName
 
-        if (userShortModel.avatar.isBlank()) {
+        if (avatar.isBlank()) {
             avatarShapeableImageView.hide()
             userShortNameTextView.show()
-            userShortNameTextView.text = getShortName(
-                firstName = userShortModel.firstName,
-                lastName = userShortModel.lastName
-            )
+            userShortNameTextView.text = displayShortName
         } else {
             userShortNameTextView.hide()
-            userShortModel.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
+            avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
         }
     }
 

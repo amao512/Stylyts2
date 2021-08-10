@@ -30,4 +30,10 @@ data class ClothesModel(
     var clothesLocation: ItemLocationModel? = null,
     var isChosen: Boolean = false,
     var selectedSize: ClothesSizeModel? = null
-) : Parcelable
+) : Parcelable {
+    val displayPrice
+        get() = "$cost ₸"
+
+    val displaySalePrice
+        get() = "$salePrice ₸"
+}

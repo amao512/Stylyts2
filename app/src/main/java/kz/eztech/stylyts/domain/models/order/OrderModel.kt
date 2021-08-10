@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.models.order
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
+import org.threeten.bp.ZonedDateTime
 
 data class OrderModel(
     val id: Int,
@@ -14,7 +15,9 @@ data class OrderModel(
     val customer: CustomerModel,
     val status: String,
     val itemTitles: List<String>,
-    val createdAt: String,
-    val modifiedAt: String,
+    val createdAt: ZonedDateTime,
+    val modifiedAt: ZonedDateTime,
     val itemsMetaData: List<OrderItemModel>,
-)
+) {
+    val displayPrice = "$price ₸"
+}

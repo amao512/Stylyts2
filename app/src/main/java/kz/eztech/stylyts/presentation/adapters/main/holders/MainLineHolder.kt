@@ -22,12 +22,10 @@ import kz.eztech.stylyts.presentation.adapters.common.ImagesViewPagerAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
-import java.text.NumberFormat
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.
@@ -81,21 +79,21 @@ class MainLineHolder(
         }
     }
 
-    private fun initializeAdapters(postModel: PostModel) {
+    private fun initializeAdapters(postModel: PostModel) = with (postModel) {
         additionalAdapter = ClothesAdditionalAdapter()
         additionalAdapter.itemClickListener = adapter.itemClickListener
 
-        if (postModel.clothes.isEmpty()) {
+        if (clothes.isEmpty()) {
             clothesRecyclerView.hide()
         }
 
         clothesRecyclerView.adapter = additionalAdapter
 
-        postModel.clothes.forEach {
-            it.referralUser = postModel.author.id
+        clothes.forEach {
+            it.referralUser = author.id
         }
 
-        additionalAdapter.updateList(list = postModel.clothes)
+        additionalAdapter.updateList(list = clothes)
     }
 
     private fun initializeViews() {
@@ -119,14 +117,13 @@ class MainLineHolder(
     }
 
     private fun processPost(postModel: PostModel) {
-        fullNameTextView.text =
-            SPACE_TEXT_FORMAT.format(postModel.author.firstName, postModel.author.lastName)
+        fullNameTextView.text = postModel.author.displayFullName
     }
 
     private fun initializeListeners(
         postModel: PostModel,
         position: Int
-    ) {
+    ) = with (postModel) {
         with(itemView) {
 //            if (ownId != postModel.author.id) {
 //                button_item_main_image_change_collection.hide()
@@ -143,12 +140,11 @@ class MainLineHolder(
 //                adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
 //            }
 
-            if (postModel.clothes.isNotEmpty()) {
+            if (clothes.isNotEmpty()) {
                 totalCostTextView.text = HtmlCompat.fromHtml(
                     totalCostTextView.context.getString(
                         R.string.total_cost_text_format,
-                        NumberFormat.getInstance().format(postModel.clothes.sumBy { it.cost })
-                            .toString(),
+                        totalPriceNumberFormat,
                         postModel.clothes[0].currency,
                     ), HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
@@ -156,13 +152,13 @@ class MainLineHolder(
                 totalCostTextView.hide()
             }
 
-            if (postModel.firstComment.text.isNotBlank()) {
+            if (firstComment.text.isNotBlank()) {
                 firstCommentTextView.text = HtmlCompat.fromHtml(
                     firstCommentTextView.context.getString(
                         R.string.comment_text_with_user_text_format,
-                        postModel.firstComment.author.username,
+                        firstComment.author.username,
                         EMPTY_STRING,
-                        postModel.firstComment.text
+                        firstComment.text
                     ), HtmlCompat.FROM_HTML_MODE_LEGACY
                 )
                 firstCommentTextView.show()
@@ -171,7 +167,7 @@ class MainLineHolder(
             }
 
             commentsCountTextView.text = commentsCountTextView.context
-                .getString(R.string.comments_count_text_format, postModel.commentsCount.toString())
+                .getString(R.string.comments_count_text_format, commentsCount.toString())
 
             commentsCountTextView.setOnClickListener { thisView ->
                 adapter.itemClickListener?.onViewClicked(thisView, position, postModel)
@@ -241,13 +237,11 @@ class MainLineHolder(
         }
     }
 
-    private fun processUserPhoto(postModel: PostModel) {
-        val author = postModel.author
-
+    private fun processUserPhoto(postModel: PostModel) = with (postModel) {
         if (author.avatar.isBlank()) {
             avatarShapeableImageView.hide()
             userShortNameTextView.show()
-            userShortNameTextView.text = getShortName(author.firstName, author.lastName)
+            userShortNameTextView.text = author.displayShortName
         } else {
             userShortNameTextView.hide()
             author.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
@@ -260,10 +254,10 @@ class MainLineHolder(
         loadUsersTags(postModel)
     }
 
-    private fun loadClothesTags(postModel: PostModel) {
+    private fun loadClothesTags(postModel: PostModel) = with (postModel) {
         clothesTagsContainerFrameLayout.removeAllViews()
 
-        postModel.tags.clothesTags.map {
+        tags.clothesTags.map {
             val textView = getTagTextView(clothesTagsContainerFrameLayout)
 
             itemView.viewTreeObserver
@@ -280,7 +274,7 @@ class MainLineHolder(
                         }
 
                         textView.setOnClickListener { view ->
-                            it.referralUser = postModel.author.id
+                            it.referralUser = author.id
                             adapter.itemClickListener?.onViewClicked(view, position = 1, item = it)
                         }
 
@@ -384,9 +378,5 @@ class MainLineHolder(
                 false -> R.drawable.ic_baseline_favorite_border_24
             }
         )
-    }
-
-    companion object {
-        private const val SPACE_TEXT_FORMAT = "%s %s"
     }
 }

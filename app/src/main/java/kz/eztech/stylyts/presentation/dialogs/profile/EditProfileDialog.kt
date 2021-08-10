@@ -52,9 +52,7 @@ class EditProfileDialog(
     )
 
     companion object {
-        private const val TAG = "TAG"
         private const val REQUEST_CODE_PERMISSIONS = 10
-        private const val FULL_NAME_TEXT_FORMAT = "%s %s"
 
         const val TOKEN_ARGS_KEY = "token_args_key"
 
@@ -170,22 +168,17 @@ class EditProfileDialog(
 
     override fun hideProgress() {}
 
-    override fun processUserModel(userModel: UserModel) {
-        edit_text_dialog_edit_profile_name.setText(
-            FULL_NAME_TEXT_FORMAT.format(userModel.firstName, userModel.lastName)
-        )
-        edit_text_dialog_edit_profile_username.setText(userModel.username)
-        edit_text_dialog_edit_profile_insta.setText(userModel.instagram)
-        edit_text_dialog_edit_profile_site.setText(userModel.webSite)
+    override fun processUserModel(userModel: UserModel) = with (userModel) {
+        edit_text_dialog_edit_profile_name.setText(displayFullName)
+        edit_text_dialog_edit_profile_username.setText(username)
+        edit_text_dialog_edit_profile_insta.setText(instagram)
+        edit_text_dialog_edit_profile_site.setText(webSite)
 
-        if (userModel.avatar.isBlank()) {
-            text_view_fragment_profile_edit_user_short_name.text = getShortName(
-                firstName = userModel.firstName,
-                lastName = userModel.lastName
-            )
+        if (avatar.isBlank()) {
+            text_view_fragment_profile_edit_user_short_name.text = displayShortName
         } else {
             text_view_fragment_profile_edit_user_short_name.hide()
-            userModel.avatar.loadImageWithCenterCrop(target = fragment_shop_profile_avatar_shapeable_image_view)
+            avatar.loadImageWithCenterCrop(target = fragment_shop_profile_avatar_shapeable_image_view)
         }
     }
 

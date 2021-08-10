@@ -2,6 +2,7 @@ package kz.eztech.stylyts.domain.models.user
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
+import java.util.*
 
 @Parcelize
 data class UserShortModel(
@@ -12,4 +13,14 @@ data class UserShortModel(
     val avatar: String,
     val isAlreadyFollow: Boolean,
     val isBrand: Boolean
-): Parcelable
+): Parcelable {
+    val displayFullName
+        get() = if (lastName.isNotEmpty()) {
+            "$firstName $lastName"
+        } else {
+            firstName
+        }
+
+    val displayShortName
+        get() = "${firstName.toUpperCase(Locale.getDefault())[0]}${lastName.toUpperCase(Locale.getDefault())[0]}"
+}

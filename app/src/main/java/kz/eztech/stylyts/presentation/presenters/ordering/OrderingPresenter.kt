@@ -7,7 +7,7 @@ import io.reactivex.schedulers.Schedulers
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartDataSource
 import kz.eztech.stylyts.data.exception.ErrorHelper
-import kz.eztech.stylyts.domain.models.order.OrderCreateModel
+import kz.eztech.stylyts.domain.models.order.ResponseOrderCreateModel
 import kz.eztech.stylyts.domain.usecases.order.CreateOrderUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
@@ -59,10 +59,10 @@ class OrderingPresenter @Inject constructor(
 
         orderList.map { order ->
             createOrderUseCase.initParams(order)
-            createOrderUseCase.execute(object : DisposableSingleObserver<OrderCreateModel>() {
-                override fun onSuccess(t: OrderCreateModel) {
-                    t.itemsMetaData.map { item ->
-                        clearCart(cartId = item.clothes)
+            createOrderUseCase.execute(object : DisposableSingleObserver<ResponseOrderCreateModel>() {
+                override fun onSuccess(t: ResponseOrderCreateModel) {
+                    t.itemObjects.map { id ->
+                        clearCart(cartId = id)
                     }
 
                     view.processSuccessCreating(orderModel = t)

@@ -9,7 +9,6 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.order.ShopPointModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -48,22 +47,19 @@ class ShopPointViewHolder(
     private fun processShopPoint(
         item: ShopPointModel,
         position: Int
-    ) {
-        if (item.avatar.isEmpty()) {
-            shortNameTextView.text = getShortName(
-                firstName = item.firstName,
-                lastName = item.lastName
-            )
+    ) = with (item) {
+        if (avatar.isEmpty()) {
+            shortNameTextView.text = displayShortName
             avatarImageView.hide()
             shortNameTextView.show()
         } else {
             avatarImageView.show()
             shortNameTextView.hide()
-            item.avatar.loadImageWithCenterCrop(target = avatarImageView)
+            avatar.loadImageWithCenterCrop(target = avatarImageView)
         }
-        titleTextView.text = item.title
+        titleTextView.text = title
 
-        if (!item.isSelected && item.selectedAddress == null) {
+        if (isSelected && selectedAddress == null) {
             statusTextView.text = statusTextView.context.getString(R.string.address_not_selected)
             statusTextView.setTextColor(
                 ContextCompat.getColor(statusTextView.context, R.color.app_light_orange)
@@ -72,9 +68,9 @@ class ShopPointViewHolder(
         } else {
             statusTextView.text = statusTextView.context.getString(
                 R.string.address_short_detail_text_format,
-                item.selectedAddress?.city,
-                item.selectedAddress?.street,
-                item.selectedAddress?.apartment
+                selectedAddress?.city,
+                selectedAddress?.street,
+                selectedAddress?.apartment
             )
             statusTextView.setTextColor(
                 ContextCompat.getColor(statusTextView.context, R.color.app_green)

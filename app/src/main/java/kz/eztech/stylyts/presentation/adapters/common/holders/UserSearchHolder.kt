@@ -2,11 +2,9 @@ package kz.eztech.stylyts.presentation.adapters.common.holders
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_user_info.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -35,13 +33,11 @@ class UserSearchHolder(
     ) {
         displayAvatar(
             avatar = user.avatar,
-            firstName = user.firstName,
-            lastName = user.lastName
+            shortName = user.displayShortName
         )
 
         displayUserInfo(
-            firstName = user.firstName,
-            lastName = user.lastName,
+            fullName = user.displayFullName,
             username = user.username
         )
 
@@ -58,13 +54,11 @@ class UserSearchHolder(
     ) {
         displayAvatar(
             avatar = user.avatar,
-            firstName = user.name,
-            lastName = user.lastName
+            shortName = user.displayShortName
         )
 
         displayUserInfo(
-            firstName = user.name,
-            lastName = user.lastName,
+            fullName = user.displayFullName,
             username = user.username
         )
 
@@ -83,15 +77,14 @@ class UserSearchHolder(
 
     private fun displayAvatar(
         avatar: String?,
-        firstName: String?,
-        lastName: String?
+        shortName: String
     ) {
         with(itemView) {
             avatar?.let {
                 if (it.isBlank()) {
                     item_user_info_user_avatar_shapeable_image_view.hide()
                     item_user_info_user_short_name_text_view.show()
-                    item_user_info_user_short_name_text_view.text = getShortName(firstName, lastName)
+                    item_user_info_user_short_name_text_view.text = shortName
                 } else {
                     item_user_info_user_avatar_shapeable_image_view.show()
                     item_user_info_user_short_name_text_view.hide()
@@ -101,23 +94,18 @@ class UserSearchHolder(
             } ?: run {
                 item_user_info_user_avatar_shapeable_image_view.hide()
                 item_user_info_user_short_name_text_view.show()
-                item_user_info_user_short_name_text_view.text = getShortName(firstName, lastName)
+                item_user_info_user_short_name_text_view.text = shortName
             }
         }
     }
 
     private fun displayUserInfo(
-        firstName: String?,
-        lastName: String?,
+        fullName: String?,
         username: String?
     ) {
         with(itemView) {
             item_user_info_username_text_view.text = username
-            item_user_info_full_name_text_view.text = context.getString(
-                R.string.full_name_text_format,
-                firstName,
-                lastName
-            )
+            item_user_info_full_name_text_view.text = fullName
         }
     }
 }

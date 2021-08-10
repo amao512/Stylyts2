@@ -6,7 +6,7 @@ import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeDateItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
-import kz.eztech.stylyts.presentation.utils.extensions.getIncomeMonthYear
+import kz.eztech.stylyts.presentation.utils.extensions.getMonthAndYear
 
 class IncomeDateViewHolder(
     itemView: View,
@@ -16,6 +16,6 @@ class IncomeDateViewHolder(
     override fun bindData(item: Any, position: Int) {
         val incomeDate = ((item as IncomesItem) as? IncomeDateItem)?.data
 
-        itemView.item_income_date_text_view.text = incomeDate?.getIncomeMonthYear()
+        itemView.item_income_date_text_view.text = incomeDate?.getMonthAndYear()
     }
 }

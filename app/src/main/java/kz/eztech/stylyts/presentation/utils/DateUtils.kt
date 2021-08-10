@@ -1,6 +1,8 @@
-package kz.eztech.stylyts.presentation.utils.extensions
+package kz.eztech.stylyts.presentation.utils
 
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
+import kz.eztech.stylyts.presentation.utils.extensions.getMonthAndDay
+import kz.eztech.stylyts.presentation.utils.extensions.getZonedDateTime
 import org.threeten.bp.Month
 
 fun List<ReferralModel>.getIncomeDateString(): String {
@@ -8,17 +10,17 @@ fun List<ReferralModel>.getIncomeDateString(): String {
     val lastDate = this.last().createdAt
 
     return if (startDate.dayOfMonth != lastDate.dayOfMonth) {
-        startDate.getIncomeDateTime() + " - " + lastDate.getIncomeDateTime()
+        startDate.getMonthAndDay() + " - " + lastDate.getMonthAndDay()
     } else {
         if ((lastDate.dayOfMonth + 7) > 31) {
             val day = lastDate.month.length(false)
             val newDate = getDate(lastDate.year, lastDate.month, day.toString())
 
-            startDate.getIncomeDateTime() + " - " + newDate.getTimeByFormat().getIncomeDateTime()
+            startDate.getMonthAndDay() + " - " + newDate.getZonedDateTime().getMonthAndDay()
         } else {
             val newDate = getDate(lastDate.year, lastDate.month, getDay(lastDate.dayOfMonth))
 
-            startDate.getIncomeDateTime() + " - " + newDate.getTimeByFormat().getIncomeDateTime()
+            startDate.getMonthAndDay() + " - " + newDate.getZonedDateTime().getMonthAndDay()
         }
     }
 }
@@ -43,4 +45,11 @@ private fun getDay(day: Int): String {
     } else {
         (day + 7).toString()
     }
+}
+
+fun getFormattedDate(date: String): String {
+    return DateFormatterHelper.formatISO_8601(
+        date,
+        DateFormatterHelper.FORMAT_DATE_DD_MMMM
+    )
 }

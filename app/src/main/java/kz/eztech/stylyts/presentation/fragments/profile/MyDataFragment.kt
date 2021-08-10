@@ -15,7 +15,6 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.MyDataContract
 import kz.eztech.stylyts.presentation.presenters.profile.MyDataPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -101,20 +100,17 @@ class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.O
 
     override fun hideProgress() {}
 
-    override fun processProfile(userModel: UserModel) {
-        fragment_my_data_toolbar.toolbar_title_text_view.text = userModel.username
-        userNameTextView.text = userModel.firstName
+    override fun processProfile(userModel: UserModel) = with (userModel) {
+        fragment_my_data_toolbar.toolbar_title_text_view.text = username
+        userNameTextView.text = firstName
 
-        if (userModel.avatar.isBlank()) {
+        if (avatar.isBlank()) {
             avatarShapeableImageView.hide()
             userShortNameTextView.show()
-            userShortNameTextView.text = getShortName(
-                firstName = userModel.firstName,
-                lastName = userModel.lastName
-            )
+            userShortNameTextView.text = displayShortName
         } else {
             userShortNameTextView.hide()
-            userModel.avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
+            avatar.loadImageWithCenterCrop(target = avatarShapeableImageView)
         }
     }
 

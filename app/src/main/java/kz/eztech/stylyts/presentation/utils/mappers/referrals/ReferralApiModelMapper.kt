@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.utils.mappers.referrals
 import kz.eztech.stylyts.data.api.models.referrals.ReferralApiModel
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.getTimeByFormat
+import kz.eztech.stylyts.presentation.utils.extensions.getZonedDateTime
 import kz.eztech.stylyts.presentation.utils.extensions.orFalse
 import kz.eztech.stylyts.presentation.utils.mappers.user.map
 
@@ -18,7 +18,7 @@ fun List<ReferralApiModel>?.map(): List<ReferralModel> {
             approved = it.approved,
             totalProfit = it.totalProfit ?: 0,
             referralPercentage = it.referralPercentage ?: 0,
-            createdAt = (it.createdAt ?: EMPTY_STRING).getTimeByFormat(),
+            createdAt = (it.createdAt ?: EMPTY_STRING).getZonedDateTime(),
             order = it.order ?: 0
         )
     }
@@ -32,7 +32,7 @@ fun ReferralApiModel?.map(): ReferralModel {
         approved = this?.approved.orFalse(),
         totalProfit = this?.totalProfit ?: 0,
         referralPercentage = this?.referralPercentage ?: 0,
-        createdAt = (this?.createdAt ?: EMPTY_STRING).getTimeByFormat(),
+        createdAt = (this?.createdAt ?: EMPTY_STRING).getZonedDateTime(),
         order = this?.order ?: 0
     )
 }

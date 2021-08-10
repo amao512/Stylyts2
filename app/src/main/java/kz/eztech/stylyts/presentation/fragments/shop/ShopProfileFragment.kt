@@ -44,7 +44,6 @@ import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopProfilePresenter
 import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
 import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.getShortName
 import kz.eztech.stylyts.presentation.utils.extensions.hide
 import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
 import kz.eztech.stylyts.presentation.utils.extensions.show
@@ -238,13 +237,13 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         refreshLayout.finishRefreshing()
     }
 
-    override fun processProfile(userModel: UserModel) {
-        currentUsername = userModel.username
+    override fun processProfile(userModel: UserModel) = with (userModel) {
+        currentUsername = username
 
-        shopNameTextView.text = userModel.username
-        followersCountTextView.text = userModel.followersCount.toString()
-        followingsCountTextView.text = userModel.followingsCount.toString()
-        fragment_shop_profile_toolbar.toolbar_title_text_view.text = userModel.username
+        shopNameTextView.text = username
+        followersCountTextView.text = followersCount.toString()
+        followingsCountTextView.text = followingsCount.toString()
+        fragment_shop_profile_toolbar.toolbar_title_text_view.text = username
 
         processShopAvatar(userModel)
         getFollowers()
@@ -544,16 +543,13 @@ class ShopProfileFragment : BaseFragment<MainActivity>(), ShopProfileContract.Vi
         presenter.getFollowers()
     }
 
-    private fun processShopAvatar(userModel: UserModel) {
-        if (userModel.avatar.isBlank()) {
-            shopShortNameTextView.text = getShortName(
-                firstName = userModel.firstName,
-                lastName = userModel.lastName
-            )
+    private fun processShopAvatar(userModel: UserModel) = with (userModel) {
+        if (avatar.isBlank()) {
+            shopShortNameTextView.text = displayShortName
             shopAvatarShapeableImageView.hide()
             shopShortNameTextView.show()
         } else {
-            userModel.avatar.loadImageWithCenterCrop(target = shopAvatarShapeableImageView)
+            avatar.loadImageWithCenterCrop(target = shopAvatarShapeableImageView)
             shopShortNameTextView.hide()
             shopAvatarShapeableImageView.show()
         }

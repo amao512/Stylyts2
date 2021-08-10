@@ -3,6 +3,7 @@ package kz.eztech.stylyts.domain.models.posts
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
+import java.text.NumberFormat
 
 data class PostModel(
     val id: Int,
@@ -16,4 +17,10 @@ data class PostModel(
     val firstComment: CommentModel,
     var likesCount: Int,
     var alreadyLiked: Boolean
-)
+) {
+    val totalPrice
+        get() = clothes.sumBy { it.cost }
+
+    val totalPriceNumberFormat
+        get() = NumberFormat.getInstance().format(totalPrice).toString()
+}
