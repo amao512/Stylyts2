@@ -17,7 +17,7 @@ import kz.eztech.stylyts.domain.usecases.outfits.GetOutfitByIdUseCase
 import kz.eztech.stylyts.domain.usecases.posts.GetPostByIdUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.contracts.collection.CommentsContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class CommentsPresenter @Inject constructor(

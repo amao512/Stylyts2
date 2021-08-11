@@ -3,8 +3,8 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.AddressApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.presentation.utils.mappers.address.map
-import kz.eztech.stylyts.presentation.utils.mappers.map
+import kz.eztech.stylyts.utils.mappers.address.map
+import kz.eztech.stylyts.utils.mappers.map
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.repository.AddressDomainRepository

@@ -10,7 +10,7 @@ import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.usecases.posts.GetPostsUseCase
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 /**

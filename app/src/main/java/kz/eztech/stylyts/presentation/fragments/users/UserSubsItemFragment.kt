@@ -19,7 +19,7 @@ import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsPresenter
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsViewModel
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import org.koin.android.ext.android.inject
 import javax.inject.Inject
 

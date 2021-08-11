@@ -11,7 +11,7 @@ import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.presentation.contracts.shop.ShopListContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import java.util.*
 import javax.inject.Inject
 

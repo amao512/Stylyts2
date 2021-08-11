@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.presenters.collection_constructor
 
 import kz.eztech.stylyts.data.exception.ErrorHelper
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorFilterContract
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import javax.inject.Inject
 
 /**

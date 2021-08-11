@@ -28,7 +28,7 @@ import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.ProfileContract
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 /**

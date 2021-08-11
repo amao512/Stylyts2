@@ -6,7 +6,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesStyleModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 21.12.2020.

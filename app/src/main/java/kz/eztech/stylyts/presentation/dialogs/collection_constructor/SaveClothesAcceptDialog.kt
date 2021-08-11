@@ -24,12 +24,12 @@ import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveCloth
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.SaveClothesAcceptPresenter
-import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImage
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.FileUtils
+import kz.eztech.stylyts.utils.Paginator
+import kz.eztech.stylyts.utils.extensions.displaySnackBar
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImage
+import kz.eztech.stylyts.utils.extensions.show
 import java.io.File
 import javax.inject.Inject
 

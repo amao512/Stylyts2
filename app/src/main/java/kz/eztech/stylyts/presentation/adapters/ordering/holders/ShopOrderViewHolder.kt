@@ -9,9 +9,9 @@ import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.PaymentStatusEnum
-import kz.eztech.stylyts.presentation.utils.extensions.getSlashDate
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.getSlashDate
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 
 class ShopOrderViewHolder(
     itemView: View,

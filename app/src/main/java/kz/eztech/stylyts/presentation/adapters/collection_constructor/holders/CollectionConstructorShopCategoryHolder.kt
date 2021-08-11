@@ -9,9 +9,9 @@ import kotlinx.android.synthetic.main.item_collection_constructor_category_wide.
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImage
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImage
+import kz.eztech.stylyts.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 25.12.2020.

@@ -18,9 +18,9 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchContract
 import kz.eztech.stylyts.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import org.koin.android.ext.android.inject
 
 class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,

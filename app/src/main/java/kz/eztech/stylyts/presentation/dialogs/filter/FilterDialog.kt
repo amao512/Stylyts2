@@ -29,9 +29,9 @@ import kz.eztech.stylyts.presentation.adapters.filter.FilterExpandableAdapter
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.filter.FilterPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.displaySnackBar
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.displaySnackBar
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class FilterDialog(

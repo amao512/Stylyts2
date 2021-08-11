@@ -11,9 +11,9 @@ import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.dialog_change_language.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.utils.helpers.LocaleHelper
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.show
+import kz.eztech.stylyts.utils.helpers.LocaleHelper
 
 class ChangeLanguageDialog : DialogFragment(), View.OnClickListener {
 

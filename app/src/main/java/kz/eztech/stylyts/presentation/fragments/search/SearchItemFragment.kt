@@ -28,8 +28,8 @@ import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchItemPresenter
 import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.Paginator
 import org.koin.android.ext.android.inject
 import javax.inject.Inject
 

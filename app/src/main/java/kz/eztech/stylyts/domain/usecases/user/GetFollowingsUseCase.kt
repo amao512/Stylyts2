@@ -6,7 +6,7 @@ import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
 import kz.eztech.stylyts.domain.repository.UserDomainRepository
 import kz.eztech.stylyts.domain.usecases.BaseUseCase
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import javax.inject.Inject
 import javax.inject.Named
 

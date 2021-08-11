@@ -30,10 +30,10 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.utils.ViewUtils
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImage
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.ViewUtils
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImage
+import kz.eztech.stylyts.utils.extensions.show
 import java.io.File
 
 class PhotoPostCreatorFragment(

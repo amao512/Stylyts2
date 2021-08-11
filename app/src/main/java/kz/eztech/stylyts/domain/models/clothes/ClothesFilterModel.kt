@@ -3,7 +3,7 @@ package kz.eztech.stylyts.domain.models.clothes
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 import kz.eztech.stylyts.presentation.enums.GenderEnum
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 
 @Parcelize
 data class ClothesFilterModel(

@@ -16,7 +16,7 @@ import kz.eztech.stylyts.presentation.contracts.ordering.PaymentContract
 import kz.eztech.stylyts.presentation.fragments.order.UserOrderDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.PaymentListener
 import kz.eztech.stylyts.presentation.presenters.ordering.PaymentPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class PaymentFragment : BaseFragment<MainActivity>(), PaymentContract.View, PaymentListener {

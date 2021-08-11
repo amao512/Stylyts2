@@ -20,13 +20,13 @@ import kz.eztech.stylyts.presentation.contracts.collection_constructor.CleanBack
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CleanBackgroundPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImage
-import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.utils.removebg.ErrorResponse
-import kz.eztech.stylyts.presentation.utils.removebg.RemoveBg
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.FileUtils
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImage
+import kz.eztech.stylyts.utils.extensions.show
+import kz.eztech.stylyts.utils.removebg.ErrorResponse
+import kz.eztech.stylyts.utils.removebg.RemoveBg
 import java.io.File
 import javax.inject.Inject
 

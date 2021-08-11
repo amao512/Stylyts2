@@ -22,7 +22,7 @@
             android:paddingBottom="180dp"
             >
 
-            <kz.eztech.stylyts.presentation.utils.stick.MotionView
+            <kz.eztech.stylyts.utils.stick.MotionView
                 android:id="@+id/frame_layout_fragment_collection_constructor_images_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

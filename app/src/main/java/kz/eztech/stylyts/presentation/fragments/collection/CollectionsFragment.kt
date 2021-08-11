@@ -21,7 +21,7 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection.CollectionsContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class CollectionsFragment : BaseFragment<MainActivity>(), CollectionsContract.View,

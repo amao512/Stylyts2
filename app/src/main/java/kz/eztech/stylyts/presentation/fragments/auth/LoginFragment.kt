@@ -14,8 +14,8 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.auth.LoginContract
 import kz.eztech.stylyts.presentation.presenters.auth.LoginPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class LoginFragment : BaseFragment<AuthorizationActivity>(), LoginContract.View,

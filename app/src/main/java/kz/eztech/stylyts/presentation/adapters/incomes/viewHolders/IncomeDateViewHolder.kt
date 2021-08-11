@@ -6,7 +6,7 @@ import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeDateItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
-import kz.eztech.stylyts.presentation.utils.extensions.getMonthAndYear
+import kz.eztech.stylyts.utils.extensions.getMonthAndYear
 
 class IncomeDateViewHolder(
     itemView: View,

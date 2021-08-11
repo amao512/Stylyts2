@@ -11,7 +11,7 @@ import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.domain.usecases.order.GetOrderListUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderListContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class OrderListPresenter @Inject constructor(

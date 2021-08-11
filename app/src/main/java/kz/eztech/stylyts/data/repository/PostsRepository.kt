@@ -9,8 +9,8 @@ import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.domain.repository.PostsDomainRepository
-import kz.eztech.stylyts.presentation.utils.mappers.map
-import kz.eztech.stylyts.presentation.utils.mappers.posts.map
+import kz.eztech.stylyts.utils.mappers.map
+import kz.eztech.stylyts.utils.mappers.posts.map
 import okhttp3.MultipartBody
 import javax.inject.Inject
 

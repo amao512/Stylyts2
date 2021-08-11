@@ -10,7 +10,7 @@ import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.presentation.contracts.profile.UserSearchContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class UserSearchPresenter @Inject constructor(

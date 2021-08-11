@@ -26,7 +26,7 @@ import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.ShopOrderDetailPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.*
+import kz.eztech.stylyts.utils.extensions.*
 import javax.inject.Inject
 
 class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailContract.View,

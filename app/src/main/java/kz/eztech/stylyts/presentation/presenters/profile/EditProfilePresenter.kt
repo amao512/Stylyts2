@@ -8,7 +8,7 @@ import kz.eztech.stylyts.domain.usecases.profile.EditProfileUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetProfileUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.profile.EditProfileContract
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody

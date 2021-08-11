@@ -29,9 +29,9 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment
-import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.FileUtils
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.concurrent.Executors

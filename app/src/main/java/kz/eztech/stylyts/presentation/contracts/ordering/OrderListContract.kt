@@ -2,7 +2,7 @@ package kz.eztech.stylyts.presentation.contracts.ordering
 
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 
 interface OrderListContract {
 

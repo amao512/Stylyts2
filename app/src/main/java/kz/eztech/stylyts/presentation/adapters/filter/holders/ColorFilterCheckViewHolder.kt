@@ -10,8 +10,8 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesColorModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.ColorEnum
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.ColorEnum
+import kz.eztech.stylyts.utils.extensions.show
 
 class ColorFilterCheckViewHolder(
     itemView: View,

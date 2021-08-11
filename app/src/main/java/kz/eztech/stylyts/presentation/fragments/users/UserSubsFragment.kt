@@ -18,9 +18,9 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.users.UserSubsContract
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsPresenter
 import kz.eztech.stylyts.presentation.presenters.users.UserSubsViewModel
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import org.koin.android.ext.android.inject
 import javax.inject.Inject
 

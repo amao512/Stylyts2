@@ -8,7 +8,7 @@ import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
-import kz.eztech.stylyts.presentation.utils.getIncomeDateString
+import kz.eztech.stylyts.utils.getIncomeDateString
 
 class IncomeViewHolder(
     itemView: View,

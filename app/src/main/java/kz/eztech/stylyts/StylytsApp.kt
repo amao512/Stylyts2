@@ -6,7 +6,7 @@ import androidx.multidex.MultiDex
 import kz.eztech.stylyts.di.ApplicationComponent
 import kz.eztech.stylyts.di.DaggerApplicationComponent
 import kz.eztech.stylyts.di.modules.*
-import kz.eztech.stylyts.presentation.utils.helpers.LocaleHelper
+import kz.eztech.stylyts.utils.helpers.LocaleHelper
 import org.koin.core.context.startKoin
 
 /**

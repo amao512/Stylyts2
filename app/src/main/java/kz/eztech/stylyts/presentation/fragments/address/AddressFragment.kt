@@ -21,10 +21,10 @@ import kz.eztech.stylyts.presentation.contracts.address.AddressContract
 import kz.eztech.stylyts.presentation.interfaces.AddressViewClickListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.address.AddressPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.Paginator
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,

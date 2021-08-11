@@ -5,7 +5,7 @@ import kotlinx.android.synthetic.main.item_collection.view.*
 import kz.eztech.stylyts.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.domain.models.posts.PostModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
-import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
+import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
 
 /**
  * Created by Ruslan Erdenoff on 25.11.2020.

@@ -9,9 +9,9 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.order.ShopPointModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
+import kz.eztech.stylyts.utils.extensions.show
 
 class ShopPointViewHolder(
     itemView: View,

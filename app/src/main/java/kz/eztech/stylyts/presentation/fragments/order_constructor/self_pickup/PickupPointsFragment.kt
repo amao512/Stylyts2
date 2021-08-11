@@ -35,11 +35,11 @@ import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
 import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.PickupPointsPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.getLocationFromAddress
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.Paginator
+import kz.eztech.stylyts.utils.extensions.getLocationFromAddress
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class PickupPointsFragment : BaseFragment<MainActivity>(), PickupPointsContract.View,

@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.main
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 20.11.2020.

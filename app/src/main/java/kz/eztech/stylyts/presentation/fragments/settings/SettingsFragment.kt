@@ -15,8 +15,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.dialogs.settings.ExitDialog
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.show
 
 class SettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener,
     UniversalViewClickListener {

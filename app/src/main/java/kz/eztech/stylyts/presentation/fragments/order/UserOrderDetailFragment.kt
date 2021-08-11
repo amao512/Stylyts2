@@ -29,9 +29,9 @@ import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.UserOrderDetailPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.getDayAndMonth
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.getDayAndMonth
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailContract.View, UniversalViewClickListener {

@@ -1,7 +1,6 @@
 package kz.eztech.stylyts.presentation.fragments.collection_constructor
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -17,8 +16,8 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.ConstructorHolderContract
 import kz.eztech.stylyts.presentation.presenters.common.PagerViewModel
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import org.koin.android.ext.android.inject
 
 class CollectionConstructorHolderFragment : BaseFragment<MainActivity>(),

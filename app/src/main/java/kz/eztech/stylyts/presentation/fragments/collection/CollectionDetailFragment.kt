@@ -37,9 +37,9 @@ import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionDetailPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.extensions.*
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.FileUtils
+import kz.eztech.stylyts.utils.extensions.*
 import ru.tinkoff.scrollingpagerindicator.ScrollingPagerIndicator
 import javax.inject.Inject
 

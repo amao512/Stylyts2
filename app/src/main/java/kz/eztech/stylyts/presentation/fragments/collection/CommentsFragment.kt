@@ -26,11 +26,11 @@ import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CommentsPresenter
-import kz.eztech.stylyts.presentation.utils.AbstractTextWatcher
-import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.AbstractTextWatcher
+import kz.eztech.stylyts.utils.Paginator
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class CommentsFragment : BaseFragment<MainActivity>(), CommentsContract.View,

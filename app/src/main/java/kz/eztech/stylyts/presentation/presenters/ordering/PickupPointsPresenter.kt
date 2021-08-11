@@ -13,7 +13,7 @@ import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.usecases.address.GetAddressUseCase
 import kz.eztech.stylyts.domain.usecases.profile.GetUserByIdUseCase
 import kz.eztech.stylyts.presentation.contracts.ordering.PickupPointsContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class PickupPointsPresenter @Inject constructor(

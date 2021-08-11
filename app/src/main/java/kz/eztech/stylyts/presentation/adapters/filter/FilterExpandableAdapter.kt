@@ -12,7 +12,7 @@ import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterExpandableViewHolder
 import kz.eztech.stylyts.presentation.adapters.filter.holders.FilterItemExpandableViewHolder
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 
 class FilterExpandableAdapter(
     private val categoryFilterSingleGroupList: List<CategoryFilterSingleCheckGenre>,

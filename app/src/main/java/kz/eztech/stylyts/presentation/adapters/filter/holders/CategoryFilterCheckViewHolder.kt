@@ -6,7 +6,7 @@ import kz.eztech.stylyts.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.hide
 
 class CategoryFilterCheckViewHolder(
     itemView: View,

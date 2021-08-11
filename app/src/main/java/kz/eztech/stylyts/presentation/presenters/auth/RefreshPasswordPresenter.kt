@@ -7,7 +7,7 @@ import kz.eztech.stylyts.domain.usecases.auth.SetNewPasswordUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.auth.RefreshPasswordContract
 import kz.eztech.stylyts.presentation.fragments.auth.RefreshPasswordFragment
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import javax.inject.Inject
 
 /**

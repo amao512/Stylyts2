@@ -14,8 +14,8 @@ import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.dialogs.settings.*
 import kz.eztech.stylyts.presentation.interfaces.MessageProblemViewListener
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.show
 
 class PersonalSettingsFragment : BaseFragment<MainActivity>(), EmptyContract.View,
     View.OnClickListener,

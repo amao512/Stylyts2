@@ -16,7 +16,7 @@ import kz.eztech.stylyts.domain.usecases.clothes.GetClothesTypesUseCase
 import kz.eztech.stylyts.domain.usecases.wardrobe.CreateClothesByImageUseCase
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.SaveClothesAcceptDialog
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class SaveClothesAcceptPresenter @Inject constructor(

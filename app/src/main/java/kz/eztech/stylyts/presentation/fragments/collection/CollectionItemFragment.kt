@@ -19,7 +19,7 @@ import kz.eztech.stylyts.presentation.contracts.collection.CollectionItemContrac
 import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection.CollectionsItemPresenter
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class CollectionItemFragment(

@@ -3,7 +3,7 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.AuthApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.presentation.utils.mappers.auth.map
+import kz.eztech.stylyts.utils.mappers.auth.map
 import kz.eztech.stylyts.domain.models.auth.AuthModel
 import kz.eztech.stylyts.domain.models.auth.ExistsUsernameModel
 import kz.eztech.stylyts.domain.repository.AuthorizationDomainRepository

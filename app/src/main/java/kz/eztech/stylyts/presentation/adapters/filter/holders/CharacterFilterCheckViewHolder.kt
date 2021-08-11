@@ -6,7 +6,7 @@ import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.models.shop.ShopListItem
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 
 class CharacterFilterCheckViewHolder(
     itemView: View,

@@ -22,8 +22,8 @@ import kz.eztech.stylyts.presentation.contracts.main.shop.ShopItemListContract
 import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopItemListPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContract.View,

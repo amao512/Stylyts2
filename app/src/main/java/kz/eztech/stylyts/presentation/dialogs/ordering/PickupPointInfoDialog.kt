@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.dialog_pickup_point_info.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.show
 
 class PickupPointInfoDialog(
     private val dialogChooserListener: DialogChooserListener

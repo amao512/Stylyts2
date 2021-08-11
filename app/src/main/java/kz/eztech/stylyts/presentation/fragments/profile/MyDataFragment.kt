@@ -15,9 +15,9 @@ import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.profile.MyDataContract
 import kz.eztech.stylyts.presentation.presenters.profile.MyDataPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class MyDataFragment : BaseFragment<MainActivity>(), MyDataContract.View, View.OnClickListener {

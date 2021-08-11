@@ -5,9 +5,9 @@ import kotlinx.android.synthetic.main.item_user_info.view.*
 import kz.eztech.stylyts.data.db.search.UserSearchEntity
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
+import kz.eztech.stylyts.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 21.02.2021.

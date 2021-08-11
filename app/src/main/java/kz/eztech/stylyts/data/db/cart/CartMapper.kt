@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.data.db.cart
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 
 /**
  * Created by Ruslan Erdenoff on 29.01.2021.

@@ -9,7 +9,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.loadImage
+import kz.eztech.stylyts.utils.extensions.loadImage
 import java.text.NumberFormat
 
 /**

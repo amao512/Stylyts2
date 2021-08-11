@@ -14,10 +14,11 @@ import kz.eztech.stylyts.presentation.adapters.incomes.ReferralItemsAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeDetailContract
+import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.incomes.IncomeDetailPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.show
-import kz.eztech.stylyts.presentation.utils.getIncomeDateString
+import kz.eztech.stylyts.utils.extensions.show
+import kz.eztech.stylyts.utils.getIncomeDateString
 import javax.inject.Inject
 
 class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.View, UniversalViewClickListener {
@@ -109,7 +110,7 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
 
     private fun navigateToClothesDetail(referralItem: ReferralItemModel) {
         val bundle = Bundle()
-//        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, referralItem.id)
+        bundle.putInt(ClothesDetailFragment.CLOTHES_ID, referralItem.id)
 
         findNavController().navigate(
             R.id.action_profileIncomeDetailFragment_to_clothesDetailFragment,

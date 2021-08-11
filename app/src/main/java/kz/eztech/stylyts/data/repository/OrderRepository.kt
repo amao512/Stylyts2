@@ -8,8 +8,8 @@ import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.domain.models.order.ResponseOrderCreateModel
 import kz.eztech.stylyts.domain.repository.OrderDomainRepository
-import kz.eztech.stylyts.presentation.utils.mappers.map
-import kz.eztech.stylyts.presentation.utils.mappers.order.map
+import kz.eztech.stylyts.utils.mappers.map
+import kz.eztech.stylyts.utils.mappers.order.map
 import javax.inject.Inject
 
 class OrderRepository @Inject constructor(

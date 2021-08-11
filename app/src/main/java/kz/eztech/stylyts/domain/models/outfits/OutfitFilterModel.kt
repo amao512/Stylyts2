@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.domain.models.outfits
 
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 
 data class OutfitFilterModel(
     var userId: Int = 0,

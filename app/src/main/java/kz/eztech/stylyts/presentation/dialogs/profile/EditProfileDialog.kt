@@ -27,9 +27,9 @@ import kz.eztech.stylyts.presentation.contracts.profile.EditProfileContract
 import kz.eztech.stylyts.presentation.fragments.camera.CameraFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.profile.EditProfilePresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.extensions.*
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.FileUtils
+import kz.eztech.stylyts.utils.extensions.*
 import javax.inject.Inject
 
 

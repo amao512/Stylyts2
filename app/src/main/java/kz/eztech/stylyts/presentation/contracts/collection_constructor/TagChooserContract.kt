@@ -2,12 +2,11 @@ package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
 import android.net.Uri
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 23.12.2020.

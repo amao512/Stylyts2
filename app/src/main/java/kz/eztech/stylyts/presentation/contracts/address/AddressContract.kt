@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.address
 import kz.eztech.stylyts.domain.models.address.AddressModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 27.02.2021.

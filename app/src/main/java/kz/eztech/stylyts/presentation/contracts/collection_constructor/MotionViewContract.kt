@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.presentation.contracts.collection_constructor
 
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.utils.stick.MotionEntity
+import kz.eztech.stylyts.utils.stick.MotionEntity
 
 /**
  * Created by Ruslan Erdenoff on 07.02.2021.

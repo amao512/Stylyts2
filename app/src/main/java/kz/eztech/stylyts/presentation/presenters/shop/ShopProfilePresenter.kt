@@ -24,7 +24,7 @@ import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
 import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopProfileContract
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class ShopProfilePresenter @Inject constructor(

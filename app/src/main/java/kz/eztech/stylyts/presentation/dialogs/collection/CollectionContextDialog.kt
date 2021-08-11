@@ -5,7 +5,7 @@ import android.view.View
 import kotlinx.android.synthetic.main.dialog_bottom_collection_context.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
-import kz.eztech.stylyts.presentation.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.hide
 
 class CollectionContextDialog(
     private val isOwn: Boolean = false,

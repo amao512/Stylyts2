@@ -28,11 +28,11 @@ import kz.eztech.stylyts.presentation.fragments.collection_constructor.Collectio
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.presenters.clothes.ClothesDetailPresenter
-import kz.eztech.stylyts.presentation.utils.ColorUtils
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.loadImageWithCenterCrop
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.ColorUtils
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class ClothesDetailFragment : BaseFragment<MainActivity>(), ClothesDetailContract.View,

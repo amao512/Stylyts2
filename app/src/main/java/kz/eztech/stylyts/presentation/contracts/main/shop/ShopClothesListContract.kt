@@ -3,7 +3,7 @@ package kz.eztech.stylyts.presentation.contracts.main.shop
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.presentation.base.BasePresenter
 import kz.eztech.stylyts.presentation.base.BaseView
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.

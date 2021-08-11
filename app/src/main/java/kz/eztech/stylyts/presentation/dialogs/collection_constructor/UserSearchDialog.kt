@@ -18,8 +18,8 @@ import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.profile.UserSearchContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.search.UserSearchPresenter
-import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.displayToast
+import kz.eztech.stylyts.utils.Paginator
+import kz.eztech.stylyts.utils.extensions.displayToast
 import javax.inject.Inject
 
 /**

@@ -19,8 +19,8 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.item_hide_keyboard.view.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import kotlin.math.roundToInt
 
 

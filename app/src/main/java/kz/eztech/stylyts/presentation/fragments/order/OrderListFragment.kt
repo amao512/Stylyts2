@@ -21,8 +21,8 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.ordering.OrderListContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderListPresenter
-import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.Paginator
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class OrderListFragment : BaseFragment<MainActivity>(), OrderListContract.View,

@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.domain.models.clothes
 
 import kz.eztech.stylyts.presentation.enums.GenderEnum
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import java.io.File
 
 data class ClothesCreateModel(

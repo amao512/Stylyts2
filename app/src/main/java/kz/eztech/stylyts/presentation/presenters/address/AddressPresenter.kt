@@ -13,7 +13,7 @@ import kz.eztech.stylyts.domain.usecases.address.GetAddressUseCase
 import kz.eztech.stylyts.domain.usecases.address.PostAddressUseCase
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.address.AddressContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
 class AddressPresenter @Inject constructor(

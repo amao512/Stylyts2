@@ -33,10 +33,10 @@ import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.main.MainLinePresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.FileUtils
-import kz.eztech.stylyts.presentation.utils.Paginator
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.FileUtils
+import kz.eztech.stylyts.utils.Paginator
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnClickListener,

@@ -10,7 +10,7 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_add_to_cart_problem.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 
 class AddToCartProblemDialog : DialogFragment() {
 

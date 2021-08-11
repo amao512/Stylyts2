@@ -5,8 +5,8 @@ import android.view.View
 import kotlinx.android.synthetic.main.dialog_bottom_create_collection_choser.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.presentation.base.BaseRoundedBottomSheetDialog
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 
 /**
  * Created by Ruslan Erdenoff on 11.02.2021.

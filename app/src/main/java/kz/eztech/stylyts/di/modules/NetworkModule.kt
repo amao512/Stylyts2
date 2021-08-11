@@ -13,7 +13,7 @@ import kz.eztech.stylyts.BuildConfig
 import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.helpers.MyTLSSocketFactory
 import kz.eztech.stylyts.data.models.SharedConstants
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import okhttp3.Cache
 import okhttp3.ConnectionSpec
 import okhttp3.OkHttpClient

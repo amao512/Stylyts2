@@ -12,9 +12,9 @@ import kz.eztech.stylyts.domain.models.auth.TokenModel
 import kz.eztech.stylyts.presentation.base.BaseActivity
 import kz.eztech.stylyts.presentation.contracts.main.MainActivityContract
 import kz.eztech.stylyts.presentation.presenters.main.MainActivityPresenter
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), MainActivityContract.View {

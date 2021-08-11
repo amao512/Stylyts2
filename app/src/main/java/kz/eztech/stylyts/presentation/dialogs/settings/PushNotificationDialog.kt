@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.base_toolbar.*
 import kotlinx.android.synthetic.main.dialog_push_notification.*
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.show
 
 class PushNotificationDialog : DialogFragment(R.layout.dialog_push_notification), View.OnClickListener {
 

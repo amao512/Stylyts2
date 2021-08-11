@@ -4,12 +4,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_shop_order_clothes.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.referrals.ReferralItemModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.utils.extensions.loadImage
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.loadImage
+import kz.eztech.stylyts.utils.extensions.show
 
 class ReferralIncomeViewHolder(
     itemView: View,
@@ -51,21 +50,13 @@ class ReferralIncomeViewHolder(
     private fun processClothes(
         clothes: ReferralItemModel,
         position: Int
-    ) {
-        clothesTitleTextView.text = clothes.title
-
-        val price = priceTextView.context.getString(
-            R.string.price_tenge_text_format,
-            clothes.cost.toString()
-        )
-
-        priceTextView.text = price
-        secondPriceTextView.text = price
-        commissionCostTextView.text = commissionCostTextView.context.getString(
-            R.string.price_tenge_text_format,
-            clothes.referralProfit.toString()
-        )
-        countsTextView.text = clothes.count.toString()
+    ) = with (clothes) {
+        clothesTitleTextView.text = title
+        brandTitleTextView.text = clothesBrand.title
+        priceTextView.text = displayPrice
+        secondPriceTextView.text = displayPrice
+        commissionCostTextView.text = displayReferralProfit
+        countsTextView.text = count.toString()
 
         if (clothes.coverImages.isNotEmpty()) {
             clothes.coverImages[0].loadImage(target = clothesImageView)

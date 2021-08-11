@@ -9,7 +9,7 @@ import kz.eztech.stylyts.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.domain.usecases.clothes.*
 import kz.eztech.stylyts.presentation.base.processViewAction
 import kz.eztech.stylyts.presentation.contracts.filter.FilterContract
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.EMPTY_STRING
 import java.util.*
 import javax.inject.Inject
 

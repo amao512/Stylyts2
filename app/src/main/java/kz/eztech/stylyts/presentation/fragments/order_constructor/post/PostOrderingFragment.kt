@@ -17,9 +17,9 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.EmptyContract
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryTypeEnum
 import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragment
-import kz.eztech.stylyts.presentation.utils.EMPTY_STRING
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.EMPTY_STRING
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 
 class PostOrderingFragment : BaseFragment<MainActivity>(), EmptyContract.View, View.OnClickListener {
 

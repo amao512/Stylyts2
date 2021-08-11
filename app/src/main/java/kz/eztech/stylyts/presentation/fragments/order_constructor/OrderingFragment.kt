@@ -12,7 +12,6 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.db.cart.CartEntity
-import kz.eztech.stylyts.domain.models.order.OrderCreateModel
 import kz.eztech.stylyts.domain.models.order.ResponseOrderCreateModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -21,8 +20,8 @@ import kz.eztech.stylyts.presentation.contracts.ordering.OrderingContract
 import kz.eztech.stylyts.presentation.enums.ordering.PaymentTypeEnum
 import kz.eztech.stylyts.presentation.fragments.card.CardFragment
 import kz.eztech.stylyts.presentation.presenters.ordering.OrderingPresenter
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import java.text.NumberFormat
 import javax.inject.Inject
 

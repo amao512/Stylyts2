@@ -12,7 +12,7 @@ import kz.eztech.stylyts.presentation.adapters.incomes.IncomeDateItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeContract
-import kz.eztech.stylyts.presentation.utils.Paginator
+import kz.eztech.stylyts.utils.Paginator
 import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
@@ -52,7 +52,7 @@ class IncomesPresenter @Inject constructor(
                 paginator.proceed(
                     Paginator.Action.NewPage(
                         pageNumber = t.page,
-                        items = getPreparedIncomesList(list = t.results)
+                        items = getPreparedIncomesList(list = t.results.reversed())
                     )
                 )
             }

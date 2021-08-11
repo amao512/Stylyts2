@@ -3,7 +3,7 @@ package kz.eztech.stylyts.data.repository
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.network.ProfileApi
 import kz.eztech.stylyts.data.exception.NetworkException
-import kz.eztech.stylyts.presentation.utils.mappers.user.map
+import kz.eztech.stylyts.utils.mappers.user.map
 import kz.eztech.stylyts.domain.models.user.UserModel
 import kz.eztech.stylyts.domain.repository.ProfileDomainRepository
 import okhttp3.MultipartBody

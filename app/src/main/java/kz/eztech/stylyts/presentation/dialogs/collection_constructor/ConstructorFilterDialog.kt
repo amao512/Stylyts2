@@ -18,8 +18,8 @@ import kz.eztech.stylyts.presentation.adapters.collection_constructor.Collection
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.CollectionConstructorFilterContract
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.presentation.utils.extensions.hide
-import kz.eztech.stylyts.presentation.utils.extensions.show
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.show
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CollectionConstructorFilterPresenter
 import javax.inject.Inject
 
