@@ -6,9 +6,6 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-open class BaseOrderItemModel : Parcelable
-
-@Parcelize
 data class OrderItemApiModel(
     @SerializedName("count")
     @Expose
@@ -21,18 +18,5 @@ data class OrderItemApiModel(
     val clothes: Int?,
     @SerializedName("referral_user")
     @Expose
-    val referralUser: Int?
-) : BaseOrderItemModel()
-
-@Parcelize
-data class OrderItemWithoutReferralApiModel(
-    @SerializedName("count")
-    @Expose
-    val count: Int?,
-    @SerializedName("size")
-    @Expose
-    val size: String?,
-    @SerializedName("clothes")
-    @Expose
-    val clothes: Int?
-) : BaseOrderItemModel()
+    val referralUser: Int? = null
+) : Parcelable

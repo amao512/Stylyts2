@@ -16,7 +16,7 @@ data class OrderCreateApiModel(
     val invoice: InvoiceApiModel? = null,
     @SerializedName("items_meta_data")
     @Expose
-    var itemsMetaData: List<BaseOrderItemModel>? = null,
+    var itemsMetaData: List<OrderItemApiModel>? = null,
     @SerializedName("payment_type")
     @Expose
     var paymentType: String?,
@@ -32,5 +32,17 @@ data class OrderCreateApiModel(
 ) : Parcelable {
     var ownerId: Int = 0
     var created = false
-    var orderItemList: MutableList<BaseOrderItemModel> = mutableListOf()
+    var orderItemList: MutableList<OrderItemApiModel> = mutableListOf()
 }
+
+data class ResponseOrderCreateApiModel(
+    @SerializedName("id")
+    @Expose
+    val id: Int?,
+    @SerializedName("invoice")
+    @Expose
+    val invoice: InvoiceApiModel?,
+    @SerializedName("item_objects")
+    @Expose
+    val itemObjects: List<Int>?
+)

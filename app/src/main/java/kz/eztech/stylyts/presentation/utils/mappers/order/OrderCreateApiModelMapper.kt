@@ -20,6 +20,6 @@ fun ResponseOrderCreateApiModel?.map(): ResponseOrderCreateModel {
     return ResponseOrderCreateModel(
         id = this?.id ?: 0,
         invoice = this?.invoice.map(),
-        itemObjects = this?.itemObjects.map()
+        itemObjects = this?.itemObjects ?: emptyList()
     )
 }

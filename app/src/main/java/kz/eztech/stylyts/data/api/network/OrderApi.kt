@@ -5,6 +5,7 @@ import kz.eztech.stylyts.data.api.RestConstants
 import kz.eztech.stylyts.data.api.models.ResultsApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderApiModel
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
+import kz.eztech.stylyts.data.api.models.order.ResponseOrderCreateApiModel
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -23,7 +24,7 @@ interface OrderApi {
     @POST(RestConstants.CREATE_ORDER)
     fun createOrder(
         @Body orderCreateApiModel: OrderCreateApiModel
-    ): Single<Response<OrderCreateApiModel>>
+    ): Single<Response<ResponseOrderCreateApiModel>>
 
     @POST(RestConstants.PROCESS_ORDER)
     fun processOrder(

@@ -152,7 +152,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
         }
 
         orderList.map { order ->
-            val items: MutableList<BaseOrderItemModel> = mutableListOf()
+            val items: MutableList<OrderItemApiModel> = mutableListOf()
 
             order.orderItemList.map {
                 items.add(it)
@@ -162,7 +162,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
         }
     }
 
-    private fun getOrderItem(cartEntity: CartEntity): BaseOrderItemModel {
+    private fun getOrderItem(cartEntity: CartEntity): OrderItemApiModel {
         return if (cartEntity.referralUser != 0) {
             OrderItemApiModel(
                 clothes = cartEntity.id,
@@ -171,7 +171,7 @@ class SelectDeliveryWayFragment : BaseFragment<MainActivity>(), SelectDeliveryWa
                 referralUser = cartEntity.referralUser ?: 0
             )
         } else {
-            OrderItemWithoutReferralApiModel(
+            OrderItemApiModel(
                 clothes = cartEntity.id,
                 count = cartEntity.count,
                 size = cartEntity.size

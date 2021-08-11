@@ -1,13 +1,12 @@
 package kz.eztech.stylyts.data.repository
 
-import android.util.Log
 import io.reactivex.Single
 import kz.eztech.stylyts.data.api.models.order.OrderCreateApiModel
 import kz.eztech.stylyts.data.api.network.OrderApi
 import kz.eztech.stylyts.data.exception.NetworkException
 import kz.eztech.stylyts.domain.models.common.ResultsModel
-import kz.eztech.stylyts.domain.models.order.OrderCreateModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
+import kz.eztech.stylyts.domain.models.order.ResponseOrderCreateModel
 import kz.eztech.stylyts.domain.repository.OrderDomainRepository
 import kz.eztech.stylyts.presentation.utils.mappers.map
 import kz.eztech.stylyts.presentation.utils.mappers.order.map
@@ -35,9 +34,8 @@ class OrderRepository @Inject constructor(
         }
     }
 
-    override fun createOrder(orderCreateApiModel: OrderCreateApiModel): Single<OrderCreateModel> {
+    override fun createOrder(orderCreateApiModel: OrderCreateApiModel): Single<ResponseOrderCreateModel> {
         return api.createOrder(orderCreateApiModel).map {
-            Log.d("TAG4", "after - ${it.message()}")
             when (it.isSuccessful) {
                 true -> it.body().map()
                 false -> throw NetworkException(it)
