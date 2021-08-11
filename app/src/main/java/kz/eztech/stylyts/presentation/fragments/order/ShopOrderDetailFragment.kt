@@ -23,7 +23,7 @@ import kz.eztech.stylyts.presentation.contracts.ordering.ShopOrderDetailContract
 import kz.eztech.stylyts.presentation.enums.ordering.DeliveryStatusEnum
 import kz.eztech.stylyts.presentation.enums.ordering.PaymentStatusEnum
 import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
-import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ui.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.ShopOrderDetailPresenter
 import kz.eztech.stylyts.utils.extensions.getDayAndMonth

@@ -21,7 +21,7 @@ import kz.eztech.stylyts.presentation.adapters.filter.FilterCheckAdapter
 import kz.eztech.stylyts.presentation.base.BaseActivity
 import kz.eztech.stylyts.presentation.base.DialogChooserListener
 import kz.eztech.stylyts.presentation.contracts.collection_constructor.SaveClothesAcceptContract
-import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ui.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.SaveClothesAcceptPresenter
 import kz.eztech.stylyts.utils.FileUtils

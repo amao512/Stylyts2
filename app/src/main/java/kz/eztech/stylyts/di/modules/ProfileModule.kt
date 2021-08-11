@@ -5,6 +5,8 @@ import dagger.Provides
 import kz.eztech.stylyts.data.api.network.ProfileApi
 import kz.eztech.stylyts.data.repository.ProfileRepository
 import kz.eztech.stylyts.domain.repository.ProfileDomainRepository
+import kz.eztech.stylyts.presentation.fragments.profile.data.UIProfileFilterData
+import kz.eztech.stylyts.presentation.fragments.profile.data.UIProfileFilterDataDelegate
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -23,5 +25,10 @@ class ProfileModule {
     @Provides
     fun providesProfileRepository(profileRepository: ProfileRepository): ProfileDomainRepository {
         return profileRepository
+    }
+
+    @Provides
+    fun providesUIProfileFilterData(): UIProfileFilterData {
+        return UIProfileFilterDataDelegate()
     }
 }

@@ -25,7 +25,7 @@ import kz.eztech.stylyts.presentation.contracts.clothes.ClothesDetailContract
 import kz.eztech.stylyts.presentation.dialogs.cart.ClothesSizesBottomDialog
 import kz.eztech.stylyts.presentation.dialogs.clothes.AddToCartProblemDialog
 import kz.eztech.stylyts.presentation.fragments.collection_constructor.CollectionConstructorFragment
-import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ui.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
 import kz.eztech.stylyts.presentation.presenters.clothes.ClothesDetailPresenter
 import kz.eztech.stylyts.utils.ColorUtils

@@ -26,7 +26,7 @@ import kz.eztech.stylyts.presentation.contracts.collection_constructor.CreateCol
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.CreateCollectionChooserDialog
 import kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog
 import kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment
-import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ui.ProfileFragment
 import kz.eztech.stylyts.presentation.presenters.collection_constructor.CreateCollectionAcceptPresenter
 import kz.eztech.stylyts.utils.EMPTY_STRING
 import kz.eztech.stylyts.utils.FileUtils

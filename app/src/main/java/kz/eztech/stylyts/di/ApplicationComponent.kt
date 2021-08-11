@@ -34,8 +34,8 @@ import kz.eztech.stylyts.presentation.fragments.order_constructor.OrderingFragme
 import kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.SelectDeliveryWayFragment
 import kz.eztech.stylyts.presentation.fragments.order_constructor.self_pickup.PickupPointsFragment
-import kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment
-import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ui.MyDataFragment
+import kz.eztech.stylyts.presentation.fragments.profile.ui.ProfileFragment
 import kz.eztech.stylyts.presentation.fragments.incomes.IncomesFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchFragment
 import kz.eztech.stylyts.presentation.fragments.search.SearchItemFragment

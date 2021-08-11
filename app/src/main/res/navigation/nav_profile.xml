@@ -8,7 +8,7 @@
     >
     <fragment
         android:id="@+id/profileFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.ui.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile"
         >
@@ -248,7 +248,7 @@
     </fragment>
     <fragment
         android:id="@+id/myDataFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.MyDataFragment"
+        android:name="kz.eztech.stylyts.presentation.fragments.profile.ui.MyDataFragment"
         android:label="MyDataFragment"
         >
         <action

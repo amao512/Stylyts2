@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.fragments.profile
+package kz.eztech.stylyts.presentation.fragments.profile.ui
 
 import android.os.Bundle
 import android.view.View
