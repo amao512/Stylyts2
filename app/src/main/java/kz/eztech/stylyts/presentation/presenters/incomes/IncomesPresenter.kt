@@ -6,11 +6,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.income.IncomeDateItem
+import kz.eztech.stylyts.domain.models.income.IncomeListItem
+import kz.eztech.stylyts.domain.models.income.IncomesItem
 import kz.eztech.stylyts.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.domain.usecases.referrals.GetReferralListUseCase
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomeDateItem
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeContract
 import kz.eztech.stylyts.utils.Paginator
 import org.threeten.bp.ZonedDateTime

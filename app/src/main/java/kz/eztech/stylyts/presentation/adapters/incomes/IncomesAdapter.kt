@@ -2,6 +2,8 @@ package kz.eztech.stylyts.presentation.adapters.incomes
 
 import android.view.ViewGroup
 import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.income.INCOME_DATE_TYPE
+import kz.eztech.stylyts.domain.models.income.IncomesItem
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.BaseDiffUtilCallBack
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder

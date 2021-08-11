@@ -2,10 +2,10 @@ package kz.eztech.stylyts.presentation.adapters.incomes.viewHolders
 
 import android.view.View
 import kotlinx.android.synthetic.main.item_income_date.view.*
+import kz.eztech.stylyts.domain.models.income.IncomeDateItem
+import kz.eztech.stylyts.domain.models.income.IncomesItem
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomeDateItem
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.utils.extensions.getMonthAndYear
 
 class IncomeDateViewHolder(
