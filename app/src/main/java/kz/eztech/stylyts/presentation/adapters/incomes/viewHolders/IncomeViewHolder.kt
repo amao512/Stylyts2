@@ -3,11 +3,10 @@ package kz.eztech.stylyts.presentation.adapters.incomes.viewHolders
 import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_income.view.*
-import kz.eztech.stylyts.R
+import kz.eztech.stylyts.domain.models.income.IncomeListItem
+import kz.eztech.stylyts.domain.models.income.IncomesItem
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.utils.getIncomeDateString
 
 class IncomeViewHolder(
@@ -41,12 +40,9 @@ class IncomeViewHolder(
     private fun processIncome(
         income: IncomeListItem,
         position: Int
-    ) {
-        dateTextView.text = income.getReferralList().getIncomeDateString()
-        priceTextView.text = priceTextView.context.getString(
-            R.string.price_tenge_text_format,
-            income.getReferralList().sumBy { it.totalProfit }.toString()
-        )
+    ) = with(income) {
+        dateTextView.text = getReferralList().getIncomeDateString()
+        priceTextView.text = displayTotalProfit
 
         dateTextView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(view = it, position, income)

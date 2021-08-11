@@ -37,10 +37,6 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     private var isForm = false
 
-    companion object {
-        private const val SLASH_TEXT_FORMAT = "%s/%s"
-    }
-
     override fun onResume() {
         super.onResume()
         currentActivity.hideBottomNavigationView()
@@ -133,7 +129,8 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     override fun displayContent() {
         isForm = false
-        include_toolbar_addresses.toolbar_title_text_view.text = getString(R.string.address_profile_title)
+        include_toolbar_addresses.toolbar_title_text_view.text =
+            getString(R.string.address_profile_title)
         linear_layout_fragment_address_profile_addresses.show()
         scroll_view_fragment_address_profile.hide()
 
@@ -141,7 +138,8 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
 
     override fun displayForm() {
         isForm = true
-        include_toolbar_addresses.toolbar_title_text_view.text = getString(R.string.address_profile_add)
+        include_toolbar_addresses.toolbar_title_text_view.text =
+            getString(R.string.address_profile_add)
         scroll_view_fragment_address_profile.show()
         linear_layout_fragment_address_profile_addresses.hide()
         edit_text_fragment_address_profile_phone.setText(EMPTY_STRING)
@@ -155,7 +153,8 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
         when (state) {
             is Paginator.State.Data<*> -> processAddressList(state.data)
             is Paginator.State.NewPageProgress<*> -> processAddressList(state.data)
-            else -> {}
+            else -> {
+            }
         }
 
         hideProgress()
@@ -164,7 +163,8 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     override fun processAddressList(list: List<Any?>) {
         list.map {
             (it as AddressModel).apply {
-                isDefaultAddress = id == currentActivity.getSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY) ?: 0
+                isDefaultAddress =
+                    id == currentActivity.getSharedPrefByKey(SharedConstants.DEFAULT_ADDRESS_ID_KEY) ?: 0
             }
         }.let {
             addressAdapter.updateList(it)
@@ -204,7 +204,8 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
     }
 
     private fun handleRecyclerView() {
-        recycler_view_fragment_address_profile.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        recycler_view_fragment_address_profile.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recycler_view_fragment_address_profile.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
                     presenter.loadMorePage()
@@ -213,14 +214,14 @@ class AddressFragment : BaseFragment<MainActivity>(), AddressContract.View,
         })
     }
 
-    private fun displayExistForm(addressModel: AddressModel) {
+    private fun displayExistForm(addressModel: AddressModel) = with(addressModel) {
         isForm = true
         scroll_view_fragment_address_profile.show()
         linear_layout_fragment_address_profile_addresses.hide()
 
-        edit_text_fragment_address_profile_country.setText(addressModel.country)
-        edit_text_fragment_address_profile_address.setText(SLASH_TEXT_FORMAT.format(addressModel.city, addressModel.street))
-        edit_text_fragment_address_profile_post.setText(addressModel.postalCode)
+        edit_text_fragment_address_profile_country.setText(country)
+        edit_text_fragment_address_profile_address.setText(displayCityAndStreet)
+        edit_text_fragment_address_profile_post.setText(postalCode)
     }
 
     private fun createAddress() {

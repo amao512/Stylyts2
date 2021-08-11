@@ -195,15 +195,15 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
         }
     }
 
-    override fun navigateToUserProfile(userModel: UserModel) {
+    override fun navigateToUserProfile(userModel: UserModel) = with(userModel) {
         val bundle = Bundle()
 
-        if (userModel.isBrand && userModel.id != currentActivity.getUserIdFromSharedPref()) {
-            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, userModel.id)
+        if (isBrand && id != currentActivity.getUserIdFromSharedPref()) {
+            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, id)
 
             findNavController().navigate(R.id.action_mainFragment_to_nav_shop_profile, bundle)
         } else {
-            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, userModel.id)
+            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, id)
 
             findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
         }
@@ -228,16 +228,18 @@ class MainFragment : BaseFragment<MainActivity>(), MainContract.View, View.OnCli
     private fun onProfileClicked(item: Any?) {
         item as PostModel
 
-        val bundle = Bundle()
+        with(item) {
+            val bundle = Bundle()
 
-        if (item.author.isBrand && item.author.id != currentActivity.getUserIdFromSharedPref()) {
-            bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, item.author.id)
+            if (author.isBrand && author.id != currentActivity.getUserIdFromSharedPref()) {
+                bundle.putInt(ShopProfileFragment.PROFILE_ID_KEY, author.id)
 
-            findNavController().navigate(R.id.action_mainFragment_to_nav_shop_profile, bundle)
-        } else {
-            bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, item.author.id)
+                findNavController().navigate(R.id.action_mainFragment_to_nav_shop_profile, bundle)
+            } else {
+                bundle.putInt(ProfileFragment.USER_ID_BUNDLE_KEY, author.id)
 
-            findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
+                findNavController().navigate(R.id.action_mainFragment_to_nav_profile, bundle)
+            }
         }
     }
 

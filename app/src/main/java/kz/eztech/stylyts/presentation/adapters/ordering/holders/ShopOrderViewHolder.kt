@@ -3,7 +3,6 @@ package kz.eztech.stylyts.presentation.adapters.ordering.holders
 import android.view.View
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_shop_order.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
@@ -49,25 +48,23 @@ class ShopOrderViewHolder(
     private fun processOrder(
         order: OrderModel,
         position: Int
-    ) {
-        numberTextView.text =
-            itemView.context.getString(R.string.order_number_text_format, "${order.id} - ")
-        priceTextView.text =
-            itemView.context.getString(R.string.price_tenge_text_format, order.price.toString())
-        dateTextView.text = order.createdAt.getSlashDate()
+    ) = with(order) {
+        numberTextView.text = displayOrderId(context = numberTextView.context)
+        priceTextView.text = displayPrice
+        dateTextView.text = createdAt.getSlashDate()
 
         if (
-            order.delivery.deliveryStatus == DeliveryStatusEnum.NEW.status &&
-            order.invoice.paymentStatus == PaymentStatusEnum.NEW.status
+            delivery.deliveryStatus == DeliveryStatusEnum.NEW.status &&
+            invoice.paymentStatus == PaymentStatusEnum.NEW.status
         ) {
             newOrderTextView.show()
             deliveredOrderTextView.hide()
             completeOrderTextView.hide()
-        } else if (order.delivery.deliveryStatus == DeliveryStatusEnum.IN_PROGRESS.status) {
+        } else if (delivery.deliveryStatus == DeliveryStatusEnum.IN_PROGRESS.status) {
             newOrderTextView.hide()
             deliveredOrderTextView.hide()
             completeOrderTextView.show()
-        } else if (order.delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status) {
+        } else if (delivery.deliveryStatus == DeliveryStatusEnum.DELIVERED.status) {
             newOrderTextView.hide()
             deliveredOrderTextView.show()
             completeOrderTextView.hide()

@@ -1,11 +1,11 @@
 package kz.eztech.stylyts.presentation.adapters.shop.holders
 
 import android.view.View
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_shop_category.view.*
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
+import kz.eztech.stylyts.utils.extensions.loadImage
 
 /**
  * Created by Ruslan Erdenoff on 26.11.2020.
@@ -22,9 +22,9 @@ class ShopCategoryHolder(
     ) {
         with(item as ClothesTypeModel) {
             with(itemView) {
-                Glide.with(image_view_item_shop_fragment.context)
-                    .load(getCoverPhoto(clothesTypeModel = item))
-                    .into(image_view_item_shop_fragment)
+                getCoverPhoto(clothesTypeModel = item).loadImage(
+                    target = image_view_item_shop_fragment
+                )
 
                 text_view_item_shop_fragment.text = title
                 constraint_layout_item_shop_category.setOnClickListener {

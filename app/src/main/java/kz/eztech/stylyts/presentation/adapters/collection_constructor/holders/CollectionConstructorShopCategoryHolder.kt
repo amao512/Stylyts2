@@ -22,73 +22,74 @@ class CollectionConstructorShopCategoryHolder(
     private val gender: Int
 ) : BaseViewHolder(itemView, adapter) {
 
-	private lateinit var rootViewConstraintLayout: ConstraintLayout
-	private lateinit var titleTextView: TextView
-	private lateinit var iconImageView: ImageView
-	private lateinit var selectedIconImageView: ImageView
+    private lateinit var rootViewConstraintLayout: ConstraintLayout
+    private lateinit var titleTextView: TextView
+    private lateinit var iconImageView: ImageView
+    private lateinit var selectedIconImageView: ImageView
 
     override fun bindData(item: Any, position: Int) {
-		item as ClothesTypeModel
+        item as ClothesTypeModel
 
-		initializeViews(item)
-		processClothesType(
-			clothesType = item,
-			position = position
-		)
+        initializeViews(item)
+        processClothesType(
+            clothesType = item,
+            position = position
+        )
     }
 
-	private fun initializeViews(clothesTypeModel: ClothesTypeModel) {
-		with (itemView) {
-			if (clothesTypeModel.isWiden) {
-				rootViewConstraintLayout = item_collection_constructor_category_wide_root_view
-				titleTextView = text_view_item_collection_constructor_category_widen_item_title
-				iconImageView = image_view_item_collection_constructor_category_widen_item_image_holder
-				selectedIconImageView = image_view_item_collection_constructor_category_widen_item_image_chooser
-			} else {
-				rootViewConstraintLayout = item_collection_constructor_category_root_view
-				titleTextView = text_view_item_collection_constructor_category_item_title
-				iconImageView = image_view_item_collection_constructor_category_item_image_holder
-				selectedIconImageView = image_view_item_collection_constructor_category_item_image_chooser
-			}
-		}
-	}
+    private fun initializeViews(clothesTypeModel: ClothesTypeModel) {
+        with(itemView) {
+            if (clothesTypeModel.isWiden) {
+                rootViewConstraintLayout = item_collection_constructor_category_wide_root_view
+                titleTextView = text_view_item_collection_constructor_category_widen_item_title
+                iconImageView =
+                    image_view_item_collection_constructor_category_widen_item_image_holder
+                selectedIconImageView =
+                    image_view_item_collection_constructor_category_widen_item_image_chooser
+            } else {
+                rootViewConstraintLayout = item_collection_constructor_category_root_view
+                titleTextView = text_view_item_collection_constructor_category_item_title
+                iconImageView = image_view_item_collection_constructor_category_item_image_holder
+                selectedIconImageView =
+                    image_view_item_collection_constructor_category_item_image_chooser
+            }
+        }
+    }
 
-	private fun processClothesType(
-		clothesType: ClothesTypeModel,
-		position: Int
-	) {
-		with(clothesType) {
-			if (isExternal) {
-				iconImageView.setImageResource(externalImageId)
-				titleTextView.text = title
-			} else {
-				fillCoverPhoto(clothesType)
+    private fun processClothesType(
+        clothesType: ClothesTypeModel,
+        position: Int
+    ) = with(clothesType) {
+        if (isExternal) {
+            iconImageView.setImageResource(externalImageId)
+            titleTextView.text = title
+        } else {
+            fillCoverPhoto(clothesType)
 
-				if (title.length > 6) {
-					(title.substring(0, 7) + "...").also { titleTextView.text = it }
-				} else {
-					titleTextView.text = title
-				}
+            if (title.length > 6) {
+                (title.substring(0, 7) + "...").also { titleTextView.text = it }
+            } else {
+                titleTextView.text = title
+            }
 
-				if (isChoosen) {
-					selectedIconImageView.show()
-				} else {
-					selectedIconImageView.hide()
-				}
-			}
+            if (isChoosen) {
+                selectedIconImageView.show()
+            } else {
+                selectedIconImageView.hide()
+            }
+        }
 
-			rootViewConstraintLayout.setOnClickListener {
-				adapter.itemClickListener?.onViewClicked(it, position, clothesType)
-			}
-		}
-	}
+        rootViewConstraintLayout.setOnClickListener {
+            adapter.itemClickListener?.onViewClicked(it, position, clothesType)
+        }
+    }
 
-	private fun fillCoverPhoto(clothesType: ClothesTypeModel) {
-		val image = when (gender) {
-			0 -> clothesType.menConstructorPhoto
-			else -> clothesType.womenConstructorPhoto
-		}
+    private fun fillCoverPhoto(clothesType: ClothesTypeModel) {
+        val image = when (gender) {
+            0 -> clothesType.menConstructorPhoto
+            else -> clothesType.womenConstructorPhoto
+        }
 
-		image.loadImage(target = iconImageView)
-	}
+        image.loadImage(target = iconImageView)
+    }
 }

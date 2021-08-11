@@ -1,5 +1,7 @@
 package kz.eztech.stylyts.domain.models.order
 
+import android.content.Context
+import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.user.UserShortModel
 import org.threeten.bp.ZonedDateTime
@@ -20,4 +22,8 @@ data class OrderModel(
     val itemsMetaData: List<OrderItemModel>,
 ) {
     val displayPrice = "$price ₸"
+
+    fun displayOrderId(context: Context): String {
+        return context.getString(R.string.order_number_text_format, "$id - ")
+    }
 }

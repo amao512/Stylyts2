@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_user_order.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.domain.models.order.OrderModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
@@ -38,7 +37,7 @@ class UserOrderViewHolder(
     }
 
     private fun initializeViews() {
-        with (itemView) {
+        with(itemView) {
             imageView = item_order_image_view
             shopNameTextView = item_order_shop_name_text_view
             clothesNameTextView = item_order_clothes_name_text_view
@@ -52,23 +51,20 @@ class UserOrderViewHolder(
     private fun processOrder(
         orderModel: OrderModel,
         position: Int
-    ) {
-        shopNameTextView.text = orderModel.seller.username
+    ) = with(orderModel) {
+        shopNameTextView.text = seller.username
         countTextView.text = "Кол-во 1"
         sizeTextView.text = "Размер L"
-        priceTextView.text = priceTextView.context.getString(
-            R.string.price_tenge_text_format,
-            orderModel.price.toString()
-        )
+        priceTextView.text = displayPrice
 
-        if (orderModel.itemObjects.isNotEmpty()) {
-            clothesNameTextView.text = orderModel.itemObjects[0].title
-            clothesIdTextView.text = "ID изделия: ${orderModel.itemObjects[0].id}"
+        if (itemObjects.isNotEmpty()) {
+            clothesNameTextView.text = itemObjects[0].title
+            clothesIdTextView.text = "ID изделия: ${itemObjects[0].id}"
 
-            if (orderModel.itemObjects[0].constructorImage.isBlank()) {
-                orderModel.itemObjects[0].coverImages[0].loadImage(target = imageView)
+            if (itemObjects[0].constructorImage.isBlank()) {
+                itemObjects[0].coverImages[0].loadImage(target = imageView)
             } else {
-                orderModel.itemObjects[0].constructorImage.loadImage(target = imageView)
+                itemObjects[0].constructorImage.loadImage(target = imageView)
             }
         }
 
@@ -80,20 +76,20 @@ class UserOrderViewHolder(
     private fun processClothes(
         clothesModel: ClothesModel,
         position: Int
-    ) {
+    ) = with(clothesModel) {
         priceTextView.hide()
         itemView.item_order_detail_linear_layout.hide()
 
-        shopNameTextView.text = clothesModel.clothesBrand.title
-        clothesNameTextView.text = clothesModel.title
+        shopNameTextView.text = clothesBrand.title
+        clothesNameTextView.text = title
         countTextView.text = "Кол-во 1"
         sizeTextView.text = "Размер L"
-        clothesIdTextView.text = "ID изделия: ${clothesModel.id}"
+        clothesIdTextView.text = "ID изделия: $id"
 
-        if (clothesModel.constructorImage.isBlank()) {
-            clothesModel.coverImages[0].loadImage(target = imageView)
+        if (constructorImage.isBlank()) {
+            coverImages[0].loadImage(target = imageView)
         } else {
-            clothesModel.constructorImage.loadImage(target = imageView)
+            constructorImage.loadImage(target = imageView)
         }
 
         imageView.setOnClickListener {

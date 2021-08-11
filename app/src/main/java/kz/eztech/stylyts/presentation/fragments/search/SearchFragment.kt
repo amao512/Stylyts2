@@ -18,7 +18,6 @@ import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.search.SearchContract
 import kz.eztech.stylyts.presentation.interfaces.SearchListener
 import kz.eztech.stylyts.presentation.presenters.search.SearchViewModel
-import kz.eztech.stylyts.utils.EMPTY_STRING
 import kz.eztech.stylyts.utils.extensions.hide
 import kz.eztech.stylyts.utils.extensions.show
 import org.koin.android.ext.android.inject
@@ -110,13 +109,13 @@ class SearchFragment : BaseFragment<MainActivity>(), SearchContract.View,
     private fun onSearchListener() {
         fragment_search_search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchViewModel.onSearch(query ?: EMPTY_STRING)
+                searchViewModel.onSearch(query = query.orEmpty())
 
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchViewModel.onSearch(newText ?: EMPTY_STRING)
+                searchViewModel.onSearch(query = newText.orEmpty())
 
                 return false
             }

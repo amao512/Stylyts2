@@ -24,25 +24,27 @@ class AddressHolder(
     ) {
         item as AddressModel
 
-        itemView.apply {
-            text_view_address_profile_street.text = item.street
-            text_view_address_profile_city.text = item.city
-            text_view_address_profile_post_code.text = item.postalCode
-            text_view_address_profile_country.text = item.country
-            linear_layout_address_profile_container.setOnClickListener {
-                adapter.itemClickListener?.onViewClicked(it, position, item)
-            }
+        with(item) {
+            itemView.apply {
+                text_view_address_profile_street.text = street
+                text_view_address_profile_city.text = city
+                text_view_address_profile_post_code.text = postalCode
+                text_view_address_profile_country.text = country
+                linear_layout_address_profile_container.setOnClickListener {
+                    adapter.itemClickListener?.onViewClicked(it, position, item)
+                }
 
-            if (item.isDefaultAddress) {
-                item_address_divider.hide()
-                item_address_profile_set_default_delivery_address_text_view.hide()
+                if (isDefaultAddress) {
+                    item_address_divider.hide()
+                    item_address_profile_set_default_delivery_address_text_view.hide()
 
-                item_address_profile_default_card_text_view.show()
-                item_address_profile_prefer_text_view.show()
-            }
+                    item_address_profile_default_card_text_view.show()
+                    item_address_profile_prefer_text_view.show()
+                }
 
-            item_address_profile_set_default_delivery_address_text_view.setOnClickListener {
-                addressViewClickListener.setDefaultAddress(addressModel = item)
+                item_address_profile_set_default_delivery_address_text_view.setOnClickListener {
+                    addressViewClickListener.setDefaultAddress(addressModel = item)
+                }
             }
         }
     }

@@ -135,10 +135,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
     }
 
     override fun processOrder(orderModel: OrderModel) = with (orderModel) {
-        fragment_order_detail_toolbar.toolbar_title_text_view.text = getString(
-            R.string.order_number_text_format,
-            id.toString()
-        )
+        fragment_order_detail_toolbar.toolbar_title_text_view.text = displayOrderId(context = requireContext())
 
         goodsPriceTextView.text = displayPrice
         totalPriceTextView.text = displayPrice

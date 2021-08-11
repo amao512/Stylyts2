@@ -11,11 +11,11 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_incomes.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.income.INCOME_TYPE
+import kz.eztech.stylyts.domain.models.income.IncomeListItem
+import kz.eztech.stylyts.domain.models.income.IncomesItem
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.incomes.INCOME_TYPE
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
 import kz.eztech.stylyts.presentation.adapters.incomes.IncomesAdapter
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomesItem
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
 import kz.eztech.stylyts.presentation.contracts.incomes.IncomeContract

@@ -26,14 +26,18 @@ import kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment
 import kz.eztech.stylyts.presentation.fragments.profile.ProfileFragment
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.ordering.ShopOrderDetailPresenter
-import kz.eztech.stylyts.utils.extensions.*
+import kz.eztech.stylyts.utils.extensions.getDayAndMonth
+import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
+import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
 
 class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailContract.View,
     UniversalViewClickListener,
     View.OnClickListener {
 
-    @Inject lateinit var presenter: ShopOrderDetailPresenter
+    @Inject
+    lateinit var presenter: ShopOrderDetailPresenter
     private lateinit var shopOrderClothesAdapter: ShopOrderClothesAdapter
 
     private lateinit var clientAvatarShapeableImageView: ShapeableImageView
@@ -177,8 +181,9 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
         }
     }
 
-    private fun processOrderInfo(orderModel: OrderModel) = with (orderModel) {
-        fragment_shop_order_toolbar.toolbar_title_text_view.text = getString(R.string.order_number_text_format, id.toString())
+    private fun processOrderInfo(orderModel: OrderModel) = with(orderModel) {
+        fragment_shop_order_toolbar.toolbar_title_text_view.text =
+            displayOrderId(context = requireContext())
 
         clientUsernameTextView.text = client.username
         clientFullNameTextView.text = client.displayFullName
@@ -198,7 +203,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
             applyButton.hide()
         } else if (
             (invoice.paymentStatus == PaymentStatusEnum.PAID.status ||
-            invoice.paymentStatus == PaymentStatusEnum.PENDING.status) &&
+                    invoice.paymentStatus == PaymentStatusEnum.PENDING.status) &&
             delivery.deliveryStatus == DeliveryStatusEnum.NEW.status
         ) {
             applyButton.show()
@@ -206,7 +211,7 @@ class ShopOrderDetailFragment : BaseFragment<MainActivity>(), ShopOrderDetailCon
             notPaidTextView.hide()
         } else if (
             (invoice.paymentStatus == PaymentStatusEnum.PAID.status ||
-            invoice.paymentStatus == PaymentStatusEnum.PENDING.status) &&
+                    invoice.paymentStatus == PaymentStatusEnum.PENDING.status) &&
             delivery.deliveryStatus == DeliveryStatusEnum.IN_PROGRESS.status
         ) {
             completeButton.show()

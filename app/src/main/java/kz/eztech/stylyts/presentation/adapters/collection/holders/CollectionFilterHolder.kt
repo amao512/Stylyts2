@@ -39,7 +39,7 @@ class CollectionFilterHolder(
     }
 
     private fun initializeViews() {
-        with (itemView) {
+        with(itemView) {
             filterItemLinearLayout = frame_layout_item_collection_filter
             iconImageView = item_collection_filter_icon_image_view
             titleTextView = item_collection_filter_title_text_view
@@ -49,10 +49,10 @@ class CollectionFilterHolder(
     private fun processFilterItem(
         collectionFilterModel: CollectionFilterModel,
         position: Int
-    ) {
-        titleTextView.text = collectionFilterModel.name
+    ) = with(collectionFilterModel) {
+        titleTextView.text = name
 
-        if (collectionFilterModel.isChosen) {
+        if (isChosen) {
             filterItemLinearLayout.background = getDrawable(
                 filterItemLinearLayout.context,
                 R.drawable.rounded_rectangle_gray
@@ -65,13 +65,13 @@ class CollectionFilterHolder(
         }
 
         filterItemLinearLayout.setOnClickListener {
-            if (!collectionFilterModel.isDisabled) {
+            if (!isDisabled) {
                 adapter.itemClickListener?.onViewClicked(it, position, collectionFilterModel)
             }
         }
 
-        if (collectionFilterModel.icon != null) {
-            iconImageView.setImageResource(collectionFilterModel.icon)
+        if (icon != null) {
+            iconImageView.setImageResource(icon)
             iconImageView.show()
         } else {
             iconImageView.hide()

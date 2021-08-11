@@ -22,4 +22,10 @@ data class AddressModel(
     val house: String
 ) : Parcelable {
     var isDefaultAddress: Boolean = false
+
+    val displayAddress
+        get() = "$city, $street $house"
+
+    val displayCityAndStreet
+        get() = "$city/$street"
 }

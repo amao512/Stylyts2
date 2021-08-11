@@ -1,4 +1,4 @@
-package kz.eztech.stylyts.presentation.adapters.incomes
+package kz.eztech.stylyts.domain.models.income
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
@@ -20,6 +20,9 @@ data class IncomeListItem(
     val startDay: Int
 ) : IncomesItem(INCOME_TYPE), Parcelable {
     private var referralList: MutableList<ReferralModel> = mutableListOf()
+
+    val displayTotalProfit
+        get() = "${referralList.sumBy { it.totalProfit }} ₸"
 
     fun addReferral(item: ReferralModel) {
         referralList.add(item)

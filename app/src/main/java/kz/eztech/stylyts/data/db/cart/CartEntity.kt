@@ -58,4 +58,10 @@ data class CartEntity(
 
     @ColumnInfo(name = "referral_user")
     val referralUser: Int? = null
-)
+) {
+    val displayPrice
+        get() = "$price ₸"
+
+    val displaySalePrice
+        get() = "$salePrice ₸"
+}

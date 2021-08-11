@@ -5,15 +5,13 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_clothes_detail.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.utils.extensions.hide
+import kz.eztech.stylyts.utils.extensions.loadImage
 import kz.eztech.stylyts.utils.extensions.show
-import java.text.NumberFormat
 
 /**
  * Created by Ruslan Erdenoff on 18.12.2020.
@@ -58,17 +56,17 @@ class ClothesDetailViewHolder(
     private fun processClothes(
         clothesModel: ClothesModel,
         position: Int
-    ) {
-        if (clothesModel.clothesBrand.title.isNotEmpty()) {
-            brandTitleTextView.text = clothesModel.clothesBrand.title
+    ) = with(clothesModel) {
+        if (clothesBrand.title.isNotEmpty()) {
+            brandTitleTextView.text = clothesBrand.title
         } else {
             brandTitleTextView.hide()
         }
 
-        clothesTitleTextView.text = clothesModel.title
+        clothesTitleTextView.text = title
 
         processPrice(clothesModel = clothesModel)
-        loadCoverPhoto(clothesModel.coverImages)
+        loadCoverPhoto(coverImages)
 
         clothesDetailLinearLayout.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, clothesModel)
@@ -77,36 +75,23 @@ class ClothesDetailViewHolder(
 
     private fun loadCoverPhoto(coverImages: List<String>) {
         coverImages.map {
-            Glide.with(clothesImageView.context)
-                .load(it)
-                .into(clothesImageView)
+            it.loadImage(target = clothesImageView)
         }
     }
 
-    private fun processPrice(clothesModel: ClothesModel) {
+    private fun processPrice(clothesModel: ClothesModel) = with(clothesModel) {
         if (clothesModel.cost != 0 && clothesModel.salePrice == 0) {
-            priceTextView.apply {
-                text = context.getString(
-                    R.string.price_tenge_text_format,
-                    NumberFormat.getInstance().format(clothesModel.cost),
-                )
-            }
+            priceTextView.text = displayPrice
             salePriceHolderLinearLayout.hide()
-        } else if (clothesModel.salePrice != 0) {
+        } else if (salePrice != 0) {
             defaultPriceTextView.apply {
-                text = context.getString(
-                    R.string.price_tenge_text_format,
-                    NumberFormat.getInstance().format(clothesModel.cost),
-                )
+                text = displayPrice
                 paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             }
 
             salePriceHolderLinearLayout.show()
             priceTextView.hide()
-            salePriceTextView.text = salePriceTextView.context.getString(
-                R.string.price_tenge_text_format,
-                NumberFormat.getInstance().format(clothesModel.salePrice),
-            )
+            salePriceTextView.text = displaySalePrice
         } else {
             priceTextView.hide()
             salePriceHolderLinearLayout.hide()

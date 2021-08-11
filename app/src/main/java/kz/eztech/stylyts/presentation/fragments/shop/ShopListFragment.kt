@@ -26,7 +26,6 @@ import kz.eztech.stylyts.presentation.dialogs.filter.FilterDialog
 import kz.eztech.stylyts.presentation.enums.GenderEnum
 import kz.eztech.stylyts.presentation.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.presentation.presenters.shop.ShopListPresenter
-import kz.eztech.stylyts.utils.EMPTY_STRING
 import kz.eztech.stylyts.utils.Paginator
 import kz.eztech.stylyts.utils.extensions.hide
 import kz.eztech.stylyts.utils.extensions.show
@@ -206,13 +205,13 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     private fun handleSearchView() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchShop(username = query ?: EMPTY_STRING)
+                searchShop(username = query.orEmpty())
 
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                searchShop(username = newText ?: EMPTY_STRING)
+                searchShop(username = newText.orEmpty())
 
                 return false
             }

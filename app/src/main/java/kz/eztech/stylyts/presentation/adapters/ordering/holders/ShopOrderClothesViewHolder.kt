@@ -4,7 +4,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_shop_order_clothes.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
@@ -46,26 +45,23 @@ class ShopOrderClothesViewHolder(
     private fun processClothes(
         clothes: ClothesModel,
         position: Int
-    ) {
-        brandTitleTextView.text = clothes.clothesBrand.title
-        clothesTitleTextView.text = clothes.title
+    ) = with(clothes) {
+        brandTitleTextView.text = clothesBrand.title
+        clothesTitleTextView.text = title
 
-        val price = priceTextView.context.getString(
-            R.string.price_tenge_text_format,
-            if (clothes.salePrice != 0) {
-                clothes.salePrice.toString()
-            } else {
-                clothes.cost.toString()
-            }
-        )
+        val price = if (salePrice != 0) {
+            displaySalePrice
+        } else {
+            displayPrice
+        }
 
         priceTextView.text = price
         secondPriceTextView.text = price
 
-        if (clothes.constructorImage.isBlank()) {
-            clothes.coverImages[0].loadImage(target = clothesImageView)
+        if (constructorImage.isBlank()) {
+            coverImages[0].loadImage(target = clothesImageView)
         } else {
-            clothes.constructorImage.loadImage(target = clothesImageView)
+            constructorImage.loadImage(target = clothesImageView)
         }
 
         clothesImageView.setOnClickListener {

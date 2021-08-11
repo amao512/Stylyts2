@@ -5,12 +5,10 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_cart_item.view.*
-import kz.eztech.stylyts.R
 import kz.eztech.stylyts.data.db.cart.CartEntity
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.utils.extensions.loadImage
-import java.text.NumberFormat
 
 /**
  * Created by Ruslan Erdenoff on 29.01.2021.
@@ -59,26 +57,20 @@ class CartHolder(
     private fun processCart(
         cart: CartEntity,
         position: Int
-    ) {
+    ) = with(cart) {
         cart.coverImage?.loadImage(target = clothesImageView)
 
-        clothesTitleTextView.text = cart.title
-        brandTitleTextView.text = cart.brandTitle
+        clothesTitleTextView.text = title
+        brandTitleTextView.text = brandTitle
 
-        clothesIdTextView.text = "ID изделия ${cart.id}"
-        sizeTextView.text = "Размер ${cart.size ?: ""}"
-        countTextView.text = "Кол-во ${cart.count}"
+        clothesIdTextView.text = "ID изделия $id"
+        sizeTextView.text = "Размер ${size ?: ""}"
+        countTextView.text = "Кол-во $count"
 
-        if (cart.salePrice != 0) {
-            priceTextView.text = priceTextView.context.getString(
-                R.string.price_tenge_text_format,
-                NumberFormat.getInstance().format(cart.salePrice)
-            )
+        if (salePrice != 0) {
+            priceTextView.text = displaySalePrice
         } else {
-            priceTextView.text = priceTextView.context.getString(
-                R.string.price_tenge_text_format,
-                NumberFormat.getInstance().format(cart.price)
-            )
+            priceTextView.text = displayPrice
         }
 
         clothesImageView.setOnClickListener {

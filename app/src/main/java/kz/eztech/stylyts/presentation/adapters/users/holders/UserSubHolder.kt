@@ -66,7 +66,7 @@ class UserSubHolder(
         }
     }
 
-    private fun processFollower(followerModel: FollowerModel) = with (followerModel) {
+    private fun processFollower(followerModel: FollowerModel) = with(followerModel) {
         usernameTextView.text = followerModel.username
         userFullNameTextView.text = displayFullName
 

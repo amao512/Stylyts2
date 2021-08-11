@@ -7,9 +7,9 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_income_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.domain.models.income.IncomeListItem
 import kz.eztech.stylyts.domain.models.referrals.ReferralItemModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
-import kz.eztech.stylyts.presentation.adapters.incomes.IncomeListItem
 import kz.eztech.stylyts.presentation.adapters.incomes.ReferralItemsAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
 import kz.eztech.stylyts.presentation.base.BaseView
@@ -95,10 +95,7 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
             val clothes: MutableList<ReferralItemModel> = mutableListOf()
 
             fragment_income_detail_date_text_view.text = income.getReferralList().getIncomeDateString()
-            fragment_income_detail_cost_text_view.text = getString(
-                R.string.price_tenge_text_format,
-                income.getReferralList().sumBy { it.totalProfit }.toString()
-            )
+            fragment_income_detail_cost_text_view.text = income.displayTotalProfit
 
             income.getReferralList().map {
                 clothes.addAll(it.items)
