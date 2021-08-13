@@ -2,7 +2,6 @@ package kz.eztech.stylyts.utils.mappers.comments
 
 import kz.eztech.stylyts.data.api.models.comments.CommentApiModel
 import kz.eztech.stylyts.domain.models.comments.CommentModel
-import kz.eztech.stylyts.utils.extensions.getZonedDateTime
 import kz.eztech.stylyts.utils.mappers.user.map
 
 fun List<CommentApiModel>?.map(): List<CommentModel> {
@@ -13,8 +12,8 @@ fun List<CommentApiModel>?.map(): List<CommentModel> {
             id = it.id ?: 0,
             author = it.author.map(),
             text = it.text.orEmpty(),
-            createdAt = it.createdAt.orEmpty().getZonedDateTime(),
-            modifiedAt = it.modifiedAt.orEmpty().getZonedDateTime(),
+            createdAt = it.createdAt.orEmpty(),
+            modifiedAt = it.modifiedAt.orEmpty(),
             post = it.post ?: 0
         )
     }
@@ -25,8 +24,8 @@ fun CommentApiModel?.map(): CommentModel {
         id = this?.id ?: 0,
         author = this?.author.map(),
         text = this?.text.orEmpty(),
-        createdAt = this?.createdAt.orEmpty().getZonedDateTime(),
-        modifiedAt = this?.modifiedAt.orEmpty().getZonedDateTime(),
+        createdAt = this?.createdAt.orEmpty(),
+        modifiedAt = this?.modifiedAt.orEmpty(),
         post = this?.post ?: 0
     )
 }

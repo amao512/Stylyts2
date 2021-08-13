@@ -13,6 +13,7 @@ data class UserModel(
     val id: Int,
     val email: String,
     val username: String,
+    val initial: String,
     val avatar: String,
     val firstName: String,
     val lastName: String,

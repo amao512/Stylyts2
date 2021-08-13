@@ -10,6 +10,7 @@ import kz.eztech.stylyts.domain.models.comments.CommentModel
 import kz.eztech.stylyts.presentation.adapters.common.BaseAdapter
 import kz.eztech.stylyts.presentation.adapters.common.holders.BaseViewHolder
 import kz.eztech.stylyts.utils.extensions.getDayAndMonth
+import kz.eztech.stylyts.utils.extensions.getZonedDateTime
 import kz.eztech.stylyts.utils.extensions.hide
 import kz.eztech.stylyts.utils.extensions.loadImageWithCenterCrop
 
@@ -63,7 +64,7 @@ class CommentHolder(
             userShortNameTextView.hide()
         }
 
-        commentDateTextView.text = createdAt.getDayAndMonth()
+        commentDateTextView.text = createdAt.getZonedDateTime().getDayAndMonth()
 
         userAvatarShapeableImageView.setOnClickListener {
             adapter.itemClickListener?.onViewClicked(it, position, comment)

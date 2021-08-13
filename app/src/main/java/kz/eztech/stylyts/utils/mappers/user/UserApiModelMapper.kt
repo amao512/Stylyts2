@@ -23,7 +23,8 @@ fun UserApiModel?.map(): UserModel {
         instagram = this?.instagram.orEmpty(),
         followersCount = this?.followersCount ?: 0,
         followingsCount = this?.followingsCount ?: 0,
-        outfitsCount = this?.outfitsCount ?: 0
+        outfitsCount = this?.outfitsCount ?: 0,
+        initial = this?.initials.orEmpty()
     )
 }
 
@@ -45,7 +46,8 @@ fun List<UserApiModel>?.map(): List<UserModel> {
             instagram = it.instagram.orEmpty(),
             followersCount = it.followersCount ?: 0,
             followingsCount = it.followingsCount ?: 0,
-            outfitsCount = it.outfitsCount ?: 0
+            outfitsCount = it.outfitsCount ?: 0,
+            initial = it.initials.orEmpty()
         )
     }
 }

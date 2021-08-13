@@ -15,6 +15,10 @@ data class UserApiModel(
 	@Expose
 	val email: String?,
 
+	@SerializedName("initials")
+	@Expose
+	val initials: String?,
+
 	@SerializedName("username")
 	@Expose
 	val username: String?,
