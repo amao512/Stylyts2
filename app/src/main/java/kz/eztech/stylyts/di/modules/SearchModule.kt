@@ -7,6 +7,8 @@ import kz.eztech.stylyts.data.api.network.SearchAPI
 import kz.eztech.stylyts.data.db.search.SearchDataSource
 import kz.eztech.stylyts.data.repository.SearchRepository
 import kz.eztech.stylyts.domain.repository.SearchDomainRepository
+import kz.eztech.stylyts.presentation.fragments.shop.data.UISHopItemDataDelegate
+import kz.eztech.stylyts.presentation.fragments.shop.data.UIShopItemData
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -28,5 +30,10 @@ class SearchModule(private val mApplication: Application) {
     @Provides
     fun provideSearchRepository(searchRepository: SearchRepository): SearchDomainRepository {
         return searchRepository
+    }
+
+    @Provides
+    fun provideUIShopItemData(uiShopItemDelegate: UISHopItemDataDelegate): UIShopItemData {
+        return uiShopItemDelegate
     }
 }

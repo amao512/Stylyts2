@@ -1,6 +1,5 @@
 package kz.eztech.stylyts.presentation.fragments.shop
 
-import android.net.Uri
 import android.view.View
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
@@ -9,7 +8,6 @@ import kotlinx.android.synthetic.main.fragment_shop_item.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
-import kz.eztech.stylyts.domain.models.common.ResultsModel
 import kz.eztech.stylyts.presentation.activity.MainActivity
 import kz.eztech.stylyts.presentation.adapters.shop.ShopCategoryAdapter
 import kz.eztech.stylyts.presentation.base.BaseFragment
@@ -105,21 +103,8 @@ class ShopItemFragment(
         swipe_refresh_fragment_shop_item.finishRefreshing()
     }
 
-    override fun processClothesTypes(resultsModel: ResultsModel<ClothesTypeModel>) {
-        val preparedTypes: MutableList<ClothesTypeModel> = mutableListOf()
-        val shopsIcon = Uri.parse("android.resource://${R::class.java.`package`.name}/${R.drawable.ic_shops}")
-
-        preparedTypes.addAll(resultsModel.results)
-        preparedTypes.add(
-            ClothesTypeModel(
-                id = 0,
-                title = getString(R.string.search_item_shops),
-                menCoverPhoto = shopsIcon.toString(),
-                womenCoverPhoto = shopsIcon.toString(),
-            )
-        )
-
-        adapter.updateList(list = preparedTypes)
+    override fun processClothesTypes(clothesTypes: List<ClothesTypeModel>) {
+        adapter.updateList(list = clothesTypes)
     }
 
     override fun onViewClicked(

@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.presentation.presenters.shop
 
+import android.app.Application
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ import kz.eztech.stylyts.domain.usecases.user.GetFollowersUseCase
 import kz.eztech.stylyts.domain.usecases.user.UnfollowUserUseCase
 import kz.eztech.stylyts.presentation.contracts.main.shop.ShopProfileContract
 import kz.eztech.stylyts.presentation.fragments.shop.ShopProfileFragment
+import kz.eztech.stylyts.presentation.fragments.shop.data.UIShopProfileData
 import kz.eztech.stylyts.utils.Paginator
 import javax.inject.Inject
 
@@ -38,6 +40,8 @@ class ShopProfilePresenter @Inject constructor(
     private val getClothesUseCase: GetClothesUseCase,
     private val followUserUseCase: FollowUserUseCase,
     private val unfollowUserUseCase: UnfollowUserUseCase,
+    private val uiShopProfileData: UIShopProfileData,
+    private val application: Application
 ) : ShopProfileContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private lateinit var view: ShopProfileContract.View
@@ -101,7 +105,12 @@ class ShopProfilePresenter @Inject constructor(
         getClothesTypesUseCase.initParams()
         getClothesTypesUseCase.execute(object : DisposableSingleObserver<ResultsModel<ClothesTypeModel>>() {
             override fun onSuccess(t: ResultsModel<ClothesTypeModel>) {
-                view.processTypes(resultsModel = t)
+                view.processCollectionFilter(
+                    filterList = uiShopProfileData.getProfileFilter(
+                        context = application,
+                        typesList = t.results
+                    )
+                )
             }
 
             override fun onError(e: Throwable) {

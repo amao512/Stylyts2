@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.presentation.contracts.main.shop
 
 import kz.eztech.stylyts.domain.models.clothes.ClothesFilterModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.domain.models.outfits.OutfitFilterModel
 import kz.eztech.stylyts.domain.models.user.FollowSuccessModel
 import kz.eztech.stylyts.domain.models.user.FollowerModel
@@ -24,7 +24,7 @@ interface ShopProfileContract {
 
         fun processFollowers(resultsModel: ResultsModel<FollowerModel>)
 
-        fun processTypes(resultsModel: ResultsModel<ClothesTypeModel>)
+        fun processCollectionFilter(filterList: List<CollectionFilterModel>)
 
         fun renderPaginatorState(state: Paginator.State)
 

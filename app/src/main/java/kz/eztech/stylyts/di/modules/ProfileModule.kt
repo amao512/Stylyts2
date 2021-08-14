@@ -7,6 +7,8 @@ import kz.eztech.stylyts.data.repository.ProfileRepository
 import kz.eztech.stylyts.domain.repository.ProfileDomainRepository
 import kz.eztech.stylyts.presentation.fragments.profile.data.UIProfileFilterData
 import kz.eztech.stylyts.presentation.fragments.profile.data.UIProfileFilterDataDelegate
+import kz.eztech.stylyts.presentation.fragments.shop.data.UIShopProfileData
+import kz.eztech.stylyts.presentation.fragments.shop.data.UIShopProfileDataDelegate
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -30,5 +32,10 @@ class ProfileModule {
     @Provides
     fun providesUIProfileFilterData(): UIProfileFilterData {
         return UIProfileFilterDataDelegate()
+    }
+
+    @Provides
+    fun providesUIShopProfileData(): UIShopProfileData {
+        return UIShopProfileDataDelegate()
     }
 }
