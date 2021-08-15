@@ -7,10 +7,7 @@ import kz.eztech.stylyts.global.data.api.SearchAPI
 import kz.eztech.stylyts.global.data.db.search.SearchDataSource
 import kz.eztech.stylyts.global.data.repositories.SearchRepository
 import kz.eztech.stylyts.global.domain.repositories.SearchDomainRepository
-import kz.eztech.stylyts.search.presentation.shop.data.UISHopItemDataDelegate
-import kz.eztech.stylyts.search.presentation.shop.data.UIShopCategoryData
-import kz.eztech.stylyts.search.presentation.shop.data.UIShopCategoryDataDelegate
-import kz.eztech.stylyts.search.presentation.shop.data.UIShopItemData
+import kz.eztech.stylyts.search.presentation.shop.data.*
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -42,5 +39,10 @@ class SearchModule(private val mApplication: Application) {
     @Provides
     fun provideUIShopCategoryData(): UIShopCategoryData {
         return UIShopCategoryDataDelegate()
+    }
+
+    @Provides
+    fun provideUIShopListData(): UIShopListData {
+        return UIShopListDataDelegate()
     }
 }

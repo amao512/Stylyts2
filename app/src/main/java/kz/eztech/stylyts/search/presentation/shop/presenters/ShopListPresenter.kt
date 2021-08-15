@@ -1,5 +1,6 @@
 package kz.eztech.stylyts.search.presentation.shop.presenters
 
+import android.app.Application
 import io.reactivex.observers.DisposableSingleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -7,17 +8,19 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.global.domain.models.common.ResultsModel
-import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
 import kz.eztech.stylyts.global.domain.models.user.UserModel
 import kz.eztech.stylyts.global.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.search.presentation.shop.contracts.ShopListContract
+import kz.eztech.stylyts.search.presentation.shop.data.UIShopListData
+import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
 import kz.eztech.stylyts.utils.Paginator
-import java.util.*
 import javax.inject.Inject
 
 class ShopListPresenter @Inject constructor(
     private val paginator: Paginator.Store<ShopListItem>,
-    private val searchProfileUseCase: SearchProfileUseCase
+    private val searchProfileUseCase: SearchProfileUseCase,
+    private val uiShopListData: UIShopListData,
+    private val application: Application
 ) : ShopListContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private lateinit var view: ShopListContract.View
@@ -50,24 +53,17 @@ class ShopListPresenter @Inject constructor(
         )
         searchProfileUseCase.execute(object : DisposableSingleObserver<ResultsModel<UserModel>>() {
             override fun onSuccess(t: ResultsModel<UserModel>) {
-                val preparedResults: MutableList<ShopListItem> = mutableListOf()
-                val characterList: MutableList<String> = mutableListOf()
-
-                sortedShopList(
-                    results = t.results.filter { it.id != view.getCurrendId() }
-                ).map { list ->
-                    list.map {
-                        preparedResults.add(it)
-                    }
-
-                    characterList.add(list[0].item as String)
-                }
-
                 paginator.proceed(Paginator.Action.NewPage(
                     pageNumber = t.page,
-                    items = preparedResults
+                    items = uiShopListData.getShopList(
+                        usersList = t.results,
+                        currentUserId = view.getCurrendId()
+                    )
                 ))
-                view.processCharacter(character = characterList)
+
+                view.processCharacter(
+                    character = uiShopListData.getCharacterList(list = t.results)
+                )
             }
 
             override fun onError(e: Throwable) {
@@ -84,51 +80,9 @@ class ShopListPresenter @Inject constructor(
         paginator.proceed(Paginator.Action.LoadMore)
     }
 
-    private fun sortedShopList(results: List<UserModel>): List<List<ShopListItem>> {
-        val list: MutableList<MutableList<ShopListItem>> = mutableListOf()
-
-        results.map { shop ->
-            var item: ShopListItem?
-            var position: Int = -1
-            var counter = 0
-
-            list.map { filterList ->
-                item = filterList.find {
-                    it.item == shop.username.substring(0, 1)
-                        .toUpperCase(Locale.getDefault())
-                }
-
-                if (item != null) {
-                    position = counter
-                }
-
-                counter++
-            }
-
-            if (position != -1) {
-                list[position].add(
-                    ShopListItem(
-                        id = shop.id,
-                        item = shop
-                    )
-                )
-            } else {
-                val character = ShopListItem(
-                    id = 0,
-                    item = shop.username.substring(0, 1).toUpperCase(Locale.getDefault())
-                )
-
-                val newBrand = ShopListItem(
-                    id = shop.id,
-                    item = shop
-                )
-
-                list.add(mutableListOf(character, newBrand))
-            }
-        }
-
-        list.sortBy { (it[0].item as String) }
-
-        return list
+    override fun getFilterList() {
+        view.processFilterList(
+            filterList = uiShopListData.getFilterList(context = application)
+        )
     }
 }

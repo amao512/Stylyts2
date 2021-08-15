@@ -1,6 +1,7 @@
 package kz.eztech.stylyts.search.presentation.shop.contracts
 
 import kz.eztech.stylyts.global.domain.models.common.SearchFilterModel
+import kz.eztech.stylyts.global.domain.models.filter.CollectionFilterModel
 import kz.eztech.stylyts.global.presentation.base.BasePresenter
 import kz.eztech.stylyts.global.presentation.base.BaseView
 import kz.eztech.stylyts.utils.Paginator
@@ -18,6 +19,8 @@ interface ShopListContract {
         fun processShops(list: List<Any?>)
 
         fun processCharacter(character: List<String>)
+
+        fun processFilterList(filterList: List<CollectionFilterModel>)
     }
 
     interface Presenter : BasePresenter<View> {
@@ -27,5 +30,7 @@ interface ShopListContract {
         fun loadMorePage()
 
         fun getShops()
+
+        fun getFilterList()
     }
 }

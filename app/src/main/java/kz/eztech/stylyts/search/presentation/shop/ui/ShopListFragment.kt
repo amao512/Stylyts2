@@ -13,20 +13,20 @@ import kotlinx.android.synthetic.main.fragment_search_item.*
 import kotlinx.android.synthetic.main.fragment_shop_list.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.collections.presentation.ui.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.global.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.global.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
-import kz.eztech.stylyts.global.presentation.common.ui.MainActivity
-import kz.eztech.stylyts.collections.presentation.ui.adapters.CollectionsFilterAdapter
-import kz.eztech.stylyts.search.presentation.shop.ui.adapters.ShopAdapter
 import kz.eztech.stylyts.global.presentation.base.BaseFragment
 import kz.eztech.stylyts.global.presentation.base.BaseView
-import kz.eztech.stylyts.search.presentation.shop.contracts.ShopListContract
-import kz.eztech.stylyts.global.presentation.filter.ui.FilterDialog
 import kz.eztech.stylyts.global.presentation.common.enums.GenderEnum
 import kz.eztech.stylyts.global.presentation.common.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.search.presentation.shop.presenters.ShopListPresenter
+import kz.eztech.stylyts.global.presentation.common.ui.MainActivity
+import kz.eztech.stylyts.global.presentation.filter.ui.FilterDialog
 import kz.eztech.stylyts.profile.presentation.profile.ui.ShopProfileFragment
+import kz.eztech.stylyts.search.presentation.shop.contracts.ShopListContract
+import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
+import kz.eztech.stylyts.search.presentation.shop.presenters.ShopListPresenter
+import kz.eztech.stylyts.search.presentation.shop.ui.adapters.ShopAdapter
 import kz.eztech.stylyts.utils.Paginator
 import kz.eztech.stylyts.utils.extensions.hide
 import kz.eztech.stylyts.utils.extensions.show
@@ -108,7 +108,7 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        filterAdapter.updateList(list = getFilterList())
+        presenter.getFilterList()
         presenter.getShops()
 
         handleSearchView()
@@ -181,26 +181,8 @@ class ShopListFragment : BaseFragment<MainActivity>(), ShopListContract.View, Vi
         }
     }
 
-    private fun getFilterList(): List<CollectionFilterModel> {
-        val filterList: MutableList<CollectionFilterModel> = mutableListOf()
-
-//        filterList.add(
-//            CollectionFilterModel(
-//                id = 1,
-//                name = getString(R.string.filter_list_filter),
-//                icon = R.drawable.ic_filter
-//            )
-//        )
-
-        filterList.add(
-            CollectionFilterModel(
-                id = 1,
-                name = getString(R.string.filter_favorite_brands),
-                icon = R.drawable.ic_baseline_favorite_border_24
-            )
-        )
-
-        return filterList
+    override fun processFilterList(filterList: List<CollectionFilterModel>) {
+        filterAdapter.updateList(list = filterList)
     }
 
     private fun handleSearchView() {
