@@ -15,7 +15,7 @@ import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
 import kz.eztech.stylyts.global.domain.models.common.SearchFilterModel
 import kz.eztech.stylyts.global.domain.models.filter.CollectionFilterModel
-import kz.eztech.stylyts.search.presentation.shop.data.ShopListItem
+import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
 import kz.eztech.stylyts.global.presentation.common.ui.MainActivity
 import kz.eztech.stylyts.collections.presentation.ui.adapters.CollectionsFilterAdapter
 import kz.eztech.stylyts.search.presentation.shop.ui.adapters.ShopAdapter

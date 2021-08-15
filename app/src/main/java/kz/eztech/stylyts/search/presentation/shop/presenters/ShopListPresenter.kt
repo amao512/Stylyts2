@@ -7,7 +7,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.launch
 import kz.eztech.stylyts.global.domain.models.common.ResultsModel
-import kz.eztech.stylyts.search.presentation.shop.data.ShopListItem
+import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
 import kz.eztech.stylyts.global.domain.models.user.UserModel
 import kz.eztech.stylyts.global.domain.usecases.search.SearchProfileUseCase
 import kz.eztech.stylyts.search.presentation.shop.contracts.ShopListContract

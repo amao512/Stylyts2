@@ -118,7 +118,7 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
 
         currentFilter.typeIdList = arrayListOf(clothesType)
 
-        presenter.getCategoriesByType(clothesTypeId = clothesType.id)
+        presenter.getCategoriesByType(clothesTypeModel = clothesType)
         presenter.getClothesResultsByType(filterModel = currentFilter)
     }
 
@@ -144,31 +144,8 @@ class ShopCategoryListFragment : BaseFragment<MainActivity>(), ShopItemListContr
         }
     }
 
-    override fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>) {
-        val preparedResults: MutableList<FilterCheckModel> = mutableListOf()
-        preparedResults.add(
-            FilterCheckModel(
-                id = 0,
-                isCustom = true,
-                item = ClothesCategoryModel(
-                    id = 0,
-                    clothesType = clothesType,
-                    title = clothesType.title,
-                    bodyPart = clothesType.id
-                )
-            )
-        )
-
-        resultsModel.results.map {
-            preparedResults.add(
-                FilterCheckModel(
-                    id = it.id,
-                    item = it
-                )
-            )
-        }
-
-        filterCheckAdapter.updateList(list = preparedResults)
+    override fun processCategories(list: List<FilterCheckModel>) {
+        filterCheckAdapter.updateList(list = list)
     }
 
     override fun processClothesResults(resultsModel: ResultsModel<ClothesModel>) {

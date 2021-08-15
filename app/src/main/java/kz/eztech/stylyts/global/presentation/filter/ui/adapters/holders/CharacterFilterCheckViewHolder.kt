@@ -3,7 +3,7 @@ package kz.eztech.stylyts.global.presentation.filter.ui.adapters.holders
 import android.view.View
 import kotlinx.android.synthetic.main.item_filter_character.view.*
 import kz.eztech.stylyts.global.domain.models.filter.FilterCheckModel
-import kz.eztech.stylyts.search.presentation.shop.data.ShopListItem
+import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.BaseAdapter
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.holders.BaseViewHolder
 import kz.eztech.stylyts.utils.EMPTY_STRING

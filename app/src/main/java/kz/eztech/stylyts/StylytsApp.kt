@@ -10,6 +10,7 @@ import kz.eztech.stylyts.global.di.modules.*
 import kz.eztech.stylyts.home.di.HomeModule
 import kz.eztech.stylyts.ordering.di.OrderModule
 import kz.eztech.stylyts.profile.di.ProfileModule
+import kz.eztech.stylyts.search.di.SearchModule
 import kz.eztech.stylyts.utils.helpers.LocaleHelper
 import org.koin.core.context.startKoin
 

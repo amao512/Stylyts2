@@ -1,9 +1,10 @@
 package kz.eztech.stylyts.search.presentation.shop.contracts
 
-import kz.eztech.stylyts.global.domain.models.clothes.ClothesCategoryModel
 import kz.eztech.stylyts.global.domain.models.clothes.ClothesFilterModel
 import kz.eztech.stylyts.global.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.global.domain.models.clothes.ClothesTypeModel
 import kz.eztech.stylyts.global.domain.models.common.ResultsModel
+import kz.eztech.stylyts.global.domain.models.filter.FilterCheckModel
 import kz.eztech.stylyts.global.presentation.base.BasePresenter
 import kz.eztech.stylyts.global.presentation.base.BaseView
 
@@ -15,7 +16,7 @@ interface ShopItemListContract {
 
         fun processClothesResults(resultsModel: ResultsModel<ClothesModel>)
 
-        fun processCategories(resultsModel: ResultsModel<ClothesCategoryModel>)
+        fun processCategories(list: List<FilterCheckModel>)
     }
 
     interface Presenter: BasePresenter<View> {
@@ -24,6 +25,6 @@ interface ShopItemListContract {
 
         fun getClothesResultsByCategory(filterModel: ClothesFilterModel)
 
-        fun getCategoriesByType(clothesTypeId: Int)
+        fun getCategoriesByType(clothesTypeModel: ClothesTypeModel)
     }
 }

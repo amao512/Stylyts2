@@ -2,7 +2,7 @@ package kz.eztech.stylyts.search.presentation.shop.ui.adapters
 
 import android.view.ViewGroup
 import kz.eztech.stylyts.R
-import kz.eztech.stylyts.search.presentation.shop.data.ShopListItem
+import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.BaseAdapter
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.BaseDiffUtilCallBack
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.holders.BaseViewHolder

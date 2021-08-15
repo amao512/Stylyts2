@@ -6,7 +6,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import kotlinx.android.synthetic.main.item_filter_character.view.*
 import kotlinx.android.synthetic.main.item_shop.view.*
-import kz.eztech.stylyts.search.presentation.shop.data.ShopListItem
+import kz.eztech.stylyts.search.presentation.shop.data.models.ShopListItem
 import kz.eztech.stylyts.global.domain.models.user.UserModel
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.BaseAdapter
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.holders.BaseViewHolder

@@ -47,6 +47,7 @@ import kz.eztech.stylyts.profile.di.ProfileModule
 import kz.eztech.stylyts.profile.presentation.subscriptions.ui.UserSubsFragment
 import kz.eztech.stylyts.profile.presentation.subscriptions.ui.UserSubsItemFragment
 import kz.eztech.stylyts.profile.presentation.profile.ui.ShopProfileFragment
+import kz.eztech.stylyts.search.di.SearchModule
 import kz.eztech.stylyts.search.presentation.shop.ui.ShopCategoryListFragment
 import kz.eztech.stylyts.search.presentation.shop.ui.ShopClothesListFragment
 import kz.eztech.stylyts.search.presentation.shop.ui.ShopItemFragment
