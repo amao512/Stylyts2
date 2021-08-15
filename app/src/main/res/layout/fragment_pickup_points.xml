@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.order_constructor.self_pickup.PickupPointsFragment"
+    tools:context=".ordering.presentation.order_constructor.ui.fragments.self_pickup.PickupPointsFragment"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".presentation.fragments.order_constructor.self_pickup.PickupPointsFragment"
+        tools:context=".ordering.presentation.order_constructor.ui.fragments.self_pickup.PickupPointsFragment"
         >
 
         <include

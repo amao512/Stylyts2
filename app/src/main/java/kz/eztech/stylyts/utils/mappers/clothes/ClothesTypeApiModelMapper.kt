@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.clothes
 
-import kz.eztech.stylyts.data.api.models.clothes.ClothesTypeApiModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesTypeModel
+import kz.eztech.stylyts.global.data.models.clothes.ClothesTypeApiModel
+import kz.eztech.stylyts.global.domain.models.clothes.ClothesTypeModel
 
 fun ClothesTypeApiModel?.map(): ClothesTypeModel {
     return ClothesTypeModel(

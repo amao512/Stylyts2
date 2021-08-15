@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.posts
 
-import kz.eztech.stylyts.data.api.models.posts.TagsApiModel
-import kz.eztech.stylyts.domain.models.posts.TagsModel
+import kz.eztech.stylyts.global.data.models.posts.TagsApiModel
+import kz.eztech.stylyts.global.domain.models.posts.TagsModel
 
 fun TagsApiModel?.map(): TagsModel {
     return TagsModel(

@@ -8,7 +8,7 @@
     >
     <fragment
         android:id="@+id/shopFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopFragment"
+        android:name="kz.eztech.stylyts.search.presentation.shop.ui.ShopFragment"
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop"
         >
@@ -44,7 +44,7 @@
 
     <fragment
         android:id="@+id/shopItemListFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopCategoryListFragment"
+        android:name="kz.eztech.stylyts.search.presentation.shop.ui.ShopCategoryListFragment"
         android:label="fragment_shop_item_list"
         tools:layout="@layout/fragment_shop_item_list"
         >
@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/shopClothesListFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopClothesListFragment"
+        android:name="kz.eztech.stylyts.search.presentation.shop.ui.ShopClothesListFragment"
         android:label="fragment_category_type_detail"
         tools:layout="@layout/fragment_category_type_detail"
         >
@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/clothesDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
+        android:name="kz.eztech.stylyts.global.presentation.clothes.ui.ClothesDetailFragment"
         android:label="fragment_item_detail"
         tools:layout="@layout/fragment_clothes_detail"
         >
@@ -102,7 +102,7 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.search.SearchFragment"
+        android:name="kz.eztech.stylyts.search.presentation.search.ui.SearchFragment"
         android:label="SearchFragment"
         tools:layout="@layout/fragment_search"
         >
@@ -126,7 +126,7 @@
 
     <fragment
         android:id="@+id/shopListFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.shop.ShopListFragment"
+        android:name="kz.eztech.stylyts.search.presentation.shop.ui.ShopListFragment"
         android:label="fragment_shop_list"
         tools:layout="@layout/fragment_shop_list"
         >

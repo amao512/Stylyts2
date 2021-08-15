@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.collection_constructor.CreateCollectionFragment"
+    tools:context=".collection_constructor.presentation.ui.fragments.CreateCollectionFragment"
     >
 
     <!-- TODO: Update blank fragment layout -->

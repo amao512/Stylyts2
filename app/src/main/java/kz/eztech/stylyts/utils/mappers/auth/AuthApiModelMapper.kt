@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.utils.mappers.auth
 
-import kz.eztech.stylyts.data.api.models.auth.AuthApiModel
+import kz.eztech.stylyts.auth.data.models.AuthApiModel
 import kz.eztech.stylyts.utils.mappers.user.map
-import kz.eztech.stylyts.domain.models.auth.AuthModel
+import kz.eztech.stylyts.auth.domain.models.AuthModel
 
 fun AuthApiModel?.map(): AuthModel {
     return AuthModel(

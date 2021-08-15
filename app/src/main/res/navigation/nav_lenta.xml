@@ -8,9 +8,9 @@
     >
     <fragment
         android:id="@+id/mainFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.main.MainFragment"
+        android:name="kz.eztech.stylyts.home.presentation.home.ui.HomeFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main"
+        tools:layout="@layout/fragment_home"
         >
         <action
             android:id="@+id/action_mainFragment_to_clothesDetailFragment"
@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/clothesDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
+        android:name="kz.eztech.stylyts.global.presentation.clothes.ui.ClothesDetailFragment"
         android:label="fragment_item_detail"
         tools:layout="@layout/fragment_clothes_detail"
         >
@@ -76,7 +76,7 @@
 
     <fragment
         android:id="@+id/collectionDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment"
+        android:name="kz.eztech.stylyts.global.presentation.collection.ui.CollectionDetailFragment"
         android:label="CollectionDetailFragment"
         >
         <action
@@ -107,14 +107,14 @@
 
     <fragment
         android:id="@+id/chatsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.chat.ChatsFragment"
+        android:name="kz.eztech.stylyts.home.presentation.chat.ChatsFragment"
         android:label="fragment_chats"
         tools:layout="@layout/fragment_chats"
         />
 
     <fragment
         android:id="@+id/userCommentsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment"
+        android:name="kz.eztech.stylyts.global.presentation.collection.ui.CommentsFragment"
         android:label="fragment_user_comments"
         tools:layout="@layout/fragment_comments"
         >
@@ -132,7 +132,7 @@
     <include app:graph="@navigation/nav_profile" />
     <fragment
         android:id="@+id/createCollectionAcceptFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.CreateCollectionAcceptFragment"
         android:label="CreateCollectionAcceptFragment"
         >
         <action

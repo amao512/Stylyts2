@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.annotation.Nullable
-import kz.eztech.stylyts.domain.models.user.UserModel
+import kz.eztech.stylyts.global.domain.models.user.UserModel
 
 
 /**

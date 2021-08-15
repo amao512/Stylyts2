@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.order
 
-import kz.eztech.stylyts.data.api.models.order.OrderApiModel
-import kz.eztech.stylyts.domain.models.order.OrderModel
+import kz.eztech.stylyts.ordering.data.models.order.OrderApiModel
+import kz.eztech.stylyts.ordering.domain.models.order.OrderModel
 import kz.eztech.stylyts.utils.extensions.getZonedDateTime
 import kz.eztech.stylyts.utils.mappers.clothes.map
 import kz.eztech.stylyts.utils.mappers.user.map

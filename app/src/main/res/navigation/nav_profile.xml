@@ -8,7 +8,7 @@
     >
     <fragment
         android:id="@+id/profileFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.ui.ProfileFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.profile.ui.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile"
         >
@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/profileIncomeFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.incomes.IncomesFragment"
+        android:name="kz.eztech.stylyts.ordering.presentation.incomes.ui.IncomesFragment"
         android:label="fragment_profile_income"
         tools:layout="@layout/fragment_incomes"
         >
@@ -60,7 +60,7 @@
 
     <fragment
         android:id="@+id/profileIncomeDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.incomes.IncomeDetailFragment"
+        android:name="kz.eztech.stylyts.ordering.presentation.incomes.ui.IncomeDetailFragment"
         android:label="ProfileIncomeDetailFragment"
         tools:layout="@layout/fragment_income_detail"
         >
@@ -72,7 +72,7 @@
 
     <fragment
         android:id="@+id/collectionDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection.CollectionDetailFragment"
+        android:name="kz.eztech.stylyts.global.presentation.collection.ui.CollectionDetailFragment"
         android:label="CollectionDetailFragment"
         tools:layout="@layout/fragment_collection_detail"
         >
@@ -100,7 +100,7 @@
 
     <fragment
         android:id="@+id/clothesDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.clothes.ClothesDetailFragment"
+        android:name="kz.eztech.stylyts.global.presentation.clothes.ui.ClothesDetailFragment"
         android:label="fragment_item_detail"
         tools:layout="@layout/fragment_clothes_detail"
         >
@@ -120,14 +120,14 @@
 
     <fragment
         android:id="@+id/addressProfileFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.address.AddressFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.address.ui.AddressFragment"
         android:label="fragment_address_profile"
         tools:layout="@layout/fragment_address_profile"
         />
 
     <fragment
         android:id="@+id/cardFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.card.CardFragment"
+        android:name="kz.eztech.stylyts.global.presentation.card.ui.CardFragment"
         android:label="fragment_card"
         tools:layout="@layout/fragment_card"
         >
@@ -139,7 +139,7 @@
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.settings.SettingsFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.settings.ui.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings"
         >
@@ -155,20 +155,20 @@
 
     <fragment
         android:id="@+id/savedSettingsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.settings.SavedSettingsFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.settings.ui.SavedSettingsFragment"
         android:label="fragment_saved_settings"
         tools:layout="@layout/fragment_saved_settings"
         />
     <fragment
         android:id="@+id/personalSettingsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.settings.PersonalSettingsFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.settings.ui.PersonalSettingsFragment"
         android:label="fragment_personal_settings"
         tools:layout="@layout/fragment_personal_settings"
         />
 
     <fragment
         android:id="@+id/cameraFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.camera.CameraFragment"
+        android:name="kz.eztech.stylyts.global.presentation.camera.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera"
         >
@@ -184,7 +184,7 @@
 
     <fragment
         android:id="@+id/cleanBackgroundFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CleanBackgroundFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.CleanBackgroundFragment"
         android:label="fragment_clean_background"
         tools:layout="@layout/fragment_clean_background"
         >
@@ -196,7 +196,7 @@
 
     <fragment
         android:id="@+id/photoPostCreatorFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.PhotoPostCreatorFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.PhotoPostCreatorFragment"
         android:label="fragment_photo_post_creator"
         tools:layout="@layout/fragment_photo_post_creator"
         >
@@ -212,14 +212,14 @@
 
     <fragment
         android:id="@+id/photoChooserFragment"
-        android:name="kz.eztech.stylyts.presentation.dialogs.collection_constructor.TagChooserDialog"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.ui.dialogs.TagChooserDialog"
         android:label="fragment_photo_chooser"
         tools:layout="@layout/dialog_tag_chooser"
         />
 
     <fragment
         android:id="@+id/userSubsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.users.UserSubsFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.subscriptions.ui.UserSubsFragment"
         android:label="UserSubsFragment"
         tools:layout="@layout/fragment_user_subs"
         >
@@ -230,13 +230,13 @@
     </fragment>
     <fragment
         android:id="@+id/userCommentsFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection.CommentsFragment"
+        android:name="kz.eztech.stylyts.global.presentation.collection.ui.CommentsFragment"
         android:label="fragment_user_comments"
         tools:layout="@layout/fragment_comments"
         />
     <fragment
         android:id="@+id/createCollectionAcceptFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.collection_constructor.CreateCollectionAcceptFragment"
+        android:name="kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.CreateCollectionAcceptFragment"
         android:label="CreateCollectionAcceptFragment"
         >
         <action
@@ -248,7 +248,7 @@
     </fragment>
     <fragment
         android:id="@+id/myDataFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.profile.ui.MyDataFragment"
+        android:name="kz.eztech.stylyts.profile.presentation.profile.ui.MyDataFragment"
         android:label="MyDataFragment"
         >
         <action
@@ -278,12 +278,12 @@
     </fragment>
     <fragment
         android:id="@+id/saveCardFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.card.SaveCardFragment"
+        android:name="kz.eztech.stylyts.global.presentation.card.ui.SaveCardFragment"
         android:label="SaveCardFragment"
         />
     <fragment
         android:id="@+id/orderListFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order.OrderListFragment"
+        android:name="kz.eztech.stylyts.ordering.presentation.order.ui.OrderListFragment"
         android:label="OrderListFragment"
         >
         <action
@@ -306,7 +306,7 @@
 
     <fragment
         android:id="@+id/orderDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order.UserOrderDetailFragment"
+        android:name="kz.eztech.stylyts.ordering.presentation.order.ui.UserOrderDetailFragment"
         android:label="OrderDetailFragment"
         >
         <action
@@ -321,7 +321,7 @@
 
     <fragment
         android:id="@+id/paymentFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order_constructor.PaymentFragment"
+        android:name="kz.eztech.stylyts.ordering.presentation.order_constructor.ui.fragments.PaymentFragment"
         android:label="PaymentFragment"
         >
         <action
@@ -334,7 +334,7 @@
 
     <fragment
         android:id="@+id/shopOrderDetailFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.order.ShopOrderDetailFragment"
+        android:name="kz.eztech.stylyts.ordering.presentation.order.ui.ShopOrderDetailFragment"
         android:label="fragment_shop_order_detail"
         tools:layout="@layout/fragment_shop_order_detail"
         >

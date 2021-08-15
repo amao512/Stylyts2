@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.posts
 
-import kz.eztech.stylyts.data.api.models.posts.PostCreateApiModel
-import kz.eztech.stylyts.domain.models.posts.PostCreateModel
+import kz.eztech.stylyts.global.data.models.posts.PostCreateApiModel
+import kz.eztech.stylyts.global.domain.models.posts.PostCreateModel
 import kz.eztech.stylyts.utils.EMPTY_STRING
 import java.io.File
 

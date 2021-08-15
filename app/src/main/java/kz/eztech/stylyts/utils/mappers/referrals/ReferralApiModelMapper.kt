@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.referrals
 
-import kz.eztech.stylyts.data.api.models.referrals.ReferralApiModel
-import kz.eztech.stylyts.domain.models.referrals.ReferralModel
+import kz.eztech.stylyts.ordering.data.models.referrals.ReferralApiModel
+import kz.eztech.stylyts.ordering.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.utils.EMPTY_STRING
 import kz.eztech.stylyts.utils.extensions.getZonedDateTime
 import kz.eztech.stylyts.utils.extensions.orFalse

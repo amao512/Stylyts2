@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.order
 
-import kz.eztech.stylyts.data.api.models.order.InvoiceApiModel
-import kz.eztech.stylyts.domain.models.order.InvoiceModel
+import kz.eztech.stylyts.ordering.data.models.order.InvoiceApiModel
+import kz.eztech.stylyts.ordering.domain.models.order.InvoiceModel
 
 fun InvoiceApiModel?.map(): InvoiceModel {
     return InvoiceModel(

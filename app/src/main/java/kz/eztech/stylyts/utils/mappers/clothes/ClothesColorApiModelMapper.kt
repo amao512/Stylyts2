@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.clothes
 
-import kz.eztech.stylyts.data.api.models.clothes.ClothesColorApiModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesColorModel
+import kz.eztech.stylyts.global.data.models.clothes.ClothesColorApiModel
+import kz.eztech.stylyts.global.domain.models.clothes.ClothesColorModel
 
 fun List<ClothesColorApiModel>?.map(): List<ClothesColorModel> {
     this ?: return emptyList()

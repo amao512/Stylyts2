@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.wardrobe
 
-import kz.eztech.stylyts.data.api.models.wardrobe.WardrobeApiModel
-import kz.eztech.stylyts.domain.models.wardrobe.WardrobeModel
+import kz.eztech.stylyts.profile.data.models.WardrobeApiModel
+import kz.eztech.stylyts.profile.domain.models.wardrobe.WardrobeModel
 
 fun List<WardrobeApiModel>?.map(): List<WardrobeModel> {
     this ?: return emptyList()

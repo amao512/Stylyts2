@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.order_constructor.post.PostOrderingFragment">
+    tools:context=".ordering.presentation.order_constructor.ui.fragments.post.PostOrderingFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

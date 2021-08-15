@@ -1,6 +1,6 @@
 package kz.eztech.stylyts.utils
 
-import kz.eztech.stylyts.domain.models.referrals.ReferralModel
+import kz.eztech.stylyts.ordering.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.utils.extensions.getMonthAndDay
 import kz.eztech.stylyts.utils.extensions.getZonedDateTime
 import org.threeten.bp.Month

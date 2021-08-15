@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.user
 
-import kz.eztech.stylyts.data.api.models.user.UserShortApiModel
-import kz.eztech.stylyts.domain.models.user.UserShortModel
+import kz.eztech.stylyts.global.data.models.user.UserShortApiModel
+import kz.eztech.stylyts.global.domain.models.user.UserShortModel
 import kz.eztech.stylyts.utils.extensions.orFalse
 
 /**

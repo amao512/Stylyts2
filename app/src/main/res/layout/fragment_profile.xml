@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.profile.ui.ProfileFragment"
+    tools:context=".profile.presentation.profile.ui.ProfileFragment"
     >
 
     <include
@@ -40,7 +40,7 @@
                     app:layout_collapseMode="parallax"
                     >
 
-                    <kz.eztech.stylyts.presentation.global.ProfileInfoView
+                    <kz.eztech.stylyts.profile.presentation.profile.views.ProfileInfoView
                         android:id="@+id/fragment_profile_profile_info_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.referrals
 
-import kz.eztech.stylyts.data.api.models.referrals.ReferralItemApiModel
-import kz.eztech.stylyts.domain.models.referrals.ReferralItemModel
+import kz.eztech.stylyts.ordering.data.models.referrals.ReferralItemApiModel
+import kz.eztech.stylyts.ordering.domain.models.referrals.ReferralItemModel
 import kz.eztech.stylyts.utils.mappers.clothes.map
 
 fun List<ReferralItemApiModel>?.map(): List<ReferralItemModel> {

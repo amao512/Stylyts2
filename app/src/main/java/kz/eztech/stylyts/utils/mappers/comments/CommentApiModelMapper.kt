@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.comments
 
-import kz.eztech.stylyts.data.api.models.comments.CommentApiModel
-import kz.eztech.stylyts.domain.models.comments.CommentModel
+import kz.eztech.stylyts.global.data.models.comments.CommentApiModel
+import kz.eztech.stylyts.global.domain.models.comments.CommentModel
 import kz.eztech.stylyts.utils.mappers.user.map
 
 fun List<CommentApiModel>?.map(): List<CommentModel> {

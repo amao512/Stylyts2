@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.user
 
-import kz.eztech.stylyts.data.api.models.user.FollowerApiModel
-import kz.eztech.stylyts.domain.models.user.FollowerModel
+import kz.eztech.stylyts.global.data.models.user.FollowerApiModel
+import kz.eztech.stylyts.global.domain.models.user.FollowerModel
 
 fun List<FollowerApiModel>?.map(): List<FollowerModel> {
     this ?: return emptyList()

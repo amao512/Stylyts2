@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.utils.mappers.clothes
 
-import kz.eztech.stylyts.data.api.models.clothes.ClothesApiModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesModel
-import kz.eztech.stylyts.presentation.enums.GenderEnum
+import kz.eztech.stylyts.global.data.models.clothes.ClothesApiModel
+import kz.eztech.stylyts.global.domain.models.clothes.ClothesModel
+import kz.eztech.stylyts.global.presentation.common.enums.GenderEnum
 import kz.eztech.stylyts.utils.mappers.user.map
 
 fun List<ClothesApiModel>?.map(): List<ClothesModel> {

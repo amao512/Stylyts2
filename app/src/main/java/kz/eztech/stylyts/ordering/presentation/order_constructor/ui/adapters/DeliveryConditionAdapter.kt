@@ -1,0 +1,31 @@
+package kz.eztech.stylyts.ordering.presentation.order_constructor.ui.adapters
+
+import android.view.ViewGroup
+import kz.eztech.stylyts.R
+import kz.eztech.stylyts.ordering.domain.models.order.DeliveryConditionModel
+import kz.eztech.stylyts.global.presentation.common.ui.adapters.BaseAdapter
+import kz.eztech.stylyts.global.presentation.common.ui.adapters.BaseDiffUtilCallBack
+import kz.eztech.stylyts.global.presentation.common.ui.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.ordering.presentation.order_constructor.ui.adapters.holders.DeliveryConditionViewHolder
+
+class DeliveryConditionAdapter : BaseAdapter() {
+
+    override fun getDiffUtilCallBack(list: List<Any>): BaseDiffUtilCallBack {
+        return object : BaseDiffUtilCallBack(currentList, list) {
+            override fun getAreContentsTheSame(
+                oldItemPosition: Int,
+                newItemPosition: Int
+            ): Boolean {
+                return (currentList[oldItemPosition] as DeliveryConditionModel).id ==
+                        (list[newItemPosition] as DeliveryConditionModel).id
+            }
+        }
+    }
+
+    override fun getViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        return DeliveryConditionViewHolder(
+            itemView = inflateView(parent, R.layout.item_delivery_condition),
+            adapter = this
+        )
+    }
+}

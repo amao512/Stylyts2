@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.order_constructor.self_pickup.SelectPickupFittingWayFragment">
+    tools:context=".ordering.presentation.order_constructor.ui.fragments.self_pickup.SelectPickupFittingWayFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

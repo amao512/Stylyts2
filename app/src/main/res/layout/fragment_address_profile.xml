@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_very_light_gray"
     android:orientation="vertical"
-    tools:context=".presentation.fragments.address.AddressFragment"
+    tools:context=".profile.presentation.address.ui.AddressFragment"
     >
 
     <include

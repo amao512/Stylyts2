@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.order
 
-import kz.eztech.stylyts.data.api.models.order.CustomerApiModel
-import kz.eztech.stylyts.domain.models.order.CustomerModel
+import kz.eztech.stylyts.ordering.data.models.order.CustomerApiModel
+import kz.eztech.stylyts.ordering.domain.models.order.CustomerModel
 
 fun CustomerApiModel?.map(): CustomerModel {
     return CustomerModel(

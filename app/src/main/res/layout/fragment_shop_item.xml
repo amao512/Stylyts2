@@ -6,7 +6,7 @@
     android:id="@+id/swipe_refresh_fragment_shop_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.shop.ShopItemFragment"
+    tools:context=".search.presentation.shop.ui.ShopItemFragment"
     >
 
     <androidx.recyclerview.widget.RecyclerView

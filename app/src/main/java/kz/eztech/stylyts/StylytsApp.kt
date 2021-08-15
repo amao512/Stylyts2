@@ -3,9 +3,13 @@ package kz.eztech.stylyts
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
-import kz.eztech.stylyts.di.ApplicationComponent
-import kz.eztech.stylyts.di.DaggerApplicationComponent
-import kz.eztech.stylyts.di.modules.*
+import kz.eztech.stylyts.auth.di.AuthModule
+import kz.eztech.stylyts.global.di.ApplicationComponent
+import kz.eztech.stylyts.global.di.DaggerApplicationComponent
+import kz.eztech.stylyts.global.di.modules.*
+import kz.eztech.stylyts.home.di.HomeModule
+import kz.eztech.stylyts.ordering.di.OrderModule
+import kz.eztech.stylyts.profile.di.ProfileModule
 import kz.eztech.stylyts.utils.helpers.LocaleHelper
 import org.koin.core.context.startKoin
 
@@ -39,7 +43,7 @@ class StylytsApp : Application(){
             .applicationModule(ApplicationModule(mApplication = this))
             .networkModule(NetworkModule())
             .authModule(AuthModule())
-            .mainModule(MainModule())
+            .homeModule(HomeModule())
             .profileModule(ProfileModule())
             .addressModule(AddressModule())
             .searchModule(SearchModule(mApplication = this))

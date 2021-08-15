@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.outfits
 
-import kz.eztech.stylyts.data.api.models.outfits.OutfitCreateApiModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitCreateModel
+import kz.eztech.stylyts.global.domain.models.outfits.OutfitCreateApiModel
+import kz.eztech.stylyts.global.domain.models.outfits.OutfitCreateModel
 
 fun OutfitCreateApiModel?.map(): OutfitCreateModel {
     return OutfitCreateModel(

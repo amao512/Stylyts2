@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.clothes
 
-import kz.eztech.stylyts.data.api.models.clothes.ClothesSizeApiModel
-import kz.eztech.stylyts.domain.models.clothes.ClothesSizeModel
+import kz.eztech.stylyts.global.data.models.clothes.ClothesSizeApiModel
+import kz.eztech.stylyts.global.domain.models.clothes.ClothesSizeModel
 
 fun List<ClothesSizeApiModel>?.map(): List<ClothesSizeModel> {
     this ?: return emptyList()

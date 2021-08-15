@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.outfits
 
-import kz.eztech.stylyts.data.api.models.outfits.ClothesLocationApiModel
-import kz.eztech.stylyts.domain.models.outfits.ItemLocationModel
+import kz.eztech.stylyts.global.domain.models.outfits.ClothesLocationApiModel
+import kz.eztech.stylyts.global.domain.models.outfits.ItemLocationModel
 
 fun ClothesLocationApiModel?.map(): ItemLocationModel {
     return ItemLocationModel(

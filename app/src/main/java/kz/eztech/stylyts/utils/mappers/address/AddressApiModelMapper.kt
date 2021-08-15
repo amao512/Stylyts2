@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.address
 
-import kz.eztech.stylyts.data.api.models.address.AddressApiModel
-import kz.eztech.stylyts.domain.models.address.AddressModel
+import kz.eztech.stylyts.global.data.models.address.AddressApiModel
+import kz.eztech.stylyts.global.domain.models.address.AddressModel
 
 /**
  * Created by Asylzhan Seytbek on 11.04.2021.

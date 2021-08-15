@@ -1,16 +1,16 @@
 package kz.eztech.stylyts.utils.mappers
 
-import kz.eztech.stylyts.data.api.models.ResultsApiModel
-import kz.eztech.stylyts.data.api.models.address.AddressApiModel
-import kz.eztech.stylyts.data.api.models.clothes.*
-import kz.eztech.stylyts.data.api.models.comments.CommentApiModel
-import kz.eztech.stylyts.data.api.models.order.OrderApiModel
-import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
-import kz.eztech.stylyts.data.api.models.posts.PostApiModel
-import kz.eztech.stylyts.data.api.models.referrals.ReferralApiModel
-import kz.eztech.stylyts.data.api.models.user.FollowerApiModel
-import kz.eztech.stylyts.data.api.models.user.UserApiModel
-import kz.eztech.stylyts.data.api.models.wardrobe.WardrobeApiModel
+import kz.eztech.stylyts.global.data.models.ResultsApiModel
+import kz.eztech.stylyts.global.data.models.address.AddressApiModel
+import kz.eztech.stylyts.global.data.models.comments.CommentApiModel
+import kz.eztech.stylyts.ordering.data.models.order.OrderApiModel
+import kz.eztech.stylyts.global.domain.models.outfits.OutfitApiModel
+import kz.eztech.stylyts.global.data.models.posts.PostApiModel
+import kz.eztech.stylyts.ordering.data.models.referrals.ReferralApiModel
+import kz.eztech.stylyts.global.data.models.user.FollowerApiModel
+import kz.eztech.stylyts.global.data.models.user.UserApiModel
+import kz.eztech.stylyts.profile.data.models.WardrobeApiModel
+import kz.eztech.stylyts.global.data.models.clothes.*
 import kz.eztech.stylyts.utils.mappers.address.map
 import kz.eztech.stylyts.utils.mappers.clothes.map
 import kz.eztech.stylyts.utils.mappers.comments.map
@@ -19,7 +19,7 @@ import kz.eztech.stylyts.utils.mappers.outfits.map
 import kz.eztech.stylyts.utils.mappers.posts.map
 import kz.eztech.stylyts.utils.mappers.user.map
 import kz.eztech.stylyts.utils.mappers.wardrobe.map
-import kz.eztech.stylyts.domain.models.common.ResultsModel
+import kz.eztech.stylyts.global.domain.models.common.ResultsModel
 import kz.eztech.stylyts.utils.mappers.referrals.map
 
 /**

@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.utils.mappers.user
 
-import kz.eztech.stylyts.data.api.models.user.UserApiModel
-import kz.eztech.stylyts.domain.models.user.UserModel
-import kz.eztech.stylyts.presentation.enums.GenderEnum
+import kz.eztech.stylyts.global.data.models.user.UserApiModel
+import kz.eztech.stylyts.global.domain.models.user.UserModel
+import kz.eztech.stylyts.global.presentation.common.enums.GenderEnum
 import kz.eztech.stylyts.utils.extensions.orFalse
 
 /**

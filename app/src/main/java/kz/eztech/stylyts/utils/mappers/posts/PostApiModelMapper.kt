@@ -1,7 +1,7 @@
 package kz.eztech.stylyts.utils.mappers.posts
 
-import kz.eztech.stylyts.data.api.models.posts.PostApiModel
-import kz.eztech.stylyts.domain.models.posts.PostModel
+import kz.eztech.stylyts.global.data.models.posts.PostApiModel
+import kz.eztech.stylyts.global.domain.models.posts.PostModel
 import kz.eztech.stylyts.utils.extensions.orFalse
 import kz.eztech.stylyts.utils.mappers.clothes.map
 import kz.eztech.stylyts.utils.mappers.comments.map

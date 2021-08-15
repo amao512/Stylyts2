@@ -2,8 +2,8 @@ package kz.eztech.stylyts.utils.helpers
 
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperAdapter
-import kz.eztech.stylyts.presentation.interfaces.ItemTouchHelperViewHolder
+import kz.eztech.stylyts.global.presentation.common.interfaces.ItemTouchHelperAdapter
+import kz.eztech.stylyts.global.presentation.common.interfaces.ItemTouchHelperViewHolder
 
 class SimpleItemTouchHelperCallback(
     private val adapter: ItemTouchHelperAdapter?

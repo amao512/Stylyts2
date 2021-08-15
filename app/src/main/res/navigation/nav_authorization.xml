@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.auth.LoginFragment"
+        android:name="kz.eztech.stylyts.auth.presentation.ui.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -19,12 +19,12 @@
     </fragment>
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.auth.RegistrationFragment"
+        android:name="kz.eztech.stylyts.auth.presentation.ui.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
     <fragment
         android:id="@+id/refreshPasswordFragment"
-        android:name="kz.eztech.stylyts.presentation.fragments.auth.RefreshPasswordFragment"
+        android:name="kz.eztech.stylyts.auth.presentation.ui.RefreshPasswordFragment"
         android:label="fragment_refresh_password"
         tools:layout="@layout/fragment_refresh_password" />
 </navigation>

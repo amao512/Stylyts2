@@ -6,7 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Build
 import androidx.preference.PreferenceManager
-import kz.eztech.stylyts.presentation.base.BaseActivity
+import kz.eztech.stylyts.global.presentation.base.BaseActivity
 import kz.eztech.stylyts.utils.EMPTY_STRING
 import java.util.*
 

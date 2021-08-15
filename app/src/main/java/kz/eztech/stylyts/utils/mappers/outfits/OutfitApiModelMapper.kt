@@ -1,8 +1,8 @@
 package kz.eztech.stylyts.utils.mappers.outfits
 
-import kz.eztech.stylyts.data.api.models.outfits.OutfitApiModel
-import kz.eztech.stylyts.domain.models.outfits.OutfitModel
-import kz.eztech.stylyts.presentation.enums.GenderEnum
+import kz.eztech.stylyts.global.domain.models.outfits.OutfitApiModel
+import kz.eztech.stylyts.global.domain.models.outfits.OutfitModel
+import kz.eztech.stylyts.global.presentation.common.enums.GenderEnum
 import kz.eztech.stylyts.utils.extensions.getZonedDateTime
 import kz.eztech.stylyts.utils.mappers.clothes.map
 import kz.eztech.stylyts.utils.mappers.user.map
