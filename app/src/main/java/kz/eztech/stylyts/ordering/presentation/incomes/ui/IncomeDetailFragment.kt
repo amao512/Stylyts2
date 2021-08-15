@@ -16,9 +16,9 @@ import kz.eztech.stylyts.ordering.presentation.incomes.contracts.IncomeDetailCon
 import kz.eztech.stylyts.global.presentation.clothes.ui.ClothesDetailFragment
 import kz.eztech.stylyts.global.presentation.common.interfaces.UniversalViewClickListener
 import kz.eztech.stylyts.ordering.presentation.incomes.data.models.IncomeListItem
+import kz.eztech.stylyts.ordering.presentation.incomes.data.models.ReferralItem
 import kz.eztech.stylyts.ordering.presentation.incomes.presenters.IncomeDetailPresenter
 import kz.eztech.stylyts.utils.extensions.show
-import kz.eztech.stylyts.utils.getIncomeDateString
 import javax.inject.Inject
 
 class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.View,
@@ -66,7 +66,9 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
     override fun initializeListeners() {}
 
     override fun processPostInitialization() {
-        processReferral()
+        getIncome()?.let {
+            presenter.getReferralList(incomeListItem = it)
+        }
     }
 
     override fun disposeRequests() {
@@ -91,19 +93,8 @@ class IncomeDetailFragment : BaseFragment<MainActivity>(), IncomeDetailContract.
         }
     }
 
-    private fun processReferral() {
-        getIncome()?.let { income ->
-            val clothes: MutableList<ReferralItemModel> = mutableListOf()
-
-            fragment_income_detail_date_text_view.text = income.getReferralList().getIncomeDateString()
-            fragment_income_detail_cost_text_view.text = income.displayTotalProfit
-
-            income.getReferralList().map {
-                clothes.addAll(it.items)
-            }
-
-            referralItemsAdapter.updateList(list = clothes)
-        }
+    override fun processReferralList(list: List<ReferralItem>) {
+        referralItemsAdapter.updateList(list = list)
     }
 
     private fun navigateToClothesDetail(referralItem: ReferralItemModel) {

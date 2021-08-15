@@ -29,6 +29,8 @@ data class IncomeListItem(
     }
 
     fun getReferralList(): List<ReferralModel> = referralList
+
+    fun getTotalProfit(): Int = getReferralList().sumBy { it.totalProfit }
 }
 
 data class IncomeDateItem(

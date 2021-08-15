@@ -7,6 +7,7 @@ import kotlinx.android.synthetic.main.item_shop_order_clothes.view.*
 import kz.eztech.stylyts.ordering.domain.models.referrals.ReferralItemModel
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.BaseAdapter
 import kz.eztech.stylyts.global.presentation.common.ui.adapters.holders.BaseViewHolder
+import kz.eztech.stylyts.ordering.presentation.incomes.data.models.ReferralListItem
 import kz.eztech.stylyts.utils.extensions.loadImage
 import kz.eztech.stylyts.utils.extensions.show
 
@@ -25,10 +26,10 @@ class ReferralIncomeViewHolder(
     private lateinit var commissionCostTextView: TextView
 
     override fun bindData(item: Any, position: Int) {
-        item as ReferralItemModel
+        val data = (item as ReferralListItem).data
 
         initializeViews()
-        processClothes(clothes = item, position)
+        processClothes(clothes = data, position)
     }
 
     private fun initializeViews() {

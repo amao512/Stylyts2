@@ -11,16 +11,15 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_incomes.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
-import kz.eztech.stylyts.global.presentation.common.ui.MainActivity
-import kz.eztech.stylyts.ordering.presentation.incomes.ui.adapters.IncomesAdapter
 import kz.eztech.stylyts.global.presentation.base.BaseFragment
 import kz.eztech.stylyts.global.presentation.base.BaseView
-import kz.eztech.stylyts.ordering.presentation.incomes.contracts.IncomeContract
 import kz.eztech.stylyts.global.presentation.common.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.ordering.presentation.incomes.data.models.INCOME_TYPE
+import kz.eztech.stylyts.global.presentation.common.ui.MainActivity
+import kz.eztech.stylyts.ordering.presentation.incomes.contracts.IncomeContract
 import kz.eztech.stylyts.ordering.presentation.incomes.data.models.IncomeListItem
 import kz.eztech.stylyts.ordering.presentation.incomes.data.models.IncomesItem
 import kz.eztech.stylyts.ordering.presentation.incomes.presenters.IncomesPresenter
+import kz.eztech.stylyts.ordering.presentation.incomes.ui.adapters.IncomesAdapter
 import kz.eztech.stylyts.utils.Paginator
 import kz.eztech.stylyts.utils.extensions.show
 import javax.inject.Inject
@@ -121,23 +120,20 @@ class IncomesFragment : BaseFragment<MainActivity>(), IncomeContract.View,
 
     override fun processReferrals(list: List<Any?>) {
         val incomes: MutableList<IncomesItem> = mutableListOf()
-        var referralCost = 0
 
-        list.map { it!! }.map { referral ->
-            referral as IncomesItem
-
-            if (referral.type == INCOME_TYPE) {
-                referralCost += (referral as IncomeListItem).getReferralList().sumBy { it.totalProfit }
-            }
-
-            incomes.add(referral)
+        list.map { referral ->
+            incomes.add(referral as IncomesItem)
         }
 
+        incomesAdapter.updateList(incomes)
+        presenter.getTotalProfit(list)
+    }
+
+    override fun processTotalProfit(totalProfit: Int) {
         fragment_incomes_referral_cost_text_view.text = getString(
             R.string.price_tenge_text_format,
-            referralCost.toString()
+            totalProfit.toString()
         )
-        incomesAdapter.updateList(incomes)
     }
 
     private fun navigateToIncome(income: IncomeListItem) {

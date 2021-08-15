@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/padding_size_24x"
+    >
+
+    <TextView
+        android:id="@+id/item_referral_date_text_view"
+        style="@style/TitleTextBold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/padding_size_24x"
+        android:textSize="@dimen/text_size_30x"
+        tools:text="Втроник, 10 декабря"
+        />
+
+    <TextView
+        android:id="@+id/item_referral_cost_text_view"
+        style="@style/TitleTextBold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_size_16x"
+        android:layout_marginBottom="@dimen/margin_size_24x"
+        android:paddingHorizontal="@dimen/padding_size_24x"
+        android:textColor="@color/income_text_color"
+        android:textSize="@dimen/text_size_30x"
+        tools:text="3 290 тг."
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/medium_divider_height"
+        android:background="@color/large_divider_bg_color"
+        />
+</LinearLayout>

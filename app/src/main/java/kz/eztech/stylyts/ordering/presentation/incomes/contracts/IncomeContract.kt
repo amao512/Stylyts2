@@ -14,6 +14,8 @@ interface IncomeContract {
         fun renderPaginatorState(state: Paginator.State)
 
         fun processReferrals(list: List<Any?>)
+
+        fun processTotalProfit(totalProfit: Int)
     }
 
     interface Presenter: BasePresenter<View> {
@@ -23,5 +25,7 @@ interface IncomeContract {
         fun getReferrals()
 
         fun loadMorePage()
+
+        fun getTotalProfit(list: List<Any?>)
     }
 }

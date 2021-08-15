@@ -9,16 +9,17 @@ import kz.eztech.stylyts.global.domain.models.common.ResultsModel
 import kz.eztech.stylyts.ordering.domain.models.referrals.ReferralModel
 import kz.eztech.stylyts.ordering.domain.usecases.referrals.GetReferralListUseCase
 import kz.eztech.stylyts.ordering.presentation.incomes.contracts.IncomeContract
-import kz.eztech.stylyts.ordering.presentation.incomes.data.models.IncomeDateItem
+import kz.eztech.stylyts.ordering.presentation.incomes.data.UIIncomeData
+import kz.eztech.stylyts.ordering.presentation.incomes.data.models.INCOME_TYPE
 import kz.eztech.stylyts.ordering.presentation.incomes.data.models.IncomeListItem
 import kz.eztech.stylyts.ordering.presentation.incomes.data.models.IncomesItem
 import kz.eztech.stylyts.utils.Paginator
-import org.threeten.bp.ZonedDateTime
 import javax.inject.Inject
 
 class IncomesPresenter @Inject constructor(
     private val paginator: Paginator.Store<ReferralModel>,
-    private val getReferralListUseCase: GetReferralListUseCase
+    private val getReferralListUseCase: GetReferralListUseCase,
+    private val uiIncomeData: UIIncomeData
 ) : IncomeContract.Presenter, CoroutineScope by CoroutineScope(Dispatchers.Main) {
 
     private lateinit var view: IncomeContract.View
@@ -52,7 +53,7 @@ class IncomesPresenter @Inject constructor(
                 paginator.proceed(
                     Paginator.Action.NewPage(
                         pageNumber = t.page,
-                        items = getPreparedIncomesList(list = t.results.reversed())
+                        items = uiIncomeData.getIncomeList(incomesList = t.results.reversed())
                     )
                 )
             }
@@ -71,62 +72,17 @@ class IncomesPresenter @Inject constructor(
         paginator.proceed(Paginator.Action.LoadMore)
     }
 
-    private fun getPreparedIncomesList(list: List<ReferralModel>): List<IncomesItem> {
-        val preparedList: MutableList<IncomesItem> = mutableListOf()
-        var lastIncomeCounter = 0
+    override fun getTotalProfit(list: List<Any?>) {
+        var referralCost = 0
 
-        list.map {
-            if (preparedList.isEmpty()) {
-                preparedList.add(
-                    getIncomeDate(createdAt = it.createdAt)
-                )
-                preparedList.add(getIncomeItem(it.createdAt).also { income ->
-                    income.addReferral(it)
-                })
+        list.map { referral ->
+            referral as IncomesItem
 
-                lastIncomeCounter = 1
-            } else {
-                val lastIncome = preparedList[lastIncomeCounter] as IncomeListItem
-
-                if (lastIncome.year == it.createdAt.year && lastIncome.month == it.createdAt.month) {
-                    if ((lastIncome.startDay + 7) < it.createdAt.dayOfMonth) {
-                        preparedList.add(getIncomeItem(it.createdAt).also { income ->
-                            income.addReferral(it)
-                        })
-
-                        lastIncomeCounter++
-                    } else {
-                        lastIncome.addReferral(it)
-                    }
-                } else {
-                    preparedList.add(
-                        getIncomeDate(createdAt = it.createdAt)
-                    )
-                    preparedList.add(getIncomeItem(it.createdAt).also { income ->
-                        income.addReferral(it)
-                    })
-
-                    lastIncomeCounter += 2
-                }
+            if (referral.type == INCOME_TYPE) {
+                referralCost += (referral as IncomeListItem).getTotalProfit()
             }
         }
 
-        return preparedList
-    }
-
-    private fun getIncomeDate(createdAt: ZonedDateTime): IncomeDateItem {
-        return IncomeDateItem(
-            data = createdAt,
-            month = createdAt.month,
-            year = createdAt.year
-        )
-    }
-
-    private fun getIncomeItem(createdAt: ZonedDateTime): IncomeListItem {
-        return IncomeListItem(
-            year = createdAt.year,
-            month = createdAt.month,
-            startDay = createdAt.dayOfMonth
-        )
+        view.processTotalProfit(totalProfit = referralCost)
     }
 }
