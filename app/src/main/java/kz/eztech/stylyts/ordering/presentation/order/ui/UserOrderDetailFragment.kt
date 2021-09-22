@@ -191,6 +191,7 @@ class UserOrderDetailFragment : BaseFragment<MainActivity>(), UserOrderDetailCon
             (isPaymentPending && isOperationUrlNotBlank) ||
             (isPaymentNew && isOperationUrlNotBlank)
         ) {
+            // status pending
             paidStatusHolder.hide()
             deliveredStatusHolder.hide()
             returnedStatusHolder.hide()

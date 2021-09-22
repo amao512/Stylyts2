@@ -3,7 +3,6 @@ package kz.eztech.stylyts.utils.mappers.outfits
 import kz.eztech.stylyts.global.domain.models.outfits.OutfitApiModel
 import kz.eztech.stylyts.global.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.global.presentation.common.enums.GenderEnum
-import kz.eztech.stylyts.utils.extensions.getZonedDateTime
 import kz.eztech.stylyts.utils.mappers.clothes.map
 import kz.eztech.stylyts.utils.mappers.user.map
 
@@ -25,8 +24,8 @@ fun List<OutfitApiModel>?.map(): List<OutfitModel> {
             clothesLocation = it.clothesLocation.map(),
             constructorCode = it.constructorCode.orEmpty(),
             saved = it.saved,
-            createdAt = it.createdAt.orEmpty().getZonedDateTime(),
-            modified_at = it.modified_at.orEmpty().getZonedDateTime(),
+            createdAt = it.createdAt.orEmpty(),
+            modified_at = it.modified_at.orEmpty(),
             style = it.style ?: 0
         )
     }
@@ -47,8 +46,8 @@ fun OutfitApiModel?.map(): OutfitModel {
         clothesLocation = this?.clothesLocation.map(),
         constructorCode = this?.constructorCode.orEmpty(),
         saved = this?.saved ?: false,
-        createdAt = this?.createdAt.orEmpty().getZonedDateTime(),
-        modified_at = this?.modified_at.orEmpty().getZonedDateTime(),
+        createdAt = this?.createdAt.orEmpty(),
+        modified_at = this?.modified_at.orEmpty(),
         style = this?.style ?: 0
     )
 }

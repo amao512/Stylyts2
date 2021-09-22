@@ -16,27 +16,27 @@ import kotlinx.android.synthetic.main.base_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_collection_detail.*
 import kz.eztech.stylyts.R
 import kz.eztech.stylyts.StylytsApp
+import kz.eztech.stylyts.collection_constructor.presentation.ui.adapters.ClothesAdditionalAdapter
+import kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.CollectionConstructorFragment
+import kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.CreateCollectionAcceptFragment
 import kz.eztech.stylyts.global.domain.models.clothes.ClothesModel
 import kz.eztech.stylyts.global.domain.models.outfits.OutfitModel
 import kz.eztech.stylyts.global.domain.models.posts.PostModel
 import kz.eztech.stylyts.global.domain.models.posts.TagModel
 import kz.eztech.stylyts.global.domain.models.user.UserModel
 import kz.eztech.stylyts.global.domain.models.user.UserShortModel
-import kz.eztech.stylyts.global.presentation.common.ui.MainActivity
-import kz.eztech.stylyts.collection_constructor.presentation.ui.adapters.ClothesAdditionalAdapter
-import kz.eztech.stylyts.global.presentation.common.ui.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.global.presentation.base.BaseFragment
 import kz.eztech.stylyts.global.presentation.base.BaseView
 import kz.eztech.stylyts.global.presentation.base.DialogChooserListener
-import kz.eztech.stylyts.global.presentation.collection.contracts.CollectionDetailContract
-import kz.eztech.stylyts.global.presentation.collection.ui.dialogs.CollectionContextDialog
 import kz.eztech.stylyts.global.presentation.clothes.ui.ClothesDetailFragment
-import kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.CollectionConstructorFragment
-import kz.eztech.stylyts.collection_constructor.presentation.ui.fragments.CreateCollectionAcceptFragment
+import kz.eztech.stylyts.global.presentation.collection.contracts.CollectionDetailContract
+import kz.eztech.stylyts.global.presentation.collection.presenters.CollectionDetailPresenter
+import kz.eztech.stylyts.global.presentation.collection.ui.dialogs.CollectionContextDialog
+import kz.eztech.stylyts.global.presentation.common.interfaces.UniversalViewClickListener
+import kz.eztech.stylyts.global.presentation.common.ui.MainActivity
+import kz.eztech.stylyts.global.presentation.common.ui.adapters.ImagesViewPagerAdapter
 import kz.eztech.stylyts.profile.presentation.profile.ui.ProfileFragment
 import kz.eztech.stylyts.profile.presentation.profile.ui.ShopProfileFragment
-import kz.eztech.stylyts.global.presentation.common.interfaces.UniversalViewClickListener
-import kz.eztech.stylyts.global.presentation.collection.presenters.CollectionDetailPresenter
 import kz.eztech.stylyts.utils.EMPTY_STRING
 import kz.eztech.stylyts.utils.FileUtils
 import kz.eztech.stylyts.utils.extensions.*
@@ -215,7 +215,7 @@ class CollectionDetailFragment : BaseFragment<MainActivity>(), CollectionDetailC
         firstCommentTextView.text = text
         firstCommentTextView.hide()
         likesCountTextView.hide()
-        text_view_fragment_collection_detail_date.text = createdAt.getDayAndMonth()
+        text_view_fragment_collection_detail_date.text = createdAt.getZonedDateTime().getDayAndMonth()
 
         if (clothes.isNotEmpty() && totalPrice != 0) {
             totalPriceTextView.text = HtmlCompat.fromHtml(
